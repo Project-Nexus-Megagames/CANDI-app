@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, FormGroup, ControlLabel, FormControl, Button } from 'rsuite';
+import { Modal, Form, FormGroup, ControlLabel, FormControl, Button, Slider } from 'rsuite';
 
 class NewAction extends Component {
   constructor(props) {
@@ -7,8 +7,8 @@ class NewAction extends Component {
     this.state = {
       formValue: {
         desc: '',
-        email: '',
-        password: '',
+        intent: '',
+        effort: 0,
         textarea: ''
       }
     };
@@ -34,7 +34,7 @@ class NewAction extends Component {
 	
 	render() { 
 		return ( 
-			<Modal
+			<Modal overflow
 			full
 			size='lg'  
 			show={this.props.show} 
@@ -43,11 +43,26 @@ class NewAction extends Component {
 					<Modal.Title>Submit a new action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form fluid formValue={this.state.formValue} onChange={this.handleChange}> 
+					<Form fluid formValue={this.state.formValue} onChange={this.handleChange} > 
 						<FormGroup>
-							<ControlLabel>Description</ControlLabel>
+							<ControlLabel>Action Description</ControlLabel>
 							<FormControl name="desc" componentClass="textarea" rows={5}/>
 						</FormGroup>
+						<FormGroup>
+							<ControlLabel>What you want to happen...</ControlLabel>
+							<FormControl name="intent" componentClass="textarea" rows={5}/>
+						</FormGroup>
+						<FormGroup>
+					        <ControlLabel>Effort</ControlLabel>
+					        <FormControl
+					          accepter={Slider}
+					          min={1}
+					          max={3}
+					          name="effort"
+					          progress
+					          style={{   }}
+					        />
+					      </FormGroup>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
