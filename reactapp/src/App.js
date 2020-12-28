@@ -20,14 +20,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    //this.loadData();
+    this.loadData();
     // this.setState({ active: "home" });
 
   }
 
   loadData = async () => {
-    const actions = await axios.get('http://localhost:5000/api/actions/');
-    this.setState({ actions });
+    const {data} = await axios.get('http://localhost:5000/api/actions/');
+    this.setState({ actions: data });
   }
 
   handleSelect(activeKey) {

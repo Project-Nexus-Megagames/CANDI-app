@@ -5,7 +5,8 @@ import { Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, Fl
 
 class OtherCharacters extends Component {
 	state = { 
-		selected: {}
+		selected: {},
+		catagories: []
 	 }
 
 	listStyle (item) {
@@ -13,9 +14,24 @@ class OtherCharacters extends Component {
 			return ({backgroundColor: "#212429"})
 		}
 	}
+
+	copyToClipboard (email) {
+		navigator.clipboard.writeText(email);
+	}
 	
 	componentDidMount() {
 		this.setState({ selected: null });
+		const catagories = [];
+		for (const character of characters) {
+			if (!catagories.some(el => el === character.role || character.role === 'NPC')) catagories.push(character.role);
+		}
+		catagories.sort((a, b) => { // sort the catagories alphabetically 
+				if(a < b) { return -1; }
+				if(a > b) { return 1; }
+				return 0;
+			});
+		catagories.push('NPC');
+		this.setState({ catagories });
 	}
 
 	render() { 
@@ -26,23 +42,32 @@ class OtherCharacters extends Component {
 					<Panel style={{ backgroundColor: "#000101"}}>
 						<Input placeholder="Search"></Input>
 					</Panel>
-					<Panel bodyFill >
-						<List hover size="sm" style={{maxHeight: 650, overflow: 'auto'}}>
-							{characters.map((character, index) => (
-								<List.Item key={index} index={index} onClick={() => this.setState({ selected: character })} style={this.listStyle(character)}>
-									<FlexboxGrid>
-										<FlexboxGrid.Item colspan={5} style={styleCenter}>
-											<Avatar src={character.icon} circle/>
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-											<div style={titleStyle}>{character.charName}</div>
-           			      <div style={slimText}>{character.email}</div>
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-								</List.Item>
-							))}
-						</List>						
-					</Panel>						
+					<Panel bodyFill style={{maxHeight: 650, overflow: 'auto'}}>					
+					{this.state.catagories.map((catagory, index) => (
+						<React.Fragment>
+						<h4>{catagory}</h4>	
+							<List hover size="sm" >
+								{characters.filter(el => el.role === catagory).sort((a, b) => { // sort the catagories alphabetically 
+									if(a.charName < b.charName) { return -1; }
+									if(a.charName > b.charName) { return 1; }
+									return 0;
+								}).map((character, index) => (
+									<List.Item key={index} index={index} onClick={() => this.setState({ selected: character })} style={this.listStyle(character)}>
+										<FlexboxGrid>
+											<FlexboxGrid.Item colspan={5} style={styleCenter}>
+												<Avatar src={character.icon} circle/>
+											</FlexboxGrid.Item>
+											<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+												<div style={titleStyle}>{character.charName}</div>
+												<div style={slimText}>{character.email}</div>
+											</FlexboxGrid.Item>
+										</FlexboxGrid>
+									</List.Item>
+								))}
+							</List>												
+						</React.Fragment>	
+					))}			
+					</Panel>							
 				</PanelGroup>
 			</Sidebar>
 			{this.state.selected &&
@@ -70,7 +95,7 @@ class OtherCharacters extends Component {
 									</FlexboxGrid>
 								</p>
 								<p>
-									<Button appearance='ghost' block>Copy email to clipboard</Button>
+									<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email)}>Copy email to clipboard</Button>
 								</p>
 								<p>
 									Faction:	
@@ -126,7 +151,7 @@ const characters = [
 	{
 	name: "Steve",
 	charName: "Mr. Bones",
-	role: "Criminal",
+	role: "Scoundrel",
 	email: "example@gmail.com",
 	timezone: "Pacific",
 	bio: "The Chair of Mollified Eschatology is a member of the Mist family - \n a cadet branch of Ignis. With a title to live up to, and no fortune to speak of, a career within the University was a natural choice. Their keen mind and ability to convincingly argue any point of view made them a natural fit for the Department of Eschatology, and their family ties helped their career accelerate. Now free to pursue their own research, with a generous Lost Society grant and their pick of the Readers for assistants, they are beginning to uncover strange mysteries - mysteries which, if pursued, might reveal dangerous truths...",
@@ -144,7 +169,7 @@ const characters = [
 {
 	name: "Billy",
 	charName: "Mrs. Bones",
-	role: "Criminal",
+	role: "Divine",
 	email: "example@gmail.com",
 	timezone: "Pacific",
 	bio: "Happily married to Mr. Bones",
@@ -162,7 +187,7 @@ const characters = [
 {
 	name: "Larry",
 	charName: "Throgg the Barbarian",
-	role: "Criminal",
+	role: "Divine",
 	email: "example@gmail.com",
 	timezone: "Pacific",
 	bio: "Vote for Throgg, he'll smash corruption",
@@ -171,7 +196,7 @@ const characters = [
 {
 	name: "Dany",
 	charName: "Tim the Enchanter",
-	role: "Criminal",
+	role: "NPC",
 	email: "example@gmail.com",
 	timezone: "GMT",
 	bio: "Some call him.... Tim?",
@@ -180,7 +205,7 @@ const characters = [
 {
 	name: "Mac",
 	charName: "A Frog",
-	role: "Criminal",
+	role: "Divine",
 	email: "example@gmail.com",
 	timezone: "Pacific",
 	bio: "Ribbit",
@@ -197,15 +222,15 @@ const characters = [
 },	{
 	name: "Charlie",
 	charName: "A Bog",
-	role: "Criminal",
+	role: "Divine",
 	email: "example@gmail.com",
 	timezone: "GMT",
 	bio: "Blub blub",
 	icon: "https://ychef.files.bbci.co.uk/624x351/p04c1c35.jpg"
 },	{
 	name: "Dee",
-	charName: "Mr. Bones",
-	role: "The Hog",
+	charName: "The Hog",
+	role: "Divine",
 	email: "example@gmail.com",
 	timezone: "Pacific",
 	bio: "Oink",
@@ -221,4 +246,5 @@ const characters = [
 },
 ];
  
+
 export default OtherCharacters;

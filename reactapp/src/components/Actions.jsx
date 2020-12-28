@@ -36,12 +36,10 @@ class Actions extends Component {
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
 					<Panel style={{ backgroundColor: "#000101"}}>
-						<Button appearance='primary' block onClick={() => this.showNew()}>New Action</Button>
-						<br></br>
 						<Input placeholder="Search"></Input>
 					</Panel>
 					<Panel bodyFill >	
-						<List hover size="sm" style={{maxHeight: 650, overflow: 'auto'}}>
+						<List hover size="sm" style={{maxHeight: 575, overflow: 'auto', cursor: 'pointer', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>
 								{actions.map((action, index) => (
 									<List.Item key={index} index={index} size={'sm'} onClick={() => this.setState({ selected: action })} style={this.listStyle(action)}>
 									<FlexboxGrid>
@@ -53,6 +51,9 @@ class Actions extends Component {
 									</List.Item>
 								))}
 						</List>	
+					</Panel>
+					<Panel style={{ backgroundColor: "#000101"}}>
+						<Button appearance='primary' block onClick={() => this.showNew()}>New Action</Button>
 					</Panel>						
 				</PanelGroup>
 			</Sidebar>
@@ -148,7 +149,98 @@ const actions = [
 
 		],
 		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
-	}
+	},
+	{
+		summary: "Call me Jonah. My parents did, or nearly did. They called me John.",
+		intent: "Jonah – John - if I had been a Sam, I would have been a Jonah still, not because I have been unlucky for others, but because somebody or something has compelled me to be certain places at certain times, without fail.",
+		location: "Underworld",
+		approach: "Clocks",
+		traits: [
+
+		],
+		assets: [
+
+		],
+		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
+	},
+	{
+		summary: "Call me Jonah. My parents did, or nearly did. They called me John.",
+		intent: "Jonah – John - if I had been a Sam, I would have been a Jonah still, not because I have been unlucky for others, but because somebody or something has compelled me to be certain places at certain times, without fail.",
+		location: "Underworld",
+		approach: "Clocks",
+		traits: [
+
+		],
+		assets: [
+
+		],
+		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
+	},
+	{
+		summary: "Call me Jonah. My parents did, or nearly did. They called me John.",
+		intent: "Jonah – John - if I had been a Sam, I would have been a Jonah still, not because I have been unlucky for others, but because somebody or something has compelled me to be certain places at certain times, without fail.",
+		location: "Underworld",
+		approach: "Clocks",
+		traits: [
+
+		],
+		assets: [
+
+		],
+		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
+	},
+	{
+		summary: "Call me Jonah. My parents did, or nearly did. They called me John.",
+		intent: "Jonah – John - if I had been a Sam, I would have been a Jonah still, not because I have been unlucky for others, but because somebody or something has compelled me to be certain places at certain times, without fail.",
+		location: "Underworld",
+		approach: "Clocks",
+		traits: [
+
+		],
+		assets: [
+
+		],
+		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
+	},
+	{
+		summary: "Call me Jonah. My parents did, or nearly did. They called me John.",
+		intent: "Jonah – John - if I had been a Sam, I would have been a Jonah still, not because I have been unlucky for others, but because somebody or something has compelled me to be certain places at certain times, without fail.",
+		location: "Underworld",
+		approach: "Clocks",
+		traits: [
+
+		],
+		assets: [
+
+		],
+		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
+	},
+	{
+		summary: "Call me Jonah. My parents did, or nearly did. They called me John.",
+		intent: "Jonah – John - if I had been a Sam, I would have been a Jonah still, not because I have been unlucky for others, but because somebody or something has compelled me to be certain places at certain times, without fail.",
+		location: "Underworld",
+		approach: "Clocks",
+		traits: [
+
+		],
+		assets: [
+
+		],
+		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
+	},
+	{
+		summary: "Call me Jonah. My parents did, or nearly did. They called me John.",
+		intent: "Jonah – John - if I had been a Sam, I would have been a Jonah still, not because I have been unlucky for others, but because somebody or something has compelled me to be certain places at certain times, without fail.",
+		location: "Underworld",
+		approach: "Clocks",
+		traits: [
+
+		],
+		assets: [
+
+		],
+		outcome: "Conveyances and motives, both conventional and bizarre, have been provided. And, according to plan, at each appointed second, at each appointed place this Jonah was there.      Listen:  When I was a younger man--two wives ago, 250,000 cigarettes ago, 3,000 quarts of booze ago.      When I was a much younger man, I began to collect material for a book to be called The Day the World Ended.      The book was to be factual.      The book was to be an account of what important Americans had done on the day when the first atomic bomb was dropped on Hiroshima, Japan.",
+	},
 ]
  
 export default Actions;

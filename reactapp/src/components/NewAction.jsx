@@ -60,7 +60,7 @@ class NewAction extends Component {
 					          max={3}
 					          name="effort"
 					          progress
-					          style={{   }}
+										style={{ width: 200, margin: '10px 0' }}
 					        />
 					      </FormGroup>
 					</Form>
