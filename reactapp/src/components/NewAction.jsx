@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React, { Component } from 'react';
-import { Modal, Form, FormGroup, ControlLabel, FormControl, Button, Slider } from 'rsuite';
+import { Modal, Form, FormGroup, ControlLabel, FormControl, Button, Slider, Alert } from 'rsuite';
+import { gameServer } from '../config';
 
 class NewAction extends Component {
   constructor(props) {
@@ -9,20 +11,21 @@ class NewAction extends Component {
         desc: '',
         intent: '',
         effort: 0,
-        textarea: ''
+        approach: ''
       }
     };
     this.handleChange = this.handleChange.bind(this);
   }
-	handleSubmit = async (blueprint) => {
-		// 1) make a new upgrade from blueprint
+	handleSubmit = async () => {
+		// 1) make a new action
 		try{
-			//await axios.put(`${gameServer}game/upgrades/add`, {upgrade: this.state.selected._id, unit: this.props.unit._id })
+
+			await axios.post(`${gameServer}api/actions`, {description: this.state.formValue.desc, intent: this.state.formValue.intent, effort: this.state.formValue.effort, approach: this.state.formValue.approach })
 			
-			//this.props.closeUpgrade()
+			this.props.closeNew()
 		}
 		catch (err) {
-			//Alert.error(`Error: ${err.body} ${err.message}`, 5000)
+			Alert.error(`Error: ${err.body} ${err.message}`, 5000)
 		}
 	}
 
@@ -53,21 +56,22 @@ class NewAction extends Component {
 							<FormControl name="intent" componentClass="textarea" rows={5}/>
 						</FormGroup>
 						<FormGroup>
-					        <ControlLabel>Effort</ControlLabel>
-					        <FormControl
-					          accepter={Slider}
-					          min={1}
-					          max={3}
-					          name="effort"
-					          progress
-										style={{ width: 200, margin: '10px 0' }}
-					        />
-					      </FormGroup>
+					    <ControlLabel>Effort</ControlLabel>
+					    <FormControl
+					      accepter={Slider}
+					      min={0}
+								max={3}
+								defaultValue={1}
+					      name="effort"
+					      progress
+								style={{ width: 200, margin: '10px ' }}
+					    />
+					  </FormGroup>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.props.closeNew()} appearance="primary">
-            Confirm
+          <Button onClick={() => this.handleSubmit()} appearance="primary">
+            Submit
           </Button>
           <Button onClick={() => this.props.closeNew()} appearance="subtle">
             Cancel

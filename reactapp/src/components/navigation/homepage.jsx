@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Container, FlexboxGrid, Icon, IconButton, Divider } from 'rsuite';
+import { Container, Icon, IconButton, Divider } from 'rsuite';
 
 class HomePage extends Component {
 	state = {  }
 	render() { 
 		return ( 
 			<Container style={{backgroundColor:'#15181e', padding:'15px', width: '660px', position: 'relative', display: 'inline-block', textAlign: 'left'}}>
-			<img src={"https://i.ytimg.com/vi/flD5ZTC3juk/maxresdefault.jpg"} width="630" height="220"/>
+			<img src={"https://i.ytimg.com/vi/flD5ZTC3juk/maxresdefault.jpg"} alt='Unable to load img' width="630" height="220"/>
 			<Divider className='catagory-underline'/>
 				<h6>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} appearance="primary"/></h6>
 				<div > <b>Current Turn:</b>

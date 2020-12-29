@@ -9,7 +9,7 @@ class MyCharacter extends Component {
 				<FlexboxGrid justify="start" style={{textAlign: 'left'}}>
 					<FlexboxGrid.Item colspan={6}>
 							<img
-								src={'https://preview.redd.it/rgtrs9tube361.jpg?width=513&auto=webp&s=4c0d6ba5218ce19f7b4918e2ec27aa04ab26a3d1'} width="320" height="320" 
+								src={'https://preview.redd.it/rgtrs9tube361.jpg?width=513&auto=webp&s=4c0d6ba5218ce19f7b4918e2ec27aa04ab26a3d1'} alt='Unable to load img' width="320" height="320" 
 							/>	
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12} >

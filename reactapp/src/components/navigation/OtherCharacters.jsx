@@ -11,8 +11,9 @@ class OtherCharacters extends Component {
 
 	listStyle (item) {
 		if (item === this.state.selected) {
-			return ({backgroundColor: "#212429"})
+			return ({cursor: 'pointer', backgroundColor: "#212429"})
 		}
+		else return ({cursor: 'pointer'})
 	}
 
 	copyToClipboard (email) {
@@ -22,7 +23,7 @@ class OtherCharacters extends Component {
 	componentDidMount() {
 		this.setState({ selected: null });
 		const catagories = [];
-		for (const character of characters) {
+		for (const character of this.props.characters) {
 			if (!catagories.some(el => el === character.role || character.role === 'NPC')) catagories.push(character.role);
 		}
 		catagories.sort((a, b) => { // sort the catagories alphabetically 
@@ -42,12 +43,12 @@ class OtherCharacters extends Component {
 					<Panel style={{ backgroundColor: "#000101"}}>
 						<Input placeholder="Search"></Input>
 					</Panel>
-					<Panel bodyFill style={{maxHeight: 650, overflow: 'auto'}}>					
+					<Panel bodyFill style={{maxHeight: 650, overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					{this.state.catagories.map((catagory, index) => (
 						<React.Fragment>
-						<h4>{catagory}</h4>	
+						<h6 style={{backgroundColor: "#61342e"}}>{catagory}</h6>	
 							<List hover size="sm" >
-								{characters.filter(el => el.role === catagory).sort((a, b) => { // sort the catagories alphabetically 
+								{this.props.characters.filter(el => el.role === catagory).sort((a, b) => { // sort the catagories alphabetically 
 									if(a.charName < b.charName) { return -1; }
 									if(a.charName > b.charName) { return 1; }
 									return 0;
@@ -55,10 +56,10 @@ class OtherCharacters extends Component {
 									<List.Item key={index} index={index} onClick={() => this.setState({ selected: character })} style={this.listStyle(character)}>
 										<FlexboxGrid>
 											<FlexboxGrid.Item colspan={5} style={styleCenter}>
-												<Avatar src={character.icon} circle/>
+												<Avatar src={character.icon ? character.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} circle/>
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-												<div style={titleStyle}>{character.charName}</div>
+												<div style={titleStyle}>{character.characterName}</div>
 												<div style={slimText}>{character.email}</div>
 											</FlexboxGrid.Item>
 										</FlexboxGrid>
@@ -77,7 +78,7 @@ class OtherCharacters extends Component {
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={16} >
 							<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
-								<h3>{this.state.selected.charName}</h3>		
+								<h3>{this.state.selected.characterName}</h3>		
 								<p>
 									<h6>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} appearance="primary"/></h6>
 								</p>
@@ -101,7 +102,7 @@ class OtherCharacters extends Component {
 									Faction:	
 								</p>
 								<p>
-									<b>{this.state.selected.role}</b>			
+									<b>{this.state.selected.tag}</b>			
 								</p>
 								<p>
 									Time Zone:	
@@ -115,7 +116,7 @@ class OtherCharacters extends Component {
 									{this.state.selected.bio}			
 								</p>
 								<p>
-									<img src={this.state.selected.icon} width="320" height="320" />
+									<img src={this.state.selected.icon ? this.state.selected.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt="Img could not be displayed" width="320" height="320" />
 								</p>
 							</Panel>
 						</FlexboxGrid.Item>
@@ -135,16 +136,17 @@ const styleCenter = {
 };
 
 const titleStyle = {
-  paddingBottom: 5,
   whiteSpace: 'nowrap',
-  fontWeight: 500
+  fontWeight: 500,
+	paddingLeft: 2
 };
 
 const slimText = {
   fontSize: '0.866em',
   color: '#97969B',
   fontWeight: 'lighter',
-  paddingBottom: 5
+	paddingBottom: 5,
+	paddingLeft: 2
 };
 
 const characters = [

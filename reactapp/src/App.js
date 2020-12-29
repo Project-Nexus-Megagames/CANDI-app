@@ -16,7 +16,8 @@ import OtherCharacters from './components/navigation/OtherCharacters';
 class App extends Component {
   state = {
     active: null,
-    actions: []
+    actions: [],
+    players: []
   }
 
   componentDidMount() {
@@ -26,8 +27,9 @@ class App extends Component {
   }
 
   loadData = async () => {
-    const {data} = await axios.get('http://localhost:5000/api/actions/');
-    this.setState({ actions: data });
+    const {data} = await axios.get(`${gameServer}api/actions/`);
+    const players = await axios.get(`${gameServer}api/players/`);
+    this.setState({ actions: data, players: players.data });
   }
 
   handleSelect(activeKey) {
@@ -44,8 +46,8 @@ class App extends Component {
         {this.state.active === "home" && <HomePage/>}
         {this.state.active === "character" && <MyCharacter/>}
         {this.state.active === "control" && <Control/>}
-        {this.state.active === "others" && <OtherCharacters/>}
-        {this.state.active === "actions" && <Actions/>}
+        {this.state.active === "others" && <OtherCharacters characters={this.state.players}/>}
+        {this.state.active === "actions" && <Actions actions={this.state.actions}/>}
       </div>
     );
   }

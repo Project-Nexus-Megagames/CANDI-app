@@ -1,9 +1,7 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 import { Container, Sidebar, Input, Panel, PanelGroup, List, FlexboxGrid, Content, Button } from 'rsuite';
-import { gameServer } from '../config';
 import NewAction from './NewAction';
-
+import SelectedAction from './SelectedAction';
 class Actions extends Component {
 	state = { 
 		selected: {},
@@ -16,19 +14,23 @@ class Actions extends Component {
 
 	listStyle (item) {
 		if (item === this.state.selected) {
-			return ({backgroundColor: "#212429"})
+			return ({cursor: 'pointer', backgroundColor: "#212429"})
 		}
+		else return({cursor: 'pointer'});
 	}
 
 	showNew = () => { 
 		this.setState({showNew: true}) 
-		console.log(this.state.showNew)	
 	};
 
 	closeNew = () => { 
 		this.setState({showNew: false}) 
 	};
 
+	async handleSelect(fuuuck) {
+		await this.setState({ selected: fuuuck })
+		console.log(this.state.selected.status)
+	}
 
 	render() { 
 		return ( 
@@ -39,13 +41,13 @@ class Actions extends Component {
 						<Input placeholder="Search"></Input>
 					</Panel>
 					<Panel bodyFill >	
-						<List hover size="sm" style={{maxHeight: 575, overflow: 'auto', cursor: 'pointer', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>
-								{actions.map((action, index) => (
-									<List.Item key={index} index={index} size={'sm'} onClick={() => this.setState({ selected: action })} style={this.listStyle(action)}>
+						<List hover size="sm" style={{height: 575, overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>
+								{this.props.actions.map((action, index) => (
+									<List.Item key={index} index={index} size={'sm'} onClick={()=>this.handleSelect(action)} style={this.listStyle(action)}>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-											<div style={titleStyle}>{action.summary}</div>
-											<div style={slimText}>{action.outcome.text}</div>
+											<div style={titleStyle}>{action.description}</div>
+
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 									</List.Item>
@@ -57,44 +59,13 @@ class Actions extends Component {
 					</Panel>						
 				</PanelGroup>
 			</Sidebar>
-			{this.state.selected && 
-					<Content>
-						<FlexboxGrid >
-							<FlexboxGrid.Item colspan={4} >
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={16} >
-								<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
-									<p>
-										Description
-									</p>
-									<p>
-										{this.state.selected.summary}	
-									</p>
-									<p>
-										Intent
-									</p>
-									<p>
-										{this.state.selected.intent}	
-									</p>
-									<p>
-										Outcome
-									</p>
-									<p>
-										{this.state.selected.outcome}	
-									</p>
-								</Panel>
-							</FlexboxGrid.Item>
-						</FlexboxGrid>	
-					</Content>			
-					}	
-					{this.state.showNew && <NewAction
-						show={this.state.showNew}
-						showNew={this.showNew} 
-						closeNew={this.closeNew}
-						// player={this.props.player????}
-					/>
-
-					}
+			{this.state.selected && <SelectedAction action={this.state.selected}/>}	
+			{this.state.showNew && <NewAction
+				show={this.state.showNew}
+				showNew={this.showNew} 
+				closeNew={this.closeNew}
+				// player={this.props.player????}
+			/>}
 		</Container>
 		 );
 	}
@@ -113,14 +84,7 @@ const titleStyle = {
   fontWeight: 500
 };
 
-const slimText = {
-  fontSize: '0.866em',
-  color: '#97969B',
-	fontWeight: 'lighter',
-	whiteSpace: 'nowrap',
-	paddingLeft: 5,
-  paddingBottom: 5
-};
+
 
 
 const actions = [
