@@ -13,8 +13,9 @@ class Control extends Component {
 
 	listStyle (item) {
 		if (item === this.state.selected) {
-			return ({backgroundColor: "#212429"})
+			return ({cursor: 'pointer', backgroundColor: "#212429"})
 		}
+		else return({cursor: 'pointer'});
 	}
 
 	render() { 
@@ -33,7 +34,6 @@ class Control extends Component {
 										<p>
 											{controller.role}
 										</p>
-										
 									</List.Item>
 								))}
 							</List>						
