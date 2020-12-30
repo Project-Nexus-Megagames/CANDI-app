@@ -22,7 +22,8 @@ class Navigation extends Component {
 						<Nav.Item eventKey="character" to="/butts">My Character</Nav.Item>
 						<Nav.Item eventKey="actions">Actions</Nav.Item>
 						<Nav.Item eventKey="others">Other Characters</Nav.Item>
-						<Nav.Item eventKey="control">Control</Nav.Item>
+						<Nav.Item eventKey="controllers">Control Team</Nav.Item>
+						<Nav.Item eventKey="control" style={{backgroundColor: "#61342e"}}>Control Terminal</Nav.Item>
 					</Nav>
 				</Navbar.Body>
 			</Navbar>

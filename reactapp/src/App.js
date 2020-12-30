@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react'; // React imports
-import { Header, } from 'rsuite';
+import { Content, FlexboxGrid, Header, } from 'rsuite';
 import 'rsuite/dist/styles/rsuite-dark.css'; // Dark theme for rsuite components
 import './App.css';
 import { gameServer } from './config';
@@ -20,10 +20,10 @@ class App extends Component {
     players: []
   }
 
-  componentDidMount() {
-    this.loadData();
-    // this.setState({ active: "home" });
-
+  componentDidMount = async () => {
+    this.setState({ active: "loading" });
+    await this.loadData();
+    setTimeout(function(){    this.setState({ active: "home" });}.bind(this), 1000); // this is just so you can see my fancy loading screen... we can take it out later
   }
 
   loadData = async () => {
@@ -38,21 +38,45 @@ class App extends Component {
 
   render() {
     return(
-      <div className="App" style={{ position: 'fixed', top: 0, bottom: 0, width: '100%' }}>
-        <Header>
-          <NavigationBar onSelect={this.handleSelect.bind(this)}>
-          </NavigationBar>
-        </Header>
-        {this.state.active === "home" && <HomePage/>}
-        {this.state.active === "character" && <MyCharacter/>}
-        {this.state.active === "control" && <Control/>}
-        {this.state.active === "others" && <OtherCharacters characters={this.state.players}/>}
-        {this.state.active === "actions" && <Actions actions={this.state.actions}/>}
+      <div className="App" style={this.state.active === "loading" ? loading : done}>
+        {this.state.active === "loading" && 
+        <React.Fragment>
+          <Header>
+
+          </Header>
+          <Content>
+            <FlexboxGrid justify="center">
+              <FlexboxGrid.Item colspan={12} style={{marginTop: '80px'}}>
+                <img src={'https://media4.giphy.com/media/tJMVqwkdUIuL0Eiam3/source.gif'} alt={'Loading...'} />  
+              </FlexboxGrid.Item>
+            </FlexboxGrid>
+          </Content> <b>Loading...</b>
+        </React.Fragment>
+        }
+        {this.state.active !== "loading" && 
+          <React.Fragment>
+            <Header>
+              <NavigationBar onSelect={this.handleSelect.bind(this)}>
+              </NavigationBar>
+            </Header>
+            {this.state.active === "home" && <HomePage/>}
+            {this.state.active === "character" && <MyCharacter/>}
+            {this.state.active === "controllers" && <Control/>}
+            {this.state.active === "others" && <OtherCharacters characters={this.state.players}/>}
+            {this.state.active === "actions" && <Actions actions={this.state.actions}/>}
+          </React.Fragment>
+        }   
       </div>
     );
   }
 }
 
-
+const loading = {
+  position: 'fixed', backgroundColor: '#000000', top: 0, bottom: 0, width: '100%',
+};
+ 
+const done = {
+  position: 'fixed', top: 0, bottom: 0, width: '100%',
+}
 
 export default (App);

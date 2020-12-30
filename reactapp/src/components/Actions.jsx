@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Sidebar, Input, Panel, PanelGroup, List, FlexboxGrid, Content, Button } from 'rsuite';
+import { Container, Sidebar, Input, Panel, PanelGroup, List, FlexboxGrid, Button } from 'rsuite';
+import ActionList from './ActionList';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
 class Actions extends Component {
@@ -12,13 +13,6 @@ class Actions extends Component {
 		this.setState({ selected: null });
 	}
 
-	listStyle (item) {
-		if (item === this.state.selected) {
-			return ({cursor: 'pointer', backgroundColor: "#212429"})
-		}
-		else return({cursor: 'pointer'});
-	}
-
 	showNew = () => { 
 		this.setState({showNew: true}) 
 	};
@@ -27,9 +21,8 @@ class Actions extends Component {
 		this.setState({showNew: false}) 
 	};
 
-	async handleSelect(fuuuck) {
-		await this.setState({ selected: fuuuck })
-		console.log(this.state.selected.status)
+	handleSelect = (fuuuck) => {
+		this.setState({ selected: fuuuck })
 	}
 
 	render() { 
@@ -41,18 +34,7 @@ class Actions extends Component {
 						<Input placeholder="Search"></Input>
 					</Panel>
 					<Panel bodyFill >	
-						<List hover size="sm" style={{height: 575, overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>
-								{this.props.actions.map((action, index) => (
-									<List.Item key={index} index={index} size={'sm'} onClick={()=>this.handleSelect(action)} style={this.listStyle(action)}>
-									<FlexboxGrid>
-										<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-											<div style={titleStyle}>{action.description}</div>
-
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-									</List.Item>
-								))}
-						</List>	
+						<ActionList actions={this.props.actions} handleSelect={this.handleSelect}/>
 					</Panel>
 					<Panel style={{ backgroundColor: "#000101"}}>
 						<Button appearance='primary' block onClick={() => this.showNew()}>New Action</Button>

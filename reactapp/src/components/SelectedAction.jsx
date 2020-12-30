@@ -25,11 +25,11 @@ class SelectedAction extends Component {
 							{action.intent}	
 						</p>
 					</Panel>
-					{action.status.complete &&
+					{/*action.status.complete &&
 						<Panel style={{backgroundColor: "#61342e"}}>
 
 						</Panel>
-					}
+					*/}
 
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={4}>
