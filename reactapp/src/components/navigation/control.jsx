@@ -4,7 +4,7 @@ import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 
 class Control extends Component {
 	state = { 
-		selected: {}
+		selected: null
 	 }
 
 	componentDidMount() {
@@ -18,6 +18,10 @@ class Control extends Component {
 		else return({cursor: 'pointer'});
 	}
 
+	copyToClipboard (email) {
+		navigator.clipboard.writeText(email);
+	}
+
 	render() { 
 		return ( 
 			<Container>
@@ -26,8 +30,8 @@ class Control extends Component {
 						<Panel style={{ backgroundColor: "#000101"}}>
 							<Input placeholder="Search"></Input>
 						</Panel>
-						<Panel bodyFill >
-							<List hover size="sm" style={{maxHeight: 650, overflow: 'auto'}}>
+						<Panel bodyFill style={{borderRadius: '0px'}}>
+							<List hover size="md" style={{height: 'calc(100vh - 130px)', scrollbarWidth: 'none', overflow: 'auto', borderRight: '1px solid rgba(255, 255, 255, 0.12)'}}>
 								{controllers.map((controller, index) => (
 									<List.Item key={index} index={index} onClick={() => this.setState({ selected: controller })} style={this.listStyle(controller)}>
 										<b>{controller.name}</b>
@@ -69,7 +73,7 @@ class Control extends Component {
 										</FlexboxGrid>
 									</p>
 									<p>
-										<Button appearance='ghost' block>Copy email to clipboard</Button>
+										<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email)}>Copy email to clipboard</Button>
 									</p>
 									<p>
 									  Time Zone:	

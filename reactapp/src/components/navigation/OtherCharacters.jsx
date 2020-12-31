@@ -43,7 +43,7 @@ class OtherCharacters extends Component {
 					<Panel style={{ backgroundColor: "#000101"}}>
 						<Input placeholder="Search"></Input>
 					</Panel>
-					<Panel bodyFill style={{maxHeight: 650, overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
+					<Panel bodyFill style={{height: 'calc(100vh - 130px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					{this.state.catagories.map((catagory, index) => (
 						<React.Fragment>
 						<h6 style={{backgroundColor: "#61342e"}}>{catagory}</h6>	

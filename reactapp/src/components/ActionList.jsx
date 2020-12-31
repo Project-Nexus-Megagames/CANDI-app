@@ -14,7 +14,7 @@ class ActionList extends Component {
 
 	render() { 
 		return ( 
-			<List hover size="sm" style={{height: 575, overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>
+			<List hover size="sm" style={{height: 'calc(91vh - 130px)', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>
 			{this.props.actions.map((action, index) => (
 				<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 				<FlexboxGrid>

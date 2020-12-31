@@ -8,20 +8,31 @@ class NewAction extends Component {
     super(props);
     this.state = {
       formValue: {
-        desc: '',
+        description: '',
         intent: '',
         effort: 0,
-        approach: ''
-      }
+				approach: '',
+				id: ''
+			},
+			edit: null
     };
     this.handleChange = this.handleChange.bind(this);
-  }
+	}
+	
+	componentDidMount() {
+		if (this.props.formValue)
+			this.setState({ formValue: this.props.formValue, edit: true});
+	}
+
 	handleSubmit = async () => {
 		// 1) make a new action
 		try{
-
-			await axios.post(`${gameServer}api/actions`, {description: this.state.formValue.desc, intent: this.state.formValue.intent, effort: this.state.formValue.effort, approach: this.state.formValue.approach })
-			
+			if (this.state.edit){
+				await axios.patch(`${gameServer}api/actions/editAction`, {data: this.state.formValue });
+			}
+			else 
+				await axios.post(`${gameServer}api/actions`, { data: this.state.formValue });
+			Alert.success('Action Successfully Created');
 			this.props.closeNew()
 		}
 		catch (err) {
@@ -49,7 +60,7 @@ class NewAction extends Component {
 					<Form fluid formValue={this.state.formValue} onChange={this.handleChange} > 
 						<FormGroup>
 							<ControlLabel>Action Description</ControlLabel>
-							<FormControl name="desc" componentClass="textarea" rows={5}/>
+							<FormControl name="description" componentClass="textarea" rows={5}/>
 						</FormGroup>
 						<FormGroup>
 							<ControlLabel>What you want to happen...</ControlLabel>
