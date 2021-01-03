@@ -4,7 +4,8 @@ import { Content, FlexboxGrid, Form, Header, Modal, FormControl, ControlLabel, F
 import 'rsuite/dist/styles/rsuite-dark.css'; // Dark theme for rsuite components
 import './App.css';
 import { gameServer } from './config';
-// import openSocket from 'socket.io-client';
+import openSocket from 'socket.io-client';
+import jwtDecode from 'jwt-decode' // JSON web-token decoder
 
 import Actions from './components/Actions';
 import Control from './components/navigation/control';
@@ -14,11 +15,12 @@ import NavigationBar from './components/navigation/navigationBar';
 import OtherCharacters from './components/navigation/OtherCharacters';
 const { StringType } = Schema.Types;
 
-// const socket = openSocket(gameServer);
+const socket = openSocket(gameServer);
 
 // React App Component
 class App extends Component {
   state = {
+    user: null,
     active: null,
     actions: [],
     players: [],
@@ -32,8 +34,9 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
+    console.log('Mounting App...')
     this.setState({ show: true });
-    //socket.on('connect', ()=> {      console.log('UwU I made it')    });
+    socket.on('connect', ()=> { console.log('UwU I made it') });
     await this.loadData();
     // this.setState({ active: "login" });
     // setTimeout(function(){    this.setState({ active: "home" });}.bind(this), 1000); // this is just so you can see my fancy loading screen... we can take it out later
@@ -64,7 +67,10 @@ class App extends Component {
         this.setState({ loading: false });
       }
       else {
-        this.setState({ show: false, playerCharacter: data });      
+        const user = jwtDecode(data);
+        this.setState({ show: false, user });
+        // this.setState({ show: false, playerCharacter: data });
+        socket.emit('login', user);     
       }    
     } 
     catch (err) {
@@ -72,6 +78,7 @@ class App extends Component {
       Alert.error(`Error: ${err.body} ${err.response.data}`, 5000);
       this.setState({ loading: false });
     }
+    this.setState({ formValue: { email: '', password: '',}})
   }
 
   render() {
@@ -133,7 +140,7 @@ class App extends Component {
 const loading = {
   position: 'fixed', backgroundColor: '#000000', top: 0, bottom: 0, width: '100%',
 };
- 
+
 const done = {
   position: 'fixed', top: 0, bottom: 0, width: '100%',
 }
