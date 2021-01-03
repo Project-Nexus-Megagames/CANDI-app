@@ -4,11 +4,12 @@ import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 
 class Control extends Component {
 	state = { 
-		selected: null
+		selected: null, 
+		filtered: []
 	 }
 
 	componentDidMount() {
-		this.setState({ selected: null });
+		this.setState({ selected: null, filtered: controllers });
 	}
 
 	listStyle (item) {
@@ -22,17 +23,25 @@ class Control extends Component {
 		navigator.clipboard.writeText(email);
 	}
 
+	filter = (fil) => {
+		const filtered = controllers.filter(controller => controller.name.toLowerCase().includes(fil.toLowerCase()) || 
+		controller.email.toLowerCase().includes(fil.toLowerCase()) || 
+		controller.role.toLowerCase().includes(fil.toLowerCase())
+		);
+		this.setState({ filtered });
+	}
+
 	render() { 
 		return ( 
 			<Container>
 				<Sidebar style={{backgroundColor: "black"}}>
 					<PanelGroup>					
-						<Panel style={{ backgroundColor: "#000101"}}>
-							<Input placeholder="Search"></Input>
-						</Panel>
+					<Panel style={{ backgroundColor: "#000101"}}>
+						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
+					</Panel>
 						<Panel bodyFill style={{borderRadius: '0px'}}>
 							<List hover size="md" style={{height: 'calc(100vh - 130px)', scrollbarWidth: 'none', overflow: 'auto', borderRight: '1px solid rgba(255, 255, 255, 0.12)'}}>
-								{controllers.map((controller, index) => (
+								{this.state.filtered.map((controller, index) => (
 									<List.Item key={index} index={index} onClick={() => this.setState({ selected: controller })} style={this.listStyle(controller)}>
 										<b>{controller.name}</b>
 										<p>

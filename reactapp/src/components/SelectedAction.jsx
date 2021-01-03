@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Form, FormGroup, ControlLabel, Panel, FormControl, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker } from 'rsuite';
+import { Slider, Form, FormGroup, ControlLabel, Panel, FormControl, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker } from 'rsuite';
 import { gameServer } from '../config';
-import NewAction from './NewAction';
 class SelectedAction extends Component {
 	state = { 
 		edit: null,
@@ -14,15 +13,10 @@ class SelectedAction extends Component {
 			approach: '',
 			id: null
 		},
-		formValue2: {
-			result: '',
-			status: '',
-			dieResult: 0,
-			id: null
-		}
+		loading: false
 	 }
 
-	 closeNew = () => { 
+	 closeEdit = () => { 
 		this.setState({edit: false}) 
 	};
 
@@ -39,24 +33,31 @@ class SelectedAction extends Component {
 			approach: action.approach,
 			id: action._id
 		}
-		this.setState({ formValue, edit: true })
+		this.setState({ formValue: formValue, edit: true })
 	}
 
 	handleChange = (value) => {
-    this.setState({ formValue2: value });
+    this.setState({ formValue: value });
 	}
 
 	handleSubmit = async () => {
-		const data = this.state.formValue2;
-		data.id = this.props.action._id;
-		this.setState({resEdit: false}) 
+		this.setState({loading: true}) 
+		const sendData = this.state.formValue;
+		sendData.id = this.props.action._id;
 		// 1) make a new action
 		try{
-			await axios.patch(`${gameServer}api/actions/editResult`, {data: data});
-			this.closeResult()
+			if (this.state.edit) {
+				let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: sendData});
+				Alert.success(data);		
+			}
+			else {
+				let {data} = await axios.patch(`${gameServer}api/actions/editResult`, {data: sendData});
+				Alert.success(data);						
+			}
+			this.setState({edit: false, resEdit: false, loading: true});
 		}
 		catch (err) {
-			Alert.error(`Error: ${err.body} ${err.message}`, 5000)
+			Alert.error(`Error: ${err.body} ${err.response.data}`, 5000)
 		}
 	}
 
@@ -65,7 +66,6 @@ class SelectedAction extends Component {
 		Alert.success(data);		
 		this.props.handleSelect(null)
 	}
-
 
 	render() { 
 		const action = this.props.action;
@@ -119,12 +119,49 @@ class SelectedAction extends Component {
 					</Panel>
 				</FlexboxGrid.Item>
 			</FlexboxGrid>	
-			<NewAction
-				show={this.state.edit}
-				closeNew={this.closeNew}
-				formValue={this.state.formValue}
-				// player={this.props.player????}
-			/>
+
+			<Modal overflow 
+			full
+			size='lg'  
+			show={this.state.edit} 
+			onHide={() => this.closeEdit()}>
+				<Modal.Header>
+					<Modal.Title>Edit an Action</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<Form fluid formValue={this.state.formValue} onChange={this.handleChange} > 
+						<FormGroup>
+							<ControlLabel>Action Description</ControlLabel>
+							<FormControl name="description" componentClass="textarea" rows={5}/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>What you want to happen...</ControlLabel>
+							<FormControl name="intent" componentClass="textarea" rows={5}/>
+						</FormGroup>
+						<FormGroup>
+					    <ControlLabel>Effort</ControlLabel>
+					    <FormControl
+					      accepter={Slider}
+					      min={0}
+								max={3}
+								defaultValue={1}
+					      name="effort"
+					      progress
+								style={{ width: 200, margin: '10px ' }}
+					    />
+					  </FormGroup>
+					</Form>
+				</Modal.Body>
+				<Modal.Footer>
+          <Button onClick={() => this.handleSubmit()} appearance="primary">
+            Submit
+          </Button>
+          <Button onClick={() => this.closeEdit()} appearance="subtle">
+            Cancel
+          </Button>
+        </Modal.Footer>
+			</Modal>
+
 			<Modal overflow
 			full
 			size='lg'  
@@ -134,7 +171,7 @@ class SelectedAction extends Component {
 					<Modal.Title>Edit Action Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form fluid formValue={this.state.formValue2} onChange={this.handleChange} > 
+					<Form fluid formValue={this.state.formValue} onChange={this.handleChange} > 
 						<FormGroup>
 							<ControlLabel>Result:</ControlLabel>
 							<FormControl name="result" componentClass="textarea" rows={5}/>

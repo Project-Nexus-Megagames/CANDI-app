@@ -14,24 +14,14 @@ class NewAction extends Component {
 				approach: '',
 				id: ''
 			},
-			edit: null
     };
     this.handleChange = this.handleChange.bind(this);
 	}
 	
-	componentDidMount() {
-		if (this.props.formValue)
-			this.setState({ formValue: this.props.formValue, edit: true});
-	}
-
 	handleSubmit = async () => {
 		// 1) make a new action
 		try{
-			if (this.state.edit){
-				await axios.patch(`${gameServer}api/actions/editAction`, {data: this.state.formValue });
-			}
-			else 
-				await axios.post(`${gameServer}api/actions`, { data: this.state.formValue });
+			await axios.post(`${gameServer}api/actions`, { data: this.state.formValue });
 			Alert.success('Action Successfully Created');
 			this.props.closeNew()
 		}

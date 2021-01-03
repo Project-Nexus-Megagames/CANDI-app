@@ -6,11 +6,12 @@ import SelectedAction from './SelectedAction';
 class Actions extends Component {
 	state = { 
 		selected: null,
-		showNew: false
+		showNew: false,
+		filtered: []
 	 }
 
 	 componentDidMount() {
-		this.setState({ selected: null });
+		this.setState({ selected: null, filtered: this.props.actions });
 	}
 
 	showNew = () => { 
@@ -25,16 +26,22 @@ class Actions extends Component {
 		this.setState({ selected: fuuuck })
 	}
 
+	filter = (fil) => {
+		const filtered = this.props.actions.filter(action => action.description.toLowerCase().includes(fil.toLowerCase()) || 
+		action.intent.toLowerCase().includes(fil.toLowerCase()));
+		this.setState({ filtered });
+	}
+
 	render() { 
 		return ( 
 			<Container>
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
 					<Panel style={{ backgroundColor: "#000101"}}>
-						<Input placeholder="Search"></Input>
+						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
 					</Panel>
 					<Panel bodyFill style={{borderRadius: '0px'}}>	
-						<ActionList actions={this.props.actions} handleSelect={this.handleSelect}/>
+						<ActionList actions={this.state.filtered} handleSelect={this.handleSelect}/>
 					</Panel>
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 						<Button appearance='primary' block onClick={() => this.showNew()}>New Action</Button>
@@ -44,6 +51,7 @@ class Actions extends Component {
 			{this.state.selected && <SelectedAction handleSelect={this.handleSelect} action={this.state.selected}/>}	
 			<NewAction
 				show={this.state.showNew}
+				edit={false}
 				showNew={this.showNew} 
 				closeNew={this.closeNew}
 				// player={this.props.player????}

@@ -3,24 +3,31 @@ import { FlexboxGrid, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonTo
 
 class MyCharacter extends Component {
 	state = {  }
-	render() { 
+
+	openAnvil (url) {
+		const win = window.open(url, '_blank');
+		win.focus();
+	}
+
+	render(){ 
+		const {playerCharacter} = this.props;
 		return ( 
 			<Panel>
 				<FlexboxGrid justify="start" style={{textAlign: 'left'}}>
 					<FlexboxGrid.Item colspan={6}>
 							<img
-								src={'https://preview.redd.it/rgtrs9tube361.jpg?width=513&auto=webp&s=4c0d6ba5218ce19f7b4918e2ec27aa04ab26a3d1'} alt='Unable to load img' width="320" height="320" 
+								src={playerCharacter.icon} alt='Unable to load img' width="320" height="320" 
 							/>	
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12} >
 								<p>
-									<b>Charity</b> smcmann42@gmail.com
+									<b>{playerCharacter.characterName}</b> {playerCharacter.tag}
 								</p>
 								<p>
-									<b>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} appearance="primary"/></b>
+									<b>World Anvil Link 				<IconButton onClick={()=> this.openAnvil(playerCharacter.worldAnvil)} icon={<Icon icon="link"/>} appearance="primary"/></b>
 								</p>
 								<p>
-									<b>Description:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+									<b>Bio:</b> {playerCharacter.bio}
 								</p>
 								<p>
 									<b>Strengths:</b> Aether, Masks
@@ -50,7 +57,6 @@ class MyCharacter extends Component {
 									<FormGroup>
 										<ButtonToolbar>
 											<Button appearance="primary">Submit</Button>
-											<Button appearance="default">Cancel</Button>
 										</ButtonToolbar>
 									</FormGroup>
 									</Form>

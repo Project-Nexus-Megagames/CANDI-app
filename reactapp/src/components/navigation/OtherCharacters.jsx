@@ -6,7 +6,8 @@ import { Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, Fl
 class OtherCharacters extends Component {
 	state = { 
 		selected: {},
-		catagories: []
+		catagories: [],
+		filtered: []
 	 }
 
 	listStyle (item) {
@@ -19,20 +20,37 @@ class OtherCharacters extends Component {
 	copyToClipboard (email) {
 		navigator.clipboard.writeText(email);
 	}
+
+	openAnvil (url) {
+		const win = window.open(url, '_blank');
+		win.focus();
+	}
 	
-	componentDidMount() {
-		this.setState({ selected: null });
+	componentDidMount = () => {
+		this.setState({ selected: null, filtered: this.props.characters });
+		this.createListCatagories(this.props.characters);
+	}
+
+	createListCatagories (characters) {
 		const catagories = [];
-		for (const character of this.props.characters) {
-			if (!catagories.some(el => el === character.tag || character.tag === 'NPC')) catagories.push(character.tag);
+		for (const character of characters) {
+			if (!catagories.some(el => el === character.tag )) catagories.push(character.tag);
 		}
 		catagories.sort((a, b) => { // sort the catagories alphabetically 
 				if(a < b) { return -1; }
 				if(a > b) { return 1; }
 				return 0;
 			});
-		catagories.push('NPC');
+		// catagories.push('NPC');
 		this.setState({ catagories });
+	}
+
+	filter = (fil) => {
+		const filtered = this.props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
+		char.email.toLowerCase().includes(fil.toLowerCase()) || 
+		char.tag.toLowerCase().includes(fil.toLowerCase()));
+		this.setState({ filtered });
+		this.createListCatagories(filtered);
 	}
 
 	render() { 
@@ -41,14 +59,14 @@ class OtherCharacters extends Component {
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
 					<Panel style={{ backgroundColor: "#000101"}}>
-						<Input placeholder="Search"></Input>
+						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
 					</Panel>
 					<Panel bodyFill style={{height: 'calc(100vh - 130px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					{this.state.catagories.map((catagory, index) => (
 						<React.Fragment>
 						<h6 style={{backgroundColor: "#61342e"}}>{catagory}</h6>	
-							<List hover size="sm" >
-								{this.props.characters.filter(el => el.tag === catagory).sort((a, b) => { // sort the catagories alphabetically 
+							<List hover size="sm" key={index}>
+								{this.state.filtered.filter(el => el.tag === catagory).sort((a, b) => { // sort the catagories alphabetically 
 									if(a.charName < b.charName) { return -1; }
 									if(a.charName > b.charName) { return 1; }
 									return 0;
@@ -78,9 +96,9 @@ class OtherCharacters extends Component {
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={16} >
 							<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
-								<h3>{this.state.selected.characterName}</h3>		
+								<h3 style={{textAlign: "center"}}> {this.state.selected.characterName}</h3>		
 								<p>
-									<h6>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} appearance="primary"/></h6>
+									<h6><IconButton placement="right" onClick={()=> this.openAnvil(this.state.selected.worldAnvil)} icon={<Icon icon="link"/>} appearance="primary">World Anvil Link</IconButton></h6>
 								</p>
 								<p>
 									Email
@@ -90,32 +108,33 @@ class OtherCharacters extends Component {
 										<FlexboxGrid.Item colspan={22}>
 											<h5>{this.state.selected.email}</h5> 
 										</FlexboxGrid.Item>
-										<FlexboxGrid.Item >
+										{/*<FlexboxGrid.Item >
 											<IconButton icon={<Icon icon="envelope"/>} color="blue" circle />										
-										</FlexboxGrid.Item>
+										</FlexboxGrid.Item>*/}
 									</FlexboxGrid>
 								</p>
 								<p>
 									<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email)}>Copy email to clipboard</Button>
 								</p>
-								<p>
-									Faction:	
-								</p>
-								<p>
-									<b>{this.state.selected.tag}</b>			
-								</p>
-								<p>
-									Time Zone:	
-								</p>
-								<p>
-									{this.state.selected.timeZone}			
-								</p>
-								<p>Bio:	
+								<FlexboxGrid style={{paddingTop: '5px'}}>
+									<FlexboxGrid.Item colspan={12}>
+										<p>
+											Faction: <b>{this.state.selected.tag}</b>			
+										</p>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={12}>
+										<p>
+											Time Zone: <b>{this.state.selected.timeZone}</b>
+										</p>									
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+								<br></br>
+								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:	
 								</p>
 								<p>
 									{this.state.selected.bio}			
 								</p>
-								<p>
+								<p style={{ alignItems: 'center', justifyContent: 'center', }}>
 									<img src={this.state.selected.icon ? this.state.selected.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt="Img could not be displayed" width="320" height="320" />
 								</p>
 							</Panel>
