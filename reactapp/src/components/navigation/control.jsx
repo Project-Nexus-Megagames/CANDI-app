@@ -110,115 +110,17 @@ export default Control;
 
 const controllers = [
 	{
-		name: "John",
-		role: "Game Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+        name: "Stuart",
+        role: "Game Control",
+        email: "afterlifecontrol@gmail.com",
+        timezone: "GMT",
+        responisble: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
 	},
 	{
-		name: "David",
-		role: "Political Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Larry",
-		role: "Political Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Eli",
-		role: "Criminal Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Patrick",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Steve",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Bob",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Rick",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "AAAAAA",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Morty",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Carl",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Ned",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Ted",
-		role: "Envoy Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	},
-	{
-		name: "Ed",
-		role: "Academics Control",
-		email: "example@gmail.com",
-		responsibilites: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut",
-		timezone: "Pcific",
-		responisble: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-	}
+        name: "Scott",
+        role: "Tech Support",
+        email: "smcmann42@gmail.com",
+        timezone: "PST",
+        responisble: "Keeping the App and Discord running"
+    }
 ]

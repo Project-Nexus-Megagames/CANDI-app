@@ -35,6 +35,16 @@ class MyCharacter extends Component {
 							<p>
 								<b>Bio:</b> {playerCharacter.bio}
 							</p>
+							<Divider>Memory Triggers</Divider>
+							<p>
+								<b>1st) </b> {playerCharacter.memories.first.trigger}
+							</p>
+							<p>
+								<b>2nd) </b> {playerCharacter.memories.second.trigger}
+							</p>
+							<p>
+								<b>3rd) </b> {playerCharacter.memories.third.trigger}
+							</p>
 							<br></br>							
 						</Panel>
 						<Panel header="Standing Orders" bordered style={{width: '95%'}}>

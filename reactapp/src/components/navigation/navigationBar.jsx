@@ -10,7 +10,6 @@ class Navigation extends Component {
     componentDidMount= async () => {
 			const {data} = await axios.get(`${gameServer}api/gamestate/`);
 			this.setState({ gamestate: data });
-			this.setState({ active: "home" });
     }
 
     componentDidUpdate(prevProps) {
@@ -31,9 +30,6 @@ class Navigation extends Component {
 					</Nav>
 					<Nav pullRight></Nav>
 						<Nav.Item style={{textAlign: 'right', paddingTop: '15px', paddingRight: '15px', cursor: 'not-allowed' }}>Game Status: {this.state.gamestate.status} </Nav.Item>
-						<Nav.Item>
-							<div >{this.state.gamestate.status}</div>
-						</Nav.Item>
 				</Navbar.Body>
 			</Navbar>
       );

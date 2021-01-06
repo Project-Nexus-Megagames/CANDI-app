@@ -40,7 +40,8 @@ class App extends Component {
     socket.on('connect', ()=> { console.log('UwU I made it') });
     socket.on('updateCharacters', ()=> { this.loadCharacters() });
     socket.on('updateActions', ()=> { this.loadActions() });
-
+    const {data} = await axios.get(`${gameServer}api/gamestate/`);
+    this.setState({ gamestate: data });
     await this.loadCharacters();    
     await this.loadActions();
   }
@@ -78,7 +79,8 @@ class App extends Component {
         this.setState({ show: false, user });
         const playerCharacter = await axios.patch(`${gameServer}api/characters/byUsername`, {username: user.username});
         this.setState({ playerCharacter: playerCharacter.data, loading: false, active: 'home' });
-        socket.emit('login', user);     
+        socket.emit('login', user);  
+        this.setState({ formValue: { email: '', password: '',}})   
       }    
     } 
     catch (err) {
@@ -86,7 +88,6 @@ class App extends Component {
       Alert.error(`Error: ${err.body} ${err.response.data}`, 5000);
       this.setState({ loading: false });
     }
-    this.setState({ formValue: { email: '', password: '',}})
   }
 
   render() {
@@ -133,7 +134,7 @@ class App extends Component {
               <NavigationBar gamestate={this.state.gamestate} onSelect={this.handleSelect.bind(this)}>
               </NavigationBar>
             </Header>
-            {this.state.active === "home" && <HomePage/>}
+            {this.state.active === "home" && <HomePage gamestate={this.state.gamestate}/>}
             {this.state.active === "character" && <MyCharacter playerCharacter={this.state.playerCharacter}/>}
             {this.state.active === "controllers" && <Control/>}
             {this.state.active === "others" && <OtherCharacters characters={this.state.players}/>}

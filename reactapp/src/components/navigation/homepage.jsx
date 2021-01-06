@@ -10,7 +10,7 @@ class HomePage extends Component {
 			<Divider className='catagory-underline'/>
 				<h6>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} appearance="primary"/></h6>
 				<div > <b>Current Turn:</b>
-					<span> 0</span>
+					<span> {this.props.gamestate.round} </span>
 				</div>
 				<div > <b>Time Ends:</b>
 					<span> 11/12/2020 23:59 PST</span>
