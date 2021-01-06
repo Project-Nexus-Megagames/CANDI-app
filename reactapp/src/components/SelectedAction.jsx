@@ -1,39 +1,44 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Slider, Form, FormGroup, ControlLabel, Panel, FormControl, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker } from 'rsuite';
+import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber } from 'rsuite';
 import { gameServer } from '../config';
 class SelectedAction extends Component {
 	state = { 
-		edit: null,
-		resEdit: null,
-		formValue: {
-			description: '',
-			intent: '',
-			effort: 0,
-			approach: '',
-			id: null
-		},
-		loading: false
+		edit: null, // used to open edit action popup
+		resEdit: null,	// used to open action result popup
+		loading: false, //used for loading button 
+		effort: 1,
+		asset1: '',
+		asset2: '',
+		asset3: '',
+		id: '',
+		description: '',
+		intent: '',	
+		result: '',
+		dieResult: 0,
+		status: ''			
 	 }
-
-	 closeEdit = () => { 
-		this.setState({edit: false}) 
-	};
-
-	closeResult = () => { 
-		this.setState({resEdit: false}) 
-	};
 
 	openEdit = () => {
 		const action = this.props.action;
-		const formValue = {
-			description: action.description,
-			intent: action.intent,
-			effort: action.effort,
-			approach: action.approach,
-			id: action._id
-		}
-		this.setState({ formValue: formValue, edit: true })
+
+		this.setState({ 
+			description: action.description, 
+			intent: action.intent, 
+			effort: action.effort, 
+			id: action._id, 
+			asset1: action.asset1,
+			asset2: action.asset2,
+			asset3: action.asset3,
+			edit: true })
+	}
+
+	openRes = () => {
+		const action = this.props.action;
+		this.setState({ 
+			result: action.result,
+			dieResult: action.dieResult,
+			resEdit: true })
 	}
 
 	handleChange = (value) => {
@@ -42,30 +47,39 @@ class SelectedAction extends Component {
 
 	handleSubmit = async () => {
 		this.setState({loading: true}) 
-		const sendData = this.state.formValue;
-		sendData.id = this.props.action._id;
+		const action = {
+			effort: this.state.effort,
+			asset1: this.state.asset1,
+			asset2: this.state.asset2,
+			asset3: this.state.asset3,
+			description: this.state.description,
+			intent: this.state.intent,
+			id: this.state.id, 	
+		}
 		// 1) make a new action
 		try{
 			if (this.state.edit) {
-				let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: sendData});
+				let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
 				Alert.success(data);		
 			}
 			else {
-				let {data} = await axios.patch(`${gameServer}api/actions/editResult`, {data: sendData});
+				const edit = {
+					id: this.props.action._id, 	
+					result: this.state.result,
+					dieResult: this.state.dieResult,
+					status: this.state.status
+				}
+				let {data} = await axios.patch(`${gameServer}api/actions/editResult`, {data: edit});
 				Alert.success(data);						
 			}
-			this.setState({edit: false, resEdit: false, loading: true});
+			this.setState({edit: false, resEdit: false, loading: false});
 		}
 		catch (err) {
-			Alert.error(`Error: ${err.body} ${err.response.data}`, 5000)
+			Alert.error(`Error: ${err.response.data}`, 6000)
+			this.setState({loading: false});
 		}
 	}
 
-	deleteAction = async () => {
-		let {data} = await axios.delete(`${gameServer}api/actions/${this.props.action._id}`);
-		Alert.success(data);		
-		this.props.handleSelect(null)
-	}
 
 	render() { 
 		const action = this.props.action;
@@ -114,7 +128,7 @@ class SelectedAction extends Component {
 					</Panel>
 					<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<ButtonGroup style={{marginTop: '5px', }} >
-							<Button appearance={"ghost"} onClick={() => this.setState({ resEdit: true })}>Edit Result</Button>
+							<Button appearance={"ghost"} onClick={() => this.openRes()}>Edit Result</Button>
 						</ButtonGroup>
 					</Panel>
 				</FlexboxGrid.Item>
@@ -129,31 +143,40 @@ class SelectedAction extends Component {
 					<Modal.Title>Edit an Action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form fluid formValue={this.state.formValue} onChange={this.handleChange} > 
-						<FormGroup>
-							<ControlLabel>Action Description</ControlLabel>
-							<FormControl name="description" componentClass="textarea" rows={5}/>
-						</FormGroup>
-						<FormGroup>
-							<ControlLabel>What you want to happen...</ControlLabel>
-							<FormControl name="intent" componentClass="textarea" rows={5}/>
-						</FormGroup>
-						<FormGroup>
-					    <ControlLabel>Effort</ControlLabel>
-					    <FormControl
-					      accepter={Slider}
-					      min={0}
-								max={3}
-								defaultValue={1}
-					      name="effort"
-					      progress
-								style={{ width: 200, margin: '10px ' }}
-					    />
-					  </FormGroup>
-					</Form>
+				<form>
+					<FlexboxGrid> Description
+						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
+					</FlexboxGrid>
+					<br></br>
+					<FlexboxGrid> What you would like to happen
+						<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
+					</FlexboxGrid>
+					<FlexboxGrid>
+						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
+							<Slider graduated
+							min={0}
+							max={3}
+							defaultValue={1}
+							progress
+							value={this.state.effort}
+							onChange={(event)=> this.setState({effort: event})}>
+							</Slider>
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
+							<InputNumber value={this.state.effort} max={3} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={4}>
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Effort
+							<InputPicker defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset1: event})}/>
+							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset2: event})}/>
+							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset3: event})}/>
+						</FlexboxGrid.Item>
+					</FlexboxGrid>
+					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} appearance="primary">
+          <Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.closeEdit()} appearance="subtle">
@@ -171,23 +194,25 @@ class SelectedAction extends Component {
 					<Modal.Title>Edit Action Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form fluid formValue={this.state.formValue} onChange={this.handleChange} > 
-						<FormGroup>
-							<ControlLabel>Result:</ControlLabel>
-							<FormControl name="result" componentClass="textarea" rows={5}/>
-						</FormGroup>
-						<FormGroup>
-        			<ControlLabel>Status</ControlLabel>
-        				<FormControl
-        				  name="status"
-        				  accepter={InputPicker}
-        				  data={pickerData}
-        				/>
-    				</FormGroup>
-					</Form>
+				<form>
+					<FlexboxGrid> Result:
+						<textarea rows='6' value={this.state.result} style={textStyle} onChange={(event)=> this.setState({result: event.target.value})}></textarea>							
+					</FlexboxGrid>
+					<br></br>
+					<FlexboxGrid>
+						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
+							<InputNumber value={this.state.dieResult} max={12} min={2} onChange={(event)=> this.setState({dieResult: event})}>Die Result</InputNumber>				
+							<InputPicker defaultValue={this.state.asset1} labelKey='label' valueKey='value' data={pickerData} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>				
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={4}>
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Status
+						</FlexboxGrid.Item>
+					</FlexboxGrid>
+					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={() => this.handleSubmit()} appearance="primary">
+					<Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
 						Submit
 					</Button>
 					<Button onClick={() => this.closeResult()} appearance="subtle">
@@ -197,6 +222,20 @@ class SelectedAction extends Component {
 			</Modal>
 		</Content>		
 		 );
+	}
+
+	closeEdit = () => { 
+		this.setState({edit: false}) 
+	};
+
+	closeResult = () => { 
+		this.setState({resEdit: false}) 
+	};
+
+	deleteAction = async () => {
+		let {data} = await axios.delete(`${gameServer}api/actions/${this.props.action._id}`);
+		Alert.success(data);		
+		this.props.handleSelect(null)
 	}
 }
 
@@ -227,4 +266,14 @@ const pickerData = [
 	}
 ]
  
+const textStyle = {
+	backgroundColor: '#1a1d24', 
+	border: '1.5px solid #3c3f43', 
+	borderRadius: '5px', 
+	width: '100%',
+	padding: '5px',
+	overflow: 'auto', 
+	scrollbarWidth: 'none',
+}
+
 export default SelectedAction;

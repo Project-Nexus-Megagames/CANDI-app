@@ -1,39 +1,39 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Modal, Form, FormGroup, ControlLabel, FormControl, Button, Slider, Alert } from 'rsuite';
+import { Modal, Button, Slider, Alert, InputPicker, FlexboxGrid, InputNumber } from 'rsuite';
 import { gameServer } from '../config';
-
 class NewAction extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formValue: {
+        effort: 1,
+				asset1: '',
+				asset2: '',
+				asset3: '',
+				id: '',
         description: '',
-        intent: '',
-        effort: 0,
-				approach: '',
-				id: ''
-			},
-    };
-    this.handleChange = this.handleChange.bind(this);
+        intent: '',		
+		};
 	}
 	
 	handleSubmit = async () => {
 		// 1) make a new action
+		const action = {
+			effort: this.state.effort,
+			asset1: this.state.asset1,
+			asset2: this.state.asset2,
+			asset3: this.state.asset3,
+			description: this.state.description,
+			intent: this.state.intent,	
+		}
 		try{
-			await axios.post(`${gameServer}api/actions`, { data: this.state.formValue });
+			await axios.post(`${gameServer}api/actions`, { data: action });
 			Alert.success('Action Successfully Created');
 			this.props.closeNew()
 		}
 		catch (err) {
-			Alert.error(`Error: ${err.body} ${err.message}`, 5000)
+      Alert.error(`Error: ${err.response.data}`, 5000);
 		}
-	}
-
-	handleChange(value) {
-    this.setState({
-      formValue: value
-    });
 	}
 	
 	render() { 
@@ -47,31 +47,40 @@ class NewAction extends Component {
 					<Modal.Title>Submit a new action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form fluid formValue={this.state.formValue} onChange={this.handleChange} > 
-						<FormGroup>
-							<ControlLabel>Action Description</ControlLabel>
-							<FormControl name="description" componentClass="textarea" rows={5}/>
-						</FormGroup>
-						<FormGroup>
-							<ControlLabel>What you want to happen...</ControlLabel>
-							<FormControl name="intent" componentClass="textarea" rows={5}/>
-						</FormGroup>
-						<FormGroup>
-					    <ControlLabel>Effort</ControlLabel>
-					    <FormControl
-					      accepter={Slider}
-					      min={0}
+					<form>
+						<FlexboxGrid> Description
+							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
+						</FlexboxGrid>
+						<br></br>
+						<FlexboxGrid> What you would like to happen
+							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
+						</FlexboxGrid>
+						<FlexboxGrid>
+							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
+								<Slider graduated
+								min={0}
 								max={3}
 								defaultValue={1}
-					      name="effort"
-					      progress
-								style={{ width: 200, margin: '10px ' }}
-					    />
-					  </FormGroup>
-					</Form>
+								progress
+								value={this.state.effort}
+								onChange={(event)=> this.setState({effort: event})}>
+								</Slider>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
+								<InputNumber value={this.state.effort} max={3} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={4}>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Effort
+								<InputPicker placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset1: event})}/>
+								<InputPicker placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset2: event})}/>
+								<InputPicker placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset3: event})}/>
+							</FlexboxGrid.Item>
+						</FlexboxGrid>
+					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} appearance="primary">
+          <Button onClick={() => this.handleSubmit()} disabled={this.isDisabled()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.props.closeNew()} appearance="subtle">
@@ -81,6 +90,22 @@ class NewAction extends Component {
 			</Modal>
 		 );
 	}
+
+	isDisabled () {
+		 if (this.state.description.length > 10 && this.state.intent.length > 10 && this.state.effort > 0) return false;
+		 else return true;
+	}
+
 }
- 
+
+const textStyle = {
+	backgroundColor: '#1a1d24', 
+	border: '1.5px solid #3c3f43', 
+	borderRadius: '5px', 
+	width: '100%',
+	padding: '5px',
+	overflow: 'auto', 
+	scrollbarWidth: 'none',
+}
+
 export default NewAction;

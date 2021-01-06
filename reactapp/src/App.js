@@ -20,6 +20,7 @@ const socket = openSocket(gameServer);
 // React App Component
 class App extends Component {
   state = {
+    gamestate: null,
     user: null,
     active: null,
     actions: [],
@@ -35,17 +36,23 @@ class App extends Component {
 
   componentDidMount = async () => {
     console.log('Mounting App...')
-    this.setState({ show: true });
+    this.setState({ show: true, active: 'loading' });
     socket.on('connect', ()=> { console.log('UwU I made it') });
-    await this.loadData();
-    // this.setState({ active: "login" });
-    // setTimeout(function(){    this.setState({ active: "home" });}.bind(this), 1000); // this is just so you can see my fancy loading screen... we can take it out later
+    socket.on('updateCharacters', ()=> { this.loadCharacters() });
+    socket.on('updateActions', ()=> { this.loadActions() });
+
+    await this.loadCharacters();    
+    await this.loadActions();
   }
 
-  loadData = async () => {
+  loadActions = async () => {
     const {data} = await axios.get(`${gameServer}api/actions/`);
-    const players = await axios.get(`${gameServer}api/characters/`);
-    this.setState({ actions: data, players: players.data });
+    this.setState({ actions: data });
+  }
+
+  loadCharacters = async () => {
+    const {data} =  await axios.get(`${gameServer}api/characters/`);
+    this.setState({ players: data });
   }
 
   handleSelect(activeKey) {
@@ -62,14 +69,15 @@ class App extends Component {
     this.setState({ loading: true });
     try {
       const { data } = await axios.post(`${gameServer}auth`, { user: this.state.formValue.email, password: this.state.formValue.password });      
-      console.log(data);
+      // console.log(data);
       if (!data || data.length < 1) {
-        this.setState({ loading: false });
+        this.setState({  });
       }
       else {
         const user = jwtDecode(data);
         this.setState({ show: false, user });
-        // this.setState({ show: false, playerCharacter: data });
+        const playerCharacter = await axios.patch(`${gameServer}api/characters/byUsername`, {username: user.username});
+        this.setState({ playerCharacter: playerCharacter.data, loading: false, active: 'home' });
         socket.emit('login', user);     
       }    
     } 
@@ -119,17 +127,17 @@ class App extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        {(this.state.active !== "loading" || this.state.active !== "login") && 
+        {(this.state.active !== "loading" && this.state.active !== "login") && 
           <React.Fragment>
             <Header>
-              <NavigationBar onSelect={this.handleSelect.bind(this)}>
+              <NavigationBar gamestate={this.state.gamestate} onSelect={this.handleSelect.bind(this)}>
               </NavigationBar>
             </Header>
             {this.state.active === "home" && <HomePage/>}
             {this.state.active === "character" && <MyCharacter playerCharacter={this.state.playerCharacter}/>}
             {this.state.active === "controllers" && <Control/>}
             {this.state.active === "others" && <OtherCharacters characters={this.state.players}/>}
-            {this.state.active === "actions" && <Actions actions={this.state.actions}/>}
+            {this.state.active === "actions" && <Actions playerCharacter={this.state.playerCharacter} actions={this.state.actions}/>}
           </React.Fragment>
         }   
       </div>

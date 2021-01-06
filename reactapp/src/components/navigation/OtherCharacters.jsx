@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon} from 'rsuite';
-
-
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, } from 'rsuite';
+import AddAsset from '../AddAsset';
+import ModifyCharacter from '../ModifyCharacter';
 
 class OtherCharacters extends Component {
 	state = { 
 		selected: {},
 		catagories: [],
-		filtered: []
+		filtered: [],
+		edit: false,
+		add: false,
 	 }
+	 
 
 	listStyle (item) {
 		if (item === this.state.selected) {
@@ -31,26 +34,16 @@ class OtherCharacters extends Component {
 		this.createListCatagories(this.props.characters);
 	}
 
-	createListCatagories (characters) {
-		const catagories = [];
-		for (const character of characters) {
-			if (!catagories.some(el => el === character.tag )) catagories.push(character.tag);
-		}
-		catagories.sort((a, b) => { // sort the catagories alphabetically 
-				if(a < b) { return -1; }
-				if(a > b) { return 1; }
-				return 0;
-			});
-		// catagories.push('NPC');
-		this.setState({ catagories });
+	closeModal = () => {
+		this.setState({ edit: false, add: false });
 	}
 
-	filter = (fil) => {
-		const filtered = this.props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
-		char.email.toLowerCase().includes(fil.toLowerCase()) || 
-		char.tag.toLowerCase().includes(fil.toLowerCase()));
-		this.setState({ filtered });
-		this.createListCatagories(filtered);
+	componentDidUpdate(prevProps) {
+		// Typical usage (don't forget to compare props):
+		if (this.props.characters !== prevProps.characters) {
+			this.setState({ filtered: this.props.characters });
+			this.createListCatagories(this.props.characters);
+		}
 	}
 
 	render() { 
@@ -77,8 +70,8 @@ class OtherCharacters extends Component {
 												<Avatar src={character.icon ? character.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} circle/>
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-												<div style={titleStyle}>{character.characterName}</div>
-												<div style={slimText}>{character.email}</div>
+												<b style={titleStyle}>{character.characterName}</b>
+												<b style={slimText}>{character.email}</b>
 											</FlexboxGrid.Item>
 										</FlexboxGrid>
 									</List.Item>
@@ -92,21 +85,21 @@ class OtherCharacters extends Component {
 			{this.state.selected &&
 				<Content>
 					<FlexboxGrid >
-						<FlexboxGrid.Item colspan={4} >
+						<FlexboxGrid.Item colspan={3} >
 						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={16} >
+						<FlexboxGrid.Item colspan={14} >
 							<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
 								<h3 style={{textAlign: "center"}}> {this.state.selected.characterName}</h3>		
-								<p>
+								<div>
 									<h6><IconButton placement="right" onClick={()=> this.openAnvil(this.state.selected.worldAnvil)} icon={<Icon icon="link"/>} appearance="primary">World Anvil Link</IconButton></h6>
-								</p>
-								<p>
+								</div>
+								<div>
 									Email
-								</p>
+								</div>
 								<p>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={22}>
-											<h5>{this.state.selected.email}</h5> 
+											<b>{this.state.selected.email}</b> 
 										</FlexboxGrid.Item>
 										{/*<FlexboxGrid.Item >
 											<IconButton icon={<Icon icon="envelope"/>} color="blue" circle />										
@@ -139,11 +132,53 @@ class OtherCharacters extends Component {
 								</p>
 							</Panel>
 						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={1} />
+				<FlexboxGrid.Item colspan={5}>
+					<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+						<ButtonGroup style={{marginTop: '5px', }} >
+							<Button appearance={"ghost"} onClick={() => this.setState({ edit: true })}>Modify</Button>
+							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>Give New Asset/Trait</Button>
+						</ButtonGroup>
+					</Panel>
+				</FlexboxGrid.Item>
 					</FlexboxGrid>	
-				</Content>		
+				<ModifyCharacter
+					show={this.state.edit}
+					character={this.state.selected}
+					closeModal={this.closeModal}
+					// player={this.props.player????}
+				/>
+				<AddAsset 
+					show={this.state.add}
+					character={this.state.selected}
+					closeModal={this.closeModal}
+				/>
+			</Content>		
 			}
 		</Container>
 		 );
+	}
+	
+	createListCatagories (characters) {
+		const catagories = [];
+		for (const character of characters) {
+			if (!catagories.some(el => el === character.tag )) catagories.push(character.tag);
+		}
+		catagories.sort((a, b) => { // sort the catagories alphabetically 
+				if(a < b) { return -1; }
+				if(a > b) { return 1; }
+				return 0;
+			});
+		// catagories.push('NPC');
+		this.setState({ catagories });
+	}
+
+	filter = (fil) => {
+		const filtered = this.props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
+		char.email.toLowerCase().includes(fil.toLowerCase()) || 
+		char.tag.toLowerCase().includes(fil.toLowerCase()));
+		this.setState({ filtered });
+		this.createListCatagories(filtered);
 	}
 }
 

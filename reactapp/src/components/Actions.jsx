@@ -14,6 +14,13 @@ class Actions extends Component {
 		this.setState({ selected: null, filtered: this.props.actions });
 	}
 
+	componentDidUpdate(prevProps) {
+		// Typical usage (don't forget to compare props):
+		if (this.props.actions !== prevProps.actions) {
+			this.setState({ filtered: this.props.actions });
+		}
+	}
+
 	showNew = () => { 
 		this.setState({showNew: true}) 
 	};
@@ -48,10 +55,10 @@ class Actions extends Component {
 					</Panel>						
 				</PanelGroup>
 			</Sidebar>
-			{this.state.selected && <SelectedAction handleSelect={this.handleSelect} action={this.state.selected}/>}	
+			{this.state.selected && <SelectedAction handleSelect={this.handleSelect} assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits]} action={this.state.selected}/>}	
 			<NewAction
 				show={this.state.showNew}
-				edit={false}
+				assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits]}
 				showNew={this.showNew} 
 				closeNew={this.closeNew}
 				// player={this.props.player????}
