@@ -131,6 +131,13 @@ const controllers = [
 		responisble: "The Gnostic, The Gourmand, The House, The Upstart, The Jester, The High-Roller, Sam the Barman"
 	},
 	{
+		name: "Mike",
+		role: "Epsilon Control",
+		email: "afterlifeepsilon@gmail.com",
+		timezone: "CST",
+		responsible: "The Scholar, The Avenging Fury, The Implacable Fury, The Forman, The Sculptor, The Overseer, The Rampant Fury, The Bailiff, The Smith, The Sommelier, The Songbird, The Executioner"
+		},
+	{
     name: "Scott",
     role: "Tech Support",
     email: "Use the #tech-support channel on the Afterlife discord server",
