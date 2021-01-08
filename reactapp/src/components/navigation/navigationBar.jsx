@@ -23,14 +23,19 @@ class Navigation extends Component {
 					<Nav onSelect={this.props.onSelect} activeKey={this.props.active}>
 						<Nav.Item eventKey="home" to="/gov" icon={<Icon icon="home" />}>Home</Nav.Item>
 						<Nav.Item eventKey="character" >My Character</Nav.Item>
+						{/*<Nav.Item eventKey="memory" >Memories</Nav.Item>*/}
 						<Nav.Item eventKey="actions">Actions</Nav.Item>
 						<Nav.Item eventKey="others">Other Characters</Nav.Item>
 						<Nav.Item eventKey="controllers">Control Team</Nav.Item>
 						<Nav.Item eventKey="control" style={{backgroundColor: "#61342e"}}>Control Terminal</Nav.Item>
-					</Nav>
-					<Nav pullRight></Nav>
-						<Nav.Item style={{textAlign: 'right', paddingTop: '15px', paddingRight: '15px', cursor: 'not-allowed' }}>Game Status: {this.state.gamestate.status} </Nav.Item>
+					</Nav>			
+
 				</Navbar.Body>
+				<div style={{ position: 'fixed', top: 5, right: 25  }}>
+					<p style={{ }}  >Round: {this.state.gamestate.round} </p>	
+					<p style={{ }}  >Game Status: {this.state.gamestate.status} </p>						
+				</div>
+
 			</Navbar>
       );
 		}

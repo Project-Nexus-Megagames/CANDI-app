@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber } from 'rsuite';
+import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress } from 'rsuite';
 import { gameServer } from '../config';
 class SelectedAction extends Component {
 	state = { 
@@ -56,6 +56,7 @@ class SelectedAction extends Component {
 			intent: this.state.intent,
 			id: this.state.id, 	
 		}
+		console.log(action)
 		// 1) make a new action
 		try{
 			if (this.state.edit) {
@@ -80,15 +81,27 @@ class SelectedAction extends Component {
 		}
 	}
 
+	renderAsset = (asset) => {
+		if (asset) {
+			return (
+					<Panel style={{backgroundColor: "#272b34"}} shaded header={asset} bordered ></Panel>	
+			)
+		}
+		else {
+			return (
+					<Panel style={{backgroundColor: "#0e1013"}} shaded header='Empty Slot' bordered ></Panel>	
+			)
+		}
+	}
 
 	render() { 
 		const action = this.props.action;
 		return ( 
 			<Content>
 			<FlexboxGrid >
-				<FlexboxGrid.Item colspan={4} >
+				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
-				<FlexboxGrid.Item colspan={12} >
+				<FlexboxGrid.Item colspan={16} >
 					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
 						<p style={slimText}>
 							Description
@@ -102,15 +115,35 @@ class SelectedAction extends Component {
 						<p>
 							{action.intent}	
 						</p>
+						<p style={slimText}>
+							Effort
+						</p>
+						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
+						<Progress.Line percent={action.effort * 33 + 1} showInfo={false}>  </Progress.Line>
+						<Divider>Assets/Traits</Divider>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={8}>
+								{this.renderAsset(action.asset1)}
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+							{this.renderAsset(action.asset2)}
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+							{this.renderAsset(action.asset3)}
+							</FlexboxGrid.Item>
+						</FlexboxGrid>
 					</Panel>
 					{action.status.published &&
+					<React.Fragment>
+						<Divider>Action Result</Divider>
 						<Panel style={{textAlign: "left", backgroundColor: "#61342e"}}>
 							<p style={slimText}>Result</p>
 							<p>
 							{action.result}	
 						</p>
-						</Panel>
-					}
+						</Panel>						
+					</React.Fragment>}
+
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={1} />
 				<FlexboxGrid.Item colspan={5}>
@@ -121,7 +154,7 @@ class SelectedAction extends Component {
 							{action.status.ready && <Tag color='violet'>Ready for Publishing</Tag>}
 							{action.status.published && <Tag color='green'>Published</Tag>}
 						</TagGroup>
-							<ButtonGroup style={{marginTop: '5px', }} >
+							<ButtonGroup style={{marginTop: '5px' }} >
 								<Button appearance={"ghost"} disabled={!action.status.draft} onClick={() => this.openEdit()} >Edit</Button>
 								<Button appearance={"ghost"} disabled={!action.status.draft} onClick={() => this.deleteAction()}>Delete</Button>
 							</ButtonGroup>

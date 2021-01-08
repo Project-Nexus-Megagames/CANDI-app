@@ -59,7 +59,7 @@ class AddAsset extends Component {
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={12}>
 								<FormGroup>
-									<ControlLabel>Asset/Trait </ControlLabel>
+									<ControlLabel>Trait/Asset </ControlLabel>
 									<FormControl accepter={this.myToggle} name='asset' />
 							</FormGroup>
 							</FlexboxGrid.Item>

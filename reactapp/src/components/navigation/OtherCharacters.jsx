@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, } from 'rsuite';
 import AddAsset from '../AddAsset';
 import ModifyCharacter from '../ModifyCharacter';
+import ModifyMemory from '../ModifyMemory';
 
 class OtherCharacters extends Component {
 	state = { 
@@ -10,6 +11,7 @@ class OtherCharacters extends Component {
 		filtered: [],
 		edit: false,
 		add: false,
+		memory: false,
 	 }
 	 
 
@@ -35,7 +37,7 @@ class OtherCharacters extends Component {
 	}
 
 	closeModal = () => {
-		this.setState({ edit: false, add: false });
+		this.setState({ edit: false, add: false, memory: false });
 	}
 
 	componentDidUpdate(prevProps) {
@@ -56,7 +58,7 @@ class OtherCharacters extends Component {
 					</Panel>
 					<Panel bodyFill style={{height: 'calc(100vh - 130px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					{this.state.catagories.map((catagory, index) => (
-						<React.Fragment>
+						<React.Fragment key={index}>
 						<h6 style={{backgroundColor: "#61342e"}}>{catagory}</h6>	
 							<List hover size="sm" key={index}>
 								{this.state.filtered.filter(el => el.tag === catagory).sort((a, b) => { // sort the catagories alphabetically 
@@ -96,7 +98,6 @@ class OtherCharacters extends Component {
 								<div>
 									Email
 								</div>
-								<p>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={22}>
 											<b>{this.state.selected.email}</b> 
@@ -105,10 +106,7 @@ class OtherCharacters extends Component {
 											<IconButton icon={<Icon icon="envelope"/>} color="blue" circle />										
 										</FlexboxGrid.Item>*/}
 									</FlexboxGrid>
-								</p>
-								<p>
 									<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email)}>Copy email to clipboard</Button>
-								</p>
 								<FlexboxGrid style={{paddingTop: '5px'}}>
 									<FlexboxGrid.Item colspan={12}>
 										<p>
@@ -122,11 +120,8 @@ class OtherCharacters extends Component {
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 								<br></br>
-								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:	
-								</p>
-								<p>
-									{this.state.selected.bio}			
-								</p>
+								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:</p>
+								<p>{this.state.selected.bio}</p>
 								<p style={{ alignItems: 'center', justifyContent: 'center', }}>
 									<img src={this.state.selected.icon ? this.state.selected.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt="Img could not be displayed" width="320" height="320" />
 								</p>
@@ -137,7 +132,8 @@ class OtherCharacters extends Component {
 					<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<ButtonGroup style={{marginTop: '5px', }} >
 							<Button appearance={"ghost"} onClick={() => this.setState({ edit: true })}>Modify</Button>
-							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>Give New Asset/Trait</Button>
+							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Asset/Trait</Button>
+							<Button appearance={"ghost"} onClick={() => this.setState({ memory: true })}>Memories</Button>
 						</ButtonGroup>
 					</Panel>
 				</FlexboxGrid.Item>
@@ -153,6 +149,10 @@ class OtherCharacters extends Component {
 					character={this.state.selected}
 					closeModal={this.closeModal}
 				/>
+				{this.state.selected !== undefined && <ModifyMemory
+					show={this.state.memory}
+					character={this.state.selected}
+					closeModal={this.closeModal}/>}
 			</Content>		
 			}
 		</Container>

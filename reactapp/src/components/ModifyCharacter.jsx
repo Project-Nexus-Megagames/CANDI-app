@@ -64,7 +64,7 @@ class ModifyCharacter extends Component {
 					<Modal.Title>Modify Character "{this.state.formValue.characterName}"</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form layout="verticle" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
+					<Form layout="vertical" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
 						<FlexboxGrid>
 
 							<FlexboxGrid.Item colspan={8}>

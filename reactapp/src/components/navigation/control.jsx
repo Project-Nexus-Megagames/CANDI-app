@@ -90,7 +90,7 @@ class Control extends Component {
 									<p>
 										<h5>{this.state.selected.timezone}</h5>			
 									</p>
-									<p>Control ResponsabilitiesTime Zone:	
+									<p>Control Responsabilities:	
 									</p>
 									<p>
 										<h5>{this.state.selected.responisble}</h5>			
@@ -110,17 +110,31 @@ export default Control;
 
 const controllers = [
 	{
-        name: "Stuart",
-        role: "Game Control",
-        email: "afterlifecontrol@gmail.com",
-        timezone: "GMT",
-        responisble: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
+   name: "Stuart",
+   role: "Game Control",
+   email: "afterlifecontrol@gmail.com",
+   timezone: "GMT",
+   responisble: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
+	},
+	{ 
+		name: "Mickey",
+		role: "Beta Control",
+		email: "afterlifebeta@gmail.com",
+		timezone: "GMT",
+		responisble: "The Penitent, The Thorn, The Claviger, The Steward, The Gossip, Madame, The Margrave of the Grey Borders, The Baptist, The Speaker of Truth, The Flagellant, The Gaoler, The Warden, She Who Bears The Scale, The Medium" 
 	},
 	{
-        name: "Scott",
-        role: "Tech Support",
-        email: "smcmann42@gmail.com",
-        timezone: "PST",
-        responisble: "Keeping the App and Discord running"
-    }
+		name: "Dan",
+		role: "Gamma Control",
+		email: "afterlifegamma@gmail.com",
+		timezone: "MST",
+		responisble: "The Gnostic, The Gourmand, The House, The Upstart, The Jester, The High-Roller, Sam the Barman"
+	},
+	{
+    name: "Scott",
+    role: "Tech Support",
+    email: "Use the #tech-support channel on the Afterlife discord server",
+    timezone: "PST",
+    responisble: "Keeping the App and Discord running"
+ }
 ]

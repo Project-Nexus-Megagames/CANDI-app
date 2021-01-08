@@ -51,7 +51,7 @@ class Actions extends Component {
 						<ActionList actions={this.state.filtered} handleSelect={this.handleSelect}/>
 					</Panel>
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
-						<Button appearance='primary' block onClick={() => this.showNew()}>New Action</Button>
+						<Button appearance='primary' disabled={this.isDisabled()} block onClick={() => this.showNew()}>New Action</Button>
 					</Panel>						
 				</PanelGroup>
 			</Sidebar>
@@ -61,10 +61,16 @@ class Actions extends Component {
 				assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits]}
 				showNew={this.showNew} 
 				closeNew={this.closeNew}
+				gamestate={this.props.gamestate}
 				// player={this.props.player????}
 			/>
 		</Container>
 		 );
+	}
+
+	isDisabled () {
+		if (this.props.gamestate.status === 'Active') return false;
+		else return true;
 	}
 }
 

@@ -24,7 +24,8 @@ class NewAction extends Component {
 			asset2: this.state.asset2,
 			asset3: this.state.asset3,
 			description: this.state.description,
-			intent: this.state.intent,	
+			intent: this.state.intent,
+			round: this.props.gamestate.round
 		}
 		try{
 			await axios.post(`${gameServer}api/actions`, { data: action });
