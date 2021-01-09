@@ -10,7 +10,8 @@ class AddAsset extends Component {
 			description: '',
 		},
 		assetBoolean: null,
-		id: ''
+		id: '',
+		loading: false
 	 }
 		
 	 componentDidMount = () => {
@@ -19,6 +20,7 @@ class AddAsset extends Component {
 	 }
 
 	 handleSubmit = async () => {
+		this.setState({ loading: true });
 		// 1) make a new asset
 		const formValue = {
 			asset: {
@@ -31,10 +33,12 @@ class AddAsset extends Component {
 		try{
 			await axios.patch(`${gameServer}api/characters/newAsset`, { data: formValue });
 			Alert.success('Character Successfully Modify');
+			this.setState({ loading: false });
 			this.props.closeModal()
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+			Alert.error(`Error: ${err.response.data}`, 5000);
+			this.setState({ loading: false });
 		}
 	 }
 

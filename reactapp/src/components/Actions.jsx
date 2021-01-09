@@ -58,11 +58,11 @@ class Actions extends Component {
 			{this.state.selected && <SelectedAction handleSelect={this.handleSelect} assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits]} action={this.state.selected}/>}	
 			<NewAction
 				show={this.state.showNew}
-				assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits]}
+				assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets]}
 				showNew={this.showNew} 
 				closeNew={this.closeNew}
 				gamestate={this.props.gamestate}
-				// player={this.props.player????}
+				playerCharacter={this.props.playerCharacter}
 			/>
 		</Container>
 		 );

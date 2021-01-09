@@ -52,7 +52,15 @@ class MyCharacter extends Component {
 							/>	
 						<Divider style={{ width: "95%" }} >Wealth</Divider>
 						<Panel style={{backgroundColor: "#bfb606", textAlign: 'center', width: '95%', }} shaded bordered >
-							<h4 style={{color: 'black'}} >{playerCharacter.wealth.level}</h4>
+							<h4 style={{color: 'black'}} >{playerCharacter.wealth.description}</h4>
+							<FlexboxGrid>
+								<FlexboxGrid.Item style={{textAlign: 'left'}} colspan={20}>{playerCharacter.wealth.status.lent && <b style={{color: 'black', fontSize: '1.35em',}}>Wealth lent to: '{playerCharacter.wealth.currentHolder}'</b>}</FlexboxGrid.Item>
+								<FlexboxGrid.Item colspan={4}> 
+									{!playerCharacter.wealth.status.lent &&  <Button onClick={() => this.openLend(playerCharacter.wealth)} color='blue' size='sm' >Lend</Button>}
+									{playerCharacter.wealth.status.lent && <Button onClick={() => this.openUnlend(playerCharacter.wealth)} color='blue' size='sm' >Un-Lend</Button>}	
+								 </FlexboxGrid.Item>
+							</FlexboxGrid>
+
 						</Panel>
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item key={2} colspan={12} >
@@ -131,7 +139,8 @@ class MyCharacter extends Component {
 											<p>{asset.description}</p>												
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item style={{ textAlign: 'center' }} colspan={4}>
-											<Button onClick={() => this.openLend(asset)} appearance="ghost" size='sm' >Lend</Button>												
+											{!asset.status.lent &&  <Button onClick={() => this.openLend(asset)} appearance="ghost" size='sm' >Lend</Button>}
+											{asset.status.lent && <Button onClick={() => this.openUnlend(asset)} appearance="ghost" size='sm' >Un-Lend</Button>}													
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</Panel>									
@@ -141,10 +150,17 @@ class MyCharacter extends Component {
 							{playerCharacter.lentAssets.map((borrowed, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
 								<Affix>
-									{borrowed.status.lent && <Tag color='blue' >Borrowed</Tag>}
+									{borrowed.status.lent && <Tag color='blue' >Borrowed from: {borrowed.currentHolder}</Tag>}
 								</Affix>
 								<Panel style={{backgroundColor: "#1a1d24"}} shaded header={borrowed.name} bordered collapsible>
-									<p >{borrowed.description}</p>
+									<FlexboxGrid>
+										<FlexboxGrid.Item colspan={18}>
+											<p>{borrowed.description}</p>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={6}>
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+
 								</Panel>									
 								</div>
 							))}
@@ -222,10 +238,9 @@ class MyCharacter extends Component {
 			)
 		}
 		else {
-			const holder = this.props.characters.find(el => el._id === this.state.unleanding.currentHolder)
 			return (
 				<p>
-					Are you sure you want to take back your {this.state.unleanding.name} from {holder.characterName}?					
+					Are you sure you want to take back your {this.state.unleanding.name} from {this.state.unleanding.currentHolder}?					
 				</p>
 			)
 		}
@@ -250,16 +265,16 @@ class MyCharacter extends Component {
 	}
 
 	handleTakeback = async () => {
+		const holder = this.props.characters.find(el => el.characterName === this.state.unleanding.currentHolder)
 		const data = {
 			asset: this.state.unleanding._id,
-			target: this.state.unleanding.currentHolder,
+			target: holder._id,
 			lendingBoolean: false
 		}
 		try{
 			await axios.post(`${gameServer}api/assets/lend`, { data });
-			Alert.success('Asset Successfully Lent');
-			this.setState({ unleanding: null });
-			this.closeLend()
+			Alert.success('Asset Successfully Taken Back');	
+			this.setState({ unlend: false, unleanding: null });
 		}
 		catch (err) {
 			console.log(err.response)

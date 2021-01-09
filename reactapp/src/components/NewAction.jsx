@@ -12,11 +12,13 @@ class NewAction extends Component {
 				asset3: '',
 				id: '',
         description: '',
-        intent: '',		
+				intent: '',	
+				loading: false	
 		};
 	}
 	
 	handleSubmit = async () => {
+		this.setState({ loading: true });
 		// 1) make a new action
 		const action = {
 			effort: this.state.effort,
@@ -25,15 +27,18 @@ class NewAction extends Component {
 			asset3: this.state.asset3,
 			description: this.state.description,
 			intent: this.state.intent,
+			creator: this.props.playerCharacter._id,
 			round: this.props.gamestate.round
 		}
 		try{
 			await axios.post(`${gameServer}api/actions`, { data: action });
 			Alert.success('Action Successfully Created');
+			this.setState({effort: 1, asset1: '', asset2: '', asset3: '', description: '', intent: '', loading: false})
 			this.props.closeNew()
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+			Alert.error(`Error: ${err.response.data}`, 5000);
+			this.setState({ loading: false });
 		}
 	}
 	
@@ -81,7 +86,7 @@ class NewAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} disabled={this.isDisabled()} appearance="primary">
+          <Button onClick={() => this.handleSubmit()} loading={this.state.loading} disabled={this.isDisabled()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.props.closeNew()} appearance="subtle">
