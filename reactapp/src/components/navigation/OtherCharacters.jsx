@@ -196,7 +196,7 @@ const titleStyle = {
 };
 
 const slimText = {
-  fontSize: '0.866em',
+  fontSize: '0.966em',
   color: '#97969B',
   fontWeight: 'lighter',
 	paddingBottom: 5,
