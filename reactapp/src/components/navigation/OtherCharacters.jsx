@@ -1,12 +1,14 @@
+import axios from 'axios';
 import React, { Component } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, } from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Alert} from 'rsuite';
 import AddAsset from '../AddAsset';
 import ModifyCharacter from '../ModifyCharacter';
 import ModifyMemory from '../ModifyMemory';
+import { gameServer } from '../../config';
 
 class OtherCharacters extends Component {
 	state = { 
-		selected: {},
+		selected: null,
 		catagories: [],
 		filtered: [],
 		edit: false,
@@ -122,9 +124,20 @@ class OtherCharacters extends Component {
 								<br></br>
 								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:</p>
 								<p>{this.state.selected.bio}</p>
-								<p style={{ alignItems: 'center', justifyContent: 'center', }}>
-									<img src={this.state.selected.icon ? this.state.selected.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt="Img could not be displayed" width="320" height="320" />
-								</p>
+								<FlexboxGrid>
+									<FlexboxGrid.Item style={{ alignItems: 'center', justifyContent: 'center', }} colspan={12}>
+										<img src={this.state.selected.icon ? this.state.selected.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt="Img could not be displayed" width="320" height="320" />
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={6}>
+										Supported By:
+										{this.state.selected.supporters.map((supporter, index) => (
+											<Tag index={index}>{supporter}</Tag>
+										))}
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item>
+									{this.makeButton()}
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
 							</Panel>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={1} />
@@ -157,6 +170,26 @@ class OtherCharacters extends Component {
 			}
 		</Container>
 		 );
+	}
+
+	makeButton = () => {
+		if (this.state.selected.supporters.some(el => el === this.props.playerCharacter.characterName)) {
+			return (<Button onClick={()=> this.lendSupp()} color='red'>Take Back Support!</Button>)
+		}
+		else {
+			return (<Button onClick={()=> this.lendSupp()} appearance="primary">Lend Support!</Button>)	
+		}
+	}
+
+	lendSupp = async () => {
+		try{
+			await axios.patch(`${gameServer}api/characters/support`, { id: this.state.selected._id, supporter: this.props.playerCharacter.characterName });
+			Alert.success('Support Changed');
+			this.setState({ selected: '' });
+		}
+		catch (err) {
+      Alert.error(`Error: ${err.response.data}`, 5000);
+		}	
 	}
 	
 	createListCatagories (characters) {

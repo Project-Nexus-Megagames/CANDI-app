@@ -14,9 +14,9 @@ class Control extends Component {
 
 	listStyle (item) {
 		if (item === this.state.selected) {
-			return ({cursor: 'pointer', backgroundColor: "#212429"})
+			return ({cursor: 'pointer', backgroundColor: "#212429", height: '80px', display: 'flex', justifyContent: 'center', alignItems: 'center', })
 		}
-		else return({cursor: 'pointer'});
+		else return({cursor: 'pointer', height: '80px',   display: 'flex', justifyContent: 'center', alignItems: 'center',  });
 	}
 
 	copyToClipboard (email) {
