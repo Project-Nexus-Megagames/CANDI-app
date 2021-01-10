@@ -21,7 +21,27 @@ class ModifyMemory extends Component {
 	componentDidMount = () => {
 		if (this.props.character !== undefined && this.props.character.memories !== undefined ) {
 			const { first, second, third } = this.props.character.memories;
-			console.log(this.props.memories);	
+			//console.log(this.props.memories);	
+			this.setState({ 
+				revealedFirst: first.revealed,
+				triggerFirst:  first.trigger,
+				recallFirst:   first.recall,
+		
+				revealedSecond: second.revealed,
+				triggerSecond:  second.trigger,
+				recallSecond:   second.recall,
+		
+				revealedThird: third.revealed,
+				triggerThird:  third.trigger,
+				recallThird:   third.recall,
+			});
+		}
+	}
+
+	componentDidUpdate = (prevProps) => {
+		if (this.props.character !== prevProps.character) {
+			const { first, second, third } = this.props.character.memories;
+			//console.log(this.props.memories);	
 			this.setState({ 
 				revealedFirst: first.revealed,
 				triggerFirst:  first.trigger,

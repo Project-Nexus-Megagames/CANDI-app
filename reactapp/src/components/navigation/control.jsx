@@ -76,9 +76,6 @@ class Control extends Component {
 											<FlexboxGridItem colspan={22}>
 												<h5>{this.state.selected.email}</h5> 
 											</FlexboxGridItem>
-											<FlexboxGridItem >
-												<IconButton icon={<Icon icon="envelope"/>} color="blue" circle />										
-											</FlexboxGridItem>
 										</FlexboxGrid>
 									</p>
 									<p>
@@ -90,10 +87,10 @@ class Control extends Component {
 									<p>
 										<h5>{this.state.selected.timezone}</h5>			
 									</p>
-									<p>Control Responsabilities:	
+									<p>Control Responsibilities:	
 									</p>
 									<p>
-										<h5>{this.state.selected.responisble}</h5>			
+										<h5>{this.state.selected.responsibilities}</h5>			
 									</p>
 								</Panel>
 							</FlexboxGrid.Item>

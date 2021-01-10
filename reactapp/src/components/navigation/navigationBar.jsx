@@ -1,20 +1,13 @@
-import axios from 'axios';
 import React, { Component } from 'react';
-import { Navbar, Nav, Icon, Panel } from 'rsuite';
-import { gameServer } from '../../config';
+import { Navbar, Nav, Icon, } from 'rsuite';
 class Navigation extends Component {
   state = {
 		gamestate: {}
-  }
-
-    componentDidMount= async () => {
-			const {data} = await axios.get(`${gameServer}api/gamestate/`);
-			this.setState({ gamestate: data });
-    }
-
-    componentDidUpdate(prevProps) {
-
-    }
+	}
+	
+	componentDidMount() {
+		this.setState({ gamestate: this.props.gamestate });
+	}
 
     render() {
       return (
@@ -32,8 +25,8 @@ class Navigation extends Component {
 
 				</Navbar.Body>
 				<div style={{ position: 'fixed', top: 5, right: 25  }}>
-					<p style={{ }}  >Round: {this.state.gamestate.round} </p>	
-					<p style={{ }}  >Game Status: {this.state.gamestate.status} </p>						
+					<p style={{ }}  >Round: {this.props.gamestate.round} </p>	
+					<p style={{ }}  >Game Status: {this.props.gamestate.status} </p>						
 				</div>
 
 			</Navbar>

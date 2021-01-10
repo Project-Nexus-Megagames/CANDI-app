@@ -18,6 +18,7 @@ import MyCharacter from './components/navigation/myCharacter';
 import NavigationBar from './components/navigation/navigationBar';
 import OtherCharacters from './components/navigation/OtherCharacters';
 import Memory from './components/navigation/Memory';
+import ControlTerminal from './components/navigation/ControlTerminal';
 const { StringType } = Schema.Types;
 
 
@@ -36,21 +37,21 @@ class App extends Component {
       email: '',
       password: '',
     },
-    show: false,
+    show: true,
     loading: false,
     playerCharacter: null
   }
 
   componentDidMount = async () => {
     console.log('Mounting App...')
-    this.setState({ show: true, active: 'loading' });
+    this.setState({ show: true, active: 'login' });
     socket.on('connect', ()=> { console.log('UwU I made it') });
     socket.on('updateCharacters', ()=> { this.loadCharacters() });
     socket.on('updateActions', ()=> { this.loadActions() });
-    const {data} = await axios.get(`${gameServer}api/gamestate/`);
-    this.setState({ gamestate: data });
+    socket.on('updateGamestate', ()=> { this.loadGamestate() });
     await this.loadCharacters();    
     await this.loadActions();
+    await this.loadGamestate();
   }
 
   render() {
@@ -91,7 +92,7 @@ class App extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        {(this.state.active !== "loading" && this.state.active !== "login") && 
+        {this.state.show === false && 
           <React.Fragment>
             <Header>
               <NavigationBar gamestate={this.state.gamestate} onSelect={this.handleSelect.bind(this)}>
@@ -101,8 +102,9 @@ class App extends Component {
             {this.state.active === "character" && <MyCharacter characters={this.state.players} playerCharacter={this.state.playerCharacter}/>}
             {this.state.active === "controllers" && <Control/>}
             {this.state.active === "others" && <OtherCharacters characters={this.state.players}/>}
-            {this.state.active === "actions" && <Actions gamestate={this.state.gamestate} playerCharacter={this.state.playerCharacter} actions={this.state.actions}/>}
-            {this.state.active === "memory" && <Memory playerCharacter={this.state.playerCharacter} /> }
+            {this.state.active === "actions" && <Actions user={this.state.user} gamestate={this.state.gamestate} playerCharacter={this.state.playerCharacter} actions={this.state.actions}/>}
+            {this.state.active === "memory" && <Memory playerCharacter={this.state.playerCharacter} />}
+            {this.state.active === "control" && <ControlTerminal user={this.state.user} gamestate={this.state.gamestate} actions={this.state.actions}/>}
           </React.Fragment>
         }   
       </div>
@@ -121,6 +123,11 @@ class App extends Component {
       const playerCharacter = await axios.patch(`${gameServer}api/characters/byUsername`, {username: this.state.playerCharacter.username});
       this.setState({ playerCharacter: playerCharacter.data });
     }
+  }
+
+  loadGamestate = async () => {
+    const {data} = await axios.get(`${gameServer}api/gamestate/`);
+    this.setState({ gamestate: data });
   }
 
   handleSelect(activeKey) {
@@ -145,8 +152,9 @@ class App extends Component {
         const user = jwtDecode(data);
         this.setState({ show: false, user });
         const playerCharacter = await axios.patch(`${gameServer}api/characters/byUsername`, {username: user.username});
+        socket.emit('login', user); 
+
         this.setState({ playerCharacter: playerCharacter.data, loading: false, active: 'home' });
-        socket.emit('login', user);  
         this.setState({ formValue: { email: '', password: '',}})   
       }    
     } 
@@ -170,7 +178,6 @@ const done = {
 
 const model = Schema.Model({
   email: StringType()
-    .isEmail('Please enter a valid email address.')
     .isRequired('This field is required.')
 });
 

@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress } from 'rsuite';
 import { gameServer } from '../config';
+
+/* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedAction extends Component {
 	state = { 
 		edit: null, // used to open edit action popup
@@ -41,10 +43,6 @@ class SelectedAction extends Component {
 			resEdit: true })
 	}
 
-	handleChange = (value) => {
-    this.setState({ formValue: value });
-	}
-
 	handleSubmit = async () => {
 		this.setState({loading: true}) 
 		const action = {
@@ -61,7 +59,8 @@ class SelectedAction extends Component {
 		try{
 			if (this.state.edit) {
 				let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
-				Alert.success(data);		
+				Alert.success(data);	
+				this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: ''});	
 			}
 			else {
 				const edit = {
@@ -71,7 +70,8 @@ class SelectedAction extends Component {
 					status: this.state.status
 				}
 				let {data} = await axios.patch(`${gameServer}api/actions/editResult`, {data: edit});
-				Alert.success(data);						
+				Alert.success(data);
+				this.setState({result: '', dieResult: 0, status: ''});
 			}
 			this.setState({edit: false, resEdit: false, loading: false});
 		}
@@ -103,6 +103,9 @@ class SelectedAction extends Component {
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={16} >
 					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
+						<p style={{ fontSize: '0.866em', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
+							Created by: {action.creator.characterName}
+						</p>
 						<p style={slimText}>
 							Description
 						</p>
@@ -233,13 +236,16 @@ class SelectedAction extends Component {
 					</FlexboxGrid>
 					<br></br>
 					<FlexboxGrid>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-							<InputNumber value={this.state.dieResult} max={12} min={2} onChange={(event)=> this.setState({dieResult: event})}>Die Result</InputNumber>				
-							<InputPicker defaultValue={this.state.asset1} labelKey='label' valueKey='value' data={pickerData} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>				
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={4}>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Status
+						<FlexboxGrid.Item colspan={6}>
+							<b>Die Result</b>
+							<InputNumber value={this.state.dieResult} max={12} min={2} onChange={(event)=> this.setState({dieResult: event})}></InputNumber>				
+					</FlexboxGrid.Item>
+					<FlexboxGrid.Item colspan={2}/>
+					<FlexboxGrid.Item colspan={6}>
+						<b>Status</b>
+						<InputPicker labelKey='label' valueKey='value' data={pickerData} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>				
+					</FlexboxGrid.Item>
+						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 					</form>
