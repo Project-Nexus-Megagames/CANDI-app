@@ -18,6 +18,13 @@ class AddAsset extends Component {
 		 const char = this.props.character;
 		 this.setState({ id: char._id, assetBoolean: false });
 	 }
+	 
+	 componentDidUpdate(prevProps) {
+		// Typical usage (don't forget to compare props):
+		if (this.props.characters !== prevProps.characters) {
+			this.setState({ id: this.props.character._id, assetBoolean: false });
+		}
+	}
 
 	 handleSubmit = async () => {
 		this.setState({ loading: true });
@@ -33,7 +40,7 @@ class AddAsset extends Component {
 		try{
 			await axios.patch(`${gameServer}api/characters/newAsset`, { data: formValue });
 			Alert.success('Character Successfully Modify');
-			this.setState({ loading: false });
+			this.setState({ loading: false, formValue: { name: '', description: '' }, assetBoolean: false });
 			this.props.closeModal()
 		}
 		catch (err) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, Alert, SelectPicker } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, Alert, InputPicker } from 'rsuite';
 import axios from 'axios';
 import { gameServer } from '../config';
 
@@ -13,7 +13,7 @@ class ModifyCharacter extends Component {
 			playerName: '',
 			timeZone: '',
 			bio: '',
-			wealth: {},
+			wealth: '',
 			icon: '',
 			popSupport: 0,
 			_id: ''		
@@ -24,7 +24,28 @@ class ModifyCharacter extends Component {
 	 componentDidMount = () => {
 		 const char = this.props.character;
 		 // console.log(this.props.character)
-		 const formValue = {
+		 if (char !== undefined) {
+			const formValue = {
+					characterName: char.characterName,
+					email: char.email,
+					worldAnvil: char.worldAnvil,
+					tag: char.tag,
+					timeZone: char.timeZone,
+					playerName: char.playerName,
+					bio: char.bio,
+					// wealth: this.props.character.wealth.description,
+					icon: char.icon,
+					popSupport: char.popSupport,
+					id: char._id
+			}
+			this.setState({ formValue });			 
+		 }
+	 }
+
+	 componentDidUpdate = (prevProps) => {
+		if (this.props.character !== prevProps.character) {
+			const char = this.props.character;
+			const formValue = {
 				characterName: char.characterName,
 				email: char.email,
 				worldAnvil: char.worldAnvil,
@@ -32,12 +53,13 @@ class ModifyCharacter extends Component {
 				timeZone: char.timeZone,
 				playerName: char.playerName,
 				bio: char.bio,
-				// wealth: this.props.character.wealth.level,
+				wealth: this.props.character.wealth.description,
 				icon: char.icon,
 				popSupport: char.popSupport,
 				id: char._id
-		 }
-		 this.setState({ formValue });
+		}
+		this.setState({ formValue });		
+		}
 	 }
 
 	 handleSubmit = async () => {
@@ -93,7 +115,7 @@ class ModifyCharacter extends Component {
 							</FormGroup>
 							<FormGroup>
 								<ControlLabel>wealth</ControlLabel>
-								<FormControl name="wealth" accepter={SelectPicker} data={pickerData} />
+								<FormControl name="wealth" accepter={InputPicker} data={pickerData} />
 							</FormGroup>
 							</FlexboxGrid.Item>
 
@@ -111,12 +133,12 @@ class ModifyCharacter extends Component {
 						</FlexboxGrid>
 						<FormGroup>
 								<ControlLabel>Bio</ControlLabel>
-								<FormControl style={{width: '100%'}} name="bio" rows={5} componentClass="textarea"/>
+								<FormControl style={{width: '100%', display: 'block' }} name="bio" rows={5} componentClass="textarea"/>
 							</FormGroup>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} appearance="primary">
+          <Button disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.props.closeModal()} appearance="subtle">

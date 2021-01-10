@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { FlexboxGrid, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Affix, Badge, Tag, Modal, Drawer, SelectPicker, Placeholder, Alert } from 'rsuite';
+import { FlexboxGrid, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Affix, Tag, Modal, Drawer, SelectPicker, Placeholder, Alert } from 'rsuite';
 import { gameServer } from '../../config';
 
 class MyCharacter extends Component {
