@@ -136,7 +136,7 @@ class SelectedAction extends Component {
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 					</Panel>
-					{action.status.published &&
+					{(action.status.published || this.props.user.roles.some(el=> el === 'Control')) && 
 					<React.Fragment>
 						<Divider>Action Result</Divider>
 						<Panel style={{textAlign: "left", backgroundColor: "#61342e"}}>

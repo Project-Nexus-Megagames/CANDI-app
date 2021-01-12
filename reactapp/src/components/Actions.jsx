@@ -72,10 +72,10 @@ class Actions extends Component {
 					</Panel>				
 				</PanelGroup>
 			</Sidebar>
-			{this.state.selected && <SelectedAction handleSelect={this.handleSelect} assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits]} action={this.state.selected}/>}	
+			{this.state.selected && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets, this.props.playerCharacter.wealth]} action={this.state.selected}/>}	
 			<NewAction
 				show={this.state.showNew}
-				assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets]}
+				assets={this.filteredAssets()}
 				showNew={this.showNew} 
 				closeNew={this.closeNew}
 				gamestate={this.props.gamestate}
@@ -83,6 +83,15 @@ class Actions extends Component {
 			/>
 		</Container>
 		 );
+	}
+
+	filteredAssets = () => {
+		let assets = [...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets];
+		console.log('before', assets)
+		assets = assets.filter(el => el.status.used === false);
+		assets.push(this.props.playerCharacter.wealth)
+		console.log('after', assets)
+		return assets;
 	}
 
 	isDisabled () {

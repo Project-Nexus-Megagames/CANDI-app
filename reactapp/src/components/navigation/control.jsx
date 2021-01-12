@@ -111,21 +111,21 @@ const controllers = [
    role: "Game Control",
    email: "afterlifecontrol@gmail.com",
    timezone: "GMT",
-   responisble: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
+   responsibilities: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
 	},
 	{ 
 		name: "Mickey",
 		role: "Beta Control",
 		email: "afterlifebeta@gmail.com",
 		timezone: "GMT",
-		responisble: "The Penitent, The Thorn, The Claviger, The Steward, The Gossip, Madame, The Margrave of the Grey Borders, The Baptist, The Speaker of Truth, The Flagellant, The Gaoler, The Warden, She Who Bears The Scale, The Medium" 
+		responsibilities: "The Penitent, The Thorn, The Claviger, The Steward, The Gossip, Madame, The Margrave of the Grey Borders, The Baptist, The Speaker of Truth, The Flagellant, The Gaoler, The Warden, She Who Bears The Scale, The Medium" 
 	},
 	{
 		name: "Dan",
 		role: "Gamma Control",
 		email: "afterlifegamma@gmail.com",
 		timezone: "MST",
-		responisble: "The Gnostic, The Gourmand, The House, The Upstart, The Jester, The High-Roller, Sam the Barman"
+		responsibilities: "The Gnostic, The Gourmand, The House, The Upstart, The Jester, The High-Roller, Sam the Barman"
 	},
 	{
 		name: "Mike",
@@ -139,6 +139,6 @@ const controllers = [
     role: "Tech Support",
     email: "Use the #tech-support channel on the Afterlife discord server",
     timezone: "PST",
-    responisble: "Keeping the App and Discord running"
+    responsibilities: "Keeping the App and Discord running"
  }
 ]

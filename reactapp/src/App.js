@@ -95,15 +95,14 @@ class App extends Component {
         {this.state.show === false && 
           <React.Fragment>
             <Header>
-              <NavigationBar gamestate={this.state.gamestate} onSelect={this.handleSelect.bind(this)}>
+              <NavigationBar user={this.state.user} gamestate={this.state.gamestate} onSelect={this.handleSelect.bind(this)}>
               </NavigationBar>
             </Header>
             {this.state.active === "home" && <HomePage gamestate={this.state.gamestate}/>}
             {this.state.active === "character" && <MyCharacter characters={this.state.players} playerCharacter={this.state.playerCharacter}/>}
             {this.state.active === "controllers" && <Control/>}
-            {this.state.active === "others" && <OtherCharacters playerCharacter={this.state.playerCharacter} characters={this.state.players}/>}
+            {this.state.active === "others" && <OtherCharacters user={this.state.user} playerCharacter={this.state.playerCharacter} characters={this.state.players}/>}
             {this.state.active === "actions" && <Actions user={this.state.user} gamestate={this.state.gamestate} playerCharacter={this.state.playerCharacter} actions={this.state.actions}/>}
-            {this.state.active === "memory" && <Memory playerCharacter={this.state.playerCharacter} />}
             {this.state.active === "control" && <ControlTerminal user={this.state.user} gamestate={this.state.gamestate} actions={this.state.actions}/>}
           </React.Fragment>
         }   
