@@ -6,10 +6,10 @@ class NewAction extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        effort: 1,
-				asset1: '',
-				asset2: '',
-				asset3: '',
+        effort: 0,
+				asset1: null,
+				asset2: null,
+				asset3: null,
 				id: '',
         description: '',
 				intent: '',	
@@ -33,7 +33,7 @@ class NewAction extends Component {
 		try{
 			await axios.post(`${gameServer}api/actions`, { data: action });
 			Alert.success('Action Successfully Created');
-			this.setState({effort: 1, asset1: '', asset2: '', asset3: '', description: '', intent: '', loading: false})
+			this.setState({effort: 0, asset1: '', asset2: '', asset3: '', description: '', intent: '', loading: false})
 			this.props.closeNew()
 		}
 		catch (err) {
@@ -65,19 +65,19 @@ class NewAction extends Component {
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
 								<Slider graduated
 								min={0}
-								max={3}
-								defaultValue={1}
+								max={this.props.playerCharacter.effort}
+								defaultValue={0}
 								progress
 								value={this.state.effort}
 								onChange={(event)=> this.setState({effort: event})}>
 								</Slider>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-								<InputNumber value={this.state.effort} max={3} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+								<InputNumber value={this.state.effort} max={this.props.playerCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
-							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Effort
+							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Traits
 								<InputPicker placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset1: event})}/>
 								<InputPicker placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset2: event})}/>
 								<InputPicker placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset3: event})}/>

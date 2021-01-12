@@ -24,8 +24,8 @@ class OtherCharacters extends Component {
 		else return ({cursor: 'pointer'})
 	}
 
-	copyToClipboard (email) {
-		navigator.clipboard.writeText(email);
+	copyToClipboard (email, controlEmail) {
+		navigator.clipboard.writeText(`${email} ${controlEmail}`);
 	}
 
 	openAnvil (url) {
@@ -108,7 +108,7 @@ class OtherCharacters extends Component {
 											<IconButton icon={<Icon icon="envelope"/>} color="blue" circle />										
 										</FlexboxGrid.Item>*/}
 									</FlexboxGrid>
-									<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email)}>Copy email to clipboard</Button>
+									<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email, this.state.selected.controlEmail)}>Copy email to clipboard</Button>
 								<FlexboxGrid style={{paddingTop: '5px'}}>
 									<FlexboxGrid.Item colspan={12}>
 										<p>
@@ -142,13 +142,13 @@ class OtherCharacters extends Component {
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={1} />
 				<FlexboxGrid.Item colspan={5}>
-					<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+					{this.props.user.roles.some(el=> el === 'Control') && <Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<ButtonGroup style={{marginTop: '5px', }} >
 							<Button appearance={"ghost"} onClick={() => this.setState({ edit: true })}>Modify</Button>
 							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Asset/Trait</Button>
 							<Button appearance={"ghost"} onClick={() => this.setState({ memory: true })}>Memories</Button>
 						</ButtonGroup>
-					</Panel>
+					</Panel>}
 				</FlexboxGrid.Item>
 					</FlexboxGrid>	
 				<ModifyCharacter

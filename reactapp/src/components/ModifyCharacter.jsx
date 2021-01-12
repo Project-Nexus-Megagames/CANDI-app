@@ -16,6 +16,7 @@ class ModifyCharacter extends Component {
 			wealth: '',
 			icon: '',
 			popSupport: 0,
+			effort: 0,
 			_id: ''		
 		}
 
@@ -36,6 +37,7 @@ class ModifyCharacter extends Component {
 					// wealth: this.props.character.wealth.description,
 					icon: char.icon,
 					popSupport: char.popSupport,
+					effort: char.effort,
 					id: char._id
 			}
 			this.setState({ formValue });			 
@@ -127,6 +129,10 @@ class ModifyCharacter extends Component {
 							<FormGroup>
 									<ControlLabel>popsupport</ControlLabel>
 									<FormControl name="popSupport" accepter={InputNumber} />
+							</FormGroup>
+							<FormGroup>
+									<ControlLabel>effort</ControlLabel>
+									<FormControl name="effort" accepter={InputNumber} />
 							</FormGroup>
 							</FlexboxGrid.Item>
 

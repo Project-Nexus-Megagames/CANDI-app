@@ -20,7 +20,7 @@ class Navigation extends Component {
 						<Nav.Item eventKey="actions">Actions</Nav.Item>
 						<Nav.Item eventKey="others">Other Characters</Nav.Item>
 						<Nav.Item eventKey="controllers">Control Team</Nav.Item>
-						<Nav.Item eventKey="control" style={{backgroundColor: "#61342e"}}>Control Terminal</Nav.Item>
+						{this.props.user.roles.some(el=> el === 'Control') && <Nav.Item eventKey="control" style={{backgroundColor: "#61342e"}}>Control Terminal</Nav.Item>}
 					</Nav>			
 
 				</Navbar.Body>

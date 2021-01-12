@@ -34,6 +34,25 @@ class ControlTerminal extends Component {
 		this.setState({ formValue, drafts, awaiting, ready })
 	}
 
+	componentDidUpdate = (prevProps) => {
+		if (this.props.gamestate !== prevProps.gamestate || this.props.actions !== prevProps.actions) {
+			const formValue = {
+				round: this.props.gamestate.round, 
+				status: this.props.gamestate.status
+			}
+			let drafts = 0;
+			let awaiting= 0;
+			let ready = 0;
+			for (const action of this.props.actions) {
+				if (action.status.draft === true) drafts++;
+				else if (action.status.ready === true) ready++;
+				else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
+			}
+			this.setState({ formValue, drafts, awaiting, ready })			
+		}
+
+	}
+
 	
 	render() { 
 		return ( 
@@ -53,12 +72,14 @@ class ControlTerminal extends Component {
 
 				<Divider>Round Editing</Divider>
 				<Panel>
-					<ButtonGroup>
-						<Button onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
-						<Button onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
-						<Button disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
+					<ButtonGroup >
+						<Button appearance="ghost" onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
+						<Button appearance="ghost" onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
+						<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
 					</ButtonGroup>
 				</Panel>
+				<Divider>Asset Management</Divider>
+
 				<Divider>Scott's Message of the Day:</Divider>
 				<div>
 					<h5>Do not touch these buttons unless you are certain of what you are doing.</h5>
