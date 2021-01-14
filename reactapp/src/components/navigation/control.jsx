@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Sidebar, Input, Panel, List, PanelGroup, Button, Content, FlexboxGrid, IconButton, Icon } from 'rsuite';
+import { Container, Sidebar, Input, Panel, List, PanelGroup, Button, Content, FlexboxGrid, } from 'rsuite';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 
 class Control extends Component {
@@ -119,6 +119,13 @@ const controllers = [
 		email: "afterlifebeta@gmail.com",
 		timezone: "GMT",
 		responsibilities: "The Penitent, The Thorn, The Claviger, The Steward, The Gossip, Madame, The Margrave of the Grey Borders, The Baptist, The Speaker of Truth, The Flagellant, The Gaoler, The Warden, She Who Bears The Scale, The Medium" 
+	},
+	{
+		name: "Andrew",
+		role: "Delta Control",
+		email: "afterlifedelta@gmail.com",
+		timezone: "CSTGMT",
+		responsibilities: "The Seeker, The Unknown Soldier, The Ranger, The Seneschal, The Warlord, The Field Marshal, The Conductor of Souls, The Taxi Driver"
 	},
 	{
 		name: "Dan",

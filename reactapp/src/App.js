@@ -17,7 +17,6 @@ import HomePage from './components/navigation/homepage';
 import MyCharacter from './components/navigation/myCharacter';
 import NavigationBar from './components/navigation/navigationBar';
 import OtherCharacters from './components/navigation/OtherCharacters';
-import Memory from './components/navigation/Memory';
 import ControlTerminal from './components/navigation/ControlTerminal';
 const { StringType } = Schema.Types;
 
@@ -70,6 +69,19 @@ class App extends Component {
           </Content> <b>Loading...</b>
         </React.Fragment>
         }
+        {this.state.active === "unfound" && 
+        <React.Fragment>
+          <Header>
+          </Header>
+          <Content>
+            <FlexboxGrid justify="center">
+              <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '80px'}}>
+                <img src={'https://steamuserimages-a.akamaihd.net/ugc/798744098479460748/5E7BF755F4F27E6876BD38BE11571E2C9952FCDA/'} alt={'No Character Found...'} />  
+              </FlexboxGrid.Item>
+            </FlexboxGrid>
+          </Content> <b>Could not find a character with your username. Please contact Tech Support if you think this was in error</b>
+        </React.Fragment>
+        }
         <Modal backdrop="static" show={this.state.show}>
           <Modal.Header>
             <Modal.Title>Login</Modal.Title>
@@ -77,8 +89,8 @@ class App extends Component {
           <Modal.Body>
             <Form model={model} fluid formValue={this.state.formValue} onChange={this.handleChange.bind(this)}>
             <FormGroup>
-                <ControlLabel>Email</ControlLabel>
-                <FormControl name="email" type="email" accepter={model.accepter}/>
+                <ControlLabel>Email / Username</ControlLabel>
+                <FormControl name="email" accepter={model.accepter}/>
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Password</ControlLabel>
@@ -92,7 +104,7 @@ class App extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        {this.state.show === false && 
+        {this.state.show === false && this.state.active !== "unfound" && this.state.active !== "loading" && 
           <React.Fragment>
             <Header>
               <NavigationBar user={this.state.user} gamestate={this.state.gamestate} onSelect={this.handleSelect.bind(this)}>
@@ -149,22 +161,24 @@ class App extends Component {
       }
       else {
         const user = jwtDecode(data);
-        this.setState({ show: false, user });
+        this.setState({ user });
         const playerCharacter = await axios.patch(`${gameServer}api/characters/byUsername`, {username: user.username});
-        socket.emit('login', user); 
-
-        this.setState({ playerCharacter: playerCharacter.data, loading: false, active: 'home' });
-        this.setState({ formValue: { email: '', password: '',}})   
+        if (!playerCharacter.data) {
+          this.setState({ show: false, active: "unfound" })        
+        }
+        else {
+          socket.emit('login', user); 
+          this.setState({ show: false, playerCharacter: playerCharacter.data, loading: false, active: 'home' });
+        }
+          this.setState({ formValue: { email: '', password: '',}})            
       }    
     } 
     catch (err) {
-      console.log(err.response)
+      console.log(err)
       Alert.error(`Error: ${err.body} ${err.response.data}`, 5000);
       this.setState({ loading: false });
     }
   }
-
-
 }
 
 const loading = {

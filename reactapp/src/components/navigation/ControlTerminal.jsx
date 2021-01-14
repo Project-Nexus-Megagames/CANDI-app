@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid } from 'rsuite';
+import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker } from 'rsuite';
 import { gameServer } from '../../config';
 
 class ControlTerminal extends Component {
@@ -8,6 +8,7 @@ class ControlTerminal extends Component {
 		gsModal: false,
 		warningModal: false,
 		warning2Modal: false,
+		assModal: false,
 		formValue: {
 			round: null,
 			status: '',
@@ -15,14 +16,18 @@ class ControlTerminal extends Component {
 		},
 		drafts: 0,
 		awaiting: 0,
-		ready: 0, 
+		ready: 0,
+		assets: [],
+		selected: null
 	 }
 
-	componentDidMount = () => {
+	componentDidMount = async () => {
 		const formValue = {
 			round: this.props.gamestate.round, 
 			status: this.props.gamestate.status
 		}
+		let {data} = 	await axios.get(`${gameServer}api/assets/`);
+		data = data.filter(el => el.model !== 'Wealth');
 		let drafts = 0;
 		let awaiting= 0;
 		let ready = 0;
@@ -31,7 +36,7 @@ class ControlTerminal extends Component {
 			else if (action.status.ready === true) ready++;
 			else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
 		}
-		this.setState({ formValue, drafts, awaiting, ready })
+		this.setState({ formValue, drafts, awaiting, ready, assets: data })
 	}
 
 	componentDidUpdate = (prevProps) => {
@@ -79,7 +84,11 @@ class ControlTerminal extends Component {
 					</ButtonGroup>
 				</Panel>
 				<Divider>Asset Management</Divider>
-
+				<Panel>
+					<ButtonGroup >
+						<Button color='red' appearance="ghost" onClick={() => this.setState({ assModal: true })}>Delete Asset/Trait</Button>
+					</ButtonGroup>
+				</Panel>
 				<Divider>Scott's Message of the Day:</Divider>
 				<div>
 					<h5>Do not touch these buttons unless you are certain of what you are doing.</h5>
@@ -151,8 +160,45 @@ class ControlTerminal extends Component {
           </Modal.Footer>
 				</Modal>
 			
+				<Modal size='sm' show={this.state.assModal} onHide={() => this.setState({ assModal: false })}>
+					<SelectPicker block placeholder="Delete Asset/Trait" onChange={(event) => this.setState({ selected: event })} data={this.state.assets} valueKey='_id' labelKey='name'></SelectPicker>
+						{this.renderAss()}
+						<Modal.Footer>
+							{this.state.selected &&  <Button onClick={() => this.handleDelete()} color="red">Delete</Button>	}
+						</Modal.Footer>
+				</Modal>
 			</Content>
 		 );
+	}
+
+	renderAss = () => {
+		if (this.state.selected) {
+			const selected = this.state.assets.find(el => el._id === this.state.selected)
+			return (
+				<Panel>
+					Name: {selected.name}
+				<p>
+					Descirption: {selected.description}
+				</p>
+				</Panel>			
+			)			
+		}
+		else {
+			return (
+				<Placeholder.Paragraph rows={5} >Awaiting Selection</Placeholder.Paragraph>
+			)
+		}
+	}
+
+	handleDelete = async () => {
+		try{
+			await axios.delete(`${gameServer}api/assets/${this.state.selected}`);
+			Alert.success('Asset Successfully Deleted');
+			this.setState({ assModal: false, selected: null });
+		}
+		catch (err) {
+      Alert.error(`Error: ${err.response.data}`, 5000);
+		}	
 	}
 
 	handleSubmit = async () => {

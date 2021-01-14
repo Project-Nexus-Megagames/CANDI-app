@@ -87,10 +87,9 @@ class Actions extends Component {
 
 	filteredAssets = () => {
 		let assets = [...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets];
-		console.log('before', assets)
 		assets = assets.filter(el => el.status.used === false);
 		assets.push(this.props.playerCharacter.wealth)
-		console.log('after', assets)
+
 		return assets;
 	}
 
