@@ -54,13 +54,14 @@ class SelectedAction extends Component {
 			intent: this.state.intent,
 			id: this.state.id, 	
 		}
-		console.log(action)
+		// console.log(action)
 		// 1) make a new action
 		try{
 			if (this.state.edit) {
 				let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
-				Alert.success(data);	
+				Alert.success('Action Succsessfully Edited');	
 				this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: ''});	
+				this.props.handleSelect(data)
 			}
 			else {
 				const edit = {
@@ -238,7 +239,7 @@ class SelectedAction extends Component {
 					<FlexboxGrid>
 						<FlexboxGrid.Item colspan={6}>
 							<b>Die Result</b>
-							<InputNumber value={this.state.dieResult} max={12} min={2} onChange={(event)=> this.setState({dieResult: event})}></InputNumber>				
+							<InputNumber value={this.state.dieResult} max={12} min={1} onChange={(event)=> this.setState({dieResult: event})}></InputNumber>				
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={2}/>
 					<FlexboxGrid.Item colspan={6}>
@@ -274,7 +275,7 @@ class SelectedAction extends Component {
 	deleteAction = async () => {
 		let {data} = await axios.delete(`${gameServer}api/actions/${this.props.action._id}`);
 		Alert.success(data);		
-		this.props.handleSelect(null)
+		this.props.handleSelect(null);
 	}
 }
 
