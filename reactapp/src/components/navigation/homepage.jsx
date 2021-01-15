@@ -31,7 +31,7 @@ class HomePage extends Component {
 				</Content>
 			<Footer>
 				<div style={{ display: 'flex',  justifyContent: 'center',  alignItems: 'center', cursor: 'pointer',  }}>
-				<img width='60%' onClick={()=> this.openNexus()} src={"https://lh6.googleusercontent.com/jw6yV54kBTA52cEaz_wO5ddXUVV7JSEvi9iazmsSK01uo-h6D76ca84WjsTWb7dbSw3iuZzdYlqx2qCABGl_v-nXRV2qI0scFcGV7PTxhfAaYPRGFsg=w1280"} alt='Powered by Project Nexus' />
+				<img width='60%' onClick={()=> this.openNexus()} src={"https://cdn.discordapp.com/attachments/582049508825890856/799759707820261496/unnamed.png"} alt='Powered by Project Nexus' />
 				</div>
 			</Footer>
 			</Container>
