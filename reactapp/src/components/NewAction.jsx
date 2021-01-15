@@ -71,6 +71,10 @@ class NewAction extends Component {
 								value={this.state.effort}
 								onChange={(event)=> this.setState({effort: event})}>
 								</Slider>
+								<div style={{ paddingTop: '20px', fontSize: '2em', }} >
+									Current Effort Left: {this.props.playerCharacter.effort}		
+								</div>
+
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
 								<InputNumber value={this.state.effort} max={this.props.playerCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
@@ -86,7 +90,7 @@ class NewAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} loading={this.state.loading} disabled={this.isDisabled()} appearance="primary">
+          <Button onHover={() => console.log('hi')} onClick={() => this.handleSubmit()} loading={this.state.loading} disabled={this.isDisabled()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.props.closeNew()} appearance="subtle">

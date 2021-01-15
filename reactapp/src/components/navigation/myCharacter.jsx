@@ -5,6 +5,9 @@ import { gameServer } from '../../config';
 
 class MyCharacter extends Component {
 	state = { 
+		formValue: {
+      textarea: ''
+    },
 		memory: '',
 		show: false,
 		lending: null,
@@ -13,6 +16,27 @@ class MyCharacter extends Component {
 		unlend: false, // boolean for displaying the "unlend" modal
 		unleanding: null // what is being "Unlent"
 	 }
+
+	 componentDidMount = () => {
+		const char = this.props.playerCharacter;
+		// console.log(this.props.character)
+		if (char !== undefined) {
+		 const formValue = {
+				 textarea: char.standingOrders,
+		 }
+		 this.setState({ formValue });			 
+		}
+	}
+
+	componentDidUpdate = (prevProps) => {
+	 if (this.props.playerCharacter !== prevProps.playerCharacter) {
+		 const char = this.props.playerCharacter;
+		 const formValue = {
+			textarea: char.standingOrders,
+		}
+	 this.setState({ formValue });		
+	 }
+	}
 
 	openAnvil (url) {
 		const win = window.open(url, '_blank');
@@ -92,14 +116,14 @@ class MyCharacter extends Component {
 							<Divider style={{marginTop: '10px', marginBottom: '10px'}}></Divider>						
 						</Panel>
 						<Panel header="Standing Orders" bordered style={{width: '95%'}}>
-							<Form fluid>
+							<Form fluid formValue={this.state.formValue} onChange={(value) => this.setState({ formValue: value })}>
 							<FormGroup>
 								<ControlLabel></ControlLabel>
 								<FormControl name="textarea" componentClass="textarea" placeholder="Orders for if you miss a turn..."/>
 							</FormGroup>
 							<FormGroup>
 								<ButtonToolbar>
-									<Button appearance="primary">Submit</Button>
+									<Button appearance="primary" onClick={() => this.handleStanding()} >Submit</Button>
 								</ButtonToolbar>
 							</FormGroup>
 							</Form>
@@ -110,7 +134,7 @@ class MyCharacter extends Component {
 							{playerCharacter.traits.map((trait, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
 									<Affix>
-										{trait.status.lent && <Tag color='violet' >Lent</Tag>}
+										{trait.status.lent && <Tag color='violet' >Lent to: {trait.currentHolder}</Tag>}
 										{!trait.status.lent && <Tag color='green' >Ready</Tag>}
 									</Affix>
 									<Panel style={{backgroundColor: "#1a1d24"}} shaded header={trait.name} bordered collapsible>
@@ -130,7 +154,7 @@ class MyCharacter extends Component {
 							{playerCharacter.assets.map((asset, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
 								<Affix>
-									{asset.status.lent && <Tag color='violet' >Lent</Tag>}
+									{asset.status.lent && <Tag color='violet' >Lent to : {asset.currentHolder}</Tag>}
 									{!asset.status.lent && <Tag color='green' >Ready</Tag>}
 								</Affix>
 								<Panel style={{backgroundColor: "#1a1d24"}} shaded header={asset.name} bordered collapsible>
@@ -146,7 +170,7 @@ class MyCharacter extends Component {
 								</Panel>									
 								</div>
 							))}
-						<Divider style={{marginTop: '15px', marginBottom: '0px'}}>Lent Assets</Divider>
+						<Divider style={{marginTop: '15px', marginBottom: '0px'}}>Borrowed Assets</Divider>
 							{playerCharacter.lentAssets.map((borrowed, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
 								<Affix>
@@ -281,6 +305,21 @@ class MyCharacter extends Component {
       Alert.error(`Error: ${err.response.data}`, 5000);
 		}
 	}
+
+	handleStanding = async () => {
+		const data = {
+			id: this.props.playerCharacter._id, 
+			standing: this.state.formValue.textarea
+		}
+		try{
+			await axios.patch(`${gameServer}api/characters/standing`, { data });
+			Alert.success('Standing Orders Set!');
+		}
+		catch (err) {
+			console.log(err)
+      Alert.error(`Error: ${err}`, 5000);
+		}
+	} 
 
 }
  
