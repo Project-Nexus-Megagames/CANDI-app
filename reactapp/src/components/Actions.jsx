@@ -49,7 +49,9 @@ class Actions extends Component {
 
 	filter = (fil) => {
 		const filtered = this.props.actions.filter(action => action.description.toLowerCase().includes(fil.toLowerCase()) || 
-		action.intent.toLowerCase().includes(fil.toLowerCase()));
+		action.intent.toLowerCase().includes(fil.toLowerCase()) || 
+		action.creator.characterName.toLowerCase().includes(fil.toLowerCase())
+		);
 		this.setState({ filtered });
 	}
 
