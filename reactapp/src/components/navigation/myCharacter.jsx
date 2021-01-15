@@ -77,6 +77,7 @@ class MyCharacter extends Component {
 						<Divider style={{ width: "95%" }} >Wealth</Divider>
 						<Panel style={{backgroundColor: "#bfb606", textAlign: 'center', width: '95%', }} shaded bordered >
 							<h4 style={{color: 'black'}} >{playerCharacter.wealth.description}</h4>
+							<b style={{color: 'black'}} >Uses: {playerCharacter.wealth.uses}</b>
 							<FlexboxGrid>
 								<FlexboxGrid.Item style={{textAlign: 'left'}} colspan={20}>{playerCharacter.wealth.status.lent && <b style={{color: 'black', fontSize: '1.35em',}}>Wealth lent to: '{playerCharacter.wealth.currentHolder}'</b>}</FlexboxGrid.Item>
 								<FlexboxGrid.Item colspan={4}> 

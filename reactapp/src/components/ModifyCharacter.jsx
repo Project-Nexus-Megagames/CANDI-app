@@ -17,6 +17,7 @@ class ModifyCharacter extends Component {
 			icon: '',
 			popSupport: 0,
 			effort: 0,
+			uses: 0,
 			_id: ''		
 		}
 
@@ -55,6 +56,7 @@ class ModifyCharacter extends Component {
 				timeZone: char.timeZone,
 				playerName: char.playerName,
 				bio: char.bio,
+				uses: this.props.character.wealth.uses,
 				wealth: this.props.character.wealth.description,
 				icon: char.icon,
 				popSupport: char.popSupport,
@@ -118,6 +120,10 @@ class ModifyCharacter extends Component {
 							<FormGroup>
 								<ControlLabel>wealth</ControlLabel>
 								<FormControl name="wealth" accepter={InputPicker} data={pickerData} />
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel>wealth uses</ControlLabel>
+								<FormControl name="uses" accepter={InputNumber} />
 							</FormGroup>
 							</FlexboxGrid.Item>
 
