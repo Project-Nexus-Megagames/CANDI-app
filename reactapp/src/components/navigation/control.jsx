@@ -139,7 +139,7 @@ const controllers = [
 		role: "Epsilon Control",
 		email: "afterlifeepsilon@gmail.com",
 		timezone: "CST",
-		responsible: "The Scholar, The Avenging Fury, The Implacable Fury, The Forman, The Sculptor, The Overseer, The Rampant Fury, The Bailiff, The Smith, The Sommelier, The Songbird, The Executioner"
+		responsibilities: "The Scholar, The Avenging Fury, The Implacable Fury, The Forman, The Sculptor, The Overseer, The Rampant Fury, The Bailiff, The Smith, The Sommelier, The Songbird, The Executioner"
 		},
 	{
     name: "Scott",
