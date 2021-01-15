@@ -156,7 +156,7 @@ class App extends Component {
   handleLogin = async () => {
     this.setState({ loading: true });
     try {
-      const { data } = await axios.post(`${gameServer}auth`, { user: this.state.formValue.email, password: this.state.formValue.password });      
+      const { data } = await axios.post(`https://nexus-central-server.herokuapp.com/auth`, { user: this.state.formValue.email, password: this.state.formValue.password });      
       // console.log(data);
       if (!data || data.length < 1) {
         this.setState({  });
