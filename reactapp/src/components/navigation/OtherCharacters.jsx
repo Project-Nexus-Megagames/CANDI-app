@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Alert} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Alert, Divider} from 'rsuite';
 import AddAsset from '../AddAsset';
 import ModifyCharacter from '../ModifyCharacter';
 import ModifyMemory from '../ModifyMemory';
@@ -114,16 +114,23 @@ class OtherCharacters extends Component {
 										<p>
 											Faction: <b>{this.state.selected.tag}</b>			
 										</p>
+										<p>
+											Pronouns: <b>{this.state.selected.pronouns}</b>			
+										</p>
 									</FlexboxGrid.Item>
 									<FlexboxGrid.Item colspan={12}>
 										<p>
 											Time Zone: <b>{this.state.selected.timeZone}</b>
+										</p>		
+										<p>
+											Contoller: <b>{this.state.selected.control}</b>
 										</p>									
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 								<br></br>
 								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:</p>
 								<p>{this.state.selected.bio}</p>
+								<Divider></Divider>
 								<FlexboxGrid>
 									<FlexboxGrid.Item style={{ alignItems: 'center', justifyContent: 'center', }} colspan={12}>
 										<img src={this.state.selected.icon ? this.state.selected.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt="Img could not be displayed" width="320" height="320" />

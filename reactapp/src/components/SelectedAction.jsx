@@ -104,7 +104,7 @@ class SelectedAction extends Component {
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={16} >
 					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
-						<p style={{ fontSize: '0.866em', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
+						<p style={{ fontSize: '300', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
 							Created by: {action.creator.characterName}
 						</p>
 						<p style={slimText}>
@@ -163,11 +163,12 @@ class SelectedAction extends Component {
 								<Button appearance={"ghost"} disabled={!action.status.draft} onClick={() => this.deleteAction()}>Delete</Button>
 							</ButtonGroup>
 					</Panel>
-					<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-						<ButtonGroup style={{marginTop: '5px', }} >
-							<Button appearance={"ghost"} onClick={() => this.openRes()}>Edit Result</Button>
-						</ButtonGroup>
-					</Panel>
+					{this.props.user.roles.some(el=> el === 'Control') && 
+						<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+							<ButtonGroup style={{marginTop: '5px', }} >
+								<Button appearance={"ghost"} onClick={() => this.openRes()}>Edit Result</Button>
+							</ButtonGroup>
+						</Panel>}
 				</FlexboxGrid.Item>
 			</FlexboxGrid>	
 
@@ -280,9 +281,9 @@ class SelectedAction extends Component {
 }
 
 const slimText = {
-  fontSize: '0.866em',
+  fontSize: '0.966em',
   color: '#97969B',
-	fontWeight: 'lighter',
+	fontWeight: '300',
 	whiteSpace: 'nowrap',
 	textAlign: "center"
 };
