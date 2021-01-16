@@ -55,7 +55,6 @@ class ControlTerminal extends Component {
 			}
 			this.setState({ formValue, drafts, awaiting, ready })			
 		}
-
 	}
 
 	

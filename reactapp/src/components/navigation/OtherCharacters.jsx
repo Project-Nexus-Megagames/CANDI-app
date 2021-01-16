@@ -52,7 +52,7 @@ class OtherCharacters extends Component {
 
 	render() { 
 		return ( 
-			<Container>
+			<Container style={{overflow: 'auto', height: 'calc(100vh)'}}>
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
 					<Panel style={{ backgroundColor: "#000101"}}>
@@ -92,7 +92,7 @@ class OtherCharacters extends Component {
 						<FlexboxGrid.Item colspan={3} >
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={14} >
-							<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
+							<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 								<h3 style={{textAlign: "center"}}> {this.state.selected.characterName}</h3>		
 								<div>
 									<h6><IconButton placement="right" onClick={()=> this.openAnvil(this.state.selected.worldAnvil)} icon={<Icon icon="link"/>} appearance="primary">World Anvil Link</IconButton></h6>

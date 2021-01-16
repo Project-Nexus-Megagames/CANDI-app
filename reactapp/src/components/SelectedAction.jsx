@@ -16,10 +16,18 @@ class SelectedAction extends Component {
 		id: '',
 		description: '',
 		intent: '',	
-		result: '',
-		dieResult: 0,
+		result: this.props.action.result,
+		dieResult: this.props.action.dieResult,
 		status: ''			
 	 }
+
+	 componentDidUpdate = (prevProps) => {
+		if (this.props.action !== prevProps.action) {
+			this.setState({ 	
+				result: this.props.action.result,
+				dieResult: this.props.action.dieResult, })			
+		}
+	}
 
 	openEdit = () => {
 		const action = this.props.action;
@@ -36,11 +44,7 @@ class SelectedAction extends Component {
 	}
 
 	openRes = () => {
-		const action = this.props.action;
-		this.setState({ 
-			result: action.result,
-			dieResult: action.dieResult,
-			resEdit: true })
+		this.setState({ resEdit: true })
 	}
 
 	handleSubmit = async () => {
@@ -98,12 +102,12 @@ class SelectedAction extends Component {
 	render() { 
 		const action = this.props.action;
 		return ( 
-			<Content>
+			<Content style={{overflow: 'auto', height: 'calc(100vh - 100px)'}} >
 			<FlexboxGrid >
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={16} >
-					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
+					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 						<p style={{ fontSize: '300', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
 							Created by: {action.creator.characterName}
 						</p>
@@ -140,7 +144,7 @@ class SelectedAction extends Component {
 					{(action.status.published || this.props.user.roles.some(el=> el === 'Control')) && 
 					<React.Fragment>
 						<Divider>Action Result</Divider>
-						<Panel style={{textAlign: "left", backgroundColor: "#61342e"}}>
+						<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
 							<p style={slimText}>Result</p>
 							<p>
 							{action.result}	
@@ -232,6 +236,27 @@ class SelectedAction extends Component {
 					<Modal.Title>Edit Action Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+
+				<p style={{ fontSize: '300', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
+						Created by: {action.creator.characterName}
+					</p>
+					<p style={{  fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
+						Description
+					</p>
+					<p>
+						{action.description}	
+					</p>
+					<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300', }}>
+						Intent
+					</p>
+					<p>
+						{action.intent}	
+					</p>
+					<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
+						Effort
+				</p>
+				<p style={{ fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
+				<Divider></Divider>
 				<form>
 					<FlexboxGrid> Result:
 						<textarea rows='6' value={this.state.result} style={textStyle} onChange={(event)=> this.setState({result: event.target.value})}></textarea>							
@@ -240,7 +265,7 @@ class SelectedAction extends Component {
 					<FlexboxGrid>
 						<FlexboxGrid.Item colspan={6}>
 							<b>Die Result</b>
-							<InputNumber value={this.state.dieResult} max={12} min={1} onChange={(event)=> this.setState({dieResult: event})}></InputNumber>				
+							<textarea value={this.state.dieResult} style={textStyle} onChange={(event)=> this.setState({dieResult: event.target.value})}></textarea>				
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={2}/>
 					<FlexboxGrid.Item colspan={6}>

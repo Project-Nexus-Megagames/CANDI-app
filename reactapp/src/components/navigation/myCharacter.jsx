@@ -67,7 +67,7 @@ class MyCharacter extends Component {
 	render(){ 
 		const {playerCharacter} = this.props;
 		return ( 
-			<Content>
+			<Content style={{overflow: 'auto', height: 'calc(100vh - 100px)'}}>
 			<Panel>
 				<FlexboxGrid justify="start" style={{textAlign: 'left'}}>
 					<FlexboxGrid.Item key={1} colspan={6}>
