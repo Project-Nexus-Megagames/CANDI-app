@@ -98,12 +98,12 @@ class SelectedAction extends Component {
 	render() { 
 		const action = this.props.action;
 		return ( 
-			<Content>
+			<Content style={{overflow: 'auto', height: 'calc(100vh - 100px)'}} >
 			<FlexboxGrid >
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={16} >
-					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
+					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 						<p style={{ fontSize: '300', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
 							Created by: {action.creator.characterName}
 						</p>
@@ -140,7 +140,7 @@ class SelectedAction extends Component {
 					{(action.status.published || this.props.user.roles.some(el=> el === 'Control')) && 
 					<React.Fragment>
 						<Divider>Action Result</Divider>
-						<Panel style={{textAlign: "left", backgroundColor: "#61342e"}}>
+						<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
 							<p style={slimText}>Result</p>
 							<p>
 							{action.result}	
