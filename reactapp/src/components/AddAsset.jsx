@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Alert, Toggle } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Alert, Toggle, InputNumber } from 'rsuite';
 import axios from 'axios';
 import { gameServer } from '../config';
 
@@ -8,6 +8,7 @@ class AddAsset extends Component {
 		formValue: {
 			name: '',
 			description: '',
+			uses: 0,
 		},
 		assetBoolean: null,
 		id: '',
@@ -33,7 +34,8 @@ class AddAsset extends Component {
 			asset: {
 				name: this.state.formValue.name,
 				description: this.state.formValue.description,	
-				model: this.state.assetBoolean ? 'Asset' : 'Trait'							
+				model: this.state.assetBoolean ? 'Asset' : 'Trait',
+				uses: this.state.formValue.uses						
 			},
 			id: this.props.character._id, 
 	 }
@@ -68,7 +70,7 @@ class AddAsset extends Component {
 									<FormControl name="name" />
 							</FormGroup>
 							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={12}>
+							<FlexboxGrid.Item colspan={6}>
 								<FormGroup>
 									<ControlLabel>Trait/Asset </ControlLabel>
 									<FormControl accepter={this.myToggle} name='asset' />
@@ -78,7 +80,11 @@ class AddAsset extends Component {
 						<FormGroup>
 								<ControlLabel>Asset Description</ControlLabel>
 								<FormControl style={{width: '100%'}} name="description" rows={5} componentClass="textarea" />
-							</FormGroup>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Uses </ControlLabel>
+							<FormControl name="uses" accepter={InputNumber} />
+						</FormGroup>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
