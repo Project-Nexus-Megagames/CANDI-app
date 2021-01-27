@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker } from 'rsuite';
+import { Alert, ButtonGroup, Content, InputNumber, Input, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker } from 'rsuite';
 import { gameServer } from '../../config';
 import openSocket from 'socket.io-client';
 
@@ -12,11 +12,19 @@ class ControlTerminal extends Component {
 		warningModal: false,
 		warning2Modal: false,
 		assModal: false,
+		projectModal: false,
 		formValue: {
 			round: null,
 			status: '',
 			endTime: null
 		},
+		
+		projName: '',
+		projDescription: '',
+		progress: 0,
+		players: [],
+		image: '',
+	
 		drafts: 0,
 		awaiting: 0,
 		ready: 0,
@@ -100,11 +108,12 @@ class ControlTerminal extends Component {
 				<Panel>
 					<ButtonGroup >
 						<Button color='red' appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Asset/Trait</Button>
+						<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
 					</ButtonGroup>
 				</Panel>
 				<Divider>Scott's Message of the Day:</Divider>
 				<div>
-					<h5>Do not touch these buttons unless you are certain of what you are doing.</h5>
+					<h5>Code Monkey get up, get coffee. Code Monkey go to job. Code Monkey have boring meeting, with boring manager Rob.</h5>
 				</div>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
@@ -123,6 +132,37 @@ class ControlTerminal extends Component {
         	    Submit
         	  </Button>
         	  <Button onClick={() => this.setState({ gsModal: false })} appearance="subtle">
+        	    Cancel
+         	 </Button>
+        </Modal.Footer>
+				</Modal>
+
+				<Modal backdrop='static' size='md' show={this.state.projectModal} onHide={() => this.setState({ projectModal: false })}>
+				<p>
+					Name		
+				</p> 
+					<textarea value={this.state.projName} style={textStyle} onChange={(event)=> this.setState({ projName: event.target.value })}></textarea>	
+				<p>
+					Description		
+				</p> 
+				<textarea rows='4' value={this.state.projDescription} style={textStyle} onChange={(event)=> this.setState({projDescription: event.target.value})}></textarea>	
+				<p>
+					Image
+				</p>
+				<textarea value={this.state.image} style={textStyle} onChange={(event)=> this.setState({ image: event.target.value })}></textarea>	
+				<p>
+					Progress
+				</p>
+				<InputNumber value={this.state.progress} onChange={(event)=> this.setState({progress: event})}></InputNumber>
+				<p>
+					Players
+				</p>
+					<TagPicker groupBy="tag" data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
+					<Modal.Footer>
+        	  <Button onClick={() => this.newProject()} appearance="primary">
+        	    Submit
+        	  </Button>
+        	  <Button onClick={() => this.setState({ projectModal: false })} appearance="subtle">
         	    Cancel
          	 </Button>
         </Modal.Footer>
@@ -267,6 +307,28 @@ class ControlTerminal extends Component {
 			await axios.patch(`${gameServer}api/gamestate/nextRound`);
 			Alert.success('Actions Have been Published!');
 			this.setState({ warning2Modal: false });
+		}
+		catch (err) {
+      Alert.error(`Error: ${err.response.data}`, 5000);
+		}		
+	}
+
+	newProject = async () => {
+		const data = {
+			description: this.state.projName,
+			intent: this.state.projDescription,
+			effort: 0,
+			progress: this.state.progress,
+			model: "Project",
+			players: this.state.players,
+			creator: this.props.playerCharacter,
+			round: this.props.gamestate.round, 
+			image: this.state.image
+		}
+		try{
+			await axios.post(`${gameServer}api/actions/project`, { data: data });
+			Alert.success('Project Created');
+			this.setState({ projectModal: false });
 		}
 		catch (err) {
       Alert.error(`Error: ${err.response.data}`, 5000);

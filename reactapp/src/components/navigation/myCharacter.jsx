@@ -148,7 +148,10 @@ class MyCharacter extends Component {
 												{trait.status.lent && <Button onClick={() => this.openUnlend(trait)} appearance="ghost" size='sm' >Un-Lend</Button>}								
 											</FlexboxGrid.Item>
 										</FlexboxGrid>
+									{trait.uses !== 999 &&	
+									<p>
 										Uses: {trait.uses}
+									</p>}
 									</Panel>									
 								</div>							
 							))}
@@ -169,7 +172,10 @@ class MyCharacter extends Component {
 											{asset.status.lent && <Button onClick={() => this.openUnlend(asset)} appearance="ghost" size='sm' >Un-Lend</Button>}													
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
-									Uses: {asset.uses}
+									{asset.uses !== 999 &&	
+									<p>
+										Uses: {asset.uses}
+									</p>}
 								</Panel>									
 								</div>
 							))}

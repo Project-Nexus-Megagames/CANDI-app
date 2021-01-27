@@ -90,7 +90,7 @@ class NewAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onHover={() => console.log('hi')} onClick={() => this.handleSubmit()} loading={this.state.loading} disabled={this.isDisabled()} appearance="primary">
+          <Button onClick={() => this.handleSubmit()} loading={this.state.loading} disabled={this.isDisabled()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.props.closeNew()} appearance="subtle">

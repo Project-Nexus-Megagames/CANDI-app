@@ -115,8 +115,8 @@ class App extends Component {
             {this.state.active === "character" && <MyCharacter characters={this.state.players} playerCharacter={this.state.playerCharacter}/>}
             {this.state.active === "controllers" && <Control/>}
             {this.state.active === "others" && <OtherCharacters user={this.state.user} playerCharacter={this.state.playerCharacter} characters={this.state.players}/>}
-            {this.state.active === "actions" && <Actions user={this.state.user} gamestate={this.state.gamestate} playerCharacter={this.state.playerCharacter} actions={this.state.actions}/>}
-            {this.state.active === "control" && <ControlTerminal user={this.state.user} gamestate={this.state.gamestate} actions={this.state.actions}/>} 
+            {this.state.active === "actions" && <Actions user={this.state.user} characters={this.state.players} gamestate={this.state.gamestate} playerCharacter={this.state.playerCharacter} actions={this.state.actions}/>}
+            {this.state.active === "control" && <ControlTerminal playerCharacter={this.state.playerCharacter} characters={this.state.players} user={this.state.user} gamestate={this.state.gamestate} actions={this.state.actions}/>} 
             {this.state.active === "reg" && <Registration characters={this.state.players}/>} 
           </React.Fragment>
         }   
