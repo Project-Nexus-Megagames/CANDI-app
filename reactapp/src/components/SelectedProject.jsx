@@ -72,6 +72,7 @@ class SelectedProject extends Component {
 						<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 							<ButtonGroup style={{marginTop: '5px', }} >
 								<Button appearance={"ghost"} onClick={() => this.setState({ projectModal: true})}>Edit Project</Button>
+								<Button color='red' appearance={"ghost"} onClick={() => this.deleteAction()}>Delete</Button>
 							</ButtonGroup>
 						</Panel>}
 				</FlexboxGrid.Item>
@@ -130,6 +131,12 @@ class SelectedProject extends Component {
 		catch (err) {
       Alert.error(`Error: ${err.response.data}`, 5000);
 		}		
+	}
+
+	deleteAction = async () => {
+		let {data} = await axios.delete(`${gameServer}api/actions/${this.props.project._id}`);
+		Alert.success(data);		
+		this.props.handleSelect(null);
 	}
 
 }
