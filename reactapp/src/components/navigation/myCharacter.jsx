@@ -183,7 +183,7 @@ class MyCharacter extends Component {
 							{playerCharacter.lentAssets.map((borrowed, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
 								<Affix>
-									{borrowed.status.lent && <Tag color='blue' >Borrowed from: {borrowed.currentHolder}</Tag>}
+									{borrowed.status.lent && this.findOwner(borrowed._id)}
 								</Affix>
 								<Panel style={{backgroundColor: "#1a1d24"}} shaded header={borrowed.name} bordered collapsible>
 									<FlexboxGrid>
@@ -242,6 +242,15 @@ class MyCharacter extends Component {
 			</Drawer>
 		</Content>
 		 );
+	}
+
+	findOwner = (id) => {
+		for (const character of this.props.characters) {
+			if (character.assets.some(el => el._id === id) || character.traits.some(el => el._id === id)) {
+				return (<Tag color='blue' >Borrowed from: {character.characterName}</Tag>)
+			}
+		}
+		return <Tag color='blue' >Borrowed from: ???</Tag>
 	}
 
 	renderLendation = () => {

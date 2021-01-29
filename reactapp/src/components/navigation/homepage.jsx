@@ -26,7 +26,7 @@ class HomePage extends Component {
 						<span> {this.props.gamestate.round} </span>
 					</div>
 					<div > <b>Game Version:</b>
-						<span> 1.04</span>
+						<span> 1.05</span>
 					</div>
 				</Content>
 			<Footer>
