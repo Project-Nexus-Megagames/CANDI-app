@@ -25,7 +25,7 @@ class OtherCharacters extends Component {
 	}
 
 	copyToClipboard (email, controlEmail) {
-		navigator.clipboard.writeText(`${email} ${controlEmail}`);
+		navigator.clipboard.writeText(`${email} ${controlEmail} ${this.props.playerCharacter.controlEmail}`);
 	}
 
 	openAnvil (url) {

@@ -18,7 +18,7 @@ class Registration extends Component {
 			for (const character of this.props.characters) {
 				if (!existingUsernames.some(el => el === character.username )) existingUsernames.push(character.username);
 			}
-			const {data} = await axios.get(`https://nexus-central-server.herokuapp.com/users/`);
+			const {data} = await axios.get(`https://nexus-central-server.herokuapp.com/api/users/`);
 
 			const filteredUsers = [];
 			for (const user of data) {

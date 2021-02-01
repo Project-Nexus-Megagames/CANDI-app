@@ -39,12 +39,12 @@ class App extends Component {
     },
     show: true,
     loading: false,
-    playerCharacter: null
+    playerCharacter: null,
   }
 
   componentDidMount = async () => {
     console.log('Mounting App...')
-    this.setState({ show: true, active: 'login' });
+    this.setState({ show: true, active: 'maintenence' }); //active: 'login' 
     socket.on('connect', ()=> { console.log('UwU I made it') });
     socket.on('updateCharacters', (data)=> { console.log("Characters:", data); this.setState({ players: data }) });
     socket.on('updateActions', (data)=> { console.log("Actions:", data); this.setState({ actions: data }); });
@@ -56,7 +56,21 @@ class App extends Component {
 
   render() {
     return(
+      
       <div className="App" style={this.state.active === "loading" ? loading : done}>
+        {this.state.active === "maintenence" && 
+        <React.Fragment>
+          <Header>
+          </Header>
+          <Content>
+            <FlexboxGrid justify="center">
+              <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '80px'}}>
+                <img src={'https://media4.giphy.com/media/tJMVqwkdUIuL0Eiam3/source.gif'} alt={'Loading...'} />  
+              </FlexboxGrid.Item>
+            </FlexboxGrid>
+          </Content> <b>App Down for Server Maintenance</b>
+        </React.Fragment>
+        }
         {this.state.active === "loading" && 
         <React.Fragment>
           <Header>
@@ -83,28 +97,31 @@ class App extends Component {
           </Content> <b>Could not find a character with your username. Please contact Tech Support if you think this was in error</b>
         </React.Fragment>
         }
-        <Modal backdrop="static" show={this.state.show}>
-          <Modal.Header>
-            <Modal.Title>Login</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form model={model} fluid formValue={this.state.formValue} onChange={this.handleChange.bind(this)}>
-            <FormGroup>
-                <ControlLabel>Email / Username</ControlLabel>
-                <FormControl name="email" accepter={model.accepter}/>
-              </FormGroup>
+        {this.state.active !== "maintenence" && 
+          <Modal backdrop="static" show={this.state.show}>
+            <Modal.Header>
+              <Modal.Title>Login</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form model={model} fluid formValue={this.state.formValue} onChange={this.handleChange.bind(this)}>
               <FormGroup>
-                <ControlLabel>Password</ControlLabel>
-                <FormControl name="password" type="password" />
-              </FormGroup>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button loading={this.state.loading} onClick={this.handleLogin.bind(this)} appearance="primary">
-              Submit
-            </Button>
-          </Modal.Footer>
-        </Modal>
+                  <ControlLabel>Email / Username</ControlLabel>
+                  <FormControl name="email" accepter={model.accepter}/>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Password</ControlLabel>
+                  <FormControl name="password" type="password" />
+                </FormGroup>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button loading={this.state.loading} onClick={this.handleLogin.bind(this)} appearance="primary">
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>        
+        }
+
         {this.state.show === false && this.state.active !== "unfound" && this.state.active !== "loading" && 
           <React.Fragment>
             <Header>
