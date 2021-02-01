@@ -45,16 +45,17 @@ class App extends Component {
     console.log('Mounting App...')
     let token = localStorage.getItem('token');
     console.log(token);
+    // this.setState({ active: 'maintenence' }); //active: 'login' 
     if (token) {
       const user = jwtDecode(token);
-        this.setState({ user, login: true, show: false });
+        this.setState({ user, show: false, active: 'loading' });
 
         this.initData(user);
     }
     else {
       this.setState({ show: true, active: 'login' });
     }
-    this.setState({ show: true, active: 'maintenence' }); //active: 'login' 
+
     socket.on('connect', ()=> { console.log('UwU I made it') });
     socket.on('updateCharacters', (data) => { console.log("Characters:", data); this.setState({ players: data }) });
     socket.on('updateActions', (data )=> { console.log("Actions:", data); this.setState({ actions: data }); });
@@ -108,7 +109,7 @@ class App extends Component {
         </React.Fragment>
         }
         { this.state.active !== "maintenence" && 
-          <Modal backdrop="static" show={(this.state.show && !this.state.login)}>
+          <Modal backdrop="static" show={this.state.show}>
             <Modal.Header>
               <Modal.Title>Login</Modal.Title>
             </Modal.Header>
@@ -151,25 +152,6 @@ class App extends Component {
     );
   }
 
-  loadActions = async () => {
-    const {data} = await axios.get(`${gameServer}api/actions/`);
-    this.setState({ actions: data });
-  }
-
-  loadCharacters = async () => {
-    const {data} =  await axios.get(`${gameServer}api/characters/`);
-    this.setState({ players: data });
-    if (this.state.playerCharacter) {
-      const playerCharacter = await axios.patch(`${gameServer}api/characters/byUsername`, {username: this.state.playerCharacter.username});
-      this.setState({ playerCharacter: playerCharacter.data.playerCharacter });
-    }
-  }
-
-  loadGamestate = async () => {
-    const {data} = await axios.get(`${gameServer}api/gamestate/`);
-    this.setState({ gamestate: data });
-  }
-
   handleSelect(activeKey) {
     this.setState({ active: activeKey });
   }
@@ -202,6 +184,12 @@ class App extends Component {
       this.setState({ loading: false });
     }
     this.setState({ formValue: { email: '', password: '',}})
+  }
+
+  handleLogOut = async () => {
+    let token = localStorage.removeItem('token');
+    this.setState({ show: true, active: 'login' });
+    console.log(token);
   }
 
   initData = async (user) => {
