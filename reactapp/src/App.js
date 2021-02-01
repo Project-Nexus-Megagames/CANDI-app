@@ -21,8 +21,6 @@ import ControlTerminal from './components/navigation/ControlTerminal';
 import Registration from './components/navigation/Registration';
 const { StringType } = Schema.Types;
 
-
-
 const socket = openSocket(gameServer);
 
 // React App Component
@@ -30,7 +28,7 @@ class App extends Component {
   state = {
     gamestate: null,
     user: null,
-    active: null,
+    active: "loading",
     actions: [],
     players: [],
     formValue: {
@@ -39,38 +37,34 @@ class App extends Component {
     },
     show: true,
     loading: false,
-    playerCharacter: null,
+    login: false,
+    playerCharacter: null
   }
 
   componentDidMount = async () => {
     console.log('Mounting App...')
-    this.setState({ show: true, active: 'maintenence' }); //active: 'login' 
+    let token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      const user = jwtDecode(token);
+        this.setState({ user, login: true, active: 'loading' });
+        this.initData(user);
+    } 
+    else {
+      this.setState({ show: true, active: 'login' }); //active: 'login'     
+    }
+
+  
     socket.on('connect', ()=> { console.log('UwU I made it') });
-    socket.on('updateCharacters', (data)=> { console.log("Characters:", data); this.setState({ players: data }) });
-    socket.on('updateActions', (data)=> { console.log("Actions:", data); this.setState({ actions: data }); });
-    socket.on('updateGamestate', (data)=> { console.log("GameState:", data); this.setState({ gamestate: data }); });
-    // await this.loadCharacters();    
-    // await this.loadActions();
-    // await this.loadGamestate();
+    socket.on('updateCharacters', (data) => { console.log("Characters:", data); this.setState({ players: data }) });
+    socket.on('updateActions', (data )=> { console.log("Actions:", data); this.setState({ actions: data }); });
+    socket.on('updateGamestate', (data) => { console.log("GameState:", data); this.setState({ gamestate: data }); });
+
   }
 
   render() {
-    return(
-      
+    return(  
       <div className="App" style={this.state.active === "loading" ? loading : done}>
-        {this.state.active === "maintenence" && 
-        <React.Fragment>
-          <Header>
-          </Header>
-          <Content>
-            <FlexboxGrid justify="center">
-              <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '80px'}}>
-                <img src={'https://media4.giphy.com/media/tJMVqwkdUIuL0Eiam3/source.gif'} alt={'Loading...'} />  
-              </FlexboxGrid.Item>
-            </FlexboxGrid>
-          </Content> <b>App Down for Server Maintenance</b>
-        </React.Fragment>
-        }
         {this.state.active === "loading" && 
         <React.Fragment>
           <Header>
@@ -97,8 +91,8 @@ class App extends Component {
           </Content> <b>Could not find a character with your username. Please contact Tech Support if you think this was in error</b>
         </React.Fragment>
         }
-        {this.state.active !== "maintenence" && 
-          <Modal backdrop="static" show={this.state.show}>
+        {this.state.active === "login" &&
+          <Modal backdrop="static" show={(this.state.active === "login")}>
             <Modal.Header>
               <Modal.Title>Login</Modal.Title>
             </Modal.Header>
@@ -121,11 +115,10 @@ class App extends Component {
             </Modal.Footer>
           </Modal>        
         }
-
-        {this.state.show === false && this.state.active !== "unfound" && this.state.active !== "loading" && 
+        {this.state.active !== "unfound" && this.state.active !== "loading" && this.state.active !== "login" && 
           <React.Fragment>
             <Header>
-              <NavigationBar user={this.state.user} gamestate={this.state.gamestate} onSelect={this.handleSelect.bind(this)}>
+              <NavigationBar user={this.state.user} gamestate={this.state.gamestate} handleLogOut={this.handleLogOut.bind(this)} onSelect={this.handleSelect.bind(this)}>
               </NavigationBar>
             </Header>
             {this.state.active === "home" && <HomePage gamestate={this.state.gamestate}/>}
@@ -179,9 +172,11 @@ class App extends Component {
         this.setState({  });
       }
       else {
+        localStorage.setItem('token', data);
         const user = jwtDecode(data);
-        this.setState({ user });
-        socket.emit('login', user);            
+        this.setState({ user, login: true });
+        socket.emit('login', user);
+        this.initData(user);          
       }    
     } 
     catch (err) {
@@ -189,9 +184,17 @@ class App extends Component {
       Alert.error(`Error: ${err.body} ${err.response.data}`, 5000);
       this.setState({ loading: false });
     }
+    this.setState({ active: "loading", formValue: { email: '', password: '',}})
+  }
 
+  handleLogOut = async () => {
+    let token = localStorage.removeItem('token');
+    this.setState({ active: "login", user: null, playerCharacter: null })
+  }
+
+  initData = async (user) => {
     try {
-      const loadingData = await axios.patch(`${gameServer}api/characters/byUsername`, {username: this.state.user.username});
+      const loadingData = await axios.patch(`${gameServer}api/characters/byUsername`, {username: user.username});
       // console.log(loadingData)
       if (!loadingData.data.playerCharacter) {
         this.setState({ show: false, active: "unfound" })        
@@ -202,11 +205,9 @@ class App extends Component {
     }
     catch (err) {
       console.log(err)
-      Alert.error(`Error: ${err.body} ${err.response.data}`, 5000);
+      Alert.error(`Error: ${err} ${err}`, 5000);
       this.setState({ loading: false });
     }
-    this.setState({ formValue: { email: '', password: '',}})
-
   }
 }
 
