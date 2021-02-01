@@ -14,6 +14,15 @@ class SelectedProject extends Component {
 			image: '',
 	 }
 
+	 componentDidMount = () => {
+			this.setState({ 	
+				projName: this.props.project.description,
+				projDescription: this.props.project.intent,
+				progress: this.props.project.progress,
+				players: this.props.project.players,
+				image: this.props.project.image, })			
+	}
+
 	 componentDidUpdate = (prevProps) => {
 		if (this.props.project !== prevProps.project) {
 			this.setState({ 	
