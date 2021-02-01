@@ -43,15 +43,17 @@ class App extends Component {
 
   componentDidMount = async () => {
     console.log('Mounting App...')
-    this.setState({ show: true, active: 'login' });
     let token = localStorage.getItem('token');
     console.log(token);
     if (token) {
       const user = jwtDecode(token);
-        this.setState({ user, login: true });
+        this.setState({ user, login: true, show: false });
 
         this.initData(user);
-    } 
+    }
+    else {
+      this.setState({ show: true, active: 'login' });
+    }
     this.setState({ show: true, active: 'maintenence' }); //active: 'login' 
     socket.on('connect', ()=> { console.log('UwU I made it') });
     socket.on('updateCharacters', (data) => { console.log("Characters:", data); this.setState({ players: data }) });
@@ -105,8 +107,8 @@ class App extends Component {
           </Content> <b>Could not find a character with your username. Please contact Tech Support if you think this was in error</b>
         </React.Fragment>
         }
-        {this.state.active !== "maintenence" && 
-          <Modal backdrop="static" show={this.state.show}>
+        { this.state.active !== "maintenence" && 
+          <Modal backdrop="static" show={(this.state.show && !this.state.login)}>
             <Modal.Header>
               <Modal.Title>Login</Modal.Title>
             </Modal.Header>
