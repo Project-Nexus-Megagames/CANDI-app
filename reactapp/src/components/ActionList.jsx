@@ -11,7 +11,6 @@ class ActionList extends Component {
 			const rounds = [];
 			for (const action of this.props.actions) {
 				if (!rounds.some(el => el === action.round)) rounds.push(action.round);
-				console.log(`action.round: ${action.round} rounds: ${rounds}`)
 			}
 			rounds.reverse();
 			this.setState({ rounds });
@@ -28,7 +27,10 @@ class ActionList extends Component {
 		}
 
 	listStyle (item) {
-		if (item === this.state.selected) {
+		if (item.model === "Project") {
+			return ({cursor: 'pointer', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+		}
+		else if (item === this.props.selected) {
 			return ({cursor: 'pointer', backgroundColor: "#212429"})
 		}
 		else return({cursor: 'pointer'});

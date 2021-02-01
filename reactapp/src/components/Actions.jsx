@@ -3,6 +3,7 @@ import { Container, Sidebar, Input, Panel, PanelGroup, Button } from 'rsuite';
 import ActionList from './ActionList';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
+import SelectedProject from './SelectedProject';
 class Actions extends Component {
 	state = { 
 		selected: null,
@@ -16,7 +17,7 @@ class Actions extends Component {
 			filtered = this.props.actions;
 		}
 		else {
-			filtered = this.props.actions.filter(el => el.creator._id === this.props.playerCharacter._id);	
+			filtered = this.props.actions.filter(el => el.creator._id === this.props.playerCharacter._id || el.players.some(el2 => el2 === this.props.playerCharacter._id));	
 		}
 		this.setState({ selected: null, filtered });
 	}
@@ -64,7 +65,7 @@ class Actions extends Component {
 						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
 					</Panel>
 					<Panel bodyFill style={{height: 'calc(90vh - 130px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
-						<ActionList user={this.props.user} playerCharacter={this.props.playerCharacter} actions={this.state.filtered} handleSelect={this.handleSelect}/>
+						<ActionList selected={this.state.selected} user={this.props.user} playerCharacter={this.props.playerCharacter} actions={this.state.filtered} handleSelect={this.handleSelect}/>
 					</Panel>
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 						<Button appearance='primary' disabled={this.isDisabled()} block onClick={() => this.showNew()}>New Action</Button>
@@ -74,7 +75,8 @@ class Actions extends Component {
 					</Panel>				
 				</PanelGroup>
 			</Sidebar>
-			{this.state.selected && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets, this.props.playerCharacter.wealth]} action={this.state.selected}/>}	
+			{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets, this.props.playerCharacter.wealth]} action={this.state.selected}/>}	
+			{this.state.selected && this.state.selected.model === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
 			<NewAction
 				show={this.state.showNew}
 				assets={this.filteredAssets()}
