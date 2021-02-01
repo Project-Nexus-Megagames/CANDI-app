@@ -21,8 +21,6 @@ import ControlTerminal from './components/navigation/ControlTerminal';
 import Registration from './components/navigation/Registration';
 const { StringType } = Schema.Types;
 
-
-
 const socket = openSocket(gameServer);
 
 // React App Component
@@ -39,16 +37,25 @@ class App extends Component {
     },
     show: true,
     loading: false,
+    login: false,
     playerCharacter: null
   }
 
   componentDidMount = async () => {
     console.log('Mounting App...')
     this.setState({ show: true, active: 'login' });
+    let token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      const user = jwtDecode(token);
+        this.setState({ user, login: true });
+
+        this.initData(user);
+    } 
     socket.on('connect', ()=> { console.log('UwU I made it') });
-    socket.on('updateCharacters', (data)=> { console.log("Characters:", data); this.setState({ players: data }) });
-    socket.on('updateActions', (data)=> { console.log("Actions:", data); this.setState({ actions: data }); });
-    socket.on('updateGamestate', (data)=> { console.log("GameState:", data); this.setState({ gamestate: data }); });
+    socket.on('updateCharacters', (data) => { console.log("Characters:", data); this.setState({ players: data }) });
+    socket.on('updateActions', (data )=> { console.log("Actions:", data); this.setState({ actions: data }); });
+    socket.on('updateGamestate', (data) => { console.log("GameState:", data); this.setState({ gamestate: data }); });
     // await this.loadCharacters();    
     // await this.loadActions();
     // await this.loadGamestate();
@@ -162,9 +169,11 @@ class App extends Component {
         this.setState({  });
       }
       else {
+        localStorage.setItem('token', data);
         const user = jwtDecode(data);
-        this.setState({ user });
-        socket.emit('login', user);            
+        this.setState({ user, login: true });
+        socket.emit('login', user);
+        this.initData(user);          
       }    
     } 
     catch (err) {
@@ -172,9 +181,12 @@ class App extends Component {
       Alert.error(`Error: ${err.body} ${err.response.data}`, 5000);
       this.setState({ loading: false });
     }
+    this.setState({ formValue: { email: '', password: '',}})
+  }
 
+  initData = async (user) => {
     try {
-      const loadingData = await axios.patch(`${gameServer}api/characters/byUsername`, {username: this.state.user.username});
+      const loadingData = await axios.patch(`${gameServer}api/characters/byUsername`, {username: user.username});
       // console.log(loadingData)
       if (!loadingData.data.playerCharacter) {
         this.setState({ show: false, active: "unfound" })        
@@ -185,11 +197,9 @@ class App extends Component {
     }
     catch (err) {
       console.log(err)
-      Alert.error(`Error: ${err.body} ${err.response.data}`, 5000);
+      Alert.error(`Error: ${err} ${err}`, 5000);
       this.setState({ loading: false });
     }
-    this.setState({ formValue: { email: '', password: '',}})
-
   }
 }
 
