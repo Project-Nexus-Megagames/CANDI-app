@@ -229,7 +229,6 @@ const spook = [
   'https://media2.giphy.com/media/l0HlCkojKEiPhw86Y/giphy.gif',
   'https://media2.giphy.com/media/65Mt9P22p2zMzpDPZ7/giphy.gif',
   'https://media4.giphy.com/media/3o7TKpmHsAZiTTekve/giphy.gif',
-  'https://media1.giphy.com/media/5DV5DkiGIlAxq/giphy.gif',
   'https://media1.giphy.com/media/12mbWQRCFxOzp6/giphy.gif',
   'https://media1.giphy.com/media/UrljInRDir27u/giphy.gif',
   'https://media4.giphy.com/media/b04Dkxq5AUOCA/giphy.gif',
@@ -247,8 +246,9 @@ const spook = [
   'https://media0.giphy.com/media/WFk0kxBWUgDjgmN2G9/giphy.gif',
   'https://media4.giphy.com/media/26xBtwZMRHvhP4WAM/giphy.gif',
   'https://media3.giphy.com/media/dt0T8TI3Kizyctrxh9/giphy.gif',
-  'https://media4.giphy.com/media/kbnUIUVY7YHNhe5tbb/giphy.gif'
-
+  'https://media4.giphy.com/media/kbnUIUVY7YHNhe5tbb/giphy.gif',
+  'https://media0.giphy.com/media/1qk24adSnJ1OOJLpZM/giphy.gif',
+  'https://media3.giphy.com/media/hS9SwD4UcQH5OJBeV4/giphy.gif'
 ]
 
 export default (App);
