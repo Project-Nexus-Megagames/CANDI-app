@@ -65,7 +65,7 @@ class ControlTerminal extends Component {
 			let awaiting= 0;
 			let ready = 0;
 			for (const action of this.props.actions) {
-				if (action.status.draft === true) drafts++;
+				if (action.status.draft === true && action.model !== "Project") drafts++;
 				else if (action.status.ready === true) ready++;
 				else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
 			}
