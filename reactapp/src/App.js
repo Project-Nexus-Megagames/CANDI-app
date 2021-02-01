@@ -56,9 +56,9 @@ class App extends Component {
 
   
     socket.on('connect', ()=> { console.log('UwU I made it') });
-    socket.on('updateCharacters', (data) => { console.log("Characters:", data); this.setState({ players: data }) });
-    socket.on('updateActions', (data )=> { console.log("Actions:", data); this.setState({ actions: data }); });
-    socket.on('updateGamestate', (data) => { console.log("GameState:", data); this.setState({ gamestate: data }); });
+    socket.on('updateCharacters', (data) => { this.setState({ players: data }) });
+    socket.on('updateActions', (data )=> { this.setState({ actions: data }); });
+    socket.on('updateGamestate', (data) => { this.setState({ gamestate: data }); });
 
   }
 
