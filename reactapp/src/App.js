@@ -26,8 +26,9 @@ import { assetsReceived } from './redux/entities/assets';
 import initUpdate from './redux/initUpdate';
 
 // React App Component
-  initUpdate();
+initUpdate();
 const App = (props) => {
+
 
   return ( 
       <div className="App" style={props.loading ? loading : done}>
