@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Alert, ButtonGroup, Content, InputNumber, Input, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker } from 'rsuite';
+import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader } from 'rsuite';
 import { gameServer } from '../../config';
 import openSocket from 'socket.io-client';
+import { connect } from 'react-redux';
 
 const socket = openSocket(gameServer);
 
@@ -16,9 +17,8 @@ class ControlTerminal extends Component {
 		formValue: {
 			round: null,
 			status: '',
-			endTime: null
 		},
-		
+		endTime: null,
 		projName: '',
 		projDescription: '',
 		progress: 0,
@@ -38,7 +38,8 @@ class ControlTerminal extends Component {
 	componentDidMount = async () => {
 		const formValue = {
 			round: this.props.gamestate.round, 
-			status: this.props.gamestate.status
+			status: this.props.gamestate.status,
+			endTime: this.props.gamestate.endTime
 		}
 		socket.on('updateAssets', ()=> { this.getAssets() });
 
@@ -65,11 +66,11 @@ class ControlTerminal extends Component {
 			let awaiting= 0;
 			let ready = 0;
 			for (const action of this.props.actions) {
-				if (action.status.draft === true) drafts++;
+				if (action.status.draft === true && action.model !== "Project") drafts++;
 				else if (action.status.ready === true) ready++;
 				else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
 			}
-			this.setState({ formValue, drafts, awaiting, ready })			
+			this.setState({ formValue, drafts, awaiting, ready, endTime: this.props.gamestate.endTime })			
 		}
 	}
 
@@ -81,6 +82,10 @@ class ControlTerminal extends Component {
 
 	
 	render() { 
+		if (!this.props.login) {
+			this.props.history.push('/');
+			return (<Loader inverse center content="doot..." />)
+		};
 		return ( 
 			<Content style={{style1}}>
 				<Divider>Actions Status</Divider>
@@ -113,7 +118,7 @@ class ControlTerminal extends Component {
 				</Panel>
 				<Divider>Scott's Message of the Day:</Divider>
 				<div>
-					<h5>Code Monkey get up, get coffee. Code Monkey go to job. Code Monkey have boring meeting, with boring manager Rob.</h5>
+					<h5>Prepare for Unseen consequences...</h5>
 				</div>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
@@ -125,6 +130,10 @@ class ControlTerminal extends Component {
 						<FormGroup>
 							<ControlLabel>Round</ControlLabel>
 							<FormControl name="round" cleanable={false} accepter={InputNumber} />
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>End Time</ControlLabel>
+							<DatePicker value={this.state.endTime} onChange={this.handleDate} format="YYYY-MM-DD HH"></DatePicker>
 						</FormGroup>
 					</Form>
 					<Modal.Footer>
@@ -228,6 +237,10 @@ class ControlTerminal extends Component {
 		 );
 	}
 
+	handleDate = (value) => {
+		this.setState({ endTime: value })
+	}
+
 	handleChage = (event) => {
 		const selected = this.state.assets.find(el => el._id === event);
 		this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses })
@@ -246,7 +259,7 @@ class ControlTerminal extends Component {
 			this.setState({ assModal: false, selected: null });
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
 	}
 
@@ -276,18 +289,23 @@ class ControlTerminal extends Component {
 			this.setState({ assModal: false, selected: null });
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+      Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
 	}
 
 	handleSubmit = async () => {
 		try{
-			await axios.patch(`${gameServer}api/gamestate/modify`, { data: this.state.formValue });
+			const data = {
+				round: this.state.formValue.round,
+				status: this.state.formValue.status,
+				endTime: this.state.endTime
+			}
+			await axios.patch(`${gameServer}api/gamestate/modify`, { data });
 			Alert.success('Gamestate Successfully Modify');
 			this.setState({ gsModal: false });
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
 	}
 
@@ -298,7 +316,7 @@ class ControlTerminal extends Component {
 			this.setState({ warningModal: false });
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}		
 	}
 
@@ -309,7 +327,7 @@ class ControlTerminal extends Component {
 			this.setState({ warning2Modal: false });
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}		
 	}
 
@@ -331,7 +349,7 @@ class ControlTerminal extends Component {
 			this.setState({ projectModal: false });
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}		
 	}
 
@@ -373,4 +391,16 @@ const textStyle = {
 	scrollbarWidth: 'none',
 }
 
-export default ControlTerminal;
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	login: state.auth.login,
+	gamestate: state.gamestate,
+	characters: state.characters.list,
+	actions: state.actions.list
+});
+
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ControlTerminal);

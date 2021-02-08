@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Alert, Divider} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Alert, Divider, Loader} from 'rsuite';
 import AddAsset from '../AddAsset';
 import ModifyCharacter from '../ModifyCharacter';
 import ModifyMemory from '../ModifyMemory';
 import { gameServer } from '../../config';
+import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
+import { connect } from 'react-redux';
 
 class OtherCharacters extends Component {
 	state = { 
@@ -14,8 +16,7 @@ class OtherCharacters extends Component {
 		edit: false,
 		add: false,
 		memory: false,
-	 }
-	 
+	}
 
 	listStyle (item) {
 		if (item === this.state.selected) {
@@ -25,7 +26,7 @@ class OtherCharacters extends Component {
 	}
 
 	copyToClipboard (email, controlEmail) {
-		navigator.clipboard.writeText(`${email} ${controlEmail} ${this.props.playerCharacter.controlEmail}`);
+		navigator.clipboard.writeText(`${email} ${controlEmail} ${this.props.myCharacter.controlEmail}`);
 	}
 
 	openAnvil (url) {
@@ -51,6 +52,10 @@ class OtherCharacters extends Component {
 	}
 
 	render() { 
+		if (!this.props.login) {
+			this.props.history.push('/');
+			return (<Loader inverse center content="doot..." />)
+		};
 		return ( 
 			<Container style={{overflow: 'auto', height: 'calc(100vh)'}}>
 			<Sidebar style={{backgroundColor: "black"}}>
@@ -176,11 +181,11 @@ class OtherCharacters extends Component {
 			</Content>		
 			}
 		</Container>
-		 );
+		);
 	}
 
 	makeButton = () => {
-		if (this.state.selected.supporters.some(el => el === this.props.playerCharacter.characterName)) {
+		if (this.state.selected.supporters.some(el => el === this.props.myCharacter.characterName)) {
 			return (<Button onClick={()=> this.lendSupp()} color='red'>Take Back Support!</Button>)
 		}
 		else {
@@ -190,13 +195,28 @@ class OtherCharacters extends Component {
 
 	lendSupp = async () => {
 		try{
-			await axios.patch(`${gameServer}api/characters/support`, { id: this.state.selected._id, supporter: this.props.playerCharacter.characterName });
-			Alert.success('Support Changed');
-			this.setState({ selected: '' });
+			await axios.patch(`${gameServer}api/characters/support`, { id: this.state.selected._id, supporter: this.props.myCharacter.characterName });
+			console.log('hello governor');
+			/*
+			*/
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+			console.log(err);
+			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
+		const modifiedChar = {...this.state.selected};
+		let bullshit = [...modifiedChar.supporters] 
+		if (modifiedChar.supporters.some(el => el === this.props.myCharacter.characterName)) {
+			const index = modifiedChar.supporters.findIndex(el => el === this.props.myCharacter.characterName);
+			bullshit.splice(index, 1);
+		}
+		else {
+			bullshit.push(this.props.myCharacter.characterName);
+		}
+		modifiedChar.supporters = bullshit;
+		this.props.updateCharacter(modifiedChar);
+		Alert.success('Support Changed');
+		this.setState({ selected: '' });
 	}
 	
 	createListCatagories (characters) {
@@ -223,26 +243,37 @@ class OtherCharacters extends Component {
 }
 
 const styleCenter = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '60px'
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	height: '60px'
 };
 
 const titleStyle = {
-  whiteSpace: 'nowrap',
-  fontWeight: 500,
+	whiteSpace: 'nowrap',
+	fontWeight: 500,
 	paddingLeft: 2
 };
 
-const slimText = {
-  fontSize: '0.966em',
-  color: '#97969B',
-  fontWeight: 'lighter',
+const slimText = {	
+	fontSize: '0.966em',
+	color: '#97969B',
+	fontWeight: 'lighter',
 	paddingBottom: 5,
 	paddingLeft: 2
 };
 
- 
 
-export default OtherCharacters;
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	gamestate: state.gamestate,
+	login: state.auth.login,
+	characters: state.characters.list,
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	updateCharacter: (data) => dispatch(characterUpdated(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OtherCharacters);

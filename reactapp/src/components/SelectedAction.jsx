@@ -1,8 +1,10 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress } from 'rsuite';
 import { gameServer } from '../config';
-
+import { characterUpdated, getMyCharacter } from '../redux/entities/characters';
+import { actionDeleted } from '../redux/entities/playerActions';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedAction extends Component {
 	state = { 
@@ -41,10 +43,6 @@ class SelectedAction extends Component {
 			asset2: action.asset2,
 			asset3: action.asset3,
 			edit: true })
-	}
-
-	openRes = () => {
-		this.setState({ resEdit: true })
 	}
 
 	handleSubmit = async () => {
@@ -170,7 +168,7 @@ class SelectedAction extends Component {
 					{this.props.user.roles.some(el=> el === 'Control') && 
 						<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 							<ButtonGroup style={{marginTop: '5px', }} >
-								<Button appearance={"ghost"} onClick={() => this.openRes()}>Edit Result</Button>
+								<Button appearance={"ghost"} onClick={() => this.setState({ resEdit: true })}>Edit Result</Button>
 							</ButtonGroup>
 						</Panel>}
 				</FlexboxGrid.Item>
@@ -197,7 +195,7 @@ class SelectedAction extends Component {
 						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
 							<Slider graduated
 							min={0}
-							max={3}
+							max={this.props.myCharacter.effort}
 							defaultValue={1}
 							progress
 							value={this.state.effort}
@@ -205,11 +203,11 @@ class SelectedAction extends Component {
 							</Slider>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-							<InputNumber value={this.state.effort} max={3} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={4}>
 						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Effort
+						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Traits
 							<InputPicker defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset1: event})}/>
 							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset2: event})}/>
 							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset3: event})}/>
@@ -300,6 +298,10 @@ class SelectedAction extends Component {
 
 	deleteAction = async () => {
 		let {data} = await axios.delete(`${gameServer}api/actions/${this.props.action._id}`);
+		this.props.deleteAction(data);
+		const modifiedChar = {...this.props.myCharacter};
+		modifiedChar.effort += this.state.effort;
+		this.props.updateCharacter(modifiedChar);
 		Alert.success(data);		
 		this.props.handleSelect(null);
 	}
@@ -342,4 +344,17 @@ const textStyle = {
 	scrollbarWidth: 'none',
 }
 
-export default SelectedAction;
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	gamestate: state.gamestate,
+	actions: state.actions.list,
+  myCharacter: state.auth.user ? getMyCharacter(state): undefined
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	// handleLogin: (data) => dispatch(loginUser(data))
+	deleteAction: (data) => dispatch(actionDeleted(data)),
+	updateCharacter: (data) => dispatch(characterUpdated(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedAction);

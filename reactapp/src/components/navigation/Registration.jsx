@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Content, Container, Sidebar, PanelGroup, Panel, Input, FlexboxGrid, List, Alert, SelectPicker, Footer, Button } from 'rsuite';
+import { Content, Container, Sidebar, PanelGroup, Panel, Input, FlexboxGrid, List, Alert, SelectPicker, Footer, Button, Loader } from 'rsuite';
 import { gameServer } from '../../config';
 
 class Registration extends Component {
@@ -28,7 +28,7 @@ class Registration extends Component {
 			this.setState({ users: filteredUsers, filtered: filteredUsers});
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
 	 }
 
@@ -41,6 +41,10 @@ class Registration extends Component {
 
 
 	render() { 
+		if (!this.props.login) {
+			this.props.history.push('/');
+			return (<Loader inverse center content="doot..." />)
+		};
 		return ( 
 			<Container>
 				<Sidebar style={{backgroundColor: "black"}}>

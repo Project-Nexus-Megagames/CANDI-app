@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {List, FlexboxGrid, Container, } from 'rsuite';
+import { getMyCharacter } from '../redux/entities/characters';
+import { filteredActions, getMyActions } from '../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { 
@@ -8,12 +11,7 @@ class ActionList extends Component {
 
 	 componentDidMount = async () => {
 		 try {
-			const rounds = [];
-			for (const action of this.props.actions) {
-				if (!rounds.some(el => el === action.round)) rounds.push(action.round);
-			}
-			rounds.reverse();
-			this.setState({ rounds });
+			this.createListCatagories();
 		 }
 		 catch (err) {
 			 console.log(err);
@@ -38,7 +36,7 @@ class ActionList extends Component {
 
 	createListCatagories = () => {
 		const rounds = [];
-		for (const action of this.props.actions) {
+		for (const action of this.props.filteredActions) {
 			if (!rounds.some(el => el === action.round)) rounds.push(action.round);
 		}
 		rounds.reverse();
@@ -52,7 +50,7 @@ class ActionList extends Component {
 					<React.Fragment key={index}>
 					<h6 style={{backgroundColor: "#61342e"}}>Round {round}</h6>	
 					<List key={index} hover size="sm" >
-						{this.props.actions.filter(el => el.round === round).map((action, index) => (
+						{this.props.filteredActions.filter(el => el.round === round).map((action, index) => (
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
@@ -83,5 +81,15 @@ const titleStyle = {
   fontWeight: 500
 };
 
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	gamestate: state.gamestate,
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
+	filteredActions: 	state.auth.control ? filteredActions(state) : getMyActions(state)
+});
 
-export default ActionList;
+const mapDispatchToProps = (dispatch) => ({
+  // handleLogin: (data) => dispatch(loginUser(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActionList);

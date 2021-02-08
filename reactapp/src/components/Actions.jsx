@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button } from 'rsuite';
+import { connect } from 'react-redux';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader } from 'rsuite';
+import { getMyCharacter } from '../redux/entities/characters';
+import { setFilter } from '../redux/entities/playerActions';
 import ActionList from './ActionList';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
@@ -8,32 +11,10 @@ class Actions extends Component {
 	state = { 
 		selected: null,
 		showNew: false,
-		filtered: []
 	 }
 
 	 componentDidMount() {
-		 let filtered = [];
-		if (this.props.user.roles.some(el => el === "Control")) {
-			filtered = this.props.actions;
-		}
-		else {
-			filtered = this.props.actions.filter(el => el.creator._id === this.props.playerCharacter._id || el.players.some(el2 => el2 === this.props.playerCharacter._id));	
-		}
-		this.setState({ selected: null, filtered });
-	}
-
-	componentDidUpdate(prevProps) {
-		// Typical usage (don't forget to compare props):
-		if (this.props.actions !== prevProps.actions) {
-			let filtered = [];
-			if (this.props.user.roles.some(el => el === "Control")) {
-				filtered = this.props.actions;
-			}
-			else {
-				filtered = this.props.actions.filter(el => el.creator._id === this.props.playerCharacter._id);	
-			}
-			this.setState({ filtered });
-		}
+		this.setState({ selected: null });
 	}
 
 	showNew = () => { 
@@ -57,15 +38,19 @@ class Actions extends Component {
 	}
 
 	render() { 
+		if (!this.props.login) {
+			this.props.history.push('/');
+			return (<Loader inverse center content="doot..." />)
+		};
 		return ( 
 			<Container>
 			<Sidebar style={{backgroundColor: "black", }}>
 				<PanelGroup>					
 					<Panel style={{ backgroundColor: "#000101"}}>
-						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
+						<Input onChange={(value)=> this.props.setFilter(value)} value={this.props.filter} placeholder="Search"></Input>
 					</Panel>
 					<Panel bodyFill style={{height: 'calc(90vh - 130px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
-						<ActionList selected={this.state.selected} user={this.props.user} playerCharacter={this.props.playerCharacter} actions={this.state.filtered} handleSelect={this.handleSelect}/>
+						<ActionList selected={this.state.selected} handleSelect={this.handleSelect}/>
 					</Panel>
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 						<Button appearance='primary' disabled={this.isDisabled()} block onClick={() => this.showNew()}>New Action</Button>
@@ -75,7 +60,7 @@ class Actions extends Component {
 					</Panel>				
 				</PanelGroup>
 			</Sidebar>
-			{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets, this.props.playerCharacter.wealth]} action={this.state.selected}/>}	
+			{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets, this.props.myCharacter.wealth]} action={this.state.selected}/>}	
 			{this.state.selected && this.state.selected.model === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
 			<NewAction
 				show={this.state.showNew}
@@ -83,16 +68,16 @@ class Actions extends Component {
 				showNew={this.showNew} 
 				closeNew={this.closeNew}
 				gamestate={this.props.gamestate}
-				playerCharacter={this.props.playerCharacter}
+				myCharacter={this.props.myCharacter}
 			/>
 		</Container>
 		 );
 	}
 
 	filteredAssets = () => {
-		let assets = [...this.props.playerCharacter.assets, ...this.props.playerCharacter.traits, ...this.props.playerCharacter.lentAssets];
+		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets];
 		assets = assets.filter(el => el.status.used === false);
-		assets.push(this.props.playerCharacter.wealth)
+		assets.push(this.props.myCharacter.wealth)
 
 		return assets;
 	}
@@ -103,5 +88,18 @@ class Actions extends Component {
 	}
 }
 
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	control: state.auth.control,
+	filter: state.actions.filter,
+	login: state.auth.login,
+	gamestate: state.gamestate,
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setFilter: (data) => dispatch(setFilter(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Actions);
  
-export default Actions;

@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { Container, Icon, IconButton, Divider, Content, Footer } from 'rsuite';
+import { connect } from 'react-redux';
+import { Container, Icon, IconButton, Divider, Content, Footer, Loader, FlexboxGrid } from 'rsuite';
+import { getMyCharacter } from '../../redux/entities/characters';
+import Loading from './loading';
 
 class HomePage extends Component {
-	state = {  }
+	constructor(props) {
+		super(props);
+		this.state = {
 
+		};
+	}
 	openAnvil () {
 		const win = window.open('https://www.worldanvil.com/w/afterlife3A-a-postmortem-megagame-afterlife-control', '_blank');
 		win.focus();
@@ -16,17 +23,30 @@ class HomePage extends Component {
 	
 
 	render() { 
+		if (!this.props.login && !this.props.loading) {
+			console.log('Hello')
+			this.props.history.push('/');
+			return (<Loader inverse center content="doot..." />)
+		};
+		if (this.props.loading) {
+			return (<Loading />)
+		}
 		return ( 
 			<Container style={{backgroundColor:'#15181e', padding:'15px', width: '860px', position: 'relative', display: 'inline-block', textAlign: 'left'}}>
 				<Content>
 					<img src={"https://www.worldanvil.com/media/cache/cover/uploads/images/d2a671e443bd62d71dd72fb872c2f887.jpg"} alt='Unable to load img' width="830" height="320"/>
 					<Divider className='catagory-underline'/>
+					{!this.props.myCharacter && 
+					<React.Fragment>
+							<p>If you cannot see the Navigation Bar at the top, it means there was a connection error. Please wait a minute and then refresh</p>
+							<Divider className='catagory-underline'/>						
+					</React.Fragment>}
 					<h6>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} onClick={() =>this.openAnvil()} appearance="primary"/></h6>
 					<div > <b>Current Turn:</b>
 						<span> {this.props.gamestate.round} </span>
 					</div>
 					<div > <b>Game Version:</b>
-						<span> 1.06</span>
+						<span> 2.0</span>
 					</div>
 				</Content>
 			<Footer>
@@ -36,10 +56,22 @@ class HomePage extends Component {
 			</Footer>
 			</Container>
 
-		 );
+		);
 	}
 }
- 
-export default HomePage;
+
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	login: state.auth.login,
+	loading: state.auth.loading,
+	gamestate: state.gamestate,
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
+});
+
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 
 //<img src={"https://i.ytimg.com/vi/flD5ZTC3juk/maxresdefault.jpg"} width="700" height="220"/>
