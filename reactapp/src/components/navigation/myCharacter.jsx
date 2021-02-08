@@ -77,7 +77,7 @@ class MyCharacter extends Component {
 				<FlexboxGrid justify="start" style={{textAlign: 'left'}}>
 					<FlexboxGrid.Item key={1} colspan={6}>
 							<img
-								src={playerCharacter.icon ? playerCharacter.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt='Unable to load img' width="95%" height="320" 
+								src={`/images/${playerCharacter.characterName}.jpg`} alt='Unable to load img' width="95%" height="320" 
 							/>	
 						<Divider style={{ width: "95%" }} >Wealth</Divider>
 						<Panel style={{backgroundColor: "#bfb606", textAlign: 'center', width: '95%', }} shaded bordered >

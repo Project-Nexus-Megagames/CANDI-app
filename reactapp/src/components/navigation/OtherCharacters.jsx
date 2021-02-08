@@ -76,7 +76,7 @@ class OtherCharacters extends Component {
 									<List.Item key={index} index={index} onClick={() => this.setState({ selected: character })} style={this.listStyle(character)}>
 										<FlexboxGrid>
 											<FlexboxGrid.Item colspan={5} style={styleCenter}>
-												<Avatar src={character.icon ? character.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} circle/>
+												<Avatar src={`/images/${character.characterName}.jpg`} circle/>
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 												<b style={titleStyle}>{character.characterName}</b>
@@ -138,7 +138,7 @@ class OtherCharacters extends Component {
 								<Divider></Divider>
 								<FlexboxGrid>
 									<FlexboxGrid.Item style={{ alignItems: 'center', justifyContent: 'center', }} colspan={12}>
-										<img src={this.state.selected.icon ? this.state.selected.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt="Img could not be displayed" width="320" height="320" />
+										<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="320" height="320" />
 									</FlexboxGrid.Item>
 									<FlexboxGrid.Item colspan={6}>
 										Supported By:
