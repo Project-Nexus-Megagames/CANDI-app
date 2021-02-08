@@ -160,6 +160,29 @@ class OtherCharacters extends Component {
 							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Asset/Trait</Button>
 							<Button appearance={"ghost"} onClick={() => this.setState({ memory: true })}>Memories</Button>
 						</ButtonGroup>
+							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Assets" >
+						<List size="md">
+							{this.state.selected.assets.map((asset, index) => (
+								<List.Item key={index} index={index} size='md'>
+									<div>{asset.name}</div>
+								</List.Item>
+							))}
+						</List>
+					</Panel>
+					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Traits" >
+						<List size="md">
+							{this.state.selected.traits.map((asset, index) => (
+								<List.Item key={index} index={index} size='md'>
+									<div>{asset.name}</div>
+								</List.Item>
+							))}
+						</List>
+					</Panel>
+					<Panel style={{backgroundColor: "#bfb606", textAlign: 'center', }} bordered header='Wealth'>
+							<h4 style={{color: 'black'}} >{this.state.selected.wealth.description}</h4>
+							<b style={{color: 'black'}} >Uses: {this.state.selected.wealth.uses}</b>
+					</Panel>
+					<h5>Effort Left: {this.state.selected.effort} </h5>
 					</Panel>}
 				</FlexboxGrid.Item>
 					</FlexboxGrid>	
@@ -267,6 +290,7 @@ const slimText = {
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
+	assets: state.assets.list,
 	login: state.auth.login,
 	characters: state.characters.list,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined
