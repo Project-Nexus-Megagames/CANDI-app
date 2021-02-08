@@ -1,7 +1,10 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { FlexboxGrid, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Affix, Tag, Modal, Drawer, SelectPicker, Placeholder, Alert } from 'rsuite';
+import { connect } from 'react-redux';
+import { FlexboxGrid, Loader, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Affix, Tag, Modal, Drawer, SelectPicker, Placeholder, Alert } from 'rsuite';
 import { gameServer } from '../../config';
+import { getMyCharacter } from '../../redux/entities/characters';
+import { assetLent, assetUpdated } from '../../redux/entities/assets'
 
 class MyCharacter extends Component {
 	state = { 
@@ -12,23 +15,25 @@ class MyCharacter extends Component {
 		show: false,
 		lending: null,
 		target: null,
+		characters: null,
 		lendShow: false,
 		unlend: false, // boolean for displaying the "unlend" modal
 		unleanding: null // what is being "Unlent"
 	 }
 
 	 componentDidMount = () => {
-		const char = this.props.playerCharacter;
+		const char = this.props.myCharacter;
 		// console.log(this.props.character)
 		if (char !== undefined) {
 		 const formValue = {
-				 textarea: char.standingOrders,
+			textarea: char.standingOrders,
 		 }
-		 this.setState({ formValue });			 
+		 const characters = {...this.props.characters}
+		 this.setState({ formValue, characters });			 
 		}
 	}
 
-	componentDidUpdate = (prevProps) => {
+	/*componentDidUpdate = (prevProps) => {
 	 if (this.props.playerCharacter !== prevProps.playerCharacter) {
 		 const char = this.props.playerCharacter;
 		 const formValue = {
@@ -36,7 +41,7 @@ class MyCharacter extends Component {
 		}
 	 this.setState({ formValue });		
 	 }
-	}
+	}*/
 
 	openAnvil (url) {
 		const win = window.open(url, '_blank');
@@ -45,10 +50,6 @@ class MyCharacter extends Component {
 
 	showMemory = (memory) => {
 		this.setState({ memory, show: true });
-	}
-
-	closeMemory = () => {
-		this.setState({ show: false });
 	}
 
 	openLend = (lending) => { 
@@ -65,14 +66,18 @@ class MyCharacter extends Component {
 
 
 	render(){ 
-		const {playerCharacter} = this.props;
+		const playerCharacter = this.props.myCharacter;
+		if (!this.props.login) {
+			this.props.history.push('/');
+			return (<Loader inverse center content="doot..." />)
+		};
 		return ( 
 			<Content style={{overflow: 'auto', height: 'calc(100vh - 100px)'}}>
 			<Panel>
 				<FlexboxGrid justify="start" style={{textAlign: 'left'}}>
 					<FlexboxGrid.Item key={1} colspan={6}>
 							<img
-								 src={playerCharacter.icon ? playerCharacter.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt='Unable to load img' width="95%" height="320" 
+								src={playerCharacter.icon ? playerCharacter.icon: "https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg"} alt='Unable to load img' width="95%" height="320" 
 							/>	
 						<Divider style={{ width: "95%" }} >Wealth</Divider>
 						<Panel style={{backgroundColor: "#bfb606", textAlign: 'center', width: '95%', }} shaded bordered >
@@ -83,7 +88,7 @@ class MyCharacter extends Component {
 								<FlexboxGrid.Item colspan={4}> 
 									{!playerCharacter.wealth.status.lent &&  <Button onClick={() => this.openLend(playerCharacter.wealth)} color='blue' size='sm' >Lend</Button>}
 									{playerCharacter.wealth.status.lent && <Button onClick={() => this.openUnlend(playerCharacter.wealth)} color='blue' size='sm' >Un-Lend</Button>}	
-								 </FlexboxGrid.Item>
+								</FlexboxGrid.Item>
 							</FlexboxGrid>
 
 						</Panel>
@@ -135,7 +140,7 @@ class MyCharacter extends Component {
 							{playerCharacter.traits.map((trait, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
 									<Affix>
-										{trait.status.lent && <Tag color='violet' >Lent to: {trait.currentHolder}</Tag>}
+										{trait.status.lent && this.rednerHolder(trait)}
 										{!trait.status.lent && <Tag color='green' >Ready</Tag>}
 									</Affix>
 									<Panel style={{backgroundColor: "#1a1d24"}} shaded header={trait.name} bordered collapsible>
@@ -159,7 +164,7 @@ class MyCharacter extends Component {
 							{playerCharacter.assets.map((asset, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
 								<Affix>
-									{asset.status.lent && <Tag color='violet' >Lent to : {asset.currentHolder}</Tag>}
+									{asset.status.lent && this.rednerHolder(asset)}
 									{!asset.status.lent && <Tag color='green' >Ready</Tag>}
 								</Affix>
 								<Panel style={{backgroundColor: "#1a1d24"}} shaded header={asset.name} bordered collapsible>
@@ -204,7 +209,7 @@ class MyCharacter extends Component {
 			<Modal 
 				size='md'
 				show={this.state.show}
-				onHide={() => this.closeMemory()}>
+				onHide={() => this.setState({ show: false })}>
 					<b>{this.state.memory.trigger}</b>
 					<p>
 						{this.state.memory.recall}
@@ -236,12 +241,17 @@ class MyCharacter extends Component {
 			show={this.state.lendShow}
 			onHide={() => this.closeLend()}>
 				<Drawer.Body>
-					<SelectPicker placeholder="Select a Lending Target" onChange={(event) => this.setState({ target: event })} block groupBy='tag' valueKey='_id' labelKey='characterName' disabledItemValues={[playerCharacter._id]} data={this.props.characters}/>					
+					<SelectPicker placeholder="Select a Lending Target" onChange={(event) => this.setState({ target: event })} block valueKey='_id' labelKey='characterName' disabledItemValues={[playerCharacter._id]} data={this.props.characters}/>					
 					{this.renderLendation()}
 				</Drawer.Body>
 			</Drawer>
 		</Content>
-		 );
+		);
+	}
+
+	rednerHolder = (asset) => {
+		const holder = this.props.characters.find(el => el.lentAssets.some(el2=> el2._id === asset._id));
+		return (<Tag color='violet' >Lent to: {holder.characterName}</Tag>)
 	}
 
 	findOwner = (id) => {
@@ -296,18 +306,21 @@ class MyCharacter extends Component {
 		}
 		try{
 			await axios.post(`${gameServer}api/assets/lend`, { data });
-			Alert.success('Asset Successfully Lent');
-			this.setState({ lending: null, target: null });
-			this.closeLend()
 		}
 		catch (err) {
 			console.log(err)
-      Alert.error(`Error: ${err}`, 5000);
+			Alert.error(`Error: ${err}`, 5000);
 		}
+		// this.props.lendAsset(this.state.lending._id);
+		Alert.success('Asset Successfully Lent');
+
+		this.setState({ lending: null, target: null });
+		this.closeLend();
 	}
 
 	handleTakeback = async () => {
-		const holder = this.props.characters.find(el => el.characterName === this.state.unleanding.currentHolder)
+		const holder = this.props.characters.find(el => el.lentAssets.some(el2=> el2._id === this.state.unleanding._id))
+		
 		const data = {
 			asset: this.state.unleanding._id,
 			target: holder._id,
@@ -320,13 +333,13 @@ class MyCharacter extends Component {
 		}
 		catch (err) {
 			console.log(err.response)
-      Alert.error(`Error: ${err.response.data}`, 5000);
+			Alert.error(`Error: ${err.response.data}`, 5000);
 		}
 	}
 
 	handleStanding = async () => {
 		const data = {
-			id: this.props.playerCharacter._id, 
+			id: this.props.myCharacter._id, 
 			standing: this.state.formValue.textarea
 		}
 		try{
@@ -335,10 +348,23 @@ class MyCharacter extends Component {
 		}
 		catch (err) {
 			console.log(err)
-      Alert.error(`Error: ${err}`, 5000);
+			Alert.error(`Error: ${err}`, 5000);
 		}
 	} 
-
 }
+
+const mapStateToProps = (state) => ({
+	login: state.auth.login,
+	user: state.auth.user,
+	assets: state.assets.list,
+	characters: state.characters.list,
+	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	updateAsset: (data) => dispatch(assetUpdated(data)),
+	lendAsset: (data) => dispatch(assetLent(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyCharacter);
  
-export default MyCharacter;

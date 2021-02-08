@@ -138,7 +138,7 @@ class SelectedProject extends Component {
 			this.props.handleSelect(data)
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}		
 	}
 

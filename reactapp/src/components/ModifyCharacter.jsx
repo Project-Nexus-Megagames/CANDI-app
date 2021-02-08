@@ -74,7 +74,7 @@ class ModifyCharacter extends Component {
 			this.props.closeModal()
 		}
 		catch (err) {
-      Alert.error(`Error: ${err.response.data}`, 5000);
+			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}
 	 }
 

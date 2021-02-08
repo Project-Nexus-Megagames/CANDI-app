@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Sidebar, Input, Panel, List, PanelGroup, Button, Content, FlexboxGrid, } from 'rsuite';
+import { connect } from 'react-redux';
+import { Container, Sidebar, Input, Panel, List, PanelGroup, Button, Content, FlexboxGrid, Loader, } from 'rsuite';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 
 class Control extends Component {
 	state = { 
 		selected: null, 
 		filtered: []
-	 }
+	}
 
 	componentDidMount() {
 		this.setState({ selected: null, filtered: controllers });
@@ -32,6 +33,10 @@ class Control extends Component {
 	}
 
 	render() { 
+		if (!this.props.login) {
+			this.props.history.push('/');
+			return (<Loader inverse center content="doot..." />)
+		};
 		return ( 
 			<Container>
 				<Sidebar style={{backgroundColor: "black"}}>
@@ -63,7 +68,7 @@ class Control extends Component {
 								<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e"}}>
 									<h3>{this.state.selected.role}</h3>		
 									<p>
-									  Name:	
+										Name:	
 									</p>
 									<p>
 										<h5>{this.state.selected.name}</h5>			
@@ -82,7 +87,7 @@ class Control extends Component {
 										<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email)}>Copy email to clipboard</Button>
 									</p>
 									<p>
-									  Time Zone:	
+										Time Zone:	
 									</p>
 									<p>
 										<h5>{this.state.selected.timezone}</h5>			
@@ -99,11 +104,20 @@ class Control extends Component {
 					}	
 			</Container>
 
-		 );
+		);
 	}
 }
- 
-export default Control;
+
+
+const mapStateToProps = (state) => ({
+	login: state.auth.login,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Control);
 
 const controllers = [
 	{

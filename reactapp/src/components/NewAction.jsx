@@ -1,7 +1,10 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Modal, Button, Slider, Alert, InputPicker, FlexboxGrid, InputNumber } from 'rsuite';
+import { connect } from 'react-redux';
+import { Modal, Button, Slider, Alert, InputPicker, FlexboxGrid, InputNumber, Loader } from 'rsuite';
 import { gameServer } from '../config';
+import { getMyCharacter, characterUpdated } from '../redux/entities/characters';
+import { actionAdded } from '../redux/entities/playerActions';
 class NewAction extends Component {
   constructor(props) {
     super(props);
@@ -27,17 +30,23 @@ class NewAction extends Component {
 			asset3: this.state.asset3,
 			description: this.state.description,
 			intent: this.state.intent,
-			creator: this.props.playerCharacter._id,
+			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
 		try{
-			await axios.post(`${gameServer}api/actions`, { data: action });
+			const {data} = await axios.post(`${gameServer}api/actions`, { data: action });
+			console.log(data)
+			this.props.actionAdded(data);
 			Alert.success('Action Successfully Created');
+			const modifiedChar = {...this.props.myCharacter};
+			modifiedChar.effort -= this.state.effort;
+			this.props.updateCharacter(modifiedChar);
+			
 			this.setState({effort: 0, asset1: '', asset2: '', asset3: '', description: '', intent: '', loading: false})
 			this.props.closeNew()
 		}
 		catch (err) {
-			Alert.error(`Error: ${err.response.data}`, 5000);
+			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 			this.setState({ loading: false });
 		}
 	}
@@ -53,6 +62,7 @@ class NewAction extends Component {
 					<Modal.Title>Submit a new action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+					{this.state.loading && <Loader backdrop content="loading..." vertical />}
 					<form>
 						<FlexboxGrid> Description
 							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
@@ -65,19 +75,19 @@ class NewAction extends Component {
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
 								<Slider graduated
 								min={0}
-								max={this.props.playerCharacter.effort}
+								max={this.props.myCharacter.effort}
 								defaultValue={0}
 								progress
 								value={this.state.effort}
 								onChange={(event)=> this.setState({effort: event})}>
 								</Slider>
 								<div style={{ paddingTop: '20px', fontSize: '2em', }} >
-									Current Effort Left: {this.props.playerCharacter.effort}		
+									Current Effort Left: {this.props.myCharacter.effort}		
 								</div>
 
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-								<InputNumber value={this.state.effort} max={this.props.playerCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+								<InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
@@ -117,5 +127,17 @@ const textStyle = {
 	overflow: 'auto', 
 	scrollbarWidth: 'none',
 }
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	gamestate: state.gamestate,
+	actions: state.actions.list,
+  myCharacter: state.auth.user ? getMyCharacter(state): undefined
+});
 
-export default NewAction;
+const mapDispatchToProps = (dispatch) => ({
+	// handleLogin: (data) => dispatch(loginUser(data))
+	actionAdded: (data) => dispatch(actionAdded(data)),
+	updateCharacter: (data) => dispatch(characterUpdated(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewAction);
