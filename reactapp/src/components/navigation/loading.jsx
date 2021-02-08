@@ -2,12 +2,14 @@ import React from 'react';
 import { Content, FlexboxGrid } from 'rsuite';
 
 const Loading = () => {
+    const rand = (Math.floor(Math.random() * spook.length ));
+    console.log(rand)
 	return ( 
 		<React.Fragment>
 		<Content>
 			<FlexboxGrid justify="center">
 			<FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '80px'}}>
-				<img src={spook[(Math.floor(Math.random() * spook.length ))]} alt={'Loading...'} />  
+				<img src={spook[rand]} alt={'Loading...'} />  
 			</FlexboxGrid.Item>
 			</FlexboxGrid>
 		</Content> <b>Loading...</b>

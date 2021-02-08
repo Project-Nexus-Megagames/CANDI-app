@@ -128,10 +128,6 @@ class ModifyCharacter extends Component {
 							</FlexboxGrid.Item>
 
 							<FlexboxGrid.Item colspan={8}>
-								<FormGroup>
-									<ControlLabel>icon</ControlLabel>
-									<FormControl name="icon" />
-							</FormGroup>
 							<FormGroup>
 									<ControlLabel>popsupport</ControlLabel>
 									<FormControl name="popSupport" accepter={InputNumber} />

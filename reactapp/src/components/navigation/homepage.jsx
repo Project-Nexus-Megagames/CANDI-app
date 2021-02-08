@@ -24,7 +24,6 @@ class HomePage extends Component {
 
 	render() { 
 		if (!this.props.login && !this.props.loading) {
-			console.log('Hello')
 			this.props.history.push('/');
 			return (<Loader inverse center content="doot..." />)
 		};
