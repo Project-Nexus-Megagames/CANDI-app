@@ -48,10 +48,10 @@ class Navigation extends Component {
 			let distance =  countDownDate - now;
 
 			let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-			let hours = Math.floor((distance / (1000 * 60 *60 * 24)) / (1000 * 60 *60));
+			let hours = Math.floor((distance % (1000 * 60 *60 * 24)) / (1000 * 60 *60));
 			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-			console.log(days);
+			console.log(hours);
 			if (days + hours > 0) {
 				return (<p style={{ }}  >Time Left: {days} Days, {hours} Hours </p>)				
 			}
