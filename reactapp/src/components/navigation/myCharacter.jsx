@@ -139,19 +139,19 @@ class MyCharacter extends Component {
 						<Divider style={{marginTop: '5px', marginBottom: '0px'}} >Traits</Divider>
 							{playerCharacter.traits.map((trait, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
-									<Affix>
+									{/*<Affix>
 										{trait.status.lent && this.rednerHolder(trait)}
 										{!trait.status.lent && <Tag color='green' >Ready</Tag>}
-									</Affix>
+									</Affix>*/}
 									<Panel style={{backgroundColor: "#1a1d24"}} shaded header={trait.name} bordered collapsible>
 										<FlexboxGrid>
 											<FlexboxGrid.Item colspan={20}>
 												<p>{trait.description}</p>												
 											</FlexboxGrid.Item>
-											<FlexboxGrid.Item style={{ textAlign: 'center' }} colspan={4}>
+											{/*<FlexboxGrid.Item style={{ textAlign: 'center' }} colspan={4}>
 												{!trait.status.lent &&  <Button onClick={() => this.openLend(trait)} appearance="ghost" size='sm' >Lend</Button>}
 												{trait.status.lent && <Button onClick={() => this.openUnlend(trait)} appearance="ghost" size='sm' >Un-Lend</Button>}								
-											</FlexboxGrid.Item>
+							</FlexboxGrid.Item>*/}
 										</FlexboxGrid>
 									{trait.uses !== 999 &&	
 									<p>
