@@ -53,7 +53,7 @@ componentDidMount = () => {
 						<span> {this.props.gamestate.round} </span>
 					</div>
 					<div > <b>Game Version:</b>
-						<span> 2.0</span>
+						<span> 2.1</span>
 					</div>
 				</Content>
 			<Footer>
