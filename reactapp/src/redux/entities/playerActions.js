@@ -31,6 +31,7 @@ const slice = createSlice({
     actionAdded: (playerActions, action) => {
       console.log(`${action.type} Dispatched`)
       playerActions.list.push(action.payload);
+      playerActions.loading = false;
     },
     actionDeleted: (playerActions, action) => {
       console.log(`${action.type} Dispatched`)
