@@ -139,49 +139,53 @@ class MyCharacter extends Component {
 						<Divider style={{marginTop: '5px', marginBottom: '0px'}} >Traits</Divider>
 							{playerCharacter.traits.map((trait, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
-									{/*<Affix>
-										{trait.status.lent && this.rednerHolder(trait)}
-										{!trait.status.lent && <Tag color='green' >Ready</Tag>}
-									</Affix>*/}
-									<Panel style={{backgroundColor: "#1a1d24"}} shaded header={trait.name} bordered collapsible>
-										<FlexboxGrid>
-											<FlexboxGrid.Item colspan={20}>
-												<p>{trait.description}</p>												
-											</FlexboxGrid.Item>
-											{/*<FlexboxGrid.Item style={{ textAlign: 'center' }} colspan={4}>
-												{!trait.status.lent &&  <Button onClick={() => this.openLend(trait)} appearance="ghost" size='sm' >Lend</Button>}
-												{trait.status.lent && <Button onClick={() => this.openUnlend(trait)} appearance="ghost" size='sm' >Un-Lend</Button>}								
-							</FlexboxGrid.Item>*/}
-										</FlexboxGrid>
-									{trait.uses !== 999 &&	
-									<p>
-										Uses: {trait.uses}
-									</p>}
-									</Panel>									
+								{trait.uses > 0 && <React.Fragment>
+										{/*<Affix>
+											{trait.status.lent && this.rednerHolder(trait)}
+											{!trait.status.lent && <Tag color='green' >Ready</Tag>}
+										</Affix>*/}
+										<Panel style={{backgroundColor: "#1a1d24"}} shaded header={trait.name} bordered collapsible>
+											<FlexboxGrid>
+												<FlexboxGrid.Item colspan={20}>
+													<p>{trait.description}</p>												
+												</FlexboxGrid.Item>
+												{/*<FlexboxGrid.Item style={{ textAlign: 'center' }} colspan={4}>
+													{!trait.status.lent &&  <Button onClick={() => this.openLend(trait)} appearance="ghost" size='sm' >Lend</Button>}
+													{trait.status.lent && <Button onClick={() => this.openUnlend(trait)} appearance="ghost" size='sm' >Un-Lend</Button>}								
+								</FlexboxGrid.Item>*/}
+											</FlexboxGrid>
+										{trait.uses !== 999 &&	
+										<p>
+											Uses: {trait.uses}
+										</p>}
+										</Panel>									
+									</React.Fragment>}							
 								</div>							
 							))}
 						<Divider style={{marginTop: '15px', marginBottom: '0px'}}>Assets</Divider>
 							{playerCharacter.assets.map((asset, index) => (
 								<div key={index} style={{paddingTop: '10px'}}>
-								<Affix>
-									{asset.status.lent && this.rednerHolder(asset)}
-									{!asset.status.lent && <Tag color='green' >Ready</Tag>}
-								</Affix>
-								<Panel style={{backgroundColor: "#1a1d24"}} shaded header={asset.name} bordered collapsible>
-									<FlexboxGrid>
-										<FlexboxGrid.Item colspan={20}>
-											<p>{asset.description}</p>												
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item style={{ textAlign: 'center' }} colspan={4}>
-											{!asset.status.lent &&  <Button onClick={() => this.openLend(asset)} appearance="ghost" size='sm' >Lend</Button>}
-											{asset.status.lent && <Button onClick={() => this.openUnlend(asset)} appearance="ghost" size='sm' >Un-Lend</Button>}													
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-									{asset.uses !== 999 &&	
-									<p>
-										Uses: {asset.uses}
-									</p>}
-								</Panel>									
+								{asset.uses > 0 && <React.Fragment>
+									<Affix>
+										{asset.status.lent && this.rednerHolder(asset)}
+										{!asset.status.lent && <Tag color='green' >Ready</Tag>}
+									</Affix>
+									<Panel style={{backgroundColor: "#1a1d24"}} shaded header={asset.name} bordered collapsible>
+										<FlexboxGrid>
+											<FlexboxGrid.Item colspan={20}>
+												<p>{asset.description}</p>												
+											</FlexboxGrid.Item>
+											<FlexboxGrid.Item style={{ textAlign: 'center' }} colspan={4}>
+												{!asset.status.lent &&  <Button onClick={() => this.openLend(asset)} appearance="ghost" size='sm' >Lend</Button>}
+												{asset.status.lent && <Button onClick={() => this.openUnlend(asset)} appearance="ghost" size='sm' >Un-Lend</Button>}													
+											</FlexboxGrid.Item>
+										</FlexboxGrid>
+										{asset.uses !== 999 &&	
+										<p>
+											Uses: {asset.uses}
+										</p>}
+									</Panel>									
+								</React.Fragment>}								
 								</div>
 							))}
 						<Divider style={{marginTop: '15px', marginBottom: '0px'}}>Borrowed Assets</Divider>
