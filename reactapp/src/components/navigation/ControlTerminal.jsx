@@ -41,9 +41,7 @@ class ControlTerminal extends Component {
 			status: this.props.gamestate.status,
 			endTime: this.props.gamestate.endTime
 		}
-		socket.on('updateAssets', ()=> { this.getAssets() });
 
-		await this.getAssets();
 		let drafts = 0;
 		let awaiting= 0;
 		let ready = 0;
@@ -61,7 +59,6 @@ class ControlTerminal extends Component {
 				round: this.props.gamestate.round, 
 				status: this.props.gamestate.status
 			}
-			await this.getAssets();
 			let drafts = 0;
 			let awaiting= 0;
 			let ready = 0;
@@ -72,12 +69,6 @@ class ControlTerminal extends Component {
 			}
 			this.setState({ formValue, drafts, awaiting, ready, endTime: this.props.gamestate.endTime })			
 		}
-	}
-
-	getAssets = async () => {
-		let {data} = 	await axios.get(`${gameServer}api/assets/`);
-		data = data.filter(el => el.model !== 'Wealth');
-		this.setState({ assets: data })		
 	}
 
 	
@@ -223,7 +214,7 @@ class ControlTerminal extends Component {
 				</Modal>
 			
 				<Modal size='sm' show={this.state.assModal} onHide={() => this.setState({ assModal: false })}>
-					<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => this.handleChage(event)} data={this.state.assets} valueKey='_id' labelKey='name'></SelectPicker>
+					<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => this.handleChage(event)} data={this.props.assets} valueKey='_id' labelKey='name'></SelectPicker>
 						{this.renderAss()}
 						<Modal.Footer>
 							{this.state.selected && 
@@ -242,8 +233,11 @@ class ControlTerminal extends Component {
 	}
 
 	handleChage = (event) => {
-		const selected = this.state.assets.find(el => el._id === event);
-		this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses })
+		if (event) {
+			const selected = this.props.assets.find(el => el._id === event);
+			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses })			
+		}
+		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
 
 	assetModify = async () => {
@@ -393,6 +387,7 @@ const textStyle = {
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
+	assets: state.assets.list,
 	login: state.auth.login,
 	gamestate: state.gamestate,
 	characters: state.characters.list,
