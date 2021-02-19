@@ -12,13 +12,6 @@ class HomePage extends Component {
 		};
 	}
 
-componentDidMount = () => {
-	setTimeout(
-		() => this.setState({ show: true }), 
-		12000
-	);
-}
-
 	openAnvil () {
 		const win = window.open('https://www.worldanvil.com/w/afterlife3A-a-postmortem-megagame-afterlife-control', '_blank');
 		win.focus();
@@ -41,11 +34,6 @@ componentDidMount = () => {
 		else return ( 
 			<Container style={{backgroundColor:'#15181e', padding:'15px', width: '860px', position: 'relative', display: 'inline-block', textAlign: 'left'}}>
 				<Content>
-				{!this.props.myCharacter && this.state.show &&
-					<React.Fragment>
-							<p>If you cannot see the Navigation Bar at the top, it means there was a connection error. Please wait a minute and then refresh</p>
-							<Divider className='catagory-underline'/>						
-					</React.Fragment>}
 					<img src={"https://www.worldanvil.com/media/cache/cover/uploads/images/d2a671e443bd62d71dd72fb872c2f887.jpg"} alt='Unable to load img' width="830" height="320"/>
 					<Divider className='catagory-underline'/>
 					<h6>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} onClick={() =>this.openAnvil()} appearance="primary"/></h6>
@@ -53,7 +41,7 @@ componentDidMount = () => {
 						<span> {this.props.gamestate.round} </span>
 					</div>
 					<div > <b>Game Version:</b>
-						<span> 2.2</span>
+						<span> 2.3</span>
 					</div>
 				</Content>
 			<Footer>
