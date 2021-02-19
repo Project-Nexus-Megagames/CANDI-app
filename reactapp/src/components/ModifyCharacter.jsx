@@ -19,8 +19,8 @@ class ModifyCharacter extends Component {
 			effort: 0,
 			uses: 0,
 			_id: ''		
-		}
-
+		},
+		loading: false
 	 }
 		
 	 componentDidMount = () => {
@@ -68,6 +68,7 @@ class ModifyCharacter extends Component {
 
 	 handleSubmit = async () => {
 		// 1) make a new action
+		this.setState({ loading: true });			
 		try{
 			await axios.patch(`${gameServer}api/characters/modify`, { data: this.state.formValue });
 			Alert.success('Character Successfully Modify');
@@ -76,6 +77,7 @@ class ModifyCharacter extends Component {
 		catch (err) {
 			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}
+		this.setState({ loading: false });		
 	 }
 
 	render() { 
@@ -146,7 +148,7 @@ class ModifyCharacter extends Component {
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
+          <Button loading={this.state.loading} disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.props.closeModal()} appearance="subtle">

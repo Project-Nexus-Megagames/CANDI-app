@@ -33,7 +33,7 @@ const App = (props) => {
   return ( 
       <div className="App" style={props.loading ? loading : done}>
         <React.Fragment>
-          {props.login && props.myCharacter && !props.loading && <Header>
+          {props.login && props.myCharacter && props.actions.length > 1 && !props.loading && <Header>
             <NavigationBar/>
           </Header> }
           <Switch>
@@ -78,6 +78,7 @@ const done = {
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
+  actions: state.actions.list,
 	loading: state.auth.loading,
 	error: state.auth.error,
   login: state.auth.login,

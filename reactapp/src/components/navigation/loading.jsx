@@ -2,8 +2,6 @@ import React from 'react';
 import { Content, FlexboxGrid } from 'rsuite';
 
 const Loading = () => {
-    const rand = (Math.floor(Math.random() * spook.length ));
-    console.log(rand)
 	return ( 
 		<React.Fragment>
 		<Content>
@@ -45,3 +43,5 @@ const spook = [
     'https://media0.giphy.com/media/1qk24adSnJ1OOJLpZM/giphy.gif',
     'https://media3.giphy.com/media/hS9SwD4UcQH5OJBeV4/giphy.gif'
 ]
+
+const rand = (Math.floor(Math.random() * spook.length ));
