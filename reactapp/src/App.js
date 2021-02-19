@@ -33,7 +33,7 @@ const App = (props) => {
   return ( 
       <div className="App" style={props.loading ? loading : done}>
         <React.Fragment>
-          {props.login && props.myCharacter && props.actions.length > 1 && !props.loading && <Header>
+          {props.login && props.characters.length > 0 && props.actions.length > 0  && !props.loading && <Header>
             <NavigationBar/>
           </Header> }
           <Switch>
@@ -84,6 +84,7 @@ const mapStateToProps = (state) => ({
   login: state.auth.login,
   gamestate: state.gamestate,
   assets: state.assets,
+  characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 

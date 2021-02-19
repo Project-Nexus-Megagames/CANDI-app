@@ -51,7 +51,6 @@ class Navigation extends Component {
 			let hours = Math.floor((distance % (1000 * 60 *60 * 24)) / (1000 * 60 *60));
 			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-			console.log(hours);
 			if (days + hours > 0) {
 				return (<p style={{ }}  >Time Left: {days} Days, {hours} Hours </p>)				
 			}

@@ -1,21 +1,89 @@
 import React from 'react';
-import { Content, FlexboxGrid } from 'rsuite';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { Content, FlexboxGrid, Progress } from 'rsuite';
+const { Line, Circle } = Progress;
 
-const Loading = () => {
-	return ( 
-		<React.Fragment>
-		<Content>
-			<FlexboxGrid justify="center">
-			<FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '80px'}}>
-				<img src={spook[rand]} alt={'Loading...'} />  
-			</FlexboxGrid.Item>
-			</FlexboxGrid>
-		</Content> <b>Loading...</b>
-	</React.Fragment>
-	 );
+class Loading extends Component {
+    constructor(props) {
+		super(props);
+		this.state = {
+            actions: false,
+            characters: false,
+            assets: false,
+            gamestate: false
+		};
+	}
+
+    componentDidUpdate = (prevProps) => {
+        if (this.props.actions !== prevProps.actions) {
+            this.setState({ actions: true }); 
+        }
+        if (this.props.characters !== prevProps.characters) {
+            this.setState({ characters: true }); 
+        }
+        if (this.props.assets !== prevProps.assets) {
+            this.setState({ assets: true }); 
+        }
+        if (this.props.gamestate !== prevProps.gamestate) {
+            this.setState({ gamestate: true }); 
+        }
+    }
+
+    render() {
+        return ( 
+            <React.Fragment>
+            <Content>
+                <FlexboxGrid justify="center">
+                <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px'}}>
+                    <img src={spook[rand]} alt={'Loading...'} />  
+                </FlexboxGrid.Item>
+                </FlexboxGrid>
+                <FlexboxGrid  justify="center" >
+                    <FlexboxGrid.Item colspan={4}>
+                    <div style={{ width: 160, marginTop: 10 }}>
+                        Gamestate: <Circle percent={this.state.gamestate ? 100 : 0} showInfo={this.state.gamestate ? true: false} status={this.state.gamestate ? 'success' : 'active'} />
+                    </div>  
+                    </FlexboxGrid.Item>
+                    
+                    <FlexboxGrid.Item colspan={4}>
+                    <div style={{ width: 160, marginTop: 10 }}>
+                        Assets: <Circle percent={this.state.assets ? 100 : 0} showInfo={this.state.assets ? true: false} status={this.state.assets ? 'success' : 'active'} />                  
+                    </div>
+                   </FlexboxGrid.Item>  
+
+                    <FlexboxGrid.Item colspan={4}>
+                    <div style={{ width: 160, marginTop: 10 }}>
+                        Characters: <Circle percent={this.state.characters ? 100 : 0} showInfo={this.state.characters ? true: false} status={this.state.characters ? 'success' : 'active'} />
+                    </div>
+                    </FlexboxGrid.Item>                  
+
+                    <FlexboxGrid.Item colspan={4}>
+                    <div style={{ width: 160, marginTop: 10 }}>
+                        Actions: <Circle percent={this.state.actions ? 100 : 0} showInfo={this.state.actions ? true: false} status={this.state.actions ? 'success' : 'active'} />               
+                    </div>
+                   </FlexboxGrid.Item>
+
+
+                </FlexboxGrid>
+            </Content> <b>Loading...</b>
+        </React.Fragment>
+        );        
+    }
 }
 
-export default Loading;
+const mapStateToProps = (state) => ({
+	assets: state.assets.list,
+	characters: state.characters.list,
+    actions: state.actions.list,
+    gamestate: state.gamestate,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Loading);
 
 const spook = [
     'https://media4.giphy.com/media/tJMVqwkdUIuL0Eiam3/source.gif',
