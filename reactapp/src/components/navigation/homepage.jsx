@@ -35,10 +35,10 @@ componentDidMount = () => {
 			this.props.history.push('/');
 			return (<Loader inverse center content="doot..." />)
 		};
-		if (this.props.loading) {
+		if (this.props.loading || this.props.actions.length === 0) {
 			return (<Loading />)
 		}
-		return ( 
+		else return ( 
 			<Container style={{backgroundColor:'#15181e', padding:'15px', width: '860px', position: 'relative', display: 'inline-block', textAlign: 'left'}}>
 				<Content>
 				{!this.props.myCharacter && this.state.show &&
@@ -72,6 +72,7 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	loading: state.auth.loading,
 	gamestate: state.gamestate,
+	actions: state.actions.list,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
