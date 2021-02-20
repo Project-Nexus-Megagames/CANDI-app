@@ -71,7 +71,7 @@ class ModifyCharacter extends Component {
 		this.setState({ loading: true });			
 		try{
 			await axios.patch(`${gameServer}api/characters/modify`, { data: this.state.formValue });
-			Alert.success('Character Successfully Modify');
+			Alert.success('Character Modify Submitted');
 			this.props.closeModal()
 		}
 		catch (err) {

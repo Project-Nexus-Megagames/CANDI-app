@@ -37,7 +37,7 @@ class NewAction extends Component {
 			const {data} = await axios.post(`${gameServer}api/actions`, { data: action });
 			console.log(data)
 			this.props.actionAdded(data);
-			Alert.success('Action Successfully Created');
+			Alert.success('Action Creation Submitted');
 			const modifiedChar = {...this.props.myCharacter};
 			modifiedChar.effort -= this.state.effort;
 			this.props.updateCharacter(modifiedChar);

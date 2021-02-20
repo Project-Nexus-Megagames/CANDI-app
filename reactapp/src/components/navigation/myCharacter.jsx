@@ -316,7 +316,7 @@ class MyCharacter extends Component {
 			Alert.error(`Error: ${err}`, 5000);
 		}
 		// this.props.lendAsset(this.state.lending._id);
-		Alert.success('Asset Successfully Lent');
+		Alert.success('Asset Lend Submitted');
 
 		this.setState({ lending: null, target: null });
 		this.closeLend();
@@ -332,7 +332,7 @@ class MyCharacter extends Component {
 		}
 		try{
 			await axios.post(`${gameServer}api/assets/lend`, { data });
-			Alert.success('Asset Successfully Taken Back');	
+			Alert.success('Asset Take Back Submitted');	
 			this.setState({ unlend: false, unleanding: null });
 		}
 		catch (err) {

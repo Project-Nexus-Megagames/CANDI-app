@@ -249,7 +249,7 @@ class ControlTerminal extends Component {
 		}
 		try{
 			await axios.patch(`${gameServer}api/assets/modify`, { data });
-			Alert.success('Asset Successfully Modified');
+			Alert.success('Asset Modification Submitted');
 			this.setState({ assModal: false, selected: null });
 		}
 		catch (err) {
@@ -295,7 +295,7 @@ class ControlTerminal extends Component {
 				endTime: this.state.endTime
 			}
 			await axios.patch(`${gameServer}api/gamestate/modify`, { data });
-			Alert.success('Gamestate Successfully Modify');
+			Alert.success('Gamestate Modify Submitted');
 			this.setState({ gsModal: false });
 		}
 		catch (err) {
