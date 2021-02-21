@@ -109,7 +109,22 @@ const spook = [
     'https://media3.giphy.com/media/dt0T8TI3Kizyctrxh9/giphy.gif',
     'https://media4.giphy.com/media/kbnUIUVY7YHNhe5tbb/giphy.gif',
     'https://media0.giphy.com/media/1qk24adSnJ1OOJLpZM/giphy.gif',
-    'https://media3.giphy.com/media/hS9SwD4UcQH5OJBeV4/giphy.gif'
+    'https://media3.giphy.com/media/hS9SwD4UcQH5OJBeV4/giphy.gif',
+    'https://i.imgur.com/vxfXBNl.gif',
+    'https://media1.giphy.com/media/3oKIP9mHmT06rm5U7m/giphy.gif',
+    'https://i.pinimg.com/originals/48/b0/53/48b053be029e37be13785a65fd3775b4.gif',
+    'https://media1.giphy.com/media/1wlWr2HGewrBcLAAQ0/giphy.gif',
+    'https://media3.giphy.com/media/1qj35KDHtfyLn8bwqh/giphy.gif',
+    'https://giphy.com/gifs/skeleton-shake-fortune-3oge86TxFDmhkprqh2',
+    'https://media0.giphy.com/media/1zi2j6wyS4LQLJahuJ/giphy.gif',
+    'https://media3.giphy.com/media/l3fQ6Fh6Ze3rMXn4A/giphy.gif',
+    'https://64.media.tumblr.com/72a50ed4436222d33167bccd569e2bb2/tumblr_ovgln7QfTh1qza1qzo1_540.gifv',
+    'https://i.giphy.com/media/3og0Iu8iny7QBGTisE/giphy.webp',
+    'https://media1.giphy.com/media/l1KVbRLpuny2Ueig8/giphy.gif',
+    'https://media4.giphy.com/media/uBy3vPgqr6zPuZjLzC/giphy.gif',
+    'https://media1.giphy.com/media/39jP8ygazzD3RQ2MpE/giphy.gif',
+    'https://media4.giphy.com/media/3o752i5GzHOYoALGeI/giphy.gif',
+    'https://i.pinimg.com/originals/cd/e4/e2/cde4e242d5c3ace213a72d33cea9b16e.gif'
 ]
 
 const rand = (Math.floor(Math.random() * spook.length ));
