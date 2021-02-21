@@ -61,7 +61,7 @@ class SelectedAction extends Component {
 		try{
 			if (this.state.edit) {
 				let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
-				Alert.success('Action Succsessfully Edited');	
+				Alert.success('Action Edit Submitted');	
 				this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: ''});	
 				this.props.handleSelect(data)
 			}

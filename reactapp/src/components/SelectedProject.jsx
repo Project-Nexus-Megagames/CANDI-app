@@ -133,7 +133,7 @@ class SelectedProject extends Component {
 		}
 		try{
 			let {data} = await axios.patch(`${gameServer}api/actions/project`, { data: data2 });
-			Alert.success('Project Edited');
+			Alert.success('Project Edit Submitted');
 			this.setState({ projectModal: false });
 			this.props.handleSelect(data)
 		}

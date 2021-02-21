@@ -2,10 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader } from 'rsuite';
 import { gameServer } from '../../config';
-import openSocket from 'socket.io-client';
 import { connect } from 'react-redux';
-
-const socket = openSocket(gameServer);
 
 class ControlTerminal extends Component {
 	state = { 
@@ -249,7 +246,7 @@ class ControlTerminal extends Component {
 		}
 		try{
 			await axios.patch(`${gameServer}api/assets/modify`, { data });
-			Alert.success('Asset Successfully Modified');
+			Alert.success('Asset Modification Submitted');
 			this.setState({ assModal: false, selected: null });
 		}
 		catch (err) {
@@ -295,7 +292,7 @@ class ControlTerminal extends Component {
 				endTime: this.state.endTime
 			}
 			await axios.patch(`${gameServer}api/gamestate/modify`, { data });
-			Alert.success('Gamestate Successfully Modify');
+			Alert.success('Gamestate Modify Submitted');
 			this.setState({ gsModal: false });
 		}
 		catch (err) {

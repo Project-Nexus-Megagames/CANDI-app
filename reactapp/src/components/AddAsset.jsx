@@ -41,7 +41,7 @@ class AddAsset extends Component {
 	 }
 		try{
 			await axios.patch(`${gameServer}api/characters/newAsset`, { data: formValue });
-			Alert.success('Character Successfully Modify');
+			Alert.success('Character Modify Submitted');
 			this.setState({ loading: false, formValue: { name: '', description: '' }, assetBoolean: false });
 			this.props.closeModal()
 		}

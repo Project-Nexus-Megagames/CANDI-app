@@ -238,7 +238,7 @@ class OtherCharacters extends Component {
 		}
 		modifiedChar.supporters = bullshit;
 		this.props.updateCharacter(modifiedChar);
-		Alert.success('Support Changed');
+		Alert.success('Support Change Submitted');
 		this.setState({ selected: '' });
 	}
 	
