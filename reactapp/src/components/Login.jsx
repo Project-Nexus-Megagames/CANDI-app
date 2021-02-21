@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react'; // React imports
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, ControlLabel, Form, FormControl, FormGroup, Modal, Schema } from 'rsuite';
@@ -24,15 +24,17 @@ const Login = props => {
 	console.log('Mounting App...')
 	let token = localStorage.getItem('token');
 
-	if (token) {
-		props.tokenLogin(token);
-	} 
+	useEffect(() => {
+		if (token && props.auth.login === false) {
+			props.tokenLogin(token);
+		} 
+	})
 
 	if (props.login) {
 		loadState();
 		history.push('/home');
 	}
-    
+
     return ( 
 		<Modal backdrop="static" show={true}>
 		<Modal.Header>
@@ -67,6 +69,7 @@ const model = Schema.Model({
 });
 
 const mapStateToProps = (state) => ({
+	auth: state.auth,
 	login: state.auth.login,
 	error: state.auth.error,
 	user: state.auth.user,

@@ -2,10 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader } from 'rsuite';
 import { gameServer } from '../../config';
-import openSocket from 'socket.io-client';
 import { connect } from 'react-redux';
-
-const socket = openSocket(gameServer);
 
 class ControlTerminal extends Component {
 	state = { 
