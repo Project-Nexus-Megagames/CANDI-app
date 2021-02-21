@@ -28,7 +28,7 @@ class HomePage extends Component {
 			this.props.history.push('/');
 			return (<Loader inverse center content="doot..." />)
 		};
-		if (this.props.loading || this.props.actions.length === 0) {
+		if (this.props.loading || this.props.actions.length === 0 || !this.props.gamestate || !this.props.myCharacter) {
 			return (<Loading />)
 		}
 		else return ( 
