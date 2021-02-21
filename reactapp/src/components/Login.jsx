@@ -10,6 +10,7 @@ import { loadplayerActions } from '../redux/entities/playerActions';
 const { StringType } = Schema.Types;
 
 const Login = props => {
+	let { login, tokenLogin } = props;
     const [errors, setErrors] = React.useState({});
     const [formValue, setFormValue] = React.useState({ email: '', password: '',});
 	const loadState = () => {
@@ -22,13 +23,15 @@ const Login = props => {
 	const history = useHistory();
 	
 	console.log('Mounting App...')
-	let token = localStorage.getItem('token');
+	
 
 	useEffect(() => {
-		if (token && props.auth.login === false) {
-			props.tokenLogin(token);
+		let token = localStorage.getItem('token');
+
+		if (token && login === false) {
+			tokenLogin(token);
 		} 
-	})
+	}, [login, tokenLogin])
 
 	if (props.login) {
 		loadState();

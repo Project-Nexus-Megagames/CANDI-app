@@ -106,7 +106,7 @@ class ControlTerminal extends Component {
 				</Panel>
 				<Divider>Scott's Message of the Day:</Divider>
 				<div>
-					<h5>Prepare for Unseen consequences...</h5>
+					<h5>Please let me know if the App is performing worse or better</h5>
 				</div>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
