@@ -58,7 +58,7 @@ export const {
 export default slice.reducer; // Reducer Export
 
 // Action Creators (Commands)
-const url = `${gameServer}api/actions`;
+let url = `${gameServer}api/actions`;
 
 // Selector
 export const getMyActions = createSelector(
@@ -82,6 +82,10 @@ export const filteredActions = createSelector(
 
 // playerActions Loader into state
 export const loadplayerActions = payload => (dispatch, getState) => {
+  if (!payload.roles.some(el => el === 'Control')) {
+    url = `${url}/${payload.username}`
+  }
+  
   return dispatch(
     apiCallBegan({
       url,

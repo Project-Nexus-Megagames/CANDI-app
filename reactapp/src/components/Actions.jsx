@@ -11,9 +11,9 @@ class Actions extends Component {
 	state = { 
 		selected: null,
 		showNew: false,
-	 }
+	}
 
-	 componentDidMount() {
+	componentDidMount() {
 		this.setState({ selected: null });
 	}
 
@@ -71,7 +71,7 @@ class Actions extends Component {
 				myCharacter={this.props.myCharacter}
 			/>
 		</Container>
-		 );
+		);
 	}
 
 	filteredAssets = () => {
@@ -102,4 +102,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Actions);
- 

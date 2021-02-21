@@ -17,18 +17,13 @@ import OtherCharacters from './components/navigation/OtherCharacters';
 import ControlTerminal from './components/navigation/ControlTerminal';
 // import Registration from './components/navigation/Registration';
 
-import { charactersReceived, getMyCharacter } from './redux/entities/characters';
 import Login from './components/Login';
-import { playerActionsReceived } from './redux/entities/playerActions';
-import { gamestateReceived } from './redux/entities/gamestate';
 import NotFound from './components/notFound';
-import { assetsReceived } from './redux/entities/assets';
 import initUpdate from './redux/initUpdate';
 
 // React App Component
 initUpdate();
 const App = (props) => {
-
 
   return ( 
       <div className="App" style={props.loading ? loading : done}>
@@ -82,18 +77,11 @@ const mapStateToProps = (state) => ({
 	loading: state.auth.loading,
 	error: state.auth.error,
   login: state.auth.login,
-  gamestate: state.gamestate,
-  assets: state.assets,
   characters: state.characters.list,
-  myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // handleLogin: (data) => dispatch(loginUser(data))
-  playerActionsReceived: (data) => dispatch(playerActionsReceived(data)),
-  charactersReceived: (data) => dispatch(charactersReceived(data)),
-  gamestateReceived: (data) => dispatch(gamestateReceived(data)),
-  assetsRecieved: (data) => dispatch(assetsReceived(data))
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

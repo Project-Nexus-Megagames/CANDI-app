@@ -28,7 +28,7 @@ const api = ({ dispatch }) => next => async action => {
     }
     else {
     console.log(error);      
-     dispatch(actions.apiCallFailed(error.response.data ? error.response.data : error.message));      
+    dispatch(actions.apiCallFailed(error.response.data ? error.response.data : error.message));      
     }
 
     // Specific

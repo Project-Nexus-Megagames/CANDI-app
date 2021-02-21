@@ -50,7 +50,7 @@ class Loading extends Component {
                     <div style={{ width: 160, marginTop: 10 }}>
                         Assets: <Circle percent={this.state.assets ? 100 : 0} showInfo={this.state.assets ? true: false} status={this.state.assets ? 'success' : 'active'} />                  
                     </div>
-                   </FlexboxGrid.Item>  
+                </FlexboxGrid.Item>  
 
                     <FlexboxGrid.Item colspan={4}>
                     <div style={{ width: 160, marginTop: 10 }}>
@@ -62,7 +62,7 @@ class Loading extends Component {
                     <div style={{ width: 160, marginTop: 10 }}>
                         Actions: <Circle percent={this.state.actions ? 100 : 0} showInfo={this.state.actions ? true: false} status={this.state.actions ? 'success' : 'active'} />               
                     </div>
-                   </FlexboxGrid.Item>
+                </FlexboxGrid.Item>
 
 
                 </FlexboxGrid>
