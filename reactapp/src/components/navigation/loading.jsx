@@ -115,7 +115,7 @@ const spook = [
     'https://i.pinimg.com/originals/48/b0/53/48b053be029e37be13785a65fd3775b4.gif',
     'https://media1.giphy.com/media/1wlWr2HGewrBcLAAQ0/giphy.gif',
     'https://media3.giphy.com/media/1qj35KDHtfyLn8bwqh/giphy.gif',
-    'https://giphy.com/gifs/skeleton-shake-fortune-3oge86TxFDmhkprqh2',
+    'https://media0.giphy.com/media/3oge86TxFDmhkprqh2/giphy.gif',
     'https://media0.giphy.com/media/1zi2j6wyS4LQLJahuJ/giphy.gif',
     'https://media3.giphy.com/media/l3fQ6Fh6Ze3rMXn4A/giphy.gif',
     'https://64.media.tumblr.com/72a50ed4436222d33167bccd569e2bb2/tumblr_ovgln7QfTh1qza1qzo1_540.gifv',
