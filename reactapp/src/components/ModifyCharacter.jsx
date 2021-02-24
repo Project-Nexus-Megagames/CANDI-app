@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, Alert, InputPicker } from 'rsuite';
 import axios from 'axios';
 import { gameServer } from '../config';
+import { connect } from 'react-redux';
 
 class ModifyCharacter extends Component {
 	state = { 
@@ -9,7 +10,8 @@ class ModifyCharacter extends Component {
 			characterName: '',
 			email: '',
 			worldAnvil: '',
-			tag: '',
+			tag: '', 
+			control: '',
 			playerName: '',
 			timeZone: '',
 			bio: '',
@@ -24,18 +26,20 @@ class ModifyCharacter extends Component {
 	 }
 		
 	 componentDidMount = () => {
-		 const char = this.props.character;
-		 // console.log(this.props.character)
+		 const char = this.props.characters.find(el => el._id === this.props.selected._id);
+		 console.log(char)
 		 if (char !== undefined) {
 			const formValue = {
 					characterName: char.characterName,
 					email: char.email,
 					worldAnvil: char.worldAnvil,
 					tag: char.tag,
+					control: char.control,
 					timeZone: char.timeZone,
 					playerName: char.playerName,
 					bio: char.bio,
-					// wealth: this.props.character.wealth.description,
+					wealth: char.wealth.description,
+					uses: char.wealth.uses,
 					icon: char.icon,
 					popSupport: char.popSupport,
 					effort: char.effort,
@@ -108,6 +112,10 @@ class ModifyCharacter extends Component {
 								<ControlLabel>worldAnvil</ControlLabel>
 								<FormControl name="worldAnvil" />
 							</FormGroup>
+							<FormGroup>
+								<ControlLabel>Control</ControlLabel>
+								<FormControl name="control" />
+							</FormGroup>							
 							</FlexboxGrid.Item>
 
 							<FlexboxGrid.Item colspan={8}>
@@ -183,4 +191,12 @@ const pickerData = [
 	}
 ]
 
-export default ModifyCharacter;
+const mapStateToProps = (state) => ({
+	characters: state.characters.list,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModifyCharacter);

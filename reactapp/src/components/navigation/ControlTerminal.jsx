@@ -29,7 +29,8 @@ class ControlTerminal extends Component {
 		selected: null,
 		name: '',
 		description: '',
-		uses: 0
+		uses: 0, 
+		loading: false
 	 }
 
 	componentDidMount = async () => {
@@ -106,7 +107,7 @@ class ControlTerminal extends Component {
 				</Panel>
 				<Divider>Scott's Message of the Day:</Divider>
 				<div>
-					<h5>Please let me know if the App is performing worse or better</h5>
+					<h5>I'm a lumberjack and I'm ok.</h5>
 				</div>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
@@ -125,7 +126,7 @@ class ControlTerminal extends Component {
 						</FormGroup>
 					</Form>
 					<Modal.Footer>
-        	  <Button onClick={() => this.handleSubmit()} disabled={(this.state.formValue.status === null)} appearance="primary">
+        	  <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={(this.state.formValue.status === null)} appearance="primary">
         	    Submit
         	  </Button>
         	  <Button onClick={() => this.setState({ gsModal: false })} appearance="subtle">
@@ -211,13 +212,13 @@ class ControlTerminal extends Component {
 				</Modal>
 			
 				<Modal size='sm' show={this.state.assModal} onHide={() => this.setState({ assModal: false })}>
-					<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => this.handleChage(event)} data={this.props.assets} valueKey='_id' labelKey='name'></SelectPicker>
+					<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => this.handleChage(event)} data={this.props.assets.filter(el => el.model !== 'Wealth')} valueKey='_id' labelKey='name'></SelectPicker>
 						{this.renderAss()}
 						<Modal.Footer>
 							{this.state.selected && 
 							<ButtonGroup>
-								<Button onClick={() => this.assetModify()} color="blue">Edit</Button>
-								<Button onClick={() => this.handleDelete()} color="red">Delete</Button>								
+								<Button loading={this.state.loading}  onClick={() => this.assetModify()} color="blue">Edit</Button>
+								<Button loading={this.state.loading}  onClick={() => this.handleDelete()} color="red">Delete</Button>								
 							</ButtonGroup>}
 						</Modal.Footer>
 				</Modal>
@@ -238,6 +239,7 @@ class ControlTerminal extends Component {
 	}
 
 	assetModify = async () => {
+		this.setState({ loading: true });
 		const data = {
 			id: this.state.selected,
 			name: this.state.name,
@@ -250,8 +252,9 @@ class ControlTerminal extends Component {
 			this.setState({ assModal: false, selected: null });
 		}
 		catch (err) {
-      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
+      Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
+		this.setState({ loading: false });
 	}
 
 	renderAss = () => {
@@ -347,6 +350,10 @@ class ControlTerminal extends Component {
 	isControl () {
 		if (this.props.user.roles.some(el => el === "Control")) return false;
 		else return true;
+	}
+
+	filterAssets () {
+		const filtered = this.props.assets.filter(el => el.modal !== 'Wealth')
 	}
 	
 }

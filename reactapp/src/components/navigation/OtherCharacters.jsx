@@ -188,7 +188,7 @@ class OtherCharacters extends Component {
 					</FlexboxGrid>	
 				<ModifyCharacter
 					show={this.state.edit}
-					character={this.state.selected}
+					selected={this.state.selected}
 					closeModal={this.closeModal}
 					// player={this.props.player????}
 				/>

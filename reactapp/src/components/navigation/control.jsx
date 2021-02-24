@@ -21,7 +21,12 @@ class Control extends Component {
 	}
 
 	copyToClipboard (email) {
-		navigator.clipboard.writeText(email);
+		if (email === 'Use the #tech-support channel on the Afterlife discord server') {
+			const win = window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+			win.focus();
+		}
+		else 
+			navigator.clipboard.writeText(email);
 	}
 
 	filter = (fil) => {
@@ -153,7 +158,7 @@ const controllers = [
 		role: "Epsilon Control",
 		email: "afterlifeepsilon@gmail.com",
 		timezone: "CST",
-		responsibilities: "The Scholar, The Avenging Fury, The Implacable Fury, The Forman, The Sculptor, The Overseer, The Rampant Fury, The Bailiff, The Smith, The Sommelier, The Songbird, The Executioner"
+		responsibilities: "The Scholar, The Avenging Fury, The Implacable Fury, The Foreman, The Sculptor, The Overseer, The Rampant Fury, The Bailiff, The Smith, The Sommelier, The Songbird, The Executioner"
 		},
 	{
     name: "Scott",
