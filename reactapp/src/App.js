@@ -50,11 +50,11 @@ const App = (props) => {
         <Route exact path='/control' render={(props) => (
           <ControlTerminal {...props} />
         )} />
-        <Route exact path='/not-found' render={(props) => (
+        <Route exact path='/404' render={(props) => (
           <NotFound {...props} />
         )} />
         <Redirect from="/" exact to="login" />
-        <Redirect to="/not-found" />
+        <Redirect to="/404" />
       </Switch>
     </div>
   );

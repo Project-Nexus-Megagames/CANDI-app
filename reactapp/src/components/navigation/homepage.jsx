@@ -28,20 +28,20 @@ class HomePage extends Component {
 			this.props.history.push('/');
 			return (<Loader inverse center content="doot..." />)
 		};
-		if (this.props.loading || this.props.actions.length === 0 || !this.props.gamestate || !this.props.myCharacter) {
+		if (this.props.loading || !this.props.actions || !this.props.gamestate || !this.props.myCharacter) {
 			return (<Loading />)
 		}
 		else return ( 
 			<Container style={{backgroundColor:'#15181e', padding:'15px', width: '860px', position: 'relative', display: 'inline-block', textAlign: 'left'}}>
 				<Content>
-					<img src={"https://www.worldanvil.com/media/cache/cover/uploads/images/d2a671e443bd62d71dd72fb872c2f887.jpg"} alt='Unable to load img' width="830" height="320"/>
+					<img src={"/images/afterlife banner v1.jpg"} alt='Unable to load img' width="830" height="320"/>
 					<Divider className='catagory-underline'/>
 					<h6>World Anvil Link 				<IconButton icon={<Icon icon="link"/>} onClick={() =>this.openAnvil()} appearance="primary"/></h6>
 					<div > <b>Current Turn:</b>
 						<span> {this.props.gamestate.round} </span>
 					</div>
 					<div > <b>Game Version:</b>
-						<span> 2.5</span>
+						<span> 2.6</span>
 					</div>
 				</Content>
 			<Footer>
