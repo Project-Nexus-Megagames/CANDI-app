@@ -175,6 +175,7 @@ const bored = [
     'https://www.youtube.com/watch?v=3NCyD3XoJgM',
     'https://www.youtube.com/watch?v=kNr1HBBeCYM',
     'https://www.youtube.com/watch?v=JFtUHVgw-gQ',
+    'https://www.youtube.com/watch?v=vYud9sZ91Mc'
 ]
 
 const loadingMsg = [

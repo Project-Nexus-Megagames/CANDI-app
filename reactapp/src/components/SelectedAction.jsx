@@ -195,15 +195,15 @@ class SelectedAction extends Component {
 						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
 							<Slider graduated
 							min={0}
-							max={this.props.myCharacter.effort}
-							defaultValue={1}
+							max={this.props.myCharacter.effort + this.props.action.effort}
+							defaultValue={this.state.effort}
 							progress
 							value={this.state.effort}
 							onChange={(event)=> this.setState({effort: event})}>
 							</Slider>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort + this.props.action.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={4}>
 						</FlexboxGrid.Item>
@@ -216,7 +216,7 @@ class SelectedAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
+          <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.closeEdit()} appearance="subtle">
