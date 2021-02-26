@@ -62,6 +62,10 @@ class Loading extends Component {
                     <div style={{ width: 160, marginTop: 10 }}>
                         Actions: <Circle percent={this.state.actions ? 100 : 0} showInfo={this.state.actions ? true: false} status={this.state.actions ? 'success' : 'active'} />               
                     </div>
+                    {this.props.actionsFailed > 0 && <div>
+                        <p>Action Request Failed! Re-attempting...</p> 
+                        <p>Number of attempts: {this.props.actionsFailed}</p>                          
+                    </div>}   
                 </FlexboxGrid.Item>
 
 
@@ -83,6 +87,7 @@ const mapStateToProps = (state) => ({
 	assets: state.assets.list,
 	characters: state.characters.list,
     actions: state.actions.list,
+    actionsFailed: state.actions.failedAttempts,
     gamestate: state.gamestate,
 });
 

@@ -8,6 +8,7 @@ const slice = createSlice({
   name: "gamestate",
 	initialState: {
     loading: false,
+    loaded: false,
     lastFetch: null,
 		round: null,
 		endTime: null,
@@ -30,6 +31,7 @@ const slice = createSlice({
       //gamestate.list = action.payload;
       gamestate.loading = false;
       gamestate.lastFetch = Date.now();
+      gamestate.loaded = true;
     },
     gamestateRequestFailed: (gamestate, action) => {
       console.log(`${action.type} Dispatched`)

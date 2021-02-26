@@ -9,6 +9,7 @@ const slice = createSlice({
 	initialState: {
     list: [],
     loading: false,
+    loaded: false,
     lastFetch: null,
     newassets: 0
   },
@@ -23,6 +24,7 @@ const slice = createSlice({
       assets.list = action.payload;
       assets.loading = false;
       assets.lastFetch = Date.now();
+      assets.loaded = true;
     },
     assetsRequestFailed: (assets, action) => {
       console.log(`${action.type} Dispatched`)

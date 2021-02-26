@@ -28,7 +28,7 @@ class HomePage extends Component {
 			this.props.history.push('/');
 			return (<Loader inverse center content="doot..." />)
 		};
-		if (this.props.loading || !this.props.actions || !this.props.gamestate || !this.props.myCharacter) {
+		if (this.props.loading || !this.props.actionsLoaded || !this.props.gamestateLoaded || !this.props.charactersLoaded) {
 			return (<Loading />)
 		}
 		else return ( 
@@ -60,8 +60,10 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	loading: state.auth.loading,
 	gamestate: state.gamestate,
-	actions: state.actions.list,
-	myCharacter: state.auth.user ? getMyCharacter(state): undefined
+	gamestateLoaded: state.gamestate.loaded,
+	actionsLoaded: state.actions.loaded,
+	charactersLoaded: state.characters.loaded,
+	assetsLoaded: state.assets.loaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
