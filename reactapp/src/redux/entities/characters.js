@@ -10,6 +10,7 @@ const slice = createSlice({
 	initialState: {
     list: [],
     loading: false,
+    loaded: false,
     lastFetch: null,
     newcharacters: 0
   },
@@ -24,6 +25,7 @@ const slice = createSlice({
       characters.list = action.payload;
       characters.loading = false;
       characters.lastFetch = Date.now();
+      characters.loaded = true;
     },
     charactersRequestFailed: (characters, action) => {
       console.log(`${action.type} Dispatched`)

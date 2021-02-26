@@ -9,8 +9,9 @@ const slice = createSlice({
 	initialState: {
     list: [],
     loading: false,
+    loaded: false,
     lastFetch: null,
-    newplayerActions: 0,
+    failedAttempts: 0,
     filter: ''
   },
   // Reducers - playerActions
@@ -24,10 +25,12 @@ const slice = createSlice({
       playerActions.list = action.payload;
       playerActions.loading = false;
       playerActions.lastFetch = Date.now();
+      playerActions.loaded = true;
     },
     playerActionsRequestFailed: (playerActions, action) => {
       console.log(`${action.type} Dispatched`)
       playerActions.loading = false;
+      playerActions.failedAttempts++;
       socket.emit('trigger', 'updateActions');
     },
     actionAdded: (playerActions, action) => {
