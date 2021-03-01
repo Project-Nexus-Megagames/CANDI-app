@@ -16,13 +16,12 @@ const Login = props => {
 
 	const history = useHistory();
 	
-	console.log('Mounting App...')
+	// console.log('Mounting App...')
 	
 
 	useEffect(() => {
 		let token = localStorage.getItem('token');
 		if (token && login === false) {
-			console.log('tokenLogin(token);')
 			tokenLogin(token);
 		} 
 	}, [login, tokenLogin])
@@ -30,7 +29,6 @@ const Login = props => {
 	useEffect(() => {
 		if (login) {
 			loadAction(user);
-			console.log('loadState()')
 			history.push('/home');
 		}
 	}, [login, user, loadAction, history])

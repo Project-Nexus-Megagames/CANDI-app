@@ -252,9 +252,9 @@ class SelectedAction extends Component {
 		// 1) make a new action
 		try{
 			if (this.state.edit) {
-				socket.emit('actionUpdate', action); // new Socket event
+				socket.emit('updateActionRequest', action); // new Socket event
 				//let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
-				Alert.success('Action Edit Submitted');	
+				// Alert.success('Action Edit Submitted');	
 				this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: ''});	
 				this.props.handleSelect(null)
 			}

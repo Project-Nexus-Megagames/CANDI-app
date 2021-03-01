@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'; // React imports
 import { connect } from "react-redux";
-import { Header } from 'rsuite';
+import { Alert, Header } from 'rsuite';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import 'rsuite/dist/styles/rsuite-dark.css'; // Dark theme for rsuite components
@@ -22,6 +22,7 @@ import initUpdates from './redux/initUpdate';
 import { loadCharacters } from './redux/entities/characters';
 import { loadAssets } from './redux/entities/assets';
 import { loadGamestate } from './redux/entities/gamestate';
+import socket from './socket';
 
 // React App Component
 initUpdates()
@@ -32,6 +33,10 @@ const App = (props) => {
     loadChar();
     loadAssets();
     loadGamestate();
+
+    socket.on('Alert', (data) => {
+      Alert.success(data.message, 5000);
+    })
   }, [loadChar, loadAssets, loadGamestate])
 
   return (

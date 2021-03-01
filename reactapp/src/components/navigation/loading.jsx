@@ -31,7 +31,7 @@ class Loading extends Component {
         }
 
         if(this.props.actionsFailed > prevProps.actionsFailed) {
-            console.log('Triggered: ', this.props.actionsFailed, ' > ', prevProps.actionsFailed)
+            // console.log('Triggered: ', this.props.actionsFailed, ' > ', prevProps.actionsFailed)
             this.props.loadAction(this.props.user)
         }
     }
