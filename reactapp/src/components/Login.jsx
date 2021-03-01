@@ -10,15 +10,9 @@ import { loadplayerActions } from '../redux/entities/playerActions';
 const { StringType } = Schema.Types;
 
 const Login = props => {
-	let { login, tokenLogin } = props;
+	let { login, tokenLogin, loadAction, user } = props;
     const [errors, setErrors] = React.useState({});
     const [formValue, setFormValue] = React.useState({ email: '', password: '',});
-	const loadState = () => {
-		if (!props.charactersLast) props.loadChar();
-		if (!props.actionsLast) props.loadAction(props.user);
-		if (!props.assetsLast) props.loadAssets();
-		if (!props.gamestateLast) props.loadState();
-	}
 
 	const history = useHistory();
 	
@@ -27,16 +21,21 @@ const Login = props => {
 
 	useEffect(() => {
 		let token = localStorage.getItem('token');
-
 		if (token && login === false) {
+			console.log('tokenLogin(token);')
 			tokenLogin(token);
 		} 
 	}, [login, tokenLogin])
 
-	if (props.login) {
-		loadState();
-		history.push('/home');
-	}
+	useEffect(() => {
+		if (login) {
+			loadAction(user);
+			console.log('loadState()')
+			history.push('/home');
+		}
+	}, [login, user, loadAction, history])
+
+
 
     return ( 
 		<Modal backdrop="static" show={true}>
@@ -89,7 +88,7 @@ const mapDispatchToProps = (dispatch) => ({
 	loadChar: (data) => dispatch(loadCharacters()),
 	loadAction: (data) => dispatch(loadplayerActions(data)),
 	loadAssets: (data) => dispatch(loadAssets()),
-	loadState: (data) => dispatch(loadGamestate())
+	loadGamestate: (data) => dispatch(loadGamestate())
 	// updateUser: (user) => dispatch(updateUser({ user }))
 });
 
