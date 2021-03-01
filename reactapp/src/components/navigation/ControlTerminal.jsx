@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader } from 'rsuite';
 import { gameServer } from '../../config';
 import { connect } from 'react-redux';
+import socket from '../../socket';
 
 class ControlTerminal extends Component {
 	state = { 
@@ -109,6 +110,7 @@ class ControlTerminal extends Component {
 				<div>
 					<h5>I'm a lumberjack and I'm ok.</h5>
 				</div>
+				<Button onClick={()=> socket.emit('test', 'hi')}>test</Button>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="center" onChange={formValue => {this.setState({ formValue });}}>

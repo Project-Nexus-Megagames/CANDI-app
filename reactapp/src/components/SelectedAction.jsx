@@ -5,6 +5,7 @@ import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button
 import { gameServer } from '../config';
 import { characterUpdated, getMyCharacter } from '../redux/entities/characters';
 import { actionDeleted } from '../redux/entities/playerActions';
+import socket from '../socket';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedAction extends Component {
 	state = { 
@@ -28,72 +29,6 @@ class SelectedAction extends Component {
 			this.setState({ 	
 				result: this.props.action.result,
 				dieResult: this.props.action.dieResult, })			
-		}
-	}
-
-	openEdit = () => {
-		const action = this.props.action;
-
-		this.setState({ 
-			description: action.description, 
-			intent: action.intent, 
-			effort: action.effort, 
-			id: action._id, 
-			asset1: action.asset1,
-			asset2: action.asset2,
-			asset3: action.asset3,
-			edit: true })
-	}
-
-	handleSubmit = async () => {
-		this.setState({loading: true}) 
-		const action = {
-			effort: this.state.effort,
-			asset1: this.state.asset1,
-			asset2: this.state.asset2,
-			asset3: this.state.asset3,
-			description: this.state.description,
-			intent: this.state.intent,
-			id: this.state.id, 	
-		}
-		// console.log(action)
-		// 1) make a new action
-		try{
-			if (this.state.edit) {
-				let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
-				Alert.success('Action Edit Submitted');	
-				this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: ''});	
-				this.props.handleSelect(data)
-			}
-			else {
-				const edit = {
-					id: this.props.action._id, 	
-					result: this.state.result,
-					dieResult: this.state.dieResult,
-					status: this.state.status
-				}
-				let {data} = await axios.patch(`${gameServer}api/actions/editResult`, {data: edit});
-				Alert.success(data);
-				this.setState({result: '', dieResult: 0, status: ''});
-			}
-			this.setState({edit: false, resEdit: false, loading: false});
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data}`, 6000)
-			this.setState({loading: false});
-		}
-	}
-
-	renderAsset = (asset) => {
-		if (asset) {
-			return (
-					<Panel style={{backgroundColor: "#272b34"}} shaded header={asset} bordered ></Panel>	
-			)
-		}
-		else {
-			return (
-					<Panel style={{backgroundColor: "#0e1013"}} shaded header='Empty Slot' bordered ></Panel>	
-			)
 		}
 	}
 
@@ -286,6 +221,73 @@ class SelectedAction extends Component {
 			</Modal>
 		</Content>		
 		 );
+	}
+
+	openEdit = () => {
+		const action = this.props.action;
+
+		this.setState({ 
+			description: action.description, 
+			intent: action.intent, 
+			effort: action.effort, 
+			id: action._id, 
+			asset1: action.asset1,
+			asset2: action.asset2,
+			asset3: action.asset3,
+			edit: true })
+	}
+
+	handleSubmit = async () => {
+		this.setState({loading: true}) 
+		const action = {
+			effort: this.state.effort,
+			asset1: this.state.asset1,
+			asset2: this.state.asset2,
+			asset3: this.state.asset3,
+			description: this.state.description,
+			intent: this.state.intent,
+			id: this.state.id, 	
+		}
+		// console.log(action)
+		// 1) make a new action
+		try{
+			if (this.state.edit) {
+				socket.emit('actionUpdate', action); // new Socket event
+				//let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
+				Alert.success('Action Edit Submitted');	
+				this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: ''});	
+				this.props.handleSelect(null)
+			}
+			else {
+				const edit = {
+					id: this.props.action._id, 	
+					result: this.state.result,
+					dieResult: this.state.dieResult,
+					status: this.state.status
+				}
+				let {data} = await axios.patch(`${gameServer}api/actions/editResult`, {data: edit});
+				Alert.success(data);
+				this.setState({result: '', dieResult: 0, status: ''});
+			}
+			this.setState({edit: false, resEdit: false, loading: false});
+		}
+		catch (err) {
+			Alert.error(`Error: ${err.response.data}`, 6000)
+			this.setState({loading: false});
+		}
+	}
+
+	renderAsset = (asset) => {
+		if (asset) {
+			return (
+					<Panel style={{backgroundColor: "#272b34"}} shaded header={asset} bordered ></Panel>	
+			)
+		}
+		else {
+			return (
+					<Panel style={{backgroundColor: "#0e1013"}} shaded header='Empty Slot' bordered ></Panel>	
+			)
+		}
 	}
 
 	closeEdit = () => { 

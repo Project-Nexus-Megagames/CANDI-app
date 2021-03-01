@@ -19,10 +19,21 @@ import ControlTerminal from './components/navigation/ControlTerminal';
 import Login from './components/Login';
 import NotFound from './components/notFound';
 import initUpdates from './redux/initUpdate';
+import { loadCharacters } from './redux/entities/characters';
+import { loadAssets } from './redux/entities/assets';
+import { loadGamestate } from './redux/entities/gamestate';
 
 // React App Component
 initUpdates()
 const App = (props) => {
+  const { loadChar, loadAssets, loadGamestate } = props;
+	useEffect(() => {
+    console.log('App Loaded');
+    loadChar();
+    loadAssets();
+    loadGamestate();
+  }, [loadChar, loadAssets, loadGamestate])
+
   return (
     <div className="App" style={props.loading ? loading : done}>
       {props.login && props.characters.length > 0 && props.actions.length > 0  && !props.loading && <Header>
@@ -78,6 +89,10 @@ const mapStateToProps = (state) => ({
   characters: state.characters.list,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  loadChar: (data) => dispatch(loadCharacters()),
+	loadAssets: (data) => dispatch(loadAssets()),
+	loadGamestate: (data) => dispatch(loadGamestate())
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

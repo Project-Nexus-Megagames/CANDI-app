@@ -2,6 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Content, FlexboxGrid, Progress } from 'rsuite';
+import { loadplayerActions } from '../../redux/entities/playerActions';
 const { Circle } = Progress;
 
 class Loading extends Component {
@@ -27,6 +28,11 @@ class Loading extends Component {
         }
         if (this.props.gamestate !== prevProps.gamestate) {
             this.setState({ gamestate: true }); 
+        }
+
+        if(this.props.actionsFailed > prevProps.actionsFailed) {
+            console.log('Triggered: ', this.props.actionsFailed, ' > ', prevProps.actionsFailed)
+            this.props.loadAction(this.props.user)
         }
     }
 
@@ -89,10 +95,11 @@ const mapStateToProps = (state) => ({
     actions: state.actions.list,
     actionsFailed: state.actions.failedAttempts,
     gamestate: state.gamestate,
+    user: state.auth.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-
+	loadAction: (data) => dispatch(loadplayerActions(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Loading);
@@ -180,21 +187,22 @@ const bored = [
     'https://www.youtube.com/watch?v=3NCyD3XoJgM',
     'https://www.youtube.com/watch?v=kNr1HBBeCYM',
     'https://www.youtube.com/watch?v=JFtUHVgw-gQ',
-    'https://www.youtube.com/watch?v=vYud9sZ91Mc'
+    'https://www.youtube.com/watch?v=vYud9sZ91Mc',
+    'https://www.youtube.com/watch?v=PPgLTgWa99w'
 ]
 
 const loadingMsg = [
-    'Loading...',
+    'Loading...',    
+    'Long live the King!',
     'Help I\'m a man stuck inside a loading screen let me out!',
     'Oh, remind me to tell you about that thing. You know that thing about that guy with that face. Yeah you know the one.',
     'Long loading screen? Try clicking the skeleton!',
     'Don\'t touch that dial! We\'ll be right back after these messages!',
     'C.A.N.D.I stands for the "Control Actions \'N Distributing Inputs"! \nLook I really just wanted to call it CANDI. It\'s my app and I\'ll call it whatever I want!',
-    'Becoming self aware...',
-    'Database successfully deleted!',
-    'All actions successfully deleted!', 
+    'Becoming self aware...', 
+    'Вся твоя база принадлежит нам',
     'I wanted to be a dating app when I was developed.',
-    'Fun Fact: if you forget your password you will be asked to answer a security question. it is: "What is a megagame?"',
+    'Fun Fact: if you forget your password you will be asked to answer a security question. It is: "What is a megagame?"',
     'Fun Fact: Gary Oldman is in fact younger than Gary Numan',
     'Fun Fact: An average person spends 24 years of his life sleeping.',
     'Fun Fact at some point you held the world record for youngest person alive. It\'s all been pretty downhill from there, hasn\'t it?',

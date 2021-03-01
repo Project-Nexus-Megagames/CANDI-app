@@ -31,7 +31,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       playerActions.loading = false;
       playerActions.failedAttempts++;
-      socket.emit('trigger', 'updateActions');
+      // socket.emit('trigger', 'updateActions');
     },
     actionAdded: (playerActions, action) => {
       console.log(`${action.type} Dispatched`)
@@ -46,6 +46,12 @@ const slice = createSlice({
     setFilter: (playerActions, action) => {
       console.log(`${action.type} Dispatched`);
       playerActions.filter = action.payload;
+    },
+    playerActionUpdated: (playerActions, action) => {
+      console.log(`${action.type} Dispatched`)
+      console.log(`Payload : ${action.payload._id}`)
+      const index = playerActions.list.findIndex(el => el._id === action.payload._id);
+      playerActions.list[index] = action.payload;
     }
   }
 });
@@ -57,7 +63,8 @@ export const {
   playerActionsRequested,
   playerActionsRequestFailed,
   actionDeleted,
-  setFilter
+  setFilter,
+  playerActionUpdated
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export

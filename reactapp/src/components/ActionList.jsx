@@ -19,7 +19,7 @@ class ActionList extends Component {
 		}
 
 		componentDidUpdate = (prevProps) => {
-			if (this.props.actions !== prevProps.actions) {
+			if (this.props.filteredActions !== prevProps.filteredActions) {
 				this.createListCatagories();
 			}
 		}
