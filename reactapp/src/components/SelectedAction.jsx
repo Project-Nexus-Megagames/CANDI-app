@@ -246,29 +246,18 @@ class SelectedAction extends Component {
 			asset3: this.state.asset3,
 			description: this.state.description,
 			intent: this.state.intent,
-			id: this.state.id, 	
+			result: this.state.result,
+			dieResult: this.state.dieResult,
+			status: this.state.status,
+			id: this.props.action._id,
+			playerBoolean: this.state.edit	
 		}
 		// console.log(action)
 		// 1) make a new action
 		try{
-			if (this.state.edit) {
-				socket.emit('updateActionRequest', action); // new Socket event
-				//let {data} = await axios.patch(`${gameServer}api/actions/editAction`, {data: action});
-				// Alert.success('Action Edit Submitted');	
-				this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: ''});	
-				this.props.handleSelect(null)
-			}
-			else {
-				const edit = {
-					id: this.props.action._id, 	
-					result: this.state.result,
-					dieResult: this.state.dieResult,
-					status: this.state.status
-				}
-				let {data} = await axios.patch(`${gameServer}api/actions/editResult`, {data: edit});
-				Alert.success(data);
-				this.setState({result: '', dieResult: 0, status: ''});
-			}
+			socket.emit('updateActionRequest', action); // new Socket event
+			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: ''});	
+			this.props.handleSelect(null)
 			this.setState({edit: false, resEdit: false, loading: false});
 		}
 		catch (err) {
@@ -299,12 +288,13 @@ class SelectedAction extends Component {
 	};
 
 	deleteAction = async () => {
-		let {data} = await axios.delete(`${gameServer}api/actions/${this.props.action._id}`);
-		this.props.deleteAction(data);
-		const modifiedChar = {...this.props.myCharacter};
+		//let {data} = await axios.delete(`${gameServer}api/actions/${this.props.action._id}`);
+		socket.emit('deleteActionRequest', {id: this.props.action._id}); // new Socket event
+		
+		/*const modifiedChar = {...this.props.myCharacter};
 		modifiedChar.effort += this.state.effort;
 		this.props.updateCharacter(modifiedChar);
-		Alert.success(data);		
+		*/
 		this.props.handleSelect(null);
 	}
 }

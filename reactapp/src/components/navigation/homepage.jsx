@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Icon, IconButton, Divider, Content, Footer, Loader, FlexboxGrid } from 'rsuite';
-import { getMyCharacter } from '../../redux/entities/characters';
+import { Container, Icon, IconButton, Divider, Content, Footer, Loader } from 'rsuite';
 import Loading from './loading';
 
 class HomePage extends Component {
@@ -41,7 +40,7 @@ class HomePage extends Component {
 						<span> {this.props.gamestate.round} </span>
 					</div>
 					<div > <b>Game Version:</b>
-						<span> 2.7</span>
+						<span> 2.8</span>
 					</div>
 				</Content>
 			<Footer>
