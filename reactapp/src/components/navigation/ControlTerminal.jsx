@@ -108,7 +108,7 @@ class ControlTerminal extends Component {
 				</Panel>
 				<Divider>Scott's Message of the Day:</Divider>
 				<div>
-					<h5>I'm a lumberjack and I'm ok.</h5>
+					<h5>This update: All actions now operate on sockets.</h5>
 				</div>
 				<Button onClick={()=> socket.emit('test', 'hi')}>test</Button>
 

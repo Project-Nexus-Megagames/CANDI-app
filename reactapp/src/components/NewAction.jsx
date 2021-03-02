@@ -5,6 +5,7 @@ import { Modal, Button, Slider, Alert, InputPicker, FlexboxGrid, InputNumber, Lo
 import { gameServer } from '../config';
 import { getMyCharacter, characterUpdated } from '../redux/entities/characters';
 import { actionAdded } from '../redux/entities/playerActions';
+import socket from '../socket';
 class NewAction extends Component {
   constructor(props) {
     super(props);
@@ -34,14 +35,17 @@ class NewAction extends Component {
 			round: this.props.gamestate.round
 		}
 		try{
-			const {data} = await axios.post(`${gameServer}api/actions`, { data: action });
-			console.log(data)
-			this.props.actionAdded(data);
-			Alert.success('Action Creation Submitted');
+			// const {data} = await axios.post(`${gameServer}api/actions`, { data: action });
+			// console.log(data)
+			// this.props.actionAdded(data);
+			// Alert.success('Action Creation Submitted');
+			socket.emit('createActionRequest', action); // new Socket event
+			
+			// Locally update redux so that it reflects the effort being drained
 			const modifiedChar = {...this.props.myCharacter};
 			modifiedChar.effort -= this.state.effort;
 			this.props.updateCharacter(modifiedChar);
-			
+
 			this.setState({effort: 0, asset1: '', asset2: '', asset3: '', description: '', intent: '', loading: false})
 			this.props.closeNew()
 		}
@@ -135,7 +139,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	// handleLogin: (data) => dispatch(loginUser(data))
 	actionAdded: (data) => dispatch(actionAdded(data)),
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });
