@@ -113,7 +113,6 @@ class ControlTerminal extends Component {
 				<div>
 					<h5>This update: All actions now operate on sockets.</h5>
 				</div>
-				<Button onClick={()=> socket.emit('test', 'hi')}>test</Button>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="center" onChange={formValue => {this.setState({ formValue });}}>
@@ -127,7 +126,7 @@ class ControlTerminal extends Component {
 						</FormGroup>
 						<FormGroup>
 							<ControlLabel>End Time</ControlLabel>
-							<DatePicker value={this.state.endTime} onChange={this.handleDate} format="YYYY-MM-DD HH"></DatePicker>
+							<DatePicker value={this.state.endTime} onChange={this.handleDate} format="YYYY-MM-DD HH:mm"></DatePicker>
 						</FormGroup>
 					</Form>
 					<Modal.Footer>

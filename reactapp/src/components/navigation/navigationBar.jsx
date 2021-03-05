@@ -5,14 +5,21 @@ import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
 class Navigation extends Component {
   state = {
-		gamestate: {}
+		days: 0,
+		hours: 0,
+		minutes: 0
 	}
 	
 	componentDidMount() {
-		this.setState({ gamestate: this.props.gamestate });
+		this.renderTime(this.props.gamestate.endTime);
+		const interval = setInterval(() => {
+			this.renderTime(this.props.gamestate.endTime);
+        //clearInterval(interval);
+    }, 60000);
 	}
 
     render() {
+			let {days, hours, minutes} = this.state;
       return (
 				<Navbar >
 				<Navbar.Body>
@@ -30,7 +37,9 @@ class Navigation extends Component {
 				</Navbar.Body>			
 				<div style={{ position: 'fixed', top: 5, right: 25  }}>
 					<p style={{ }}  >Round: {this.props.gamestate.round} </p>	
-					{this.renderTime(this.props.gamestate.endTime)}					
+					{(this.state.days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
+					{(this.state.hours > 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+					{(this.state.days + this.state.hours + this.state.minutes === 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
 				</div>
 
 			</Navbar>
@@ -51,16 +60,7 @@ class Navigation extends Component {
 			let hours = Math.floor((distance % (1000 * 60 *60 * 24)) / (1000 * 60 *60));
 			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-			if (days + hours > 0) {
-				return (<p style={{ }}  >Time Left: {days} Days, {hours} Hours </p>)				
-			}
-			else if (minutes > 0) {
-				return (<p style={{ }}  >Time Left: {minutes} Minutes </p>)	
-			}
-			else {
-				return (<p>Game Status: Resolution</p>)	
-			}
-
+			this.setState({ days, hours, minutes })
 		}
 
 		handleSelect = (activeKey) => {
