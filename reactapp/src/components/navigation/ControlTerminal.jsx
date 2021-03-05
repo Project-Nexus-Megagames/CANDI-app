@@ -4,6 +4,7 @@ import { Alert, ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeho
 import { gameServer } from '../../config';
 import { connect } from 'react-redux';
 import socket from '../../socket';
+import { getMyCharacter } from '../../redux/entities/characters';
 
 class ControlTerminal extends Component {
 	state = { 
@@ -22,6 +23,8 @@ class ControlTerminal extends Component {
 		progress: 0,
 		players: [],
 		image: '',
+
+		characters: [],
 	
 		drafts: 0,
 		awaiting: 0,
@@ -49,7 +52,7 @@ class ControlTerminal extends Component {
 			else if (action.status.ready === true) ready++;
 			else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
 		}
-		this.setState({ formValue, drafts, awaiting, ready })
+		this.setState({ formValue, drafts, awaiting, ready, characters: {...this.props.characters} })
 	}
 
 	componentDidUpdate = async (prevProps) => {
@@ -157,7 +160,7 @@ class ControlTerminal extends Component {
 				<p>
 					Players
 				</p>
-					<TagPicker groupBy="tag" data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
+					<TagPicker data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
 					<Modal.Footer>
         	  <Button onClick={() => this.newProject()} appearance="primary">
         	    Submit
@@ -397,7 +400,8 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	gamestate: state.gamestate,
 	characters: state.characters.list,
-	actions: state.actions.list
+	actions: state.actions.list,
+	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({
