@@ -258,12 +258,13 @@ class SelectedAction extends Component {
 			socket.emit('updateActionRequest', action); // new Socket event
 			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: ''});	
 			this.props.handleSelect(null)
-			this.setState({edit: false, resEdit: false, loading: false});
+			this.closeEdit();
+			this.closeResult();
 		}
 		catch (err) {
 			Alert.error(`Error: ${err.response.data}`, 6000)
-			this.setState({loading: false});
 		}
+		this.setState({loading: false});
 	}
 
 	renderAsset = (asset) => {

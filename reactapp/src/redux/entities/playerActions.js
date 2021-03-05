@@ -109,3 +109,18 @@ export const loadplayerActions = payload => (dispatch, getState) => {
     })
   );
 };
+
+// get all actions Loader into state for "emergencies"
+export const loadAllActions = payload => (dispatch, getState) => {
+  let url = baseURL;
+  return dispatch(
+    apiCallBegan({
+      url,
+      method: 'get',
+      data: payload,
+      onStart:playerActionsRequested.type,
+      onSuccess: playerActionsReceived.type,
+      onError:playerActionsRequestFailed.type
+    })
+  );
+};
