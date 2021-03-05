@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Content, FlexboxGrid, Progress } from 'rsuite';
-import { loadplayerActions } from '../../redux/entities/playerActions';
+import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
 const { Circle } = Progress;
 
 class Loading extends Component {
@@ -31,8 +31,12 @@ class Loading extends Component {
         }
 
         if(this.props.actionsFailed > prevProps.actionsFailed) {
-            // console.log('Triggered: ', this.props.actionsFailed, ' > ', prevProps.actionsFailed)
-            this.props.loadAction(this.props.user)
+            if (this.props.actionsFailed < 4) {
+              this.props.loadAction(this.props.user);
+            }
+            else {
+                this.props.loadAllActions();
+            }
         }
     }
 
@@ -56,21 +60,41 @@ class Loading extends Component {
                     <div style={{ width: 160, marginTop: 10 }}>
                         Assets: <Circle percent={this.state.assets ? 100 : 0} showInfo={this.state.assets ? true: false} status={this.state.assets ? 'success' : 'active'} />                  
                     </div>
+                    {this.props.assetsFailed > 0 && <div>
+                        <div>
+                            <span>Asset Request Failed! Re-attempting...</span> 
+                        </div>
+                        <div>
+                            <span>Number of attempts: {this.props.assetsFailed}</span>         
+                        </div>               
+                    </div>}  
                 </FlexboxGrid.Item>  
 
                     <FlexboxGrid.Item colspan={4}>
                     <div style={{ width: 160, marginTop: 10 }}>
                         Characters: <Circle percent={this.state.characters ? 100 : 0} showInfo={this.state.characters ? true: false} status={this.state.characters ? 'success' : 'active'} />
                     </div>
+                    {this.props.charactersFailed > 0 && <div>
+                        <div>
+                            <span>Character Request Failed! Re-attempting...</span> 
+                        </div>
+                        <div>
+                            <span>Number of attempts: {this.props.charactersFailed}</span>         
+                        </div>               
+                    </div>}  
                     </FlexboxGrid.Item>                  
 
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: 160, marginTop: 10 }}>
+                    <div style={{ width: 160, marginTop: 10, position: 'relative', display: 'inline-block', }}>
                         Actions: <Circle percent={this.state.actions ? 100 : 0} showInfo={this.state.actions ? true: false} status={this.state.actions ? 'success' : 'active'} />               
                     </div>
                     {this.props.actionsFailed > 0 && <div>
-                        <p>Action Request Failed! Re-attempting...</p> 
-                        <p>Number of attempts: {this.props.actionsFailed}</p>                          
+                        <div>
+                            <span>Action Request Failed! Re-attempting...</span> 
+                        </div>
+                        <div>
+                            <span>Number of attempts: {this.props.actionsFailed}</span>         
+                        </div>               
                     </div>}   
                 </FlexboxGrid.Item>
 
@@ -94,12 +118,15 @@ const mapStateToProps = (state) => ({
 	characters: state.characters.list,
     actions: state.actions.list,
     actionsFailed: state.actions.failedAttempts,
+    charactersFailed: state.characters.failedAttempts,
+    assetsFailed: state.assets.failedAttempts,
     gamestate: state.gamestate,
     user: state.auth.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	loadAction: (data) => dispatch(loadplayerActions(data)),
+    loadAllActions: (data) => dispatch(loadAllActions(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Loading);
@@ -193,6 +220,8 @@ const bored = [
 
 const loadingMsg = [
     'Loading...',    
+    'Hey, you\'re not Australian are you?',
+    'pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ \'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI',
     'Long live the King!',
     'Help I\'m a man stuck inside a loading screen let me out!',
     'Oh, remind me to tell you about that thing. You know that thing about that guy with that face. Yeah you know the one.',
