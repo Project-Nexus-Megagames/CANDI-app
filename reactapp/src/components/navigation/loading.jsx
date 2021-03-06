@@ -219,8 +219,9 @@ const bored = [
 ]
 
 const loadingMsg = [
-    'Loading...',    
-    'Hey, you\'re not Australian are you?',
+    'Loading...',   
+    'Thank you all for taking time to make this game happen.',  
+    'Hey... you\'re not Australian are you?',
     'pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ \'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI',
     'Long live the King!',
     'Help I\'m a man stuck inside a loading screen let me out!',
