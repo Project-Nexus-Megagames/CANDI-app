@@ -38,7 +38,7 @@ class Navigation extends Component {
 				<div style={{ position: 'fixed', top: 5, right: 25  }}>
 					<p style={{ }}  >Round: {this.props.gamestate.round} </p>	
 					{(this.state.days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
-					{(this.state.hours > 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+					{(this.state.hours > 0 && this.state.days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
 					{(this.state.days + this.state.hours + this.state.minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
 				</div>
 
