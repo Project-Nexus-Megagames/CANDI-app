@@ -220,6 +220,7 @@ const bored = [
 
 const loadingMsg = [
     'Loading...',   
+    "Fun Fact: Cthonian is pronounced: 'C̷̩͔̈̓ţ̷͍̞̯̝̘͕̼͂̓̀̀̊̓̇̏̈́̒͆̿̐̕͝ȟ̶͓̲̱̥̙̒̄͛́̽̓̇̈́̄̇̔̋ͅo̷̧̧͕͇̘̝̲͇̐͌̀̂̃͜͝n̸̡͙̘̮͕̼̈́̀͂͐́̉i̸̖̓̈́͂̄͊a̷̧͉͗́̍̓̆̀͘͠͝n̵̢̢̝͓̦̈́̈́'",
     'Thank you all for taking time to make this game happen.',  
     'Hey... you\'re not Australian are you?',
     'pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ \'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI',
