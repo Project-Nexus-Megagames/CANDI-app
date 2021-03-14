@@ -46,7 +46,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img src='https://i.pinimg.com/originals/5a/6a/ff/5a6affd685147f1db964335b9156657a.gif' alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -101,7 +101,7 @@ class Loading extends Component {
 
                 </FlexboxGrid>
             </Content>
-             <b>{loadingMsg[rand1]}</b>
+             <b>So long, and thanks for all the Bugs! -Scott</b>
         </React.Fragment>
         );        
     }
@@ -175,6 +175,7 @@ const spook = [
 
 const bored = [
     'https://www.youtube.com/watch?v=QSS3GTmKWVA',
+    'https://www.youtube.com/watch?v=Q6EIUo1q4lc&lc=UgwLB6d6w9RNlqJHQ1t4AaABAg&ab_channel=BobtheNinjaMan',
     'https://youtu.be/Rc-Jh3Oe0Gc',
     'https://www.youtube.com/watch?v=BP9uI4rFVHU',
     'https://www.youtube.com/watch?v=j0HN7bvBODE',
