@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader } from 'rsuite';
-import { getMyCharacter } from '../redux/entities/characters';
-import { setFilter } from '../redux/entities/playerActions';
+import { getMyCharacter } from '../../redux/entities/characters';
+import { setFilter } from '../../redux/entities/playerActions';
+
 import ActionList from './ActionList';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';

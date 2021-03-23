@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Alert, Toggle, InputNumber } from 'rsuite';
 import axios from 'axios';
-import { gameServer } from '../config';
+import { gameServer } from '../../config';
 
 class AddAsset extends Component {
 	state = { 

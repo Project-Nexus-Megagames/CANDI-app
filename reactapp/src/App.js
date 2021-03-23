@@ -7,17 +7,17 @@ import 'rsuite/dist/styles/rsuite-dark.css'; // Dark theme for rsuite components
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
 import './App.css';
-import Actions from './components/Actions';
-import Control from './components/navigation/control';
-import HomePage from './components/navigation/homepage';
-import MyCharacter from './components/navigation/myCharacter';
-import NavigationBar from './components/navigation/navigationBar';
-import OtherCharacters from './components/navigation/OtherCharacters';
-import ControlTerminal from './components/navigation/ControlTerminal';
-// import Registration from './components/navigation/Registration';
+import Actions from './components/Actions/Actions';
+import Control from './components/Control/control';
+import HomePage from './components/Navigation/homepage';
+import MyCharacter from './components/MyCharacters/myCharacter';
+import NavigationBar from './components/Navigation/navigationBar';
+import OtherCharacters from './components/OtherCharacters/OtherCharacters';
+import ControlTerminal from './components/Control/ControlTerminal';
+// import Registration from './components/Control/Registration';
 
-import Login from './components/Login';
-import NotFound from './components/notFound';
+import Login from './components/Navigation/Login';
+import NotFound from './components/Navigation/notFound';
 import initUpdates from './redux/initUpdate';
 import { loadCharacters } from './redux/entities/characters';
 import { loadAssets } from './redux/entities/assets';

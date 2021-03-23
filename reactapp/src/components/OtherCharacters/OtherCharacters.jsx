@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Alert, Divider, Loader} from 'rsuite';
-import AddAsset from '../AddAsset';
-import ModifyCharacter from '../ModifyCharacter';
-import ModifyMemory from '../ModifyMemory';
+import AddAsset from './AddAsset';
+import ModifyCharacter from './ModifyCharacter';
+import ModifyMemory from './ModifyMemory';
 import { gameServer } from '../../config';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';

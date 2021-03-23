@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {List, FlexboxGrid, Container, } from 'rsuite';
-import { getMyCharacter } from '../redux/entities/characters';
-import { filteredActions, getMyActions } from '../redux/entities/playerActions';
+import { getMyCharacter } from '../../redux/entities/characters';
+import { filteredActions, getMyActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { 

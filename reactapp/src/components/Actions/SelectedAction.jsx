@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress } from 'rsuite';
-import { gameServer } from '../config';
-import { characterUpdated, getMyCharacter } from '../redux/entities/characters';
-import { actionDeleted } from '../redux/entities/playerActions';
-import socket from '../socket';
+import { gameServer } from '../../config';
+import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
+import { actionDeleted } from '../../redux/entities/playerActions';
+import socket from '../../socket';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedAction extends Component {
 	state = { 

@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'; // React imports
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, ControlLabel, Form, FormControl, FormGroup, Modal, Schema } from 'rsuite';
-import { loadAssets } from '../redux/entities/assets';
-import { authReceived, loginUser } from '../redux/entities/auth';
-import { loadCharacters } from '../redux/entities/characters';
-import { loadGamestate } from '../redux/entities/gamestate';
-import { loadplayerActions } from '../redux/entities/playerActions';
+import { loadAssets } from '../../redux/entities/assets';
+import { authReceived, loginUser } from '../../redux/entities/auth';
+import { loadCharacters } from '../../redux/entities/characters';
+import { loadGamestate } from '../../redux/entities/gamestate';
+import { loadplayerActions } from '../../redux/entities/playerActions';
+
 const { StringType } = Schema.Types;
 
 const Login = props => {

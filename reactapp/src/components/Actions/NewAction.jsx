@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Slider, Alert, InputPicker, FlexboxGrid, InputNumber, Loader } from 'rsuite';
-import { gameServer } from '../config';
-import { getMyCharacter, characterUpdated } from '../redux/entities/characters';
-import { actionAdded } from '../redux/entities/playerActions';
-import socket from '../socket';
+import { gameServer } from '../../config';
+import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
+import { actionAdded } from '../../redux/entities/playerActions';
+import socket from '../../socket';
 class NewAction extends Component {
   constructor(props) {
     super(props);

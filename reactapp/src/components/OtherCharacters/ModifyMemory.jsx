@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Button, Divider, Drawer, FlexboxGrid, Toggle, Alert } from 'rsuite';
-import { gameServer } from '../config';
+import { gameServer } from '../../config';
 
 class ModifyMemory extends Component {
 	state = { 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { TagPicker, Panel, FlexboxGrid, Content, Alert, ButtonGroup, Button, Modal, InputNumber, Progress, List } from 'rsuite';
-import { gameServer } from '../config';
+import { gameServer } from '../../config';
 
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedProject extends Component {
