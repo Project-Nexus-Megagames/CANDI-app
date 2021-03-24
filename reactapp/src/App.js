@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Alert, Header } from 'rsuite';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import 'rsuite/dist/styles/rsuite-dark.css'; // Dark theme for rsuite components
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
 import './App.css';
@@ -28,6 +27,21 @@ import socket from './socket';
 initUpdates()
 const App = (props) => {
   const { loadChar, loadAssets, loadGamestate } = props;
+  useEffect(() => {
+    const theme = 'dark'
+    console.log(`Setting Theme: ${theme}`)
+
+    let head = document.head;
+    let link = document.createElement("link");
+
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.href = `/${theme}.css`;
+
+    head.appendChild(link);
+    return () => { setTimeout(() => head.removeChild(link), 2000) }
+  }, [])
+
 	useEffect(() => {
     console.log('App Loaded');
     loadChar();
@@ -45,7 +59,6 @@ const App = (props) => {
         default:
           Alert.info(data.message, 6000);
         }
-      
     })
   }, [loadChar, loadAssets, loadGamestate])
 
