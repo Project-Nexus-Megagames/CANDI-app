@@ -1,12 +1,11 @@
-import axios from 'axios';
 import React, { Component } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Alert, Divider, Loader} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Divider, Loader} from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import ModifyMemory from './ModifyMemory';
-import { gameServer } from '../../config';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
+import socket from '../../socket';
 
 class OtherCharacters extends Component {
 	state = { 
@@ -217,28 +216,7 @@ class OtherCharacters extends Component {
 	}
 
 	lendSupp = async () => {
-		try{
-			await axios.patch(`${gameServer}api/characters/support`, { id: this.state.selected._id, supporter: this.props.myCharacter.characterName });
-			console.log('hello governor');
-			/*
-			*/
-		}
-		catch (err) {
-			console.log(err);
-			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}	
-		const modifiedChar = {...this.state.selected};
-		let bullshit = [...modifiedChar.supporters] 
-		if (modifiedChar.supporters.some(el => el === this.props.myCharacter.characterName)) {
-			const index = modifiedChar.supporters.findIndex(el => el === this.props.myCharacter.characterName);
-			bullshit.splice(index, 1);
-		}
-		else {
-			bullshit.push(this.props.myCharacter.characterName);
-		}
-		modifiedChar.supporters = bullshit;
-		this.props.updateCharacter(modifiedChar);
-		Alert.success('Support Change Submitted');
+		socket.emit('characterRequest', 'support', { id: this.state.selected._id, supporter: this.props.myCharacter.characterName }); // new Socket event
 		this.setState({ selected: '' });
 	}
 	

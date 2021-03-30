@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Alert, Toggle, InputNumber } from 'rsuite';
-import axios from 'axios';
-import { gameServer } from '../../config';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Toggle, InputNumber } from 'rsuite';
+import socket from '../../socket';
 
 class AddAsset extends Component {
 	state = { 
@@ -39,16 +38,9 @@ class AddAsset extends Component {
 			},
 			id: this.props.character._id, 
 	 }
-		try{
-			await axios.patch(`${gameServer}api/characters/newAsset`, { data: formValue });
-			Alert.success('Character Modify Submitted');
-			this.setState({ loading: false, formValue: { name: '', description: '' }, assetBoolean: false });
-			this.props.closeModal()
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-			this.setState({ loading: false });
-		}
+	 socket.emit('assetRequest', 'create', {data: formValue}); // new Socket event	
+	 this.setState({ loading: false, formValue: { name: '', description: '' }, assetBoolean: false });
+	 this.props.closeModal();
 	 }
 
 	render() { 

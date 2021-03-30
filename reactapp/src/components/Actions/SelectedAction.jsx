@@ -136,7 +136,7 @@ class SelectedAction extends Component {
 							</Slider>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort + this.props.action.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort + this.props.action.effort} min={0} onChange={(value)=> this.setState({effort: parseInt(value)})}></InputNumber>								
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={4}>
 						</FlexboxGrid.Item>

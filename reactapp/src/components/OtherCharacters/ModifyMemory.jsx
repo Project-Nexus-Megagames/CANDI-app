@@ -1,7 +1,6 @@
-import axios from 'axios';
 import React, { Component } from 'react';
-import { Button, Divider, Drawer, FlexboxGrid, Toggle, Alert } from 'rsuite';
-import { gameServer } from '../../config';
+import { Button, Divider, Drawer, FlexboxGrid, Toggle } from 'rsuite';
+import socket from '../../socket';
 
 class ModifyMemory extends Component {
 	state = { 
@@ -80,14 +79,8 @@ class ModifyMemory extends Component {
 			},
 			id: this.props.character._id, 
 	 }
-		try{
-			await axios.patch(`${gameServer}api/characters/memory`, { data: formValue });
-			Alert.success('Character Memory Modification Successfully ');
-			this.props.closeModal()
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}
+	 socket.emit('characterRequest', 'memory', { data: formValue }); // new Socket event
+	 this.props.closeModal();
 	 }
 
 

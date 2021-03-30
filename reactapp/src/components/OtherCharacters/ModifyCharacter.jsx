@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, Alert, InputPicker } from 'rsuite';
-import axios from 'axios';
-import { gameServer } from '../../config';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, InputPicker } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
@@ -74,7 +72,7 @@ class ModifyCharacter extends Component {
 	 handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
-		socket.emit('actionRequest', 'modify', { data: this.state.formValue }); // new Socket event
+		socket.emit('characterRequest', 'modify', this.state.formValue ); // new Socket event
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	 }

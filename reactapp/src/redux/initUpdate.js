@@ -56,21 +56,21 @@ const initUpdates = () => {
     socket.on('deleteClients', (data) => { 
         console.log('deleteClients');
         for (const el of data) {
-            switch(el.model) {
-                case 'Character':
+            switch(el.type) {
+                case 'character':
                     store.dispatch(characterDeleted(el));
                     break;
-                case 'Action':
+                case 'action':
                     store.dispatch(actionDeleted(el));
                     break;
                 case 'Gamestate':
                     console.log('DEAR GOD IF YOU SEE THIS FUCKING CALL SCOTT OH GOD HOW COULD THIS HAPPEN')
                     break;
-                case 'Asset':
+                case 'asset':
                     store.dispatch(assetDeleted(el));
                     break;
                 default:
-                    console.log(`Unable to add Redux for ${el.model}: ${el._id}`);
+                    console.log(`Unable to add Redux for ${el.type}: ${el.id}`);
                     break;
             }
         }

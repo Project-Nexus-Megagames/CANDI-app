@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Slider, Alert, InputPicker, FlexboxGrid, InputNumber, Loader } from 'rsuite';
+import { Modal, Button, Slider, InputPicker, FlexboxGrid, InputNumber, Loader } from 'rsuite';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
-import { actionAdded } from '../../redux/entities/playerActions';
+import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 class NewAction extends Component {
   constructor(props) {
@@ -15,12 +15,28 @@ class NewAction extends Component {
 				id: '',
         description: '',
 				intent: '',	
-				loading: false	
 		};
+	}
+
+	componentDidUpdate = (prevProps) => {
+		if (this.props.actions !== prevProps.actions) {
+			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
+				this.props.closeNew();
+				this.setState({
+					effort: 0,
+					asset1: null,
+					asset2: null,
+					asset3: null,
+					id: '',
+					description: '',
+					intent: '',	
+				});
+			}
+		}
 	}
 	
 	handleSubmit = async () => {
-		this.setState({ loading: true });
+		this.props.actionDispatched();
 		// 1) make a new action
 		const action = {
 			effort: this.state.effort,
@@ -46,7 +62,7 @@ class NewAction extends Component {
 					<Modal.Title>Submit a new action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					{this.state.loading && <Loader backdrop content="loading..." vertical />}
+					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
 						<FlexboxGrid> Description
 							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
@@ -84,7 +100,7 @@ class NewAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} loading={this.state.loading} disabled={this.isDisabled()} appearance="primary">
+          <Button onClick={() => this.handleSubmit()} loading={this.props.actionLoading} disabled={this.isDisabled()} appearance="primary">
             Submit
           </Button>
           <Button onClick={() => this.props.closeNew()} appearance="subtle">
@@ -115,12 +131,13 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	actions: state.actions.list,
+	actionLoading: state.actions.loading,
   myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	actionAdded: (data) => dispatch(actionAdded(data)),
-	updateCharacter: (data) => dispatch(characterUpdated(data))
+	updateCharacter: (data) => dispatch(characterUpdated(data)),
+  actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewAction);

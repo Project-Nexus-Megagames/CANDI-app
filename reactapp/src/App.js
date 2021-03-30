@@ -18,10 +18,11 @@ import ControlTerminal from './components/Control/ControlTerminal';
 import Login from './components/Navigation/Login';
 import NotFound from './components/Navigation/notFound';
 import initUpdates from './redux/initUpdate';
-import { loadCharacters } from './redux/entities/characters';
+import { getMyCharacter, loadCharacters } from './redux/entities/characters';
 import { loadAssets } from './redux/entities/assets';
 import { loadGamestate } from './redux/entities/gamestate';
 import socket from './socket';
+import NoCharacter from './components/Navigation/NoCharacter';
 
 // React App Component
 initUpdates()
@@ -64,7 +65,7 @@ const App = (props) => {
 
   return (
     <div className="App" style={props.loading ? loading : done}>
-      {props.login && props.characters.length > 0 && props.actions.length > 0  && !props.loading && <Header>
+      {props.login && props.myCharacter && !props.loading && <Header>
         <NavigationBar/>
       </Header> }
       <Switch>
@@ -92,6 +93,9 @@ const App = (props) => {
         <Route exact path='/404' render={(props) => (
           <NotFound {...props} />
         )} />
+        <Route exact path='/no-character' render={(props) => (
+          <NoCharacter {...props} />
+        )} />
         <Redirect from="/" exact to="login" />
         <Redirect to="/404" />
       </Switch>
@@ -115,6 +119,7 @@ const mapStateToProps = (state) => ({
 	error: state.auth.error,
   login: state.auth.login,
   characters: state.characters.list,
+  myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({

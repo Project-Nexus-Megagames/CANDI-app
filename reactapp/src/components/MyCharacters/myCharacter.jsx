@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
@@ -30,6 +29,7 @@ import { gameServer } from "../../config";
 import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated } from "../../redux/entities/assets";
 import socket from "../../socket";
+import { playerActionsRequested } from "../../redux/entities/playerActions";
 
 class MyCharacter extends Component {
   state = {
@@ -394,7 +394,7 @@ class MyCharacter extends Component {
   };
 
   handleStanding = async () => {
-    const char = this.props.character;
+    const char = this.props.myCharacter;
     const data = {
       characterName: char.characterName,
       email: char.email,
@@ -403,14 +403,14 @@ class MyCharacter extends Component {
       timeZone: char.timeZone,
       playerName: char.playerName,
       bio: char.bio,
-      uses: this.props.character.wealth.uses,
-      wealth: this.props.character.wealth.description,
+      uses: char.wealth.uses,
+      wealth: char.wealth.description,
       icon: char.icon,
       popSupport: char.popSupport,
       standing: this.state.formValue.textarea,
       id: char._id
   }
-    socket.emit('characterRequest', 'modify', { data }); // new Socket event
+    socket.emit('characterRequest', 'modify', data ); // new Socket event
   };
 }
 
@@ -425,6 +425,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateAsset: (data) => dispatch(assetUpdated(data)),
   lendAsset: (data) => dispatch(assetLent(data)),
+  actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyCharacter);

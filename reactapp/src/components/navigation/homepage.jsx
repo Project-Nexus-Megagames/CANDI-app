@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Icon, IconButton, Divider, Content, Footer, Loader } from 'rsuite';
+import { getMyCharacter } from '../../redux/entities/characters';
 import Loading from './loading';
 
 class HomePage extends Component {
@@ -29,6 +30,10 @@ class HomePage extends Component {
 		};
 		if (this.props.loading || !this.props.actionsLoaded || !this.props.gamestateLoaded || !this.props.charactersLoaded) {
 			return (<Loading />)
+		}
+		else if (this.props.login && !this.props.myCharacter) {
+			this.props.history.push('/no-character');
+			return (<Loader inverse center content="doot..." />)
 		}
 		else return ( 
 			<Container style={{backgroundColor:'#15181e', padding:'15px', width: '860px', position: 'relative', display: 'inline-block', textAlign: 'left'}}>
@@ -62,6 +67,7 @@ const mapStateToProps = (state) => ({
 	actionsLoaded: state.actions.loaded,
 	charactersLoaded: state.characters.loaded,
 	assetsLoaded: state.assets.loaded,
+  myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({
