@@ -130,7 +130,7 @@ class ControlTerminal extends Component {
 						</FormGroup>
 					</Form>
 					<Modal.Footer>
-        	  <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={(this.state.formValue.status === null)} appearance="primary">
+        	  <Button loading={this.state.loading} onClick={() => this.editGameState()} disabled={(this.state.formValue.status === null)} appearance="primary">
         	    Submit
         	  </Button>
         	  <Button onClick={() => this.setState({ gsModal: false })} appearance="subtle">
@@ -250,15 +250,8 @@ class ControlTerminal extends Component {
 			description: this.state.description,
 			uses: this.state.uses
 		}
-		try{
-			await axios.patch(`${gameServer}api/assets/modify`, { data });
-			Alert.success('Asset Modification Submitted');
-			this.setState({ assModal: false, selected: null });
-		}
-		catch (err) {
-      Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}	
-		this.setState({ loading: false });
+		socket.emit('assetRequest', 'modify', { data }); // new Socket event	
+		this.setState({ assModal: false, selected: null, loading: false });
 	}
 
 	renderAss = () => {
@@ -281,52 +274,27 @@ class ControlTerminal extends Component {
 	}
 
 	handleDelete = async () => {
-		try{
-			await axios.delete(`${gameServer}api/assets/${this.state.selected}`);
-			Alert.success('Asset Successfully Deleted');
-			this.setState({ assModal: false, selected: null });
-		}
-		catch (err) {
-      Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}	
+		socket.emit('assetRequest', 'delete', { id: this.state.selected }); // new Socket event	
 	}
 
-	handleSubmit = async () => {
-		try{
-			const data = {
-				round: this.state.formValue.round,
-				status: this.state.formValue.status,
-				endTime: this.state.endTime
-			}
-			await axios.patch(`${gameServer}api/gamestate/modify`, { data });
-			Alert.success('Gamestate Modify Submitted');
-			this.setState({ gsModal: false });
+	editGameState = async () => {
+		const data = {
+			round: this.state.formValue.round,
+			status: this.state.formValue.status,
+			endTime: this.state.endTime
 		}
-		catch (err) {
-      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}	
+		socket.emit('gamestateRequest', 'modify', { data }); // new Socket event	
+		this.setState({ gsModal: false });
 	}
 
 	closeDraft = async () => {
-		try{
-			await axios.patch(`${gameServer}api/gamestate/closeRound`);
-			Alert.success('The Game is now in Resolution Phase');
-			this.setState({ warningModal: false });
-		}
-		catch (err) {
-      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}		
+		socket.emit('gamestateRequest', 'closeRound', 'Hello'); // new Socket event
+		this.setState({ warningModal: false });
 	}
 
 	publishActions = async () => {
-		try{
-			await axios.patch(`${gameServer}api/gamestate/nextRound`);
-			Alert.success('Actions Have been Published!');
-			this.setState({ warning2Modal: false });
-		}
-		catch (err) {
-      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}		
+		socket.emit('gamestateRequest', 'nextRound', 'Hello'); // new Socket event
+		this.setState({ warning2Modal: false });	
 	}
 
 	newProject = async () => {
@@ -339,16 +307,13 @@ class ControlTerminal extends Component {
 			players: this.state.players,
 			creator: this.props.playerCharacter,
 			round: this.props.gamestate.round, 
-			image: this.state.image
+			image: this.state.image,
+			status: {
+				draft: false,
+				published: true
+			}
 		}
-		try{
-			await axios.post(`${gameServer}api/actions/project`, { data: data });
-			Alert.success('Project Created');
-			this.setState({ projectModal: false });
-		}
-		catch (err) {
-      			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}		
+		socket.emit('actionRequest', 'create', { data: data }); // new Socket event
 	}
 
 	isControl () {

@@ -48,7 +48,7 @@ const App = (props) => {
     loadAssets();
     loadGamestate();
 
-    socket.on('Alert', (data) => {
+    socket.on('alert', (data) => {
       switch(data.type) {
         case 'error': 
           Alert.error(data.message, 6000);

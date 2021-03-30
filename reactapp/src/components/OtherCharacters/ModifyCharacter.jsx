@@ -3,6 +3,7 @@ import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,
 import axios from 'axios';
 import { gameServer } from '../../config';
 import { connect } from 'react-redux';
+import socket from '../../socket';
 
 class ModifyCharacter extends Component {
 	state = { 
@@ -73,14 +74,8 @@ class ModifyCharacter extends Component {
 	 handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
-		try{
-			await axios.patch(`${gameServer}api/characters/modify`, { data: this.state.formValue });
-			Alert.success('Character Modify Submitted');
-			this.props.closeModal()
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}
+		socket.emit('actionRequest', 'modify', { data: this.state.formValue }); // new Socket event
+		this.props.closeModal()
 		this.setState({ loading: false });		
 	 }
 

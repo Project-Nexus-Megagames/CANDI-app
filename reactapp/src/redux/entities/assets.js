@@ -35,6 +35,11 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       assets.list.push(action.payload);
     },
+    assetDeleted: (assets, action) => {
+      console.log(`${action.type} Dispatched`)
+      const index = assets.list.findIndex(el => el._id === action.payload._id);
+      assets.list.splice(index, 1);
+    },
     assetUpdated: (assets, action) => {
       console.log(`${action.type} Dispatched`)
       const index = assets.list.findIndex(el => el._id === action.payload._id);
@@ -54,6 +59,7 @@ const slice = createSlice({
 // Action Export
 export const {
   assetAdded,
+  assetDeleted,
   assetsReceived,
   assetsRequested,
   assetsRequestFailed,

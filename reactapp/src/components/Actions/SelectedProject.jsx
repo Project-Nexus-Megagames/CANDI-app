@@ -1,7 +1,6 @@
-import axios from 'axios';
 import React, { Component } from 'react';
-import { TagPicker, Panel, FlexboxGrid, Content, Alert, ButtonGroup, Button, Modal, InputNumber, Progress, List } from 'rsuite';
-import { gameServer } from '../../config';
+import { TagPicker, Panel, FlexboxGrid, Content,  ButtonGroup, Button, Modal, InputNumber, Progress, List } from 'rsuite';
+import socket from '../../socket';
 
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedProject extends Component {
@@ -81,7 +80,7 @@ class SelectedProject extends Component {
 						<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 							<ButtonGroup style={{marginTop: '5px', }} >
 								<Button appearance={"ghost"} onClick={() => this.setState({ projectModal: true})}>Edit Project</Button>
-								<Button color='red' appearance={"ghost"} onClick={() => this.deleteAction()}>Delete</Button>
+								<Button color='red' appearance={"ghost"} onClick={() => this.deleteProject()}>Delete</Button>
 							</ButtonGroup>
 						</Panel>}
 				</FlexboxGrid.Item>
@@ -109,7 +108,7 @@ class SelectedProject extends Component {
 				</p>
 					<TagPicker groupBy="tag" defaultValue={this.state.players} data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
 					<Modal.Footer>
-        	  <Button onClick={() => this.newProject()} appearance="primary">
+        	  <Button onClick={() => this.editProject()} appearance="primary">
         	    Submit
         	  </Button>
         	  <Button onClick={() => this.setState({ projectModal: false })} appearance="subtle">
@@ -122,29 +121,24 @@ class SelectedProject extends Component {
 		 );
 	}
 
-	newProject = async () => {
+	editProject = async () => {
 		const data2 = {
 			description: this.state.projName,
 			intent: this.state.projDescription,
 			progress: this.state.progress,
 			players: this.state.players,
 			image: this.state.image,
+			status: {
+				draft: false,
+				published: true
+			},
 			id: this.props.project._id
 		}
-		try{
-			let {data} = await axios.patch(`${gameServer}api/actions/project`, { data: data2 });
-			Alert.success('Project Edit Submitted');
-			this.setState({ projectModal: false });
-			this.props.handleSelect(data)
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-		}		
+		socket.emit('actionRequest', 'update', { data2 }); // new Socket event		
 	}
 
-	deleteAction = async () => {
-		let {data} = await axios.delete(`${gameServer}api/actions/${this.props.project._id}`);
-		Alert.success(data);		
+	deleteProject = async () => {
+		socket.emit('actionRequest', 'data', { id: this.props.project._id}); // new Socket event		
 		this.props.handleSelect(null);
 	}
 

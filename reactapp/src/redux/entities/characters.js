@@ -36,6 +36,11 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       characters.list.push(action.payload);
     },
+    characterDeleted: (characters, action) => {
+      console.log(`${action.type} Dispatched`)
+      const index = characters.list.findIndex(el => el._id === action.payload._id);
+      characters.list.splice(index, 1);
+    },
     characterUpdated: (characters, action) => {
       console.log(`${action.type} Dispatched`)
       const index = characters.list.findIndex(el => el._id === action.payload._id);
@@ -47,6 +52,7 @@ const slice = createSlice({
 // Action Export
 export const {
   characterAdded,
+  characterDeleted,
   charactersReceived,
   charactersRequested,
   charactersRequestFailed,

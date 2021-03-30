@@ -1,8 +1,6 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress } from 'rsuite';
-import { gameServer } from '../../config';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -255,7 +253,7 @@ class SelectedAction extends Component {
 		// console.log(action)
 		// 1) make a new action
 		try{
-			socket.emit('updateActionRequest', action); // new Socket event
+			socket.emit('actionRequest', 'update', action); // new Socket event
 			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: ''});	
 			this.props.handleSelect(null)
 			this.closeEdit();
@@ -289,13 +287,7 @@ class SelectedAction extends Component {
 	};
 
 	deleteAction = async () => {
-		//let {data} = await axios.delete(`${gameServer}api/actions/${this.props.action._id}`);
-		socket.emit('deleteActionRequest', {id: this.props.action._id}); // new Socket event
-		
-		/*const modifiedChar = {...this.props.myCharacter};
-		modifiedChar.effort += this.state.effort;
-		this.props.updateCharacter(modifiedChar);
-		*/
+		socket.emit('actionRequest', 'delete', {id: this.props.action._id}); // new Socket event
 		this.props.handleSelect(null);
 	}
 }

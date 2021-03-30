@@ -1,8 +1,6 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Slider, Alert, InputPicker, FlexboxGrid, InputNumber, Loader } from 'rsuite';
-import { gameServer } from '../../config';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { actionAdded } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -34,25 +32,7 @@ class NewAction extends Component {
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
-		try{
-			// const {data} = await axios.post(`${gameServer}api/actions`, { data: action });
-			// console.log(data)
-			// this.props.actionAdded(data);
-			// Alert.success('Action Creation Submitted');
-			socket.emit('createActionRequest', action); // new Socket event
-			
-			// Locally update redux so that it reflects the effort being drained
-			const modifiedChar = {...this.props.myCharacter};
-			modifiedChar.effort -= this.state.effort;
-			this.props.updateCharacter(modifiedChar);
-
-			this.setState({effort: 0, asset1: '', asset2: '', asset3: '', description: '', intent: '', loading: false})
-			this.props.closeNew()
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
-			this.setState({ loading: false });
-		}
+		socket.emit('actionRequest', 'create', action); // new Socket event	
 	}
 	
 	render() { 

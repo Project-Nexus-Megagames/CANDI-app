@@ -29,6 +29,7 @@ import {
 import { gameServer } from "../../config";
 import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated } from "../../redux/entities/assets";
+import socket from "../../socket";
 
 class MyCharacter extends Component {
   state = {
@@ -369,19 +370,12 @@ class MyCharacter extends Component {
 
   handleSubmit = async () => {
     const data = {
-      asset: this.state.lending._id,
+      id: this.state.lending._id,
       target: this.state.target,
       lendingBoolean: true,
     };
-    try {
-      await axios.post(`${gameServer}api/assets/lend`, { data });
-    } catch (err) {
-      console.log(err);
-      Alert.error(`Error: ${err}`, 5000);
-    }
-    // this.props.lendAsset(this.state.lending._id);
-    Alert.success("Asset Lend Submitted");
-
+    
+    socket.emit('characterRequest', 'lend', { data }); // new Socket event
     this.setState({ lending: null, target: null });
     this.closeLend();
   };
@@ -392,32 +386,31 @@ class MyCharacter extends Component {
     );
 
     const data = {
-      asset: this.state.unleanding._id,
+      id: this.state.unleanding._id,
       target: holder._id,
       lendingBoolean: false,
     };
-    try {
-      await axios.post(`${gameServer}api/assets/lend`, { data });
-      Alert.success("Asset Take Back Submitted");
-      this.setState({ unlend: false, unleanding: null });
-    } catch (err) {
-      console.log(err.response);
-      Alert.error(`Error: ${err.response.data}`, 5000);
-    }
+    socket.emit('characterRequest', 'lend', { data }); // new Socket event
   };
 
   handleStanding = async () => {
+    const char = this.props.character;
     const data = {
-      id: this.props.myCharacter._id,
+      characterName: char.characterName,
+      email: char.email,
+      worldAnvil: char.worldAnvil,
+      tag: char.tag,
+      timeZone: char.timeZone,
+      playerName: char.playerName,
+      bio: char.bio,
+      uses: this.props.character.wealth.uses,
+      wealth: this.props.character.wealth.description,
+      icon: char.icon,
+      popSupport: char.popSupport,
       standing: this.state.formValue.textarea,
-    };
-    try {
-      await axios.patch(`${gameServer}api/characters/standing`, { data });
-      Alert.success("Standing Orders Set!");
-    } catch (err) {
-      console.log(err);
-      Alert.error(`Error: ${err}`, 5000);
-    }
+      id: char._id
+  }
+    socket.emit('characterRequest', 'modify', { data }); // new Socket event
   };
 }
 
