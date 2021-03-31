@@ -30,6 +30,7 @@ import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated } from "../../redux/entities/assets";
 import socket from "../../socket";
 import { playerActionsRequested } from "../../redux/entities/playerActions";
+import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
 
 class MyCharacter extends Component {
   state = {
@@ -101,6 +102,15 @@ class MyCharacter extends Component {
           <Row>
             <Col xs={24} sm={24} md={8} className="gridbox">
               <div>
+              <p>
+                  <img
+                    class="portrait"
+                    src={`/images/${playerCharacter.characterName}.jpg`}
+                    alt="Unable to load img"
+                    width="95%"
+                    height="320"
+                  />
+                </p>
                 <p>
                   <b>{playerCharacter.characterName}</b> {playerCharacter.tag}
                 </p>
@@ -117,19 +127,84 @@ class MyCharacter extends Component {
                 <p>
                   <b>Bio:</b> {playerCharacter.bio}
                 </p>
-                <p>
-                  <img
-                    class="portrait"
-                    src={`/images/${playerCharacter.characterName}.jpg`}
-                    alt="Unable to load img"
-                    width="95%"
-                    height="320"
-                  />
-                </p>
+                <Panel header="Standing Orders" style={{ width: "95%" }}>
+                <Form
+                  fluid
+                  formValue={this.state.formValue}
+                  onChange={(value) => this.setState({ formValue: value })}
+                >
+                  <FormGroup>
+                    <ControlLabel></ControlLabel>
+                    <FormControl
+                      name="textarea"
+                      componentClass="textarea"
+                      placeholder="Orders for if you miss a turn..."
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <ButtonToolbar>
+                      <Button
+                        appearance="primary"
+                        onClick={() => this.handleStanding()}
+                      >
+                        Submit
+                      </Button>
+                    </ButtonToolbar>
+                  </FormGroup>
+                </Form>
+              </Panel>
               </div>
             </Col>
             <Col xs={24} sm={24} md={8} className="gridbox">
-              <Divider style={{ marginTop: "5px", marginBottom: "0px" }}>
+              <PlaceholderParagraph>Character shit goes here</PlaceholderParagraph>
+            </Col>
+            <Col xs={24} sm={24} md={8} className="gridbox">
+            <Divider >Wealth</Divider>
+              <Panel
+                style={{
+                  backgroundColor: "#bfb606",
+                  textAlign: "center",
+                  backgroundSize: '650px',
+                  backgroundImage: 'url("/images/coin.png")'
+                }}
+                shaded
+                bordered
+              >
+                <h4 style={{ color: "black" }}>
+                  {playerCharacter.wealth.description}
+                </h4>
+                <b style={{ color: "black" }}>
+                  Uses: {playerCharacter.wealth.uses}
+                </b>
+
+                {playerCharacter.wealth.status.lent && (
+                  <b style={{ color: "black", fontSize: "1.35em" }}>
+                    Wealth lent to: '{playerCharacter.wealth.currentHolder}'
+                  </b>
+                )}
+                <div>
+                  {!playerCharacter.wealth.status.lent && (
+                    <Button
+                      onClick={() => this.openLend(playerCharacter.wealth)}
+                      color="blue"
+                      size="sm"
+                    >
+                      Lend
+                    </Button>
+                  )}
+                  {playerCharacter.wealth.status.lent && (
+                    <Button
+                      onClick={() => this.openUnlend(playerCharacter.wealth)}
+                      color="blue"
+                      size="sm"
+                    >
+                      Un-Lend
+                    </Button>
+                  )}
+                </div>
+              </Panel>
+ 
+              <Divider style={{ marginBottom: "0px" }}>
                 Traits
               </Divider>
               {playerCharacter.traits.map((trait, index) => (
@@ -203,50 +278,7 @@ class MyCharacter extends Component {
                   )}
                 </div>
               ))}
-              <Divider style={{ width: "95%" }}>Wealth</Divider>
-              <Panel
-                style={{
-                  backgroundColor: "#bfb606",
-                  textAlign: "center",
-                  width: "95%",
-                }}
-                shaded
-                bordered
-              >
-                <h4 style={{ color: "black" }}>
-                  {playerCharacter.wealth.description}
-                </h4>
-                <b style={{ color: "black" }}>
-                  Uses: {playerCharacter.wealth.uses}
-                </b>
-
-                {playerCharacter.wealth.status.lent && (
-                  <b style={{ color: "black", fontSize: "1.35em" }}>
-                    Wealth lent to: '{playerCharacter.wealth.currentHolder}'
-                  </b>
-                )}
-                <div>
-                  {!playerCharacter.wealth.status.lent && (
-                    <Button
-                      onClick={() => this.openLend(playerCharacter.wealth)}
-                      color="blue"
-                      size="sm"
-                    >
-                      Lend
-                    </Button>
-                  )}
-                  {playerCharacter.wealth.status.lent && (
-                    <Button
-                      onClick={() => this.openUnlend(playerCharacter.wealth)}
-                      color="blue"
-                      size="sm"
-                    >
-                      Un-Lend
-                    </Button>
-                  )}
-                </div>
-              </Panel>
-              <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
+             <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
                 Borrowed Assets
               </Divider>
               {playerCharacter.lentAssets.map((borrowed, index) => (
@@ -259,34 +291,6 @@ class MyCharacter extends Component {
                   </Panel>
                 </div>
               ))}
-            </Col>
-            <Col xs={24} sm={24} md={8} className="gridbox">
-              <Panel header="Standing Orders" bordered style={{ width: "95%" }}>
-                <Form
-                  fluid
-                  formValue={this.state.formValue}
-                  onChange={(value) => this.setState({ formValue: value })}
-                >
-                  <FormGroup>
-                    <ControlLabel></ControlLabel>
-                    <FormControl
-                      name="textarea"
-                      componentClass="textarea"
-                      placeholder="Orders for if you miss a turn..."
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <ButtonToolbar>
-                      <Button
-                        appearance="primary"
-                        onClick={() => this.handleStanding()}
-                      >
-                        Submit
-                      </Button>
-                    </ButtonToolbar>
-                  </FormGroup>
-                </Form>
-              </Panel>
             </Col>
           </Row>
         </Grid>
