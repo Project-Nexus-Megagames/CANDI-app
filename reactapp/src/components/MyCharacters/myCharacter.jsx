@@ -31,6 +31,7 @@ import { assetLent, assetUpdated } from "../../redux/entities/assets";
 import socket from "../../socket";
 import { playerActionsRequested } from "../../redux/entities/playerActions";
 import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
+import NavigationBar from "../Navigation/NavigationBar";
 
 class MyCharacter extends Component {
   state = {
@@ -98,6 +99,7 @@ class MyCharacter extends Component {
     }
     return (
       <Content style={{ overflow: "auto", height: "calc(100vh - 100px)" }}>
+      <NavigationBar/>
         <Grid fluid>
           <Row>
             <Col xs={24} sm={24} md={8} className="gridbox">

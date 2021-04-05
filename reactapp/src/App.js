@@ -10,7 +10,7 @@ import Actions from './components/Actions/Actions';
 import Control from './components/Control/control';
 import HomePage from './components/Navigation/homepage';
 import MyCharacter from './components/MyCharacters/myCharacter';
-import NavigationBar from './components/Navigation/navigationBar';
+import NavigationBar from './components/Navigation/NavigationBar';
 import OtherCharacters from './components/OtherCharacters/OtherCharacters';
 import ControlTerminal from './components/Control/ControlTerminal';
 // import Registration from './components/Control/Registration';
@@ -64,10 +64,10 @@ const App = (props) => {
   }, [loadChar, loadAssets, loadGamestate])
 
   return (
-    <div className="App" style={props.loading ? loading : done}>
-      {props.login && props.myCharacter && !props.loading && <Header>
+    <div className="App" > {/*style={props.loading ? loading : done} */}
+      {/*  props.login && props.myCharacter && !props.loading && <Header>
         <NavigationBar/>
-      </Header> }
+      </Header> */}
       <Switch>
         <Route exact path='/login' render={(props) => (
           <Login {...props} />

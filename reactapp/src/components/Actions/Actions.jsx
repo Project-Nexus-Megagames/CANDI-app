@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader } from 'rsuite';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Header, Content } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { setFilter } from '../../redux/entities/playerActions';
+import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
 import NewAction from './NewAction';
@@ -44,25 +45,26 @@ class Actions extends Component {
 			return (<Loader inverse center content="doot..." />)
 		};
 		return ( 
+			<React.Fragment>
+			<NavigationBar/>
 			<Container>
 			<Sidebar style={{backgroundColor: "black", }}>
 				<PanelGroup>					
-					<Panel style={{ backgroundColor: "#000101"}}>
+					<Panel style={{ height: 'calc(8vh)', backgroundColor: "#000101"}}>
 						<Input onChange={(value)=> this.props.setFilter(value)} value={this.props.filter} placeholder="Search"></Input>
 					</Panel>
-					<Panel bodyFill style={{height: 'calc(90vh - 130px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
+					<Panel bodyFill style={{height: 'calc(78vh)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
 						<ActionList selected={this.state.selected} handleSelect={this.handleSelect}/>
 					</Panel>
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 						<Button appearance='primary' disabled={this.isDisabled()} block onClick={() => this.showNew()}>New Action</Button>
-					</Panel>	
-					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
-						<img src='https://i.kym-cdn.com/entries/icons/original/000/011/121/SKULL_TRUMPET_0-1_screenshot.png' alt='Boo!' ></img>						
-					</Panel>				
+					</Panel>			
 				</PanelGroup>
 			</Sidebar>
-			{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets, this.props.myCharacter.wealth]} action={this.state.selected}/>}	
-			{this.state.selected && this.state.selected.model === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
+			<Content>
+				{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets, this.props.myCharacter.wealth]} action={this.state.selected}/>}	
+				{this.state.selected && this.state.selected.model === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
+			</Content>
 			<NewAction
 				show={this.state.showNew}
 				assets={this.filteredAssets()}
@@ -72,6 +74,7 @@ class Actions extends Component {
 				myCharacter={this.props.myCharacter}
 			/>
 		</Container>
+		</React.Fragment>
 		);
 	}
 

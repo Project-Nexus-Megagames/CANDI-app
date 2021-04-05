@@ -33,7 +33,7 @@ class SelectedAction extends Component {
 	render() { 
 		const action = this.props.action;
 		return ( 
-			<Content style={{overflow: 'auto', height: 'calc(100vh - 100px)'}} >
+			<React.Fragment style={{overflow: 'auto', height: 'calc(100vh - 100px)'}} >
 			<FlexboxGrid >
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
@@ -217,7 +217,7 @@ class SelectedAction extends Component {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</Content>		
+		</React.Fragment>		
 		 );
 	}
 

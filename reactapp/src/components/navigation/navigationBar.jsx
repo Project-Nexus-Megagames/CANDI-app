@@ -24,18 +24,10 @@ class Navigation extends Component {
 				<Navbar >
 				<Navbar.Body>
 					<Nav onSelect={this.props.onSelect} activeKey={this.props.active}>
-						<Whisper placement="bottom" trigger="hover" speaker={tooltip}><Nav.Item eventKey="login" icon={<Icon icon="sign-out"/>} onClick={()=> this.props.logOut()}></Nav.Item></Whisper> 
-						<Nav.Item eventKey="home" to="/home" componentClass={NavLink} icon={<Icon icon="home" />}>Home</Nav.Item>
-						<Nav.Item eventKey="character" to="/character" componentClass={NavLink} >My Character</Nav.Item>
-						<Nav.Item eventKey="actions" to="/actions" componentClass={NavLink} >Actions</Nav.Item>
-						<Nav.Item eventKey="others" to="/others" componentClass={NavLink} >Other Characters</Nav.Item>
-						<Nav.Item eventKey="controllers" to="/controllers" componentClass={NavLink} >Control Team</Nav.Item>
-						{this.props.user.roles.some(el=> el === 'Control') && <Nav.Item eventKey="control" to="/control" componentClass={NavLink} style={{backgroundColor: "#61342e"}}>Control Terminal</Nav.Item>}
-						{/*this.props.user.roles.some(el=> el === 'Control') && <Nav.Item eventKey="reg" to="/reg" componentClass={NavLink} style={{backgroundColor: "#61342e"}}>User Registration</Nav.Item>*/}
-					</Nav>			
-
+					<Nav.Item eventKey="home" to="/home" componentClass={NavLink} icon={<Icon icon="arrow-circle-left" />}>Back</Nav.Item>
+				</Nav>		
 				</Navbar.Body>			
-				<div style={{ position: 'fixed', top: 5, right: 25  }}>
+				<div style={{  }}>
 					<p style={{ }}  >Round: {this.props.gamestate.round} </p>	
 					{(this.state.days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
 					{(this.state.hours > 0 && this.state.days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
@@ -47,7 +39,8 @@ class Navigation extends Component {
 		}
 
 		handleLogOut = async () => {
-			localStorage.removeItem('token');
+			this.props.logOut()
+			//localStorage.removeItem('token');
 			//props.history.push('/login')
 		}
 		

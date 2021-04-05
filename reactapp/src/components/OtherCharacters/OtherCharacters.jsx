@@ -3,6 +3,7 @@ import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, P
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import ModifyMemory from './ModifyMemory';
+import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
 import socket from '../../socket';
@@ -56,6 +57,8 @@ class OtherCharacters extends Component {
 			return (<Loader inverse center content="doot..." />)
 		};
 		return ( 
+			<React.Fragment>
+			<NavigationBar/>
 			<Container style={{overflow: 'auto', height: 'calc(100vh)'}}>
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
@@ -203,6 +206,7 @@ class OtherCharacters extends Component {
 			</Content>		
 			}
 		</Container>
+		</React.Fragment>
 		);
 	}
 
