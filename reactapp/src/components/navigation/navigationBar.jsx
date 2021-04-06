@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Navbar, Nav, Icon, Whisper, Tooltip} from 'rsuite';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
-class Navigation extends Component {
+class NavigationBar extends Component {
   state = {
 		days: 0,
 		hours: 0,
@@ -76,5 +76,5 @@ const tooltip = (
   </Tooltip>
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);
 

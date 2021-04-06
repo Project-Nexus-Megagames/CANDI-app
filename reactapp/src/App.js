@@ -10,7 +10,6 @@ import Actions from './components/Actions/Actions';
 import Control from './components/Control/control';
 import HomePage from './components/Navigation/homepage';
 import MyCharacter from './components/MyCharacters/myCharacter';
-import NavigationBar from './components/Navigation/NavigationBar';
 import OtherCharacters from './components/OtherCharacters/OtherCharacters';
 import ControlTerminal from './components/Control/ControlTerminal';
 // import Registration from './components/Control/Registration';
