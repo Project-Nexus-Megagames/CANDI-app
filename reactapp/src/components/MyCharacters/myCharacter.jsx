@@ -31,7 +31,7 @@ import { assetLent, assetUpdated } from "../../redux/entities/assets";
 import socket from "../../socket";
 import { playerActionsRequested } from "../../redux/entities/playerActions";
 import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
-import NavigationBar from "../Navigation/NavigationBar";
+import NavigationBar from "../Navigation/navigationBar";
 
 class MyCharacter extends Component {
   state = {

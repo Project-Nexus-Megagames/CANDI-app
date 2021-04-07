@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Navbar, Nav, Icon, Tooltip} from 'rsuite';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
+import socket from '../../socket';
 class Navigation extends Component {
   state = {
 		days: 0,
@@ -39,7 +40,8 @@ class Navigation extends Component {
 		}
 
 		handleLogOut = async () => {
-			this.props.logOut()
+			this.props.logOut();
+			socket.disconnect();
 			//localStorage.removeItem('token');
 			//props.history.push('/login')
 		}

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit"; // Import from reactjs toolkit
 import { apiCallBegan } from "../api"; // Import Redux API call
 // import playTrack from "../../scripts/audio";
 import jwtDecode from 'jwt-decode' // JSON web-token decoder
-import socket from "../../socket";
 
 
 // Create entity slice of the store
@@ -29,7 +28,6 @@ const slice = createSlice({
       localStorage.setItem("token", jwt);
       // console.log(`Token: ${jwt}`);
       const user = jwtDecode(jwt);
-      socket.emit('login', user);
 
       if (user.roles.some(el => el === "Control")) auth.control = true;
 

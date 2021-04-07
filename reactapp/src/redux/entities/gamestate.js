@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"; // Import from reactjs toolkit
 import { gameServer } from "../../config";
 import { apiCallBegan } from "../api"; // Import Redux API call
-import socket from '../../socket'
 
 // Create entity slice of the store
 const slice = createSlice({
@@ -36,7 +35,6 @@ const slice = createSlice({
     gamestateRequestFailed: (gamestate, action) => {
       console.log(`${action.type} Dispatched`)
       gamestate.loading = false;
-      socket.emit('trigger', 'updateGamestate');
     },
     gamestateAdded: (gamestate, action) => {
       console.log(`${action.type} Dispatched`)

@@ -3,7 +3,7 @@ import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, P
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import ModifyMemory from './ModifyMemory';
-import NavigationBar from '../Navigation/NavigationBar';
+import NavigationBar from '../Navigation/navigationBar';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
 import socket from '../../socket';

@@ -23,10 +23,12 @@ import { loadGamestate } from './redux/entities/gamestate';
 import socket from './socket';
 import NoCharacter from './components/Navigation/NoCharacter';
 
+import { initConnection } from './socket';
+
 // React App Component
 initUpdates()
 const App = (props) => {
-  const { loadChar, loadAssets, loadGamestate } = props;
+  const { loadChar, loadAssets, loadGamestate, login, user } = props;
   useEffect(() => {
     const theme = 'dark'
     console.log(`Setting Theme: ${theme}`)
@@ -41,6 +43,12 @@ const App = (props) => {
     head.appendChild(link);
     return () => { setTimeout(() => head.removeChild(link), 2000) }
   }, [])
+
+  useEffect(() => {
+		if (login) {
+			initConnection(user);
+		}
+	}, [login, user])
 
 	useEffect(() => {
     console.log('App Loaded');

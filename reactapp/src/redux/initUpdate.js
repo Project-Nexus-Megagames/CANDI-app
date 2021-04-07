@@ -6,7 +6,6 @@ import socket from '../socket'
 import store from './store';
 
 const initUpdates = () => {
-    socket.on('connect', () => { console.log('UwU I made it') });
     socket.on('updateClients', (data) => { 
         console.log('updateClients');
         for (const el of data) {
