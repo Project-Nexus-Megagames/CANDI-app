@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Icon, Whisper, Nav, Row, Col, Loader, Navbar, Tooltip, Dropdown, IconButton } from 'rsuite';
+import { Container, Icon, Nav, Row, Col, Loader, Navbar, Dropdown, IconButton } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 import Loading from './loading';
-import { NavLink } from 'react-router-dom';
 
 import aang from '../Images/aang.jpg'
 import { signOut } from '../../redux/entities/auth';
@@ -22,7 +21,7 @@ class HomePage extends Component {
 
 	componentDidMount() {
 		this.renderTime(this.props.gamestate.endTime);
-		const interval = setInterval(() => {
+		setInterval(() => {
 			this.renderTime(this.props.gamestate.endTime);
         //clearInterval(interval);
     }, 60000);
@@ -75,19 +74,16 @@ class HomePage extends Component {
 				</div>
 
 			</Navbar>
-				<Container style={{backgroundColor:'#413938', padding:'15px', width: '660px', position: 'relative', display: 'inline-block', textAlign: 'center'}}>
+				<Container style={{backgroundColor:'white', padding:'15px', width: '660px', position: 'relative', display: 'inline-block', textAlign: 'center'}}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
-						<img style={{backgroundColor: '#ff1616'}} width={620} height={250} src='/images/Dusk City Logo.png' alt='oops' ></img>
-				</Col>
-				<Col>
-				<ImgPanel width={620} height={250} img={'/images/profile.jpg'} to='character' title='My Character' body='My Assets and Traits'/>
+				<ImgPanel width={620} height={250} img={aang} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 		</Row>
 		<Row>
 			<Col>
-				<ImgPanel width={300} height={300} img={'/images/action.png'} to='actions' title='Actions' body='Creating and editing Actions'/>
-				<ImgPanel width={300} height={300} img={'/images/succ.jpg'} to='coffiehouse' title='Feeding' body='Om nom nom'/>
+				<ImgPanel width={300}  img={aang} to='actions' title='Actions' body='Creating and editing Actions'/>
+				<ImgPanel width={300}  img={aang} to='coffiehouse' title='Feeding' body='Om nom nom'/>
 			</Col>
 			<Col>
 				<ImgPanel width={620} height={250} img={aang} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
@@ -141,12 +137,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	logOut: () => dispatch(signOut())
 });
-
-const tooltip = (
-  <Tooltip>
-    Log-Out
-  </Tooltip>
-);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 

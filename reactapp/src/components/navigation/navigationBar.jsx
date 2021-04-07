@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Navbar, Nav, Icon, Whisper, Tooltip} from 'rsuite';
+import { Navbar, Nav, Icon, Tooltip} from 'rsuite';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
-class NavigationBar extends Component {
+class Navigation extends Component {
   state = {
 		days: 0,
 		hours: 0,
@@ -12,7 +12,7 @@ class NavigationBar extends Component {
 	
 	componentDidMount() {
 		this.renderTime(this.props.gamestate.endTime);
-		const interval = setInterval(() => {
+		setInterval(() => {
 			this.renderTime(this.props.gamestate.endTime);
         //clearInterval(interval);
     }, 60000);
@@ -70,11 +70,5 @@ const mapDispatchToProps = (dispatch) => ({
 	logOut: () => dispatch(signOut())
 });
 
-const tooltip = (
-  <Tooltip>
-    Log-Out
-  </Tooltip>
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
 
