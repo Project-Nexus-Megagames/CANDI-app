@@ -25,7 +25,6 @@ import NoCharacter from './components/Navigation/NoCharacter';
 
 import { initConnection } from './socket';
 import Map from './components/Navigation/Map';
-import ZoomDragCircle from './components/Navigation/Test';
 
 // React App Component
 initUpdates()
@@ -106,7 +105,7 @@ const App = (props) => {
           <NoCharacter {...props} />
         )} />
         <Route exact path='/map' render={(props) => (
-          <ZoomDragCircle {...props} />
+          <Map {...props} />
         )} />
         <Redirect from="/" exact to="login" />
         <Redirect to="/404" />
