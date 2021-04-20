@@ -77,6 +77,9 @@ class HomePage extends Component {
 				<Container style={{backgroundColor:'white', padding:'15px', width: '660px', position: 'relative', display: 'inline-block', textAlign: 'center'}}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
+				<ImgPanel width={620} height={250} img={aang} to='map' title='Map' body=''/>
+				</Col>
+				<Col>
 				<ImgPanel width={620} height={250} img={aang} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 		</Row>

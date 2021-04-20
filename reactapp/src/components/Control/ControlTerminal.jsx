@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader, Table } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getMyCharacter } from '../../redux/entities/characters';
+import { draftActions } from '../../redux/entities/playerActions';
 
+const { Column, HeaderCell, Cell, Pagination } = Table;
 class ControlTerminal extends Component {
 	state = { 
 		gsModal: false,
@@ -62,7 +64,10 @@ class ControlTerminal extends Component {
 			let drafts = 0;
 			let awaiting= 0;
 			let ready = 0;
-			for (const action of this.props.actions) {
+			const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
+			let tableData = [];
+			for (const action of copy) {
+				
 				if (action.status.draft === true && action.model !== "Project") drafts++;
 				else if (action.status.ready === true) ready++;
 				else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
@@ -79,7 +84,13 @@ class ControlTerminal extends Component {
 		};
 		return ( 
 			<Content style={{style1}}>
-				<Divider>Actions Status</Divider>
+				<div style={{height: '10vh'}} >
+					<Divider>Scott's Message of the Day:</Divider>
+					<div>
+						<h5>This update: All actions now operate on sockets.</h5>
+					</div>					
+				</div>
+				<div style={{height: '15vh'}}>
 				<FlexboxGrid>
 					<FlexboxGrid.Item colspan={8}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Drafts'> {this.state.drafts} </Panel>
@@ -90,27 +101,29 @@ class ControlTerminal extends Component {
 					<FlexboxGrid.Item colspan={8}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Ready for Publishing'> {this.state.ready} </Panel>			
 					</FlexboxGrid.Item>					
-				</FlexboxGrid>
-
-				<Divider>Round Editing</Divider>
-				<Panel>
-					<ButtonGroup >
-						<Button appearance="ghost" onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
-						<Button appearance="ghost" onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
-						<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
-					</ButtonGroup>
-				</Panel>
-				<Divider>Asset Management</Divider>
-				<Panel>
-					<ButtonGroup >
-						<Button color='red' appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Asset/Trait</Button>
-						<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
-					</ButtonGroup>
-				</Panel>
-				<Divider>Scott's Message of the Day:</Divider>
-				<div>
-					<h5>This update: All actions now operate on sockets.</h5>
+				</FlexboxGrid>					
 				</div>
+				<div  style={{height: '15vh'}}>
+					<Divider>Editing</Divider>
+					<Panel>
+						<ButtonGroup >
+							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
+							<Button appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
+							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
+							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Asset/Trait</Button>
+							<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
+						</ButtonGroup>
+					</Panel>
+					<Divider>Round {this.props.gamestate.round}</Divider>					
+				</div>
+				<Panel style={{height: '50vh'}}>
+					<Table virtualized data={this.props.actions} >
+						<Column>
+						<HeaderCell>Character</HeaderCell>
+						<Cell dataKey="description" />
+						</Column>
+					</Table>
+				</Panel>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="center" onChange={formValue => {this.setState({ formValue });}}>
@@ -363,6 +376,7 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	characters: state.characters.list,
 	actions: state.actions.list,
+	draftActions: draftActions(state),
 	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined
 });
 

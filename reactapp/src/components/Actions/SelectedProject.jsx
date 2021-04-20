@@ -128,10 +128,7 @@ class SelectedProject extends Component {
 			progress: this.state.progress,
 			players: this.state.players,
 			image: this.state.image,
-			status: {
-				draft: false,
-				published: true
-			},
+			status: 'Published',
 			id: this.props.project._id
 		}
 		socket.emit('actionRequest', 'update', { data2 }); // new Socket event		

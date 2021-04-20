@@ -72,7 +72,7 @@ class SelectedAction extends Component {
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 					</Panel>
-					{(action.status.published || this.props.user.roles.some(el=> el === 'Control')) && 
+					{(action.status === 'Published' || this.props.user.roles.some(el=> el === 'Control')) && 
 					<React.Fragment>
 						<Divider>Action Result</Divider>
 						<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
@@ -88,14 +88,14 @@ class SelectedAction extends Component {
 				<FlexboxGrid.Item colspan={5}>
 					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<TagGroup >Status:
-							{action.status.draft && <Tag color='red'>Draft</Tag>}
-							{!action.status.draft && !action.status.ready && !action.status.published && <Tag color='blue'>Awaiting Resolution</Tag>}
-							{action.status.ready && <Tag color='violet'>Ready for Publishing</Tag>}
-							{action.status.published && <Tag color='green'>Published</Tag>}
+							{action.status === 'Draft' && <Tag color='red'>Draft</Tag>}
+							{!action.status === 'Awaiting' && <Tag color='blue'>Awaiting Resolution</Tag>}
+							{action.status === 'Ready' && <Tag color='violet'>Ready for Publishing</Tag>}
+							{action.status === 'Published' && <Tag color='green'>Published</Tag>}
 						</TagGroup>
-							<ButtonGroup style={{marginTop: '5px' }} >
-								<Button appearance={"ghost"} disabled={!action.status.draft} onClick={() => this.openEdit()} >Edit</Button>
-								<Button color='red' appearance={"ghost"} disabled={!action.status.draft} onClick={() => this.deleteAction()}>Delete</Button>
+							<ButtonGroup style={{ marginTop: '5px' }} >
+								<Button appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.openEdit()} >Edit</Button>
+								<Button color='red' appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.deleteAction()}>Delete</Button>
 							</ButtonGroup>
 					</Panel>
 					{this.props.user.roles.some(el=> el === 'Control') && 

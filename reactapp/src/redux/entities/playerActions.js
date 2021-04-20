@@ -77,7 +77,7 @@ export const getMyActions = createSelector(
   state => state.actions.list,
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (filter, actions, myCharacter) => actions.filter(
-    action => (action.creator._id === myCharacter._id && ( action.description.toLowerCase().includes(filter.toLowerCase()) ||
+    action => (action.creator === myCharacter.characterName && ( action.description.toLowerCase().includes(filter.toLowerCase()) ||
     action.intent.toLowerCase().includes(filter.toLowerCase()) ))
   )
 );
@@ -87,8 +87,13 @@ export const filteredActions = createSelector(
   state => state.actions.list,
   (filter, actions) => actions.filter(action => action.description.toLowerCase().includes(filter.toLowerCase()) || 
   action.intent.toLowerCase().includes(filter.toLowerCase()) || 
-  action.creator.characterName.toLowerCase().includes(filter.toLowerCase())
+  action.creator.toLowerCase().includes(filter.toLowerCase())
   )
+);
+
+export const draftActions = createSelector(
+  state => state.actions.list,
+  (actions) => actions.filter(el => el.status.draft === true)
 );
 
 // playerActions Loader into state

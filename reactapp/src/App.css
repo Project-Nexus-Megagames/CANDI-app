@@ -70,3 +70,8 @@
 .container:hover .middle {
   opacity: 1;
 }
+
+.cls-1:hover {
+  fill: #ec008c;
+  opacity: 1;
+}
