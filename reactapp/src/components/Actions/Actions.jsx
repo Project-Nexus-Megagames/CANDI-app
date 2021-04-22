@@ -48,7 +48,7 @@ class Actions extends Component {
 			<React.Fragment>
 			<NavigationBar/>
 			<Container>
-			<Sidebar style={{backgroundColor: "black", }}>
+			<Sidebar style={{backgroundColor: "black", height: '94vh'}}>
 				<PanelGroup>					
 					<Panel style={{ height: 'calc(8vh)', backgroundColor: "#000101"}}>
 						<Input onChange={(value)=> this.props.setFilter(value)} value={this.props.filter} placeholder="Search"></Input>
@@ -62,7 +62,7 @@ class Actions extends Component {
 				</PanelGroup>
 			</Sidebar>
 			<Content>
-				{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets, this.props.myCharacter.wealth]} action={this.state.selected}/>}	
+				{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets ]} action={this.state.selected}/>}	
 				{this.state.selected && this.state.selected.model === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
 			</Content>
 			<NewAction
@@ -81,7 +81,6 @@ class Actions extends Component {
 	filteredAssets = () => {
 		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets];
 		assets = assets.filter(el => el.status.used === false);
-		assets.push(this.props.myCharacter.wealth)
 
 		return assets;
 	}

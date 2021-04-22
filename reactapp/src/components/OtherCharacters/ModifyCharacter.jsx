@@ -14,7 +14,6 @@ class ModifyCharacter extends Component {
 			playerName: '',
 			timeZone: '',
 			bio: '',
-			wealth: '',
 			icon: '',
 			popSupport: 0,
 			effort: 0,
@@ -37,8 +36,6 @@ class ModifyCharacter extends Component {
 					timeZone: char.timeZone,
 					playerName: char.playerName,
 					bio: char.bio,
-					wealth: char.wealth.description,
-					uses: char.wealth.uses,
 					icon: char.icon,
 					popSupport: char.popSupport,
 					effort: char.effort,
@@ -59,8 +56,6 @@ class ModifyCharacter extends Component {
 				timeZone: char.timeZone,
 				playerName: char.playerName,
 				bio: char.bio,
-				uses: this.props.character.wealth.uses,
-				wealth: this.props.character.wealth.description,
 				icon: char.icon,
 				popSupport: char.popSupport,
 				id: char._id
@@ -119,14 +114,6 @@ class ModifyCharacter extends Component {
 							<FormGroup>
 								<ControlLabel>timeZone</ControlLabel>
 								<FormControl name="timeZone" />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>wealth</ControlLabel>
-								<FormControl name="wealth" accepter={InputPicker} data={pickerData} />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>wealth uses</ControlLabel>
-								<FormControl name="uses" accepter={InputNumber} />
 							</FormGroup>
 							</FlexboxGrid.Item>
 

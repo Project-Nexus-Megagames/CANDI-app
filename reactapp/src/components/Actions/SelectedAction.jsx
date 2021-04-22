@@ -164,32 +164,35 @@ class SelectedAction extends Component {
 			show={this.state.resEdit} 
 			onHide={() => this.closeResult()}>
 				<Modal.Header>
-					<Modal.Title>Edit Action Result</Modal.Title>
+					<Modal.Title>Edit {action.creator.characterName}'s' Action Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-
-				<p style={{ fontSize: '300', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
-						Created by: {action.creator.characterName}
-					</p>
-					<p style={{  fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
-						Description
-					</p>
-					<p>
-						{action.description}	
-					</p>
-					<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300', }}>
-						Intent
-					</p>
-					<p>
-						{action.intent}	
-					</p>
-					<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
+					<FlexboxGrid>
+						<FlexboxGrid.Item colspan={12}>
+							<p style={{  fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
+								Description
+							</p>
+							<p>
+								{action.description}	
+							</p>
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={12}>
+							<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300', }}>
+								Intent
+							</p>
+							<p>
+								{action.intent}	
+							</p>							
+						</FlexboxGrid.Item>
+					</FlexboxGrid>
+					<Divider/>
+					<p style={{ 	textAlign: "center", fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
 						Effort
 				</p>
-				<p style={{ fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
+				<p style={{ fontWeight: 'bolder', 	textAlign: "center", fontSize: 20 }} >{action.effort}</p>
 				<Divider></Divider>
 				<form>
-					<FlexboxGrid> Result:
+					<FlexboxGrid>
 						<textarea rows='6' value={this.state.result} style={textStyle} onChange={(event)=> this.setState({result: event.target.value})}></textarea>							
 					</FlexboxGrid>
 					<br></br>
@@ -206,7 +209,7 @@ class SelectedAction extends Component {
 						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
-					</form>
+				</form>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
@@ -303,19 +306,19 @@ const slimText = {
 const pickerData = [
 	{
 		label: 'Draft',
-		value: 'draft'
+		value: 'Draft'
 	},
 	{
 		label: 'Awaiting Resolution',
-		value: 'awaiting'
+		value: 'Awaiting'
 	},
 	{
 		label: 'Ready for Publishing',
-		value: 'ready'
+		value: 'Ready'
 	},
 	{
 		label: 'Published',
-		value: 'published'
+		value: 'Published'
 	}
 ]
  

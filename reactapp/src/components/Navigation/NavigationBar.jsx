@@ -22,7 +22,7 @@ class Navigation extends Component {
     render() {
 			let {days, hours, minutes} = this.state;
       return (
-				<Navbar >
+				<Navbar style={{ height: '6vh' }} >
 				<Navbar.Body>
 					<Nav onSelect={this.props.onSelect} activeKey={this.props.active}>
 					<Nav.Item eventKey="home" to="/home" componentClass={NavLink} icon={<Icon icon="arrow-circle-left" />}>Back</Nav.Item>

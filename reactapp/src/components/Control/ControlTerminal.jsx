@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { draftActions } from '../../redux/entities/playerActions';
+import NavigationBar from '../Navigation/NavigationBar';
 
-const { Column, HeaderCell, Cell, Pagination } = Table;
+const { Column, HeaderCell, Cell } = Table;
 class ControlTerminal extends Component {
 	state = { 
 		gsModal: false,
@@ -34,7 +35,9 @@ class ControlTerminal extends Component {
 		name: '',
 		description: '',
 		uses: 0, 
-		loading: false
+		loading: false,
+
+		tableData: []
 	 }
 
 	componentDidMount = async () => {
@@ -43,14 +46,26 @@ class ControlTerminal extends Component {
 			status: this.props.gamestate.status,
 			endTime: this.props.gamestate.endTime
 		}
+		const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
+		await this.compileTable(copy);
 
 		let drafts = 0;
 		let awaiting= 0;
 		let ready = 0;
 		for (const action of this.props.actions) {
-			if (action.status.draft === true) drafts++;
-			else if (action.status.ready === true) ready++;
-			else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
+			switch (action.status) {
+				case "Draft":
+					drafts++;
+					break;
+				case "Ready":
+					ready++;
+					break;
+				case "Awaiting":
+					awaiting++;
+					break;
+				default:
+					break;
+			}
 		}
 		this.setState({ formValue, drafts, awaiting, ready, characters: {...this.props.characters} })
 	}
@@ -65,18 +80,44 @@ class ControlTerminal extends Component {
 			let awaiting= 0;
 			let ready = 0;
 			const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
-			let tableData = [];
+			await this.compileTable(copy);
+
 			for (const action of copy) {
-				
-				if (action.status.draft === true && action.model !== "Project") drafts++;
-				else if (action.status.ready === true) ready++;
-				else if (action.status.draft === false && action.status.ready === false && action.status.published === false) awaiting++;
+				switch (action.status) {
+					case "Draft":
+						drafts++;
+						break;
+					case "Ready":
+						ready++;
+						break;
+					case "Awaiting":
+						awaiting++;
+						break;
+					default:
+						break;
+				}
 			}
 			this.setState({ formValue, drafts, awaiting, ready, endTime: this.props.gamestate.endTime })			
 		}
 	}
 
-	
+	compileTable = async (actions) => {
+		let tableData = []
+		for (const action of actions) {
+			const data = {
+				control: action.creator.control,
+				character: action.creator.characterName,
+				description: action.description,
+				status: action.status,
+				dieResult: action.dieResult,
+				controlAssigned: action.controlAssigned,
+				news: action.newsworthy,
+			}
+			tableData.push(data);
+		}
+		this.setState({ tableData })
+	}
+
 	render() { 
 		if (!this.props.login) {
 			this.props.history.push('/');
@@ -84,10 +125,11 @@ class ControlTerminal extends Component {
 		};
 		return ( 
 			<Content style={{style1}}>
+				<NavigationBar />
 				<div style={{height: '10vh'}} >
 					<Divider>Scott's Message of the Day:</Divider>
 					<div>
-						<h5>This update: All actions now operate on sockets.</h5>
+						<h5>Welcome, to J̶u̶r̶a̶s̶s̶i̶c̶ ̶P̶a̶r̶k̶  Dusk City</h5>
 					</div>					
 				</div>
 				<div style={{height: '15vh'}}>
@@ -116,12 +158,43 @@ class ControlTerminal extends Component {
 					</Panel>
 					<Divider>Round {this.props.gamestate.round}</Divider>					
 				</div>
-				<Panel style={{height: '50vh'}}>
-					<Table virtualized data={this.props.actions} >
-						<Column>
-						<HeaderCell>Character</HeaderCell>
-						<Cell dataKey="description" />
+
+				<Panel style={{height: '46vh'}}>
+					<Table virtualized data={this.state.tableData} >
+						<Column flexGrow={1}>
+						<HeaderCell>Controller</HeaderCell>
+						<Cell dataKey="control" />
 						</Column>
+
+						<Column flexGrow={2}>
+						<HeaderCell>Character</HeaderCell>
+						<Cell dataKey="character" />
+						</Column>
+
+						<Column align="left" flexGrow={3}>
+						<HeaderCell>Description</HeaderCell>
+						<Cell  dataKey="description" />
+						</Column>
+
+						<Column align="left" flexGrow={2}>
+						<HeaderCell>Die Result</HeaderCell>
+						<Cell  dataKey="dieResult" />
+						</Column>
+
+						<Column flexGrow={1}>
+						<HeaderCell>Control Assigned</HeaderCell>
+						<Cell dataKey="controlAssigned" />
+						</Column>			
+
+						<Column flexGrow={1}>
+						<HeaderCell>Status</HeaderCell>
+						<Cell dataKey="status" />
+						</Column>	
+
+						<Column flexGrow={1}>
+						<HeaderCell>News</HeaderCell>
+						<Cell dataKey="newsworthy" />
+						</Column>	
 					</Table>
 				</Panel>
 

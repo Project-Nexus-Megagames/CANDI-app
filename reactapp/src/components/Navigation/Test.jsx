@@ -7,17 +7,10 @@ import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
 
-
-console.log(window.innerWidth)
-console.log(window.innerHeight)
-
 const MapContainer = ({ locations }) => {
 	const [filter, setFilter] = React.useState('');
 	const [territory, setTerritory] = React.useState({});
 	const [boolean, setBoolean] = React.useState(false);
-
-  let height = window.innerHeight
-  let width = window.innerWidth
 
 	const history = useHistory();
 		
@@ -41,9 +34,16 @@ const MapContainer = ({ locations }) => {
 		<Container style={{ overflow: 'hidden', height: '99vh', width: '100%', position: 'relative', display: 'inline-block', textAlign: 'center', }}>
 			<NavigationBar/>
       <Content style={{ overflow: 'hidden' }}>
-        <MapInteractionCSS style={{ overflow: 'hidden' }} translationBounds={{ xMin: -250, xMax: 500, yMin: -250, yMax: 500 }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
-          <Map handleClick={clickHandlerer} />          
-        </MapInteractionCSS>
+        <FlexboxGrid>
+          <FlexboxGrid.Item colspan={4}>
+            <Panel style={{ height: '100vh'}} bordered></Panel>
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item colspan={20}>
+            <MapInteractionCSS style={{ overflow: 'hidden' }} translationBounds={{ xMin: -750, xMax: 750, yMin: -1000, yMax: 800 }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+              <Map handleClick={clickHandlerer} />          
+            </MapInteractionCSS>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
 
 			</Content>
 

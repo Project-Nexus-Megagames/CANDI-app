@@ -59,13 +59,13 @@ class OtherCharacters extends Component {
 		return ( 
 			<React.Fragment>
 			<NavigationBar/>
-			<Container style={{overflow: 'auto', height: 'calc(100vh)'}}>
+			<Container style={{overflow: 'auto', height: '94vh'}}>
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
-					<Panel style={{ backgroundColor: "#000101"}}>
+					<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
 						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
 					</Panel>
-					<Panel bodyFill style={{height: 'calc(100vh - 130px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
+					<Panel bodyFill style={{height: '86vh', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					{this.state.catagories.map((catagory, index) => (
 						<React.Fragment key={index}>
 						<h6 style={{backgroundColor: "#61342e"}}>{catagory}</h6>	
@@ -179,10 +179,6 @@ class OtherCharacters extends Component {
 								</List.Item>
 							))}
 						</List>
-					</Panel>
-					<Panel style={{backgroundColor: "#bfb606", textAlign: 'center', }} bordered header='Wealth'>
-							<h4 style={{color: 'black'}} >{this.state.selected.wealth.description}</h4>
-							<b style={{color: 'black'}} >Uses: {this.state.selected.wealth.uses}</b>
 					</Panel>
 					<h5>Effort Left: {this.state.selected.effort} </h5>
 					</Panel>}

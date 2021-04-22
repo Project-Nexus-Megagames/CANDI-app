@@ -98,7 +98,7 @@ class MyCharacter extends Component {
       return <Loader inverse center content="doot..." />;
     }
     return (
-      <Content style={{ overflow: "auto", height: "calc(100vh - 100px)" }}>
+      <Content style={{ overflow: "auto", height: "94vh" }}>
       <NavigationBar/>
         <Grid fluid>
           <Row>
@@ -161,50 +161,6 @@ class MyCharacter extends Component {
               <PlaceholderParagraph>Character shit goes here</PlaceholderParagraph>
             </Col>
             <Col xs={24} sm={24} md={8} className="gridbox">
-            <Divider >Wealth</Divider>
-              <Panel
-                style={{
-                  backgroundColor: "#bfb606",
-                  textAlign: "center",
-                  backgroundSize: '650px',
-                  backgroundImage: 'url("/images/coin.png")'
-                }}
-                shaded
-                bordered
-              >
-                <h4 style={{ color: "black" }}>
-                  {playerCharacter.wealth.description}
-                </h4>
-                <b style={{ color: "black" }}>
-                  Uses: {playerCharacter.wealth.uses}
-                </b>
-
-                {playerCharacter.wealth.status.lent && (
-                  <b style={{ color: "black", fontSize: "1.35em" }}>
-                    Wealth lent to: '{playerCharacter.wealth.currentHolder}'
-                  </b>
-                )}
-                <div>
-                  {!playerCharacter.wealth.status.lent && (
-                    <Button
-                      onClick={() => this.openLend(playerCharacter.wealth)}
-                      color="blue"
-                      size="sm"
-                    >
-                      Lend
-                    </Button>
-                  )}
-                  {playerCharacter.wealth.status.lent && (
-                    <Button
-                      onClick={() => this.openUnlend(playerCharacter.wealth)}
-                      color="blue"
-                      size="sm"
-                    >
-                      Un-Lend
-                    </Button>
-                  )}
-                </div>
-              </Panel>
  
               <Divider style={{ marginBottom: "0px" }}>
                 Traits
@@ -409,8 +365,6 @@ class MyCharacter extends Component {
       timeZone: char.timeZone,
       playerName: char.playerName,
       bio: char.bio,
-      uses: char.wealth.uses,
-      wealth: char.wealth.description,
       icon: char.icon,
       popSupport: char.popSupport,
       standing: this.state.formValue.textarea,

@@ -6,6 +6,8 @@ import ImgPanel from './ImgPanel';
 import Loading from './loading';
 
 import aang from '../Images/aang.jpg'
+import city from '../Images/city.png'
+import action from '../Images/action.png'
 import { signOut } from '../../redux/entities/auth';
 
 class HomePage extends Component {
@@ -77,7 +79,7 @@ class HomePage extends Component {
 				<Container style={{backgroundColor:'white', padding:'15px', width: '660px', position: 'relative', display: 'inline-block', textAlign: 'center'}}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
-				<ImgPanel width={620} height={250} img={aang} to='map' title='Map' body=''/>
+				<ImgPanel width={620} height={250} img={city} to='map' title='Map' body=''/>
 				</Col>
 				<Col>
 				<ImgPanel width={620} height={250} img={aang} to='character' title='My Character' body='My Assets and Traits'/>
@@ -85,8 +87,8 @@ class HomePage extends Component {
 		</Row>
 		<Row>
 			<Col>
-				<ImgPanel width={300}  img={aang} to='actions' title='Actions' body='Creating and editing Actions'/>
-				<ImgPanel width={300}  img={aang} to='coffiehouse' title='Feeding' body='Om nom nom'/>
+				<ImgPanel width={300} height={350} img={aang} to='actions' title='Actions' body='Creating and editing Actions'/>
+				<ImgPanel width={300} height={350} img={action} to='coffiehouse' title='Feeding' body='Om nom nom'/>
 			</Col>
 			<Col>
 				<ImgPanel width={620} height={250} img={aang} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
