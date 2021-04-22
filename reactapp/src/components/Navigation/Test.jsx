@@ -5,13 +5,13 @@ import { useHistory } from "react-router-dom";
 import Map from './Map';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
-import NavigationBar from "../Navigation/navigationBar";
+import NavigationBar from "../Navigation/NavigationBar";
 
 
 console.log(window.innerWidth)
 console.log(window.innerHeight)
 
-const Memories = ({ locations }) => {
+const MapContainer = ({ locations }) => {
 	const [filter, setFilter] = React.useState('');
 	const [territory, setTerritory] = React.useState({});
 	const [boolean, setBoolean] = React.useState(false);
@@ -83,6 +83,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Memories);
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
 
 //<img src={"https://i.ytimg.com/vi/flD5ZTC3juk/maxresdefault.jpg"} width="700" height="220"/>

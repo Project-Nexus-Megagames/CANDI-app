@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; // React imports
+import React from 'react'; // React imports
 
 const Map = (props) => {
   const { handleClick } = props;

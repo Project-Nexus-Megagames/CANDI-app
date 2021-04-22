@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Header, Content } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { setFilter } from '../../redux/entities/playerActions';
-import NavigationBar from '../Navigation/navigationBar';
+import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
 import NewAction from './NewAction';

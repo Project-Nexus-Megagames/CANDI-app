@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Navbar, Nav, Icon, Tooltip} from 'rsuite';
+import { Navbar, Nav, Icon } from 'rsuite';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';

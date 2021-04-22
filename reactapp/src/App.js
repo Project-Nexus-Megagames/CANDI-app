@@ -8,14 +8,14 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import Actions from './components/Actions/Actions';
 import Control from './components/Control/control';
-import HomePage from './components/Navigation/homepage';
+import HomePage from './components/Navigation/HomePage';
 import MyCharacter from './components/MyCharacters/myCharacter';
 import OtherCharacters from './components/OtherCharacters/OtherCharacters';
 import ControlTerminal from './components/Control/ControlTerminal';
 // import Registration from './components/Control/Registration';
 
 import Login from './components/Navigation/Login';
-import NotFound from './components/Navigation/notFound';
+import NotFound from './components/Navigation/NotFound';
 import initUpdates from './redux/initUpdate';
 import { getMyCharacter, loadCharacters } from './redux/entities/characters';
 import { loadAssets } from './redux/entities/assets';
@@ -25,8 +25,7 @@ import socket from './socket';
 import NoCharacter from './components/Navigation/NoCharacter';
 
 import { initConnection } from './socket';
-import Map from './components/Navigation/Map';
-import Test from './components/Navigation/Test';
+import MapContainer from './components/Navigation/Test';
 
 // React App Component
 initUpdates()
@@ -72,7 +71,7 @@ const App = (props) => {
           Alert.info(data.message, 6000);
         }
     })
-  }, [loadChar, loadAssets, loadGamestate])
+  }, [loadChar, loadAssets, loadGamestate, loadLocations])
 
   return (
     <div className="App" > {/*style={props.loading ? loading : done} */}
@@ -108,22 +107,13 @@ const App = (props) => {
           <NoCharacter {...props} />
         )} />
         <Route exact path='/map' render={(props) => (
-          <Test {...props} />
+          <MapContainer {...props} />
         )} />
         <Redirect from="/" exact to="login" />
         <Redirect to="/404" />
       </Switch>
     </div>
   );
-}
-
-
-const loading = {
-  position: 'fixed', backgroundColor: '#000000', top: 0, bottom: 0, width: '100%',
-};
-
-const done = {
-  position: 'fixed', top: 0, bottom: 0, width: '100%',
 }
 
 const mapStateToProps = (state) => ({
