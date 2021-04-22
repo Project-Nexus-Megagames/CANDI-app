@@ -4,6 +4,7 @@ import assets from "./entities/assets";
 import characters from "./entities/characters";
 import playerActions from "./entities/playerActions";
 import gamestate from "./entities/gamestate";
+import locations from "./entities/locations";
 
 // Main Store reducer
 export default combineReducers({
@@ -12,5 +13,6 @@ export default combineReducers({
   actions: playerActions,
   assets,
   characters, 
-  gamestate
+  gamestate,
+  locations
 });

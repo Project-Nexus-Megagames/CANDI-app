@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'; // React imports
 import { connect } from "react-redux";
-import { Alert, Header } from 'rsuite';
+import { Alert } from 'rsuite';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
@@ -19,17 +19,19 @@ import NotFound from './components/Navigation/notFound';
 import initUpdates from './redux/initUpdate';
 import { getMyCharacter, loadCharacters } from './redux/entities/characters';
 import { loadAssets } from './redux/entities/assets';
+import { loadLocations } from './redux/entities/locations';
 import { loadGamestate } from './redux/entities/gamestate';
 import socket from './socket';
 import NoCharacter from './components/Navigation/NoCharacter';
 
 import { initConnection } from './socket';
 import Map from './components/Navigation/Map';
+import Test from './components/Navigation/Test';
 
 // React App Component
 initUpdates()
 const App = (props) => {
-  const { loadChar, loadAssets, loadGamestate, login, user } = props;
+  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations } = props;
   useEffect(() => {
     const theme = 'dark'
     console.log(`Setting Theme: ${theme}`)
@@ -55,6 +57,7 @@ const App = (props) => {
     console.log('App Loaded');
     loadChar();
     loadAssets();
+    loadLocations();
     loadGamestate();
 
     socket.on('alert', (data) => {
@@ -105,7 +108,7 @@ const App = (props) => {
           <NoCharacter {...props} />
         )} />
         <Route exact path='/map' render={(props) => (
-          <Map {...props} />
+          <Test {...props} />
         )} />
         <Redirect from="/" exact to="login" />
         <Redirect to="/404" />
@@ -136,6 +139,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadChar: (data) => dispatch(loadCharacters()),
 	loadAssets: (data) => dispatch(loadAssets()),
+  loadLocations: (data) => dispatch(loadLocations()),
 	loadGamestate: (data) => dispatch(loadGamestate())
 });
 
