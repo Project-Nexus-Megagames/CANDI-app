@@ -46,7 +46,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img src='https://i.pinimg.com/originals/5a/6a/ff/5a6affd685147f1db964335b9156657a.gif' alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -101,7 +101,7 @@ class Loading extends Component {
 
                 </FlexboxGrid>
             </Content>
-             <b>So long, and thanks for all the Bugs! -Scott</b>
+             <b>{loadingMsg[rand1]}</b>
         </React.Fragment>
         );        
     }
@@ -132,120 +132,88 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Loading);
 
 const spook = [
-    'https://media4.giphy.com/media/tJMVqwkdUIuL0Eiam3/source.gif',
-    'https://media2.giphy.com/media/l0HlCkojKEiPhw86Y/giphy.gif',
-    'https://media2.giphy.com/media/65Mt9P22p2zMzpDPZ7/giphy.gif',
-    'https://media4.giphy.com/media/3o7TKpmHsAZiTTekve/giphy.gif',
-    'https://media1.giphy.com/media/12mbWQRCFxOzp6/giphy.gif',
-    'https://media1.giphy.com/media/UrljInRDir27u/giphy.gif',
-    'https://media4.giphy.com/media/b04Dkxq5AUOCA/giphy.gif',
-    'https://media0.giphy.com/media/9V8Zkw4N7wef4wVTMj/giphy.gif',
-    'https://media0.giphy.com/media/3o7TKFiWSXV7JjjLFu/giphy.gif',
-    'https://media0.giphy.com/media/26BRCc2VNkdZ5tjvG/giphy.gif',
-    'https://media4.giphy.com/media/QBkBsqCs1fzB6lWtAg/giphy.gif',
-    'https://media3.giphy.com/media/1wqpNgYn6Ioi5KFpYu/giphy.gif',
-    'https://media3.giphy.com/media/NReptqJMy4AEqVBMLy/giphy.gif',
-    'https://media3.giphy.com/media/dAROqk8Rj2hijvQSZ6/giphy.gif',
-    'https://media2.giphy.com/media/J3FG7OCZ41ECEGg5xK/giphy.gif',
-    'https://media0.giphy.com/media/26BRxmqeqsRPBBOpy/giphy.gif',
-    'https://media3.giphy.com/media/1NTrtg7jDz8XwSObFE/giphy.gif',
-    'https://media1.giphy.com/media/623LlMM8HuzF2gD12N/giphy.gif',
-    'https://media0.giphy.com/media/WFk0kxBWUgDjgmN2G9/giphy.gif',
-    'https://media4.giphy.com/media/26xBtwZMRHvhP4WAM/giphy.gif',
-    'https://media3.giphy.com/media/dt0T8TI3Kizyctrxh9/giphy.gif',
-    'https://media4.giphy.com/media/kbnUIUVY7YHNhe5tbb/giphy.gif',
-    'https://media0.giphy.com/media/1qk24adSnJ1OOJLpZM/giphy.gif',
-    'https://media3.giphy.com/media/hS9SwD4UcQH5OJBeV4/giphy.gif',
-    'https://i.imgur.com/vxfXBNl.gif',
-    'https://media1.giphy.com/media/1wlWr2HGewrBcLAAQ0/giphy.gif',
-    'https://media3.giphy.com/media/1qj35KDHtfyLn8bwqh/giphy.gif',
-    'https://media0.giphy.com/media/1zi2j6wyS4LQLJahuJ/giphy.gif',
-    'https://media3.giphy.com/media/l3fQ6Fh6Ze3rMXn4A/giphy.gif',
-    'https://media4.giphy.com/media/uBy3vPgqr6zPuZjLzC/giphy.gif',
-    'https://media1.giphy.com/media/39jP8ygazzD3RQ2MpE/giphy.gif',
-    'https://media1.giphy.com/media/l0MYzoJm5MTpmiqd2/giphy.gif?cid=ecf05e47b8e1e8u4a4zom62y0n8jmo9qxapszq2o39s4h97w&rid=giphy.gif',
-    'https://media0.giphy.com/media/ec4eYyyV3lDdZQN3tM/giphy.gif',
-    'https://media.giphy.com/media/KfHdqUYph81ult6hiP/giphy.gif',
-    'https://media.giphy.com/media/U7yEG153QrpXnviwWd/giphy.gif',
-    'https://media0.giphy.com/media/iIYWG1FvZCv5FJS6iY/giphy.gif', //ouiji video call
-    'https://media.giphy.com/media/gI6SlmfHfmRd2imYAD/giphy.gif',
-    'https://media.giphy.com/media/lMwyhPnj7Xp2adc5qp/giphy.gif',
-    'https://media.giphy.com/media/f7N10M1qz4I2M29DNP/giphy.gif'
+'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/64f52102-0936-45b9-8d7c-15f71238f654/dbzk98q-cd887df7-7dc8-486a-83c8-6d14ab0de296.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNjRmNTIxMDItMDkzNi00NWI5LThkN2MtMTVmNzEyMzhmNjU0XC9kYnprOThxLWNkODg3ZGY3LTdkYzgtNDg2YS04M2M4LTZkMTRhYjBkZTI5Ni5naWYifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.G_1pM3g7tWqIlAIK8kSev37yhR6GCQOleN45GuallO4',
+'https://media2.giphy.com/media/JpLa7HlmdfN3gciTOu/giphy.gif',
+'https://www.picgifs.com/reaction-gifs/reaction-gifs/community/picgifs-community-45751.gif',
+'https://64.media.tumblr.com/4cf9d3d672e0dccb0e60a50d47292e64/tumblr_miijyik7bK1qj7dsso1_500.gif',
+'https://data.whicdn.com/images/318906663/original.gif',
+'https://thumbs.gfycat.com/CharmingBleakHake-size_restricted.gif',
+'https://i.pinimg.com/originals/1d/cb/01/1dcb01275091bdcbb56ed2c15dea60e0.gif',
+'https://media4.giphy.com/media/l0iYPARiJXo2Fwr9hO/giphy.gif',
+'https://media1.giphy.com/media/nyNS6Cfrnkdj2/giphy.gif',
+'https://i1.wp.com/nileease.com/wp-content/uploads/2020/05/cf028dae44f0f5b1e7763747f422bbe0.gif?fit=400%2C222&ssl=1',
+'https://i.pinimg.com/originals/44/03/f8/4403f8810a593202d3b5a44893ac3835.gif',
+'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif'
 ]
 
 const bored = [
-    'https://www.youtube.com/watch?v=QSS3GTmKWVA',
-    'https://www.youtube.com/watch?v=Q6EIUo1q4lc&lc=UgwLB6d6w9RNlqJHQ1t4AaABAg&ab_channel=BobtheNinjaMan',
-    'https://youtu.be/Rc-Jh3Oe0Gc',
-    'https://www.youtube.com/watch?v=BP9uI4rFVHU',
-    'https://www.youtube.com/watch?v=j0HN7bvBODE',
-    'https://www.youtube.com/watch?v=fhmeYoJZeOw',
-    'https://www.youtube.com/watch?v=Oct2xKMGOno',
-    'https://www.youtube.com/watch?v=5tFZof9EDhc',
-    'https://www.youtube.com/watch?v=Qz7tMKlkPOc&t=1',
-    'https://www.youtube.com/watch?v=nWIzwQui-xg',
-    'https://www.youtube.com/watch?v=4ISDUKG-N90&feature=youtu.be',
-    'https://www.youtube.com/watch?v=cHoGhisiBg8&feature=youtu.be',
-    'https://www.youtube.com/watch?v=9xX6QPIQdZs&feature=youtu.be',
-    'https://www.youtube.com/watch?v=it8vJ03E8c8',
-    'https://www.youtube.com/watch?v=bTS9XaoQ6mg&list=WL&index=130',
-    'https://www.youtube.com/watch?v=aiM5KDuHrR4',
-    'https://www.youtube.com/watch?v=zo7fgswQPJ8&list=WL&index=37&ab_channel=ThomasSchuler',
-    'https://www.youtube.com/watch?v=G_rWl-jaAiU',
-    'https://www.youtube.com/watch?v=D5fH5j7ux0U',
-    'https://www.youtube.com/watch?v=B62ACxuq8Pw',
-    'https://www.youtube.com/watch?v=dGDH3meSPyk&list=PLoF28YhYwCLjMcirMvGouxbIeNSqJGi_K&index=22&ab_channel=dakooters',
-    'https://www.youtube.com/watch?v=WGNuDe3OwFY&feature=youtu.be',
-    'https://www.youtube.com/watch?v=AauAyjBxaIQ',
-    'https://www.youtube.com/watch?v=ihSaGAVHmvw',
-    'https://www.youtube.com/watch?v=c7_CcBgZ2e4&feature=share',
-    'https://www.youtube.com/watch?v=gp1lCem43lg',
-    'https://www.youtube.com/watch?v=dh0TkO3sypw',
-    'https://www.youtube.com/watch?v=nHc288IPFzk',
-    'https://www.youtube.com/watch?v=Z47xwzYGop8',
-    'https://www.youtube.com/watch?v=GPUgjy-Pn-4',
-    'https://www.youtube.com/watch?v=St7S3YrxqW0',
-    'https://www.youtube.com/watch?v=otIrDM4RBpo',
-    'https://www.youtube.com/watch?v=mnE8A9cfGio',
-    'https://www.youtube.com/watch?v=0_7WwPkqqvA',
-    'https://www.youtube.com/watch?v=1fjuaBZQtOI',
-    'https://www.youtube.com/watch?v=ozlhNbDJ7DY',
-    'https://www.youtube.com/watch?v=n3GOL_KHxX4',
-    'https://www.youtube.com/watch?v=IdoD2147Fik',
-    'https://www.youtube.com/watch?v=3NCyD3XoJgM',
-    'https://www.youtube.com/watch?v=kNr1HBBeCYM',
-    'https://www.youtube.com/watch?v=JFtUHVgw-gQ',
-    'https://www.youtube.com/watch?v=vYud9sZ91Mc',
-    'https://www.youtube.com/watch?v=PPgLTgWa99w'
+    'https://www.youtube.com/watch?v=QSS3GTmKWVA', // Freddie Mercury gets Trapped in a Slide and Calls out for Mamma (ASMR)
+    'https://www.youtube.com/watch?v=Q6EIUo1q4lc&lc=UgwLB6d6w9RNlqJHQ1t4AaABAg&ab_channel=BobtheNinjaMan', // Dummy Thicc
+    'https://youtu.be/Rc-Jh3Oe0Gc', // Racism In Teen Titans
+    'https://www.youtube.com/watch?v=BP9uI4rFVHU', // you dare speak to me in that tone of voice?
+    'https://www.youtube.com/watch?v=j0HN7bvBODE', // Ding (toto car alarm)
+    'https://www.youtube.com/watch?v=fhmeYoJZeOw', // When I Make a Good Pun (Brian David Gilbert)
+    'https://www.youtube.com/watch?v=Oct2xKMGOno', // WednesdayOS
+    'https://www.youtube.com/watch?v=5tFZof9EDhc', // what's your team's name?
+    'https://www.youtube.com/watch?v=Qz7tMKlkPOc&t=1', // The Male Fantasy
+    'https://www.youtube.com/watch?v=nWIzwQui-xg', // Awkward moments with... Daniel Radcliffe - Pathé
+    'https://www.youtube.com/watch?v=cHoGhisiBg8&feature=youtu.be', // WW2 - Pearl Harbor
+    'https://www.youtube.com/watch?v=9xX6QPIQdZs&feature=youtu.be', // Waiting in line for 10 hours for a Supreme crowbar
+    'https://www.youtube.com/watch?v=it8vJ03E8c8', // shingle jingle
+    'https://www.youtube.com/watch?v=bTS9XaoQ6mg&list=WL&index=130', // chess king sacrifice
+    'https://www.youtube.com/watch?v=aiM5KDuHrR4', // cat mario 64
+    'https://www.youtube.com/watch?v=zo7fgswQPJ8&list=WL&index=37&ab_channel=ThomasSchuler', // Someone Hacked Lime Scooters
+    'https://www.youtube.com/watch?v=G_rWl-jaAiU', // buy my bed
+    'https://www.youtube.com/watch?v=D5fH5j7ux0U', // Spongebob also knows the rules
+    'https://www.youtube.com/watch?v=B62ACxuq8Pw', // Discombobulate
+    'https://www.youtube.com/watch?v=dGDH3meSPyk&ab_channel=dakooters', // god is dead OwO
+    'https://www.youtube.com/watch?v=WGNuDe3OwFY&feature=youtu.be', // Annihilation Deleted Scene
+    'https://www.youtube.com/watch?v=AauAyjBxaIQ', // Siblings
+    'https://www.youtube.com/watch?v=ihSaGAVHmvw', // Bikie Wars
+    'https://www.youtube.com/watch?v=gp1lCem43lg', // Tactical Reload
+    'https://www.youtube.com/watch?v=dh0TkO3sypw', // RIP to the Civic
+    'https://www.youtube.com/watch?v=nHc288IPFzk', // Duck Army
+    'https://www.youtube.com/watch?v=Z47xwzYGop8', // that's just a stupid boulder [2]
+    'https://www.youtube.com/watch?v=GPUgjy-Pn-4', // a villain who unintentionally always does helpful things
+    'https://www.youtube.com/watch?v=St7S3YrxqW0', // Dog concerto in A♭m
+    'https://www.youtube.com/watch?v=otIrDM4RBpo', // Modern Romance
+    'https://www.youtube.com/watch?v=mnE8A9cfGio', // Send This to a Fellow King
+    'https://www.youtube.com/watch?v=0_7WwPkqqvA', // Being Bigoted in the Workplace - 1999 Ep01
+    'https://www.youtube.com/watch?v=1fjuaBZQtOI', // fine dining dakooters
+    'https://www.youtube.com/watch?v=n3GOL_KHxX4', // you fool dakooters
+    'https://www.youtube.com/watch?v=IdoD2147Fik', // Dumbledore asked calmly
+    'https://www.youtube.com/watch?v=3NCyD3XoJgM', // Hi, I'm Daisy
+    'https://www.youtube.com/watch?v=JFtUHVgw-gQ', // Boston Dynamics: Rise of the Dance of the Machines
+    'https://www.youtube.com/watch?v=vYud9sZ91Mc', // Music really makes a difference
+    'https://www.youtube.com/watch?v=PPgLTgWa99w', // "WAAfrica" (Five Waluigis sing Africa)
+    'https://www.youtube.com/watch?v=kGj_HkKhhSE', // Wire
+    'https://www.youtube.com/watch?v=pMN_bvk4KTo',
+    'https://www.youtube.com/watch?v=xI39jU24InY',
+    'https://www.youtube.com/watch?v=s-09gNDsPzQ'
 ]
 
 const loadingMsg = [
     'Loading...',   
-    "Fun Fact: Cthonian is pronounced: 'C̷̩͔̈̓ţ̷͍̞̯̝̘͕̼͂̓̀̀̊̓̇̏̈́̒͆̿̐̕͝ȟ̶͓̲̱̥̙̒̄͛́̽̓̇̈́̄̇̔̋ͅo̷̧̧͕͇̘̝̲͇̐͌̀̂̃͜͝n̸̡͙̘̮͕̼̈́̀͂͐́̉i̸̖̓̈́͂̄͊a̷̧͉͗́̍̓̆̀͘͠͝n̵̢̢̝͓̦̈́̈́'",
     'Thank you all for taking time to make this game happen.',  
-    'Hey... you\'re not Australian are you?',
     'pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ \'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI',
-    'Long live the King!',
     'Help I\'m a man stuck inside a loading screen let me out!',
     'Oh, remind me to tell you about that thing. You know that thing about that guy with that face. Yeah you know the one.',
-    'Long loading screen? Try clicking the skeleton!',
     'Don\'t touch that dial! We\'ll be right back after these messages!',
     'C.A.N.D.I stands for the "Control Actions \'N Distributing Inputs"! \nLook I really just wanted to call it CANDI. It\'s my app and I\'ll call it whatever I want!',
     'Becoming self aware...', 
-    'Вся твоя база принадлежит нам',
     'I wanted to be a dating app when I was developed.',
-    'Fun Fact: if you forget your password you will be asked to answer a security question. It is: "What is a megagame?"',
+    'If you forget your password you will be asked to answer a security question. It is: "What is a megagame?"',
     'Fun Fact: Gary Oldman is in fact younger than Gary Numan',
     'Fun Fact: An average person spends 24 years of his life sleeping.',
     'Fun Fact at some point you held the world record for youngest person alive. It\'s all been pretty downhill from there, hasn\'t it?',
     'Fun Fact: Pope Stephen VI had the corpse of his predecessor dug up to stand trial.',
     'Fun Fact: Most toilets flush in e flat.',
-    'Did you know, clicking the skeleton gives you a secret!',
+    'Why does the word "fridge" have the letter "d" in it, while "refrigerator" does not?',
     'This message brought to you by: A very weird sense of humor',
     'Joke Time! A blind man walks into a bar.',
     'What\'s orange and sounds like a parrot?\nA carrot.',
     '01001101 01100001 01100100 01100101 00100000 01111001 01101111 01110101 00100000 01101100 01101111 01101111 01101011',
-    'What if the real Afterlife was the firends we made along the way?',
+    'What if the real Dusk City was the firends we made along the way?',
     'Loading... what? They can\'t all be interesting or funny...',
     'What do you call an alligator in a vest?\n An Investigator.',
     'Fun Fact: Sun tzu invented war, and then perfected it so no man could best him in the ring of honor. This was shortly before he invented the Zoo.',

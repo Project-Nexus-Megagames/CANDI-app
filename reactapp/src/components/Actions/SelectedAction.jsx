@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress } from 'rsuite';
+import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Form, FormGroup, ControlLabel, FormControl, Toggle } from 'rsuite';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -19,7 +19,13 @@ class SelectedAction extends Component {
 		intent: '',	
 		result: this.props.action.result,
 		dieResult: this.props.action.dieResult,
-		status: ''			
+		status: '',
+		bonus: true,
+		formValue: {
+			name: '',
+			description: '',
+			uses: 0,
+		},			
 	 }
 
 	 componentDidUpdate = (prevProps) => {
@@ -164,11 +170,11 @@ class SelectedAction extends Component {
 			show={this.state.resEdit} 
 			onHide={() => this.closeResult()}>
 				<Modal.Header>
-					<Modal.Title>Edit {action.creator.characterName}'s' Action Result</Modal.Title>
+					<Modal.Title>Edit {action.creator.characterName}'s Action Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<FlexboxGrid>
-						<FlexboxGrid.Item colspan={12}>
+						<FlexboxGrid.Item colspan={10}>
 							<p style={{  fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
 								Description
 							</p>
@@ -176,7 +182,7 @@ class SelectedAction extends Component {
 								{action.description}	
 							</p>
 						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={12}>
+						<FlexboxGrid.Item colspan={10}>
 							<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300', }}>
 								Intent
 							</p>
@@ -184,12 +190,14 @@ class SelectedAction extends Component {
 								{action.intent}	
 							</p>							
 						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={4}>
+							<p style={{ 	textAlign: "center", fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
+								Effort
+							</p>
+							<p style={{ fontWeight: 'bolder', 	textAlign: "center", fontSize: 20 }} >{action.effort}</p>
+						</FlexboxGrid.Item>
 					</FlexboxGrid>
-					<Divider/>
-					<p style={{ 	textAlign: "center", fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
-						Effort
-				</p>
-				<p style={{ fontWeight: 'bolder', 	textAlign: "center", fontSize: 20 }} >{action.effort}</p>
+
 				<Divider></Divider>
 				<form>
 					<FlexboxGrid>
@@ -210,6 +218,32 @@ class SelectedAction extends Component {
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 				</form>
+				<Divider>If this action gives bonus Assets, fill this part out. Otherwise ignore the below</Divider>
+				<Form layout="center" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={12}>
+								<FormGroup>
+									<ControlLabel>Asset Name </ControlLabel>
+									<FormGroup name="name" />
+							</FormGroup>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={6}>
+								<FormGroup>
+									<ControlLabel>Trait/Asset </ControlLabel>
+									<FormControl accepter={this.myToggle} name='asset' />
+							</FormGroup>
+							</FlexboxGrid.Item>
+						</FlexboxGrid>
+						<FormGroup>
+								<ControlLabel>Asset Description</ControlLabel>
+								<FormControl style={{width: '100%'}} name="description" rows={5} componentClass="textarea" />
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Uses </ControlLabel>
+							<FormControl name="uses" accepter={InputNumber} />
+						</FormGroup>
+					</Form>
+
 				</Modal.Body>
 				<Modal.Footer>
 					<Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
@@ -292,7 +326,13 @@ class SelectedAction extends Component {
 	deleteAction = async () => {
 		socket.emit('actionRequest', 'delete', {id: this.props.action._id}); // new Socket event
 		this.props.handleSelect(null);
-	}
+	};
+
+	myToggle = () => {
+		return (
+			<Toggle onChange={()=> this.setState({ assetBoolean: !this.state.assetBoolean })} checkedChildren="Asset" unCheckedChildren="Trait"></Toggle>			
+		)
+	};
 }
 
 const slimText = {

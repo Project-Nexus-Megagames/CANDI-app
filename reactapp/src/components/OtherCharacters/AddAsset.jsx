@@ -97,7 +97,6 @@ class AddAsset extends Component {
 				
 			</Toggle>			
 		)
-
 	}
 }
  
