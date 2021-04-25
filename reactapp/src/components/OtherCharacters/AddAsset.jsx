@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Toggle, InputNumber } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Toggle, InputNumber, InputPicker } from 'rsuite';
 import socket from '../../socket';
 
 class AddAsset extends Component {
@@ -8,21 +8,22 @@ class AddAsset extends Component {
 			name: '',
 			description: '',
 			uses: 0,
+			type: ''
 		},
-		assetBoolean: null,
+		hidden: true,
 		id: '',
 		loading: false
 	 }
 		
 	 componentDidMount = () => {
 		 const char = this.props.character;
-		 this.setState({ id: char._id, assetBoolean: false });
+		 this.setState({ id: char._id });
 	 }
 	 
 	 componentDidUpdate(prevProps) {
 		// Typical usage (don't forget to compare props):
 		if (this.props.characters !== prevProps.characters) {
-			this.setState({ id: this.props.character._id, assetBoolean: false });
+			this.setState({ id: this.props.character._id });
 		}
 	}
 
@@ -33,13 +34,17 @@ class AddAsset extends Component {
 			asset: {
 				name: this.state.formValue.name,
 				description: this.state.formValue.description,	
-				model: this.state.assetBoolean ? 'Asset' : 'Trait',
-				uses: this.state.formValue.uses						
+				model: this.state.formValue.type,
+				uses: this.state.formValue.uses,
+				status: {
+					hidden: this.state.hidden							
+				}
 			},
 			id: this.props.character._id, 
 	 }
-	 socket.emit('assetRequest', 'create', {data: formValue}); // new Socket event	
-	 this.setState({ loading: false, formValue: { name: '', description: '' }, assetBoolean: false });
+	 console.log(formValue)
+	 socket.emit('assetRequest', 'create', formValue); // new Socket event	
+	 this.setState({ loading: false, formValue: { name: '', description: '', type: '' }, hidden: true });
 	 this.props.closeModal();
 	 }
 
@@ -59,13 +64,13 @@ class AddAsset extends Component {
 							<FlexboxGrid.Item colspan={12}>
 								<FormGroup>
 									<ControlLabel>Asset Name </ControlLabel>
-									<FormControl name="name" />
+									<FormControl name="name" componentClass="textarea"/>
 							</FormGroup>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={6}>
 								<FormGroup>
-									<ControlLabel>Trait/Asset </ControlLabel>
-									<FormControl accepter={this.myToggle} name='asset' />
+									<ControlLabel>Hidden/Revealed</ControlLabel>
+									<FormControl accepter={this.myToggle}/>
 							</FormGroup>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
@@ -73,10 +78,21 @@ class AddAsset extends Component {
 								<ControlLabel>Asset Description</ControlLabel>
 								<FormControl style={{width: '100%'}} name="description" rows={5} componentClass="textarea" />
 						</FormGroup>
-						<FormGroup>
-							<ControlLabel>Uses </ControlLabel>
-							<FormControl name="uses" accepter={InputNumber} />
-						</FormGroup>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={12}>
+								<FormGroup>
+									<ControlLabel>Uses </ControlLabel>
+									<FormControl name="uses" accepter={InputNumber} />
+								</FormGroup>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={12}>
+								<FormGroup>
+										<ControlLabel>Trait/Asset </ControlLabel>
+										<FormControl name='type' accepter={InputPicker} data={pickerData}/>
+								</FormGroup>
+							</FlexboxGrid.Item>
+						</FlexboxGrid>
+
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
@@ -93,11 +109,35 @@ class AddAsset extends Component {
 
 	myToggle = () => {
 		return (
-			<Toggle onChange={()=> this.setState({ assetBoolean: !this.state.assetBoolean })} checkedChildren="Asset" unCheckedChildren="Trait">
+			<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="Hidden" unCheckedChildren="Revealed">
 				
 			</Toggle>			
 		)
 	}
+	
 }
+
+const pickerData = [
+	{
+		label: 'Asset',
+		value: 'Asset'
+	},
+	{
+		label: 'Trait',
+		value: 'Trait'
+	},
+	{
+		label: 'Wealth',
+		value: 'Wealth'
+	},
+	{
+		label: 'Bond',
+		value: 'Bond'
+	},
+	{
+		label: 'Power',
+		value: 'Power'
+	}
+]
  
 export default AddAsset;

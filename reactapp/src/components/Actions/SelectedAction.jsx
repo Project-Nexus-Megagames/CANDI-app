@@ -20,12 +20,7 @@ class SelectedAction extends Component {
 		result: this.props.action.result,
 		dieResult: this.props.action.dieResult,
 		status: '',
-		bonus: true,
-		formValue: {
-			name: '',
-			description: '',
-			uses: 0,
-		},			
+		bonus: this.props.action.bonus,
 	 }
 
 	 componentDidUpdate = (prevProps) => {
@@ -200,49 +195,28 @@ class SelectedAction extends Component {
 
 				<Divider></Divider>
 				<form>
-					<FlexboxGrid>
-						<textarea rows='6' value={this.state.result} style={textStyle} onChange={(event)=> this.setState({result: event.target.value})}></textarea>							
-					</FlexboxGrid>
-					<br></br>
-					<FlexboxGrid>
-						<FlexboxGrid.Item colspan={6}>
-							<b>Die Result</b>
-							<textarea value={this.state.dieResult} style={textStyle} onChange={(event)=> this.setState({dieResult: event.target.value})}></textarea>				
-					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={2}/>
-					<FlexboxGrid.Item colspan={6}>
-						<b>Status</b>
-						<InputPicker labelKey='label' valueKey='value' data={pickerData} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>				
-					</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}>
+					<textarea rows='6' value={this.state.result} style={textStyle} onChange={(event)=> this.setState({result: event.target.value})}></textarea>							
+					<Divider></Divider>
+					<FlexboxGrid justify="start">
+						<FlexboxGrid.Item  colspan={11}>
+							<b>Bonus Resources Awarded</b>
+							<textarea rows='4' value={this.state.bonus} style={textStyle} onChange={(event)=> this.setState({bonus: event.target.value})}></textarea>			
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={1}/>
+						<FlexboxGrid.Item colspan={12}>
+							<FlexboxGrid>
+								<FlexboxGrid.Item colspan={24}>
+									<b>Status</b>
+									<InputPicker labelKey='label' valueKey='value' data={pickerData} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>
+								</FlexboxGrid.Item>
+								<FlexboxGrid.Item colspan={24}>
+									<b>Die Result</b>
+									<textarea value={this.state.dieResult} style={textStyle} onChange={(event)=> this.setState({dieResult: event.target.value})}></textarea>									
+								</FlexboxGrid.Item>
+							</FlexboxGrid>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 				</form>
-				<Divider>If this action gives bonus Assets, fill this part out. Otherwise ignore the below</Divider>
-				<Form layout="center" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
-						<FlexboxGrid>
-							<FlexboxGrid.Item colspan={12}>
-								<FormGroup>
-									<ControlLabel>Asset Name </ControlLabel>
-									<FormGroup name="name" />
-							</FormGroup>
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={6}>
-								<FormGroup>
-									<ControlLabel>Trait/Asset </ControlLabel>
-									<FormControl accepter={this.myToggle} name='asset' />
-							</FormGroup>
-							</FlexboxGrid.Item>
-						</FlexboxGrid>
-						<FormGroup>
-								<ControlLabel>Asset Description</ControlLabel>
-								<FormControl style={{width: '100%'}} name="description" rows={5} componentClass="textarea" />
-						</FormGroup>
-						<FormGroup>
-							<ControlLabel>Uses </ControlLabel>
-							<FormControl name="uses" accepter={InputNumber} />
-						</FormGroup>
-					</Form>
 
 				</Modal.Body>
 				<Modal.Footer>
