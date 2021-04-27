@@ -20,12 +20,10 @@ import {
   Drawer,
   SelectPicker,
   Placeholder,
-  Alert,
   Grid,
   Col,
   Row,
 } from "rsuite";
-import { gameServer } from "../../config";
 import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated } from "../../redux/entities/assets";
 import socket from "../../socket";
@@ -60,7 +58,7 @@ class MyCharacter extends Component {
     }
   };
 
-  /*componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps) => {
 	 if (this.props.playerCharacter !== prevProps.playerCharacter) {
 		 const char = this.props.playerCharacter;
 		 const formValue = {
@@ -68,7 +66,7 @@ class MyCharacter extends Component {
 		}
 	 this.setState({ formValue });		
 	 }
-	}*/
+	}
 
   openAnvil(url) {
     const win = window.open(url, "_blank");
@@ -161,33 +159,11 @@ class MyCharacter extends Component {
               <PlaceholderParagraph>Character shit goes here</PlaceholderParagraph>
             </Col>
             <Col xs={24} sm={24} md={8} className="gridbox">
- 
-              <Divider style={{ marginBottom: "0px" }}>
-                Traits
-              </Divider>
-              {playerCharacter.traits.map((trait, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {trait.uses > 0 && (
-                    <React.Fragment>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={trait.name}
-                        bordered
-                        collapsible
-                      >
-                        <p>{trait.description}</p>
 
-                        {trait.uses !== 999 && <p>Uses: {trait.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))}
-              <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
+            <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
                 Assets
               </Divider>
-              {playerCharacter.assets.map((asset, index) => (
+              {playerCharacter.assets.filter(el => (el.type === 'Asset' || el.type === 'Wealth') && el.status.hidden !== true ).map((asset, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {asset.uses > 0 && (
                     <React.Fragment>
@@ -210,7 +186,7 @@ class MyCharacter extends Component {
                             style={{ textAlign: "center" }}
                             colspan={4}
                           >
-                            {!asset.status.lent && (
+                            {asset.status.lendable && !asset.status.lent && (
                               <Button
                                 onClick={() => this.openLend(asset)}
                                 appearance="ghost"
@@ -219,7 +195,7 @@ class MyCharacter extends Component {
                                 Lend
                               </Button>
                             )}
-                            {asset.status.lent && (
+                            {asset.status.lendable && asset.status.lent && (
                               <Button
                                 onClick={() => this.openUnlend(asset)}
                                 appearance="ghost"
@@ -235,7 +211,74 @@ class MyCharacter extends Component {
                     </React.Fragment>
                   )}
                 </div>
+              ))} 
+              <Divider style={{ marginBottom: "0px" }}>
+                Traits
+              </Divider>
+              {playerCharacter.assets.filter(el => el.type === 'Trait' && el.status.hidden !== true).map((trait, index) => (
+                <div key={index} style={{ paddingTop: "10px" }}>
+                  {trait.uses >= 0 && ( // change this back to > 0
+                    <React.Fragment>
+                      <Panel
+                        style={{ backgroundColor: "#1a1d24" }}
+                        shaded
+                        header={trait.name}
+                        bordered
+                        collapsible
+                      >
+                        <p>{trait.description}</p>
+
+                        {trait.uses !== 999 && <p>Uses: {trait.uses}</p>}
+                      </Panel>
+                    </React.Fragment>
+                  )}
+                </div>
               ))}
+
+              <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
+                Bonds
+              </Divider>
+              {playerCharacter.assets.filter(el => el.type === 'Bond' && el.status.hidden !== true).map((bond, index) => (
+                <div key={index} style={{ paddingTop: "10px" }}>
+                  {bond.uses > 0 && (
+                    <React.Fragment>
+                      <Panel
+                        style={{ backgroundColor: "#1a1d24" }}
+                        shaded
+                        header={bond.name}
+                        bordered
+                        collapsible
+                      >
+                        <p>{bond.description}</p>
+
+                        {bond.uses !== 999 && <p>Uses: {bond.uses}</p>}
+                      </Panel>
+                    </React.Fragment>
+                  )}
+                </div>
+              ))}
+
+              <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>Powers</Divider>
+              {playerCharacter.assets.filter(el => el.type === 'Power' && el.status.hidden !== true).map((power, index) => (
+                <div key={index} style={{ paddingTop: "10px" }}>
+                  {power.uses >= 0 && ( // change this back to > 0
+                    <React.Fragment>
+                      <Panel
+                        style={{ backgroundColor: "#1a1d24" }}
+                        shaded
+                        header={power.name}
+                        bordered
+                        collapsible
+                      >
+                        <p>{power.description}</p>
+
+                        {power.uses !== 999 && <p>Uses: {power.uses}</p>}
+                      </Panel>
+                    </React.Fragment>
+                  )}
+                </div>
+              ))}
+
              <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
                 Borrowed Assets
               </Divider>
@@ -252,14 +295,46 @@ class MyCharacter extends Component {
             </Col>
           </Row>
         </Grid>
+				
+			<Modal backdrop="static"
+			size='sm'
+			show={this.state.unlend}
+			onHide={() => this.setState({ unlend: false, unleanding: null })}>
+				{this.state.unleanding && 
+					<React.Fragment>
+						<Modal.Body>
+							{this.renderUnLendation()}
+						</Modal.Body>	
+						<Modal.Footer>
+							<Button onClick={() => this.handleTakeback()} appearance="primary">
+								Take it Back!
+							</Button>
+							<Button onClick={() => this.setState({ unlend: false, unleanding: null })} appearance="subtle">
+								Cancel
+							</Button>
+						</Modal.Footer>											
+					</React.Fragment>
+				}
+			</Modal>
+
+			<Drawer
+			show={this.state.lendShow}
+			onHide={() => this.closeLend()}>
+				<Drawer.Body>
+					<SelectPicker placeholder="Select a Lending Target" onChange={(event) => this.setState({ target: event })} block valueKey='_id' labelKey='characterName' disabledItemValues={[playerCharacter._id]} data={this.props.characters}/>					
+					{this.renderLendation()}
+				</Drawer.Body>
+			</Drawer>
+
       </Content>
     );
   }
 
   rednerHolder = (asset) => {
-    const holder = this.props.characters.find((el) =>
+    let holder = this.props.characters.find((el) =>
       el.lentAssets.some((el2) => el2._id === asset._id)
     );
+    if (!holder) holder = this.props.myCharacter;
     return <Tag color="violet">Lent to: {holder.characterName}</Tag>;
   };
 
@@ -335,9 +410,10 @@ class MyCharacter extends Component {
       id: this.state.lending._id,
       target: this.state.target,
       lendingBoolean: true,
+      owner: this.props.myCharacter._id
     };
     
-    socket.emit('characterRequest', 'lend', { data }); // new Socket event
+    socket.emit('assetRequest', 'lend',  data ); // new Socket event
     this.setState({ lending: null, target: null });
     this.closeLend();
   };
@@ -351,8 +427,10 @@ class MyCharacter extends Component {
       id: this.state.unleanding._id,
       target: holder._id,
       lendingBoolean: false,
+      owner: this.props.myCharacter._id
     };
-    socket.emit('characterRequest', 'lend', { data }); // new Socket event
+    socket.emit('assetRequest', 'lend',  data ); // new Socket event
+    this.setState({ unlend: false });
   };
 
   handleStanding = async () => {

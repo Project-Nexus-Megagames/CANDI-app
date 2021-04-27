@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Form, FormGroup, ControlLabel, FormControl, Toggle } from 'rsuite';
+import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Form, FormGroup, ControlLabel, FormControl, Toggle, SelectPicker } from 'rsuite';
+import { getUnusuedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -21,20 +22,39 @@ class SelectedAction extends Component {
 		dieResult: this.props.action.dieResult,
 		status: '',
 		bonus: this.props.action.bonus,
+		usedAssets: []
+	 }
+
+	 componentDidMount = () => {
+				let array2 = [];
+				for (const el of this.props.unusedAssets) {
+					array2.push(el.name)
+				}
+
+				this.setState({ usedAssets: array2 }); 
 	 }
 
 	 componentDidUpdate = (prevProps) => {
-		if (this.props.action !== prevProps.action) {
+		if (this.props.assetsRedux !== prevProps.assetsRedux) {
+			const array = this.props.assetsRedux.filter(el => el.status.used === true);
+			let array2 = [];
+			for (const el of array) {
+				array2.push(el.name)
+			}
+			this.setState({ usedAssets: array2 });		
+		}
+		if (this.props.actions !== prevProps.actions) {
 			this.setState({ 	
 				result: this.props.action.result,
-				dieResult: this.props.action.dieResult, })			
+				dieResult: this.props.action.dieResult, 
+			});		
 		}
 	}
 
 	render() { 
 		const action = this.props.action;
 		return ( 
-			<React.Fragment style={{overflow: 'auto', height: 'calc(100vh - 100px)'}} >
+			<React.Fragment >
 			<FlexboxGrid >
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
@@ -142,9 +162,9 @@ class SelectedAction extends Component {
 						<FlexboxGrid.Item colspan={4}>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Traits
-							<InputPicker defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset1: event})}/>
-							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset2: event})}/>
-							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset3: event})}/>
+							<SelectPicker  defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset1: event})}/>
+							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset2: event})}/>
+							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset3: event})}/>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 					</form>
@@ -266,7 +286,7 @@ class SelectedAction extends Component {
 		try{
 			socket.emit('actionRequest', 'update', action); // new Socket event
 			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: ''});	
-			this.props.handleSelect(null)
+
 			this.closeEdit();
 			this.closeResult();
 		}
@@ -350,6 +370,8 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	actions: state.actions.list,
+	assetsRedux: state.assets.list,
+  unusedAssets: getUnusuedAssets(state),
   myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 

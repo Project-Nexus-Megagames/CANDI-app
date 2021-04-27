@@ -34,7 +34,7 @@ class AddAsset extends Component {
 			asset: {
 				name: this.state.formValue.name,
 				description: this.state.formValue.description,	
-				model: this.state.formValue.type,
+				type: this.state.formValue.type,
 				uses: this.state.formValue.uses,
 				status: {
 					hidden: this.state.hidden							

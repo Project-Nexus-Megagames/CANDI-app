@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Divider, Loader} from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
-import ModifyMemory from './ModifyMemory';
 import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
@@ -164,7 +163,7 @@ class OtherCharacters extends Component {
 						</ButtonGroup>
 							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Assets" >
 						<List size="md">
-							{this.state.selected.assets.map((asset, index) => (
+							{this.state.selected.assets.filter(el => el.type === 'Asset').map((asset, index) => (
 								<List.Item key={index} index={index} size='md'>
 									<div>{asset.name}</div>
 								</List.Item>
@@ -173,7 +172,7 @@ class OtherCharacters extends Component {
 					</Panel>
 					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Traits" >
 						<List size="md">
-							{this.state.selected.traits.map((asset, index) => (
+							{this.state.selected.assets.filter(el => el.type === 'Trait').map((asset, index) => (
 								<List.Item key={index} index={index} size='md'>
 									<div>{asset.name}</div>
 								</List.Item>
@@ -195,10 +194,6 @@ class OtherCharacters extends Component {
 					character={this.state.selected}
 					closeModal={this.closeModal}
 				/>
-				{this.state.selected !== undefined && <ModifyMemory
-					show={this.state.memory}
-					character={this.state.selected}
-					closeModal={this.closeModal}/>}
 			</Content>		
 			}
 		</Container>

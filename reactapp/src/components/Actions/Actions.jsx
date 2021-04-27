@@ -19,6 +19,15 @@ class Actions extends Component {
 		this.setState({ selected: null });
 	}
 
+	componentDidUpdate = (prevProps) => {
+		if (this.props.actions !== prevProps.actions) {
+			if (this.state.selected) {
+				const selected = this.props.actions.find(el => el._id === this.state.selected._id)
+				this.setState({ selected })				
+			}
+		}
+	}
+
 	showNew = () => { 
 		this.setState({showNew: true}) 
 	};
@@ -62,7 +71,7 @@ class Actions extends Component {
 				</PanelGroup>
 			</Sidebar>
 			<Content>
-				{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets ]} action={this.state.selected}/>}	
+				{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets ]} action={this.state.selected}/>}	
 				{this.state.selected && this.state.selected.model === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
 			</Content>
 			<NewAction
@@ -79,7 +88,7 @@ class Actions extends Component {
 	}
 
 	filteredAssets = () => {
-		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.traits, ...this.props.myCharacter.lentAssets];
+		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
 		assets = assets.filter(el => el.status.used === false);
 
 		return assets;
@@ -92,6 +101,7 @@ class Actions extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	actions: state.actions.list,
 	user: state.auth.user,
 	control: state.auth.control,
 	filter: state.actions.filter,

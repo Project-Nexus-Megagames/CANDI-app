@@ -79,6 +79,13 @@ export const getMyAssets = createSelector(
   )
 );
 
+export const getUnusuedAssets = createSelector(
+  state => state.assets.list,
+  (assets) => assets.filter(
+    el => el.status.used === true
+  )
+);
+
 // assets Loader into state
 export const loadAssets = payload => (dispatch, getState) => {
   return dispatch(
