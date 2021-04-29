@@ -62,7 +62,7 @@
   height: auto;
   transition: .5s ease;
   backface-visibility: hidden;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .container:hover .image {

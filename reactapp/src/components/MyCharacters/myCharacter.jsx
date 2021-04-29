@@ -96,7 +96,7 @@ class MyCharacter extends Component {
       return <Loader inverse center content="doot..." />;
     }
     return (
-      <Content style={{ overflow: "auto", height: "94vh" }}>
+      <Content style={{ overflow: "auto", height: "94vh", }}>
       <NavigationBar/>
         <Grid fluid>
           <Row>

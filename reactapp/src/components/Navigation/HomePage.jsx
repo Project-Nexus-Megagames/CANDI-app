@@ -9,6 +9,9 @@ import aang from '../Images/aang.jpg'
 import city from '../Images/city.png'
 import action from '../Images/action.jpg'
 import feed from '../Images/feed.png'
+import mycharacter from '../Images/MyCharacter.jpg'
+import other from '../Images/othercharacters.jpg'
+import control from '../Images/balls.png'
 import { signOut } from '../../redux/entities/auth';
 
 class HomePage extends Component {
@@ -56,7 +59,7 @@ class HomePage extends Component {
 		}
 		else return ( 
 			<React.Fragment>
-				<Navbar >
+				<Navbar style={{ height: '6vh' }}>
 				<Navbar.Body>
 					<Nav>
 					<Dropdown
@@ -77,28 +80,28 @@ class HomePage extends Component {
 				</div>
 
 			</Navbar>
-				<Container style={{backgroundColor:'white', padding:'15px', width: '660px', position: 'relative', display: 'inline-block', textAlign: 'center'}}>
+				<Container style={{backgroundColor:'#2a272e', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
 				<ImgPanel width={620} height={250} img={city} to='map' title='Map' body=''/>
 				</Col>
 				<Col>
-				<ImgPanel width={620} height={250} img={aang} to='character' title='My Character' body='My Assets and Traits'/>
+					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions' body='Creating and editing Actions'/>
+					<ImgPanel width={300} height={350} img={feed} to='coffiehouse' title='Feeding' body='Om nom nom'/>
 				</Col>
 		</Row>
-		<Row>
+		<Row style={{display: 'inherit'}}>
 			<Col>
-				<ImgPanel width={300}  img={action} to='actions' title='Actions' body='Creating and editing Actions'/>
-				<ImgPanel width={300} height={350} img={feed} to='coffiehouse' title='Feeding' body='Om nom nom'/>
+				<ImgPanel width={620} height={250} img={mycharacter} to='character' title='My Character' body='My Assets and Traits'/>
 			</Col>
 			<Col>
-				<ImgPanel width={620} height={250} img={aang} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
+				<ImgPanel width={620} height={250} img={other} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
 			</Col>
 		</Row>
 		{this.props.user.roles.some(el=> el === 'Control') && <React.Fragment>
 			<Row>
 				<Col>
-				<ImgPanel width={620} height={250} img={aang} to='control' title='Control Terminal' body='They Keys to the whole empire'/>	
+				<ImgPanel width={620} height={250} img={control} to='control' title='Control Terminal' body='They Keys to the whole empire'/>	
 				</Col>
 			</Row>
 			</React.Fragment>}
