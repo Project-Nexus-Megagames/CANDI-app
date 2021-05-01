@@ -104,7 +104,7 @@ class MyCharacter extends Component {
               <div>
               <p>
                   <img
-                    class="portrait"
+                    className="portrait"
                     src={`/images/${playerCharacter.characterName}.jpg`}
                     alt="Unable to load img"
                     width="95%"
