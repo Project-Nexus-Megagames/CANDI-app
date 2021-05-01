@@ -30,6 +30,7 @@ import MapContainer from './components/Navigation/Test';
 // React App Component
 initUpdates()
 const App = (props) => {
+  console.log("version 0.1.x [John CORS]");
   const { loadChar, loadAssets, loadGamestate, login, user, loadLocations } = props;
   useEffect(() => {
     const theme = 'dark'
