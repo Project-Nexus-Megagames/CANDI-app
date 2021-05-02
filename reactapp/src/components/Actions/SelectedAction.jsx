@@ -61,7 +61,7 @@ class SelectedAction extends Component {
 				<FlexboxGrid.Item colspan={16} >
 					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 						<p style={{ fontSize: '300', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
-							Created by: {action.creator.characterName}
+							Created by: {action.creator}
 						</p>
 						<p style={slimText}>
 							Description

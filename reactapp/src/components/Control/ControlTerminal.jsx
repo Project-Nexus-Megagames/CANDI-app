@@ -367,7 +367,7 @@ class ControlTerminal extends Component {
 			status: this.state.formValue.status,
 			endTime: this.state.endTime
 		}
-		socket.emit('gamestateRequest', 'modify', { data }); // new Socket event	
+		socket.emit('gamestateRequest', 'modify',  data ); // new Socket event	
 		this.setState({ gsModal: false });
 	}
 

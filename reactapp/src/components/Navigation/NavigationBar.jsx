@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Navbar, Nav, Icon } from 'rsuite';
+import { Navbar, Nav, Icon, IconButton, FlexboxGrid } from 'rsuite';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
@@ -22,28 +22,46 @@ class Navigation extends Component {
     render() {
 			let {days, hours, minutes} = this.state;
       return (
-				<Navbar style={{ height: '6vh' }} >
+				<div style={{ backgroundColor: '#3287a8', height: '6vh' }}>
+					<FlexboxGrid justify="start" align="middle">
+						<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={2}>
+							<div>
+								<IconButton icon={<Icon icon="arrow-circle-left"/>} size="sm" >Back</IconButton>	
+							</div>							
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={20}>
+							<div>
+								<p>Round: {this.props.gamestate.round} </p>	
+								{(this.state.days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
+								{(this.state.hours > 0 && this.state.days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+								{(this.state.days + this.state.hours + this.state.minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
+							</div>									
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+					</FlexboxGrid>
+
+					
+			
+				</div>
+      );
+		}
+		/**
+		 * 				<Navbar style={{ height: '6vh' }} >
 				<Navbar.Body>
 					<Nav onSelect={this.props.onSelect} activeKey={this.props.active}>
 					<Nav.Item eventKey="home" to="/home" componentClass={NavLink} icon={<Icon icon="arrow-circle-left" />}>Back</Nav.Item>
 				</Nav>		
 				</Navbar.Body>			
-				<div style={{  }}>
-					<p style={{ }}  >Round: {this.props.gamestate.round} </p>	
-					{(this.state.days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
-					{(this.state.hours > 0 && this.state.days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
-					{(this.state.days + this.state.hours + this.state.minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
-				</div>
+
 
 			</Navbar>
-      );
-		}
+		 */
 
 		handleLogOut = async () => {
 			this.props.logOut();
 			socket.disconnect();
 			//localStorage.removeItem('token');
-			//props.history.push('/login')
+			this.props.history.push('/login')
 		}
 		
 		renderTime = (endTime) => {

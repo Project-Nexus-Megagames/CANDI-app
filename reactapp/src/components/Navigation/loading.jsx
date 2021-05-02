@@ -198,7 +198,8 @@ const bored = [
     'https://www.youtube.com/watch?v=pMN_bvk4KTo',
     'https://www.youtube.com/watch?v=xI39jU24InY',
     'https://www.youtube.com/watch?v=s-09gNDsPzQ',
-    'https://www.youtube.com/watch?v=9fjk8cNiptU'
+    'https://www.youtube.com/watch?v=9fjk8cNiptU',
+    'https://www.youtube.com/watch?v=yUZfkbKFtKA'
 ]
 
 const loadingMsg = [

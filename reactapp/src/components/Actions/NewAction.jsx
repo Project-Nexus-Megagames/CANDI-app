@@ -45,7 +45,7 @@ class NewAction extends Component {
 			asset3: this.state.asset3,
 			description: this.state.description,
 			intent: this.state.intent,
-			creator: this.props.myCharacter._id,
+			creator: this.props.myCharacter.characterName,
 			round: this.props.gamestate.round
 		}
 		socket.emit('actionRequest', 'create', action); // new Socket event	
