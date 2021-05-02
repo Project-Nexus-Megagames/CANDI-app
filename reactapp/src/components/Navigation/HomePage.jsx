@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Icon, Nav, Row, Col, Loader, Navbar, Dropdown, IconButton } from 'rsuite';
+import { Container, Icon, Nav, Row, Col, Loader, Navbar, Dropdown, IconButton, FlexboxGrid } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 import Loading from './loading';
@@ -59,27 +59,28 @@ class HomePage extends Component {
 		}
 		else return ( 
 			<React.Fragment>
-				<Navbar style={{ height: '6vh' }}>
-				<Navbar.Body>
-					<Nav>
-					<Dropdown
-						renderTitle={() => {
-							return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} circle />;
-						}}
-					>
-						<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
-					</Dropdown>						
-					</Nav>
-
-				</Navbar.Body>			
-				<div style={{  }}>
-					<p style={{ }}  >Round: {this.props.gamestate.round} </p>	
-					{(this.state.days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
-					{(this.state.hours > 0 && this.state.days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
-					{(this.state.days + this.state.hours + this.state.minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
-				</div>
-
-			</Navbar>
+					<div style={{ backgroundColor: '#324ea8', height: '6vh' }}>
+						<FlexboxGrid justify="start" align="middle">
+							<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
+								<Dropdown
+										renderTitle={() => {
+											return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
+										}}
+									>
+										<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
+									</Dropdown>					
+								</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={22}>
+								<div>
+									<p>Round: {this.props.gamestate.round} </p>	
+									{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
+									{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+									{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
+								</div>									
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+						</FlexboxGrid>
+					</div>
 				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
 				<Row style={{display: 'inherit'}}>
 				<Col>

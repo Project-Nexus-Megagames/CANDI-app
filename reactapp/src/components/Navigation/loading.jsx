@@ -96,7 +96,7 @@ class Loading extends Component {
                             <span>Number of attempts: {this.props.actionsFailed}</span>         
                         </div>               
                     </div>}   
-                    {this.props.actionsFailed > 11 && <div>
+                    {this.props.actionsFailed > 10 && <div>
                         <div>
                             <span>Action Request Failed! Please close tab and try again later</span> 
                         </div>
