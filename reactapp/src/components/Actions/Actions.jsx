@@ -71,7 +71,7 @@ class Actions extends Component {
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 						<ButtonGroup>
 							<Button appearance='primary' disabled={this.isDisabled()} onClick={() => this.showNew()}>New Action</Button>
-							<Button color='red' appearance='ghost' disabled={this.props.myCharacter.feed} onClick={() => this.setState({showFeed: true}) }>New Feed</Button>
+							<Button color='red' appearance='primary' disabled={this.props.myCharacter.feed} onClick={() => this.setState({showFeed: true}) }>New Feed</Button>
 						</ButtonGroup>
 					</Panel>			
 				</PanelGroup>
@@ -101,13 +101,13 @@ class Actions extends Component {
 
 	filteredAssets = () => {
 		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
-		assets = assets.filter(el => el.status.used === false);
+		assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth'));
 		return assets;
 	}
 
 	filtereFeeddAssets = () => {
 		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
-		assets = assets.filter(el => el.status.used === false && el.type === 'Asset' && el.type === 'Trait');
+		assets = assets.filter(el => el.status.used === false && (el.type === 'Bond' || el.type === 'Territory'));
 		return assets;
 	}
 

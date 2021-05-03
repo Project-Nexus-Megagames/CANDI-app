@@ -46,7 +46,9 @@ const Navigation = props => {
 					{(days + hours + minutes <= 0) && <p>Game Status: {props.gamestate.status}</p>}	
 				</div>									
 			</FlexboxGrid.Item>
-			<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+			<FlexboxGrid.Item colspan={2}>
+
+			</FlexboxGrid.Item>
 		</FlexboxGrid>
 	</div>
   );

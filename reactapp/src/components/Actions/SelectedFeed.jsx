@@ -19,7 +19,7 @@ class SelectedFeed extends Component {
 		result: this.props.action.result,
 		dieResult: this.props.action.dieResult,
 		status: '',
-		bonus: this.props.action.bonus,
+		mechanicalEffect: this.props.action.mechanicalEffect,
 		usedAssets: []
 	 }
 
@@ -41,10 +41,18 @@ class SelectedFeed extends Component {
 			}
 			this.setState({ usedAssets: array2 });		
 		}
-		if (this.props.actions !== prevProps.actions) {
+		if (this.props.action !== prevProps.action) {
 			this.setState({ 	
+				asset1: this.props.action.asset1,
+				asset2: this.props.action.asset2,
+				asset3: this.props.action.asset3,
+				id: this.props.action._id,
+				description: this.props.action.description,
+				intent: this.props.action.intent,	
 				result: this.props.action.result,
-				dieResult: this.props.action.dieResult, 
+				dieResult: this.props.action.dieResult,
+				status: this.props.action.status,
+				mechanicalEffect: this.props.action.mechanicalEffect,
 			});		
 		}
 	}
@@ -160,7 +168,7 @@ class SelectedFeed extends Component {
 			show={this.state.resEdit} 
 			onHide={() => this.closeResult()}>
 				<Modal.Header>
-					<Modal.Title>Edit {action.creator.characterName}'s Action Result</Modal.Title>
+					<Modal.Title>Edit {action.creator}'s Feed Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<FlexboxGrid>
@@ -194,15 +202,15 @@ class SelectedFeed extends Component {
 					<Divider></Divider>
 					<FlexboxGrid justify="start">
 						<FlexboxGrid.Item  colspan={11}>
-							<b>Bonus Resources Awarded</b>
-							<textarea rows='4' value={this.state.bonus} style={textStyle} onChange={(event)=> this.setState({bonus: event.target.value})}></textarea>			
+							<b>Mechanical Effects</b>
+							<textarea rows='4' value={this.state.mechanicalEffect} style={textStyle} onChange={(event)=> this.setState({mechanicalEffect: event.target.value})}></textarea>			
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={1}/>
 						<FlexboxGrid.Item colspan={12}>
 							<FlexboxGrid>
 								<FlexboxGrid.Item colspan={24}>
 									<b>Status</b>
-									<InputPicker labelKey='label' valueKey='value' data={pickerData} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>
+									<InputPicker labelKey='label' valueKey='value' data={pickerData} defaultValue={this.state.status} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item colspan={24}>
 									<b>Die Result</b>
@@ -253,6 +261,7 @@ class SelectedFeed extends Component {
 			result: this.state.result,
 			dieResult: this.state.dieResult,
 			status: this.state.status,
+			mechanicalEffect: this.state.mechanicalEffect,
 			id: this.props.action._id,
 			playerBoolean: this.state.edit	
 		}
@@ -260,7 +269,7 @@ class SelectedFeed extends Component {
 		// 1) make a new action
 		try{
 			socket.emit('actionRequest', 'update', action); // new Socket event
-			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: ''});	
+			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: '', mechanicalEffect: ''});	
 
 			this.closeEdit();
 			this.closeResult();
