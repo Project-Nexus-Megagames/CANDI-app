@@ -87,14 +87,11 @@ class HomePage extends Component {
 				<ImgPanel width={620} height={250} img={city} to='map' title='Map' body=''/>
 				</Col>
 				<Col>
-					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions' body='Creating and editing Actions'/>
-					<ImgPanel width={300} height={350} img={feed} to='coffiehouse' title='Feeding' body='Om nom nom'/>
+					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
+					<ImgPanel width={300} height={350} img={mycharacter} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 		</Row>
 		<Row style={{display: 'inherit'}}>
-			<Col>
-				<ImgPanel width={620} height={250} img={mycharacter} to='character' title='My Character' body='My Assets and Traits'/>
-			</Col>
 			<Col>
 				<ImgPanel width={620} height={250} img={other} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
 			</Col>

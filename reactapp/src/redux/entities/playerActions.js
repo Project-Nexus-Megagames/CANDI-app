@@ -99,11 +99,11 @@ export const draftActions = createSelector(
 // playerActions Loader into state
 export const loadplayerActions = payload => (dispatch, getState) => {
   let url = baseURL;
-  /*
+  
   if (!payload.roles.some(el => el === 'Control' )) {
     url = `${baseURL}/${payload.username}`
   }  
-  */
+  
 
   
   return dispatch(

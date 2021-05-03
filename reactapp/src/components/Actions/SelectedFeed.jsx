@@ -6,18 +6,16 @@ import { characterUpdated, getMyCharacter } from '../../redux/entities/character
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
-class SelectedAction extends Component {
+class SelectedFeed extends Component {
 	state = { 
 		edit: null, // used to open edit action popup
 		resEdit: null,	// used to open action result popup
 		loading: false, //used for loading button 
 		effort: 1,
 		asset1: '',
-		asset2: '',
-		asset3: '',
 		id: '',
 		description: '',
-		intent: '',	
+		intent: this.props.action.intent,	
 		result: this.props.action.result,
 		dieResult: this.props.action.dieResult,
 		status: '',
@@ -65,34 +63,20 @@ class SelectedAction extends Component {
 							Created by: {action.creator}
 						</p>
 						<p style={slimText}>
-							Description
-						</p>
-						<p>
-							{action.description}	
-						</p>
-						<p style={slimText}>
 							Intent
 						</p>
 						<p>
 							{action.intent}	
 						</p>
 						<p style={slimText}>
-							Effort
+							Overfeed Level
 						</p>
 						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
 						<Progress.Line percent={action.effort * 33 + 1} showInfo={false}>  </Progress.Line>
-						<Divider>Assets/Traits</Divider>
-						<FlexboxGrid>
-							<FlexboxGrid.Item colspan={8}>
-								{this.renderAsset(action.asset1)}
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(action.asset2)}
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(action.asset3)}
-							</FlexboxGrid.Item>
-						</FlexboxGrid>
+						<Divider>Bond/Territory</Divider>
+
+							{this.renderAsset(action.asset1)}
+
 					</Panel>
 					{(action.status === 'Published' || this.props.user.roles.some(el=> el === 'Control')) && 
 					<React.Fragment>
@@ -135,50 +119,40 @@ class SelectedAction extends Component {
 			show={this.state.edit} 
 			onHide={() => this.closeEdit()}>
 				<Modal.Header>
-					<Modal.Title>Edit an Action</Modal.Title>
+					<Modal.Title>Edit a Feed Action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-				<form>
-					<FlexboxGrid> Description
-						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
-					</FlexboxGrid>
-					<br></br>
-					<FlexboxGrid> What you would like to happen
-						<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
-					</FlexboxGrid>
-					<FlexboxGrid>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
-							<Slider graduated
-							min={0}
-							max={this.props.myCharacter.effort + this.props.action.effort}
-							defaultValue={this.state.effort}
-							progress
-							value={this.state.effort}
-							onChange={(event)=> this.setState({effort: event})}>
-							</Slider>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort + this.props.action.effort} min={0} onChange={(value)=> this.setState({effort: parseInt(value)})}></InputNumber>								
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={4}>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Traits
-							<InputPicker  defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset1: event})}/>
-							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset2: event})}/>
-							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset3: event})}/>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-					</form>
+					<b>What are you doing with this feed?</b>
+					<form>
+						<textarea rows='6' value={action.intent} style={textStyle} onChange={(event)=> this.setState({ effort: event.target.value })}></textarea>							
+						<br></br>				
+						<FlexboxGrid style={{padding: '5px', textAlign: 'left', width: '100%'}} align="middle">
+							<FlexboxGrid.Item  align="middle" colspan={10}>Overfeeding Level
+								<Slider graduated
+									min={0}
+									max={4}
+									defaultValue={0}
+									progress
+									value={this.state.effort}
+									onChange={(event)=> this.setState({ effort: event})}>
+								</Slider>
+								<InputNumber value={this.state.effort} max={4} min={0} onChange={(event)=> this.setState({ effort: event})}></InputNumber>	
+							</FlexboxGrid.Item>	
+							<FlexboxGrid.Item colspan={1} />
+							<FlexboxGrid.Item  align="middle" colspan={10}>Bond/Territory
+								<InputPicker  block style={{ width: '75%' }} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} onChange={(event)=> this.setState({ asset1: event})}/>
+							</FlexboxGrid.Item>
+						</FlexboxGrid>
+				</form>
 				</Modal.Body>
-				<Modal.Footer>
-          <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
-            Submit
-          </Button>
-          <Button onClick={() => this.closeEdit()} appearance="subtle">
-            Cancel
-          </Button>
-        </Modal.Footer>
-			</Modal>
+		<Modal.Footer>
+			<Button loading={this.props.loading} onClick={() => {
+								this.handleSubmit()
+								}} appearance="primary">
+				Submit
+			</Button>
+		</Modal.Footer>
+	</Modal> 
 
 			<Modal overflow
 			full
@@ -280,7 +254,6 @@ class SelectedAction extends Component {
 			dieResult: this.state.dieResult,
 			status: this.state.status,
 			id: this.props.action._id,
-			type: this.props.action.type,
 			playerBoolean: this.state.edit	
 		}
 		// console.log(action)
@@ -383,4 +356,4 @@ const mapDispatchToProps = (dispatch) => ({
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectedAction);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedFeed);

@@ -25,8 +25,11 @@ class ActionList extends Component {
 		}
 
 	listStyle (item) {
-		if (item.model === "Project") {
+		if (item.type === "Project") {
 			return ({cursor: 'pointer', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+		}
+		else if (item.type === "Feed") {
+			return ({cursor: 'pointer', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		}
 		else if (item === this.props.selected) {
 			return ({cursor: 'pointer', backgroundColor: "#212429"})

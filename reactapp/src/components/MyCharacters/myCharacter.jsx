@@ -462,8 +462,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   updateAsset: (data) => dispatch(assetUpdated(data)),
-  lendAsset: (data) => dispatch(assetLent(data)),
-  actionDispatched: (data) => dispatch(playerActionsRequested(data))
+  lendAsset: (data) => dispatch(assetLent(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyCharacter);

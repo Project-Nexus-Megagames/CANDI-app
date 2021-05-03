@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Header, Content } from 'rsuite';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Header, Content, ButtonToolbar, ButtonGroup } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
 import NewAction from './NewAction';
+import NewFeed from './NewFeed';
 import SelectedAction from './SelectedAction';
+import SelectedFeed from './SelectedFeed';
 import SelectedProject from './SelectedProject';
 class Actions extends Component {
 	state = { 
 		selected: null,
 		showNew: false,
+		showFeed: false,
 	}
 
 	componentDidMount() {
@@ -66,13 +69,17 @@ class Actions extends Component {
 						<ActionList selected={this.state.selected} handleSelect={this.handleSelect}/>
 					</Panel>
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
-						<Button appearance='primary' disabled={this.isDisabled()} block onClick={() => this.showNew()}>New Action</Button>
+						<ButtonGroup>
+							<Button appearance='primary' disabled={this.isDisabled()} onClick={() => this.showNew()}>New Action</Button>
+							<Button color='red' appearance='ghost' disabled={this.props.myCharacter.feed} onClick={() => this.setState({showFeed: true}) }>New Feed</Button>
+						</ButtonGroup>
 					</Panel>			
 				</PanelGroup>
 			</Sidebar>
 			<Content>
-				{this.state.selected && this.state.selected.model === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={[...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets ]} action={this.state.selected}/>}	
-				{this.state.selected && this.state.selected.model === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
+				{this.state.selected && this.state.selected.type === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={this.filteredAssets()} action={this.state.selected}/>}	
+				{this.state.selected && this.state.selected.type === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
+				{this.state.selected && this.state.selected.type === 'Feed' && <SelectedFeed user={this.props.user} handleSelect={this.handleSelect} assets={this.filtereFeeddAssets()} action={this.state.selected}/>}	
 			</Content>
 			<NewAction
 				show={this.state.showNew}
@@ -82,6 +89,11 @@ class Actions extends Component {
 				gamestate={this.props.gamestate}
 				myCharacter={this.props.myCharacter}
 			/>
+			<NewFeed 
+				show={this.state.showFeed}
+				assets={this.filtereFeeddAssets()}
+				closeFeed={() => this.setState({showFeed: false})}
+			/>
 		</Container>
 		</React.Fragment>
 		);
@@ -90,7 +102,12 @@ class Actions extends Component {
 	filteredAssets = () => {
 		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
 		assets = assets.filter(el => el.status.used === false);
+		return assets;
+	}
 
+	filtereFeeddAssets = () => {
+		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
+		assets = assets.filter(el => el.status.used === false && el.type === 'Asset' && el.type === 'Trait');
 		return assets;
 	}
 
