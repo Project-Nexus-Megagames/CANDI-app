@@ -67,6 +67,7 @@ class HomePage extends Component {
 											return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
 										}}
 									>
+										<Dropdown.Item>Version: 1.0</Dropdown.Item>
 										<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
 									</Dropdown>					
 								</FlexboxGrid.Item>
