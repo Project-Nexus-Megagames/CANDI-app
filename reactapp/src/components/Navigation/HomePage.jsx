@@ -59,7 +59,7 @@ class HomePage extends Component {
 		}
 		else return ( 
 			<React.Fragment>
-					<div style={{ backgroundColor: '#324ea8', height: '6vh' }}>
+					<div style={{ backgroundColor: '#746D75', height: '6vh', color: '' }}>
 						<FlexboxGrid justify="start" align="middle">
 							<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 								<Dropdown

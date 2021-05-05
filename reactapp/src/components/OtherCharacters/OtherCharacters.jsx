@@ -159,7 +159,6 @@ class OtherCharacters extends Component {
 						<ButtonGroup style={{marginTop: '5px', }} >
 							<Button appearance={"ghost"} onClick={() => this.setState({ edit: true })}>Modify</Button>
 							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Resources</Button>
-							<Button appearance={"ghost"} onClick={() => this.setState({ memory: true })}>Memories</Button>
 						</ButtonGroup>
 							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Assets" >
 						<List size="md">
