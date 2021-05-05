@@ -11,7 +11,7 @@ const slice = createSlice({
     loading: false,
     loaded: false,
     lastFetch: null,
-    newcharacters: 0
+    failedAttempts: 0,
   },
   // Reducers - Events
   reducers: {
@@ -28,6 +28,7 @@ const slice = createSlice({
     },
     charactersRequestFailed: (characters, action) => {
       console.log(`${action.type} Dispatched`)
+      characters.failedAttempts++;
       characters.loading = false;
     },
     characterAdded: (characters, action) => {

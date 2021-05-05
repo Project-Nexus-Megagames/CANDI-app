@@ -10,7 +10,7 @@ const slice = createSlice({
     loading: false,
     loaded: false,
     lastFetch: null,
-    newassets: 0
+    failedAttempts: 0,
   },
   // Reducers - Events
   reducers: {
@@ -27,6 +27,7 @@ const slice = createSlice({
     },
     assetsRequestFailed: (assets, action) => {
       console.log(`${action.type} Dispatched`)
+      assets.failedAttempts++;
       assets.loading = false;
     },
     assetAdded: (assets, action) => {

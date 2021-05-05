@@ -1,35 +1,17 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Content, FlexboxGrid, Progress } from 'rsuite';
+import { Content, Divider, FlexboxGrid, Progress } from 'rsuite';
+import { loadAssets } from '../../redux/entities/assets';
+import { loadCharacters } from '../../redux/entities/characters';
+import { loadGamestate } from '../../redux/entities/gamestate';
+import { loadLocations } from '../../redux/entities/locations';
 import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
 const { Circle } = Progress;
 
 class Loading extends Component {
-    constructor(props) {
-		super(props);
-		this.state = {
-            actions: false,
-            characters: false,
-            assets: false,
-            gamestate: false
-		};
-	}
 
     componentDidUpdate = (prevProps) => {
-        if (this.props.actions !== prevProps.actions) {
-            this.setState({ actions: true }); 
-        }
-        if (this.props.characters !== prevProps.characters) {
-            this.setState({ characters: true }); 
-        }
-        if (this.props.assets !== prevProps.assets) {
-            this.setState({ assets: true }); 
-        }
-        if (this.props.gamestate !== prevProps.gamestate) {
-            this.setState({ gamestate: true }); 
-        }
-
         if(this.props.actionsFailed > prevProps.actionsFailed && this.props.actionsFailed < 10) {
             if (this.props.actionsFailed < 4) {
               this.props.loadAction(this.props.user);
@@ -38,6 +20,15 @@ class Loading extends Component {
                 this.props.loadAllActions();
             }
         }
+        if(this.props.assetsFailed > prevProps.assetsFailed && this.props.assetsFailed < 10) {
+            this.props.loadAssets();
+        }    
+        if(this.props.locationsFailed > prevProps.locationsFailed && this.props.locationsFailed < 10) {
+            this.props.loadLocations();
+        }    
+        if(this.props.charactersFailed > prevProps.charactersFailed && this.props.charactersFailed < 10) {
+            this.props.loadChar();
+        }    
     }
 
     render() {
@@ -51,14 +42,14 @@ class Loading extends Component {
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: 160, marginTop: 10 }}>
-                        Gamestate: <Circle percent={this.state.gamestate ? 100 : 0} showInfo={this.state.gamestate ? true: false} status={this.state.gamestate ? 'success' : 'active'} />
+                    <div style={{ width: 160, marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                        Gamestate: <Circle percent={this.props.gamestateLoaded ? 100 : 0} showInfo={this.props.gamestateLoaded ? true: false} status={this.props.gamestateLoaded ? 'success' : 'active'} />
                     </div>  
                     </FlexboxGrid.Item>
                     
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: 160, marginTop: 10 }}>
-                        Assets: <Circle percent={this.state.assets ? 100 : 0} showInfo={this.state.assets ? true: false} status={this.state.assets ? 'success' : 'active'} />                  
+                    <div style={{ width: 160, marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                        Assets: <Circle percent={this.props.assetsLoaded ? 100 : 0} showInfo={this.props.assetsLoaded ? true: false} status={this.props.assetsLoaded ? 'success' : 'active'} />                  
                     </div>
                     {this.props.assetsFailed > 0 && <div>
                         <div>
@@ -71,8 +62,8 @@ class Loading extends Component {
                 </FlexboxGrid.Item>  
 
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: 160, marginTop: 10 }}>
-                        Characters: <Circle percent={this.state.characters ? 100 : 0} showInfo={this.state.characters ? true: false} status={this.state.characters ? 'success' : 'active'} />
+                    <div style={{ width: 160, marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                        Characters: <Circle percent={this.props.characterLoaded ? 100 : 0} showInfo={this.props.characterLoaded ? true: false} status={this.props.characterLoaded ? 'success' : 'active'} />
                     </div>
                     {this.props.charactersFailed > 0 && <div>
                         <div>
@@ -85,8 +76,8 @@ class Loading extends Component {
                     </FlexboxGrid.Item>                  
 
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: 160, marginTop: 10, position: 'relative', display: 'inline-block', }}>
-                        Actions: <Circle percent={this.state.actions ? 100 : 0} showInfo={this.state.actions ? true: false} status={this.state.actions ? 'success' : 'active'} />               
+                    <div style={{ width: 160, marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                        Actions: <Circle percent={this.props.actionsLoaded ? 100 : 0} showInfo={this.props.actionsLoaded ? true: false} status={this.props.actionsLoaded ? 'success' : 'active'} />               
                     </div>
                     {this.props.actionsFailed > 0 && this.props.actionsFailed < 11 && <div>
                         <div>
@@ -96,7 +87,7 @@ class Loading extends Component {
                             <span>Number of attempts: {this.props.actionsFailed}</span>         
                         </div>               
                     </div>}   
-                    {this.props.actionsFailed > 10 && <div>
+                    {this.props.actionsFailed > 9 && <div>
                         <div>
                             <span>Action Request Failed! Please close tab and try again later</span> 
                         </div>
@@ -106,9 +97,31 @@ class Loading extends Component {
                     </div>} 
                 </FlexboxGrid.Item>
 
+                <FlexboxGrid.Item colspan={4}>
+                    <div style={{ width: 160, marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center"}}>
+                        Locations: <Circle percent={this.props.locationsLoaded ? 100 : 0} showInfo={this.props.locationsLoaded ? true: false} status={this.props.locationsLoaded ? 'success' : 'active'} />               
+                    </div>
+                    {this.props.locationsFailed > 0 && this.props.locationsFailed < 11 && <div>
+                        <div>
+                            <span>Action Request Failed! Re-attempting...</span> 
+                        </div>
+                        <div>
+                            <span>Number of attempts: {this.props.locationsFailed}</span>         
+                        </div>               
+                    </div>}   
+                    {this.props.locationsFailed > 9 && <div>
+                        <div>
+                            <span>Action Request Failed! Please close tab and try again later</span> 
+                        </div>
+                        <div>
+                            <span>Number of attempts: Too Many</span>         
+                        </div>               
+                    </div>} 
+                </FlexboxGrid.Item>
 
                 </FlexboxGrid>
             </Content>
+            <Divider/>
              <b>{loadingMsg[rand1]}</b>
         </React.Fragment>
         );        
@@ -125,16 +138,29 @@ const mapStateToProps = (state) => ({
 	assets: state.assets.list,
 	characters: state.characters.list,
     actions: state.actions.list,
+
     actionsFailed: state.actions.failedAttempts,
     charactersFailed: state.characters.failedAttempts,
     assetsFailed: state.assets.failedAttempts,
+    locationsFailed: state.locations.failedAttempts,
+
     gamestate: state.gamestate,
     user: state.auth.user,
+
+    actionsLoaded: state.actions.loaded,
+    assetsLoaded: state.assets.loaded,
+    gamestateLoaded: state.gamestate.loaded,
+    characterLoaded: state.characters.loaded,
+    locationsLoaded: state.locations.loaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	loadAction: (data) => dispatch(loadplayerActions(data)),
     loadAllActions: (data) => dispatch(loadAllActions(data)),
+    loadChar: (data) => dispatch(loadCharacters()),
+	loadAssets: (data) => dispatch(loadAssets()),
+    loadLocations: (data) => dispatch(loadLocations()),
+	loadGamestate: (data) => dispatch(loadGamestate())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Loading);

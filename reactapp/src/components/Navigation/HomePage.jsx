@@ -21,7 +21,8 @@ class HomePage extends Component {
 			show: false,
 			days: 0,
 			hours: 0,
-			minutes: 0
+			minutes: 0,
+			loaded: false
 		};
 	}
 
@@ -31,6 +32,14 @@ class HomePage extends Component {
 			this.renderTime(this.props.gamestate.endTime);
         //clearInterval(interval);
     }, 60000);
+	}
+
+	componentDidUpdate = (prevProps) => {
+		if (this.props !== prevProps) {
+			if(!this.props.loading && this.props.actionsLoaded && this.props.gamestateLoaded && this.props.charactersLoaded && this.props.locationsLoaded && this.props.assetsLoaded && this.props.myCharacter) {
+				setTimeout(() => this.setState({ loaded: true }), 1000)	
+			}			
+		}
 	}
 
 	openAnvil () {
@@ -50,7 +59,7 @@ class HomePage extends Component {
 			this.props.history.push('/');
 			return (<Loader inverse center content="doot..." />)
 		};
-		if (this.props.loading || !this.props.actionsLoaded || !this.props.gamestateLoaded || !this.props.charactersLoaded) {
+		if (!this.state.loaded) {
 			return (<Loading />)
 		}
 		else if (this.props.login && !this.props.myCharacter) {
@@ -139,6 +148,7 @@ const mapStateToProps = (state) => ({
 	actionsLoaded: state.actions.loaded,
 	charactersLoaded: state.characters.loaded,
 	assetsLoaded: state.assets.loaded,
+	locationsLoaded: state.locations.loaded,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });
 

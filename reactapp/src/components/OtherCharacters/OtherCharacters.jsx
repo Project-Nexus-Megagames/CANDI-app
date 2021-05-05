@@ -77,7 +77,7 @@ class OtherCharacters extends Component {
 									<List.Item key={index} index={index} onClick={() => this.setState({ selected: character })} style={this.listStyle(character)}>
 										<FlexboxGrid>
 											<FlexboxGrid.Item colspan={5} style={styleCenter}>
-												<Avatar src={`/images/${character.characterName}.jpg`} circle/>
+												<Avatar src={`/images/${character.characterName}.jpg`} alt='?' circle/>
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 												<b style={titleStyle}>{character.characterName}</b>

@@ -11,7 +11,7 @@ const slice = createSlice({
     loading: false,
     loaded: false,
     lastFetch: null,
-    newlocations: 0
+    failedAttempts: 0,
   },
   // Reducers - Events
   reducers: {
@@ -27,7 +27,8 @@ const slice = createSlice({
       locations.loaded = true;
     },
     locationsRequestFailed: (locations, action) => {
-      console.log(`${action.type} Dispatched`)
+      console.log(`${action.type} Dispatched`);
+      locations.failedAttempts++;
       locations.loading = false;
     },
     locationAdded: (locations, action) => {
