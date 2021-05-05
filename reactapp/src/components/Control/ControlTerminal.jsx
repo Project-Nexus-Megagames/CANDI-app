@@ -5,6 +5,7 @@ import socket from '../../socket';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { draftActions } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
+import { assetsRequested } from '../../redux/entities/assets';
 
 const { Column, HeaderCell, Cell } = Table;
 class ControlTerminal extends Component {
@@ -103,11 +104,11 @@ class ControlTerminal extends Component {
 
 	compileTable = async (actions) => {
 		let tableData = []
-		for (const action of actions) {
+		for (const action of actions.filter(el => el.type !== 'Project')) {
 			const data = {
 				control: action.creator.control,
-				character: action.creator.characterName,
-				description: action.description,
+				character: action.creator,
+				intent: action.intent,
 				status: action.status,
 				dieResult: action.dieResult,
 				controlAssigned: action.controlAssigned,
@@ -129,7 +130,7 @@ class ControlTerminal extends Component {
 				<div style={{height: '10vh'}} >
 					<Divider>Scott's Message of the Day:</Divider>
 					<div>
-						<h5>Welcome, to J̶u̶r̶a̶s̶s̶i̶c̶ ̶P̶a̶r̶k̶  Dusk City</h5>
+						<h5>Still Working on the table below.</h5>
 					</div>					
 				</div>
 				<div style={{height: '15vh'}}>
@@ -161,10 +162,6 @@ class ControlTerminal extends Component {
 
 				<Panel style={{height: '46vh'}}>
 					<Table virtualized data={this.state.tableData} >
-						<Column flexGrow={1}>
-						<HeaderCell>Controller</HeaderCell>
-						<Cell dataKey="control" />
-						</Column>
 
 						<Column flexGrow={2}>
 						<HeaderCell>Character</HeaderCell>
@@ -173,7 +170,7 @@ class ControlTerminal extends Component {
 
 						<Column align="left" flexGrow={3}>
 						<HeaderCell>Description</HeaderCell>
-						<Cell  dataKey="description" />
+						<Cell  dataKey="intent" />
 						</Column>
 
 						<Column align="left" flexGrow={2}>
@@ -299,14 +296,14 @@ class ControlTerminal extends Component {
           </Modal.Footer>
 				</Modal>
 			
-				<Modal size='sm' show={this.state.assModal} onHide={() => this.setState({ assModal: false })}>
+				<Modal loading={this.props.assetLoading} size='sm' show={this.state.assModal} onHide={() => this.setState({ assModal: false })}>
 					<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => this.handleChage(event)} data={this.props.assets.filter(el => el.model !== 'Wealth')} valueKey='_id' labelKey='name'></SelectPicker>
 						{this.renderAss()}
 						<Modal.Footer>
 							{this.state.selected && 
 							<ButtonGroup>
-								<Button loading={this.state.loading}  onClick={() => this.assetModify()} color="blue">Edit</Button>
-								<Button loading={this.state.loading}  onClick={() => this.handleDelete()} color="red">Delete</Button>								
+								<Button loading={this.props.assetLoading}  onClick={() => this.assetModify()} color="blue">Edit</Button>
+								<Button loading={this.props.assetLoading}  onClick={() => this.handleDelete()} color="red">Delete</Button>								
 							</ButtonGroup>}
 						</Modal.Footer>
 				</Modal>
@@ -327,15 +324,15 @@ class ControlTerminal extends Component {
 	}
 
 	assetModify = async () => {
-		this.setState({ loading: true });
+		this.props.assetDispatched();
 		const data = {
 			id: this.state.selected,
 			name: this.state.name,
 			description: this.state.description,
 			uses: this.state.uses
 		}
-		socket.emit('assetRequest', 'modify', { data }); // new Socket event	
-		this.setState({ assModal: false, selected: null, loading: false });
+		socket.emit('assetRequest', 'modify',  data ); // new Socket event	
+		this.setState({ assModal: false, selected: null, });
 	}
 
 	renderAss = () => {
@@ -387,17 +384,13 @@ class ControlTerminal extends Component {
 			intent: this.state.projDescription,
 			effort: 0,
 			progress: this.state.progress,
-			model: "Project",
+			type: "Project",
 			players: this.state.players,
-			creator: this.props.playerCharacter,
+			creator: this.props.playerCharacter.characterName,
 			round: this.props.gamestate.round, 
 			image: this.state.image,
-			status: {
-				draft: false,
-				published: true
-			}
 		}
-		socket.emit('actionRequest', 'create', { data: data }); // new Socket event
+		socket.emit('actionRequest', 'create', data ); // new Socket event
 	}
 
 	isControl () {
@@ -444,6 +437,7 @@ const textStyle = {
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
+	assetLoading: state.assets.loading,
 	assets: state.assets.list,
 	login: state.auth.login,
 	gamestate: state.gamestate,
@@ -454,6 +448,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  assetDispatched: (data) => dispatch(assetsRequested(data))
 
 });
 

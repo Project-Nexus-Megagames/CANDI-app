@@ -104,7 +104,7 @@ class Registration extends Component {
 			username: this.state.selected.username,
 		}
 		try{
-			await axios.patch(`${gameServer}api/characters/register`, { data });
+			await axios.patch(`${gameServer}api/characters/register`,  data );
 			Alert.success('User successfully given their character');
 			this.setState({ selected: null, target: null });
 		}
