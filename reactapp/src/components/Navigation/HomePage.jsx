@@ -28,6 +28,9 @@ class HomePage extends Component {
 
 	componentDidMount() {
 		this.renderTime(this.props.gamestate.endTime);
+		if(!this.props.loading && this.props.actionsLoaded && this.props.gamestateLoaded && this.props.charactersLoaded && this.props.locationsLoaded && this.props.assetsLoaded && this.props.myCharacter) {
+			this.setState({ loaded: true });
+		}			
 		setInterval(() => {
 			this.renderTime(this.props.gamestate.endTime);
         //clearInterval(interval);
