@@ -199,7 +199,8 @@ const bored = [
     'https://www.youtube.com/watch?v=xI39jU24InY',
     'https://www.youtube.com/watch?v=s-09gNDsPzQ',
     'https://www.youtube.com/watch?v=9fjk8cNiptU',
-    'https://www.youtube.com/watch?v=yUZfkbKFtKA'
+    'https://www.youtube.com/watch?v=yUZfkbKFtKA',
+    'https://www.youtube.com/watch?v=iP897Z5Nerk' // BINARY search with FLAMENCO dance
 ]
 
 const loadingMsg = [

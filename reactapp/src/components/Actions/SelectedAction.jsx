@@ -89,7 +89,7 @@ class SelectedAction extends Component {
 						</p>
 						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
 						<Progress.Line percent={action.effort * 33 + 1} showInfo={false}>  </Progress.Line>
-						<Divider>Assets/Traits</Divider>
+						<Divider>Resources</Divider>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={8}>
 								{this.renderAsset(action.asset1)}
@@ -170,7 +170,7 @@ class SelectedAction extends Component {
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={4}>
 						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Traits
+						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources
 							<InputPicker  defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset1: event})}/>
 							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset2: event})}/>
 							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset3: event})}/>

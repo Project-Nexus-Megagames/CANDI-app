@@ -158,21 +158,12 @@ class OtherCharacters extends Component {
 					{this.props.user.roles.some(el=> el === 'Control') && <Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<ButtonGroup style={{marginTop: '5px', }} >
 							<Button appearance={"ghost"} onClick={() => this.setState({ edit: true })}>Modify</Button>
-							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Asset/Trait</Button>
+							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Resources</Button>
 							<Button appearance={"ghost"} onClick={() => this.setState({ memory: true })}>Memories</Button>
 						</ButtonGroup>
 							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Assets" >
 						<List size="md">
-							{this.state.selected.assets.filter(el => el.type === 'Asset').map((asset, index) => (
-								<List.Item key={index} index={index} size='md'>
-									<div>{asset.name}</div>
-								</List.Item>
-							))}
-						</List>
-					</Panel>
-					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Traits" >
-						<List size="md">
-							{this.state.selected.assets.filter(el => el.type === 'Trait').map((asset, index) => (
+							{this.state.selected.assets.map((asset, index) => (
 								<List.Item key={index} index={index} size='md'>
 									<div>{asset.name}</div>
 								</List.Item>

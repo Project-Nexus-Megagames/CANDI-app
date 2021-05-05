@@ -91,7 +91,7 @@ class NewAction extends Component {
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
-							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Assets/Traits
+							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources
 								<InputPicker placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset1: event})}/>
 								<InputPicker placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset2: event})}/>
 								<InputPicker placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset3: event})}/>
