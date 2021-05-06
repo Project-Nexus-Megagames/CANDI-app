@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Content, Footer, FlexboxGrid, Button, PanelGroup, Panel, Input, List, RadioGroup, Radio, Toggle, ButtonToolbar, Modal, ButtonGroup, Icon } from 'rsuite';
+import { Container, Content, Footer, FlexboxGrid, Button, PanelGroup, Panel, Input, List, RadioGroup, Radio, Toggle, ButtonToolbar, Modal, ButtonGroup, Icon, Loader } from 'rsuite';
 import { useHistory } from "react-router-dom";
 import Map from './Map';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
 
-const MapContainer = ({ locations }) => {
-	const [filter, setFilter] = React.useState('');
+const MapContainer = ({ locations, login, loading }) => {
+	// const [scale, setScale] = React.useState(1);
+  const [value, setValue] = React.useState({ scale: 1, translation: { x: 0, y: 0 }});
 	const [territory, setTerritory] = React.useState({});
 	const [boolean, setBoolean] = React.useState(false);
 
@@ -29,9 +30,12 @@ const MapContainer = ({ locations }) => {
     }
     setBoolean(true);
 	}
-
+  if (!login && !loading) {
+    history.push('/');
+    return (<Loader inverse center content="doot..." />)
+  };
 	return ( 
-		<Container style={{ overflow: 'hidden', height: '99vh', width: '100%', position: 'relative', display: 'inline-block', textAlign: 'center', }}>
+		<Container style={{ overflow: 'hidden', height: '99vh', width: '100%', position: 'relative', display: 'inline-block', textAlign: 'center', backgroundColor: '#29525f'}}>
 			<NavigationBar/>
       <Content style={{ overflow: 'hidden' }}>
         <FlexboxGrid>
@@ -39,7 +43,7 @@ const MapContainer = ({ locations }) => {
             <Panel style={{ height: '100vh'}} bordered></Panel>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={20}>
-            <MapInteractionCSS style={{ overflow: 'hidden' }} translationBounds={{ xMin: -750, xMax: 750, yMin: -1000, yMax: 800 }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+            <MapInteractionCSS minScale={.5} maxScale={1} value={value} onChange={(value) => setValue(value)} style={{ overflow: 'hidden' }} translationBounds={{ xMin: -750, xMax: 750, yMin: -1000, yMax: 800 }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
               <Map handleClick={clickHandlerer} />          
             </MapInteractionCSS>
           </FlexboxGrid.Item>
@@ -77,6 +81,8 @@ const MapContainer = ({ locations }) => {
 
 const mapStateToProps = (state) => ({
 	locations: state.locations.list,
+  login: state.auth.login,
+	loading: state.auth.loading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

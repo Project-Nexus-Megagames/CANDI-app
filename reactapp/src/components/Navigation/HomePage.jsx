@@ -28,7 +28,7 @@ class HomePage extends Component {
 
 	componentDidMount() {
 		this.renderTime(this.props.gamestate.endTime);
-		if(!this.props.loading && this.props.actionsLoaded && this.props.gamestateLoaded && this.props.charactersLoaded && this.props.locationsLoaded && this.props.assetsLoaded && this.props.myCharacter) {
+		if(!this.props.loading && this.props.actionsLoaded && this.props.gamestateLoaded && this.props.charactersLoaded && this.props.locationsLoaded && this.props.assetsLoaded) {
 			this.setState({ loaded: true });
 		}			
 		setInterval(() => {
@@ -39,7 +39,7 @@ class HomePage extends Component {
 
 	componentDidUpdate = (prevProps) => {
 		if (this.props !== prevProps) {
-			if(!this.props.loading && this.props.actionsLoaded && this.props.gamestateLoaded && this.props.charactersLoaded && this.props.locationsLoaded && this.props.assetsLoaded && this.props.myCharacter) {
+			if(!this.props.loading && this.props.actionsLoaded && this.props.gamestateLoaded && this.props.charactersLoaded && this.props.locationsLoaded && this.props.assetsLoaded) {
 				setTimeout(() => this.setState({ loaded: true }), 1000)	
 			}			
 		}
