@@ -51,14 +51,9 @@ const MapContainer = ({ locations, login, loading }) => {
 			<NavigationBar/>
       <Content style={{ overflow: 'hidden' }}>
         <FlexboxGrid>
-          <FlexboxGrid.Item colspan={4}>
-            <Panel style={{ height: '100vh', backgroundColor: '#0f131a'}} bordered></Panel>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={20}>
             <MapInteractionCSS minScale={1.25} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden' }} translationBounds={getScale()} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
               <Map handleClick={clickHandlerer} />          
             </MapInteractionCSS>
-          </FlexboxGrid.Item>
         </FlexboxGrid>
 
 			</Content>
