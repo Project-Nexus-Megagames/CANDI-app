@@ -30,6 +30,18 @@ const MapContainer = ({ locations, login, loading }) => {
     }
     setBoolean(true);
 	}
+
+  const getScale = () => {
+    return { xMin: -250, xMax: 250, yMin: -1350, yMax: 50 }
+  }
+
+  const handleIt = (value) => {
+    console.log(value.translation)
+    setValue(value)
+  }
+
+
+
   if (!login && !loading) {
     history.push('/');
     return (<Loader inverse center content="doot..." />)
@@ -40,10 +52,10 @@ const MapContainer = ({ locations, login, loading }) => {
       <Content style={{ overflow: 'hidden' }}>
         <FlexboxGrid>
           <FlexboxGrid.Item colspan={4}>
-            <Panel style={{ height: '100vh'}} bordered></Panel>
+            <Panel style={{ height: '100vh', backgroundColor: '#0f131a'}} bordered></Panel>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={20}>
-            <MapInteractionCSS minScale={.5} maxScale={1} value={value} onChange={(value) => setValue(value)} style={{ overflow: 'hidden' }} translationBounds={{ xMin: -750, xMax: 750, yMin: -1000, yMax: 800 }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+            <MapInteractionCSS minScale={1.25} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden' }} translationBounds={getScale()} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
               <Map handleClick={clickHandlerer} />          
             </MapInteractionCSS>
           </FlexboxGrid.Item>
@@ -73,11 +85,9 @@ const MapContainer = ({ locations, login, loading }) => {
           </Modal.Footer>
 			</Modal>		
 		</Container>
-
-
 	);
-	
 }
+
 
 const mapStateToProps = (state) => ({
 	locations: state.locations.list,
