@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { Container, Content, Footer, FlexboxGrid, Button, PanelGroup, Panel, Input, List, RadioGroup, Radio, Toggle, ButtonToolbar, Modal, ButtonGroup, Icon, Loader } from 'rsuite';
 import { useHistory } from "react-router-dom";
 import Map from './Map';
+import Map2 from './Map2';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
 
 const MapContainer = ({ locations, login, loading }) => {
 	// const [scale, setScale] = React.useState(1);
-  const [value, setValue] = React.useState({ scale: 1, translation: { x: 0, y: 0 }});
+  const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 0, y: 0 }});
 	const [territory, setTerritory] = React.useState({});
 	const [boolean, setBoolean] = React.useState(false);
 
@@ -31,12 +32,53 @@ const MapContainer = ({ locations, login, loading }) => {
     setBoolean(true);
 	}
 
-  const getScale = () => {
-    return { xMin: -250, xMax: 250, yMin: -1350, yMax: 50 }
-  }
-
   const handleIt = (value) => {
-    console.log(value.translation)
+    if (value.scale > 2.1) {
+      console.log(value.translation)
+      console.log(value.scale)
+      if (value.translation.x > 600) value.translation.x = 600; // Left
+      if (value.translation.x < -1200) value.translation.x = -1200; //Right
+      if (value.translation.y > -400) value.translation.y = -400; // Up
+      if (value.translation.y < -2200) value.translation.y = -2200; // Down
+    }
+    else if(value.scale <= 2.1 && value.scale > 1.9) {
+      console.log('3');
+      if (value.translation.x > 600) value.translation.x = 600; // Left
+      if (value.translation.x < -900) value.translation.x = -900; //Right
+      if (value.translation.y > -400) value.translation.y = -400; // Up
+      if (value.translation.y < -2200) value.translation.y = -2200; // Down
+    }
+    else if(value.scale <= 1.9 && value.scale > 1.7) {
+      console.log('3');
+      if (value.translation.x > 600) value.translation.x = 600; // Left
+      if (value.translation.x < -600) value.translation.x = -600; //Right
+      if (value.translation.y > -400) value.translation.y = -400; // Up
+      if (value.translation.y < -1700) value.translation.y = -1700; // Down
+    }
+    else if (value.scale <= 1.7 && value.scale > 1.4) {
+      console.log('2')
+      console.log(value.scale)
+      if (value.translation.x > 600) value.translation.x = 600;
+      if (value.translation.x < -250) value.translation.x = -250;
+      if (value.translation.y > -90) value.translation.y = -90;
+      if (value.translation.y < -1300) value.translation.y = -1300;
+    }
+    else if (value.scale <= 1.4 && value.scale > 1.15) {
+      console.log('1')
+      if (value.translation.x > 600) value.translation.x = 600;
+      if (value.translation.x < 0) value.translation.x = 0;
+      if (value.translation.y > -250) value.translation.y = -250;
+      if (value.translation.y < -900) value.translation.y = -900;
+    }
+    else { // if scale is 1.15
+      console.log('max')
+      console.log(value.translation)
+      console.log(value.scale)
+      if (value.translation.x > 600) value.translation.x = 600;
+      if (value.translation.x < 90) value.translation.x = 90;
+      if (value.translation.y > -250) value.translation.y = -250;
+      if (value.translation.y < -680) value.translation.y = -680;
+    }
     setValue(value)
   }
 
@@ -51,8 +93,8 @@ const MapContainer = ({ locations, login, loading }) => {
 			<NavigationBar/>
       <Content style={{ overflow: 'hidden' }}>
         <FlexboxGrid>
-            <MapInteractionCSS minScale={1.25} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden' }} translationBounds={getScale()} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
-              <Map handleClick={clickHandlerer} />          
+            <MapInteractionCSS minScale={1.15} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+              <Map2 handleClick={clickHandlerer} />          
             </MapInteractionCSS>
         </FlexboxGrid>
 
