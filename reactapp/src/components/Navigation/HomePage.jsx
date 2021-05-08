@@ -71,29 +71,27 @@ class HomePage extends Component {
 		}
 		else return ( 
 			<React.Fragment>
-					<div style={{ backgroundColor: '#746D75', height: '6vh', color: '' }}>
-						<FlexboxGrid justify="start" align="middle">
-							<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
-								<Dropdown
-										renderTitle={() => {
-											return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
-										}}
-									>
-										<Dropdown.Item>Version: 1.0</Dropdown.Item>
-										<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
-									</Dropdown>					
-								</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={22}>
-								<div>
-									<p>Round: {this.props.gamestate.round} </p>	
-									{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
-									{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
-									{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
-								</div>									
+					<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75', height: '6vh', color: '' }} align="middle">
+						<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
+							<Dropdown
+									renderTitle={() => {
+										return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
+									}}
+								>
+									<Dropdown.Item>Version: 1.0</Dropdown.Item>
+									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
+								</Dropdown>					
 							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
-						</FlexboxGrid>
-					</div>
+						<FlexboxGrid.Item colspan={22}>
+							<div>
+								<p>Round: {this.props.gamestate.round} </p>	
+								{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
+								{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+								{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
+							</div>									
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+					</FlexboxGrid>
 				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
