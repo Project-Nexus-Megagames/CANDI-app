@@ -5,7 +5,7 @@ import { getMyCharacter, characterUpdated } from '../../redux/entities/character
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 class NewAction extends Component {
-  constructor(props) {
+	constructor(props) {
     super(props);
     this.state = {
         effort: 0,
@@ -100,20 +100,20 @@ class NewAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} loading={this.props.actionLoading} disabled={this.isDisabled()} appearance="primary">
+		<Button onClick={() => this.handleSubmit()} loading={this.props.actionLoading} disabled={this.isDisabled()} appearance="primary">
             Submit
-          </Button>
-          <Button onClick={() => this.props.closeNew()} appearance="subtle">
+        </Button>
+		<Button onClick={() => this.props.closeNew()} appearance="subtle">
             Cancel
-          </Button>
+        </Button>
         </Modal.Footer>
 			</Modal>
-		 );
+		);
 	}
 
 	isDisabled () {
-		 if (this.state.description.length > 10 && this.state.intent.length > 10 && this.state.effort > 0) return false;
-		 else return true;
+		if (this.state.description.length > 10 && this.state.intent.length > 10 && this.state.effort > 0) return false;
+		else return true;
 	}
 
 }
@@ -132,12 +132,12 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	actions: state.actions.list,
 	actionLoading: state.actions.loading,
-  myCharacter: state.auth.user ? getMyCharacter(state): undefined
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	updateCharacter: (data) => dispatch(characterUpdated(data)),
-  actionDispatched: (data) => dispatch(playerActionsRequested(data))
+	actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewAction);

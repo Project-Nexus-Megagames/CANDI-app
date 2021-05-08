@@ -1,10 +1,10 @@
-import React, { Component, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Navbar, Nav, Icon, IconButton, FlexboxGrid } from 'rsuite';
+import React, { useEffect } from 'react';
+import { Icon, IconButton, FlexboxGrid } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
-import socket from '../../socket';
+// import socket from '../../socket';
+
 const Navigation = props => {
 	const [days, setDays] = React.useState(0);
 	const [minutes, setMinutes] = React.useState(0);
@@ -33,9 +33,8 @@ const Navigation = props => {
 	}
 
   return (
-	<div style={{ backgroundColor: '#746D75', height: '6vh' }}>
-		<FlexboxGrid justify="start" align="middle">
-			<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={2}>
+		<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75', height: '6vh' }} align="middle">
+			<FlexboxGrid.Item justify="start" colspan={2}>
 					<IconButton style={{ height: '100%'}} icon={<Icon icon="arrow-circle-left"/>} onClick={()=> history.push('/login')} appearance="subtle" size="lg" >Back</IconButton>			
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={20}>
@@ -47,11 +46,9 @@ const Navigation = props => {
 				</div>									
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={2}>
-
 			</FlexboxGrid.Item>
 		</FlexboxGrid>
-	</div>
-  );
+	);
 	/**
 	 * 				<Navbar style={{ height: '6vh' }} >
 			<Navbar.Body>

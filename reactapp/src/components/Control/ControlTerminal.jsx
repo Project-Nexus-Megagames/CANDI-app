@@ -39,7 +39,7 @@ class ControlTerminal extends Component {
 		loading: false,
 
 		tableData: []
-	 }
+	}
 
 	componentDidMount = async () => {
 		const formValue = {
@@ -211,13 +211,13 @@ class ControlTerminal extends Component {
 						</FormGroup>
 					</Form>
 					<Modal.Footer>
-        	  <Button loading={this.state.loading} onClick={() => this.editGameState()} disabled={(this.state.formValue.status === null)} appearance="primary">
-        	    Submit
-        	  </Button>
-        	  <Button onClick={() => this.setState({ gsModal: false })} appearance="subtle">
-        	    Cancel
-         	 </Button>
-        </Modal.Footer>
+			<Button loading={this.state.loading} onClick={() => this.editGameState()} disabled={(this.state.formValue.status === null)} appearance="primary">
+				Submit
+			</Button>
+			<Button onClick={() => this.setState({ gsModal: false })} appearance="subtle">
+				Cancel
+			</Button>
+		</Modal.Footer>
 				</Modal>
 
 				<Modal backdrop='static' size='md' show={this.state.projectModal} onHide={() => this.setState({ projectModal: false })}>
@@ -242,12 +242,12 @@ class ControlTerminal extends Component {
 				</p>
 					<TagPicker data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
 					<Modal.Footer>
-        	  <Button onClick={() => this.newProject()} appearance="primary">
-        	    Submit
-        	  </Button>
-        	  <Button onClick={() => this.setState({ projectModal: false })} appearance="subtle">
-        	    Cancel
-         	 </Button>
+				<Button onClick={() => this.newProject()} appearance="primary">
+					Submit
+				</Button>
+				<Button onClick={() => this.setState({ projectModal: false })} appearance="subtle">
+					Cancel
+				</Button>
         </Modal.Footer>
 				</Modal>
 		
@@ -260,12 +260,12 @@ class ControlTerminal extends Component {
 					</Modal.Body>
 					<Modal.Footer>
             <Button onClick={() => this.closeDraft()} appearance="primary">
-              I am Sure!
+				I am Sure!
             </Button>
             <Button onClick={() => this.setState({ warningModal: false })} appearance="subtle">
-              Nevermind
+				Nevermind
             </Button>
-          </Modal.Footer>
+		</Modal.Footer>
 				</Modal>
 			
 				<Modal backdrop="static" size='sm' show={this.state.warning2Modal} onHide={() => this.setState({ warning2Modal: false })}>
@@ -288,12 +288,12 @@ class ControlTerminal extends Component {
 					</Modal.Body>
 					<Modal.Footer>
             <Button onClick={() => this.publishActions()} appearance="primary">
-              I am Sure!
+				I am Sure!
             </Button>
             <Button onClick={() => this.setState({ warning2Modal: false })} appearance="subtle">
-              Nevermind
+				Nevermind
             </Button>
-          </Modal.Footer>
+			</Modal.Footer>
 				</Modal>
 			
 				<Modal loading={this.props.assetLoading} size='sm' show={this.state.assModal} onHide={() => this.setState({ assModal: false })}>
@@ -308,7 +308,7 @@ class ControlTerminal extends Component {
 						</Modal.Footer>
 				</Modal>
 			</Content>
-		 );
+		);
 	}
 
 	handleDate = (value) => {
@@ -403,11 +403,11 @@ class ControlTerminal extends Component {
 	}
 	
 }
- 
+
 const style1 = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
 };
 
 const pickerData = [
@@ -448,8 +448,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  assetDispatched: (data) => dispatch(assetsRequested(data))
-
+	assetDispatched: (data) => dispatch(assetsRequested(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlTerminal);

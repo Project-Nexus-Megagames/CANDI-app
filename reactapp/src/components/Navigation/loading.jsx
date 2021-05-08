@@ -14,7 +14,7 @@ class Loading extends Component {
     componentDidUpdate = (prevProps) => {
         if(this.props.actionsFailed > prevProps.actionsFailed && this.props.actionsFailed < 10) {
             if (this.props.actionsFailed < 4) {
-              this.props.loadAction(this.props.user);
+                this.props.loadAction(this.props.user);
             }
             else {
                 this.props.loadAllActions();
@@ -122,7 +122,7 @@ class Loading extends Component {
                 </FlexboxGrid>
             </Content>
             <Divider/>
-             <b>{loadingMsg[rand1]}</b>
+                <b>{loadingMsg[rand1]}</b>
         </React.Fragment>
         );        
     }

@@ -108,7 +108,6 @@ class Control extends Component {
 					</Content>			
 					}	
 			</Container>
-
 		);
 	}
 }
@@ -126,11 +125,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(Control);
 
 const controllers = [
 	{
-   name: "Stuart",
-   role: "Game Control",
-   email: "afterlifecontrol@gmail.com",
-   timezone: "GMT",
-   responsibilities: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
+		name: "Stuart",
+		role: "Game Control",
+		email: "afterlifecontrol@gmail.com",
+		timezone: "GMT",
+		responsibilities: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
 	},
 	{ 
 		name: "Mickey",
@@ -166,5 +165,5 @@ const controllers = [
     email: "Use the #tech-support channel on the Afterlife discord server",
     timezone: "PST",
     responsibilities: "Keeping the App and Discord running"
- }
+	}
 ]

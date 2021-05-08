@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Form, FormGroup, ControlLabel, FormControl, Toggle, SelectPicker } from 'rsuite';
+import { Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
 import { getUnusuedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
@@ -21,18 +21,18 @@ class SelectedFeed extends Component {
 		status: '',
 		mechanicalEffect: this.props.action.mechanicalEffect,
 		usedAssets: []
-	 }
+	}
 
-	 componentDidMount = () => {
-				let array2 = [];
-				for (const el of this.props.unusedAssets) {
-					array2.push(el.name)
-				}
+	componentDidMount = () => {
+		let array2 = [];
+			for (const el of this.props.unusedAssets) {
+				array2.push(el.name)
+			}
 
-				this.setState({ usedAssets: array2 }); 
-	 }
+		this.setState({ usedAssets: array2 }); 
+	}
 
-	 componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps) => {
 		if (this.props.assetsRedux !== prevProps.assetsRedux) {
 			const array = this.props.assetsRedux.filter(el => el.status.used === true);
 			let array2 = [];
@@ -155,8 +155,8 @@ class SelectedFeed extends Component {
 				</Modal.Body>
 		<Modal.Footer>
 			<Button loading={this.props.loading} onClick={() => {
-								this.handleSubmit()
-								}} appearance="primary">
+					this.handleSubmit()
+				}} appearance="primary">
 				Submit
 			</Button>
 		</Modal.Footer>
@@ -232,7 +232,7 @@ class SelectedFeed extends Component {
 				</Modal.Footer>
 			</Modal>
 		</React.Fragment>		
-		 );
+		);
 	}
 
 	openEdit = () => {
@@ -314,8 +314,8 @@ class SelectedFeed extends Component {
 }
 
 const slimText = {
-  fontSize: '0.966em',
-  color: '#97969B',
+	fontSize: '0.966em',
+	color: '#97969B',
 	fontWeight: '300',
 	whiteSpace: 'nowrap',
 	textAlign: "center"
@@ -339,7 +339,7 @@ const pickerData = [
 		value: 'Published'
 	}
 ]
- 
+
 const textStyle = {
 	backgroundColor: '#1a1d24', 
 	border: '1.5px solid #3c3f43', 
@@ -355,8 +355,8 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	actions: state.actions.list,
 	assetsRedux: state.assets.list,
-  unusedAssets: getUnusuedAssets(state),
-  myCharacter: state.auth.user ? getMyCharacter(state): undefined
+	unusedAssets: getUnusuedAssets(state),
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({

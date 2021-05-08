@@ -11,9 +11,9 @@ class SelectedProject extends Component {
 			progress: 0,
 			players: [],
 			image: '',
-	 }
+	}
 
-	 componentDidMount = () => {
+	componentDidMount = () => {
 			this.setState({ 	
 				projName: this.props.project.description,
 				projDescription: this.props.project.intent,
@@ -22,7 +22,7 @@ class SelectedProject extends Component {
 				image: this.props.project.image, })			
 	}
 
-	 componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps) => {
 		if (this.props.project !== prevProps.project) {
 			this.setState({ 	
 				projName: this.props.project.description,
@@ -108,17 +108,16 @@ class SelectedProject extends Component {
 				</p>
 					<TagPicker groupBy="tag" defaultValue={this.state.players} data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
 					<Modal.Footer>
-        	  <Button onClick={() => this.editProject()} appearance="primary">
-        	    Submit
-        	  </Button>
-        	  <Button onClick={() => this.setState({ projectModal: false })} appearance="subtle">
-        	    Cancel
-         	 </Button>
+			<Button onClick={() => this.editProject()} appearance="primary">
+				Submit
+			</Button>
+			<Button onClick={() => this.setState({ projectModal: false })} appearance="subtle">
+				Cancel
+			</Button>
         </Modal.Footer>
-				</Modal>
-
+			</Modal>
 		</Content>		
-		 );
+		);
 	}
 
 	editProject = async () => {
@@ -142,8 +141,8 @@ class SelectedProject extends Component {
 }
 
 const slimText = {
-  fontSize: '0.966em',
-  color: '#97969B',
+	fontSize: '0.966em',
+	color: '#97969B',
 	fontWeight: '300',
 	whiteSpace: 'nowrap',
 	textAlign: "center"

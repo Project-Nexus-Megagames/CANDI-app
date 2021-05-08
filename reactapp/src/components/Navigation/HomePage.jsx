@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Icon, Nav, Row, Col, Loader, Navbar, Dropdown, IconButton, FlexboxGrid } from 'rsuite';
+import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 import Loading from './loading';
 
-import aang from '../Images/aang.jpg'
+// import aang from '../Images/aang.jpg'
 import city from '../Images/city.png'
 import action from '../Images/action.jpg'
-import feed from '../Images/feed.png'
+// import feed from '../Images/feed.png'
 import mycharacter from '../Images/MyCharacter.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
@@ -71,30 +71,30 @@ class HomePage extends Component {
 		}
 		else return ( 
 			<React.Fragment>
-					<div style={{ backgroundColor: '#746D75', height: '6vh', color: '' }}>
-						<FlexboxGrid justify="start" align="middle">
-							<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
-								<Dropdown
-										renderTitle={() => {
-											return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
-										}}
-									>
-										<Dropdown.Item>Version: 1.0</Dropdown.Item>
-										<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
-									</Dropdown>					
-								</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={22}>
-								<div>
-									<p>Round: {this.props.gamestate.round} </p>	
-									{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
-									{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
-									{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
-								</div>									
+				<div style={{ position: 'fixed', width: "100%" }}>
+					<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75', height: '6vh', color: '' }} align="middle">
+						<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
+							<Dropdown
+									renderTitle={() => {
+										return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
+									}}
+								>
+									<Dropdown.Item>Version: 1.0</Dropdown.Item>
+									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
+								</Dropdown>					
 							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
-						</FlexboxGrid>
+						<FlexboxGrid.Item colspan={22}>
+							<div>
+								<p>Round: {this.props.gamestate.round} </p>	
+								{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
+								{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+								{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
+							</div>									
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+					</FlexboxGrid>
 					</div>
-				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
+				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '100%', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
 				<ImgPanel width={620} height={250} img={city} to='map' title='Map' body=''/>

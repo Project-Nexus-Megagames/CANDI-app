@@ -25,9 +25,10 @@ const slice = createSlice({
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
       let jwt = action.payload;
-      localStorage.setItem("token", jwt);
+      localStorage.setItem('userToken-CANDI', jwt);
       // console.log(`Token: ${jwt}`);
       const user = jwtDecode(jwt);
+      console.log(user)
 
       if (user.roles.some(el => el === "Control")) auth.control = true;
 
@@ -53,7 +54,7 @@ const slice = createSlice({
 		},
 		signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('token');
+      localStorage.removeItem('userToken-CANDI');
 			auth.user = null;
 			auth.login = false;
 			auth.loading = false;
