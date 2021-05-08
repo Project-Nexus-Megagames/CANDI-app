@@ -71,8 +71,8 @@ class HomePage extends Component {
 		}
 		else return ( 
 			<React.Fragment>
-				<div style={{ position: 'fixed', width: "100%" }}>
-					<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75', height: '6vh', color: '' }} align="middle">
+				<div style={{ height: '6vh', width: "100%" }}>
+					<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75',  color: '' }} align="middle">
 						<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 							<Dropdown
 									renderTitle={() => {
@@ -94,7 +94,7 @@ class HomePage extends Component {
 						<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
 					</FlexboxGrid>
 					</div>
-				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '100%', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
+				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
 				<ImgPanel width={620} height={250} img={city} to='map' title='Map' body=''/>
