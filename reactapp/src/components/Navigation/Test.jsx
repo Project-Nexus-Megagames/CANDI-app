@@ -10,7 +10,7 @@ import NavigationBar from "../Navigation/NavigationBar";
 
 const MapContainer = ({ locations, login, loading }) => {
 	// const [scale, setScale] = React.useState(1);
-  const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 0, y: 0 }});
+  const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 100, y: -470 }});
 	const [territory, setTerritory] = React.useState({});
 	const [boolean, setBoolean] = React.useState(false);
 
