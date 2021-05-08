@@ -1,7 +1,7 @@
 import { assetAdded, assetDeleted, assetUpdated } from './entities/assets';
 import { characterAdded, characterDeleted, characterUpdated } from './entities/characters';
 import { gamestateReceived } from './entities/gamestate';
-import { playerActionsReceived, playerActionUpdated, actionAdded, actionDeleted } from './entities/playerActions';
+import { playerActionUpdated, actionAdded, actionDeleted } from './entities/playerActions';
 import socket from '../socket'
 import store from './store';
 

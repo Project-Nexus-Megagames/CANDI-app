@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Content, Footer, FlexboxGrid, Button, PanelGroup, Panel, Input, List, RadioGroup, Radio, Toggle, ButtonToolbar, Modal, ButtonGroup, Icon, Loader } from 'rsuite';
+import { Container, Content, FlexboxGrid, Button, Modal, Icon, Loader } from 'rsuite';
 import { useHistory } from "react-router-dom";
-import Map from './Map';
+// import Map from './Map';
 import Map2 from './Map2';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
@@ -132,9 +132,7 @@ const mapStateToProps = (state) => ({
 	loading: state.auth.loading,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
 

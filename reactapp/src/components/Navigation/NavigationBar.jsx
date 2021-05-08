@@ -1,10 +1,10 @@
-import React, { Component, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Navbar, Nav, Icon, IconButton, FlexboxGrid } from 'rsuite';
+import React, { useEffect } from 'react';
+import { Icon, IconButton, FlexboxGrid } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
-import socket from '../../socket';
+// import socket from '../../socket';
+
 const Navigation = props => {
 	const [days, setDays] = React.useState(0);
 	const [minutes, setMinutes] = React.useState(0);

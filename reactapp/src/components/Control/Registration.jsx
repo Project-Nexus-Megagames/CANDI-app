@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Content, Container, Sidebar, PanelGroup, Panel, Input, FlexboxGrid, List, Alert, SelectPicker, Footer, Button, Loader } from 'rsuite';
+import { Content, Container, Sidebar, PanelGroup, Panel, Input, FlexboxGrid, List, Alert, SelectPicker, Button, Loader } from 'rsuite';
 import { gameServer } from '../../config';
 
 class Registration extends Component {
@@ -10,9 +10,9 @@ class Registration extends Component {
 		filtered: [],
 		slected: null,
 		target: null
-	 }
+	}
 
-	 componentDidMount = async () => {
+	componentDidMount = async () => {
 		try{
 			const existingUsernames = [];
 			for (const character of this.props.characters) {
@@ -30,9 +30,9 @@ class Registration extends Component {
 		catch (err) {
 			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
-	 }
+	}
 
-	 listStyle (item) {
+	listStyle (item) {
 		if (item === this.state.selected) {
 			return ({cursor: 'pointer', backgroundColor: "#212429"})
 		}
@@ -88,7 +88,7 @@ class Registration extends Component {
 				</React.Fragment>
 			}
 			</Container>
-		 );
+		);
 	}
 
 	filter = (fil) => {
@@ -110,29 +110,29 @@ class Registration extends Component {
 		}
 		catch (err) {
 			console.log(err)
-      Alert.error(`Error: ${err}`, 5000);
+			Alert.error(`Error: ${err}`, 5000);
 		}
 	}
 
 }
 
 const styleCenter = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '60px'
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	height: '60px'
 };
 
 const titleStyle = {
-  whiteSpace: 'nowrap',
-  fontWeight: 500,
+	whiteSpace: 'nowrap',
+	fontWeight: 500,
 	paddingLeft: 2
 };
 
 const slimText = {
-  fontSize: '0.966em',
-  color: '#97969B',
-  fontWeight: 'lighter',
+	fontSize: '0.966em',
+	color: '#97969B',
+	fontWeight: 'lighter',
 	paddingBottom: 5,
 	paddingLeft: 2
 };

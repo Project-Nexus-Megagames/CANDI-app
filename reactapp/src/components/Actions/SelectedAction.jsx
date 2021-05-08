@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Slider, Panel, FlexboxGrid, Content, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Form, FormGroup, ControlLabel, FormControl, Toggle, SelectPicker } from 'rsuite';
+import { Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
 import { getUnusuedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
@@ -23,18 +23,18 @@ class SelectedAction extends Component {
 		status: this.props.action.status,
 		mechanicalEffect: this.props.action.mechanicalEffect,
 		usedAssets: []
-	 }
+	}
 
-	 componentDidMount = () => {
-				let array2 = [];
-				for (const el of this.props.unusedAssets) {
-					array2.push(el.name)
-				}
+	componentDidMount = () => {
+		let array2 = [];
+		for (const el of this.props.unusedAssets) {
+			array2.push(el.name)
+		}
 
-				this.setState({ usedAssets: array2 }); 
-	 }
+		this.setState({ usedAssets: array2 }); 
+	}
 
-	 componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps) => {
 		if (this.props.assetsRedux !== prevProps.assetsRedux) {
 			const array = this.props.assetsRedux.filter(el => el.status.used === true);
 			let array2 = [];
@@ -179,12 +179,12 @@ class SelectedAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
+        <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
             Submit
-          </Button>
-          <Button onClick={() => this.closeEdit()} appearance="subtle">
+        </Button>
+        <Button onClick={() => this.closeEdit()} appearance="subtle">
             Cancel
-          </Button>
+        </Button>
         </Modal.Footer>
 			</Modal>
 
@@ -258,7 +258,7 @@ class SelectedAction extends Component {
 				</Modal.Footer>
 			</Modal>
 		</React.Fragment>		
-		 );
+		);
 	}
 
 	openEdit = () => {
@@ -341,8 +341,8 @@ class SelectedAction extends Component {
 }
 
 const slimText = {
-  fontSize: '0.966em',
-  color: '#97969B',
+	fontSize: '0.966em',
+	color: '#97969B',
 	fontWeight: '300',
 	whiteSpace: 'nowrap',
 	textAlign: "center"
@@ -366,7 +366,7 @@ const pickerData = [
 		value: 'Published'
 	}
 ]
- 
+
 const textStyle = {
 	backgroundColor: '#1a1d24', 
 	border: '1.5px solid #3c3f43', 
@@ -382,8 +382,8 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	actions: state.actions.list,
 	assetsRedux: state.assets.list,
-  unusedAssets: getUnusuedAssets(state),
-  myCharacter: state.auth.user ? getMyCharacter(state): undefined
+	unusedAssets: getUnusuedAssets(state),
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { gameServer } from './config';
-import store from "./redux/store";
+// import store from "./redux/store";
 
 const URL = gameServer;
 const socket = io(URL, { autoConnect: false });

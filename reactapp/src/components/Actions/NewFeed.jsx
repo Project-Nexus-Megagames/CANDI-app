@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, FlexboxGrid, InputPicker, FormControl, InputNumber, Loader, Form, Slider } from 'rsuite';
+import { Modal, Button, FlexboxGrid, InputPicker, InputNumber, Slider } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
-const NewFeed = props => {
 
-  const [intent, setIntent] = React.useState('');
+const NewFeed = props => {
+	const [intent, setIntent] = React.useState('');
 	const [asset1, setAsset] = React.useState('');
 	const [overFeed, setOverFeed] = React.useState(0);
 

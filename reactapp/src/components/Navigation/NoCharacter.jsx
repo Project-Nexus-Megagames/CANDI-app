@@ -1,9 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Content, FlexboxGrid, Progress } from 'rsuite';
+import { Button, Content, FlexboxGrid } from 'rsuite';
 import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
-const { Circle } = Progress;
+// const { Circle } = Progress;
 
 class NoCharacter extends Component {
     constructor(props) {
@@ -25,8 +25,8 @@ class NoCharacter extends Component {
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
             </Content>
-             <p>Looks like you have no character assigned to your user. If you think this is in error then please contact Tech Support. Or just spam f5. It's a free world.</p>
-						<Button onClick={()=> this.handleLogOut()}>Log Out</Button>
+            <p>Looks like you have no character assigned to your user. If you think this is in error then please contact Tech Support. Or just spam f5. It's a free world.</p>
+			<Button onClick={()=> this.handleLogOut()}>Log Out</Button>
         </React.Fragment>
         );        
     }
@@ -37,7 +37,7 @@ class NoCharacter extends Component {
 		win.focus();
     }
 		handleLogOut = async () => {
-			localStorage.removeItem('token');
+			localStorage.removeItem('userToken-CANDI');
 			this.props.history.push('/');
 		}
 }

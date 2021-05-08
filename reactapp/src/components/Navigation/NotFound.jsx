@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { Button, Content, FlexboxGrid, Header, Panel } from 'rsuite';
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { Button, FlexboxGrid, Panel } from 'rsuite';
+// import { useHistory } from "react-router-dom";
 import socket from '../../socket';
 import { connect } from 'react-redux';
 
@@ -17,11 +17,11 @@ const start = () => {
 }
 
 const NotFound = (props) => {
-  const [seconds, setSeconds] = React.useState(25);
-  const [startBool, setStart] = React.useState(false);
-	const history = useHistory()
+  // const [seconds, setSeconds] = React.useState(25);
+  // const [startBool, setStart] = React.useState(false);
+	// const history = useHistory()
 
-  const test = () => {}
+  // const test = () => {}
 
   return ( 
 		<React.Fragment>
@@ -37,9 +37,7 @@ const NotFound = (props) => {
         <Button onClick={() => start()} >Feed</Button>
         <Button>Play</Button>
       <Panel>
-        
       </Panel>
-
     </React.Fragment>
 	)
 }
@@ -48,9 +46,7 @@ const mapStateToProps = (state) => ({
 	locations: state.locations.list,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotFound);

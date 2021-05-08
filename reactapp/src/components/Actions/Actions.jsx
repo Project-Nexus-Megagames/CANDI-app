@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Header, Content, ButtonToolbar, ButtonGroup } from 'rsuite';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Content, ButtonGroup } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, InputPicker } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
@@ -21,12 +21,12 @@ class ModifyCharacter extends Component {
 			_id: ''		
 		},
 		loading: false
-	 }
+	}
 		
-	 componentDidMount = () => {
-		 const char = this.props.characters.find(el => el._id === this.props.selected._id);
-		 console.log(char)
-		 if (char !== undefined) {
+	componentDidMount = () => {
+		const char = this.props.characters.find(el => el._id === this.props.selected._id);
+		console.log(char)
+		if (char !== undefined) {
 			const formValue = {
 					characterName: char.characterName,
 					email: char.email,
@@ -42,10 +42,10 @@ class ModifyCharacter extends Component {
 					id: char._id
 			}
 			this.setState({ formValue });			 
-		 }
-	 }
+		}
+	}
 
-	 componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps) => {
 		if (this.props.character !== prevProps.character) {
 			const char = this.props.character;
 			const formValue = {
@@ -62,15 +62,15 @@ class ModifyCharacter extends Component {
 		}
 		this.setState({ formValue });		
 		}
-	 }
+	}
 
-	 handleSubmit = async () => {
+	handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
 		socket.emit('characterRequest', 'modify', this.state.formValue ); // new Socket event
 		this.props.closeModal()
 		this.setState({ loading: false });		
-	 }
+	}
 
 	render() { 
 		return ( 
@@ -86,7 +86,6 @@ class ModifyCharacter extends Component {
 				<Modal.Body>
 					<Form layout="vertical" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
 						<FlexboxGrid>
-
 							<FlexboxGrid.Item colspan={8}>
 								<FormGroup>
 									<ControlLabel>Character Name</ControlLabel>
@@ -105,7 +104,6 @@ class ModifyCharacter extends Component {
 								<FormControl name="control" />
 							</FormGroup>							
 							</FlexboxGrid.Item>
-
 							<FlexboxGrid.Item colspan={8}>
 								<FormGroup>
 									<ControlLabel>tag</ControlLabel>
@@ -136,47 +134,45 @@ class ModifyCharacter extends Component {
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button loading={this.state.loading} disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
+        <Button loading={this.state.loading} disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
             Submit
-          </Button>
-          <Button onClick={() => this.props.closeModal()} appearance="subtle">
+        </Button>
+        <Button onClick={() => this.props.closeModal()} appearance="subtle">
             Cancel
-          </Button>
+        </Button>
         </Modal.Footer>
 			</Modal>
-		 );
+		);
 	}
 }
- 
-const pickerData = [
-	{
-		label: 'Poor',
-		value: 'Poor'
-	},
-	{
-		label: 'Laborer',
-		value: 'Laborer'
-	},
-	{
-		label: 'Comfortable',
-		value: 'Comfortable'
-	},
-	{
-		label: 'Affluent',
-		value: 'Affluent'
-	},
-	{
-		label: 'Luxury',
-		value: 'Luxury'
-	}
-]
+
+// const pickerData = [
+// 	{
+// 		label: 'Poor',
+// 		value: 'Poor'
+// 	},
+// 	{
+// 		label: 'Laborer',
+// 		value: 'Laborer'
+// 	},
+// 	{
+// 		label: 'Comfortable',
+// 		value: 'Comfortable'
+// 	},
+// 	{
+// 		label: 'Affluent',
+// 		value: 'Affluent'
+// 	},
+// 	{
+// 		label: 'Luxury',
+// 		value: 'Luxury'
+// 	}
+// ]
 
 const mapStateToProps = (state) => ({
 	characters: state.characters.list,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModifyCharacter);

@@ -12,7 +12,7 @@ const { StringType } = Schema.Types;
 
 const Login = props => {
 	let { login, tokenLogin, loadAction, user } = props;
-    const [errors, setErrors] = React.useState({});
+    // const [errors, setErrors] = React.useState({}); 
     const [formValue, setFormValue] = React.useState({ email: '', password: '',});
 
 	const history = useHistory();
@@ -21,7 +21,7 @@ const Login = props => {
 	
 
 	useEffect(() => {
-		let token = localStorage.getItem('token');
+		let token = localStorage.getItem('userToken-CANDI');
 		if (token && login === false) {
 			tokenLogin(token);
 		} 

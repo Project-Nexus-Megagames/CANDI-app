@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {List, FlexboxGrid, Container, } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { filteredActions, getMyActions } from '../../redux/entities/playerActions';
+import { filteredActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { 
 		rounds: []
-	 }
+	}
 
-	 componentDidMount = async () => {
-		 try {
+	componentDidMount = async () => {
+		try {
 			this.createListCatagories();
-		 }
-		 catch (err) {
-			 console.log(err);
-		 }
+		}
+		catch (err) {
+			console.log(err);
+		}
 		}
 
 		componentDidUpdate = (prevProps) => {
