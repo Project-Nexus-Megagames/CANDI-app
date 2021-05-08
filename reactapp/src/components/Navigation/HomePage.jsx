@@ -92,7 +92,7 @@ class HomePage extends Component {
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
 					</FlexboxGrid>
-				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
+				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '100%', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
 				<ImgPanel width={620} height={250} img={city} to='map' title='Map' body=''/>
