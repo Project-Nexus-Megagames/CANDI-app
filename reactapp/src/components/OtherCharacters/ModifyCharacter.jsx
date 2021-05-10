@@ -15,6 +15,7 @@ class ModifyCharacter extends Component {
 			timeZone: '',
 			bio: '',
 			icon: '',
+			color: '',
 			popSupport: 0,
 			effort: 0,
 			uses: 0,
@@ -39,6 +40,7 @@ class ModifyCharacter extends Component {
 					icon: char.icon,
 					popSupport: char.popSupport,
 					effort: char.effort,
+					color: char.color,
 					id: char._id
 			}
 			this.setState({ formValue });			 
@@ -46,21 +48,26 @@ class ModifyCharacter extends Component {
 	}
 
 	componentDidUpdate = (prevProps) => {
-		if (this.props.character !== prevProps.character) {
-			const char = this.props.character;
-			const formValue = {
-				characterName: char.characterName,
-				email: char.email,
-				worldAnvil: char.worldAnvil,
-				tag: char.tag,
-				timeZone: char.timeZone,
-				playerName: char.playerName,
-				bio: char.bio,
-				icon: char.icon,
-				popSupport: char.popSupport,
-				id: char._id
-		}
-		this.setState({ formValue });		
+		if (this.props.selected !== prevProps.selected) {
+			const char = this.props.characters.find(el => el._id === this.props.selected._id);
+			console.log(char)
+			if (char !== undefined) {
+				const formValue = {
+					characterName: char.characterName,
+					email: char.email,
+					worldAnvil: char.worldAnvil,
+					tag: char.tag,
+					timeZone: char.timeZone,
+					playerName: char.playerName,
+					bio: char.bio,
+					icon: char.icon,
+					popSupport: char.popSupport,
+					effort: char.effort,
+					color: char.color,
+					id: char._id
+				}				
+			this.setState({ formValue });				
+			}
 		}
 	}
 
@@ -112,6 +119,10 @@ class ModifyCharacter extends Component {
 							<FormGroup>
 								<ControlLabel>timeZone</ControlLabel>
 								<FormControl name="timeZone" />
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel>color (no # plz)</ControlLabel>
+								<FormControl name="color" />
 							</FormGroup>
 							</FlexboxGrid.Item>
 

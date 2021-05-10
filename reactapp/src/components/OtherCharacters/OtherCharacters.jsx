@@ -62,7 +62,7 @@ class OtherCharacters extends Component {
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
 					<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
-						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
+						<Input onChange={(value)=> this.filter(value)} placeholder="Search by Name or Email"></Input>
 					</Panel>
 					<Panel bodyFill style={{height: '86vh', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					{this.state.catagories.map((catagory, index) => (
@@ -208,14 +208,14 @@ class OtherCharacters extends Component {
 	createListCatagories (characters) {
 		const catagories = [];
 		for (const character of characters) {
-			if (!catagories.some(el => el === character.tag )) catagories.push(character.tag);
+			if (!catagories.some(el => el === character.tag) && character.tag !== 'NPC') catagories.push(character.tag);
 		}
 		catagories.sort((a, b) => { // sort the catagories alphabetically 
 				if(a < b) { return -1; }
 				if(a > b) { return 1; }
 				return 0;
 			});
-		// catagories.push('NPC');
+		catagories.push('NPC');
 		this.setState({ catagories });
 	}
 
