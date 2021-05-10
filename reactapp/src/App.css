@@ -96,3 +96,31 @@
   opacity: 1;
   fill: #dd5065;
 }
+
+.misc:hover {
+  opacity: 1;
+  fill: #dd5065;
+}
+
+
+.toggle-menu {
+  height: 50px;
+  width: 20px;
+  position: absolute;
+  outline: none;
+  z-index: 1;
+  background-color: #a136e9;
+  border-color: rgba(64, 194, 133, 0.693);
+  border-left: 0;
+}
+
+.side-bar {
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  border-right: 3px solid;
+  border-radius: 0;
+  border-color: #a136e9;
+  background-color: #282c34;
+  transition: 0.8s ease;
+}
