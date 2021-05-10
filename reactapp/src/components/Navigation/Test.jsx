@@ -65,8 +65,17 @@ const MapContainer = ({ locations, login, loading }) => {
     }
     else if (value.scale <= 1.4 && value.scale > 1.15) {
       console.log('1')
+      console.log(value.translation)
+      console.log(value.scale)
       if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 0) value.translation.x = 0;
+      if (value.translation.x < 90) value.translation.x = 90;
+      if (value.translation.y > -250) value.translation.y = -250;
+      if (value.translation.y < -900) value.translation.y = -900;
+    }
+    else if (value.scale <= 1.15 && value.scale > 1) {
+      console.log('0')
+      if (value.translation.x > 600) value.translation.x = 600;
+      if (value.translation.x < 100) value.translation.x = 100;
       if (value.translation.y > -250) value.translation.y = -250;
       if (value.translation.y < -900) value.translation.y = -900;
     }
@@ -75,9 +84,9 @@ const MapContainer = ({ locations, login, loading }) => {
       console.log(value.translation)
       console.log(value.scale)
       if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 90) value.translation.x = 90;
+      if (value.translation.x < 290) value.translation.x = 290;
       if (value.translation.y > -250) value.translation.y = -250;
-      if (value.translation.y < -680) value.translation.y = -680;
+      if (value.translation.y < -650) value.translation.y = -650;
     }
     setValue(value)
   }
@@ -93,7 +102,7 @@ const MapContainer = ({ locations, login, loading }) => {
 			<NavigationBar/>
       <Content style={{ overflow: 'hidden' }}>
         <FlexboxGrid>
-            <MapInteractionCSS minScale={1.15} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+            <MapInteractionCSS minScale={1} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
               <Map2 handleClick={clickHandlerer} />          
             </MapInteractionCSS>
         </FlexboxGrid>
