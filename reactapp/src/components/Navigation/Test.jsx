@@ -1,25 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Content, FlexboxGrid, Button, Modal, Icon, Loader, Panel, Sidebar, Divider } from 'rsuite';
+import { Container, Content, FlexboxGrid, Button, Modal, Icon, Loader, Sidebar, Divider } from 'rsuite';
 import { useHistory } from "react-router-dom";
 // import Map from './Map';
 import Map2 from './Map2';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
-import { MySideBar } from '../Map/SideBar';
 
 const MapContainer = ({ locations, login, loading }) => {
 	// const [scale, setScale] = React.useState(1);
   const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 100, y: -470 }});
-	const [territory, setTerritory] = React.useState({});
+	const [territory, setTerritory] = React.useState({ name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0});
 	const [boolean, setBoolean] = React.useState(false);
 
 
 	const history = useHistory();
   
 	const width = window.innerHeight / 2.5;
-  const [xPosition, setX] = React.useState(-width);
+  const [xPosition, setX] = React.useState(0);
 
   const toggleMenu = () => {
     if (xPosition < 0) { // if close
