@@ -100,6 +100,7 @@ class OtherCharacters extends Component {
 						<FlexboxGrid.Item colspan={14} >
 							<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 								<h3 style={{textAlign: "center"}}> {this.state.selected.characterName}</h3>		
+								<h5 style={{textAlign: "center"}}> {this.state.selected.characterActualName}</h5>		
 								<div>
 									<h6><IconButton placement="right" onClick={()=> this.openAnvil(this.state.selected.worldAnvil)} icon={<Icon icon="link"/>} appearance="primary">World Anvil Link</IconButton></h6>
 								</div>

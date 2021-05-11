@@ -14,8 +14,8 @@ class ModifyCharacter extends Component {
 			playerName: '',
 			timeZone: '',
 			bio: '',
-			icon: '',
 			color: '',
+			characterActualName: '',
 			popSupport: 0,
 			effort: 0,
 			uses: 0,
@@ -37,10 +37,10 @@ class ModifyCharacter extends Component {
 					timeZone: char.timeZone,
 					playerName: char.playerName,
 					bio: char.bio,
-					icon: char.icon,
 					popSupport: char.popSupport,
 					effort: char.effort,
 					color: char.color,
+					characterActualName: char.characterActualName,
 					id: char._id
 			}
 			this.setState({ formValue });			 
@@ -60,10 +60,10 @@ class ModifyCharacter extends Component {
 					timeZone: char.timeZone,
 					playerName: char.playerName,
 					bio: char.bio,
-					icon: char.icon,
 					popSupport: char.popSupport,
 					effort: char.effort,
 					color: char.color,
+					characterActualName: char.characterActualName,
 					id: char._id
 				}				
 			this.setState({ formValue });				
@@ -123,6 +123,10 @@ class ModifyCharacter extends Component {
 							<FormGroup>
 								<ControlLabel>color (no # plz)</ControlLabel>
 								<FormControl name="color" />
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel>characterActualName</ControlLabel>
+								<FormControl name="characterActualName" />
 							</FormGroup>
 							</FlexboxGrid.Item>
 
