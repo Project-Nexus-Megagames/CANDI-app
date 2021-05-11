@@ -1,6 +1,8 @@
 {
-  "name": "reactapp",
+  "name": "candi_duskcity_app",
   "version": "0.1.0",
+  "description": "The CANDI App for the Dusk City Megagame ",
+  "author": "Scott McMann & John T. Cleveland",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
@@ -24,11 +26,19 @@
     "socket.io-client": "^4.0.1",
     "web-vitals": "^0.2.4"
   },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "eslint": "^7.11.0",
+    "nodemon": "^2.0.5"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "client": "react-scripts start",
+    "server": "npm run server --prefix ../CANDI-server",
+    "dev": "concurrently \"npm run sever\" \"npm run client\""
   },
   "eslintConfig": {
     "extends": [
