@@ -26,7 +26,6 @@ class ModifyCharacter extends Component {
 		
 	componentDidMount = () => {
 		const char = this.props.characters.find(el => el._id === this.props.selected._id);
-		console.log(char)
 		if (char !== undefined) {
 			const formValue = {
 					characterName: char.characterName,
@@ -50,7 +49,6 @@ class ModifyCharacter extends Component {
 	componentDidUpdate = (prevProps) => {
 		if (this.props.selected !== prevProps.selected) {
 			const char = this.props.characters.find(el => el._id === this.props.selected._id);
-			console.log(char)
 			if (char !== undefined) {
 				const formValue = {
 					characterName: char.characterName,

@@ -130,7 +130,7 @@ class OtherCharacters extends Component {
 											Time Zone: <b>{this.state.selected.timeZone}</b>
 										</p>		
 										<p>
-											Contoller: <b>{this.state.selected.control}</b>
+											Controller: <b>{this.state.selected.control}</b>
 										</p>									
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
