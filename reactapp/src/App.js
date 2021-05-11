@@ -26,6 +26,7 @@ import NoCharacter from './components/Navigation/NoCharacter';
 
 import { initConnection } from './socket';
 import MapContainer from './components/Navigation/Test';
+import Registration from './components/Control/Registration';
 
 // React App Component
 initUpdates()
@@ -106,6 +107,9 @@ const App = (props) => {
         )} />
         <Route exact path='/no-character' render={(props) => (
           <NoCharacter {...props} />
+        )} />
+        <Route exact path='/registration' render={(props) => (
+          <Registration {...props} />
         )} />
         <Route exact path='/map' render={(props) => (
           <MapContainer {...props} />

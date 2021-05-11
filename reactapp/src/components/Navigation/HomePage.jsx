@@ -46,7 +46,7 @@ class HomePage extends Component {
 	}
 
 	openAnvil () {
-		const win = window.open('https://www.worldanvil.com/w/afterlife3A-a-postmortem-megagame-afterlife-control', '_blank');
+		const win = window.open('https://www.worldanvil.com/w/dusk-city-by-night-afterlife-control', '_blank');
 		win.focus();
 	}
 

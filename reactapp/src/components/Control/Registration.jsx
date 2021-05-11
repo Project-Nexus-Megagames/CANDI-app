@@ -1,7 +1,10 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Content, Container, Sidebar, PanelGroup, Panel, Input, FlexboxGrid, List, Alert, SelectPicker, Button, Loader } from 'rsuite';
 import { gameServer } from '../../config';
+import socket from '../../socket';
+import NavigationBar from '../Navigation/NavigationBar';
 
 class Registration extends Component {
 	state = { 
@@ -13,6 +16,7 @@ class Registration extends Component {
 	}
 
 	componentDidMount = async () => {
+		console.log(this.props)
 		try{
 			const existingUsernames = [];
 			for (const character of this.props.characters) {
@@ -28,6 +32,7 @@ class Registration extends Component {
 			this.setState({ users: filteredUsers, filtered: filteredUsers});
 		}
 		catch (err) {
+			console.log(err)
 			Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 		}	
 	}
@@ -47,31 +52,35 @@ class Registration extends Component {
 		};
 		return ( 
 			<Container>
-				<Sidebar style={{backgroundColor: "black"}}>
-					<PanelGroup>					
-						<Panel style={{ backgroundColor: "#000101"}}>
-							<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
-						</Panel>
-						<Panel bodyFill style={{height: 'calc(100vh - 130px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>		
-							<List>			
-									{this.state.filtered.sort((a, b) => { // sort the catagories alphabetically 
-										if(a.name.first < b.name.first) { return -1; }
-										if(a.name.first > b.name.first) { return 1; }
-										return 0;
-									}).map((user, index) => (
-										<List.Item key={index} index={index} onClick={() => this.setState({ selected: user })} style={this.listStyle(user)}>
-											<FlexboxGrid>
-												<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-													<b style={titleStyle}>{user.name.first} {user.name.last}</b>
-													<b style={slimText}>{user.email}</b>
-												</FlexboxGrid.Item>
-											</FlexboxGrid>
-										</List.Item>
-									))}
-								</List>														
-						</Panel>							
-					</PanelGroup>
-				</Sidebar>
+				<Content>
+					<NavigationBar />
+					<Sidebar style={{backgroundColor: "black"}}>
+						<PanelGroup>					
+							<Panel style={{ backgroundColor: "#000101"}}>
+								<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
+							</Panel>
+							<Panel bodyFill style={{height: 'calc(100vh - 130px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>		
+								<List>			
+										{this.state.filtered.sort((a, b) => { // sort the catagories alphabetically 
+											if(a.name.first < b.name.first) { return -1; }
+											if(a.name.first > b.name.first) { return 1; }
+											return 0;
+										}).map((user, index) => (
+											<List.Item key={index} index={index} onClick={() => this.setState({ selected: user })} style={this.listStyle(user)}>
+												<FlexboxGrid>
+													<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+														<b style={titleStyle}>{user.name.first} {user.name.last}</b>
+														<b style={slimText}>{user.email}</b>
+													</FlexboxGrid.Item>
+												</FlexboxGrid>
+											</List.Item>
+										))}
+									</List>														
+							</Panel>							
+						</PanelGroup>
+					</Sidebar>					
+				</Content>
+
 				{this.state.selected &&
 				<React.Fragment>
 					<Content>
@@ -79,7 +88,7 @@ class Registration extends Component {
 							<h3 style={{textAlign: "center"}}> {this.state.selected.name.first} {this.state.selected.name.last} </h3>	
 							<h5 style={{textAlign: "center"}}> {this.state.selected.email} </h5>	
 							<b>Username: {this.state.selected.username} </b>
-							<SelectPicker placeholder="Select a Character" onChange={(event) => this.setState({ target: event })} block groupBy='tag' valueKey='_id' labelKey='characterName' data={this.props.characters}/>			
+							<SelectPicker placeholder="Select a Character" onChange={(event) => this.setState({ target: event })} block valueKey='_id' labelKey='characterName' data={this.props.characters}/>			
 						</Panel>
 						<Panel>
 							<Button disabled={(!this.state.target)} onClick={()=> this.handleReg()} >Register this Player!</Button>							
@@ -102,10 +111,12 @@ class Registration extends Component {
 		const data = {
 			character: this.state.target,
 			username: this.state.selected.username,
+			playerName: this.state.selected.name.first
 		}
 		try{
-			await axios.patch(`${gameServer}api/characters/register`,  data );
-			Alert.success('User successfully given their character');
+			socket.emit('characterRequest', 'register',  data ); // new Socket event
+			// await axios.patch(`${gameServer}api/characters/register`,  data );
+			// Alert.success('User successfully given their character');
 			this.setState({ selected: null, target: null });
 		}
 		catch (err) {
@@ -137,4 +148,12 @@ const slimText = {
 	paddingLeft: 2
 };
 
-export default Registration;
+const mapStateToProps = (state) => ({
+	characters: state.characters.list,
+  login: state.auth.login,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);

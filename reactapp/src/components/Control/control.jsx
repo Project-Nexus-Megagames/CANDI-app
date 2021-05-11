@@ -126,44 +126,37 @@ export default connect(mapStateToProps, mapDispatchToProps)(Control);
 const controllers = [
 	{
 		name: "Stuart",
-		role: "Game Control",
-		email: "afterlifecontrol@gmail.com",
+		role: "East Control",
+		email: "stuart.pbem@gmail.com",
 		timezone: "GMT",
 		responsibilities: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
 	},
-	{ 
-		name: "Mickey",
-		role: "Beta Control",
-		email: "afterlifebeta@gmail.com",
-		timezone: "GMT",
-		responsibilities: "The Penitent, The Thorn, The Claviger, The Steward, The Gossip, Madame, The Margrave of the Grey Borders, The Baptist, The Speaker of Truth, The Flagellant, The Gaoler, The Warden, She Who Bears The Scale, The Medium" 
-	},
-	{
-		name: "Andrew",
-		role: "Delta Control",
-		email: "afterlifedelta@gmail.com",
-		timezone: "CSTGMT",
-		responsibilities: "The Seeker, The Unknown Soldier, The Ranger, The Seneschal, The Warlord, The Field Marshal, The Conductor of Souls, The Taxi Driver"
-	},
 	{
 		name: "Dan",
-		role: "Gamma Control",
-		email: "afterlifegamma@gmail.com",
+		role: "Central Control",
+		email: "duskcontrolcentral@gmail.com",
 		timezone: "MST",
-		responsibilities: "The Gnostic, The Gourmand, The House, The Upstart, The Jester, The High-Roller, Sam the Barman"
+		responsibilities: ''
 	},
 	{
-		name: "Mike",
-		role: "Epsilon Control",
-		email: "afterlifeepsilon@gmail.com",
-		timezone: "CST",
-		responsibilities: "The Scholar, The Avenging Fury, The Implacable Fury, The Foreman, The Sculptor, The Overseer, The Rampant Fury, The Bailiff, The Smith, The Sommelier, The Songbird, The Executioner"
+		name: "LJ",
+		role: "North Control",
+		email: "duskcontrolnorth@gmail.com",
+		timezone: "EST",
+		responsibilities: ""
 		},
+		{
+			name: "Alex",
+			role: "South Control",
+			email: "duskcontrolsouth@gmail.com",
+			timezone: "???",
+			responsibilities: ""
+			},
 	{
     name: "Scott",
     role: "Tech Support",
-    email: "Use the #tech-support channel on the Afterlife discord server",
+    email: "Use the #tech-support channel on the Dusk City discord server",
     timezone: "PST",
-    responsibilities: "Keeping the App and Discord running"
+    responsibilities: "Keeping CANDI running"
 	}
 ]
