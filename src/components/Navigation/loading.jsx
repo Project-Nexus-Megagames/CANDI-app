@@ -251,12 +251,12 @@ const loadingMsg = [
     'What\'s orange and sounds like a parrot?\nA carrot.',
     '01001101 01100001 01100100 01100101 00100000 01111001 01101111 01110101 00100000 01101100 01101111 01101111 01101011',
     'What if the real Dusk City was the firends we made along the way?',
-    'Loading... what? They can\'t all be interesting or funny...',
     'What do you call an alligator in a vest?\n An Investigator.',
     'Fun Fact: Sun tzu invented war, and then perfected it so no man could best him in the ring of honor. This was shortly before he invented the Zoo.',
     'Code monkey get up, get coffee. Code monkey go to job.',
     'Secret: Scott\'s E-mail is booby trapped...',
-    'Why are pirates called pirates? \'cause they arrr!'
+    'Why are pirates called pirates? \'cause they arrr!',
+    'Vampires probably started the garlic myth so their victims would carry around their own seasoning'
 ]
 
 const rand = (Math.floor(Math.random() * spook.length ));

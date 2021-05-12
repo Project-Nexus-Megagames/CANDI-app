@@ -1,18 +1,20 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Content, Container, Sidebar, PanelGroup, Panel, Input, FlexboxGrid, List, Alert, SelectPicker, Button, Loader } from 'rsuite';
+import { Content, Container, Sidebar, PanelGroup, Panel, Input, FlexboxGrid, List, Alert, SelectPicker, Button, Loader, Toggle } from 'rsuite';
 import { gameServer } from '../../config';
 import socket from '../../socket';
 import NavigationBar from '../Navigation/NavigationBar';
 
 class Registration extends Component {
 	state = { 
-		users: [],
 		characters: [],
 		filtered: [],
-		slected: null,
-		target: null
+		unfiltered: [],
+		selected: null,
+		target: null,
+		loading: true,
+		britta: true
 	}
 
 	componentDidMount = async () => {
@@ -29,7 +31,7 @@ class Registration extends Component {
 				if (!existingUsernames.some(el => el === user.username )) filteredUsers.push(user);
 			}
 		//	Alert.success('Asset Successfully Deleted');
-			this.setState({ users: filteredUsers, filtered: filteredUsers});
+			this.setState({ unfiltered: data, filtered: filteredUsers, loading: false});
 		}
 		catch (err) {
 			console.log(err)
@@ -57,10 +59,18 @@ class Registration extends Component {
 						<Sidebar style={{backgroundColor: "black"}}>
 							<PanelGroup>					
 								<Panel style={{ backgroundColor: "#000101"}}>
-									<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
+									<FlexboxGrid align='middle'>
+										<FlexboxGrid.Item colspan={12}>
+											<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={12}>
+											<Toggle checked={this.state.britta} onChange={()=> this.setState({ britta: !this.state.britta })} checkedChildren="Filtered" unCheckedChildren="Unfiltered"/>
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
 								</Panel>
 								<Panel bodyFill style={{height: 'calc(100vh - 130px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>		
-									<List>			
+									{this.state.loading && <Loader/>}
+									{!this.state.loading && this.state.britta && <List>			
 											{this.state.filtered.sort((a, b) => { // sort the catagories alphabetically 
 												if(a.name.first < b.name.first) { return -1; }
 												if(a.name.first > b.name.first) { return 1; }
@@ -75,7 +85,23 @@ class Registration extends Component {
 													</FlexboxGrid>
 												</List.Item>
 											))}
-										</List>														
+										</List>}			
+										{!this.state.loading && !this.state.britta && <List>			
+											{this.state.unfiltered.sort((a, b) => { // sort the catagories alphabetically 
+												if(a.name.first < b.name.first) { return -1; }
+												if(a.name.first > b.name.first) { return 1; }
+												return 0;
+											}).map((user, index) => (
+												<List.Item key={index} index={index} onClick={() => this.setState({ selected: user })} style={this.listStyle(user)}>
+													<FlexboxGrid>
+														<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+															<b style={titleStyle}>{user.name.first} {user.name.last}</b>
+															<b style={slimText}>{user.email}</b>
+														</FlexboxGrid.Item>
+													</FlexboxGrid>
+												</List.Item>
+											))}
+										</List>}											
 								</Panel>							
 							</PanelGroup>
 						</Sidebar>	
