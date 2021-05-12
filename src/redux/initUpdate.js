@@ -16,7 +16,7 @@ const initUpdates = () => {
                 case 'Action':
                     store.dispatch(playerActionUpdated(el));
                     break;
-                case 'Gamestate':
+                case 'GameState':
                     store.dispatch(gamestateReceived(el));
                     break;
                 case 'Asset':
