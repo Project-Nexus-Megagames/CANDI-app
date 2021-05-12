@@ -8,6 +8,7 @@ import NavigationBar from '../Navigation/NavigationBar';
 
 class Registration extends Component {
 	state = { 
+		users: [],
 		characters: [],
 		filtered: [],
 		unfiltered: [],
@@ -18,7 +19,6 @@ class Registration extends Component {
 	}
 
 	componentDidMount = async () => {
-		console.log(this.props)
 		try{
 			const existingUsernames = [];
 			for (const character of this.props.characters) {
@@ -31,7 +31,7 @@ class Registration extends Component {
 				if (!existingUsernames.some(el => el === user.username )) filteredUsers.push(user);
 			}
 		//	Alert.success('Asset Successfully Deleted');
-			this.setState({ unfiltered: data, filtered: filteredUsers, loading: false});
+			this.setState({ unfiltered: data, filtered: filteredUsers, loading: false, users: data});
 		}
 		catch (err) {
 			console.log(err)
@@ -128,10 +128,28 @@ class Registration extends Component {
 	}
 
 	filter = (fil) => {
-		const filtered = this.state.users.filter(user => user.name.first.toLowerCase().includes(fil.toLowerCase()) ||
-		user.name.last.toLowerCase().includes(fil.toLowerCase()) ||
-		user.email.toLowerCase().includes(fil.toLowerCase()));
-		this.setState({ filtered });
+		if (this.state.britta) {
+			const existingUsernames = [];
+			for (const character of this.props.characters) {
+				if (!existingUsernames.some(el => el === character.username )) existingUsernames.push(character.username);
+			}
+
+			const filteredUsers = [];
+			for (const user of this.state.users) {
+				if (!existingUsernames.some(el => el === user.username )) filteredUsers.push(user);
+			}
+			const filtered = filteredUsers.filter(user => user.name.first.toLowerCase().includes(fil.toLowerCase()) ||
+			user.name.last.toLowerCase().includes(fil.toLowerCase()) ||
+			user.email.toLowerCase().includes(fil.toLowerCase()));
+			this.setState({ filtered });			
+		}
+		else {
+			const unfiltered = this.state.users.filter(user => user.name.first.toLowerCase().includes(fil.toLowerCase()) ||
+			user.name.last.toLowerCase().includes(fil.toLowerCase()) ||
+			user.email.toLowerCase().includes(fil.toLowerCase()));
+			this.setState({ unfiltered });		
+		}
+
 	}
 
 	handleReg = async () => {
