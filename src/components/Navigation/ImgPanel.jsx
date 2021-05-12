@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const ImgPanel = (props) => {
     return (
-        <Panel style={{width: props.width, height: props.height, position: 'relative', float:'left', display:'inline-block', margin: '10px'}} boardered shaded bodyFill>
+        <Panel style={{width: props.width, height: props.height, position: 'relative', float:'left', display:'inline-block', margin: '10px'}} shaded bodyFill>
             <Link to={props.to}>
             <div className="container">
                 <img src={props.img} className='image' height='100%' alt='Failed to load img' />             

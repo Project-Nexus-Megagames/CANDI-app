@@ -197,7 +197,7 @@ class ControlTerminal extends Component {
 				</Panel>
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
-					<Form formValue={this.state.formValue} layout="center" onChange={formValue => {this.setState({ formValue });}}>
+					<Form formValue={this.state.formValue} layout="vertical" onChange={formValue => {this.setState({ formValue });}}>
 						<FormGroup>
 							<ControlLabel>Game State </ControlLabel>
 							<FormControl name="status" data={pickerData} accepter={InputPicker} />
