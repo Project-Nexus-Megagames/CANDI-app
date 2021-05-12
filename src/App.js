@@ -15,7 +15,6 @@ import ControlTerminal from './components/Control/ControlTerminal';
 // import Registration from './components/Control/Registration';
 
 import Login from './components/Navigation/Login';
-import NotFound from './components/Navigation/NotFound';
 import initUpdates from './redux/initUpdate';
 import { getMyCharacter, loadCharacters } from './redux/entities/characters';
 import { loadAssets } from './redux/entities/assets';
@@ -27,6 +26,7 @@ import NoCharacter from './components/Navigation/NoCharacter';
 import { initConnection } from './socket';
 import MapContainer from './components/Navigation/Test';
 import Registration from './components/Control/Registration';
+import NotFound from './components/Navigation/NotFound';
 
 // React App Component
 initUpdates()

@@ -138,20 +138,9 @@ class OtherCharacters extends Component {
 								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:</p>
 								<p>{this.state.selected.bio}</p>
 								<Divider></Divider>
-								<FlexboxGrid>
-									<FlexboxGrid.Item style={{ alignItems: 'center', justifyContent: 'center', }} colspan={12}>
-										<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="320" height="320" />
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item colspan={6}>
-										Supported By:
-										{this.state.selected.supporters.map((supporter, index) => (
-											<Tag index={index}>{supporter}</Tag>
-										))}
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item>
-									{this.makeButton()}
-									</FlexboxGrid.Item>
-								</FlexboxGrid>
+
+								<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="320" height="320" />
+
 							</Panel>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={1} />
