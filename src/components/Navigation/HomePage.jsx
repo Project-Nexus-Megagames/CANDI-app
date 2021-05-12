@@ -8,7 +8,7 @@ import Loading from './loading';
 // import aang from '../Images/aang.jpg'
 import city from '../Images/city.png'
 import action from '../Images/action.jpg'
-// import feed from '../Images/feed.png'
+ import feed from '../Images/feed.png'
 import mycharacter from '../Images/MyCharacter.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
@@ -101,7 +101,7 @@ class HomePage extends Component {
 				</Col>
 				<Col>
 					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
-					<ImgPanel width={300} height={350} img={mycharacter} to='character' title='My Character' body='My Assets and Traits'/>
+					<ImgPanel width={300} height={350} img={feed} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 		</Row>
 		<Row style={{display: 'inherit'}}>
