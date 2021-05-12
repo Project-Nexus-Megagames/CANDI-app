@@ -166,9 +166,9 @@ const MapContainer = ({ locations, login, loading }) => {
                 <FlexboxGridItem colspan={12}>
                   Borough: {territory.borough}
                 </FlexboxGridItem>
-                <FlexboxGridItem colspan={12}>
+                {/*<FlexboxGridItem colspan={12}>
                   Influence: {territory.influence}
-                </FlexboxGridItem>
+      </FlexboxGridItem>*/}
               </FlexboxGrid>
           </Modal.Header>
             <Modal.Body>
