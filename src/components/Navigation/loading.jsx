@@ -226,7 +226,8 @@ const bored = [
     'https://www.youtube.com/watch?v=s-09gNDsPzQ',
     'https://www.youtube.com/watch?v=9fjk8cNiptU',
     'https://www.youtube.com/watch?v=yUZfkbKFtKA',
-    'https://www.youtube.com/watch?v=iP897Z5Nerk' // BINARY search with FLAMENCO dance
+    'https://www.youtube.com/watch?v=iP897Z5Nerk', // BINARY search with FLAMENCO dance
+    'https://www.youtube.com/watch?v=fC7oUOUEEi4'
 ]
 
 const loadingMsg = [
@@ -256,7 +257,9 @@ const loadingMsg = [
     'Code monkey get up, get coffee. Code monkey go to job.',
     'Secret: Scott\'s E-mail is booby trapped...',
     'Why are pirates called pirates? \'cause they arrr!',
-    'Vampires probably started the garlic myth so their victims would carry around their own seasoning'
+    'Vampires probably started the garlic myth so their victims would carry around their own seasoning',
+    'Fun fact: He is getting closer...',
+    'Hi! We\'ve been trying to reach you about your extended warrenty expiring!'
 ]
 
 const rand = (Math.floor(Math.random() * spook.length ));

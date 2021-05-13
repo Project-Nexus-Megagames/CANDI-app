@@ -42,7 +42,6 @@ class AddAsset extends Component {
 			},
 			id: this.props.character._id, 
 	 }
-	 console.log(formValue)
 	 socket.emit('assetRequest', 'create', formValue); // new Socket event	
 	 this.setState({ loading: false, formValue: { name: '', description: '', type: '' }, hidden: true });
 	 this.props.closeModal();

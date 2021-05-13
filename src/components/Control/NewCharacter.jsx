@@ -3,11 +3,12 @@ import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
-class ModifyCharacter extends Component {
+class NewCharacter extends Component {
 	state = { 
 		formValue: {
 			characterName: '',
 			email: '',
+			controlEmail: '',
 			worldAnvil: '',
 			tag: '', 
 			control: '',
@@ -15,67 +16,21 @@ class ModifyCharacter extends Component {
 			timeZone: '',
 			bio: '',
 			color: '',
-			pronouns: '',
 			characterActualName: '',
+			pronouns: '',
 			popSupport: 0,
 			effort: 0,
 			uses: 0,
-			_id: ''		
+			username: 'temp'
 		},
 		loading: false
 	}
 		
-	componentDidMount = () => {
-		const char = this.props.characters.find(el => el._id === this.props.selected._id);
-		if (char !== undefined) {
-			const formValue = {
-					characterName: char.characterName,
-					email: char.email,
-					worldAnvil: char.worldAnvil,
-					tag: char.tag,
-					control: char.control,
-					timeZone: char.timeZone,
-					playerName: char.playerName,
-					bio: char.bio,
-					pronouns: char.pronouns,
-					popSupport: char.popSupport,
-					effort: char.effort,
-					color: char.color,
-					characterActualName: char.characterActualName,
-					id: char._id
-			}
-			this.setState({ formValue });			 
-		}
-	}
-
-	componentDidUpdate = (prevProps) => {
-		if (this.props.selected !== prevProps.selected) {
-			const char = this.props.characters.find(el => el._id === this.props.selected._id);
-			if (char !== undefined) {
-				const formValue = {
-					characterName: char.characterName,
-					email: char.email,
-					worldAnvil: char.worldAnvil,
-					tag: char.tag,
-					timeZone: char.timeZone,
-					playerName: char.playerName,
-					bio: char.bio,
-					pronouns: char.pronouns,
-					popSupport: char.popSupport,
-					effort: char.effort,
-					color: char.color,
-					characterActualName: char.characterActualName,
-					id: char._id
-				}				
-			this.setState({ formValue });				
-			}
-		}
-	}
 
 	handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
-		socket.emit('characterRequest', 'modify', this.state.formValue ); // new Socket event
+		socket.emit('characterRequest', 'create', this.state.formValue ); // new Socket event
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	}
@@ -89,7 +44,7 @@ class ModifyCharacter extends Component {
 			show={this.props.show} 
 			onHide={() => this.props.closeModal()}>
 				<Modal.Header>
-					<Modal.Title>Modify Character "{this.state.formValue.characterName}"</Modal.Title>
+					<Modal.Title>New Character "{this.state.formValue.characterName}"</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form layout="vertical" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
@@ -118,16 +73,16 @@ class ModifyCharacter extends Component {
 									<FormControl name="tag" />
 							</FormGroup>
 							<FormGroup>
+								<ControlLabel>controlEmail</ControlLabel>
+								<FormControl name="controlEmail" />
+							</FormGroup>
+							<FormGroup>
 								<ControlLabel>timeZone</ControlLabel>
 								<FormControl name="timeZone" />
 							</FormGroup>
 							<FormGroup>
-								<ControlLabel>color (no # plz)</ControlLabel>
-								<FormControl name="color" />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>characterActualName</ControlLabel>
-								<FormControl name="characterActualName" />
+								<ControlLabel>playerName</ControlLabel>
+								<FormControl name="playerName" />
 							</FormGroup>
 							</FlexboxGrid.Item>
 
@@ -143,6 +98,10 @@ class ModifyCharacter extends Component {
 							<FormGroup>
 									<ControlLabel>effort</ControlLabel>
 									<FormControl name="effort" accepter={InputNumber} />
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel>color (no # plz)</ControlLabel>
+								<FormControl name="color" />
 							</FormGroup>
 							</FlexboxGrid.Item>
 
@@ -195,4 +154,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModifyCharacter);
+export default connect(mapStateToProps, mapDispatchToProps)(NewCharacter);

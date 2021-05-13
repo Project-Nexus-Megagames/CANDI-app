@@ -6,6 +6,7 @@ import { getMyCharacter } from '../../redux/entities/characters';
 import { draftActions } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import { assetsRequested } from '../../redux/entities/assets';
+import NewCharacter from './NewCharacter';
 
 const { Column, HeaderCell, Cell } = Table;
 class ControlTerminal extends Component {
@@ -15,6 +16,7 @@ class ControlTerminal extends Component {
 		warning2Modal: false,
 		assModal: false,
 		projectModal: false,
+		newCharater: false,
 		formValue: {
 			round: null,
 			status: '',
@@ -155,6 +157,7 @@ class ControlTerminal extends Component {
 							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
 							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
+							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
 							<Button color='violet' appearance="ghost" onClick={() => this.props.history.push('/registration')}>Registration</Button>
 						</ButtonGroup>
 					</Panel>
@@ -308,6 +311,9 @@ class ControlTerminal extends Component {
 							</ButtonGroup>}
 						</Modal.Footer>
 				</Modal>
+
+				<NewCharacter show={this.state.newCharacter} 
+					closeModal={() => this.setState({ newCharacter: false })}/>
 			</Content>
 		);
 	}
