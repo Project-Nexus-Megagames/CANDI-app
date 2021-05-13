@@ -11,7 +11,7 @@ import { loadplayerActions } from '../../redux/entities/playerActions';
 const { StringType } = Schema.Types;
 
 const Login = props => {
-	let { login, tokenLogin, loadAction, user } = props;
+	let { login, tokenLogin, loadAction, user, actionsLoaded } = props;
     const [errors, setErrors] = React.useState({});
     const [formValue, setFormValue] = React.useState({ email: '', password: '',});
 
@@ -29,10 +29,10 @@ const Login = props => {
 
 	useEffect(() => {
 		if (login) {
-			loadAction(user);
+			if (!actionsLoaded) loadAction(user);
 			history.push('/home');
 		}
-	}, [login, user, loadAction, history])
+	}, [login, user, loadAction, history, actionsLoaded])
 
 
 
@@ -75,7 +75,7 @@ const mapStateToProps = (state) => ({
 	error: state.auth.error,
 	user: state.auth.user,
 	loading: state.auth.loading,
-	actionsLast: state.actions.lastFetch,
+	actionsLoaded: state.actions.loaded,
 	assetsLast: state.assets.lastFetch,
 	charactersLast: state.characters.lastFetch,
 	gamestateLast: state.gamestate.lastFetch,
