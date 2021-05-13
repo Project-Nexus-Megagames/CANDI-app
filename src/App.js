@@ -64,6 +64,7 @@ const App = (props) => {
     socket.on('alert', (data) => {
       switch(data.type) {
         case 'error': 
+          // console.log(data.message);
           Alert.error(data.message, 6000);
           break;
         case 'success':
