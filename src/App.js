@@ -27,6 +27,7 @@ import { initConnection } from './socket';
 import MapContainer from './components/Navigation/Test';
 import Registration from './components/Control/Registration';
 import NotFound from './components/Navigation/NotFound';
+import Bitsy from './components/Navigation/Bitsy';
 
 // React App Component
 initUpdates()
@@ -114,6 +115,9 @@ const App = (props) => {
         )} />
         <Route exact path='/map' render={(props) => (
           <MapContainer {...props} />
+        )} />
+        <Route exact path='/bitsy' render={(props) => (
+          <Bitsy {...props} />
         )} />
         <Redirect from="/" exact to="login" />
         <Redirect to="/404" />

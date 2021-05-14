@@ -24,11 +24,13 @@ const slice = createSlice({
     },
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
+      /*
+
+      */
       let jwt = action.payload;
-      localStorage.setItem('userToken-CANDI', jwt);
-      // console.log(`Token: ${jwt}`);
+      // console.log(jwt)
+      localStorage.setItem('CANDI', jwt);
       const user = jwtDecode(jwt);
-      console.log(user)
 
       if (user.roles.some(el => el === "Control")) auth.control = true;
 
@@ -54,12 +56,13 @@ const slice = createSlice({
 		},
 		signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('userToken-CANDI');
+      localStorage.removeItem('CANDI');
 			auth.user = null;
 			auth.login = false;
 			auth.loading = false;
 			auth.lastLogin = null;
 			auth.error = null;
+
 		},
 		updateUser: (auth, action) => {
 			console.log(`${action.type} Dispatched`);

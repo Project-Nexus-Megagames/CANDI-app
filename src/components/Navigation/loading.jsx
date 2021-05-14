@@ -177,7 +177,8 @@ const spook = [
 'https://media1.giphy.com/media/nyNS6Cfrnkdj2/giphy.gif',
 'https://i1.wp.com/nileease.com/wp-content/uploads/2020/05/cf028dae44f0f5b1e7763747f422bbe0.gif?fit=400%2C222&ssl=1',
 'https://i.pinimg.com/originals/44/03/f8/4403f8810a593202d3b5a44893ac3835.gif',
-'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif'
+'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif',
+'https://i.redd.it/r3ey7kphfln61.jpg'
 ]
 
 const bored = [

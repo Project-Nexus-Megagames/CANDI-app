@@ -123,6 +123,7 @@ class HomePage extends Component {
 
 	handleLogOut = async () => {
 		this.props.logOut();
+		this.props.history.push('/login');
 	}
 	
 	renderTime = (endTime) => {

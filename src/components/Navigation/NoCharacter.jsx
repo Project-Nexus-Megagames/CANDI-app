@@ -36,7 +36,7 @@ class NoCharacter extends Component {
 		win.focus();
     }
 		handleLogOut = async () => {
-			localStorage.removeItem('userToken-CANDI');
+			localStorage.removeItem('CANDI');
 			this.props.history.push('/');
 		}
 }

@@ -21,8 +21,11 @@ const Login = props => {
 	
 
 	useEffect(() => {
-		let token = localStorage.getItem('token');
-		if (token && login === false) {
+		localStorage.removeItem('token');
+		localStorage.removeItem('CANDI');
+		localStorage.removeItem('userToken-CANDI');
+		let token = localStorage.getItem('CANDI');
+		if (token !== null && login === false) {
 			tokenLogin(token);
 		} 
 	}, [login, tokenLogin])
