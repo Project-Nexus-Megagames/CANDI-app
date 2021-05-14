@@ -2,7 +2,6 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Content, FlexboxGrid } from 'rsuite';
-import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
 // const { Circle } = Progress;
 
 class NoCharacter extends Component {
@@ -54,8 +53,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	loadAction: (data) => dispatch(loadplayerActions(data)),
-    loadAllActions: (data) => dispatch(loadAllActions(data)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NoCharacter);

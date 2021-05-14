@@ -68,7 +68,7 @@ export const getMyLocation = createSelector(
   state => state.locations.list,
   state => state.auth.user,
   (locations, user) => locations.find(
-    char => char.username === user.username
+    loc => loc.currentOwner === user.username
   )
 );
 

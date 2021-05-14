@@ -8,7 +8,7 @@ import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
 
-const MapContainer = ({ locations, login, loading }) => {
+const MapContainer = ({ locations, login, loading, characters }) => {
 	// const [scale, setScale] = React.useState(1);
   const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 100, y: -470 }});
 	const [territory, setTerritory] = React.useState({ name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0});
@@ -155,7 +155,7 @@ const MapContainer = ({ locations, login, loading }) => {
         <Content>
           <div style={{ width: '100%', height: '100%' }}> 
             <MapInteractionCSS minScale={1} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
-              <Map2 mouseOverEffect={handleHover} handleClick={clickHandlerer} />          
+              <Map2 mouseOverEffect={handleHover} handleClick={clickHandlerer} locations={locations} characters={characters} />          
             </MapInteractionCSS>       
           </div>
         </Content>
@@ -189,6 +189,7 @@ const MapContainer = ({ locations, login, loading }) => {
 
 const mapStateToProps = (state) => ({
 	locations: state.locations.list,
+	characters: state.characters.list,
   login: state.auth.login,
 	loading: state.auth.loading,
 });
