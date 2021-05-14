@@ -9,35 +9,40 @@ class EditTerritory extends Component {
 			name: '',
 			description: '',
 			borough: '',
-			currentOwner: '',
 			influence: 0,
 			id: ''		
 		},
+		currentOwner: '',
 		selected: false,
 		loading: false
 	}
 		
 	handleSubmit = async () => {
 		// 1) make a new action
+		const data = {
+			name: this.state.formValue.name,
+			description: this.state.formValue.description,
+			borough: this.state.formValue.borough,
+			influence: this.state.formValue.influence,
+			id: this.state.formValue.id,
+			currentOwner: this.state.currentOwner
+		}
 		this.setState({ loading: true });			
-		socket.emit('locationRequest', 'modify', this.state.formValue ); // new Socket event
+		socket.emit('locationRequest', 'modify', data ); // new Socket event
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	}
 
 	handleSelect = (code) => {
-		console.log(code)
 		const selected = this.props.locations.find(el => el.code === code);
-		console.log(selected)
 		const formValue = {
 			name: selected.name,
 			description: selected.description,
 			borough: selected.borough,
-			currentOwner: selected.currentOwner,
 			influence: selected.influence,
 			id: selected._id
 		}
-		this.setState({ selected: true, formValue });
+		this.setState({ selected: true, formValue, currentOwner: selected.currentOwner, });
 	}
 
 	render() { 
@@ -65,10 +70,7 @@ class EditTerritory extends Component {
 						<ControlLabel>description</ControlLabel>
 						<FormControl name="description" />
 					</FormGroup>
-					<FormGroup>
-						<ControlLabel>currentOwner</ControlLabel>
-						<FormControl name="currentOwner" />
-					</FormGroup>
+					<SelectPicker defaultValue={this.state.currentOwner} onChange={(event) => this.setState({ currentOwner: event })} block valueKey='characterName' labelKey='characterName' data={this.props.characters}/>
 
 					</Form>}
 				</Modal.Body>
@@ -76,8 +78,8 @@ class EditTerritory extends Component {
         <Button loading={this.state.loading} disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
             Submit
         </Button>
-        <Button onClick={() => this.props.closeModal()} appearance="subtle">
-            Cancel
+        <Button onClick={() => this.setState({ selected: false })} appearance="subtle">
+            Select A new Territory
         </Button>
         </Modal.Footer>
 			</Modal>
@@ -87,6 +89,7 @@ class EditTerritory extends Component {
 
 const mapStateToProps = (state) => ({
 	locations: state.locations.list,
+	characters: state.characters.list,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

@@ -4,6 +4,7 @@ import { gamestateReceived } from './entities/gamestate';
 import { playerActionUpdated, actionAdded, actionDeleted } from './entities/playerActions';
 import socket from '../socket'
 import store from './store';
+import { locationUpdated } from './entities/locations';
 
 const initUpdates = () => {
     socket.on('updateClients', (data) => { 
@@ -21,6 +22,9 @@ const initUpdates = () => {
                     break;
                 case 'Asset':
                     store.dispatch(assetUpdated(el));
+                    break;
+                case 'Location':
+                    store.dispatch(locationUpdated(el));
                     break;
                 default:
                     console.log(`Unable to update Redux for ${el.model}: ${el._id}`);

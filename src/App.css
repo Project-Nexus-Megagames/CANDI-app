@@ -74,31 +74,31 @@
 }
 
 .north:hover {
-  opacity: .75;
+  opacity: 1;
   fill: #6a7af7;
 }
 
 .east:hover {
-  opacity: .75;
+  opacity: 1;
   fill: #a1c4d6;
 }
 
 .south:hover {
-  opacity: .75;
+  opacity: 1;
   fill: #dd4dd3;
 }
 
 .west:hover {
-  opacity: .75;
+  opacity: 1;
   fill: #60db59;
 }
 .central:hover {
-  opacity: .75;
+  opacity: 1;
   fill: #dd5065;
 }
 
 .misc:hover {
-  opacity: .75;
+  opacity: 1;
   fill: #dd5065;
 }
 
