@@ -140,7 +140,7 @@ class OtherCharacters extends Component {
 								<p>{this.state.selected.bio}</p>
 								<Divider></Divider>
 
-								<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="320" height="320" />
+								<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="320" />
 
 							</Panel>
 						</FlexboxGrid.Item>
