@@ -27,7 +27,7 @@ const slice = createSlice({
       /*
 
       */
-      let jwt = action.payload;
+      let jwt = action.payload.token;
       // console.log(jwt)
       localStorage.setItem('CANDI', jwt);
       const user = jwtDecode(jwt);
