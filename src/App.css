@@ -1,0 +1,126 @@
+.App {
+  text-align: center;
+  overflow: hidden;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.img {
+  object-fit: contain;
+}
+
+.portrait {
+  margin: 1rem;
+}
+
+.gridbox {
+  margin-top: 1rem;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+  object-fit: cover;
+}
+
+.container:hover .image {
+  opacity: 0.6;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+
+.north:hover {
+  opacity: 1;
+  fill: #6a7af7;
+}
+
+.east:hover {
+  opacity: 1;
+  fill: #a1c4d6;
+}
+
+.south:hover {
+  opacity: 1;
+  fill: #dd4dd3;
+}
+
+.west:hover {
+  opacity: 1;
+  fill: #60db59;
+}
+.central:hover {
+  opacity: 1;
+  fill: #dd5065;
+}
+
+.misc:hover {
+  opacity: 1;
+  fill: #dd5065;
+}
+
+
+.toggle-menu {
+  height: 50px;
+  width: 20px;
+  position: absolute;
+  outline: none;
+  z-index: 1;
+  background-color: #a136e9;
+  border-color: rgba(64, 194, 133, 0.693);
+  border-left: 0;
+}
+
+.side-bar {
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  border-right: 3px solid;
+  border-radius: 0;
+  border-color: #a136e9;
+  background-color: #282c34;
+  transition: 0.8s ease;
+}
