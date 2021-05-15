@@ -20,6 +20,7 @@ class Bitsy extends Component {
     socket.emit('actionRequest', 'easterEgg', data ); // new Socket event
     socket.emit('actionRequest', 'create', data); // new Socket event
     socket.emit('locationRequest', 'modify', data ); // new Socket event
+    console.log(socket)
     console.log('hi');
   }
 	render() {
