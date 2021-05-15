@@ -206,7 +206,6 @@ const bored = [
     'https://www.youtube.com/watch?v=AauAyjBxaIQ', // Siblings
     'https://www.youtube.com/watch?v=ihSaGAVHmvw', // Bikie Wars
     'https://www.youtube.com/watch?v=gp1lCem43lg', // Tactical Reload
-    'https://www.youtube.com/watch?v=dh0TkO3sypw', // RIP to the Civic
     'https://www.youtube.com/watch?v=nHc288IPFzk', // Duck Army
     'https://www.youtube.com/watch?v=Z47xwzYGop8', // that's just a stupid boulder [2]
     'https://www.youtube.com/watch?v=GPUgjy-Pn-4', // a villain who unintentionally always does helpful things
@@ -228,7 +227,8 @@ const bored = [
     'https://www.youtube.com/watch?v=9fjk8cNiptU',
     'https://www.youtube.com/watch?v=yUZfkbKFtKA',
     'https://www.youtube.com/watch?v=iP897Z5Nerk', // BINARY search with FLAMENCO dance
-    'https://www.youtube.com/watch?v=fC7oUOUEEi4'
+    'https://www.youtube.com/watch?v=fC7oUOUEEi4',
+    'https://www.youtube.com/watch?v=d1rtJ3DbwIw'
 ]
 
 const loadingMsg = [
@@ -237,22 +237,19 @@ const loadingMsg = [
     'pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ \'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI',
     'Help I\'m a man stuck inside a loading screen let me out!',
     'Oh, remind me to tell you about that thing. You know that thing about that guy with that face. Yeah you know the one.',
-    'Don\'t touch that dial! We\'ll be right back after these messages!',
     'C.A.N.D.I stands for the "Control Actions \'N Distributing Inputs"! \nLook I really just wanted to call it CANDI. It\'s my app and I\'ll call it whatever I want!',
     'Becoming self aware...', 
     'I wanted to be a dating app when I was developed.',
     'If you forget your password you will be asked to answer a security question. It is: "What is a megagame?"',
-    'Fun Fact: Gary Oldman is in fact younger than Gary Numan',
     'Fun Fact: An average person spends 24 years of his life sleeping.',
     'Fun Fact at some point you held the world record for youngest person alive. It\'s all been pretty downhill from there, hasn\'t it?',
-    'Fun Fact: Pope Stephen VI had the corpse of his predecessor dug up to stand trial.',
     'Fun Fact: Most toilets flush in e flat.',
     'Why does the word "fridge" have the letter "d" in it, while "refrigerator" does not?',
     'This message brought to you by: A very weird sense of humor',
     'Joke Time! A blind man walks into a bar.',
     'What\'s orange and sounds like a parrot?\nA carrot.',
     '01001101 01100001 01100100 01100101 00100000 01111001 01101111 01110101 00100000 01101100 01101111 01101111 01101011',
-    'What if the real Dusk City was the firends we made along the way?',
+    'What if the real Dusk City was the friends we made along the way?',
     'What do you call an alligator in a vest?\n An Investigator.',
     'Fun Fact: Sun tzu invented war, and then perfected it so no man could best him in the ring of honor. This was shortly before he invented the Zoo.',
     'Code monkey get up, get coffee. Code monkey go to job.',
@@ -260,7 +257,9 @@ const loadingMsg = [
     'Why are pirates called pirates? \'cause they arrr!',
     'Vampires probably started the garlic myth so their victims would carry around their own seasoning',
     'Fun fact: He is getting closer...',
-    'Hi! We\'ve been trying to reach you about your extended warrenty expiring!'
+    'Ya like Jazz?',
+    'Hi! We\'ve been trying to reach you about your extended warrenty expiring!',
+    `Did you know? There are ${bored.length} videos in the loading screen collection!`
 ]
 
 const rand = (Math.floor(Math.random() * spook.length ));

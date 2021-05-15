@@ -126,7 +126,10 @@ class MyCharacter extends Component {
                 <p>
                   <b>Bio:</b> {playerCharacter.bio}
                 </p>
-                <Panel header="Standing Orders" style={{ width: "95%" }}>
+              </div>
+            </Col>
+            <Col xs={24} sm={24} md={8} className="gridbox">
+            <Panel header="Standing Orders" style={{ width: "95%" }}>
                 <Form
                   fluid
                   formValue={this.state.formValue}
@@ -152,10 +155,6 @@ class MyCharacter extends Component {
                   </FormGroup>
                 </Form>
               </Panel>
-              </div>
-            </Col>
-            <Col xs={24} sm={24} md={8} className="gridbox">
-              <PlaceholderParagraph>Character shit goes here</PlaceholderParagraph>
             </Col>
             <Col xs={24} sm={24} md={8} className="gridbox">
 
