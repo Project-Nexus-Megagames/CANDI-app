@@ -28,9 +28,10 @@ const slice = createSlice({
 
       */
       let jwt = action.payload.token;
-      // console.log(jwt)
-      localStorage.setItem('CANDI', jwt);
+      console.log(jwt)
+      localStorage.setItem('nexusAuth', jwt );
       const user = jwtDecode(jwt);
+      console.log(localStorage)
 
       if (user.roles.some(el => el === "Control")) auth.control = true;
 
@@ -56,7 +57,7 @@ const slice = createSlice({
 		},
 		signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('CANDI');
+      localStorage.removeItem('nexusAuth');
 			auth.user = null;
 			auth.login = false;
 			auth.loading = false;

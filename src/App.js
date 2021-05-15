@@ -32,7 +32,8 @@ import Bitsy from './components/Navigation/Bitsy';
 // React App Component
 initUpdates()
 const App = (props) => {
-  console.log("version 0.1.x [John CORS]");
+  console.log("version 0.1.1 [Token Troubles]");
+  // console.log(localStorage)
   const { loadChar, loadAssets, loadGamestate, login, user, loadLocations } = props;
   useEffect(() => {
     const theme = 'dark'

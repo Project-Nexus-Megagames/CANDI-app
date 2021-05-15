@@ -21,12 +21,10 @@ const Login = props => {
 	
 
 	useEffect(() => {
-		localStorage.removeItem('token');
-		localStorage.removeItem('CANDI');
-		localStorage.removeItem('userToken-CANDI');
-		let token = localStorage.getItem('CANDI');
+		// localStorage.clear();
+		let token = localStorage.getItem('nexusAuth');
 		if (token !== null && login === false) {
-			tokenLogin(token);
+			tokenLogin({ token });
 		} 
 	}, [login, tokenLogin])
 
