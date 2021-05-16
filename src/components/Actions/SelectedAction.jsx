@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
+import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
 import { getUnusuedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
@@ -62,7 +62,7 @@ class SelectedAction extends Component {
 	render() { 
 		const action = this.props.action;
 		return ( 
-			<React.Fragment >
+			<Content style={{overflow: 'auto', height: '100%'}} >
 			<FlexboxGrid >
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
@@ -125,7 +125,7 @@ class SelectedAction extends Component {
 						</TagGroup>
 							<ButtonGroup style={{ marginTop: '5px' }} >
 								<Button appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.openEdit()} >Edit</Button>
-								<Button color='red' appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.deleteAction()}>Delete</Button>
+								<Button color='red' appearance={"ghost"} disabled={(action.status !== 'Draft' && !this.props.user.roles.some(el=> el === 'Control'))} onClick={() => this.deleteAction()}>Delete</Button>
 							</ButtonGroup>
 					</Panel>
 					{this.props.user.roles.some(el=> el === 'Control') && 
@@ -257,7 +257,7 @@ class SelectedAction extends Component {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</React.Fragment>		
+		</Content>		
 		);
 	}
 

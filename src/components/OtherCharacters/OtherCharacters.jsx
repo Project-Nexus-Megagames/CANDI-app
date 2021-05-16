@@ -59,7 +59,7 @@ class OtherCharacters extends Component {
 		return ( 
 			<React.Fragment>
 			<NavigationBar/>
-			<Container style={{overflow: 'auto', height: '94vh'}}>
+			<Container style={{ height: '94vh'}}>
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
 					<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
@@ -94,7 +94,7 @@ class OtherCharacters extends Component {
 				</PanelGroup>
 			</Sidebar>
 			{this.state.selected &&
-				<Content>
+				<Content style={{overflow: 'auto', height: 'auto'}}>
 					<FlexboxGrid >
 						<FlexboxGrid.Item colspan={3} >
 						</FlexboxGrid.Item>

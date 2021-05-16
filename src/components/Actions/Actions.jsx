@@ -59,8 +59,8 @@ class Actions extends Component {
 		return ( 
 			<React.Fragment>
 			<NavigationBar/>
-			<Container>
-			<Sidebar style={{backgroundColor: "black", height: '94vh'}}>
+			<Container style={{ height: '93vh'}}>
+			<Sidebar style={{backgroundColor: "black", }}>
 				<PanelGroup>					
 					<Panel style={{ height: 'calc(8vh)', backgroundColor: "#000101"}}>
 						<Input onChange={(value)=> this.props.setFilter(value)} value={this.props.filter} placeholder="Search"></Input>

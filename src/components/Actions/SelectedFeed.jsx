@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
+import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
 import { getUnusuedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
@@ -60,7 +60,7 @@ class SelectedFeed extends Component {
 	render() { 
 		const action = this.props.action;
 		return ( 
-			<React.Fragment >
+			<Content style={{overflow: 'auto', height: '100%'}} >
 			<FlexboxGrid >
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
@@ -231,7 +231,7 @@ class SelectedFeed extends Component {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</React.Fragment>		
+		</Content>		
 		);
 	}
 
