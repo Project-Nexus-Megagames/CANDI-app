@@ -8,6 +8,7 @@ class ModifyCharacter extends Component {
 		formValue: {
 			characterName: '',
 			email: '',
+			controlEmail: '',
 			worldAnvil: '',
 			tag: '', 
 			control: '',
@@ -31,6 +32,7 @@ class ModifyCharacter extends Component {
 			const formValue = {
 					characterName: char.characterName,
 					email: char.email,
+					controlEmail: char.controlEmail,
 					worldAnvil: char.worldAnvil,
 					tag: char.tag,
 					control: char.control,
@@ -55,6 +57,7 @@ class ModifyCharacter extends Component {
 				const formValue = {
 					characterName: char.characterName,
 					email: char.email,
+					controlEmail: char.controlEmail,
 					worldAnvil: char.worldAnvil,
 					tag: char.tag,
 					control: char.control,
@@ -105,8 +108,8 @@ class ModifyCharacter extends Component {
 								<FormControl name="email" />
 							</FormGroup>
 							<FormGroup>
-								<ControlLabel>worldAnvil</ControlLabel>
-								<FormControl name="worldAnvil" />
+								<ControlLabel>controlEmail</ControlLabel>
+								<FormControl name="controlEmail" />
 							</FormGroup>
 							<FormGroup>
 								<ControlLabel>Control</ControlLabel>
@@ -144,6 +147,10 @@ class ModifyCharacter extends Component {
 							<FormGroup>
 									<ControlLabel>effort</ControlLabel>
 									<FormControl name="effort" accepter={InputNumber} />
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel>worldAnvil</ControlLabel>
+								<FormControl name="worldAnvil" />
 							</FormGroup>
 							</FlexboxGrid.Item>
 
