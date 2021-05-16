@@ -33,14 +33,14 @@ const Navigation = props => {
 	}
 
 	const handleLogOut = async () => {
-		this.props.logOut()
-		this.props.history.push('/login');
+		props.logOut()
+		// history.push('/login');
 	}
 
   return (
 		<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75', height: '6vh' }} align="middle">
 			<FlexboxGrid.Item justify="start" colspan={2}>
-					<IconButton style={{ height: '100%'}} icon={<Icon icon="arrow-circle-left"/>} onClick={handleLogOut()} appearance="subtle" size="lg" >Back</IconButton>			
+					<IconButton style={{ height: '100%'}} icon={<Icon icon="arrow-circle-left"/>} onClick={() => handleLogOut()} appearance="subtle" size="lg" >Back</IconButton>			
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={20}>
 				<div>
