@@ -57,6 +57,7 @@ class ModifyCharacter extends Component {
 					email: char.email,
 					worldAnvil: char.worldAnvil,
 					tag: char.tag,
+					control: char.control,
 					timeZone: char.timeZone,
 					playerName: char.playerName,
 					bio: char.bio,
