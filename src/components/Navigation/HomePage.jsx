@@ -100,7 +100,7 @@ class HomePage extends Component {
 				<ImgPanel width={620} height={250} img={city} to='map' title='Map'  body='View Dusk City'/>
 				</Col>
 				<Col>
-					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
+					<ImgPanel width={300} height={350} img={action} to='404' title='Actions/Feeding [Disabled]' body='Creating and editing Actions'/>
 					<ImgPanel width={300} height={350} img={feed} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 		</Row>
