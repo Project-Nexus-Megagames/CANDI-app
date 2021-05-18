@@ -113,7 +113,7 @@
   position: absolute;
   outline: none;
   z-index: 1;
-  background-color: #a136e9;
+  background-color: #d4af37;
   border-color: rgba(64, 194, 133, 0.693);
   border-left: 0;
 }
@@ -124,7 +124,7 @@
   flex-direction: column;
   border-right: 3px solid;
   border-radius: 0;
-  border-color: #a136e9;
-  background-color: #282c34;
+  border-color: #d4af37;
+  background-color: #22162b;
   transition: 0.8s ease;
 }

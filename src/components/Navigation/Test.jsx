@@ -45,56 +45,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
 	}
 
   const handleIt = (value) => {
-    if (value.scale > 2.1) {
-      if (value.translation.x > 600) value.translation.x = 600; // Left
-      if (value.translation.x < -1200) value.translation.x = -1200; //Right
-      if (value.translation.y > -400) value.translation.y = -400; // Up
-      if (value.translation.y < -2200) value.translation.y = -2200; // Down
-    }
-    else if(value.scale <= 2.1 && value.scale > 1.9) {
-      // console.log('4');
-      if (value.translation.x > 600) value.translation.x = 600; // Left
-      if (value.translation.x < -900) value.translation.x = -900; //Right
-      if (value.translation.y > -400) value.translation.y = -400; // Up
-      if (value.translation.y < -2200) value.translation.y = -2200; // Down
-    }
-    else if(value.scale <= 1.9 && value.scale > 1.7) {
-      // console.log('3');
-      if (value.translation.x > 600) value.translation.x = 600; // Left
-      if (value.translation.x < -600) value.translation.x = -600; //Right
-      if (value.translation.y > -400) value.translation.y = -400; // Up
-      if (value.translation.y < -1700) value.translation.y = -1700; // Down
-    }
-    else if (value.scale <= 1.7 && value.scale > 1.4) {
-      // console.log('2')
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < -250) value.translation.x = -250;
-      if (value.translation.y > -90) value.translation.y = -90;
-      if (value.translation.y < -1300) value.translation.y = -1300;
-    }
-    else if (value.scale <= 1.4 && value.scale > 1.15) {
-      //console.log('1')
-      //console.log(value.translation)
-      // console.log(value.scale)
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 90) value.translation.x = 90;
-      if (value.translation.y > -250) value.translation.y = -250;
-      if (value.translation.y < -900) value.translation.y = -900;
-    }
-    else if (value.scale <= 1.15 && value.scale > 1) {
-      // console.log('0')
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 100) value.translation.x = 100;
-      if (value.translation.y > -250) value.translation.y = -250;
-      if (value.translation.y < -900) value.translation.y = -900;
-    }
-    else { // if scale is 1.15
-      //console.log('max')
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 290) value.translation.x = 290;
-      if (value.translation.y > -250) value.translation.y = -250;
-      if (value.translation.y < -650) value.translation.y = -650;
-    }
+
     setValue(value)
   }
 
@@ -129,7 +80,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
 	return ( 
     <React.Fragment>
       	<NavigationBar/>
-      <Container style={{ height: '94vh', width: '100%', position: 'relative', textAlign: 'center', backgroundColor: '#29525f'}}>
+      <Container style={{ height: '94vh', width: '100%', position: 'relative', textAlign: 'center', backgroundColor: '#5d000e'}}>
       <Sidebar width={xPosition < 0 ? width + xPosition + 15 : width + xPosition} style={{transition: '0.8s ease'}}>
       <div
         className="side-bar"
