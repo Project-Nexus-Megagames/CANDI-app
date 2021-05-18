@@ -8,11 +8,12 @@ import Loading from './loading';
 // import aang from '../Images/aang.jpg'
 import city from '../Images/city.png'
 import action from '../Images/action.jpg'
- import feed from '../Images/feed.png'
+import feed from '../Images/feed.png'
 import mycharacter from '../Images/MyCharacter.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
 import { signOut } from '../../redux/entities/auth';
+import socket from '../../socket';
 
 class HomePage extends Component {
 	constructor(props) {
@@ -125,6 +126,7 @@ class HomePage extends Component {
 
 	handleLogOut = async () => {
 		this.props.logOut();
+		socket.emit('logout');
 		this.props.history.push('/login');
 	}
 	
@@ -155,7 +157,7 @@ const mapStateToProps = (state) => ({
 	charactersLoaded: state.characters.loaded,
 	assetsLoaded: state.assets.loaded,
 	locationsLoaded: state.locations.loaded,
-  myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({
