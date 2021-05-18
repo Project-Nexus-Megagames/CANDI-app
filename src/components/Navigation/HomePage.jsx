@@ -80,6 +80,8 @@ class HomePage extends Component {
 									}}
 								>
 									<Dropdown.Item>Version: 1.01</Dropdown.Item>
+									<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
+									<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
 								</Dropdown>					
 							</FlexboxGrid.Item>
