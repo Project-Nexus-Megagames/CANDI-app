@@ -10,9 +10,9 @@ socket.onAny((event, ...args) => {
   console.log(event, args);
 });
 
-export function initConnection(user) {
+export function initConnection(user, character, version) {
   console.log('Socket Connecting....')
-  socket.auth = { username: user.username }
+  socket.auth = { username: user.username, character: character ? character.characterName : "Unassigned" , version }
     
   console.log(socket);
   socket.connect();
