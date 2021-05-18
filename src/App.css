@@ -65,6 +65,10 @@
   object-fit: cover;
 }
 
+.disabled {
+  filter: grayscale(100%);
+}
+
 .container:hover .image {
   opacity: 0.6;
 }
