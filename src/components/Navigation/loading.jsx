@@ -228,7 +228,8 @@ const bored = [
     'https://www.youtube.com/watch?v=yUZfkbKFtKA',
     'https://www.youtube.com/watch?v=iP897Z5Nerk', // BINARY search with FLAMENCO dance
     'https://www.youtube.com/watch?v=fC7oUOUEEi4',
-    'https://www.youtube.com/watch?v=d1rtJ3DbwIw'
+    'https://www.youtube.com/watch?v=d1rtJ3DbwIw',
+    'https://www.youtube.com/watch?v=EwAajOtfNT8' // two dudes in a hot tub
 ]
 
 const loadingMsg = [

@@ -101,7 +101,7 @@ class Actions extends Component {
 
 	filteredAssets = () => {
 		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
-		assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth'));
+		assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth' || el.type === 'Power'));
 		return assets;
 	}
 
