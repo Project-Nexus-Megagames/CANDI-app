@@ -80,7 +80,7 @@ class HomePage extends Component {
 										return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
 									}}
 								>
-									<Dropdown.Item>Version: 1.01</Dropdown.Item>
+									<Dropdown.Item>Version: 1.02</Dropdown.Item>
 									<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
 									<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
@@ -103,7 +103,7 @@ class HomePage extends Component {
 				<ImgPanel width={620} height={250} img={city} to='map' title='Map'  body='View Dusk City'/>
 				</Col>
 				<Col>
-					<ImgPanel disabled width={300} height={350} img={action} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
+					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
 					<ImgPanel width={300} height={350} img={feed} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 		</Row>

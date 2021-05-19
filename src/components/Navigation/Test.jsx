@@ -105,7 +105,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
 		</Sidebar>
         <Content>
           <div style={{ width: '100%', height: '100%' }}> 
-            <MapInteractionCSS minScale={1} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+            <MapInteractionCSS minScale={1} maxScale={2.7} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
               <Map2 mouseOverEffect={handleHover} handleClick={clickHandlerer} locations={locations} characters={characters} />          
             </MapInteractionCSS>       
           </div>
