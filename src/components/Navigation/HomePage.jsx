@@ -9,7 +9,7 @@ import Loading from './loading';
 import city from '../Images/city.png'
 import action from '../Images/action.jpg'
 import feed from '../Images/feed.png'
-import mycharacter from '../Images/MyCharacter.jpg'
+// import mycharacter from '../Images/MyCharacter.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
 import { signOut } from '../../redux/entities/auth';
@@ -80,7 +80,7 @@ class HomePage extends Component {
 										return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
 									}}
 								>
-									<Dropdown.Item>Version: 1.02</Dropdown.Item>
+									<Dropdown.Item>Version: {this.props.version}</Dropdown.Item>
 									<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
 									<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
@@ -157,6 +157,7 @@ const mapStateToProps = (state) => ({
 	charactersLoaded: state.characters.loaded,
 	assetsLoaded: state.assets.loaded,
 	locationsLoaded: state.locations.loaded,
+	version: state.gamestate.version,
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });
 
