@@ -132,7 +132,7 @@ class SelectedFeed extends Component {
 				<Modal.Body>
 					<b>What are you doing with this feed?</b>
 					<form>
-						<textarea rows='6' value={action.intent} style={textStyle} onChange={(event)=> this.setState({ effort: event.target.value })}></textarea>							
+						<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({ intent: event.target.value })}></textarea>							
 						<br></br>				
 						<FlexboxGrid style={{padding: '5px', textAlign: 'left', width: '100%'}} align="middle">
 							<FlexboxGrid.Item  align="middle" colspan={10}>Overfeeding Level
