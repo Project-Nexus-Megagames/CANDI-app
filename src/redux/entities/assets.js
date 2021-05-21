@@ -43,6 +43,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       const index = assets.list.findIndex(el => el._id === action.payload._id);
       assets.list[index] = action.payload;
+      assets.loading = false;
     },
     assetLent: (assets, action) => {
       console.log(`${action.type} Dispatched`);

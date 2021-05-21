@@ -8,7 +8,7 @@ import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
 
-const MapContainer = ({ locations, login, loading, characters }) => {
+const MapContainer = ({ locations, login, loading, characters, user }) => {
 	// const [scale, setScale] = React.useState(1);
   const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 100, y: -470 }});
 	const [territory, setTerritory] = React.useState({ name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0});
@@ -96,6 +96,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
           style={specialStyle()}
         ></button>
 			<h3>{territory.name}</h3>
+      {user.roles.some(el=> el === 'Control') && <h5 style={{backgroundColor: "#61342e", }} > Territory Value: {territory.influence} </h5>}
       <Divider>{territory.borough} - {territory.code}</Divider>
       <p><h5>Owned by: {territory.currentOwner}</h5></p>
       
@@ -117,13 +118,15 @@ const MapContainer = ({ locations, login, loading, characters }) => {
                 <FlexboxGridItem colspan={12}>
                   Borough: {territory.borough}
                 </FlexboxGridItem>
-                {/*<FlexboxGridItem colspan={12}>
-                  Influence: {territory.influence}
-      </FlexboxGridItem>*/}
+                <p style={{ fontSize: '1.2em', fontWeight: '300', }}>{territory.description}</p>
+      {user.roles.some(el=> el === 'Control') && <FlexboxGridItem colspan={12}>
+        <h3 style={{backgroundColor: "#61342e", }} >Influence: {territory.influence}</h3>
+                  
+      </FlexboxGridItem>}
               </FlexboxGrid>
           </Modal.Header>
             <Modal.Body>
-              {territory.description}
+
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={() => setBoolean(false)} appearance="subtle">
@@ -143,6 +146,7 @@ const mapStateToProps = (state) => ({
 	characters: state.characters.list,
   login: state.auth.login,
 	loading: state.auth.loading,
+  user: state.auth.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

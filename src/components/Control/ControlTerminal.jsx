@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader, Table } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader, Table, Toggle } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -40,6 +40,7 @@ class ControlTerminal extends Component {
 		name: '',
 		description: '',
 		uses: 0, 
+		used: false,
 		loading: false,
 
 		tableData: []
@@ -330,7 +331,7 @@ class ControlTerminal extends Component {
 	handleChage = (event) => {
 		if (event) {
 			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses })			
+			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses, used: selected.status.used })			
 		}
 		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
@@ -341,7 +342,8 @@ class ControlTerminal extends Component {
 			id: this.state.selected,
 			name: this.state.name,
 			description: this.state.description,
-			uses: this.state.uses
+			uses: this.state.uses,
+			used: this.state.used	
 		}
 		socket.emit('assetRequest', 'modify',  data ); // new Socket event	
 		this.setState({ assModal: false, selected: null, });
@@ -356,6 +358,8 @@ class ControlTerminal extends Component {
 					Description:
 					<textarea rows='4' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
 					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
+					<Divider>Statuses</Divider>
+					<Toggle checked={this.state.used} onChange={()=> this.setState({ used: !this.state.used })} checkedChildren="Used" unCheckedChildren="Un-used"/>
 				</Panel>			
 			)			
 		}
