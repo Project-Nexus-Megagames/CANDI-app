@@ -73,18 +73,23 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/assets`;
 
 // Selector
-export const getMyAssets = createSelector(
+export const getMyUsedAssets = createSelector(
   state => state.assets.list,
-  state => state.auth.user,
-  (assets, user) => assets.find(
-    char => char.username === user.username
+  state => state.characters.list.find(
+    char => char.username === state.auth.user.username
+    ),
+  (assets, char) => assets.filter(
+    asset => (asset.owner === char.characterName || asset.currentHolder === char.characterName) && asset.status.used === true
   )
 );
 
-export const getUnusuedAssets = createSelector(
+export const getMyAssets = createSelector(
   state => state.assets.list,
-  (assets) => assets.filter(
-    el => el.status.used === true
+  state => state.characters.list.find(
+    char => char.username === state.auth.user.username
+    ),
+  (assets, char) => assets.filter(
+    asset => asset.owner === char.characterName || asset.currentHolder === char.characterName
   )
 );
 

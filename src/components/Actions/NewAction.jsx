@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Slider, InputPicker, FlexboxGrid, InputNumber, Loader } from 'rsuite';
+import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -92,9 +93,9 @@ class NewAction extends Component {
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources
-								<InputPicker placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset1: event})}/>
-								<InputPicker placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset2: event})}/>
-								<InputPicker placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} onChange={(event)=> this.setState({asset3: event})}/>
+								<InputPicker placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset1: event})}/>
+								<InputPicker placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset2: event})}/>
+								<InputPicker placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset3: event})}/>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 					</form>
@@ -116,6 +117,14 @@ class NewAction extends Component {
 		else return true;
 	}
 
+	formattedUsedAssets = () => {
+		let assets = [];
+		for (const asset of this.props.usedAssets) {
+			assets.push(asset.name)
+		}
+		return assets;
+	}
+
 }
 
 const textStyle = {
@@ -132,6 +141,8 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	actions: state.actions.list,
 	actionLoading: state.actions.loading,
+	usedAssets: getMyUsedAssets(state),
+	getMyAssets: getMyAssets(state),
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 

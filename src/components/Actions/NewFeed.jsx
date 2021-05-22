@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, FlexboxGrid, InputPicker, InputNumber, Slider } from 'rsuite';
+import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -25,6 +26,14 @@ const NewFeed = props => {
 			// Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
 			// this.setState({ loading: false });
 		}
+	}
+
+	const formattedUsedAssets = () => {
+		let assets = [];
+		for (const asset of props.usedAssets) {
+			assets.push(asset.name)
+		}
+		return assets;
 	}
 	
 
@@ -52,7 +61,7 @@ const NewFeed = props => {
 				</FlexboxGrid.Item>	
 				<FlexboxGrid.Item colspan={1} />
 				<FlexboxGrid.Item  align="middle" colspan={10}>Bond/Territory
-					<InputPicker  block style={{ width: '75%' }} placeholder="Slot 1" labelKey='name' valueKey='name' data={props.assets} onChange={(event)=> setAsset(event)}/>
+					<InputPicker  block style={{ width: '75%' }} placeholder="Slot 1" labelKey='name' valueKey='name' data={props.getMyAssets.filter(el => (el.type === 'Bond' || el.type === 'Territory'))} disabledItemValues={formattedUsedAssets()} onChange={(event)=> setAsset(event)}/>
 				</FlexboxGrid.Item>
 			</FlexboxGrid>
 		</form>
@@ -81,6 +90,8 @@ const mapStateToProps = (state) => ({
   myCharacter: state.auth.user ? getMyCharacter(state): undefined,	
 	loading: state.auth.loading,
 	gamestate: state.gamestate,
+	usedAssets: getMyUsedAssets(state),
+	getMyAssets: getMyAssets(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

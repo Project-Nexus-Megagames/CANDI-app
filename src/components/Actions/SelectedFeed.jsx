@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
-import { getUnusuedAssets } from '../../redux/entities/assets';
+import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
+
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -23,24 +24,7 @@ class SelectedFeed extends Component {
 		usedAssets: []
 	}
 
-	componentDidMount = () => {
-		let array2 = [];
-			for (const el of this.props.unusedAssets) {
-				array2.push(el.name)
-			}
-
-		this.setState({ usedAssets: array2 }); 
-	}
-
 	componentDidUpdate = (prevProps) => {
-		if (this.props.assetsRedux !== prevProps.assetsRedux) {
-			const array = this.props.assetsRedux.filter(el => el.status.used === true);
-			let array2 = [];
-			for (const el of array) {
-				array2.push(el.name)
-			}
-			this.setState({ usedAssets: array2 });		
-		}
 		if (this.props.action !== prevProps.action) {
 			this.setState({ 	
 				asset1: this.props.action.asset1,
@@ -148,7 +132,7 @@ class SelectedFeed extends Component {
 							</FlexboxGrid.Item>	
 							<FlexboxGrid.Item colspan={1} />
 							<FlexboxGrid.Item  align="middle" colspan={10}>Bond/Territory
-								<InputPicker  block style={{ width: '75%' }} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} onChange={(event)=> this.setState({ asset1: event})}/>
+								<InputPicker  style={{ width: '50%' }} placeholder="Slot 1" defaultValue={this.state.asset1} labelKey='name' valueKey='name' data={this.props.getMyAssets.filter(el => (el.type === 'Bond' || el.type === 'Territory'))} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ asset1: event})}/>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 				</form>
@@ -311,6 +295,14 @@ class SelectedFeed extends Component {
 			<Toggle onChange={()=> this.setState({ assetBoolean: !this.state.assetBoolean })} checkedChildren="Asset" unCheckedChildren="Trait"></Toggle>			
 		)
 	};
+
+	formattedUsedAssets = () => {
+		let assets = [];
+		for (const asset of this.props.usedAssets) {
+			assets.push(asset.name)
+		}
+		return assets;
+	}
 }
 
 const slimText = {
@@ -355,7 +347,8 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	actions: state.actions.list,
 	assetsRedux: state.assets.list,
-	unusedAssets: getUnusuedAssets(state),
+	usedAssets: getMyUsedAssets(state),
+	getMyAssets: getMyAssets(state),
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 

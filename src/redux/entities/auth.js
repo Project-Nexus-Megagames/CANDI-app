@@ -9,6 +9,7 @@ const slice = createSlice({
   name: "auth",
   initialState: {
     user: undefined,
+    character: undefined,
     login: false,
     loading: false,
     lastLogin: null,
