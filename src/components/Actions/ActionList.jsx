@@ -57,7 +57,7 @@ class ActionList extends Component {
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-										<div style={titleStyle}>{action.description}</div>
+										<div style={titleStyle}>{action.intent}</div>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
