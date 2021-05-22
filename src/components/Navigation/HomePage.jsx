@@ -91,6 +91,7 @@ class HomePage extends Component {
 								<p>Round: {this.props.gamestate.round} </p>	
 								{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
 								{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+								{(hours <= 0 && minutes > 0 && days <= 0) && <p>Time Left: {minutes} Minutes</p>}	
 								{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
 							</div>									
 						</FlexboxGrid.Item>
