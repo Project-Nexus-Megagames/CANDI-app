@@ -134,6 +134,10 @@ const pickerData = [
 		value: 'Bond'
 	},
 	{
+		label: 'Territory',
+		value: 'Territory'
+	},
+	{
 		label: 'Power',
 		value: 'Power'
 	}

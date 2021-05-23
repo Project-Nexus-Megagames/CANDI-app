@@ -233,10 +233,10 @@ class MyCharacter extends Component {
                 </div>
               ))}
 
-              <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
-                Bonds
+              <Divider style={{ marginBottom: "0px" }}>
+                Bonds/Territories
               </Divider>
-              {playerCharacter.assets.filter(el => el.type === 'Bond' && el.status.hidden !== true).map((bond, index) => (
+              {playerCharacter.assets.filter(el => (el.type === 'Bond' || el.type === 'Territory') && el.status.hidden !== true).map((bond, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {bond.uses > 0 && (
                     <React.Fragment>
@@ -256,7 +256,7 @@ class MyCharacter extends Component {
                 </div>
               ))}
 
-              <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>Powers</Divider>
+              <Divider style={{ marginBottom: "0px" }}>Powers</Divider>
               {playerCharacter.assets.filter(el => el.type === 'Power' && el.status.hidden !== true).map((power, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {power.uses >= 0 && ( // change this back to > 0
@@ -277,7 +277,7 @@ class MyCharacter extends Component {
                 </div>
               ))}
 
-             <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
+             <Divider style={{ marginBottom: "0px" }}>
                 Borrowed Assets
               </Divider>
               {playerCharacter.lentAssets.map((borrowed, index) => (

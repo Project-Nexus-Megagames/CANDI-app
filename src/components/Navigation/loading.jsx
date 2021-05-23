@@ -231,7 +231,7 @@ const bored = [
     'https://www.youtube.com/watch?v=EwAajOtfNT8', // two dudes in a hot tub
     'https://www.youtube.com/watch?v=XKqqqO83yp0', // Guy blow dries his tongue then eats a cracker...
     'https://www.youtube.com/watch?v=GfCqnHgXwBo',  // How to troll a parade
-    'https://www.youtube.com/watch?v=TLV30GuX-ug'
+    'https://www.youtube.com/watch?v=TLV30GuX-ug',
 
 ]
 

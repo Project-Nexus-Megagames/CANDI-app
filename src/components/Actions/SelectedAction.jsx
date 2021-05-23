@@ -109,7 +109,7 @@ class SelectedAction extends Component {
 						</TagGroup>
 							<ButtonGroup style={{ marginTop: '5px' }} >
 								<Button appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.openEdit()} >Edit</Button>
-								<Button color='red' appearance={"ghost"} disabled={(action.status !== 'Draft' && !this.props.user.roles.some(el=> el === 'Control'))} onClick={() => this.deleteAction()}>Delete</Button>
+								<Button color='red' appearance={"ghost"} disabled={(action.status !== 'Draft')} onClick={() => this.deleteAction()}>Delete</Button>
 							</ButtonGroup>
 					</Panel>
 					{this.props.user.roles.some(el=> el === 'Control') && 

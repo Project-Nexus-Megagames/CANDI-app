@@ -169,7 +169,7 @@ class ControlTerminal extends Component {
 				</div>
 
 				<Panel style={{height: '46vh'}}>
-					<Table virtualized data={this.state.tableData} >
+					<Table  virtualized data={this.state.tableData} >
 
 						<Column flexGrow={2}>
 						<HeaderCell>Character</HeaderCell>
