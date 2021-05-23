@@ -134,7 +134,7 @@ class SelectedProject extends Component {
 	}
 
 	deleteProject = async () => {
-		socket.emit('actionRequest', 'data', { id: this.props.project._id}); // new Socket event		
+		socket.emit('actionRequest', 'delete', { id: this.props.project._id}); // new Socket event		
 		this.props.handleSelect(null);
 	}
 

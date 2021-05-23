@@ -41,6 +41,7 @@ class OtherCharacters extends Component {
 
 	closeModal = () => {
 		this.setState({ edit: false, add: false, memory: false });
+		this.filter('')
 	}
 
 	componentDidUpdate(prevProps) {
