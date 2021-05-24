@@ -94,7 +94,15 @@ class SelectedAction extends Component {
 							<p>
 							{action.result}	
 						</p>
+						</Panel>		
+						{action.mechanicalEffect !== 'No Mechanical Effect Recorded Yet...' && action.mechanicalEffect !== '' && <div>
+							<Divider>Mechanical Effect</Divider>
+							<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
+							<p>
+							{action.mechanicalEffect}	
+						</p>		
 						</Panel>						
+						</div>}				
 					</React.Fragment>}
 
 				</FlexboxGrid.Item>

@@ -238,10 +238,6 @@ class ControlTerminal extends Component {
 				</p> 
 				<textarea rows='4' value={this.state.projDescription} style={textStyle} onChange={(event)=> this.setState({projDescription: event.target.value})}></textarea>	
 				<p>
-					Image
-				</p>
-				<textarea value={this.state.image} style={textStyle} onChange={(event)=> this.setState({ image: event.target.value })}></textarea>	
-				<p>
 					Progress
 				</p>
 				<InputNumber value={this.state.progress} onChange={(event)=> this.setState({progress: event})}></InputNumber>
@@ -404,9 +400,10 @@ class ControlTerminal extends Component {
 			players: this.state.players,
 			creator: this.props.playerCharacter.characterName,
 			round: this.props.gamestate.round, 
-			image: this.state.image,
+			status: 'Published',
 		}
 		socket.emit('actionRequest', 'create', data ); // new Socket event
+		this.setState({ projectModal: false });
 	}
 
 	isControl () {

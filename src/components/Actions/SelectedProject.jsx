@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { TagPicker, Panel, FlexboxGrid, Content,  ButtonGroup, Button, Modal, InputNumber, Progress, List } from 'rsuite';
 import socket from '../../socket';
 
@@ -41,7 +42,8 @@ class SelectedProject extends Component {
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={16} >
-					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#274472", position: 'relative', display: 'inline-block', whiteSpace: 'pre-line'}}>
+				<Panel style={{backgroundColor: "#15181e", textAlign: 'center', fontSize: '4em'}} shaded bordered >Type: {project.type}</Panel>	
+					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#274472", whiteSpace: 'pre-line'}}>
 						<p style={slimText}>
 							Project Name
 						</p>
@@ -58,9 +60,6 @@ class SelectedProject extends Component {
 							Progress
 						</p>
 					<Progress.Line percent={project.progress} showInfo={true}>  </Progress.Line>
-					<div style={{ display: 'flex',  justifyContent: 'center',  alignItems: 'center', cursor: 'pointer',  }}>
-						<img style={{ display: 'flex',  justifyContent: 'center',  alignItems: 'center',}} src={project.image} alt='Unable to load img' width="60%" />
-					</div>
 					
 					</Panel>
 					</FlexboxGrid.Item>
@@ -96,17 +95,13 @@ class SelectedProject extends Component {
 				</p> 
 				<textarea rows='4' value={this.state.projDescription} style={textStyle} onChange={(event)=> this.setState({projDescription: event.target.value})}></textarea>	
 				<p>
-					Image
-				</p>
-				<textarea value={this.state.image} style={textStyle} onChange={(event)=> this.setState({ image: event.target.value })}></textarea>	
-				<p>
 					Progress
 				</p>
 				<InputNumber value={this.state.progress} onChange={(event)=> this.setState({progress: event})}></InputNumber>
 				<p>
 					Players
 				</p>
-					<TagPicker groupBy="tag" defaultValue={this.state.players} data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
+					<TagPicker defaultValue={this.state.players} data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
 					<Modal.Footer>
 			<Button onClick={() => this.editProject()} appearance="primary">
 				Submit
@@ -126,11 +121,12 @@ class SelectedProject extends Component {
 			intent: this.state.projDescription,
 			progress: this.state.progress,
 			players: this.state.players,
-			image: this.state.image,
 			status: 'Published',
+			playerBoolean: true,
 			id: this.props.project._id
 		}
 		socket.emit('actionRequest', 'update',  data2 ); // new Socket event		
+		this.setState({ projectModal: false });
 	}
 
 	deleteProject = async () => {
@@ -158,4 +154,11 @@ const textStyle = {
 	scrollbarWidth: 'none',
 }
 
-export default SelectedProject;
+const mapStateToProps = (state) => ({
+	characters: state.characters.list,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedProject);
