@@ -78,32 +78,26 @@
 }
 
 .north:hover {
-  opacity: 1;
-  fill: #6a7af7;
+  opacity: .5;
 }
 
 .east:hover {
-  opacity: 1;
-  fill: #a1c4d6;
+  opacity: .5;
 }
 
 .south:hover {
-  opacity: 1;
-  fill: #dd4dd3;
+  opacity: .5;
 }
 
 .west:hover {
-  opacity: 1;
-  fill: #60db59;
+  opacity: .5;
 }
 .central:hover {
-  opacity: 1;
-  fill: #dd5065;
+  opacity: .5;
 }
 
 .misc:hover {
-  opacity: 1;
-  fill: #dd5065;
+  opacity: .5;
 }
 
 

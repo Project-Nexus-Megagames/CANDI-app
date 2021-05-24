@@ -7,8 +7,9 @@ import Map2 from './Map2';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
+import { getMyCharacter } from '../../redux/entities/characters';
 
-const MapContainer = ({ locations, login, loading, characters, user }) => {
+const MapContainer = ({ locations, login, loading, characters, user, myCharacter }) => {
 	// const [scale, setScale] = React.useState(1);
   const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 100, y: -470 }});
 	const [territory, setTerritory] = React.useState({ name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0});
@@ -96,7 +97,7 @@ const MapContainer = ({ locations, login, loading, characters, user }) => {
           style={specialStyle()}
         ></button>
 			<h3>{territory.name}</h3>
-      {user.roles.some(el=> el === 'Control') && <h5 style={{backgroundColor: "#61342e", }} > Territory Value: {territory.influence} </h5>}
+      {(user.roles.some(el=> el === 'Control') || myCharacter.characterName === territory.currentOwner) && <h5 style={{backgroundColor: "#61342e", }} > Territory Value: {territory.influence} </h5>}
       <Divider>{territory.borough} - {territory.code}</Divider>
       <p><h5>Owned by: {territory.currentOwner}</h5></p>
       
@@ -147,6 +148,7 @@ const mapStateToProps = (state) => ({
   login: state.auth.login,
 	loading: state.auth.loading,
   user: state.auth.user,
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({});
