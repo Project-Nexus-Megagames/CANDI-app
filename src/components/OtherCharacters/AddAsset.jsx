@@ -42,6 +42,7 @@ class AddAsset extends Component {
 				description: this.state.formValue.description,	
 				type: this.state.formValue.type,
 				uses: this.state.formValue.uses,
+				owner: this.props.character.characterName,
 				status: {
 					hidden: this.state.hidden							
 				}
