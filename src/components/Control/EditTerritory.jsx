@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, SelectPicker } from 'rsuite';
+import { ControlLabel, Form, FormControl, FormGroup, Modal, Button, SelectPicker } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
@@ -16,6 +16,19 @@ class EditTerritory extends Component {
 		selected: false,
 		loading: false
 	}
+
+	componentDidMount = () => {
+		const stateReplace = JSON.parse(localStorage.getItem('editTerritoryState'));
+		console.dir(stateReplace);
+		if (stateReplace) this.setState(stateReplace); 
+	}
+
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.state !== prevState) {
+			localStorage.setItem('editTerritoryState', JSON.stringify(this.state));
+			console.log(localStorage);
+		};
+	};
 		
 	handleSubmit = async () => {
 		// 1) make a new action
@@ -54,11 +67,11 @@ class EditTerritory extends Component {
 			show={this.props.show} 
 			onHide={() => this.props.closeModal()}>
 				<Modal.Header>
-					<Modal.Title>Modify Character "{this.state.formValue.characterName}"</Modal.Title>
+					<Modal.Title>Modify Territory "{this.state.formValue.characterName}"</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					{!this.state.selected && 
-						<SelectPicker placeholder="Select a Territory" onChange={(event) => this.handleSelect(event)} block valueKey='code' labelKey='code' data={this.props.locations}/>					
+						<SelectPicker placeholder="Select a Territory" onChange={(event) => this.handleSelect(event)} block valueKey='code' labelKey='name' data={this.props.locations}/>					
 					}
 					{this.state.selected && <Form layout="vertical" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
 

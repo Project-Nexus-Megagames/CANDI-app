@@ -25,8 +25,17 @@ class SelectedAction extends Component {
 		usedAssets: []
 	}
 
+	componentDidMount = () => {
+		// localStorage.removeItem('newActionState');
+		const stateReplace = JSON.parse(localStorage.getItem('selectedActionState'));
+		console.dir(stateReplace);
+		if (stateReplace) this.setState(stateReplace); 
+	}
 
-	componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.state !== prevState) {
+			localStorage.setItem('selectedActionState', JSON.stringify(this.state));
+		};
 		if (this.props.action !== prevProps.action) {
 			this.setState({ 	
 				asset1: this.props.action.asset1,

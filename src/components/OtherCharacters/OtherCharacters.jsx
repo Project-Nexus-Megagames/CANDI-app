@@ -168,13 +168,13 @@ class OtherCharacters extends Component {
 				<ModifyCharacter
 					show={this.state.edit}
 					selected={this.state.selected}
-					closeModal={this.closeModal}
+					closeModal={()=> this.setState({ edit: false })}
 					// player={this.props.player????}
 				/>
 				<AddAsset 
 					show={this.state.add}
 					character={this.state.selected}
-					closeModal={this.closeModal}
+					closeModal={() => this.setState({ add: false })}
 				/>
 			</Content>		
 			}

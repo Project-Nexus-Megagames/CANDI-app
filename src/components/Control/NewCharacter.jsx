@@ -25,7 +25,18 @@ class NewCharacter extends Component {
 		},
 		loading: false
 	}
-		
+
+	componentDidMount = () => {
+		// localStorage.removeItem('newActionState');
+		const stateReplace = JSON.parse(localStorage.getItem('newCharacterState'));
+		if (stateReplace) this.setState(stateReplace); 
+	}
+
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.state !== prevState) {
+			localStorage.setItem('newCharacterState', JSON.stringify(this.state));
+		};
+	}
 
 	handleSubmit = async () => {
 		// 1) make a new action
@@ -124,29 +135,6 @@ class NewCharacter extends Component {
 		);
 	}
 }
-
-// const pickerData = [
-// 	{
-// 		label: 'Poor',
-// 		value: 'Poor'
-// 	},
-// 	{
-// 		label: 'Laborer',
-// 		value: 'Laborer'
-// 	},
-// 	{
-// 		label: 'Comfortable',
-// 		value: 'Comfortable'
-// 	},
-// 	{
-// 		label: 'Affluent',
-// 		value: 'Affluent'
-// 	},
-// 	{
-// 		label: 'Luxury',
-// 		value: 'Luxury'
-// 	}
-// ]
 
 const mapStateToProps = (state) => ({
 	characters: state.characters.list,

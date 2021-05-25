@@ -13,21 +13,27 @@ class AddAsset extends Component {
 		hidden: true,
 		id: '',
 		loading: false
-	 }
+	}
 		
-	 componentDidMount = () => {
-		 const char = this.props.character;
-		 this.setState({ id: char._id });
-	 }
-	 
-	 componentDidUpdate(prevProps) {
+	componentDidMount = () => {
+		const char = this.props.character;
+		this.setState({ id: char._id });
+
+		const stateReplace = JSON.parse(localStorage.getItem('addAssetState'));
+		if (stateReplace) this.setState(stateReplace); 
+	}
+	
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state !== prevState) {
+			localStorage.setItem('addAssetState', JSON.stringify(this.state));
+		};
 		// Typical usage (don't forget to compare props):
 		if (this.props.characters !== prevProps.characters) {
 			this.setState({ id: this.props.character._id });
 		}
 	}
 
-	 handleSubmit = async () => {
+	handleSubmit = async () => {
 		this.setState({ loading: true });
 		// 1) make a new asset
 		const formValue = {

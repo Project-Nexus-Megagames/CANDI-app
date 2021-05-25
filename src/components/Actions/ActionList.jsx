@@ -67,7 +67,7 @@ class ActionList extends Component {
 
 				))}		
 			</Container>
-		 );
+		);
 	}
 }
  

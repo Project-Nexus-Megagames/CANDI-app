@@ -46,11 +46,17 @@ class ModifyCharacter extends Component {
 					characterActualName: char.characterActualName,
 					id: char._id
 			}
-			this.setState({ formValue });			 
+			this.setState({ formValue });		
 		}
+		// localStorage.removeItem('newActionState');
+		// const stateReplace = JSON.parse(localStorage.getItem('modifyCharacterState'));
+		// if (stateReplace) this.setState(stateReplace);
 	}
 
-	componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps, prevState) => {
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('modifyCharacterState', JSON.stringify(this.state));
+		// };
 		if (this.props.selected !== prevProps.selected) {
 			const char = this.props.characters.find(el => el._id === this.props.selected._id);
 			if (char !== undefined) {
@@ -165,7 +171,10 @@ class ModifyCharacter extends Component {
         <Button loading={this.state.loading} disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
             Submit
         </Button>
-        <Button onClick={() => this.props.closeModal()} appearance="subtle">
+        <Button onClick={() => {
+				this.props.closeModal();
+				// localStorage.removeItem('modifyCharacterState');
+			}} appearance="subtle">
             Cancel
         </Button>
         </Modal.Footer>
