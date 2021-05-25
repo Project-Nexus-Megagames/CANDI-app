@@ -79,6 +79,11 @@ const initUpdates = () => {
         }
     });
 
+    socket.on('clearLocalStorage', (data) => { 
+        console.log('clearLocalStorage');
+        localStorage.removeItem(data);
+    });
+
 /*	socket.on('updateCharacters', (data) => { store.dispatch(charactersReceived(data)) });
 	socket.on('updateCharacter', (data) => { store.dispatch(characterUpdated(data)) });
 

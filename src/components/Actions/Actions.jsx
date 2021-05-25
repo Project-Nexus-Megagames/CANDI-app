@@ -59,8 +59,8 @@ class Actions extends Component {
 		return ( 
 			<React.Fragment>
 			<NavigationBar/>
-			<Container>
-			<Sidebar style={{backgroundColor: "black", height: '94vh'}}>
+			<Container style={{ height: '93vh'}}>
+			<Sidebar style={{backgroundColor: "black", }}>
 				<PanelGroup>					
 					<Panel style={{ height: 'calc(8vh)', backgroundColor: "#000101"}}>
 						<Input onChange={(value)=> this.props.setFilter(value)} value={this.props.filter} placeholder="Search"></Input>
@@ -101,7 +101,7 @@ class Actions extends Component {
 
 	filteredAssets = () => {
 		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
-		assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth'));
+		assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth' || el.type === 'Power' || el.type === 'Bond'));
 		return assets;
 	}
 

@@ -7,8 +7,9 @@ import Map2 from './Map2';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
 import { MapInteractionCSS } from 'react-map-interaction';
 import NavigationBar from "../Navigation/NavigationBar";
+import { getMyCharacter } from '../../redux/entities/characters';
 
-const MapContainer = ({ locations, login, loading, characters }) => {
+const MapContainer = ({ locations, login, loading, characters, user, myCharacter }) => {
 	// const [scale, setScale] = React.useState(1);
   const [value, setValue] = React.useState({ scale: 1.15, translation: { x: 100, y: -470 }});
 	const [territory, setTerritory] = React.useState({ name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0});
@@ -45,56 +46,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
 	}
 
   const handleIt = (value) => {
-    if (value.scale > 2.1) {
-      if (value.translation.x > 600) value.translation.x = 600; // Left
-      if (value.translation.x < -1200) value.translation.x = -1200; //Right
-      if (value.translation.y > -400) value.translation.y = -400; // Up
-      if (value.translation.y < -2200) value.translation.y = -2200; // Down
-    }
-    else if(value.scale <= 2.1 && value.scale > 1.9) {
-      // console.log('4');
-      if (value.translation.x > 600) value.translation.x = 600; // Left
-      if (value.translation.x < -900) value.translation.x = -900; //Right
-      if (value.translation.y > -400) value.translation.y = -400; // Up
-      if (value.translation.y < -2200) value.translation.y = -2200; // Down
-    }
-    else if(value.scale <= 1.9 && value.scale > 1.7) {
-      // console.log('3');
-      if (value.translation.x > 600) value.translation.x = 600; // Left
-      if (value.translation.x < -600) value.translation.x = -600; //Right
-      if (value.translation.y > -400) value.translation.y = -400; // Up
-      if (value.translation.y < -1700) value.translation.y = -1700; // Down
-    }
-    else if (value.scale <= 1.7 && value.scale > 1.4) {
-      // console.log('2')
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < -250) value.translation.x = -250;
-      if (value.translation.y > -90) value.translation.y = -90;
-      if (value.translation.y < -1300) value.translation.y = -1300;
-    }
-    else if (value.scale <= 1.4 && value.scale > 1.15) {
-      //console.log('1')
-      //console.log(value.translation)
-      // console.log(value.scale)
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 90) value.translation.x = 90;
-      if (value.translation.y > -250) value.translation.y = -250;
-      if (value.translation.y < -900) value.translation.y = -900;
-    }
-    else if (value.scale <= 1.15 && value.scale > 1) {
-      // console.log('0')
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 100) value.translation.x = 100;
-      if (value.translation.y > -250) value.translation.y = -250;
-      if (value.translation.y < -900) value.translation.y = -900;
-    }
-    else { // if scale is 1.15
-      //console.log('max')
-      if (value.translation.x > 600) value.translation.x = 600;
-      if (value.translation.x < 290) value.translation.x = 290;
-      if (value.translation.y > -250) value.translation.y = -250;
-      if (value.translation.y < -650) value.translation.y = -650;
-    }
+
     setValue(value)
   }
 
@@ -129,7 +81,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
 	return ( 
     <React.Fragment>
       	<NavigationBar/>
-      <Container style={{ height: '94vh', width: '100%', position: 'relative', textAlign: 'center', backgroundColor: '#29525f'}}>
+      <Container style={{ height: '94vh', width: '100%', position: 'relative', textAlign: 'center', backgroundColor: '#5d000e'}}>
       <Sidebar width={xPosition < 0 ? width + xPosition + 15 : width + xPosition} style={{transition: '0.8s ease'}}>
       <div
         className="side-bar"
@@ -145,6 +97,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
           style={specialStyle()}
         ></button>
 			<h3>{territory.name}</h3>
+      {(user.roles.some(el=> el === 'Control') || myCharacter.characterName === territory.currentOwner) && <h5 style={{backgroundColor: "#61342e", }} > Territory Value: {territory.influence} </h5>}
       <Divider>{territory.borough} - {territory.code}</Divider>
       <p><h5>Owned by: {territory.currentOwner}</h5></p>
       
@@ -154,7 +107,7 @@ const MapContainer = ({ locations, login, loading, characters }) => {
 		</Sidebar>
         <Content>
           <div style={{ width: '100%', height: '100%' }}> 
-            <MapInteractionCSS minScale={1} maxScale={2.5} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+            <MapInteractionCSS minScale={1} maxScale={2.7} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
               <Map2 mouseOverEffect={handleHover} handleClick={clickHandlerer} locations={locations} characters={characters} />          
             </MapInteractionCSS>       
           </div>
@@ -166,13 +119,15 @@ const MapContainer = ({ locations, login, loading, characters }) => {
                 <FlexboxGridItem colspan={12}>
                   Borough: {territory.borough}
                 </FlexboxGridItem>
-                {/*<FlexboxGridItem colspan={12}>
-                  Influence: {territory.influence}
-      </FlexboxGridItem>*/}
+                <p style={{ fontSize: '1.2em', fontWeight: '300', }}>{territory.description}</p>
+      {user.roles.some(el=> el === 'Control') && <FlexboxGridItem colspan={12}>
+        <h3 style={{backgroundColor: "#61342e", }} >Influence: {territory.influence}</h3>
+                  
+      </FlexboxGridItem>}
               </FlexboxGrid>
           </Modal.Header>
             <Modal.Body>
-              {territory.description}
+
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={() => setBoolean(false)} appearance="subtle">
@@ -192,6 +147,8 @@ const mapStateToProps = (state) => ({
 	characters: state.characters.list,
   login: state.auth.login,
 	loading: state.auth.loading,
+  user: state.auth.user,
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({});

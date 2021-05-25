@@ -65,6 +65,10 @@
   object-fit: cover;
 }
 
+.disabled {
+  filter: grayscale(100%);
+}
+
 .container:hover .image {
   opacity: 0.6;
 }
@@ -74,32 +78,26 @@
 }
 
 .north:hover {
-  opacity: 1;
-  fill: #6a7af7;
+  opacity: .5;
 }
 
 .east:hover {
-  opacity: 1;
-  fill: #a1c4d6;
+  opacity: .5;
 }
 
 .south:hover {
-  opacity: 1;
-  fill: #dd4dd3;
+  opacity: .5;
 }
 
 .west:hover {
-  opacity: 1;
-  fill: #60db59;
+  opacity: .5;
 }
 .central:hover {
-  opacity: 1;
-  fill: #dd5065;
+  opacity: .5;
 }
 
 .misc:hover {
-  opacity: 1;
-  fill: #dd5065;
+  opacity: .5;
 }
 
 
@@ -109,7 +107,7 @@
   position: absolute;
   outline: none;
   z-index: 1;
-  background-color: #a136e9;
+  background-color: #d4af37;
   border-color: rgba(64, 194, 133, 0.693);
   border-left: 0;
 }
@@ -120,7 +118,17 @@
   flex-direction: column;
   border-right: 3px solid;
   border-radius: 0;
-  border-color: #a136e9;
-  background-color: #282c34;
+  border-color: #d4af37;
+  background-color: #22162b;
   transition: 0.8s ease;
+}
+
+.textStyle {
+	background-color: #1a1d24;
+	border: 1.5px solid #3c3f43; 
+	border-radius: 5px; 
+	width: 100%;
+	padding: 5px;
+	overflow: auto; 
+	scrollbar-width: none;
 }

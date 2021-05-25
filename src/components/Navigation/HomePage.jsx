@@ -8,11 +8,12 @@ import Loading from './loading';
 // import aang from '../Images/aang.jpg'
 import city from '../Images/city.png'
 import action from '../Images/action.jpg'
- import feed from '../Images/feed.png'
-import mycharacter from '../Images/MyCharacter.jpg'
+import feed from '../Images/feed.png'
+// import mycharacter from '../Images/MyCharacter.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
 import { signOut } from '../../redux/entities/auth';
+import socket from '../../socket';
 
 class HomePage extends Component {
 	constructor(props) {
@@ -79,7 +80,9 @@ class HomePage extends Component {
 										return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
 									}}
 								>
-									<Dropdown.Item>Version: 1.0</Dropdown.Item>
+									<Dropdown.Item>Version: {this.props.version}</Dropdown.Item>
+									<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
+									<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
 								</Dropdown>					
 							</FlexboxGrid.Item>
@@ -88,6 +91,7 @@ class HomePage extends Component {
 								<p>Round: {this.props.gamestate.round} </p>	
 								{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
 								{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+								{(hours <= 0 && minutes > 0 && days <= 0) && <p>Time Left: {minutes} Minutes</p>}	
 								{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
 							</div>									
 						</FlexboxGrid.Item>
@@ -123,6 +127,7 @@ class HomePage extends Component {
 
 	handleLogOut = async () => {
 		this.props.logOut();
+		socket.emit('logout');
 		this.props.history.push('/login');
 	}
 	
@@ -153,7 +158,8 @@ const mapStateToProps = (state) => ({
 	charactersLoaded: state.characters.loaded,
 	assetsLoaded: state.assets.loaded,
 	locationsLoaded: state.locations.loaded,
-  myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	version: state.gamestate.version,
+	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({

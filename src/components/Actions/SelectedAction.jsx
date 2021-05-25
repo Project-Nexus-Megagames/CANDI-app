@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
-import { getUnusuedAssets } from '../../redux/entities/assets';
+import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
+import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
@@ -26,23 +26,16 @@ class SelectedAction extends Component {
 	}
 
 	componentDidMount = () => {
-		let array2 = [];
-		for (const el of this.props.unusedAssets) {
-			array2.push(el.name)
-		}
-
-		this.setState({ usedAssets: array2 }); 
+		// localStorage.removeItem('newActionState');
+		const stateReplace = JSON.parse(localStorage.getItem('selectedActionState'));
+		console.dir(stateReplace);
+		if (stateReplace) this.setState(stateReplace); 
 	}
 
-	componentDidUpdate = (prevProps) => {
-		if (this.props.assetsRedux !== prevProps.assetsRedux) {
-			const array = this.props.assetsRedux.filter(el => el.status.used === true);
-			let array2 = [];
-			for (const el of array) {
-				array2.push(el.name)
-			}
-			this.setState({ usedAssets: array2 });		
-		}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.state !== prevState) {
+			localStorage.setItem('selectedActionState', JSON.stringify(this.state));
+		};
 		if (this.props.action !== prevProps.action) {
 			this.setState({ 	
 				asset1: this.props.action.asset1,
@@ -62,7 +55,7 @@ class SelectedAction extends Component {
 	render() { 
 		const action = this.props.action;
 		return ( 
-			<React.Fragment >
+			<Content style={{overflow: 'auto', height: '100%'}} >
 			<FlexboxGrid >
 				<FlexboxGrid.Item colspan={2} >
 				</FlexboxGrid.Item>
@@ -110,7 +103,15 @@ class SelectedAction extends Component {
 							<p>
 							{action.result}	
 						</p>
+						</Panel>		
+						{action.mechanicalEffect !== 'No Mechanical Effect Recorded Yet...' && action.mechanicalEffect !== '' && <div>
+							<Divider>Mechanical Effect</Divider>
+							<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
+							<p>
+							{action.mechanicalEffect}	
+						</p>		
 						</Panel>						
+						</div>}				
 					</React.Fragment>}
 
 				</FlexboxGrid.Item>
@@ -125,7 +126,7 @@ class SelectedAction extends Component {
 						</TagGroup>
 							<ButtonGroup style={{ marginTop: '5px' }} >
 								<Button appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.openEdit()} >Edit</Button>
-								<Button color='red' appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.deleteAction()}>Delete</Button>
+								<Button color='red' appearance={"ghost"} disabled={(action.status !== 'Draft')} onClick={() => this.deleteAction()}>Delete</Button>
 							</ButtonGroup>
 					</Panel>
 					{this.props.user.roles.some(el=> el === 'Control') && 
@@ -171,9 +172,9 @@ class SelectedAction extends Component {
 						<FlexboxGrid.Item colspan={4}>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources
-							<InputPicker  defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset1: event})}/>
-							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset2: event})}/>
-							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.assets} style={{ width: '100%' }} disabledItemValues={this.state.usedAssets} onChange={(event)=> this.setState({asset3: event})}/>
+							<InputPicker defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset1: event})}/>
+							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset2: event})}/>
+							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset3: event})}/>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 					</form>
@@ -257,7 +258,7 @@ class SelectedAction extends Component {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</React.Fragment>		
+		</Content>		
 		);
 	}
 
@@ -338,7 +339,32 @@ class SelectedAction extends Component {
 			<Toggle onChange={()=> this.setState({ assetBoolean: !this.state.assetBoolean })} checkedChildren="Asset" unCheckedChildren="Trait"></Toggle>			
 		)
 	};
+
+	formattedUsedAssets = () => {
+		let assets = [];
+		for (const asset of this.props.usedAssets) {
+			assets.push(asset.name)
+		}
+		return assets;
+	}
 }
+
+
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+	gamestate: state.gamestate,
+	actions: state.actions.list,
+	assetsRedux: state.assets.list,
+	usedAssets: getMyUsedAssets(state),
+	getMyAssets: getMyAssets(state),
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	// handleLogin: (data) => dispatch(loginUser(data))
+	deleteAction: (data) => dispatch(actionDeleted(data)),
+	updateCharacter: (data) => dispatch(characterUpdated(data))
+});
 
 const slimText = {
 	fontSize: '0.966em',
@@ -376,20 +402,5 @@ const textStyle = {
 	overflow: 'auto', 
 	scrollbarWidth: 'none',
 }
-
-const mapStateToProps = (state) => ({
-	user: state.auth.user,
-	gamestate: state.gamestate,
-	actions: state.actions.list,
-	assetsRedux: state.assets.list,
-	unusedAssets: getUnusuedAssets(state),
-	myCharacter: state.auth.user ? getMyCharacter(state): undefined
-});
-
-const mapDispatchToProps = (dispatch) => ({
-	// handleLogin: (data) => dispatch(loginUser(data))
-	deleteAction: (data) => dispatch(actionDeleted(data)),
-	updateCharacter: (data) => dispatch(characterUpdated(data))
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectedAction);

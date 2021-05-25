@@ -41,6 +41,7 @@ class OtherCharacters extends Component {
 
 	closeModal = () => {
 		this.setState({ edit: false, add: false, memory: false });
+		this.filter('')
 	}
 
 	componentDidUpdate(prevProps) {
@@ -59,7 +60,7 @@ class OtherCharacters extends Component {
 		return ( 
 			<React.Fragment>
 			<NavigationBar/>
-			<Container style={{overflow: 'auto', height: '94vh'}}>
+			<Container style={{ height: '94vh'}}>
 			<Sidebar style={{backgroundColor: "black"}}>
 				<PanelGroup>					
 					<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
@@ -94,7 +95,7 @@ class OtherCharacters extends Component {
 				</PanelGroup>
 			</Sidebar>
 			{this.state.selected &&
-				<Content>
+				<Content style={{overflow: 'auto', height: 'auto'}}>
 					<FlexboxGrid >
 						<FlexboxGrid.Item colspan={3} >
 						</FlexboxGrid.Item>
@@ -167,13 +168,13 @@ class OtherCharacters extends Component {
 				<ModifyCharacter
 					show={this.state.edit}
 					selected={this.state.selected}
-					closeModal={this.closeModal}
+					closeModal={()=> this.setState({ edit: false })}
 					// player={this.props.player????}
 				/>
 				<AddAsset 
 					show={this.state.add}
 					character={this.state.selected}
-					closeModal={this.closeModal}
+					closeModal={() => this.setState({ add: false })}
 				/>
 			</Content>		
 			}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; // React imports
+import React, { useEffect, version } from 'react'; // React imports
 import { connect } from "react-redux";
 import { Alert } from 'rsuite';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -28,13 +28,14 @@ import MapContainer from './components/Navigation/Test';
 import Registration from './components/Control/Registration';
 import NotFound from './components/Navigation/NotFound';
 import Bitsy from './components/Navigation/Bitsy';
+import myCharacter from './components/MyCharacters/myCharacter';
 
 // React App Component
 initUpdates()
 const App = (props) => {
-  console.log("version 0.1.1 [Token Troubles]");
+  console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations } = props;
+  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations, myCharacter, version } = props;
   useEffect(() => {
     const theme = 'dark'
     console.log(`Setting Theme: ${theme}`)
@@ -51,10 +52,10 @@ const App = (props) => {
   }, [])
 
   useEffect(() => {
-		if (login) {
-			initConnection(user);
+		if (login && myCharacter) {
+			initConnection(user, myCharacter, version);
 		}
-	}, [login, user])
+	}, [login, user, myCharacter, version])
 
 	useEffect(() => {
     console.log('App Loaded');
@@ -133,6 +134,7 @@ const mapStateToProps = (state) => ({
 	loading: state.auth.loading,
 	error: state.auth.error,
   login: state.auth.login,
+  version: state.gamestate.version,
   characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });

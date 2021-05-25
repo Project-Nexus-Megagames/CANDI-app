@@ -2,6 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Content, FlexboxGrid } from 'rsuite';
+import { signOut } from '../../redux/entities/auth';
 // const { Circle } = Progress;
 
 class NoCharacter extends Component {
@@ -30,14 +31,9 @@ class NoCharacter extends Component {
         );        
     }
 
-    bored () {
-        const random = (Math.floor(Math.random() * bored.length ));
-        const win = window.open(bored[random], '_blank');
-		win.focus();
-    }
 		handleLogOut = async () => {
-			localStorage.removeItem('CANDI');
-			this.props.history.push('/');
+			this.props.logOut()
+			this.props.history.push('/login');
 		}
 }
 
@@ -53,7 +49,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-
+	logOut: () => dispatch(signOut())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NoCharacter);

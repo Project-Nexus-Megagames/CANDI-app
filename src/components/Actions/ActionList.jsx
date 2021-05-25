@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {List, FlexboxGrid, Container, } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { filteredActions } from '../../redux/entities/playerActions';
+import { filteredActions, getMyActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { 
@@ -57,7 +57,7 @@ class ActionList extends Component {
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-										<div style={titleStyle}>{action.description}</div>
+										<div style={titleStyle}>{action.intent}</div>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
@@ -67,7 +67,7 @@ class ActionList extends Component {
 
 				))}		
 			</Container>
-		 );
+		);
 	}
 }
  
@@ -88,7 +88,7 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
-	filteredActions: filteredActions(state)//state.auth.control ? filteredActions(state) : 	getMyActions(state) 
+	filteredActions: state.auth.control ? filteredActions(state) : 	getMyActions(state) 
 });
 
 const mapDispatchToProps = (dispatch) => ({

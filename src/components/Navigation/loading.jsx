@@ -177,8 +177,7 @@ const spook = [
 'https://media1.giphy.com/media/nyNS6Cfrnkdj2/giphy.gif',
 'https://i1.wp.com/nileease.com/wp-content/uploads/2020/05/cf028dae44f0f5b1e7763747f422bbe0.gif?fit=400%2C222&ssl=1',
 'https://i.pinimg.com/originals/44/03/f8/4403f8810a593202d3b5a44893ac3835.gif',
-'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif',
-'https://i.redd.it/r3ey7kphfln61.jpg'
+'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif'
 ]
 
 const bored = [
@@ -221,14 +220,19 @@ const bored = [
     'https://www.youtube.com/watch?v=vYud9sZ91Mc', // Music really makes a difference
     'https://www.youtube.com/watch?v=PPgLTgWa99w', // "WAAfrica" (Five Waluigis sing Africa)
     'https://www.youtube.com/watch?v=kGj_HkKhhSE', // Wire
-    'https://www.youtube.com/watch?v=pMN_bvk4KTo',
-    'https://www.youtube.com/watch?v=xI39jU24InY',
-    'https://www.youtube.com/watch?v=s-09gNDsPzQ',
-    'https://www.youtube.com/watch?v=9fjk8cNiptU',
-    'https://www.youtube.com/watch?v=yUZfkbKFtKA',
+    'https://www.youtube.com/watch?v=pMN_bvk4KTo', // vacuum sealed tupperware
+    'https://www.youtube.com/watch?v=xI39jU24InY', // Vader being a jerk
+    'https://www.youtube.com/watch?v=s-09gNDsPzQ', // gamers
+    'https://www.youtube.com/watch?v=9fjk8cNiptU', // Hard Ticket to Hawaii (1987) - Skate or Die
+    'https://www.youtube.com/watch?v=yUZfkbKFtKA', // He must have taken him back to his village
     'https://www.youtube.com/watch?v=iP897Z5Nerk', // BINARY search with FLAMENCO dance
-    'https://www.youtube.com/watch?v=fC7oUOUEEi4',
-    'https://www.youtube.com/watch?v=d1rtJ3DbwIw'
+    'https://www.youtube.com/watch?v=fC7oUOUEEi4', // Get Stick Bugged lol
+    'https://www.youtube.com/watch?v=d1rtJ3DbwIw', // Just a Jug of Chocolate Milk being Cut in Half
+    'https://www.youtube.com/watch?v=EwAajOtfNT8', // two dudes in a hot tub
+    'https://www.youtube.com/watch?v=XKqqqO83yp0', // Guy blow dries his tongue then eats a cracker...
+    'https://www.youtube.com/watch?v=GfCqnHgXwBo',  // How to troll a parade
+    'https://www.youtube.com/watch?v=TLV30GuX-ug',
+
 ]
 
 const loadingMsg = [

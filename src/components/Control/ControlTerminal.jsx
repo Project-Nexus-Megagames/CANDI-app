@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Placeholder, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, SelectPicker, TagPicker, DatePicker, Loader, Table } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -8,6 +8,8 @@ import NavigationBar from '../Navigation/NavigationBar';
 import { assetsRequested } from '../../redux/entities/assets';
 import NewCharacter from './NewCharacter';
 import EditTerritory from './EditTerritory';
+import NewProject from './NewProject';
+import ModifyResource from './ModifyResource';
 
 const { Column, HeaderCell, Cell } = Table;
 class ControlTerminal extends Component {
@@ -24,13 +26,6 @@ class ControlTerminal extends Component {
 			status: '',
 		},
 		endTime: null,
-		projName: '',
-		projDescription: '',
-		progress: 0,
-		players: [],
-		image: '',
-
-		characters: [],
 	
 		drafts: 0,
 		awaiting: 0,
@@ -40,6 +35,7 @@ class ControlTerminal extends Component {
 		name: '',
 		description: '',
 		uses: 0, 
+		used: false,
 		loading: false,
 
 		tableData: []
@@ -168,7 +164,7 @@ class ControlTerminal extends Component {
 				</div>
 
 				<Panel style={{height: '46vh'}}>
-					<Table virtualized data={this.state.tableData} >
+					<Table  virtualized data={this.state.tableData} >
 
 						<Column flexGrow={2}>
 						<HeaderCell>Character</HeaderCell>
@@ -226,37 +222,6 @@ class ControlTerminal extends Component {
 			</Button>
 		</Modal.Footer>
 				</Modal>
-
-				<Modal backdrop='static' size='md' show={this.state.projectModal} onHide={() => this.setState({ projectModal: false })}>
-				<p>
-					Name		
-				</p> 
-					<textarea value={this.state.projName} style={textStyle} onChange={(event)=> this.setState({ projName: event.target.value })}></textarea>	
-				<p>
-					Description		
-				</p> 
-				<textarea rows='4' value={this.state.projDescription} style={textStyle} onChange={(event)=> this.setState({projDescription: event.target.value})}></textarea>	
-				<p>
-					Image
-				</p>
-				<textarea value={this.state.image} style={textStyle} onChange={(event)=> this.setState({ image: event.target.value })}></textarea>	
-				<p>
-					Progress
-				</p>
-				<InputNumber value={this.state.progress} onChange={(event)=> this.setState({progress: event})}></InputNumber>
-				<p>
-					Players
-				</p>
-					<TagPicker data={this.props.characters} labelKey='characterName' valueKey='characterName' block onChange={(event)=> this.setState({ players: event })}></TagPicker>
-					<Modal.Footer>
-				<Button onClick={() => this.newProject()} appearance="primary">
-					Submit
-				</Button>
-				<Button onClick={() => this.setState({ projectModal: false })} appearance="subtle">
-					Cancel
-				</Button>
-        </Modal.Footer>
-				</Modal>
 		
 				<Modal backdrop="static" size='sm' show={this.state.warningModal} onHide={() => this.setState({ warningModal: false })}>
 					<Modal.Body>
@@ -303,67 +268,23 @@ class ControlTerminal extends Component {
 			</Modal.Footer>
 				</Modal>
 			
-				<Modal loading={this.props.assetLoading} size='sm' show={this.state.assModal} onHide={() => this.setState({ assModal: false })}>
-					<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => this.handleChage(event)} data={this.props.assets.filter(el => el.model !== 'Wealth')} valueKey='_id' labelKey='name'></SelectPicker>
-						{this.renderAss()}
-						<Modal.Footer>
-							{this.state.selected && 
-							<ButtonGroup>
-								<Button loading={this.props.assetLoading}  onClick={() => this.assetModify()} color="blue">Edit</Button>
-								<Button loading={this.props.assetLoading}  onClick={() => this.handleDelete()} color="red">Delete</Button>								
-							</ButtonGroup>}
-						</Modal.Footer>
-				</Modal>
+				<ModifyResource show={this.state.assModal} 
+					closeModal={() => this.setState({ assModal: false })}/>
 
 				<NewCharacter show={this.state.newCharacter} 
 					closeModal={() => this.setState({ newCharacter: false })}/>
+
 				<EditTerritory show={this.state.editTerritory} 
 					closeModal={() => this.setState({ editTerritory: false })}/>
+
+				<NewProject show={this.state.projectModal} 
+					closeModal={() => this.setState({ projectModal: false })}/>
 			</Content>
 		);
 	}
 
 	handleDate = (value) => {
 		this.setState({ endTime: value })
-	}
-
-	handleChage = (event) => {
-		if (event) {
-			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses })			
-		}
-		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
-	}
-
-	assetModify = async () => {
-		this.props.assetDispatched();
-		const data = {
-			id: this.state.selected,
-			name: this.state.name,
-			description: this.state.description,
-			uses: this.state.uses
-		}
-		socket.emit('assetRequest', 'modify',  data ); // new Socket event	
-		this.setState({ assModal: false, selected: null, });
-	}
-
-	renderAss = () => {
-		if (this.state.selected) {
-			return (
-				<Panel>
-					Name:
-					<textarea value={this.state.name} style={textStyle} onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	
-					Description:
-					<textarea rows='4' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
-					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
-				</Panel>			
-			)			
-		}
-		else {
-			return (
-				<Placeholder.Paragraph rows={5} >Awaiting Selection</Placeholder.Paragraph>
-			)
-		}
 	}
 
 	handleDelete = async () => {
@@ -388,21 +309,6 @@ class ControlTerminal extends Component {
 	publishActions = async () => {
 		socket.emit('gamestateRequest', 'nextRound', 'Hello'); // new Socket event
 		this.setState({ warning2Modal: false });	
-	}
-
-	newProject = async () => {
-		const data = {
-			description: this.state.projName,
-			intent: this.state.projDescription,
-			effort: 0,
-			progress: this.state.progress,
-			type: "Project",
-			players: this.state.players,
-			creator: this.props.playerCharacter.characterName,
-			round: this.props.gamestate.round, 
-			image: this.state.image,
-		}
-		socket.emit('actionRequest', 'create', data ); // new Socket event
 	}
 
 	isControl () {

@@ -8,6 +8,7 @@ class ModifyCharacter extends Component {
 		formValue: {
 			characterName: '',
 			email: '',
+			controlEmail: '',
 			worldAnvil: '',
 			tag: '', 
 			control: '',
@@ -31,6 +32,7 @@ class ModifyCharacter extends Component {
 			const formValue = {
 					characterName: char.characterName,
 					email: char.email,
+					controlEmail: char.controlEmail,
 					worldAnvil: char.worldAnvil,
 					tag: char.tag,
 					control: char.control,
@@ -44,19 +46,27 @@ class ModifyCharacter extends Component {
 					characterActualName: char.characterActualName,
 					id: char._id
 			}
-			this.setState({ formValue });			 
+			this.setState({ formValue });		
 		}
+		// localStorage.removeItem('newActionState');
+		// const stateReplace = JSON.parse(localStorage.getItem('modifyCharacterState'));
+		// if (stateReplace) this.setState(stateReplace);
 	}
 
-	componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps, prevState) => {
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('modifyCharacterState', JSON.stringify(this.state));
+		// };
 		if (this.props.selected !== prevProps.selected) {
 			const char = this.props.characters.find(el => el._id === this.props.selected._id);
 			if (char !== undefined) {
 				const formValue = {
 					characterName: char.characterName,
 					email: char.email,
+					controlEmail: char.controlEmail,
 					worldAnvil: char.worldAnvil,
 					tag: char.tag,
+					control: char.control,
 					timeZone: char.timeZone,
 					playerName: char.playerName,
 					bio: char.bio,
@@ -104,8 +114,8 @@ class ModifyCharacter extends Component {
 								<FormControl name="email" />
 							</FormGroup>
 							<FormGroup>
-								<ControlLabel>worldAnvil</ControlLabel>
-								<FormControl name="worldAnvil" />
+								<ControlLabel>controlEmail</ControlLabel>
+								<FormControl name="controlEmail" />
 							</FormGroup>
 							<FormGroup>
 								<ControlLabel>Control</ControlLabel>
@@ -144,6 +154,10 @@ class ModifyCharacter extends Component {
 									<ControlLabel>effort</ControlLabel>
 									<FormControl name="effort" accepter={InputNumber} />
 							</FormGroup>
+							<FormGroup>
+								<ControlLabel>worldAnvil</ControlLabel>
+								<FormControl name="worldAnvil" />
+							</FormGroup>
 							</FlexboxGrid.Item>
 
 						</FlexboxGrid>
@@ -157,7 +171,10 @@ class ModifyCharacter extends Component {
         <Button loading={this.state.loading} disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
             Submit
         </Button>
-        <Button onClick={() => this.props.closeModal()} appearance="subtle">
+        <Button onClick={() => {
+				this.props.closeModal();
+				// localStorage.removeItem('modifyCharacterState');
+			}} appearance="subtle">
             Cancel
         </Button>
         </Modal.Footer>
