@@ -6,13 +6,11 @@ import { assetsRequested } from '../../redux/entities/assets';
 
 class ModifyResource extends Component {
 	state = { 
-		formValue: {
-			name: '',
-			description: '',
-			borough: '',
-			influence: 0,
-			id: ''		
-		},
+		name: '',
+		description: '',
+		uses: 0,
+		influence: 0,
+		id: '',
 		currentOwner: '',
 		selected: false,
 		loading: false
@@ -40,6 +38,7 @@ class ModifyResource extends Component {
 			uses: this.state.uses,
 			owner: this.state.owner,
 			used: this.state.used,
+			lendable: this.state.lendable,
 			hidden: this.state.hidden	
 		}
 		socket.emit('assetRequest', 'modify',  data ); // new Socket event	
@@ -70,7 +69,7 @@ class ModifyResource extends Component {
 	handleChage = (event) => {
 		if (event) {
 			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses, owner: selected.owner, used: selected.status.used, hidden: selected.status.hidden })			
+			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden })			
 		}
 		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
@@ -89,6 +88,7 @@ class ModifyResource extends Component {
 					<Divider>Statuses</Divider>
 					<Toggle checked={this.state.used} onChange={()=> this.setState({ used: !this.state.used })} checkedChildren="Used" unCheckedChildren="Un-used"/>
 					<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="hidden" unCheckedChildren="Un-hidden"/>
+					<Toggle checked={this.state.lendable} onChange={()=> this.setState({ lendable: !this.state.lendable })} checkedChildren="lendable" unCheckedChildren="Un-lendable"/>
 				</Panel>			
 			)			
 		}
