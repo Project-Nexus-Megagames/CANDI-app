@@ -77,7 +77,7 @@ export const getMyActions = createSelector(
   state => state.actions.list,
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (filter, actions, myCharacter) => actions.filter(
-    action => (action.creator === myCharacter.characterName && ( action.description.toLowerCase().includes(filter.toLowerCase()) ||
+    action => ((action.creator === myCharacter.characterName || action.players.some(el => el === myCharacter.characterName)) && ( action.description.toLowerCase().includes(filter.toLowerCase()) ||
     action.intent.toLowerCase().includes(filter.toLowerCase()) ))
   )
 );
