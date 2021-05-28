@@ -343,15 +343,15 @@ const pickerData = [
 	},
 ]
 
-const textStyle = {
-	backgroundColor: '#1a1d24', 
-	border: '1.5px solid #3c3f43', 
-	borderRadius: '5px', 
-	width: '100%',
-	padding: '5px',
-	overflow: 'auto', 
-	scrollbarWidth: 'none',
-}
+// const textStyle = {
+// 	backgroundColor: '#1a1d24', 
+// 	border: '1.5px solid #3c3f43', 
+// 	borderRadius: '5px', 
+// 	width: '100%',
+// 	padding: '5px',
+// 	overflow: 'auto', 
+// 	scrollbarWidth: 'none',
+// }
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,

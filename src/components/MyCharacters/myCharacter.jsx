@@ -339,8 +339,7 @@ class MyCharacter extends Component {
   findOwner = (id) => {
     for (const character of this.props.characters) {
       if (
-        character.assets.some((el) => el._id === id) ||
-        character.traits.some((el) => el._id === id)
+        character.assets.some((el) => el._id === id)
       ) {
         return <Tag color="blue">Borrowed from: {character.characterName}</Tag>;
       }

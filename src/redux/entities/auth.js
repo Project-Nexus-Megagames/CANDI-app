@@ -32,7 +32,7 @@ const slice = createSlice({
       console.log(jwt)
       localStorage.setItem('nexusAuth', jwt );
       const user = jwtDecode(jwt);
-      console.log(localStorage)
+      // console.log(localStorage)
 
       if (user.roles.some(el => el === "Control")) auth.control = true;
 

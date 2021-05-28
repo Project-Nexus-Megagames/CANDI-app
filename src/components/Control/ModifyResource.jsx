@@ -6,13 +6,11 @@ import { assetsRequested } from '../../redux/entities/assets';
 
 class ModifyResource extends Component {
 	state = { 
-		formValue: {
-			name: '',
-			description: '',
-			borough: '',
-			influence: 0,
-			id: ''		
-		},
+		name: '',
+		description: '',
+		uses: 0,
+		influence: 0,
+		id: '',
 		currentOwner: '',
 		selected: false,
 		loading: false
@@ -38,23 +36,14 @@ class ModifyResource extends Component {
 			name: this.state.name,
 			description: this.state.description,
 			uses: this.state.uses,
-			used: this.state.used	
+			owner: this.state.owner,
+			used: this.state.used,
+			lendable: this.state.lendable,
+			hidden: this.state.hidden	
 		}
 		socket.emit('assetRequest', 'modify',  data ); // new Socket event	
 		this.setState({ selected: null, });
 		this.props.closeModal()
-	}
-
-	handleSelect = (code) => {
-		const selected = this.props.locations.find(el => el.code === code);
-		const formValue = {
-			name: selected.name,
-			description: selected.description,
-			borough: selected.borough,
-			influence: selected.influence,
-			id: selected._id
-		}
-		this.setState({ selected: true, formValue, currentOwner: selected.currentOwner, });
 	}
 
 	render() { 
@@ -80,7 +69,7 @@ class ModifyResource extends Component {
 	handleChage = (event) => {
 		if (event) {
 			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses, used: selected.status.used })			
+			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden })			
 		}
 		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
@@ -94,8 +83,12 @@ class ModifyResource extends Component {
 					Description:
 					<textarea rows='4' value={this.state.description} className='textStyle' onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
 					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
+					Owner (Match Character's name exactly):
+					<textarea value={this.state.owner} className='textStyle' onChange={(event)=> this.setState({ owner: event.target.value })}></textarea>	
 					<Divider>Statuses</Divider>
 					<Toggle checked={this.state.used} onChange={()=> this.setState({ used: !this.state.used })} checkedChildren="Used" unCheckedChildren="Un-used"/>
+					<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="hidden" unCheckedChildren="Un-hidden"/>
+					<Toggle checked={this.state.lendable} onChange={()=> this.setState({ lendable: !this.state.lendable })} checkedChildren="lendable" unCheckedChildren="Un-lendable"/>
 				</Panel>			
 			)			
 		}
