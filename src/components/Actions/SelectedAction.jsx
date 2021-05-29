@@ -136,7 +136,7 @@ class SelectedAction extends Component {
 					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<TagGroup >Status:
 							{action.status === 'Draft' && <Tag color='red'>Draft</Tag>}
-							{!action.status === 'Awaiting' && <Tag color='blue'>Awaiting Resolution</Tag>}
+							{action.status === 'Awaiting' && <Tag color='blue'>Awaiting Resolution</Tag>}
 							{action.status === 'Ready' && <Tag color='violet'>Ready for Publishing</Tag>}
 							{action.status === 'Published' && <Tag color='green'>Published</Tag>}
 						</TagGroup>
