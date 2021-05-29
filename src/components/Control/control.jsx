@@ -141,7 +141,7 @@ const controllers = [
 		role: "East Control",
 		email: "stuart.pbem@gmail.com",
 		timezone: "GMT",
-		responsibilities: "The First Angel, The First Demon, The Librarian, The Archivist, The Eremite, The Chronicler (Press), The Crier (Press), Gallowglass"
+		responsibilities: "To be updated"
 	},
 	{
 		name: "Dan",
@@ -155,14 +155,14 @@ const controllers = [
 		role: "North Control",
 		email: "duskcontrolnorth@gmail.com",
 		timezone: "EST",
-		responsibilities: ""
+		responsibilities: "To be updated"
 		},
 		{
 			name: "Alex",
 			role: "South Control",
 			email: "duskcontrolsouth@gmail.com",
 			timezone: "???",
-			responsibilities: ""
+			responsibilities: "To be updated"
 			},
 	{
     name: "Scott",
