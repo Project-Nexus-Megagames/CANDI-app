@@ -111,7 +111,7 @@ class HomePage extends Component {
 					<ImgPanel width={300} height={350} img={feed} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 				<Col>
-					<ImgPanel width={300} height={350} img={control2} to='controllers' title='Control' body='Who is responsible for what characters'/>
+					<ImgPanel width={300} height={350} img={control2} to='controllers' title='Control' body='Who is responsible?'/>
 					<Panel onClick={() => window.open('https://www.patreon.com/wcmprojectnexus')} style={{width: 300, height: 350, cursor: 'pointer', position: 'relative', float:'left', display:'flex', margin: '10px', backgroundColor: 'black', alignItems: 'center', justifyContent: 'center', }} shaded bodyFill>
             <div >
                 <img width='100%'  src={"https://cdn.discordapp.com/attachments/582049508825890856/799759707820261496/unnamed.png"} alt='Powered by Project Nexus' />        
