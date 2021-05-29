@@ -141,8 +141,8 @@ const controllers = [
 		role: "East Control",
 		email: "stuart.pbem@gmail.com",
 		timezone: "GMT/BST",
-		responsibilities: "Oda Orochi, Samhain Walsh, Aisling Cathain, J Doe, Reynard Fennick, Peter Black, Ciara Rowland, Jeong-Gwon "Johnny" Baek, Sunday Ubir, teasing you all." 
-	}
+		responsibilities: "Oda Orochi, Samhain Walsh, Aisling Cathain, J Doe, Reynard Fennick, Peter Black, Ciara Rowland, Jeong-Gwon 'Johnny' Baek, Sunday Ubir, teasing you all." 
+	},
 	{
 		name: "Dan",
 		role: "Central Control",
