@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
+import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
+import AssetInfo from './AssetInfo';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedAction extends Component {
 	state = { 
@@ -22,7 +23,10 @@ class SelectedAction extends Component {
 		dieResult: this.props.action.dieResult,
 		status: this.props.action.status,
 		mechanicalEffect: this.props.action.mechanicalEffect,
-		usedAssets: []
+		usedAssets: [],
+
+		infoModal: false,
+		infoAsset: {}
 	}
 
 	componentDidMount = () => {
@@ -212,7 +216,7 @@ class SelectedAction extends Component {
 				<Modal.Body>
 					<FlexboxGrid>
 						<FlexboxGrid.Item colspan={10}>
-							<p style={{  fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
+							<p style={{  fontSize: '0.966em', color: '#97969B', fontWeight: '300',}}>
 								Description
 							</p>
 							<p>
@@ -270,6 +274,8 @@ class SelectedAction extends Component {
 					</Button>
 				</Modal.Footer>
 			</Modal>
+
+			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>
 		</Content>		
 		);
 	}
@@ -331,14 +337,30 @@ class SelectedAction extends Component {
 	renderAsset = (asset) => {
 		if (asset) {
 			return (
-					<Panel style={{backgroundColor: "#272b34"}} shaded header={asset} bordered ></Panel>	
+					<Panel style={{backgroundColor: "#272b34"}} shaded bordered >
+						<FlexboxGrid align='middle'>
+							<FlexboxGrid.Item colspan={20}>
+							<b>{asset}</b>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={4}>
+							<IconButton onClick={() => this.openInfo(asset)} color='blue' size="sm" icon={<Icon  icon="info"/>} /> 
+							</FlexboxGrid.Item >
+						</FlexboxGrid>
+					</Panel>	
 			)
 		}
 		else {
 			return (
-					<Panel style={{backgroundColor: "#0e1013"}} shaded header='Empty Slot' bordered ></Panel>	
+					<Panel style={{backgroundColor: "#0e1013"}} shaded bordered >
+						<b>Empty Slot</b>
+					</Panel>	
 			)
 		}
+	}
+
+	openInfo = (asset) => {
+		const found = this.props.assetsRedux.find(el => el.name === asset)
+		this.setState({ infoAsset: found, infoModal: true });
 	}
 
 	closeEdit = () => { 
