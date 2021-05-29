@@ -140,9 +140,9 @@ const controllers = [
 		name: "Stuart",
 		role: "East Control",
 		email: "stuart.pbem@gmail.com",
-		timezone: "GMT",
-		responsibilities: "To be updated"
-	},
+		timezone: "GMT/BST",
+		responsibilities: "Oda Orochi, Samhain Walsh, Aisling Cathain, J Doe, Reynard Fennick, Peter Black, Ciara Rowland, Jeong-Gwon "Johnny" Baek, Sunday Ubir, teasing you all." 
+	}
 	{
 		name: "Dan",
 		role: "Central Control",
@@ -155,15 +155,15 @@ const controllers = [
 		role: "North Control",
 		email: "duskcontrolnorth@gmail.com",
 		timezone: "EST",
-		responsibilities: "To be updated"
-		},
+		responsibilities: "Razmus, Alfie Barnes, Alias, Christopher Foster, Dead Gorgeous, Sanoh Prasansapakit, Shani Blake, Jean-Luc Leroux, Layla Chambers"
+	},
 		{
 			name: "Alex",
 			role: "South Control",
 			email: "duskcontrolsouth@gmail.com",
-			timezone: "???",
-			responsibilities: "To be updated"
-			},
+			timezone: "GMT",
+			responsibilities: "Aaron Storme, Dominik, Gustave, Helga Adler, Jennifer Yuen, Letitia Mayhew, Maisie Walliams, Orla Kuchler, Roger Broom"
+		},
 	{
     name: "Scott",
     role: "Tech Support",
