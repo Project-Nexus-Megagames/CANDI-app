@@ -26,14 +26,14 @@ class ActionList extends Component {
 
 	listStyle (item) {
 		if (item.type === "Project") {
-			return ({cursor: 'pointer', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+			if (item === this.props.selected)	return ({cursor: 'pointer', opacity: '0.6', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+			else return ({cursor: 'pointer', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		}
 		else if (item.type === "Feed") {
-			return ({cursor: 'pointer', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+			if (item === this.props.selected)	return ({cursor: 'pointer', opacity: '0.6', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+			else return ({cursor: 'pointer', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		}
-		else if (item === this.props.selected) {
-			return ({cursor: 'pointer', backgroundColor: "#212429"})
-		}
+		else if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		else return({cursor: 'pointer'});
 	}
 
