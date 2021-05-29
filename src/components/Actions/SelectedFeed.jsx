@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle } from 'rsuite';
+import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, Icon, IconButton } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
+import AssetInfo from './AssetInfo';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class SelectedFeed extends Component {
 	state = { 
@@ -21,7 +22,10 @@ class SelectedFeed extends Component {
 		dieResult: this.props.action.dieResult,
 		status: '',
 		mechanicalEffect: this.props.action.mechanicalEffect,
-		usedAssets: []
+		usedAssets: [],
+
+		infoModal: false,
+		infoAsset: {}
 	}
 
 	componentDidUpdate = (prevProps) => {
@@ -68,7 +72,10 @@ class SelectedFeed extends Component {
 						<Divider>Bond/Territory</Divider>
 
 							{this.renderAsset(action.asset1)}
-
+							{this.props.user.roles.some(el=> el === 'Control') && action.asset1 &&
+								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+									<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
+								</Panel>}
 					</Panel>
 					{(action.status === 'Published' || this.props.user.roles.some(el=> el === 'Control')) && 
 					<React.Fragment>
@@ -87,7 +94,7 @@ class SelectedFeed extends Component {
 					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<TagGroup >Status:
 							{action.status === 'Draft' && <Tag color='red'>Draft</Tag>}
-							{!action.status === 'Awaiting' && <Tag color='blue'>Awaiting Resolution</Tag>}
+							{action.status === 'Awaiting' && <Tag color='blue'>Awaiting Resolution</Tag>}
 							{action.status === 'Ready' && <Tag color='violet'>Ready for Publishing</Tag>}
 							{action.status === 'Published' && <Tag color='green'>Published</Tag>}
 						</TagGroup>
@@ -215,6 +222,9 @@ class SelectedFeed extends Component {
 					</Button>
 				</Modal.Footer>
 			</Modal>
+
+			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>
+
 		</Content>		
 		);
 	}
@@ -231,6 +241,14 @@ class SelectedFeed extends Component {
 			asset2: action.asset2,
 			asset3: action.asset3,
 			edit: true })
+	}
+
+	controlRemove = (asset) => {
+		const action = {
+			asset,
+			id: this.props.action._id,
+		}
+		socket.emit('actionRequest', 'controlReject', action); // new Socket event
 	}
 
 	handleSubmit = async () => {
@@ -267,14 +285,30 @@ class SelectedFeed extends Component {
 	renderAsset = (asset) => {
 		if (asset) {
 			return (
-					<Panel style={{backgroundColor: "#272b34"}} shaded header={asset} bordered ></Panel>	
+					<Panel style={{backgroundColor: "#272b34"}} shaded bordered >
+						<FlexboxGrid align='middle'>
+							<FlexboxGrid.Item colspan={20}>
+							<b>{asset}</b>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={4}>
+							<IconButton onClick={() => this.openInfo(asset)} color='blue' size="sm" icon={<Icon  icon="info"/>} /> 
+							</FlexboxGrid.Item >
+						</FlexboxGrid>
+					</Panel>	
 			)
 		}
 		else {
 			return (
-					<Panel style={{backgroundColor: "#0e1013"}} shaded header='Empty Slot' bordered ></Panel>	
+					<Panel style={{backgroundColor: "#0e1013"}} shaded bordered >
+						<b>Empty Slot</b>
+					</Panel>	
 			)
 		}
+	}
+
+	openInfo = (asset) => {
+		const found = this.props.assetsRedux.find(el => el.name === asset)
+		this.setState({ infoAsset: found, infoModal: true });
 	}
 
 	closeEdit = () => { 
