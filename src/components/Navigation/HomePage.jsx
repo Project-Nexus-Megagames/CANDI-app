@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid } from 'rsuite';
+import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid, Panel } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 import Loading from './loading';
@@ -9,11 +9,12 @@ import Loading from './loading';
 import city from '../Images/city.png'
 import action from '../Images/action.jpg'
 import feed from '../Images/feed.png'
-// import mycharacter from '../Images/MyCharacter.jpg'
+import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
+import { Link } from 'react-router-dom';
 
 class HomePage extends Component {
 	constructor(props) {
@@ -39,6 +40,8 @@ class HomePage extends Component {
 	}
 
 	componentDidUpdate = (prevProps) => {
+		const listeners = socket.listenersAny();
+		console.log(listeners)
 		if (this.props !== prevProps) {
 			if(!this.props.loading && this.props.actionsLoaded && this.props.gamestateLoaded && this.props.charactersLoaded && this.props.locationsLoaded && this.props.assetsLoaded) {
 				setTimeout(() => this.setState({ loaded: true }), 1000)	
@@ -107,6 +110,16 @@ class HomePage extends Component {
 					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
 					<ImgPanel width={300} height={350} img={feed} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
+				<Col>
+					<ImgPanel width={300} height={350} img={control2} to='controllers' title='Control' body='Creating and editing Actions'/>
+					<Panel onClick={() => window.open('https://www.patreon.com/wcmprojectnexus')} style={{width: 300, height: 350, cursor: 'pointer', position: 'relative', float:'left', display:'flex', margin: '10px', backgroundColor: 'black', alignItems: 'center', justifyContent: 'center', }} shaded bodyFill>
+            <div >
+                <img width='100%'  src={"https://cdn.discordapp.com/attachments/582049508825890856/799759707820261496/unnamed.png"} alt='Powered by Project Nexus' />        
+            </div>
+						{/*<h5 style={{ color:'#099def' }}>People online: 0</h5>*/}
+            <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white'}}>CANDI Version {this.props.version}</h6>
+        </Panel>
+				</Col>
 		</Row>
 		<Row style={{display: 'inherit'}}>
 			<Col>
@@ -169,3 +182,67 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 
 //<img src={"https://i.ytimg.com/vi/flD5ZTC3juk/maxresdefault.jpg"} width="700" height="220"/>
+/*
+
+		else return ( 
+			<React.Fragment>
+				<div style={{ height: '6vh', width: "100%" }}>
+					<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75',  color: '' }} align="middle">
+						<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
+							<Dropdown
+									renderTitle={() => {
+										return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
+									}}
+								>
+									<Dropdown.Item>Version: {this.props.version}</Dropdown.Item>
+									<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
+									<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
+									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
+								</Dropdown>					
+							</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={22}>
+							<div>
+								<p>Round: {this.props.gamestate.round} </p>	
+								{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
+								{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
+								{(hours <= 0 && minutes > 0 && days <= 0) && <p>Time Left: {minutes} Minutes</p>}	
+								{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
+							</div>									
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+					</FlexboxGrid>
+					</div>
+				<Container style={{backgroundColor:'#880015', position: 'relative', textAlign: 'center', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
+					<FlexboxGrid>
+						<FlexboxGrid.Item colspan={10}>
+									<Panel bordered style={{ height: '31.3vh' }}>
+										<Link to='actions'>
+
+												<img src={action} height='auto' alt='Failed to load img' style={{ objectFit: 'contain' }} />             
+
+										</Link>
+										<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white'}}>Actions/Feeding</h6>
+										<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white'}}>Creating and editing Actions</p>
+									</Panel>
+									<Panel bordered style={{ height: '31.3vh' }}></Panel>
+									<Panel bordered style={{ height: '31.3vh' }}></Panel>
+						</FlexboxGrid.Item>
+						<FlexboxGrid.Item colspan={14}>
+									<Panel bordered style={{ height: '45vh' }}></Panel>
+									<FlexboxGrid style={{ height: '49vh' }}>
+										<FlexboxGrid.Item  colspan={8}>
+											<Panel bordered style={{ height: '49vh' }}></Panel>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item  colspan={8}>
+											<Panel bordered style={{ height: '49vh' }}></Panel>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item  colspan={8}>
+											<Panel bordered style={{ height: '49vh' }}></Panel>
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+						</FlexboxGrid.Item>
+					</FlexboxGrid>
+				</Container>
+			</React.Fragment>
+		);
+*/

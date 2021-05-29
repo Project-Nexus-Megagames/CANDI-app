@@ -86,12 +86,24 @@ class SelectedAction extends Component {
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={8}>
 								{this.renderAsset(action.asset1)}
+								{this.props.user.roles.some(el=> el === 'Control') && action.asset1 &&
+								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+									<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
+								</Panel>}
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
 							{this.renderAsset(action.asset2)}
+							{this.props.user.roles.some(el=> el === 'Control') && action.asset2 &&
+								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+									<Button onClick={() => this.controlRemove('asset2')} color='red'>Control Remove Asset</Button>									
+								</Panel>}
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
 							{this.renderAsset(action.asset3)}
+							{this.props.user.roles.some(el=> el === 'Control') && action.asset3 &&
+								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+									<Button onClick={() => this.controlRemove('asset3')} color='red'>Control Remove Asset</Button>									
+								</Panel>}
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 					</Panel>
@@ -306,6 +318,14 @@ class SelectedAction extends Component {
 			Alert.error(`Error: ${err.response.data}`, 6000)
 		}
 		this.setState({loading: false});
+	}
+
+	controlRemove = (asset) => {
+		const action = {
+			asset,
+			id: this.props.action._id,
+		}
+		socket.emit('actionRequest', 'controlReject', action); // new Socket event
 	}
 
 	renderAsset = (asset) => {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Sidebar, Input, Panel, List, PanelGroup, Button, Content, FlexboxGrid, Loader, } from 'rsuite';
 import FlexboxGridItem from 'rsuite/lib/FlexboxGrid/FlexboxGridItem';
+import NavigationBar from '../Navigation/NavigationBar';
 
 class Control extends Component {
 	state = { 
@@ -21,7 +22,7 @@ class Control extends Component {
 	}
 
 	copyToClipboard (email) {
-		if (email === 'Use the #tech-support channel on the Afterlife discord server') {
+		if (email === 'Use the #tech-support channel on the Dusk City discord server') {
 			const win = window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
 			win.focus();
 		}
@@ -43,7 +44,9 @@ class Control extends Component {
 			return (<Loader inverse center content="doot..." />)
 		};
 		return ( 
-			<Container>
+			<React.Fragment>
+			<NavigationBar/>
+			<Container style={{ height: '94vh'}}>
 				<Sidebar style={{backgroundColor: "black"}}>
 					<PanelGroup>					
 					<Panel style={{ backgroundColor: "#000101"}}>
@@ -107,7 +110,9 @@ class Control extends Component {
 						</FlexboxGrid>	
 					</Content>			
 					}	
-			</Container>
+			</Container>				
+			</React.Fragment>
+
 		);
 	}
 }
@@ -125,6 +130,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(Control);
 
 const controllers = [
 	{
+		name: "Kyle",
+		role: "Game Control",
+		email: "duskcitycontrol@gmail.com",
+		timezone: "GMT+8",
+		responsibilities: "Diego Armando, Cassandra Hasapi, Father Rex Davidson, Mayor Shivani Chowdhury, Maxine Hawthorne, DJ Pyro, Melanie Yeoh, Josephine Rosales, Eli Kaufmann, Mark Cordero"
+	},
+	{
 		name: "Stuart",
 		role: "East Control",
 		email: "stuart.pbem@gmail.com",
@@ -135,8 +147,8 @@ const controllers = [
 		name: "Dan",
 		role: "Central Control",
 		email: "duskcontrolcentral@gmail.com",
-		timezone: "MST",
-		responsibilities: ''
+		timezone: "MDT",
+		responsibilities: "Bobby Weber, Chelsea Hubbard, Dave Busters, Devin Slater, Duncan Buchanan,  Reginald 'Reggie' Royce,  Steven Davies, Susan Chandler Timothy Ipswich"
 	},
 	{
 		name: "LJ",
