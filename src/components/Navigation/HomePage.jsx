@@ -12,6 +12,7 @@ import feed from '../Images/feed.png'
 import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
+import nexus from '../Images/nexus.jpg'
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
 import { Link } from 'react-router-dom';
@@ -112,13 +113,12 @@ class HomePage extends Component {
 				</Col>
 				<Col>
 					<ImgPanel width={300} height={350} img={control2} to='controllers' title='Control' body='Who is responsible?'/>
-					<Panel onClick={() => window.open('https://www.patreon.com/wcmprojectnexus')} style={{width: 300, height: 350, cursor: 'pointer', position: 'relative', float:'left', display:'flex', margin: '10px', backgroundColor: 'black', alignItems: 'center', justifyContent: 'center', }} shaded bodyFill>
-            <div >
-                <img width='100%'  src={"https://cdn.discordapp.com/attachments/582049508825890856/799759707820261496/unnamed.png"} alt='Powered by Project Nexus' />        
+					<Panel style={{width: 300, height: 350, position: 'relative', float:'left', display:'inline-block', margin: '10px', cursor: 'pointer'}} onClick={()=> this.openNexus()} shaded bodyFill>
+            <div className="container">
+                <img src={nexus} className='image' height='auto' alt='Failed to load img' />             
             </div>
-						{/*<h5 style={{ color:'#099def' }}>People online: 0</h5>*/}
             <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white'}}>CANDI Version {this.props.version}</h6>
-        </Panel>
+        	</Panel>
 				</Col>
 		</Row>
 		<Row style={{display: 'inherit'}}>
@@ -129,7 +129,7 @@ class HomePage extends Component {
 		{this.props.user.roles.some(el=> el === 'Control') && <React.Fragment>
 			<Row>
 				<Col>
-				<ImgPanel width={620} height={250} img={control} to='control' title='Control Terminal' body='They Keys to the whole empire'/>	
+				<ImgPanel className='image' width={620} height={250} img={control} to='control' title='Control Terminal' body='They Keys to the whole empire'/>	
 				</Col>
 			</Row>
 			</React.Fragment>}
