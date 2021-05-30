@@ -152,7 +152,7 @@ class OtherCharacters extends Component {
 							<Button appearance={"ghost"} onClick={() => this.setState({ edit: true })}>Modify</Button>
 							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Resources</Button>
 						</ButtonGroup>
-							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Assets" >
+							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Resources" >
 						<List size="md">
 							{this.state.selected.assets.map((asset, index) => (
 								<List.Item key={index} index={index} size='md'>

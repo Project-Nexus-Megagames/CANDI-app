@@ -177,7 +177,8 @@ const spook = [
 'https://media1.giphy.com/media/nyNS6Cfrnkdj2/giphy.gif',
 'https://i1.wp.com/nileease.com/wp-content/uploads/2020/05/cf028dae44f0f5b1e7763747f422bbe0.gif?fit=400%2C222&ssl=1',
 'https://i.pinimg.com/originals/44/03/f8/4403f8810a593202d3b5a44893ac3835.gif',
-'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif'
+'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif',
+'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/86b28b6a-9021-4e90-a0e8-a4c90d1101e5/dcojqze-cc1a7fa3-47d5-4bfb-84b0-2aac7bfa6434.png/v1/fill/w_1024,h_827,strp/stolen_by_cottonvalent_dcojqze-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODI3IiwicGF0aCI6IlwvZlwvODZiMjhiNmEtOTAyMS00ZTkwLWEwZTgtYTRjOTBkMTEwMWU1XC9kY29qcXplLWNjMWE3ZmEzLTQ3ZDUtNGJmYi04NGIwLTJhYWM3YmZhNjQzNC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.xFBtgnLBCCPeIIAdqtVFjN_oEhpo2p1DZg6EeSBXly0'
 ]
 
 const bored = [

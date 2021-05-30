@@ -157,13 +157,20 @@ const controllers = [
 		timezone: "EST",
 		responsibilities: "Razmus, Alfie Barnes, Alias, Christopher Foster, Dead Gorgeous, Sanoh Prasansapakit, Shani Blake, Jean-Luc Leroux, Layla Chambers"
 	},
-		{
-			name: "Alex",
-			role: "South Control",
-			email: "duskcontrolsouth@gmail.com",
-			timezone: "GMT",
-			responsibilities: "Aaron Storme, Dominik, Gustave, Helga Adler, Jennifer Yuen, Letitia Mayhew, Maisie Walliams, Orla Kuchler, Roger Broom"
-		},
+	{
+		name: "Alex",
+		role: "South Control",
+		email: "duskcontrolsouth@gmail.com",
+		timezone: "GMT",
+		responsibilities: "Aaron Storme, Dominik, Gustave, Helga Adler, Jennifer Yuen, Letitia Mayhew, Maisie Walliams, Orla Kuchler, Roger Broom"
+	},
+	{
+		name: "Simo",
+		role: "West Control",
+		email: "duskcontrolwest@gmail.com",
+		timezone: "GMT+3",
+		responsibilities: "Alan Monty, Adrian Montgomery, Charles Layton, Gregory Toska, James Marras, Lucia Siska, Marivic Belen, Mikael Tharson, Ray Johnson" 
+	},
 	{
     name: "Scott",
     role: "Tech Support",
