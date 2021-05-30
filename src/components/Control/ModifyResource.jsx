@@ -74,6 +74,10 @@ class ModifyResource extends Component {
 		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
 
+	handleDelete = async () => {
+		socket.emit('assetRequest', 'delete', { id: this.state.selected }); // new Socket event	
+	}
+
 	renderAss = () => {
 		if (this.state.selected) {
 			return (
