@@ -25,9 +25,7 @@ const slice = createSlice({
     },
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
-      /*
 
-      */
       let jwt = action.payload.token;
       console.log(jwt)
       localStorage.setItem('nexusAuth', jwt );
@@ -64,7 +62,6 @@ const slice = createSlice({
 			auth.loading = false;
 			auth.lastLogin = null;
 			auth.error = null;
-
 		},
 		updateUser: (auth, action) => {
 			console.log(`${action.type} Dispatched`);

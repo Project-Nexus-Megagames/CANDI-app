@@ -59,7 +59,7 @@ const initUpdates = () => {
     socket.on('deleteClients', (data) => { 
         console.log('deleteClients');
         for (const el of data) {
-            switch(el.type) {
+            switch(el.model) {
                 case 'character':
                     store.dispatch(characterDeleted(el));
                     break;

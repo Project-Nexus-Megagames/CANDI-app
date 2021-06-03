@@ -214,6 +214,7 @@ class OtherCharacters extends Component {
 	filter = (fil) => {
 		const filtered = this.props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
 		char.email.toLowerCase().includes(fil.toLowerCase()) || 
+		char.characterActualName.toLowerCase().includes(fil.toLowerCase()) || 
 		char.tag.toLowerCase().includes(fil.toLowerCase()));
 		this.setState({ filtered });
 		this.createListCatagories(filtered);
