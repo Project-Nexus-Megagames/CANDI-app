@@ -140,9 +140,21 @@ class OtherCharacters extends Component {
 								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:</p>
 								<p>{this.state.selected.bio}</p>
 								<Divider>{this.makeButton()}</Divider>
-
-								<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="320" />
-
+										<FlexboxGrid>
+											<FlexboxGrid.Item colspan={12}>
+												<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" />
+											</FlexboxGrid.Item>
+											<FlexboxGrid.Item colspan={12} style={{ textAlign: 'center' }}>
+												<h4>Supporters</h4>
+											<List size="md" >
+												{this.state.selected.supporters.map((supporter, index) => (
+													<List.Item key={index} index={index} size='md'>
+														<div>{supporter}</div>
+													</List.Item>
+												))}
+											</List>
+											</FlexboxGrid.Item>
+										</FlexboxGrid>
 							</Panel>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={1} />
@@ -153,7 +165,7 @@ class OtherCharacters extends Component {
 							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Resources</Button>
 						</ButtonGroup>
 							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Resources" >
-						<List size="md">
+						<List size="md" bordered>
 							{this.state.selected.assets.map((asset, index) => (
 								<List.Item key={index} index={index} size='md'>
 									<div>{asset.name}</div>
