@@ -139,7 +139,7 @@ class OtherCharacters extends Component {
 								<br></br>
 								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:</p>
 								<p>{this.state.selected.bio}</p>
-								<Divider></Divider>
+								<Divider>{this.makeButton()}</Divider>
 
 								<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="320" />
 
