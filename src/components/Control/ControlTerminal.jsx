@@ -246,7 +246,7 @@ class ControlTerminal extends Component {
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 							{'  '}
-						HEY! This is Scott. Do NOT edit assets to reduce their usage for purposes of people using them on actions. If you do I will revoke your Control priveledges >.>  
+						HEY! This is Scott. Do NOT edit assets to reduce their usage for purposes of people using them on actions. This will mess up the automation I am working on and players will get confused.
 							<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 					</Modal.Body>
 					<Modal.Footer>
