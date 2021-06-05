@@ -17,6 +17,7 @@ class ControlTerminal extends Component {
 		gsModal: false,
 		warningModal: false,
 		warning2Modal: false,
+		scottModal: false,
 		assModal: false,
 		projectModal: false,
 		newCharater: false,
@@ -151,9 +152,10 @@ class ControlTerminal extends Component {
 					<Panel>
 						<ButtonGroup >
 							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
-							<Button appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
+							<Button disabled appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions [DISABLED] </Button>
 							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
-							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
+							{/*<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>*/}
+							<Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button>
 							<Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button>
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
@@ -236,6 +238,23 @@ class ControlTerminal extends Component {
             </Button>
             <Button onClick={() => this.setState({ warningModal: false })} appearance="subtle">
 				Nevermind
+            </Button>
+		</Modal.Footer>
+				</Modal>
+
+				<Modal backdrop="static" size='sm' show={this.state.scottModal} onHide={() => this.setState({ scottModal: false })}>
+					<Modal.Body>
+						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+							{'  '}
+						HEY! This is Scott. Do NOT edit assets to reduce their usage for purposes of people using them on actions. This will mess up the automation I am working on and players will get confused.
+							<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+					</Modal.Body>
+					<Modal.Footer>
+            <Button onClick={() => this.setState({ assModal: true })} appearance="primary">
+							I understand
+            </Button>
+            <Button onClick={() => this.setState({ scottModal: false })} appearance="subtle">
+							This warning Modal Can't stop me if I don't read it!
             </Button>
 		</Modal.Footer>
 				</Modal>

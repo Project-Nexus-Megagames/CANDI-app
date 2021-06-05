@@ -24,6 +24,7 @@ class Bitsy extends Component {
     console.log('hi');
   }
 	render() {
+  if (!this.props.login) return (<h1>You bypassed login again Scott... you can't just type /bitsy</h1>)
   return ( 
 		<React.Fragment>
       <Panel style={{ height: '50vh'}} bordered>
@@ -45,6 +46,7 @@ class Bitsy extends Component {
 
 const mapStateToProps = (state) => ({
 	locations: state.locations.list,
+  login: state.auth.login,
 });
 
 const mapDispatchToProps = (dispatch) => ({});
