@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -233,7 +233,9 @@ const bored = [
     'https://www.youtube.com/watch?v=XKqqqO83yp0', // Guy blow dries his tongue then eats a cracker...
     'https://www.youtube.com/watch?v=GfCqnHgXwBo',  // How to troll a parade
     'https://www.youtube.com/watch?v=TLV30GuX-ug',
-    'https://www.youtube.com/watch?v=4W3Pfrv0lfg'
+    'https://www.youtube.com/watch?v=4W3Pfrv0lfg',
+    'https://www.youtube.com/watch?v=nqhLn76kCv0',
+    'https://pointerpointer.com/'
 
 ]
 
