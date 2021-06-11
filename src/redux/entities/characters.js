@@ -72,6 +72,13 @@ export const getMyCharacter = createSelector(
   )
 );
 
+export const getBadCharacters = createSelector(
+  state => state.characters.list,
+  (characters) => characters.filter(
+    char => char.controlEmail === '' || char.pronouns === ''
+  )
+);
+
 // characters Loader into state
 export const loadCharacters = payload => (dispatch, getState) => {
   return dispatch(

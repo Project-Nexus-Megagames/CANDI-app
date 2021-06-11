@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
-import { getMyCharacter } from '../../redux/entities/characters';
+import { getBadCharacters, getMyCharacter } from '../../redux/entities/characters';
 import { draftActions } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import { assetsRequested } from '../../redux/entities/assets';
@@ -131,7 +131,10 @@ class ControlTerminal extends Component {
 				<div style={{height: '10vh'}} >
 					<Divider>Scott's Message of the Day:</Divider>
 					<div>
-						<h5>Still Working on the table below.</h5>
+						<h5>There are {this.props.badCharacters.length} characters with bad email/pronouns</h5>
+						{this.props.badCharacters.map((bad, index) => (
+							<Tag color='red'>{bad.characterName}</Tag>
+						))}
 					</div>					
 				</div>
 				<div style={{height: '15vh'}}>
@@ -381,7 +384,8 @@ const mapStateToProps = (state) => ({
 	characters: state.characters.list,
 	actions: state.actions.list,
 	draftActions: draftActions(state),
-	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined
+	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	badCharacters: getBadCharacters(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
