@@ -113,7 +113,8 @@ class NewAction extends Component {
 				</Modal.Body>
 				<Modal.Footer>
 		<Button onClick={() => this.handleSubmit()} loading={this.props.actionLoading} disabled={this.isDisabled()} appearance="primary">
-            Submit
+            {this.isDisabled() && <b>Text is too short</b>}
+						{!this.isDisabled() && <b>Submit</b>}
         </Button>
 		<Button onClick={() => this.props.closeNew()} appearance="subtle">
             Cancel

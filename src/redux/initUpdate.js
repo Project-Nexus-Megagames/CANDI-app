@@ -73,7 +73,7 @@ const initUpdates = () => {
                     store.dispatch(assetDeleted(el));
                     break;
                 default:
-                    console.log(`Unable to add Redux for ${el.type}: ${el.id}`);
+                    console.log(`Unable to add Redux for ${el.model}: ${el.id}`);
                     break;
             }
         }

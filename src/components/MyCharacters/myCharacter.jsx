@@ -189,6 +189,7 @@ class MyCharacter extends Component {
                                 onClick={() => this.openLend(asset)}
                                 appearance="ghost"
                                 size="sm"
+                                disabled={asset.status.used}
                               >
                                 Lend
                               </Button>
