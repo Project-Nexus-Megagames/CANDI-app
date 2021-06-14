@@ -241,6 +241,10 @@ class MyCharacter extends Component {
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {bond.uses > 0 && (
                     <React.Fragment>
+                      <Affix>
+                        {bond.status.lendable && bond.status.lent && this.rednerHolder(bond)}
+                        {bond.status.lendable && !bond.status.lent && <Tag color="green">Ready</Tag>}
+                      </Affix>
                       <Panel
                         style={{ backgroundColor: "#1a1d24" }}
                         shaded
@@ -249,7 +253,30 @@ class MyCharacter extends Component {
                         collapsible
                       >
                         <p>{bond.description}</p>
-
+                        <FlexboxGrid.Item
+                            style={{ textAlign: "center" }}
+                            colspan={4}
+                          >
+                            {bond.status.lendable && !bond.status.lent && (
+                              <Button
+                                onClick={() => this.openLend(bond)}
+                                appearance="ghost"
+                                size="sm"
+                                disabled={bond.status.used}
+                              >
+                                Lend
+                              </Button>
+                            )}
+                            {bond.status.lendable && bond.status.lent && (
+                              <Button
+                                onClick={() => this.openUnlend(bond)}
+                                appearance="ghost"
+                                size="sm"
+                              >
+                                Un-Lend
+                              </Button>
+                            )}
+                          </FlexboxGrid.Item>
                         {bond.uses !== 999 && <p>Uses: {bond.uses}</p>}
                       </Panel>
                     </React.Fragment>
