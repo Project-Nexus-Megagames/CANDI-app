@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px' }} src={birthday[bRand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -122,7 +122,8 @@ class Loading extends Component {
                 </FlexboxGrid>
             </Content>
             <Divider/>
-                <b>{loadingMsg[rand1]}</b>
+                <h1>Happy Birthday Kyle!</h1>
+                {/*<b>{loadingMsg[rand1]}</b>*/}
         </React.Fragment>
         );        
     }
@@ -239,6 +240,12 @@ const bored = [
 
 ]
 
+const birthday = [
+    'https://i.pinimg.com/originals/43/3c/42/433c420a99ffccb150b9981bd6bba9cf.gif',
+    'https://i.pinimg.com/originals/54/5b/fd/545bfd1c316ee9fce8c30b9414c4421d.gif'
+
+]
+
 const loadingMsg = [
     'Loading...',   
     'Thank you all for taking time to make this game happen.',  
@@ -271,4 +278,5 @@ const loadingMsg = [
 ]
 
 const rand = (Math.floor(Math.random() * spook.length ));
+const bRand = (Math.floor(Math.random() * birthday.length ));
 const rand1 = (Math.floor(Math.random() * loadingMsg.length ));
