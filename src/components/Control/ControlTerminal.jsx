@@ -157,8 +157,8 @@ class ControlTerminal extends Component {
 							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
 							<Button disabled appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions [DISABLED] </Button>
 							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
-							{/*<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>*/}
-							<Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button>
+							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
+							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
 							<Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button>
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
@@ -245,7 +245,7 @@ class ControlTerminal extends Component {
 		</Modal.Footer>
 				</Modal>
 
-				<Modal backdrop="static" size='sm' show={this.state.scottModal} onHide={() => this.setState({ scottModal: false })}>
+				{/* <Modal backdrop="static" size='sm' show={this.state.scottModal} onHide={() => this.setState({ scottModal: false })}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 							{'  '}
@@ -260,7 +260,7 @@ class ControlTerminal extends Component {
 							This warning Modal Can't stop me if I don't read it!
             </Button>
 		</Modal.Footer>
-				</Modal>
+				</Modal> */}
 			
 				<Modal backdrop="static" size='sm' show={this.state.warning2Modal} onHide={() => this.setState({ warning2Modal: false })}>
 					<Modal.Body>
