@@ -340,6 +340,7 @@ class SelectedAction extends Component {
 					<Panel style={{backgroundColor: "#272b34"}} shaded bordered >
 						<FlexboxGrid align='middle'>
 							<FlexboxGrid.Item colspan={20}>
+							<b>{asset.type}</b>
 							<b>{asset}</b>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
