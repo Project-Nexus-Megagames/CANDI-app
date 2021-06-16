@@ -196,7 +196,7 @@ class SelectedAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-        <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
+        <Button onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
             Submit
         </Button>
         <Button onClick={() => this.closeEdit()} appearance="subtle">
@@ -266,7 +266,7 @@ class SelectedAction extends Component {
 
 				</Modal.Body>
 				<Modal.Footer>
-					<Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
+					<Button onClick={() => this.handleSubmit()} appearance="primary">
 						Submit
 					</Button>
 					<Button onClick={() => this.closeResult()} appearance="subtle">
@@ -296,21 +296,21 @@ class SelectedAction extends Component {
 
 	handleSubmit = async () => {
 		this.setState({loading: true}) 
-		const action = {
-			effort: this.state.effort,
-			asset1: this.state.asset1,
-			asset2: this.state.asset2,
-			asset3: this.state.asset3,
-			description: this.state.description,
-			intent: this.state.intent,
-			result: this.state.result,
-			dieResult: this.state.dieResult,
-			status: this.state.status,
-			id: this.props.action._id,
-			type: this.props.action.type,
-			mechanicalEffect: this.state.mechanicalEffect,
-			playerBoolean: this.state.edit	
-		}
+		let action = { ...this.props.action };
+
+		action.effort= this.state.effort
+		action.asset1= this.state.asset1
+		action.asset2= this.state.asset2
+		action.asset3= this.state.asset3
+		action.description= this.state.description
+		action.intent= this.state.intent
+		action.result= this.state.result
+		action.dieResult= this.state.dieResult
+		action.status= this.state.status
+		action.id= this.props.action._id
+		action.mechanicalEffect= this.state.mechanicalEffect
+		action.playerBoolean= this.state.edit	
+	
 		// console.log(action)
 		// 1) make a new action
 		try{
