@@ -242,7 +242,9 @@ const bored = [
 
 const birthday = [
     'https://i.pinimg.com/originals/43/3c/42/433c420a99ffccb150b9981bd6bba9cf.gif',
-    'https://i.pinimg.com/originals/54/5b/fd/545bfd1c316ee9fce8c30b9414c4421d.gif'
+    'https://i.pinimg.com/originals/54/5b/fd/545bfd1c316ee9fce8c30b9414c4421d.gif',
+    'https://media1.tenor.com/images/b7e33bd26c649ee7ee5114835cad8898/tenor.gif?itemid=13929089',
+    'https://media1.tenor.com/images/b7e33bd26c649ee7ee5114835cad8898/tenor.gif?itemid=13929089'
 
 ]
 
