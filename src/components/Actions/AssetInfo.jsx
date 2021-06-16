@@ -8,6 +8,7 @@ function AssetInfo({ asset, showInfo, closeInfo }) {
 					<Modal.Title>{asset.name}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
+					{asset.type === 'Bond' && <b>Level: {asset.level}</b>}
 					<p>{asset.description}</p>
                     {asset.uses !== 999 && <React.Fragment>
                         <Divider/> <b>Uses: {asset.uses}</b>
