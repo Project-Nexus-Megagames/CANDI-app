@@ -17,19 +17,6 @@ class ModifyResource extends Component {
 		loading: false
 	}
 
-	componentDidMount = () => {
-		const stateReplace = JSON.parse(localStorage.getItem('modifyResourceState'));
-		console.dir(stateReplace);
-		if (stateReplace) this.setState(stateReplace); 
-	}
-
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('modifyResourceState', JSON.stringify(this.state));
-			console.log(localStorage);
-		};
-	};
-		
 	assetModify = async () => {
 		this.props.assetDispatched();
 		const data = {
