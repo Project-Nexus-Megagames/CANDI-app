@@ -25,7 +25,7 @@ import {
   Row,
 } from "rsuite";
 import { getMyCharacter } from "../../redux/entities/characters";
-import { assetLent, assetUpdated } from "../../redux/entities/assets";
+import { assetLent, assetUpdated, getMyAssets } from "../../redux/entities/assets";
 import socket from "../../socket";
 // import { playerActionsRequested } from "../../redux/entities/playerActions";
 import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
@@ -91,6 +91,7 @@ class MyCharacter extends Component {
 
   render() {
     const playerCharacter = this.props.myCharacter;
+    const myAssets = this.props.getMyAssets;
     if (!this.props.login) {
       this.props.history.push("/");
       return <Loader inverse center content="doot..." />;
@@ -161,13 +162,14 @@ class MyCharacter extends Component {
             <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
                 Assets
               </Divider>
-              {playerCharacter.assets.filter(el => (el.type === 'Asset' || el.type === 'Wealth') && el.status.hidden !== true ).map((asset, index) => (
+              {myAssets.filter(el => (el.type === 'Asset' || el.type === 'Wealth') && el.status.hidden !== true ).map((asset, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {asset.uses > 0 && (
                     <React.Fragment>
                       <Affix>
                         {asset.status.lent && this.rednerHolder(asset)}
                         {!asset.status.lent && <Tag color="green">Ready</Tag>}
+                        {asset.status.lent && this.findOwner(asset._id)}
                       </Affix>
                       <Panel
                         style={{ backgroundColor: "#1a1d24" }}
@@ -214,7 +216,7 @@ class MyCharacter extends Component {
               <Divider style={{ marginBottom: "0px" }}>
                 Traits
               </Divider>
-              {playerCharacter.assets.filter(el => el.type === 'Trait' && el.status.hidden !== true).map((trait, index) => (
+              {myAssets.filter(el => el.type === 'Trait' && el.status.hidden !== true).map((trait, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {trait.uses >= 0 && ( // change this back to > 0
                     <React.Fragment>
@@ -237,13 +239,14 @@ class MyCharacter extends Component {
               <Divider style={{ marginBottom: "0px" }}>
                 Bonds/Territories
               </Divider>
-              {playerCharacter.assets.filter(el => (el.type === 'Bond' || el.type === 'Territory') && el.status.hidden !== true).map((bond, index) => (
+              {myAssets.filter(el => (el.type === 'Bond' || el.type === 'Territory') && el.status.hidden !== true).map((bond, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {bond.uses > 0 && (
                     <React.Fragment>
                       <Affix>
                         {bond.status.lendable && bond.status.lent && this.rednerHolder(bond)}
                         {bond.status.lendable && !bond.status.lent && <Tag color="green">Ready</Tag>}
+                        {bond.status.lent && this.findOwner(bond._id)}
                       </Affix>
                       <Panel
                         style={{ backgroundColor: "#1a1d24" }}
@@ -285,7 +288,7 @@ class MyCharacter extends Component {
               ))}
 
               <Divider style={{ marginBottom: "0px" }}>Powers</Divider>
-              {playerCharacter.assets.filter(el => el.type === 'Power' && el.status.hidden !== true).map((power, index) => (
+              {myAssets.filter(el => el.type === 'Power' && el.status.hidden !== true).map((power, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {power.uses >= 0 && ( // change this back to > 0
                     <React.Fragment>
@@ -305,19 +308,6 @@ class MyCharacter extends Component {
                 </div>
               ))}
 
-             <Divider style={{ marginBottom: "0px" }}>
-                Borrowed Assets
-              </Divider>
-              {playerCharacter.lentAssets.map((borrowed, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  <Affix>
-                    {borrowed.status.lent && this.findOwner(borrowed._id)}
-                  </Affix>
-                  <Panel shaded header={borrowed.name} bordered collapsible>
-                    <p>{borrowed.description}</p>
-                  </Panel>
-                </div>
-              ))}
             </Col>
           </Row>
         </Grid>
@@ -483,6 +473,7 @@ const mapStateToProps = (state) => ({
   assets: state.assets.list,
   characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+  getMyAssets: getMyAssets(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
