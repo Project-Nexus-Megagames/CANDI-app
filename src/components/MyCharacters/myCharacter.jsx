@@ -251,7 +251,7 @@ class MyCharacter extends Component {
                       <Panel
                         style={{ backgroundColor: "#1a1d24" }}
                         shaded
-                        header={bond.name}
+                        header={bond.name + ' - ( ' + bond.level + ' )'}
                         bordered
                         collapsible
                       >
