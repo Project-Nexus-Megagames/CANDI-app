@@ -85,7 +85,7 @@ class ModifyResource extends Component {
 			return (
 				<Panel>
 					Name: {this.state.name}
-					<textarea value={this.state.name} className='textStyle' onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	
+					{/* <textarea value={this.state.name} className='textStyle' onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	 */}
 					<Divider />
 					Description:
 					<textarea rows='4' value={this.state.description} className='textStyle' onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
