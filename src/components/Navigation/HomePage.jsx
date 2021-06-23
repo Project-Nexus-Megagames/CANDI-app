@@ -13,9 +13,18 @@ import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
 import nexus from '../Images/nexus.jpg'
+
+// Duck
+import actionDuck from '../Duck/action.jpg'
+import control2Duck from '../Duck/Control.jpg'
+import feedDuck from '../Duck/feed.jpg'
+import otherDuck from '../Duck/othercharacters.jpg'
+import nexusDuck from '../Duck/nexus.jpg'
+
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
 import { Link } from 'react-router-dom';
+import { toggleDuck } from '../../redux/entities/gamestate';
 
 class HomePage extends Component {
 	constructor(props) {
@@ -88,6 +97,7 @@ class HomePage extends Component {
 									<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
 									<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
+									<Dropdown.Item onSelect={()=> this.props.toggleDuck()}>Quack</Dropdown.Item>
 								</Dropdown>					
 							</FlexboxGrid.Item>
 						<FlexboxGrid.Item colspan={22}>
@@ -105,17 +115,17 @@ class HomePage extends Component {
 				<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
 				<Row style={{display: 'inherit'}}>
 				<Col>
-				<ImgPanel width={620} height={250} img={city} to='map' title='Map'  body='View Dusk City'/>
+				<ImgPanel width={620} height={250} img={!this.props.duck ? city : 'https://isteam.wsimg.com/ip/f6ab3626-8e65-11e5-80e5-f04da206c13a/ols/278_original/:/rs=w:600,h:600'} to='map' title='Map'  body='View Dusk City'/>
 				</Col>
 				<Col>
-					<ImgPanel width={300} height={350} img={action} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
-					<ImgPanel width={300} height={350} img={feed} to='character' title='My Character' body='My Assets and Traits'/>
+					<ImgPanel width={300} height={350} img={!this.props.duck ? action : actionDuck} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
+					<ImgPanel width={300} height={350} img={!this.props.duck ? feed : feedDuck} to='character' title='My Character' body='My Assets and Traits'/>
 				</Col>
 				<Col>
-					<ImgPanel width={300} height={350} img={control2} to='controllers' title='Control' body='Who is responsible?'/>
+					<ImgPanel width={300} height={350} img={!this.props.duck ? control2 : control2Duck} to='controllers' title='Control' body='Who is responsible?'/>
 					<Panel style={{width: 300, height: 350, position: 'relative', float:'left', display:'inline-block', margin: '10px', cursor: 'pointer'}} onClick={()=> this.openNexus()} shaded bodyFill>
             <div className="container">
-                <img src={nexus} className='image' height='auto' alt='Failed to load img' />             
+                <img src={!this.props.duck ? nexus : nexusDuck} className='image' height='auto' alt='Failed to load img' />             
             </div>
             <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white'}}>CANDI Version {this.props.version}</h6>
         	</Panel>
@@ -123,7 +133,7 @@ class HomePage extends Component {
 		</Row>
 		<Row style={{display: 'inherit'}}>
 			<Col>
-				<ImgPanel width={620} height={250} img={other} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
+				<ImgPanel width={620} height={250} img={!this.props.duck ? other : otherDuck} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
 			</Col>
 		</Row>
 		{this.props.user.roles.some(el=> el === 'Control') && <React.Fragment>
@@ -172,11 +182,13 @@ const mapStateToProps = (state) => ({
 	assetsLoaded: state.assets.loaded,
 	locationsLoaded: state.locations.loaded,
 	version: state.gamestate.version,
+	duck: state.gamestate.duck,
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	logOut: () => dispatch(signOut())
+	logOut: () => dispatch(signOut()),
+	toggleDuck: (data) => dispatch(toggleDuck(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

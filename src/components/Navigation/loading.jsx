@@ -244,7 +244,14 @@ const birthday = [
     'https://i.pinimg.com/originals/54/5b/fd/545bfd1c316ee9fce8c30b9414c4421d.gif',
     'https://media1.tenor.com/images/b7e33bd26c649ee7ee5114835cad8898/tenor.gif?itemid=13929089',
     'https://media1.tenor.com/images/b7e33bd26c649ee7ee5114835cad8898/tenor.gif?itemid=13929089'
+]
 
+const duck = [
+    'https://media1.tenor.com/images/a6fe1299a96e143c3249edbe50f4a55f/tenor.gif?itemid=4522389',
+    'https://media1.tenor.com/images/0e004747d2e41dcd26fdd39a10df50b1/tenor.gif?itemid=15884158',
+    'https://media1.tenor.com/images/f85dcbdc742c0e32bc933fc2002f0bcd/tenor.gif?itemid=15449339',
+    'https://media1.tenor.com/images/f89ea03a4f7bfdd47980a04e5a0c964f/tenor.gif?itemid=16629770',
+    'https://media2.giphy.com/media/rtRflhLVzbNWU/giphy.gif?cid=790b7611acef6b0baf91079205a45b562faac7ca2a35735e&rid=giphy.gif&ct=s'
 ]
 
 const loadingMsg = [

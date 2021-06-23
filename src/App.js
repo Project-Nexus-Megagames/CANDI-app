@@ -80,7 +80,7 @@ const App = (props) => {
   }, [loadChar, loadAssets, loadGamestate, loadLocations])
 
   return (
-    <div className="App" > {/*style={props.loading ? loading : done} */}
+    <div className="App" style={ props.duck ? { backgroundImage: `url("https://media.tenor.com/images/596a8e59748d4ebcf222a97a5b5897e5/tenor.gif")` } : {}} > {/*style={props.loading ? loading : done} */}
       {/*  props.login && props.myCharacter && !props.loading && <Header>
         <NavigationBar/>
       </Header> */}
@@ -137,6 +137,7 @@ const mapStateToProps = (state) => ({
   version: state.gamestate.version,
   characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	duck: state.gamestate.duck,
 });
 
 const mapDispatchToProps = (dispatch) => ({
