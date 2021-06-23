@@ -155,7 +155,7 @@ class ControlTerminal extends Component {
 					<Panel>
 						<ButtonGroup >
 							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
-							<Button disabled appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions [DISABLED] </Button>
+							<Button appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
 							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
 							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
 							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
