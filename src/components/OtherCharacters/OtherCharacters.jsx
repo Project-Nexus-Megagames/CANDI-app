@@ -79,7 +79,7 @@ class OtherCharacters extends Component {
 									<List.Item key={index} index={index} onClick={() => this.setState({ selected: character })} style={this.listStyle(character)}>
 										<FlexboxGrid>
 											<FlexboxGrid.Item colspan={5} style={styleCenter}>
-												<Avatar src={`/images/${character.characterName}.jpg`} alt='?' circle/>
+												<Avatar src={this.props.duck ? `/duck/${character.characterName}.jpg` : `/images/${character.characterName}.jpg`} alt='?' circle/>
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 												<b style={titleStyle}>{character.characterName}</b>
@@ -142,7 +142,7 @@ class OtherCharacters extends Component {
 								<Divider>{this.makeButton()}</Divider>
 										<FlexboxGrid>
 											<FlexboxGrid.Item colspan={12}>
-												<img src={`/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" />
+												<img src={this.props.duck? `/duck/${this.state.selected.characterName}.jpg` : `/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" />
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={12} style={{ textAlign: 'center' }}>
 												<h4>Supporters</h4>
@@ -262,6 +262,7 @@ const mapStateToProps = (state) => ({
 	assets: state.assets.list,
 	login: state.auth.login,
 	characters: state.characters.list,
+	duck: state.gamestate.duck,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined
 });
 

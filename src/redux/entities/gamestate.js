@@ -13,7 +13,8 @@ const slice = createSlice({
 		round: null,
 		endTime: null,
 		status: '',
-		tag: ''
+		tag: '',
+    duck: true
   },
   // Reducers - Events
   reducers: {
@@ -40,6 +41,10 @@ const slice = createSlice({
     gamestateAdded: (gamestate, action) => {
       console.log(`${action.type} Dispatched`)
       gamestate.list.push(action.payload);
+    },
+    toggleDuck: (gamestate, action) => {
+      console.log(`${action.type} Dispatched`)
+      gamestate.duck = !gamestate.duck;
     }
   }
 });
@@ -49,7 +54,8 @@ export const {
   gamestateAdded,
   gamestateReceived,
   gamestateRequested,
-  gamestateRequestFailed
+  gamestateRequestFailed,
+  toggleDuck
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export
