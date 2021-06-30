@@ -79,8 +79,16 @@ const App = (props) => {
     })
   }, [loadChar, loadAssets, loadGamestate, loadLocations])
 
+  const quack = () => {
+    console.log('hello')
+    const audio = new Audio('/killsound.wav');
+    audio.loop = false;
+    audio.volume = 0.15;
+    audio.play();  
+  }
+
   return (
-    <div className="App" style={ props.duck ? { backgroundImage: `url("https://media.tenor.com/images/596a8e59748d4ebcf222a97a5b5897e5/tenor.gif")` } : {}} > {/*style={props.loading ? loading : done} */}
+    <div className="App" onClick={props.duck ? () => quack() : undefined} style={ props.duck ? { backgroundImage: `url("https://media.tenor.com/images/596a8e59748d4ebcf222a97a5b5897e5/tenor.gif")` } : {}} > {/*style={props.loading ? loading : done} */}
       {/*  props.login && props.myCharacter && !props.loading && <Header>
         <NavigationBar/>
       </Header> */}

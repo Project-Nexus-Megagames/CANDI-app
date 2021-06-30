@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px' }} src={duck[duckRand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -122,7 +122,8 @@ class Loading extends Component {
                 </FlexboxGrid>
             </Content>
             <Divider/>
-                <b>{loadingMsg[rand1]}</b>
+                    <b>Quack quack quack quack? Quack quack! Quack!!!</b>
+                {/* <b>{loadingMsg[rand1]}</b> */}
         </React.Fragment>
         );        
     }
@@ -235,9 +236,10 @@ const bored = [
     'https://www.youtube.com/watch?v=TLV30GuX-ug',
     'https://www.youtube.com/watch?v=4W3Pfrv0lfg',
     'https://www.youtube.com/watch?v=nqhLn76kCv0',
-    'https://pointerpointer.com/'
+    'https://pointerpointer.com/',
+    'https://www.youtube.com/watch?v=Cv42itgRU6o'
 
-]
+] // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
 
 const birthday = [
     'https://i.pinimg.com/originals/43/3c/42/433c420a99ffccb150b9981bd6bba9cf.gif',
@@ -280,5 +282,5 @@ const loadingMsg = [
 ]
 
 const rand = (Math.floor(Math.random() * spook.length ));
-const bRand = (Math.floor(Math.random() * birthday.length ));
+const duckRand = (Math.floor(Math.random() * duck.length ));
 const rand1 = (Math.floor(Math.random() * loadingMsg.length ));
