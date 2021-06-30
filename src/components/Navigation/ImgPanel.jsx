@@ -3,6 +3,7 @@ import { Panel } from 'rsuite'
 import { Link } from 'react-router-dom'
 
 const ImgPanel = (props) => {
+    
     return (
         <Panel style={{width: props.width, height: props.height, position: 'relative', float:'left', display:'inline-block', margin: '10px'}} shaded bodyFill>
             <Link to={props.disabled ? '#' : props.to}>

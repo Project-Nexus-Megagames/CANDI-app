@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px' }} src={duck[duckRand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -122,7 +122,8 @@ class Loading extends Component {
                 </FlexboxGrid>
             </Content>
             <Divider/>
-                <b>{loadingMsg[rand1]}</b>
+                    <b>Quack quack quack quack? Quack quack! Quack!!!</b>
+                {/* <b>{loadingMsg[rand1]}</b> */}
         </React.Fragment>
         );        
     }
@@ -235,16 +236,24 @@ const bored = [
     'https://www.youtube.com/watch?v=TLV30GuX-ug',
     'https://www.youtube.com/watch?v=4W3Pfrv0lfg',
     'https://www.youtube.com/watch?v=nqhLn76kCv0',
-    'https://pointerpointer.com/'
+    'https://pointerpointer.com/',
+    'https://www.youtube.com/watch?v=Cv42itgRU6o'
 
-]
+] // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
 
 const birthday = [
     'https://i.pinimg.com/originals/43/3c/42/433c420a99ffccb150b9981bd6bba9cf.gif',
     'https://i.pinimg.com/originals/54/5b/fd/545bfd1c316ee9fce8c30b9414c4421d.gif',
     'https://media1.tenor.com/images/b7e33bd26c649ee7ee5114835cad8898/tenor.gif?itemid=13929089',
     'https://media1.tenor.com/images/b7e33bd26c649ee7ee5114835cad8898/tenor.gif?itemid=13929089'
+]
 
+const duck = [
+    'https://media1.tenor.com/images/a6fe1299a96e143c3249edbe50f4a55f/tenor.gif?itemid=4522389',
+    'https://media1.tenor.com/images/0e004747d2e41dcd26fdd39a10df50b1/tenor.gif?itemid=15884158',
+    'https://media1.tenor.com/images/f85dcbdc742c0e32bc933fc2002f0bcd/tenor.gif?itemid=15449339',
+    'https://media1.tenor.com/images/f89ea03a4f7bfdd47980a04e5a0c964f/tenor.gif?itemid=16629770',
+    'https://media2.giphy.com/media/rtRflhLVzbNWU/giphy.gif?cid=790b7611acef6b0baf91079205a45b562faac7ca2a35735e&rid=giphy.gif&ct=s'
 ]
 
 const loadingMsg = [
@@ -273,5 +282,5 @@ const loadingMsg = [
 ]
 
 const rand = (Math.floor(Math.random() * spook.length ));
-const bRand = (Math.floor(Math.random() * birthday.length ));
+const duckRand = (Math.floor(Math.random() * duck.length ));
 const rand1 = (Math.floor(Math.random() * loadingMsg.length ));
