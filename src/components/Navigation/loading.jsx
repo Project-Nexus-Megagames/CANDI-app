@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px' }} src={duck[duckRand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -122,8 +122,8 @@ class Loading extends Component {
                 </FlexboxGrid>
             </Content>
             <Divider/>
-                    <b>Quack quack quack quack? Quack quack! Quack!!!</b>
-                {/* <b>{loadingMsg[rand1]}</b> */}
+                    {/* <b>Quack quack quack quack? Quack quack! Quack!!!</b> */}
+                <b>{loadingMsg[rand1]}</b>
         </React.Fragment>
         );        
     }
@@ -179,7 +179,12 @@ const spook = [
 'https://i1.wp.com/nileease.com/wp-content/uploads/2020/05/cf028dae44f0f5b1e7763747f422bbe0.gif?fit=400%2C222&ssl=1',
 'https://i.pinimg.com/originals/44/03/f8/4403f8810a593202d3b5a44893ac3835.gif',
 'https://media3.giphy.com/media/kiJEGxbplHfT5zkCDJ/giphy.gif',
-'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/86b28b6a-9021-4e90-a0e8-a4c90d1101e5/dcojqze-cc1a7fa3-47d5-4bfb-84b0-2aac7bfa6434.png/v1/fill/w_1024,h_827,strp/stolen_by_cottonvalent_dcojqze-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODI3IiwicGF0aCI6IlwvZlwvODZiMjhiNmEtOTAyMS00ZTkwLWEwZTgtYTRjOTBkMTEwMWU1XC9kY29qcXplLWNjMWE3ZmEzLTQ3ZDUtNGJmYi04NGIwLTJhYWM3YmZhNjQzNC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.xFBtgnLBCCPeIIAdqtVFjN_oEhpo2p1DZg6EeSBXly0'
+'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/86b28b6a-9021-4e90-a0e8-a4c90d1101e5/dcojqze-cc1a7fa3-47d5-4bfb-84b0-2aac7bfa6434.png/v1/fill/w_1024,h_827,strp/stolen_by_cottonvalent_dcojqze-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODI3IiwicGF0aCI6IlwvZlwvODZiMjhiNmEtOTAyMS00ZTkwLWEwZTgtYTRjOTBkMTEwMWU1XC9kY29qcXplLWNjMWE3ZmEzLTQ3ZDUtNGJmYi04NGIwLTJhYWM3YmZhNjQzNC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.xFBtgnLBCCPeIIAdqtVFjN_oEhpo2p1DZg6EeSBXly0',
+'https://media1.tenor.com/images/a6fe1299a96e143c3249edbe50f4a55f/tenor.gif?itemid=4522389', // here be ducks
+'https://media1.tenor.com/images/0e004747d2e41dcd26fdd39a10df50b1/tenor.gif?itemid=15884158',
+'https://media1.tenor.com/images/f85dcbdc742c0e32bc933fc2002f0bcd/tenor.gif?itemid=15449339',
+'https://media1.tenor.com/images/f89ea03a4f7bfdd47980a04e5a0c964f/tenor.gif?itemid=16629770',
+'https://media2.giphy.com/media/rtRflhLVzbNWU/giphy.gif?cid=790b7611acef6b0baf91079205a45b562faac7ca2a35735e&rid=giphy.gif&ct=s'
 ]
 
 const bored = [
