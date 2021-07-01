@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px' }} src={duck[duckRand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
@@ -122,8 +122,8 @@ class Loading extends Component {
                 </FlexboxGrid>
             </Content>
             <Divider/>
-                    <b>Quack quack quack quack? Quack quack! Quack!!!</b>
-                {/* <b>{loadingMsg[rand1]}</b> */}
+                    {/* <b>Quack quack quack quack? Quack quack! Quack!!!</b> */}
+                <b>{loadingMsg[rand1]}</b>
         </React.Fragment>
         );        
     }
