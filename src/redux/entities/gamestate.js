@@ -14,7 +14,7 @@ const slice = createSlice({
 		endTime: null,
 		status: '',
 		tag: '',
-    duck: true
+    duck: false
   },
   // Reducers - Events
   reducers: {
