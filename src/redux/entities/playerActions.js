@@ -100,12 +100,10 @@ export const draftActions = createSelector(
 export const loadplayerActions = payload => (dispatch, getState) => {
   let url = baseURL;
   
-  if (!payload.roles.some(el => el === 'Control' )) {
-    url = `${baseURL}/${payload.username}`
-  }  
-  
+  // if (!payload.roles.some(el => el === 'Control' )) {
+  //   url = `${baseURL}/${payload.username}`
+  // }  // NOTE TO SELF this makes players load all actions on boot, so take this out before next game
 
-  
   return dispatch(
     apiCallBegan({
       url,
