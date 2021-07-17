@@ -105,10 +105,10 @@ class ModifyCharacter extends Component {
 					<Form layout="vertical" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={8}>
-								<FormGroup>
+								{/*<FormGroup>
 									<ControlLabel>Character Name</ControlLabel>
 									<FormControl name="characterName" />
-							</FormGroup>
+								</FormGroup>*/}
 							<FormGroup>
 								<ControlLabel>email</ControlLabel>
 								<FormControl name="email" />

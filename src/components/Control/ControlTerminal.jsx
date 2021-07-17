@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
-import { getMyCharacter } from '../../redux/entities/characters';
+import { getBadCharacters, getMyCharacter } from '../../redux/entities/characters';
 import { draftActions } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import { assetsRequested } from '../../redux/entities/assets';
@@ -131,7 +131,10 @@ class ControlTerminal extends Component {
 				<div style={{height: '10vh'}} >
 					<Divider>Scott's Message of the Day:</Divider>
 					<div>
-						<h5>Still Working on the table below.</h5>
+						<h5>There are {this.props.badCharacters.length} characters with bad email/pronouns</h5>
+						{this.props.badCharacters.map((bad, index) => (
+							<Tag color='red'>{bad.characterName}</Tag>
+						))}
 					</div>					
 				</div>
 				<div style={{height: '15vh'}}>
@@ -152,10 +155,10 @@ class ControlTerminal extends Component {
 					<Panel>
 						<ButtonGroup >
 							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
-							<Button disabled appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions [DISABLED] </Button>
+							<Button appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
 							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
-							{/*<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>*/}
-							<Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button>
+							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
+							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
 							<Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button>
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
@@ -242,7 +245,7 @@ class ControlTerminal extends Component {
 		</Modal.Footer>
 				</Modal>
 
-				<Modal backdrop="static" size='sm' show={this.state.scottModal} onHide={() => this.setState({ scottModal: false })}>
+				{/* <Modal backdrop="static" size='sm' show={this.state.scottModal} onHide={() => this.setState({ scottModal: false })}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 							{'  '}
@@ -257,7 +260,7 @@ class ControlTerminal extends Component {
 							This warning Modal Can't stop me if I don't read it!
             </Button>
 		</Modal.Footer>
-				</Modal>
+				</Modal> */}
 			
 				<Modal backdrop="static" size='sm' show={this.state.warning2Modal} onHide={() => this.setState({ warning2Modal: false })}>
 					<Modal.Body>
@@ -381,7 +384,8 @@ const mapStateToProps = (state) => ({
 	characters: state.characters.list,
 	actions: state.actions.list,
 	draftActions: draftActions(state),
-	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined
+	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	badCharacters: getBadCharacters(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

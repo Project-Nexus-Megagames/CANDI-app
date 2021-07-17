@@ -214,7 +214,7 @@ class SelectedFeed extends Component {
 
 				</Modal.Body>
 				<Modal.Footer>
-					<Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
+					<Button loading={this.state.loading} onClick={() => this.handleResultSubmit()} appearance="primary">
 						Submit
 					</Button>
 					<Button onClick={() => this.closeResult()} appearance="subtle">
@@ -262,6 +262,32 @@ class SelectedFeed extends Component {
 			intent: this.state.intent,
 			result: this.state.result,
 			dieResult: this.state.dieResult,
+			mechanicalEffect: this.state.mechanicalEffect,
+			id: this.props.action._id,
+			playerBoolean: this.state.edit	
+		}
+		// console.log(action)
+		// 1) make a new action
+		try{
+			socket.emit('actionRequest', 'update', action); // new Socket event
+			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: '', mechanicalEffect: ''});	
+
+			this.closeEdit();
+			this.closeResult();
+		}
+		catch (err) {
+			Alert.error(`Error: ${err.response.data}`, 6000)
+		}
+		this.setState({loading: false});
+	}
+
+	handleResultSubmit = async () => {
+		this.setState({loading: true}) 
+		const action = {
+			description: this.state.description,
+			intent: this.state.intent,
+			result: this.state.result,
+			dieResult: this.state.dieResult,
 			status: this.state.status,
 			mechanicalEffect: this.state.mechanicalEffect,
 			id: this.props.action._id,
@@ -281,6 +307,7 @@ class SelectedFeed extends Component {
 		}
 		this.setState({loading: false});
 	}
+
 
 	renderAsset = (asset) => {
 		if (asset) {

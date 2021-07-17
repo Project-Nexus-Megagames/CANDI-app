@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, Form, FormControl, FormGroup, Modal, Button, SelectPicker, ButtonGroup, Panel, InputNumber, Divider, Toggle, Placeholder } from 'rsuite';
+import { ControlLabel, Form, FormControl, InputPicker, Modal, Button, SelectPicker, ButtonGroup, Panel, InputNumber, Divider, Toggle, Placeholder } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { assetsRequested } from '../../redux/entities/assets';
@@ -12,22 +12,23 @@ class ModifyResource extends Component {
 		influence: 0,
 		id: '',
 		currentOwner: '',
+		level: '',
 		selected: false,
 		loading: false
 	}
 
-	componentDidMount = () => {
-		const stateReplace = JSON.parse(localStorage.getItem('modifyResourceState'));
-		console.dir(stateReplace);
-		if (stateReplace) this.setState(stateReplace); 
-	}
+	// componentDidMount = () => {
+	// 	const stateReplace = JSON.parse(localStorage.getItem('modifyResourceState'));
+	// 	console.dir(stateReplace);
+	// 	if (stateReplace) this.setState(stateReplace); 
+	// }
 
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('modifyResourceState', JSON.stringify(this.state));
-			console.log(localStorage);
-		};
-	};
+	// componentDidUpdate = (prevProps, prevState) => {
+	// 	if (this.state !== prevState) {
+	// 		localStorage.setItem('modifyResourceState', JSON.stringify(this.state));
+	// 		console.log(localStorage);
+	// 	};
+	// };
 		
 	assetModify = async () => {
 		this.props.assetDispatched();
@@ -38,6 +39,7 @@ class ModifyResource extends Component {
 			uses: this.state.uses,
 			owner: this.state.owner,
 			used: this.state.used,
+			level: this.state.level,
 			lendable: this.state.lendable,
 			hidden: this.state.hidden	
 		}
@@ -69,7 +71,7 @@ class ModifyResource extends Component {
 	handleChage = (event) => {
 		if (event) {
 			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden })			
+			this.setState({ selected: event, name: selected.name, description: selected.description, level: selected.level, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden })			
 		}
 		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
@@ -82,13 +84,16 @@ class ModifyResource extends Component {
 		if (this.state.selected) {
 			return (
 				<Panel>
-					Name:
-					<textarea value={this.state.name} className='textStyle' onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	
+					Name: {this.state.name}
+					{/* <textarea value={this.state.name} className='textStyle' onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	 */}
+					<Divider />
 					Description:
 					<textarea rows='4' value={this.state.description} className='textStyle' onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
 					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
 					Owner (Match Character's name exactly):
 					<textarea value={this.state.owner} className='textStyle' onChange={(event)=> this.setState({ owner: event.target.value })}></textarea>	
+					Bond Level
+					<InputPicker labelKey='label' valueKey='value' data={pickerData} defaultValue={this.state.level} style={{ width: '100%' }} onChange={(event)=> this.setState({level: event})}/>
 					<Divider>Statuses</Divider>
 					<Toggle checked={this.state.used} onChange={()=> this.setState({ used: !this.state.used })} checkedChildren="Used" unCheckedChildren="Un-used"/>
 					<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="hidden" unCheckedChildren="Un-hidden"/>
@@ -103,6 +108,33 @@ class ModifyResource extends Component {
 		}
 	}
 }
+
+const pickerData = [
+	{
+		label: 'Loathing',
+		value: 'Loathing'
+	},
+	{
+		label: 'Unfriendly',
+		value: 'Unfriendly'
+	},
+	{
+		label: 'Neutral',
+		value: 'Neutral'
+	},
+	{
+		label: 'Warm',
+		value: 'Warm'
+	},
+	{
+		label: 'Friendly',
+		value: 'Friendly'
+	},
+	{
+		label: 'Bonded',
+		value: 'Bonded'
+	},
+]
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,

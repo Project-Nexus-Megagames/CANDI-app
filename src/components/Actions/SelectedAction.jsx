@@ -196,7 +196,7 @@ class SelectedAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-        <Button loading={this.state.loading} onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
+        <Button onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
             Submit
         </Button>
         <Button onClick={() => this.closeEdit()} appearance="subtle">
@@ -266,7 +266,7 @@ class SelectedAction extends Component {
 
 				</Modal.Body>
 				<Modal.Footer>
-					<Button loading={this.state.loading} onClick={() => this.handleSubmit()} appearance="primary">
+					<Button onClick={() => this.handleResultSubmit()} appearance="primary">
 						Submit
 					</Button>
 					<Button onClick={() => this.closeResult()} appearance="subtle">
@@ -296,21 +296,50 @@ class SelectedAction extends Component {
 
 	handleSubmit = async () => {
 		this.setState({loading: true}) 
-		const action = {
-			effort: this.state.effort,
-			asset1: this.state.asset1,
-			asset2: this.state.asset2,
-			asset3: this.state.asset3,
-			description: this.state.description,
-			intent: this.state.intent,
-			result: this.state.result,
-			dieResult: this.state.dieResult,
-			status: this.state.status,
-			id: this.props.action._id,
-			type: this.props.action.type,
-			mechanicalEffect: this.state.mechanicalEffect,
-			playerBoolean: this.state.edit	
+		let action = { ...this.props.action };
+
+		action.effort= this.state.effort
+		action.asset1= this.state.asset1
+		action.asset2= this.state.asset2
+		action.asset3= this.state.asset3
+		action.description= this.state.description
+		action.intent= this.state.intent
+		action.dieResult= this.state.dieResult
+		action.id= this.props.action._id
+		action.playerBoolean= this.state.edit	
+	
+		// console.log(action)
+		// 1) make a new action
+		try{
+			socket.emit('actionRequest', 'update', action); // new Socket event
+			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: '', mechanicalEffect: ''});	
+
+			this.closeEdit();
+			this.closeResult();
 		}
+		catch (err) {
+			Alert.error(`Error: ${err.response.data}`, 6000)
+		}
+		this.setState({loading: false});
+	}
+
+	handleResultSubmit = async () => {
+		this.setState({loading: true}) 
+		let action = { ...this.props.action };
+
+		action.effort= this.state.effort
+		action.asset1= this.state.asset1
+		action.asset2= this.state.asset2
+		action.asset3= this.state.asset3
+		action.description= this.state.description
+		action.intent= this.state.intent
+		action.result= this.state.result
+		action.dieResult= this.state.dieResult
+		action.status= this.state.status
+		action.id= this.props.action._id
+		action.mechanicalEffect= this.state.mechanicalEffect
+		action.playerBoolean= this.state.edit	
+	
 		// console.log(action)
 		// 1) make a new action
 		try{
@@ -340,6 +369,7 @@ class SelectedAction extends Component {
 					<Panel style={{backgroundColor: "#272b34"}} shaded bordered >
 						<FlexboxGrid align='middle'>
 							<FlexboxGrid.Item colspan={20}>
+							<b>{asset.type}</b>
 							<b>{asset}</b>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
