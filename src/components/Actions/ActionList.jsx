@@ -88,7 +88,8 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
-	filteredActions: state.auth.control ? filteredActions(state) : 	getMyActions(state) 
+	// filteredActions: state.auth.control ? filteredActions(state) : 	getMyActions(state) 
+	filteredActions: filteredActions(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
