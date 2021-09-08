@@ -83,6 +83,10 @@ class HomePage extends Component {
 			this.props.history.push('/no-character');
 			return (<Loader inverse center content="doot..." />)
 		}
+		else if (this.props.gamestate.status === 'Down') {
+			this.props.history.push('/down');
+			return (<Loader inverse center content="doot..." />)
+		}
 		else return ( 
 			<React.Fragment>
 				<div style={{ height: '6vh', width: "100%" }}>

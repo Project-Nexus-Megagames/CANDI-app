@@ -29,6 +29,7 @@ import Registration from './components/Control/Registration';
 import NotFound from './components/Navigation/NotFound';
 import Bitsy from './components/Navigation/Bitsy';
 import myCharacter from './components/MyCharacters/myCharacter';
+import Down from './components/Navigation/Down';
 
 // React App Component
 initUpdates()
@@ -125,6 +126,9 @@ const App = (props) => {
         )} />
         <Route exact path='/map' render={(props) => (
           <MapContainer {...props} />
+        )} />
+        <Route exact path='/down' render={(props) => (
+          <Down {...props} />
         )} />
         <Route exact path='/bitsy' render={(props) => (
           <Bitsy {...props} />
