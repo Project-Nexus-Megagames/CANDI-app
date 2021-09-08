@@ -202,7 +202,6 @@ const bored = [
     'https://www.youtube.com/watch?v=9xX6QPIQdZs&feature=youtu.be', // Waiting in line for 10 hours for a Supreme crowbar
     'https://www.youtube.com/watch?v=it8vJ03E8c8', // shingle jingle
     'https://www.youtube.com/watch?v=bTS9XaoQ6mg&list=WL&index=130', // chess king sacrifice
-    'https://www.youtube.com/watch?v=aiM5KDuHrR4', // cat mario 64
     'https://www.youtube.com/watch?v=zo7fgswQPJ8&list=WL&index=37&ab_channel=ThomasSchuler', // Someone Hacked Lime Scooters
     'https://www.youtube.com/watch?v=G_rWl-jaAiU', // buy my bed
     'https://www.youtube.com/watch?v=D5fH5j7ux0U', // Spongebob also knows the rules
@@ -238,12 +237,16 @@ const bored = [
     'https://www.youtube.com/watch?v=EwAajOtfNT8', // two dudes in a hot tub
     'https://www.youtube.com/watch?v=XKqqqO83yp0', // Guy blow dries his tongue then eats a cracker...
     'https://www.youtube.com/watch?v=GfCqnHgXwBo',  // How to troll a parade
-    'https://www.youtube.com/watch?v=TLV30GuX-ug',
-    'https://www.youtube.com/watch?v=4W3Pfrv0lfg',
-    'https://www.youtube.com/watch?v=nqhLn76kCv0',
+    'https://www.youtube.com/watch?v=TLV30GuX-ug', // this is the ideal doggy type
+    'https://www.youtube.com/watch?v=nqhLn76kCv0', // Epic Skeletor He Man Money Super Market Commercial
     'https://pointerpointer.com/',
-    'https://www.youtube.com/watch?v=Cv42itgRU6o'
-
+    'https://www.youtube.com/watch?v=Cv42itgRU6o', // Randall is banished to the shadow realm
+    'https://www.youtube.com/watch?v=U_ILg-oZK-Q', // Playtime (Dan harmon)
+    'https://www.youtube.com/watch?v=B0Td48JLgow', // FELLINLOVEWITHAGIRLLLL
+    'https://www.youtube.com/watch?v=5KO2IjWI9fA', // Witches On Tinder
+    'https://www.youtube.com/watch?v=ETbMj3cE7YA', // Star Fox 64 Ligma
+    'https://www.youtube.com/watch?v=gnXUFXc2Yns', // Socialism is when the government does stuff but I vocoded it
+    'https://www.youtube.com/watch?v=R4GlR6X4ljU&t=3s&ab_channel=PopCultureFish' // Oblivion npc conversation
 ] // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
 
 const birthday = [
