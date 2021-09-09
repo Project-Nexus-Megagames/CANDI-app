@@ -1,84 +1,30 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, InputNumber, Input } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
 class ModifyCharacter extends Component {
-	state = { 
-		formValue: {
-			characterName: '',
-			email: '',
-			controlEmail: '',
-			worldAnvil: '',
-			tag: '', 
-			control: '',
-			playerName: '',
-			timeZone: '',
-			bio: '',
-			color: '',
-			pronouns: '',
-			characterActualName: '',
-			popSupport: 0,
-			effort: 0,
-			uses: 0,
-			_id: ''		
-		},
-		loading: false
+	constructor(props) {
+    super(props)
+    this.state = {
+		formValue: { ...this.props.selected },
+		formArray: [],
+    }
+	this.handleInput = this.handleInput.bind(this);
 	}
-		
-	componentDidMount = () => {
-		const char = this.props.characters.find(el => el._id === this.props.selected._id);
-		if (char !== undefined) {
-			const formValue = {
-					characterName: char.characterName,
-					email: char.email,
-					controlEmail: char.controlEmail,
-					worldAnvil: char.worldAnvil,
-					tag: char.tag,
-					control: char.control,
-					timeZone: char.timeZone,
-					playerName: char.playerName,
-					bio: char.bio,
-					pronouns: char.pronouns,
-					popSupport: char.popSupport,
-					effort: char.effort,
-					color: char.color,
-					characterActualName: char.characterActualName,
-					id: char._id
-			}
-			this.setState({ formValue });		
+
+	componentDidMount = () => {	
+		let test = [];
+		for (const el in this.props.selected) {
+			// console.log(el)
+			test.push(el);
 		}
-		// localStorage.removeItem('newActionState');
-		// const stateReplace = JSON.parse(localStorage.getItem('modifyCharacterState'));
-		// if (stateReplace) this.setState(stateReplace);
+		this.setState({ formValue: this.props.selected, formArray: test });	
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
-		// if (this.state !== prevState) {
-		// 	localStorage.setItem('modifyCharacterState', JSON.stringify(this.state));
-		// };
 		if (this.props.selected !== prevProps.selected) {
-			const char = this.props.characters.find(el => el._id === this.props.selected._id);
-			if (char !== undefined) {
-				const formValue = {
-					characterName: char.characterName,
-					email: char.email,
-					controlEmail: char.controlEmail,
-					worldAnvil: char.worldAnvil,
-					tag: char.tag,
-					control: char.control,
-					timeZone: char.timeZone,
-					playerName: char.playerName,
-					bio: char.bio,
-					pronouns: char.pronouns,
-					popSupport: char.popSupport,
-					effort: char.effort,
-					color: char.color,
-					characterActualName: char.characterActualName,
-					id: char._id
-				}				
-			this.setState({ formValue });				
-			}
+			this.setState({ formValue: this.props.selected });		
 		}
 	}
 
@@ -89,6 +35,58 @@ class ModifyCharacter extends Component {
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	}
+
+  handleInput = (value, id) => {
+    if (id === '_id') {
+			console.log('id!!!!')
+    }
+		else {
+			let formValue = { ...this.state.formValue };
+			formValue[id] = value;
+			// if (id === 'location' && value === null) formValue['location'] =  { _id:'' }
+			this.setState({ formValue });			
+		}
+
+  };
+
+	renderSwitch = (el) => {
+		let formValue = this.state.formValue;
+		switch(typeof formValue[el]) {
+			case 'string':
+				return(
+					<div>
+						<h5>{el}</h5>
+						<Input
+							id={el}
+							disabled={el === '_id'}
+							type="text"
+							value={formValue[el]}
+							name={el}
+							label={el}
+							placeholder={el}
+							onChange={value => this.handleInput(value, el)}
+						/>						
+					</div>
+				)
+				case 'number':
+					return(
+					<div>
+						<h5>{el}</h5>
+						<InputNumber
+							id={el}
+							value={formValue[el]}
+							name={el}
+							label={el}
+							placeholder={el}
+							onChange={value => this.handleInput(value, el)}
+						/>
+					</div>
+					)
+			default:
+				return(<b>{formValue[el]}</b>)	
+		}	
+	}
+
 
 	render() { 
 		return ( 
@@ -102,70 +100,13 @@ class ModifyCharacter extends Component {
 					<Modal.Title>Modify Character "{this.state.formValue.characterName}"</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form layout="vertical" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
-						<FlexboxGrid>
-							<FlexboxGrid.Item colspan={8}>
-								{/*<FormGroup>
-									<ControlLabel>Character Name</ControlLabel>
-									<FormControl name="characterName" />
-								</FormGroup>*/}
-							<FormGroup>
-								<ControlLabel>email</ControlLabel>
-								<FormControl name="email" />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>controlEmail</ControlLabel>
-								<FormControl name="controlEmail" />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>Control</ControlLabel>
-								<FormControl name="control" />
-							</FormGroup>							
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-								<FormGroup>
-									<ControlLabel>tag</ControlLabel>
-									<FormControl name="tag" />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>timeZone</ControlLabel>
-								<FormControl name="timeZone" />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>color (no # plz)</ControlLabel>
-								<FormControl name="color" />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>characterActualName</ControlLabel>
-								<FormControl name="characterActualName" />
-							</FormGroup>
-							</FlexboxGrid.Item>
-
-							<FlexboxGrid.Item colspan={8}>
-							<FormGroup>
-									<ControlLabel>pronouns</ControlLabel>
-									<FormControl name="pronouns" />
-							</FormGroup>
-							<FormGroup>
-									<ControlLabel>popsupport</ControlLabel>
-									<FormControl name="popSupport" accepter={InputNumber} />
-							</FormGroup>
-							<FormGroup>
-									<ControlLabel>effort</ControlLabel>
-									<FormControl name="effort" accepter={InputNumber} />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>worldAnvil</ControlLabel>
-								<FormControl name="worldAnvil" />
-							</FormGroup>
-							</FlexboxGrid.Item>
-
-						</FlexboxGrid>
-						<FormGroup>
-								<ControlLabel>Bio</ControlLabel>
-								<FormControl style={{width: '100%', display: 'block' }} name="bio" rows={5} componentClass="textarea"/>
-							</FormGroup>
-					</Form>
+						{this.state.formArray.map((el, index) => (
+								this.renderSwitch(el)
+							))}
+						{/* <FormGroup>
+							<ControlLabel>Bio</ControlLabel>
+							<FormControl style={{width: '100%', display: 'block' }} name="bio" rows={5} componentClass="textarea"/>
+						</FormGroup> */}
 				</Modal.Body>
 				<Modal.Footer>
         <Button loading={this.state.loading} disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">

@@ -128,7 +128,7 @@ const App = (props) => {
           <MapContainer {...props} />
         )} />
         <Route exact path='/down' render={(props) => (
-          <Down {...props} />
+          <Down {...props}/>
         )} />
         <Route exact path='/bitsy' render={(props) => (
           <Bitsy {...props} />
