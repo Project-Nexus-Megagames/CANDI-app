@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Tag, Icon, IconButton, Drawer, Button, InputNumber, Input, TagGroup } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, IconButton, Drawer, Button, InputNumber, Input } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
@@ -10,9 +10,6 @@ class ModifyCharacter extends Component {
     this.state = {
 		formValue: { ...this.props.selected },
 		formArray: [],
-		add: false,
-		inputValue: '',
-
     }
 	this.handleInput = this.handleInput.bind(this);
 	}
@@ -21,7 +18,8 @@ class ModifyCharacter extends Component {
 		let test = [];
 		for (const el in this.props.selected) {
 			// console.log(el)
-			typeof this.props.selected[el] !== 'object' ? test.push(el) : console.log(el);
+			test.push(el);
+
 		}
 		test.sort((a, b) => { // sort the catagories alphabetically 
 			if(a < b) { return -1; }
@@ -45,15 +43,6 @@ class ModifyCharacter extends Component {
 		this.setState({ loading: false });		
 	}
 
-	handleInputConfirm = () => {
-    const nextTags = this.state.inputValue ? [...this.state.formValue.tag, this.state.inputValue] : this.state.formValue.tag;
-		this.handleInput(nextTags, 'tag');
-    this.setState({
-      add: false,
-      inputValue: ''
-    });
-  }
-
   handleInput = (value, id) => {
     if (id === '_id') {
 			console.log('id!!!!')
@@ -64,34 +53,6 @@ class ModifyCharacter extends Component {
 			this.setState({ formValue });			
 		}
   };
-
-	handleTagRemove = (tag) => {
-    const nextTags = this.state.formValue.tag.filter(item => item !== tag);
-		this.handleInput(nextTags, 'tag');
-  }
-
-	renderTagAdd = () => {
-		if (this.state.add)
-			return(
-				<Input 
-					size="xs"
-					style={{ width: 70, display: 'inline-block', }}
-					value={this.state.inputValue}
-					onChange={(inputValue) => this.setState({ inputValue })}
-					onBlur={this.handleInputConfirm}
-					onPressEnter={this.handleInputConfirm}/>
-			)
-		else 
-			return (
-				<IconButton
-					className="tag-add-btn"
-					onClick={() => this.setState({ add: true })}
-					icon={<Icon icon="plus" />}
-					appearance="ghost"
-					size="xs"
-				/>
-			)
-	}
 
 	renderSwitch = (el) => {
 		let formValue = this.state.formValue;
@@ -141,21 +102,12 @@ class ModifyCharacter extends Component {
 			show={this.props.show} 
 			onHide={() => this.props.closeDrawer()}>
 				<Drawer.Header>
-					<Drawer.Title>Modify Character "{this.state.formValue.characterName}"</Drawer.Title>			
-					<b>Tags</b>		
-					<TagGroup>
-					{this.state.formValue && this.state.formValue.tag && this.state.formValue.tag.map((item, index) => (
-						<Tag index={index} closable onClose={() => this.handleTagRemove(item)}>
-							{item}
-						</Tag>
-					))}	
-					{this.renderTagAdd()}	
-					</TagGroup>
+					<Drawer.Title>Modify Character "{this.state.formValue.characterName}"</Drawer.Title>
 				</Drawer.Header>
 				<Drawer.Body>
-					{this.state.formArray.map((el, index) => (
-							this.renderSwitch(el)
-						))}						
+						{this.state.formArray.map((el, index) => (
+								this.renderSwitch(el)
+							))}						
 				</Drawer.Body>
 				<Drawer.Footer>
         <Button disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
