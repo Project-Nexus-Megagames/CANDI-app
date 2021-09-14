@@ -6,24 +6,17 @@ import ImgPanel from './ImgPanel';
 import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
-import city from '../Images/city.png'
-import action from '../Images/action.jpg'
-import feed from '../Images/feed.png'
 import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
-import nexus from '../Images/nexus.jpg'
 
-// Duck
-import actionDuck from '../Duck/action.jpg'
-import control2Duck from '../Duck/Control.jpg'
-import feedDuck from '../Duck/feed.jpg'
-import otherDuck from '../Duck/othercharacters.jpg'
-import nexusDuck from '../Duck/nexus.jpg'
+import test from '../Images/test.png'
+import banner from '../Images/banner.jpg'
+import myCharacter from '../Images/myCharacter.jpg'
+
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
-import { Link } from 'react-router-dom';
 import { toggleDuck } from '../../redux/entities/gamestate';
 import MobileHomePage from './MobileHomePage';
 
@@ -88,10 +81,10 @@ const HomePage = (props) => {
 		props.history.push('/down');
 		return (<Loader inverse center content="doot..." />)
 	}
-	else if (window.innerHeight < 900) {
+	if (window.innerHeight < 900) {
 		return (<MobileHomePage />)
 	}
-	else return ( 
+	return ( 
 		<React.Fragment>
 			<div style={{ height: '6vh', width: "100%" }}>
 				<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75',  color: '' }} align="middle">
@@ -120,38 +113,41 @@ const HomePage = (props) => {
 					<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
 				</FlexboxGrid>
 				</div>
-			<Container style={{backgroundColor:'#880015', padding:'15px', width: '670px', position: 'relative', display: 'inline-block', textAlign: 'center', height: '93vh', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
-			<Row style={{display: 'inherit'}}>
-			<Col>
-			<ImgPanel width={620} height={250} img={!props.duck ? city : 'https://isteam.wsimg.com/ip/f6ab3626-8e65-11e5-80e5-f04da206c13a/ols/278_original/:/rs=w:600,h:600'} to='map' title='Map'  body='View Dusk City'/>
-			</Col>
-			<Col>
-				<ImgPanel width={300} height={350} img={!props.duck ? action : actionDuck} to='actions' title='Actions/Feeding' body='Creating and editing Actions'/>
-				<ImgPanel width={300} height={350} img={!props.duck ? feed : feedDuck} to='character' title='My Character' body='My Assets and Traits'/>
-			</Col>
-			<Col>
-				<ImgPanel width={300} height={350} img={!props.duck ? control2 : control2Duck} to='controllers' title='Control' body='Who is responsible?'/>
-				<Panel style={{width: 300, height: 350, position: 'relative', float:'left', display:'inline-block', margin: '10px', cursor: 'pointer'}} onClick={()=> openNexus()} shaded bodyFill>
-           <div className="container">
-               <img src={!props.duck ? nexus : nexusDuck} className='image' height='auto' alt='Failed to load img' />             
-           </div>
-           <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white'}}>CANDI Version {props.version}</h6>
-       	</Panel>
-			</Col>
-	</Row>
-	<Row style={{display: 'inherit'}}>
-		<Col>
-			<ImgPanel width={620} height={250} img={!props.duck ? other : otherDuck} to='others' title={'Other Characters'} body='Character Details & Email Addresses'/>
-		</Col>
-	</Row>
-	{props.user.roles.some(el=> el === 'Control') && <React.Fragment>
-		<Row>
-			<Col>
-			<ImgPanel className='image' width={620} height={250} img={control} to='control' title='Control Terminal' body='They Keys to the whole empire'/>	
-			</Col>
-		</Row>
-			</React.Fragment>}
-	</Container>
+
+				<div style={{ height: '94vh', width: "100%", overflow: 'auto' }}>
+				<FlexboxGrid >
+
+					<FlexboxGrid.Item colspan={14}>
+						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
+
+									<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
+
+						</div>
+					</FlexboxGrid.Item>
+
+					<FlexboxGrid.Item colspan={10}>
+						<ImgPanel height={'45vh'} img={test} to='actions' title='Actions' body='Creating and editing Actions'/>
+					</FlexboxGrid.Item>
+
+					<FlexboxGrid.Item colspan={6}>
+						<ImgPanel img={myCharacter} to='character' title='My Character' body='My Assets and Traits'/>
+					</FlexboxGrid.Item>
+
+					<FlexboxGrid.Item colspan={6}>
+						<ImgPanel img={control2} to='controllers' title='Control' body='Who is responsible?'/>
+					</FlexboxGrid.Item>
+
+					<FlexboxGrid.Item colspan={6}>
+						<ImgPanel img={other} to='others' title={'Other Characters'} body='Character Details'/>
+					</FlexboxGrid.Item>
+
+					<FlexboxGrid.Item colspan={6}>
+						<ImgPanel img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>
+					</FlexboxGrid.Item>
+
+				</FlexboxGrid>
+				</div>
+
 			</React.Fragment>
 		);
 }

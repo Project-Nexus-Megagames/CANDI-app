@@ -70,7 +70,7 @@ const  OtherCharacters = (props) => {
 		<React.Fragment>
 		<NavigationBar/>
 		<Container style={{ height: '94vh'}}>
-		<Sidebar style={{backgroundColor: "black"}}>
+		<Sidebar className="side-bar">
 			<PanelGroup>					
 				<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
 					<Input onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
@@ -188,6 +188,7 @@ const  OtherCharacters = (props) => {
 				</Panel>
 				</FlexboxGrid.Item>}
 				</FlexboxGrid>	
+				
 			<ModifyCharacter
 				show={edit}
 				selected={selected}

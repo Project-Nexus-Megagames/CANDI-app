@@ -71,7 +71,6 @@ class Actions extends Component {
 					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 						<ButtonGroup>
 							<Button appearance='primary' disabled={this.isDisabled()} onClick={() => this.showNew()}>New Action</Button>
-							<Button color='red' appearance='primary' disabled={this.props.myCharacter.feed || this.isDisabled()} onClick={() => this.setState({showFeed: true}) }>New Feed</Button>
 						</ButtonGroup>
 					</Panel>			
 				</PanelGroup>

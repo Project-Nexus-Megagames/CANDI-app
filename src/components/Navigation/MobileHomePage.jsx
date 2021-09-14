@@ -6,20 +6,12 @@ import ImgPanel from './ImgPanel';
 import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
-import city from '../Images/city.png'
-import action from '../Images/action.jpg'
-import feed from '../Images/feed.png'
+import action from '../Images/actiommobile.png'
 import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
 import nexus from '../Images/nexus.jpg'
-
-// Duck
-import actionDuck from '../Duck/action.jpg'
-import control2Duck from '../Duck/Control.jpg'
-import feedDuck from '../Duck/feed.jpg'
-import otherDuck from '../Duck/othercharacters.jpg'
-import nexusDuck from '../Duck/nexus.jpg'
+import myCharacter from '../Images/myCharacter.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
@@ -104,7 +96,7 @@ const HomePage = (props) => {
 
 
 
-				<div style={{ height: '87vh', width: "100%", overflow: 'auto' }}>
+				<div style={{ height: '94vh', width: "100%", overflow: 'auto' }}>
 				<FlexboxGrid  >
 
 					<FlexboxGrid.Item colspan={24}>
@@ -118,41 +110,19 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={!props.duck ? action : actionDuck} to='actions' title='Actions' body='Creating and editing Actions'/>
+						<ImgPanel img={action} to='actions' title='Actions' body='Creating and editing Actions'/>
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={!props.duck ? feed : feedDuck} to='character' title='My Character' body='My Assets and Traits'/>
+						<ImgPanel img={myCharacter} to='character' title='My Character' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={!props.duck ? control2 : control2Duck} to='controllers' title='Control' body='Who is responsible?'/>
+						<ImgPanel img={control2} to='controllers' title='Control' body='Who is responsible?'/>
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={!props.duck ? other : otherDuck} to='others' title={'Other Characters'} body='Character Details'/>
+						<ImgPanel img={other} to='others' title={'Other Characters'} body='Character Details'/>
 					</FlexboxGrid.Item>
 
-				</FlexboxGrid>
-				</div>
-
-				<div style={{ height: '7vh', backgroundColor: '#746D75', width: "100%" }}>
-				<FlexboxGrid justify="space-around" style={{ backgroundColor: '#746D75',  color: '' }} align="middle">
-
-					<FlexboxGrid.Item>
-						<IconButton appearance="subtle" size='lg' icon={<Icon icon="user" />} ></IconButton>
-					</FlexboxGrid.Item>
-
-					<FlexboxGrid.Item>
-						<IconButton appearance="subtle" size='lg' icon={<Icon icon="user" />} ></IconButton>
-					</FlexboxGrid.Item>
-
-					<FlexboxGrid.Item>
-						<IconButton appearance="subtle" size='lg' icon={<Icon icon="user" />} ></IconButton>
-					</FlexboxGrid.Item>
-
-					<FlexboxGrid.Item>
-						<IconButton appearance="subtle" size='lg' icon={<Icon icon="user" />} ></IconButton>
-					</FlexboxGrid.Item>
-					
 				</FlexboxGrid>
 				</div>
 
