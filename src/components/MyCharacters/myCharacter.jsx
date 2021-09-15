@@ -112,7 +112,7 @@ class MyCharacter extends Component {
                   />
                 </p>
                 <p>
-                  <b>{playerCharacter.characterName}</b> {playerCharacter.tag}
+                  <b>{playerCharacter.characterName}</b> {playerCharacter.tags}
                 </p>
                 <p>
                   <b>
@@ -160,9 +160,9 @@ class MyCharacter extends Component {
             <Col xs={24} sm={24} md={8} className="gridbox">
 
             <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
-                Assets
+                Resources
               </Divider>
-              {myAssets.filter(el => (el.type === 'Asset' || el.type === 'Wealth') && el.status.hidden !== true ).map((asset, index) => (
+              {myAssets.filter(el => el.status.hidden !== true ).map((asset, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {asset.uses > 0 && (
                     <React.Fragment>
@@ -213,100 +213,6 @@ class MyCharacter extends Component {
                   )}
                 </div>
               ))} 
-              <Divider style={{ marginBottom: "0px" }}>
-                Traits
-              </Divider>
-              {myAssets.filter(el => el.type === 'Trait' && el.status.hidden !== true).map((trait, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {trait.uses >= 0 && ( // change this back to > 0
-                    <React.Fragment>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={trait.name}
-                        bordered
-                        collapsible
-                      >
-                        <p>{trait.description}</p>
-
-                        {trait.uses !== 999 && <p>Uses: {trait.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))}
-
-              <Divider style={{ marginBottom: "0px" }}>
-                Bonds/Territories
-              </Divider>
-              {myAssets.filter(el => (el.type === 'Bond' || el.type === 'Territory') && el.status.hidden !== true).map((bond, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {bond.uses > 0 && (
-                    <React.Fragment>
-                      <Affix>
-                        {bond.status.lendable && bond.status.lent && this.rednerHolder(bond)}
-                        {bond.status.lendable && !bond.status.lent && <Tag color="green">Ready</Tag>}
-                        {bond.status.lent && this.findOwner(bond._id)}
-                      </Affix>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={bond.name + ' - ( ' + bond.level + ' )'}
-                        bordered
-                        collapsible
-                      >
-                        <p>{bond.description}</p>
-                        <FlexboxGrid.Item
-                            style={{ textAlign: "center" }}
-                            colspan={4}
-                          >
-                            {bond.status.lendable && !bond.status.lent && (
-                              <Button
-                                onClick={() => this.openLend(bond)}
-                                appearance="ghost"
-                                size="sm"
-                                disabled={bond.status.used}
-                              >
-                                Lend
-                              </Button>
-                            )}
-                            {bond.status.lendable && bond.status.lent && (
-                              <Button
-                                onClick={() => this.openUnlend(bond)}
-                                appearance="ghost"
-                                size="sm"
-                              >
-                                Un-Lend
-                              </Button>
-                            )}
-                          </FlexboxGrid.Item>
-                        {bond.uses !== 999 && <p>Uses: {bond.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))}
-
-              <Divider style={{ marginBottom: "0px" }}>Powers</Divider>
-              {myAssets.filter(el => el.type === 'Power' && el.status.hidden !== true).map((power, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {power.uses >= 0 && ( // change this back to > 0
-                    <React.Fragment>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={power.name}
-                        bordered
-                        collapsible
-                      >
-                        <p>{power.description}</p>
-
-                        {power.uses !== 999 && <p>Uses: {power.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))}
 
             </Col>
           </Row>
@@ -381,7 +287,7 @@ class MyCharacter extends Component {
           <Divider
             style={{ textAlign: "center", fontWeight: "bolder", fontSize: 20 }}
           >
-            {target.characterName}, {target.tag}
+            {target.characterName}
           </Divider>
           <p>{target.bio}</p>
           <Divider></Divider>
@@ -454,7 +360,7 @@ class MyCharacter extends Component {
       characterName: char.characterName,
       email: char.email,
       worldAnvil: char.worldAnvil,
-      tag: char.tag,
+      tag: char.tags,
       timeZone: char.timeZone,
       playerName: char.playerName,
       bio: char.bio,

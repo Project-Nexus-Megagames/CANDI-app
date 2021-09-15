@@ -11,8 +11,8 @@ const ImgPanel = (props) => {
             <div className="container">
                 <img src={props.img} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
             </div>
-            <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white'}}>{`${props.disabled ? '[DISABLED] ' : ''}${props.title}`}</h6>
-            <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>{props.body}</p>
+            <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>{`${props.disabled ? '[DISABLED] ' : ''}${props.title}`}</h6>
+            <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>{props.body}</p>
             
         </div>
         </Link>

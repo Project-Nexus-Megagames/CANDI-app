@@ -46,7 +46,7 @@ class ModifyCharacter extends Component {
 	}
 
 	handleInputConfirm = () => {
-    const nextTags = this.state.inputValue ? [...this.state.formValue.tag, this.state.inputValue] : this.state.formValue.tag;
+    const nextTags = this.state.inputValue ? [...this.state.formValue.tags, this.state.inputValue] : this.state.formValue.tag;
 		this.handleInput(nextTags, 'tag');
     this.setState({
       add: false,
@@ -66,7 +66,7 @@ class ModifyCharacter extends Component {
   };
 
 	handleTagRemove = (tag) => {
-    const nextTags = this.state.formValue.tag.filter(item => item !== tag);
+    const nextTags = this.state.formValue.tags.filter(item => item !== tag);
 		this.handleInput(nextTags, 'tag');
   }
 
@@ -144,7 +144,7 @@ class ModifyCharacter extends Component {
 					<Drawer.Title>Modify Character "{this.state.formValue.characterName}"</Drawer.Title>			
 					<b>Tags</b>		
 					<TagGroup>
-					{this.state.formValue && this.state.formValue.tag && this.state.formValue.tag.map((item, index) => (
+					{this.state.formValue && this.state.formValue.tags && this.state.formValue.tags.map((item, index) => (
 						<Tag index={index} closable onClose={() => this.handleTagRemove(item)}>
 							{item}
 						</Tag>

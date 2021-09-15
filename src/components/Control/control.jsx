@@ -47,7 +47,7 @@ class Control extends Component {
 			<React.Fragment>
 			<NavigationBar/>
 			<Container style={{ height: '94vh'}}>
-				<Sidebar style={{backgroundColor: "black"}}>
+				<Sidebar className="side-bar">
 					<PanelGroup>					
 					<Panel style={{ backgroundColor: "#000101"}}>
 						<Input onChange={(value)=> this.filter(value)} placeholder="Search"></Input>
@@ -128,53 +128,11 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Control);
 
-const controllers = [
-	{
-		name: "Kyle",
-		role: "Game Control",
-		email: "duskcitycontrol@gmail.com",
-		timezone: "GMT+8",
-		responsibilities: "Diego Armando, Cassandra Hasapi, Father Rex Davidson, Mayor Shivani Chowdhury, Maxine Hawthorne, DJ Pyro, Melanie Yeoh, Josephine Rosales, Eli Kaufmann, Mark Cordero"
-	},
-	{
-		name: "Stuart",
-		role: "East Control",
-		email: "stuart.pbem@gmail.com",
-		timezone: "GMT/BST",
-		responsibilities: "Oda Orochi, Samhain Walsh, Aisling Cathain, J Doe, Reynard Fennick, Peter Black, Ciara Rowland, Jeong-Gwon 'Johnny' Baek, Sunday Ubir, teasing you all." 
-	},
-	{
-		name: "Dan",
-		role: "Central Control",
-		email: "duskcontrolcentral@gmail.com",
-		timezone: "MDT",
-		responsibilities: "Bobby Weber, Chelsea Hubbard, Dave Busters, Devin Slater, Duncan Buchanan,  Reginald 'Reggie' Royce,  Steven Davies, Susan Chandler Timothy Ipswich"
-	},
-	{
-		name: "LJ",
-		role: "North Control",
-		email: "duskcontrolnorth@gmail.com",
-		timezone: "EST",
-		responsibilities: "Razmus, Alfie Barnes, Alias, Christopher Foster, Dead Gorgeous, Sanoh Prasansapakit, Shani Blake, Jean-Luc Leroux, Layla Chambers"
-	},
-	{
-		name: "Alex",
-		role: "South Control",
-		email: "duskcontrolsouth@gmail.com",
-		timezone: "GMT",
-		responsibilities: "Aaron Storme, Dominik, Gustave, Helga Adler, Jennifer Yuen, Letitia Mayhew, Maisie Walliams, Orla Kuchler, Roger Broom"
-	},
-	{
-		name: "Simo",
-		role: "West Control",
-		email: "duskcontrolwest@gmail.com",
-		timezone: "GMT+3",
-		responsibilities: "Alan Monty, Adrian Montgomery, Charles Layton, Gregory Toska, James Marras, Lucia Siska, Marivic Belen, Mikael Tharson, Ray Johnson" 
-	},
+const controllers = [ 
 	{
     name: "Scott",
     role: "Tech Support",
-    email: "Use the #tech-support channel on the Dusk City discord server",
+    email: "Use the #tech-support channel on the discord server",
     timezone: "PST",
     responsibilities: "Keeping CANDI running"
 	}

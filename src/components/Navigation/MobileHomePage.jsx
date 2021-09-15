@@ -90,13 +90,13 @@ const HomePage = (props) => {
 							{(clock.days + clock.hours + clock.minutes <= 0) && <p>Game Status: {props.gamestate.status}</p>}	
 						</div>									
 					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+					<FlexboxGrid.Item colspan={1}></FlexboxGrid.Item>
 				</FlexboxGrid>
 				</div>
+ 
 
 
-
-				<div style={{ height: '94vh', width: "100%", overflow: 'auto' }}>
+				<div style={{ height: '94vh', width: "100%", overflow: 'hidden' }}>
 				<FlexboxGrid  >
 
 					<FlexboxGrid.Item colspan={24}>

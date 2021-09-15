@@ -51,7 +51,7 @@ class NewAction extends Component {
 		this.props.actionDispatched();
 		// 1) make a new action
 		const action = {
-			effort: this.state.effort,
+			effort: 1,
 			asset1: this.state.asset1,
 			asset2: this.state.asset2,
 			asset3: this.state.asset3,
@@ -84,22 +84,22 @@ class NewAction extends Component {
 							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
 						</FlexboxGrid>
 						<FlexboxGrid>
-							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
-								<Slider graduated
+							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
+								{/* <Slider graduated
 								min={0}
 								max={this.props.myCharacter.effort}
 								defaultValue={0}
 								progress
 								value={this.state.effort}
 								onChange={(event)=> this.setState({effort: event})}>
-								</Slider>
+								</Slider> */}
 								<div style={{ paddingTop: '20px', fontSize: '2em', }} >
-									Current Effort Left: {this.props.myCharacter.effort}		
+									Current Actions Left: {this.props.myCharacter.effort}		
 								</div>
 
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-								<InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+								{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
@@ -113,8 +113,10 @@ class NewAction extends Component {
 				</Modal.Body>
 				<Modal.Footer>
 		<Button onClick={() => this.handleSubmit()} loading={this.props.actionLoading} disabled={this.isDisabled()} appearance="primary">
-            {this.isDisabled() && <b>Text is too short</b>}
-						{!this.isDisabled() && <b>Submit</b>}
+            {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
+						this.state.intent.length < 11 ? <b>Intent text need {11 - this.state.intent.length} more characters</b> :
+						this.props.myCharacter.effort <= 0 ? <b>No more Actions left</b> :
+						<b>Submit</b>}
         </Button>
 		<Button onClick={() => this.props.closeNew()} appearance="subtle">
             Cancel
@@ -125,7 +127,7 @@ class NewAction extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length > 10 && this.state.intent.length > 10 && this.state.effort > 0) return false;
+		if (this.state.description.length > 10 && this.state.intent.length > 10) return false;
 		else return true;
 	}
 

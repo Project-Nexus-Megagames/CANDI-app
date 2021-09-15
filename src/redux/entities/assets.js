@@ -89,7 +89,7 @@ export const getMyAssets = createSelector(
     char => char.username === state.auth.user.username
     ),
   (assets, char) => assets.filter(
-    asset => (asset.owner === char.characterName || asset.currentHolder === char.characterName) && asset.uses > 0
+    asset => (asset.owner === char._id || asset.currentHolder === char._id) && asset.uses > 0
   )
 );
 

@@ -58,7 +58,7 @@ const  OtherCharacters = (props) => {
 		const filtered = props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
 		char.email.toLowerCase().includes(fil.toLowerCase()) || 
 		char.characterActualName.toLowerCase().includes(fil.toLowerCase()) || 
-		char.tag.some(el => el.toLowerCase().includes(fil.toLowerCase())));
+		char.tags.some(el => el.toLowerCase().includes(fil.toLowerCase())));
 		setFilteredCharacters(filtered);
 	}
 	
@@ -85,7 +85,7 @@ const  OtherCharacters = (props) => {
 									</FlexboxGrid.Item>
 									<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<b style={titleStyle}>{character.characterName}
-										{character.tag.some(el => el === 'NPC') && <Tag color='blue' style={{ marginLeft: '15px' }} >NPC</Tag>}</b>	
+										{character.tags.some(el => el === 'NPC') && <Tag color='blue' style={{ marginLeft: '15px' }} >NPC</Tag>}</b>	
 										<b style={slimText}>{character.email}</b>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
@@ -109,7 +109,7 @@ const  OtherCharacters = (props) => {
 
 										<FlexboxGrid.Item colspan={12}>
 											<TagGroup>
-												{selected.tag && selected.tag.map((item, index) => (
+												{selected.tags && selected.tags.map((item, index) => (
 													<Tag index={index}>{item}</Tag>
 												))}	
 											</TagGroup>			
@@ -164,7 +164,7 @@ const  OtherCharacters = (props) => {
 					</FlexboxGrid.Item>
 
 					{/*Control Panel*/}
-					{props.user.roles.some(el=> el === 'Control') && <FlexboxGrid.Item colspan={24}>
+					{props.myCharacter.tags.some(el=> el === 'Control') && <FlexboxGrid.Item colspan={24}>
 					<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center', height: '30vh'}}>
 					<h5>Effort Left: {selected.effort} </h5>
 					<ButtonGroup style={{marginTop: '5px', }} >
@@ -175,7 +175,7 @@ const  OtherCharacters = (props) => {
 					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<h5>Resources</h5>
 						<Row style={{ display: 'flex', overflow: 'auto' }}>
-						{selected.assets.map((asset, index) => (
+						{props.assets.filter(el => el.owner._id === selected._id).map((asset, index) => (
 							<Col md={6} sm={12}>
 								<Panel index={index} bordered>
 									<h5>{asset.name}</h5>

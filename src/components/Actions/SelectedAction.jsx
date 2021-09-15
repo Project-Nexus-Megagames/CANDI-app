@@ -196,7 +196,7 @@ class SelectedAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-        <Button onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
+        <Button onClick={() => this.handleSubmit()} appearance="primary">
             Submit
         </Button>
         <Button onClick={() => this.closeEdit()} appearance="subtle">
@@ -298,7 +298,7 @@ class SelectedAction extends Component {
 		this.setState({loading: true}) 
 		let action = { ...this.props.action };
 
-		action.effort= this.state.effort
+		// action.effort= this.state.effort
 		action.asset1= this.state.asset1
 		action.asset2= this.state.asset2
 		action.asset3= this.state.asset3

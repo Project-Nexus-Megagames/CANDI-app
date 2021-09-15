@@ -79,10 +79,6 @@ class NewCharacter extends Component {
 							</FormGroup>							
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
-								<FormGroup>
-									<ControlLabel>tag</ControlLabel>
-									<FormControl name="tag" />
-							</FormGroup>
 							<FormGroup>
 								<ControlLabel>controlEmail</ControlLabel>
 								<FormControl name="controlEmail" />
@@ -109,10 +105,6 @@ class NewCharacter extends Component {
 							<FormGroup>
 									<ControlLabel>effort</ControlLabel>
 									<FormControl name="effort" accepter={InputNumber} />
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>color (no # plz)</ControlLabel>
-								<FormControl name="color" />
 							</FormGroup>
 							</FlexboxGrid.Item>
 
