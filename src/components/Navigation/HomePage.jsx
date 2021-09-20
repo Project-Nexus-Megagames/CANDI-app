@@ -12,7 +12,7 @@ import control from '../Images/balls.png'
 
 import test from '../Images/test.png'
 import banner from '../Images/banner.jpg'
-import myCharacter from '../Images/myCharacter.jpg'
+import myCharacter from '../Images/MyCharacter.jpg'
 
 
 import { signOut } from '../../redux/entities/auth';
@@ -114,7 +114,7 @@ const HomePage = (props) => {
 				</FlexboxGrid>
 				</div>
 
-				<div style={{ height: '94vh', width: "100%", overflow: 'auto' }}>
+				<div style={{ height: '94vh', width: "100%",  }}>
 				<FlexboxGrid >
 
 					<FlexboxGrid.Item colspan={14}>

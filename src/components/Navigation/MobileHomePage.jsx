@@ -11,7 +11,7 @@ import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
 import control from '../Images/balls.png'
 import nexus from '../Images/nexus.jpg'
-import myCharacter from '../Images/myCharacter.jpg'
+import myCharacter from '../Images/MyCharacter.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
@@ -66,7 +66,7 @@ const HomePage = (props) => {
 
 	return ( 
 		<React.Fragment>
-				<div style={{ height: '6vh', backgroundColor: '#746D75', width: "100%" }}>
+				<div style={{ height: '50px', backgroundColor: '#746D75', width: "100%", fontSize: '0.966em' }}>
 				<FlexboxGrid align="middle">
 					<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 						<Dropdown
@@ -96,7 +96,7 @@ const HomePage = (props) => {
  
 
 
-				<div style={{ height: '94vh', width: "100%", overflow: 'hidden' }}>
+				<div style={{ height: 'calc(100% - 50px)', width: "100%", overflow: 'auto' }}>
 				<FlexboxGrid  >
 
 					<FlexboxGrid.Item colspan={24}>
