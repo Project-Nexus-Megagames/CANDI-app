@@ -136,9 +136,9 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height={'21vh'}  img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
-						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height={'21vh'}  img={''} to='' title={''} body=''/>}
-						<ImgPanel height={'20.5vh'} img={LeaderBoard} to='controllers' title='Control' body='Who is responsible?'/>
+						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
+						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={''} to='' title={''} body=''/>}
+						{/* <ImgPanel height={'20.5vh'} img={LeaderBoard} to='controllers' title='Control' body='Who is responsible?'/> */}
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>

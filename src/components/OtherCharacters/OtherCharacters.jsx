@@ -27,13 +27,20 @@ const  OtherCharacters = (props) => {
 		Alert.success('Email Copied!', 6000);
 	}
 
-	const openAnvil = (characterName) => {
-		let url = 'https://godswars.miraheze.org/wiki/'
-		let temp = url.concat(characterName.split(' ').join('_'));
-		console.log(url)
-		console.log(temp)
-		const win = window.open(url, '_blank');
-		win.focus();
+	const openAnvil = (character) => {
+		if (character.worldAnvil) {
+			let url = character.worldAnvil;
+			const win = window.open(url, '_blank');
+			win.focus();
+		}
+		else {
+			let url = 'https://godswars.miraheze.org/wiki/'
+			let temp = url.concat(character.characterName.split(' ').join('_'));		
+			const win = window.open(temp, '_blank');
+			win.focus();	
+			console.log(temp)
+		}
+
 	}
 
 	
@@ -85,10 +92,12 @@ const  OtherCharacters = (props) => {
 							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={5} style={styleCenter}>
-										<Avatar src={props.duck ? `/duck/${character.characterName}.jpg` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
 									</FlexboxGrid.Item>
 									<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<b style={titleStyle}>{character.characterName}
+										{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px' }} >Control</Tag>}
+										{character.tags.some(el => el === 'God') && <Tag color='green' style={{ marginLeft: '15px' }} >God</Tag>}
 										{character.tags.some(el => el === 'NPC') && <Tag color='blue' style={{ marginLeft: '15px' }} >NPC</Tag>}</b>	
 										<b style={slimText}>{character.email}</b>
 									</FlexboxGrid.Item>
@@ -146,8 +155,8 @@ const  OtherCharacters = (props) => {
 								<FlexboxGrid.Item colspan={1}/>
 
 								{/*Profile Pic*/}
-								<FlexboxGrid.Item colspan={9}> 
-									<img onClick={() => openAnvil(selected.characterName)} src={props.duck? `/duck/${selected.characterName}.jpg` : `/images/${selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '60vh' }} />
+								<FlexboxGrid.Item colspan={9} style={{ cursor: 'pointer' }} onClick={() => openAnvil(selected)}> 
+									<img src={selected.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '50vh' }} />
 								</FlexboxGrid.Item>
 
 								{/*Lend Support*/}
