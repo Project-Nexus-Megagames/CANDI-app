@@ -77,19 +77,18 @@ export const getMyActions = createSelector(
   state => state.actions.list,
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (filter, actions, myCharacter) => actions.filter(
-    action => ((action.creator === myCharacter.characterName || action.players.some(el => el === myCharacter.characterName)) && ( action.description.toLowerCase().includes(filter.toLowerCase()) ||
-    action.intent.toLowerCase().includes(filter.toLowerCase()) ))
-  )
+    action => (( action.creator === myCharacter._id ) ))
+  
 );
 
-export const filteredActions = createSelector(
-  state => state.actions.filter,
-  state => state.actions.list,
-  (filter, actions) => actions.filter(action => action.description.toLowerCase().includes(filter.toLowerCase()) || 
-  action.intent.toLowerCase().includes(filter.toLowerCase()) || 
-  action.creator.toLowerCase().includes(filter.toLowerCase())
-  )
-);
+// export const filteredActions = createSelector(
+//   state => state.actions.filter,
+//   state => state.actions.list,
+//   (filter, actions) => actions.filter(action => action.description.toLowerCase().includes(filter.toLowerCase()) || 
+//   action.intent.toLowerCase().includes(filter.toLowerCase()) || 
+//   action.creator.toLowerCase().includes(filter.toLowerCase())
+//   )
+// );
 
 export const draftActions = createSelector(
   state => state.actions.list,
@@ -103,9 +102,7 @@ export const loadplayerActions = payload => (dispatch, getState) => {
   if (!payload.roles.some(el => el === 'Control' )) {
     url = `${baseURL}/${payload.username}`
   }  
-  
-
-  
+    
   return dispatch(
     apiCallBegan({
       url,

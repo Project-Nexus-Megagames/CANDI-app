@@ -13,7 +13,7 @@ import control from '../Images/balls.png'
 import test from '../Images/test.png'
 import banner from '../Images/banner.jpg'
 import myCharacter from '../Images/MyCharacter.jpg'
-
+import LeaderBoard from '../Images/LeaderBoard.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
@@ -86,8 +86,7 @@ const HomePage = (props) => {
 	}
 	return ( 
 		<React.Fragment>
-			<div style={{ height: '6vh', width: "100%" }}>
-				<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75',  color: '' }} align="middle">
+				<FlexboxGrid justify="start" style={{ height: '6vh', backgroundColor: '#746D75',  color: '', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37'  }} align="middle">
 					<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 						<Dropdown
 								renderTitle={() => {
@@ -112,7 +111,6 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
 				</FlexboxGrid>
-				</div>
 
 				<div style={{ height: '94vh', width: "100%",  }}>
 				<FlexboxGrid >
@@ -134,14 +132,13 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel height={'21vh'}  img={control2} to='controllers' title='Control' body='Who is responsible?'/>
-						<ImgPanel height={'20.5vh'} img={control2} to='controllers' title='Control' body='Who is responsible?'/>
+						<ImgPanel disabled={true} img={control2} to='leaderboard' title='Leaderboard' body='How are things standing?'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height={'21vh'}  img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
 						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height={'21vh'}  img={''} to='' title={''} body=''/>}
-						<ImgPanel height={'20.5vh'} img={control2} to='controllers' title='Control' body='Who is responsible?'/>
+						<ImgPanel height={'20.5vh'} img={LeaderBoard} to='controllers' title='Control' body='Who is responsible?'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>

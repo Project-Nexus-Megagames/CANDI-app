@@ -4,40 +4,33 @@ import { Modal, Button, Slider, InputPicker, FlexboxGrid, InputNumber, CheckPick
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
-import socket from '../../socket';
-class NewAction extends Component {
+import socket from '../../socket'; 
+class NewResult extends Component {
 	constructor(props) {
     super(props);
     this.state = {
-        effort: 0,
-				assets: [],
-				id: '',
-        description: '',
-				intent: '',	
+			description: '',
+			dice: '',
 		};
 	}
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newActionState'));
+		const stateReplace = JSON.parse(localStorage.getItem('newResultState'));
 		console.dir(stateReplace);
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('newActionState', JSON.stringify(this.state));
+			localStorage.setItem('newResultState', JSON.stringify(this.state));
 			console.log(localStorage);
 		};
 		if (this.props.actions !== prevProps.actions) {
 			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();
 				this.setState({
-					effort: 0,
-					assets: [],
-					id: '',
 					description: '',
-					intent: '',	
 				});
 			}
 		}
@@ -69,7 +62,7 @@ class NewAction extends Component {
 			show={this.props.show} 
 			onHide={() => this.props.closeNew()}>
 				<Modal.Header>
-					<Modal.Title>Submit a new action</Modal.Title>
+					<Modal.Title>Submit a new Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
@@ -78,22 +71,9 @@ class NewAction extends Component {
 							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
 						</FlexboxGrid>
 						<br></br>
-						<FlexboxGrid> What you would like to happen
-							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
-						</FlexboxGrid>
+
 						<FlexboxGrid>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
-								{/* <Slider graduated
-								min={0}
-								max={this.props.myCharacter.effort}
-								defaultValue={0}
-								progress
-								value={this.state.effort}
-								onChange={(event)=> this.setState({effort: event})}>
-								</Slider> */}
-								<div style={{ paddingTop: '20px', fontSize: '2em', }} >
-									Current Actions Left: {this.props.myCharacter.effort}		
-								</div>
 
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
@@ -101,9 +81,7 @@ class NewAction extends Component {
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
-							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
-								<CheckPicker labelKey='name' valueKey='_id' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
-							</FlexboxGrid.Item>
+
 						</FlexboxGrid>
 					</form>
 				</Modal.Body>
@@ -123,7 +101,7 @@ class NewAction extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length > 10 && this.state.intent.length > 10) return false;
+		if (this.state.description.length > 10) return false;
 		else return true;
 	}
 
@@ -161,4 +139,4 @@ const mapDispatchToProps = (dispatch) => ({
 	actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewAction);
+export default connect(mapStateToProps, mapDispatchToProps)(NewResult);

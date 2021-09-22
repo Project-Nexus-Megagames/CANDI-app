@@ -85,12 +85,8 @@ export const getMyUsedAssets = createSelector(
 
 export const getMyAssets = createSelector(
   state => state.assets.list,
-  state => state.characters.list.find(
-    char => char.username === state.auth.user.username
-    ),
-  (assets, char) => assets.filter(
-    asset => (asset.owner === char._id || asset.currentHolder === char._id) && asset.uses > 0
-  )
+  state => state.characters.list.find(char => char.username === state.auth.user.username),
+  (assets, char) => assets.filter(asset => (asset.ownerCharacter === char._id || asset.currentHolder === char._id))
 );
 
 // assets Loader into state

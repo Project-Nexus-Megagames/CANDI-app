@@ -33,7 +33,7 @@ const Navigation = props => {
 	}
 
   return (
-		<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75', height: '6vh' }} align="middle">
+		<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75', height: '6vh', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37'  }} align="middle">
 			<FlexboxGrid.Item justify="start" colspan={2}>
 					<IconButton style={{ height: '100%'}} icon={<Icon icon="arrow-circle-left"/>} onClick={()=> history.push('/home')} appearance="subtle" size="lg" >Back</IconButton>			
 			</FlexboxGrid.Item>

@@ -91,7 +91,6 @@ class MyCharacter extends Component {
 
   render() {
     const playerCharacter = this.props.myCharacter;
-    const myAssets = this.props.getMyAssets;
     if (!this.props.login) {
       this.props.history.push("/");
       return <Loader inverse center content="doot..." />;
@@ -162,7 +161,7 @@ class MyCharacter extends Component {
             <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
                 Resources
               </Divider>
-              {myAssets.filter(el => el.status.hidden !== true ).map((asset, index) => (
+              {this.props.myAssets.filter(el => el.status.hidden !== true ).map((asset, index) => (
                 <div key={index} style={{ paddingTop: "10px" }}>
                   {asset.uses > 0 && (
                     <React.Fragment>
@@ -379,7 +378,7 @@ const mapStateToProps = (state) => ({
   assets: state.assets.list,
   characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
-  getMyAssets: getMyAssets(state),
+  myAssets: getMyAssets(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

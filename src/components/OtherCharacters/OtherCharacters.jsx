@@ -27,7 +27,11 @@ const  OtherCharacters = (props) => {
 		Alert.success('Email Copied!', 6000);
 	}
 
-	const openAnvil = (url) => {
+	const openAnvil = (characterName) => {
+		let url = 'https://godswars.miraheze.org/wiki/'
+		let temp = url.concat(characterName.split(' ').join('_'));
+		console.log(url)
+		console.log(temp)
 		const win = window.open(url, '_blank');
 		win.focus();
 	}
@@ -143,7 +147,7 @@ const  OtherCharacters = (props) => {
 
 								{/*Profile Pic*/}
 								<FlexboxGrid.Item colspan={9}> 
-									<img src={props.duck? `/duck/${selected.characterName}.jpg` : `/images/${selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '60vh' }} />
+									<img onClick={() => openAnvil(selected.characterName)} src={props.duck? `/duck/${selected.characterName}.jpg` : `/images/${selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '60vh' }} />
 								</FlexboxGrid.Item>
 
 								{/*Lend Support*/}
@@ -175,7 +179,7 @@ const  OtherCharacters = (props) => {
 					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<h5>Resources</h5>
 						<Row style={{ display: 'flex', overflow: 'auto' }}>
-						{props.assets.filter(el => el.owner._id === selected._id).map((asset, index) => (
+						{props.assets.filter(el => el.ownerCharacter === selected._id).map((asset, index) => (
 							<Col md={6} sm={12}>
 								<Panel index={index} bordered>
 									<h5>{asset.name}</h5>
