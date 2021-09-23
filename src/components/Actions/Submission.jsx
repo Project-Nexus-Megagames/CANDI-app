@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon } from 'rsuite';
+import { Avatar, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon, ButtonToolbar } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
@@ -56,11 +56,37 @@ class Submission extends Component {
 		}
 	}
 
+	getTime = (date) => {
+		let day = new Date(date).toDateString();
+		let time = new Date(date).toLocaleTimeString();
+		return (<b>{day} - {time}</b>)
+	}
+
 	render() { 
 		const action = this.props.action;
 		return ( 
 			<div style={{ 	border: '3px solid #22a12a', borderRadius: '5px' }} >
-				<h4>Player Action Submission</h4>
+				<FlexboxGrid align="middle" style={{ backgroundColor: '#22a12a' }} justify="center">
+
+					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
+							<Avatar circle size="md" src={`/images/${this.props.creator.characterName}.jpg`} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />
+					</FlexboxGrid.Item>
+
+					<FlexboxGrid.Item colspan={15}>
+						<h5>{this.props.creator.characterName}'s Action Submission</h5>
+						<p style={slimText}>{this.getTime(this.props.action.createdAt)}</p>
+					</FlexboxGrid.Item>
+
+					<FlexboxGrid.Item colspan={4}>
+						<ButtonToolbar>
+							<ButtonGroup>
+								<IconButton color='blue' icon={<Icon icon="pencil" />} />
+								<IconButton color='red' icon={<Icon icon="trash2" />} />
+							</ButtonGroup>							
+						</ButtonToolbar>
+					</FlexboxGrid.Item>
+				</FlexboxGrid>
+				
 				<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 					<p style={slimText}>
 						Description
@@ -74,13 +100,14 @@ class Submission extends Component {
 					<p>
 						{action.intent}	
 					</p>
-					<p style={slimText}>
+					{/* <p style={slimText}>
 						Effort
 					</p>
 					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
-					<Progress.Line percent={action.effort * 33 + 1} showInfo={false}>  </Progress.Line>
+					<Progress.Line percent={action.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
 					<Divider>Resources</Divider>
 					<FlexboxGrid>
+
 						<FlexboxGrid.Item colspan={8}>
 							{this.renderAsset(action.assets[0])}
 							{this.props.user.roles.some(el=> el === 'Control') && action.asset1 &&
@@ -88,6 +115,7 @@ class Submission extends Component {
 								<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
 							</Panel>}
 						</FlexboxGrid.Item>
+
 						<FlexboxGrid.Item colspan={8}>
 						{this.renderAsset(action.assets[1])}
 						{this.props.user.roles.some(el=> el === 'Control') && action.asset2 &&
@@ -95,6 +123,7 @@ class Submission extends Component {
 								<Button onClick={() => this.controlRemove('asset2')} color='red'>Control Remove Asset</Button>									
 							</Panel>}
 						</FlexboxGrid.Item>
+
 						<FlexboxGrid.Item colspan={8}>
 						{this.renderAsset(action.assets[2])}
 						{this.props.user.roles.some(el=> el === 'Control') && action.asset3 &&
@@ -102,6 +131,7 @@ class Submission extends Component {
 								<Button onClick={() => this.controlRemove('asset3')} color='red'>Control Remove Asset</Button>									
 							</Panel>}
 						</FlexboxGrid.Item>
+
 					</FlexboxGrid>
 				</Panel>		
 
@@ -155,77 +185,6 @@ class Submission extends Component {
         </Button>
         </Modal.Footer>
 			</Modal>
-
-			<Modal overflow
-			full
-			size='lg'  
-			show={this.state.resEdit} 
-			onHide={() => this.closeResult()}>
-				<Modal.Header>
-					<Modal.Title>Edit {action.creator}'s Action Result</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<FlexboxGrid>
-						<FlexboxGrid.Item colspan={10}>
-							<p style={{  fontSize: '0.966em', color: '#97969B', fontWeight: '300',}}>
-								Description
-							</p>
-							<p>
-								{action.description}	
-							</p>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={10}>
-							<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300', }}>
-								Intent
-							</p>
-							<p>
-								{action.intent}	
-							</p>							
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={4}>
-							<p style={{ 	textAlign: "center", fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
-								Effort
-							</p>
-							<p style={{ fontWeight: 'bolder', 	textAlign: "center", fontSize: 20 }} >{action.effort}</p>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-
-				<Divider></Divider>
-				<form>
-					<textarea rows='6' value={this.state.result} style={textStyle} onChange={(event)=> this.setState({result: event.target.value})}></textarea>							
-					<Divider></Divider>
-					<FlexboxGrid justify="start">
-						<FlexboxGrid.Item  colspan={11}>
-							<b>Mechanical Effects</b>
-							<textarea rows='4' value={this.state.mechanicalEffect} style={textStyle} onChange={(event)=> this.setState({mechanicalEffect: event.target.value})}></textarea>			
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={1}/>
-						<FlexboxGrid.Item colspan={12}>
-							<FlexboxGrid>
-								<FlexboxGrid.Item colspan={24}>
-									<b>Status</b>
-									<InputPicker labelKey='label' valueKey='value' data={pickerData} defaultValue={this.state.status} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>
-								</FlexboxGrid.Item>
-								<FlexboxGrid.Item colspan={24}>
-									<b>Die Result</b>
-									<textarea value={this.state.dieResult} style={textStyle} onChange={(event)=> this.setState({dieResult: event.target.value})}></textarea>									
-								</FlexboxGrid.Item>
-							</FlexboxGrid>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-				</form>
-
-				</Modal.Body>
-				<Modal.Footer>
-					<Button onClick={() => this.handleResultSubmit()} appearance="primary">
-						Submit
-					</Button>
-					<Button onClick={() => this.closeResult()} appearance="subtle">
-						Cancel
-					</Button>
-				</Modal.Footer>
-			</Modal>
-
 			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>			
 			</div>
 
@@ -395,30 +354,11 @@ const mapDispatchToProps = (dispatch) => ({
 
 const slimText = {
 	fontSize: '0.966em',
-	color: '#97969B',
 	fontWeight: '300',
 	whiteSpace: 'nowrap',
 	textAlign: "center"
 };
 
-const pickerData = [
-	{
-		label: 'Draft',
-		value: 'Draft'
-	},
-	{
-		label: 'Awaiting Resolution',
-		value: 'Awaiting'
-	},
-	{
-		label: 'Ready for Publishing',
-		value: 'Ready'
-	},
-	{
-		label: 'Published',
-		value: 'Published'
-	}
-]
 
 const textStyle = {
 	backgroundColor: '#1a1d24', 

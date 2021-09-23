@@ -41,6 +41,7 @@ class NewAction extends Component {
 				});
 			}
 		}
+
 	}
 	
 	handleSubmit = async () => {
@@ -108,7 +109,7 @@ class NewAction extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
+					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} color={this.isDisabled() ? 'red' : 'green'} appearance="primary">
             {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
 						this.state.intent.length < 11 ? <b>Intent text need {11 - this.state.intent.length} more characters</b> :
 						this.props.myCharacter.effort <= 0 ? <b>No more Actions left</b> :

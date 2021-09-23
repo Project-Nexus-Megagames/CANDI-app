@@ -10,6 +10,8 @@ import NewAction from './NewAction';
 import NewComment from './NewComment';
 import NewResult from './NewResult';
 import Submission from './Submission';
+import Comment from './Comment';
+import Result from './Result';
 
 const SelectedAction = (props) => {
 	const [selectedArray, setSelectedArray] = React.useState([]);
@@ -32,12 +34,34 @@ const SelectedAction = (props) => {
 		setComment(false);
 	}
 
+	const getTime = (date) => {
+		let day = new Date(date).toDateString();
+		return (<b>{day}</b>)
+	}
+
 	const renderSwitch = (el, index) => {
 		switch(el.model) {
 			case 'Submission':
 				return(
-					<Submission action={el} />
+					<div>
+						<Divider vertical/>	
+						<Submission index={index} action={el} creator={props.selected.creator}/>
+					</div>
 				)
+				case 'Comment':
+					return(
+						<div>
+							<Divider vertical/>	
+							<Comment index={index} comment={el} />
+						</div>
+					)
+					case 'Result':
+						return(
+							<div>
+								<Divider vertical/>	
+								<Result index={index} result={el}  action={props.selected.submission}/>
+							</div>
+						)
 			default:
 				return(<b> Oops </b>)	
 		}	
@@ -49,18 +73,18 @@ const SelectedAction = (props) => {
 			<FlexboxGrid.Item colspan={2} >
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={16} >
-			<Divider>Created at: </Divider>
+
 			{selectedArray.map((el, index) => (
 					renderSwitch(el, index)
 			))}		
 
-			<Divider/>
+			<Divider>End of Action Feed</Divider>
 
 			<div style={{ transition: '3s ease'}}>
 				{!add && <IconButton onClick={() => setAdd(true)} color='blue' icon={<Icon icon="plus" />}></IconButton>}
 				{add &&
 					<ButtonGroup justified style={{ width: '100%', transition: '.5s' }} >
-						<Button onClick={() => setSubmission(true)}  color='green' >Player Submission</Button>
+						{/* <Button onClick={() => setSubmission(true)}  color='green' >Player Submission</Button> */}
 						<Button onClick={() => setComment(true)}color='cyan'>Comment</Button>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <Button onClick={() => setResult(true)} color='blue' >Result</Button>}
 						{props.myCharacter.tags.some(el=> el === 'Control') && <Button disabled={true} color='violet' >Effect</Button>}
@@ -92,18 +116,22 @@ const SelectedAction = (props) => {
 				show={submission}
 				closeNew={() => closeIt()}
 				gamestate={props.gamestate}
+				selected={props.selected}
 			/>
 
 			<NewResult
 				show={result}
 				closeNew={() => closeIt()}
 				gamestate={props.gamestate}
+				submission={props.selected.submission}
+				selected={props.selected}
 			/>
 
 			<NewComment
 				show={comment}
 				closeNew={() => closeIt()}
 				gamestate={props.gamestate}
+				selected={props.selected}
 			/>
 	</Content>		
 	);

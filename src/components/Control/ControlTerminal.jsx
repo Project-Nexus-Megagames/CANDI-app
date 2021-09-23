@@ -49,7 +49,7 @@ class ControlTerminal extends Component {
 			endTime: this.props.gamestate.endTime
 		}
 		const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
-		await this.compileTable(copy);
+		// await this.compileTable(copy);
 
 		let drafts = 0;
 		let awaiting= 0;
@@ -103,22 +103,22 @@ class ControlTerminal extends Component {
 		}
 	}
 
-	compileTable = async (actions) => {
-		let tableData = []
-		for (const action of actions.filter(el => el.type !== 'Project')) {
-			const data = {
-				control: action.creator.control,
-				character: action.creator,
-				intent: action.intent,
-				status: action.status,
-				dieResult: action.dieResult,
-				controlAssigned: action.controlAssigned,
-				news: action.newsworthy,
-			}
-			tableData.push(data);
-		}
-		this.setState({ tableData })
-	}
+	// compileTable = async (actions) => {
+	// 	let tableData = []
+	// 	for (const action of actions.filter(el => el.type !== 'Project')) {
+	// 		const data = {
+	// 			control: action.creator.control,
+	// 			character: action.creator,
+	// 			intent: action.intent,
+	// 			status: action.status,
+	// 			dieResult: action.dieResult,
+	// 			controlAssigned: action.controlAssigned,
+	// 			news: action.newsworthy,
+	// 		}
+	// 		tableData.push(data);
+	// 	}
+	// 	this.setState({ tableData })
+	// }
 
 	render() { 
 		if (!this.props.login) {
@@ -168,7 +168,7 @@ class ControlTerminal extends Component {
 					<Divider>Round {this.props.gamestate.round}</Divider>					
 				</div>
 
-				<Panel style={{height: '46vh'}}>
+				{/* <Panel style={{height: '46vh'}}>
 					<Table  virtualized data={this.state.tableData} >
 
 						<Column flexGrow={2}>
@@ -201,7 +201,7 @@ class ControlTerminal extends Component {
 						<Cell dataKey="newsworthy" />
 						</Column>	
 					</Table>
-				</Panel>
+				</Panel> */}
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="vertical" onChange={formValue => {this.setState({ formValue });}}>

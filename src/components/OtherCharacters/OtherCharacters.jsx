@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon} from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
 import socket from '../../socket';
+import NewCharacter from '../Control/NewCharacter';
 
 const  OtherCharacters = (props) => {
 	const [selected, setSelected] = React.useState(null);
@@ -14,6 +15,7 @@ const  OtherCharacters = (props) => {
 	const [filteredCharacters, setFilteredCharacters] = React.useState(props.characters);
 	const [edit, setEdit] = React.useState(false);
 	const [add, setAdd] = React.useState(false);
+	const [showNew, setShowNew] = React.useState(false);
 
 	const listStyle = (item) => {
 		if (item === selected) {
@@ -22,8 +24,16 @@ const  OtherCharacters = (props) => {
 		else return ({cursor: 'pointer'})
 	}
 
-	const copyToClipboard = (email, controlEmail) => {
-		navigator.clipboard.writeText(`${email} ${controlEmail}`);
+	const copyToClipboard = (character) => {
+		console.log(character)
+		let board = `${character.email}; `;
+
+		for (const controller of character.control) {
+			const character = props.characters.find(el => el.characterName === controller)
+			character ? board = board.concat(character.characterName, `; ${character.email}`) : console.log(controller);
+		}
+
+		navigator.clipboard.writeText(board);
 		Alert.success('Email Copied!', 6000);
 	}
 
@@ -84,26 +94,80 @@ const  OtherCharacters = (props) => {
 		<Sidebar className="side-bar">
 			<PanelGroup>					
 				<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
-					<Input onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
+					<InputGroup>
+						<Input onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
+						{props.myCharacter.tags.some(el=> el === 'Control') && <InputGroup.Button color='green' onClick={() => setShowNew(true)}>
+      			  <Icon  icon="plus" />
+      			</InputGroup.Button>}
+					</InputGroup>
 				</Panel>
 				<Panel bodyFill style={{height: '86vh', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					<List hover size="sm">
-						{filteredCharacters.map((character, index) => (
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'God')).map((character, index) => (
 							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={5} style={styleCenter}>
 										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
 									</FlexboxGrid.Item>
-									<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<b style={titleStyle}>{character.characterName}
-										{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px' }} >Control</Tag>}
-										{character.tags.some(el => el === 'God') && <Tag color='green' style={{ marginLeft: '15px' }} >God</Tag>}
-										{character.tags.some(el => el === 'NPC') && <Tag color='blue' style={{ marginLeft: '15px' }} >NPC</Tag>}</b>	
+											<Tag color='green' style={{ marginLeft: '15px' }} >God</Tag>
+										</b>
 										<b style={slimText}>{character.email}</b>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
 						))}
+
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'PC')).map((character, index) => (
+							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={5} style={styleCenter}>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<b style={titleStyle}>{character.characterName}
+											<Tag color='cyan' style={{ marginLeft: '15px' }} >PC</Tag>
+										</b>	
+										<b style={slimText}>{character.email}</b>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+
+
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'NPC')).map((character, index) => (
+							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={5} style={styleCenter}>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<b style={titleStyle}>{character.characterName}
+											<Tag color='blue' style={{ marginLeft: '15px' }} >NPC</Tag>
+										</b>	
+										<b style={slimText}>{character.email}</b>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'Control')).map((character, index) => (
+							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={5} style={styleCenter}>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<b style={titleStyle}>{character.characterName}
+											{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px' }} >Control</Tag>}
+										</b>	
+										<b style={slimText}>{character.email}</b>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+
 					</List>												
 				</Panel>							
 			</PanelGroup>
@@ -129,7 +193,7 @@ const  OtherCharacters = (props) => {
 										</FlexboxGrid.Item>					
 									</FlexboxGrid>
 
-									<Button appearance='ghost' block onClick={()=> copyToClipboard(selected.email, selected.controlEmail)}>{selected.email}</Button>
+									<Button appearance='ghost' block onClick={()=> copyToClipboard(selected)}>{selected.email}</Button>
 									<FlexboxGrid style={{paddingTop: '5px'}}>
 										<FlexboxGrid.Item colspan={12}>
 											<p>
@@ -212,9 +276,12 @@ const  OtherCharacters = (props) => {
 				character={selected}
 				closeModal={() => setAdd(false)}
 			/>
+
 		</Content>		
 		}
 	</Container>
+		<NewCharacter show={showNew} 
+			closeModal={() => setShowNew(false)}/>
 	</React.Fragment>
 	);
 }

@@ -61,9 +61,9 @@ class NewCharacter extends Component {
 					<Form layout="vertical" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={8}>
-								<FormGroup>
-									<ControlLabel>Character Name</ControlLabel>
-									<FormControl name="characterName" />
+							<FormGroup>
+								<ControlLabel>Character Name</ControlLabel>
+								<FormControl name="characterName" />
 							</FormGroup>
 							<FormGroup>
 								<ControlLabel>email</ControlLabel>
@@ -73,16 +73,10 @@ class NewCharacter extends Component {
 								<ControlLabel>worldAnvil</ControlLabel>
 								<FormControl name="worldAnvil" />
 							</FormGroup>
-							<FormGroup>
-								<ControlLabel>Control</ControlLabel>
-								<FormControl name="control" />
-							</FormGroup>							
+						
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
-							<FormGroup>
-								<ControlLabel>controlEmail</ControlLabel>
-								<FormControl name="controlEmail" />
-							</FormGroup>
+
 							<FormGroup>
 								<ControlLabel>timeZone</ControlLabel>
 								<FormControl name="timeZone" />
@@ -95,13 +89,10 @@ class NewCharacter extends Component {
 
 							<FlexboxGrid.Item colspan={8}>
 							<FormGroup>
-									<ControlLabel>pronouns</ControlLabel>
-									<FormControl name="pronouns" />
+								<ControlLabel>pronouns</ControlLabel>
+								<FormControl name="pronouns" />
 							</FormGroup>
-							<FormGroup>
-									<ControlLabel>popsupport</ControlLabel>
-									<FormControl name="popSupport" accepter={InputNumber} />
-							</FormGroup>
+
 							<FormGroup>
 									<ControlLabel>effort</ControlLabel>
 									<FormControl name="effort" accepter={InputNumber} />
@@ -111,7 +102,7 @@ class NewCharacter extends Component {
 						</FlexboxGrid>
 						<FormGroup>
 								<ControlLabel>Bio</ControlLabel>
-								<FormControl style={{width: '100%', display: 'block' }} name="bio" rows={5} componentClass="textarea"/>
+								<FormControl style={textStyle} name="bio" rows={5} componentClass="textarea"/>
 							</FormGroup>
 					</Form>
 				</Modal.Body>
@@ -126,6 +117,16 @@ class NewCharacter extends Component {
 			</Modal>
 		);
 	}
+}
+
+const textStyle = {
+	backgroundColor: '#1a1d24', 
+	border: '1.5px solid #3c3f43', 
+	borderRadius: '5px', 
+	width: '100%',
+	padding: '5px',
+	overflow: 'auto', 
+	scrollbarWidth: 'none',
 }
 
 const mapStateToProps = (state) => ({

@@ -77,7 +77,7 @@ export const getMyActions = createSelector(
   state => state.actions.list,
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (filter, actions, myCharacter) => actions.filter(
-    action => (( action.creator === myCharacter._id ) ))
+    action => (( action.creator._id === myCharacter._id ) ))
   
 );
 

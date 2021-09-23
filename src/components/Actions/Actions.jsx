@@ -59,7 +59,7 @@ const Actions = (props) => {
 				</Panel>
 				<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 					<ButtonGroup>
-						<Button appearance='primary' disabled={!props.gamestate.status === 'Active'} onClick={() => setShowNew(true)}>New Action</Button>
+						<Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active'} onClick={() => setShowNew(true)}>New Action</Button>
 					</ButtonGroup>
 				</Panel>			
 			</PanelGroup>

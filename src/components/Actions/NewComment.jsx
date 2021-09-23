@@ -38,19 +38,16 @@ class NewComment extends Component {
 	handleSubmit = async () => {
 		this.props.actionDispatched();
 		// 1) make a new action
-		const action = {
-			submission: {
-				effort: 1,
-				assets: this.state.assets, //this.state.asset1._id, this.state.asset2._id, this.state.asset3._id
-				description: this.state.description,
-				intent: this.state.intent,			
-				round: this.props.gamestate.round	
+		const data = {
+			id: this.props.selected._id,
+			comment: {
+				body: this.state.description,
+				status: 'Public',
+				commentor: this.props.myCharacter.characterName
 			},
-			controllers: ['Test2'],
-			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'create', action); // new Socket event	
+		socket.emit('actionRequest', 'comment', data); // new Socket event	
 	}
 	
 	render() { 

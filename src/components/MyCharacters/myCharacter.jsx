@@ -23,6 +23,7 @@ import {
   Grid,
   Col,
   Row,
+  List,
 } from "rsuite";
 import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated, getMyAssets } from "../../redux/entities/assets";
@@ -30,6 +31,7 @@ import socket from "../../socket";
 // import { playerActionsRequested } from "../../redux/entities/playerActions";
 import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
 import NavigationBar from "../Navigation/NavigationBar";
+import AssetInfo from "../Actions/AssetInfo";
 
 class MyCharacter extends Component {
   state = {
@@ -44,6 +46,9 @@ class MyCharacter extends Component {
     lendShow: false,
     unlend: false, // boolean for displaying the "unlend" modal
     unleanding: null, // what is being "Unlent"
+
+		infoModal: false,
+		infoAsset: {}
   };
 
   componentDidMount = () => {
@@ -89,6 +94,12 @@ class MyCharacter extends Component {
     this.setState({ unleanding, unlend: true });
   };
 
+  openInfo = (asset) => {
+		console.log(asset)
+		const found = this.props.assets.find(el => el._id === asset._id);
+		this.setState({ infoAsset: found, infoModal: true });
+	}
+
   render() {
     const playerCharacter = this.props.myCharacter;
     if (!this.props.login) {
@@ -108,6 +119,7 @@ class MyCharacter extends Component {
                     src={`/images/${playerCharacter.characterName}.jpg`}
                     alt="Unable to load img"
                     width="95%"
+                    style={{ maxHeight: '50vh' }}
                   />
                 </p>
                 <p>
@@ -158,60 +170,12 @@ class MyCharacter extends Component {
             </Col>
             <Col xs={24} sm={24} md={8} className="gridbox">
 
-            <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
-                Resources
-              </Divider>
-              {this.props.myAssets.filter(el => el.status.hidden !== true ).map((asset, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {asset.uses > 0 && (
-                    <React.Fragment>
-                      <Affix>
-                        {asset.status.lent && this.rednerHolder(asset)}
-                        {!asset.status.lent && <Tag color="green">Ready</Tag>}
-                        {asset.status.lent && this.findOwner(asset._id)}
-                      </Affix>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={asset.name}
-                        bordered
-                        collapsible
-                      >
-                        <FlexboxGrid>
-                          <FlexboxGrid.Item colspan={20}>
-                            <p>{asset.description}</p>
-                          </FlexboxGrid.Item>
-                          <FlexboxGrid.Item
-                            style={{ textAlign: "center" }}
-                            colspan={4}
-                          >
-                            {asset.status.lendable && !asset.status.lent && (
-                              <Button
-                                onClick={() => this.openLend(asset)}
-                                appearance="ghost"
-                                size="sm"
-                                disabled={asset.status.used}
-                              >
-                                Lend
-                              </Button>
-                            )}
-                            {asset.status.lendable && asset.status.lent && (
-                              <Button
-                                onClick={() => this.openUnlend(asset)}
-                                appearance="ghost"
-                                size="sm"
-                              >
-                                Un-Lend
-                              </Button>
-                            )}
-                          </FlexboxGrid.Item>
-                        </FlexboxGrid>
-                        {asset.uses !== 999 && <p>Uses: {asset.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))} 
+            <Divider>Resources</Divider>
+            {this.renderList('Asset')}
+            {this.renderList('Trait')}
+            {this.renderList('Power')}
+            {this.renderList('Bond')}
+
 
             </Col>
           </Row>
@@ -246,10 +210,59 @@ class MyCharacter extends Component {
 					{this.renderLendation()}
 				</Drawer.Body>
 			</Drawer>
-
+      <AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>		
       </Content>
     );
   }
+
+  renderList = (type) => {
+    return (
+      <div>
+        <h5 style={{ backgroundColor: '#746d75' }}>{type}s</h5>
+          <List autoScroll hover size="md" style={{ scrollbarWidth: 'none', overflow: 'auto', borderLeft: '1px solid rgba(255, 255, 255, 0.12)'}}>
+            {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).map((asset, index) => (
+              <List.Item style={{ textAlign: "center", cursor: 'pointer' }} onClick={() => this.openInfo(asset)}>
+                {asset.status.lendable && <FlexboxGrid>
+                <Affix>
+                  {asset.status.lent && this.rednerHolder(asset)}
+                  {!asset.status.lent && <Tag color="green">Ready</Tag>}
+                  {asset.status.lent && this.findOwner(asset._id)}
+                </Affix>
+                  <FlexboxGrid.Item colspan={20}>
+                    <p>{asset.description}</p>
+                  </FlexboxGrid.Item>
+                  <FlexboxGrid.Item style={{ textAlign: "center" }} colspan={4}>
+                    {!asset.status.lent && (
+                      <Button
+                        onClick={() => this.openLend(asset)}
+                        appearance="ghost"
+                        size="sm"
+                        disabled={asset.status.used}
+                      >
+                        Lend
+                      </Button>
+                    )}
+                    {asset.status.lent && (
+                      <Button
+                        onClick={() => this.openUnlend(asset)}
+                        appearance="ghost"
+                        size="sm"
+                      >
+                        Un-Lend
+                      </Button>
+                    )}
+                  </FlexboxGrid.Item>
+                </FlexboxGrid>}
+                {!asset.status.lendable && <div>
+                  <b>{asset.description}</b>
+                  </div>}
+                {asset.uses !== 999 && <p>Uses: {asset.uses}</p>}
+              </List.Item>
+            ))} 
+            </List>	
+      </div>
+    )
+  };
 
   rednerHolder = (asset) => {
     let holder = this.props.characters.find((el) =>
