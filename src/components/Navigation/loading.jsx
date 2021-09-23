@@ -229,7 +229,8 @@ const bored = [
     'https://www.youtube.com/watch?v=5KO2IjWI9fA', // Witches On Tinder
     'https://www.youtube.com/watch?v=ETbMj3cE7YA', // Star Fox 64 Ligma
     'https://www.youtube.com/watch?v=gnXUFXc2Yns', // Socialism is when the government does stuff but I vocoded it
-    'https://www.youtube.com/watch?v=R4GlR6X4ljU&t=3s&ab_channel=PopCultureFish' // Oblivion npc conversation
+    'https://www.youtube.com/watch?v=R4GlR6X4ljU&t=3s&ab_channel=PopCultureFish', // Oblivion npc conversation
+    'https://www.youtube.com/watch?v=gBCKZtpMSNE&ab_channel=JCFosterTakesItToTheMoon', // Maslow Pyramid Any% Speedrun | 8.1 Seconds
 ] // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
 
 const birthday = [

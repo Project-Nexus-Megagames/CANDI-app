@@ -51,6 +51,7 @@ const slice = createSlice({
       console.log(`Payload : ${action.payload._id}`)
       const index = playerActions.list.findIndex(el => el._id === action.payload._id);
       playerActions.list[index] = action.payload;
+      playerActions.loading = false;
     }
   }
 });
@@ -81,14 +82,13 @@ export const getMyActions = createSelector(
   
 );
 
-// export const filteredActions = createSelector(
-//   state => state.actions.filter,
-//   state => state.actions.list,
-//   (filter, actions) => actions.filter(action => action.description.toLowerCase().includes(filter.toLowerCase()) || 
-//   action.intent.toLowerCase().includes(filter.toLowerCase()) || 
-//   action.creator.toLowerCase().includes(filter.toLowerCase())
-//   )
-// );
+export const filteredActions = createSelector(
+  state => state.actions.filter,
+  state => state.actions.list,
+  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || 
+  action.submission.intent.toLowerCase().includes(filter.toLowerCase()) 
+  )
+);
 
 export const draftActions = createSelector(
   state => state.actions.list,

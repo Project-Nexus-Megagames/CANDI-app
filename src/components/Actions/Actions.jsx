@@ -59,7 +59,7 @@ const Actions = (props) => {
 				</Panel>
 				<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
 					<ButtonGroup>
-						<Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active'} onClick={() => setShowNew(true)}>New Action</Button>
+						<Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>{!props.gamestate.status === 'Active' ? <b>Round Closed</b> : props.myCharacter.effort < 1 ? <b>No Effort Left</b> :  <b>New Action</b>}</Button>
 					</ButtonGroup>
 				</Panel>			
 			</PanelGroup>
@@ -67,6 +67,7 @@ const Actions = (props) => {
 		<Content>
 			{selected && selected.type === 'Action' && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
 		</Content>
+
 		<NewAction
 			show={showNew}
 			closeNew={() => setShowNew(false)}

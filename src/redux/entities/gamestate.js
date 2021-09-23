@@ -6,7 +6,7 @@ import { apiCallBegan } from "../api"; // Import Redux API call
 const slice = createSlice({
   name: "gamestate",
 	initialState: {
-    version: '1.10',
+    version: '3.0',
     loading: false,
     loaded: false,
     lastFetch: null,
@@ -43,7 +43,7 @@ const slice = createSlice({
       gamestate.list.push(action.payload);
     },
     toggleDuck: (gamestate, action) => {
-      console.log(`${action.type} Dispatched`)
+      console.og(`${action.type} Dispatched`)
       gamestate.duck = !gamestate.duck;
     }
   }

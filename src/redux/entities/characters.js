@@ -44,6 +44,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       const index = characters.list.findIndex(el => el._id === action.payload._id);
       characters.list[index] = action.payload;
+      characters.loading = false;
     }
   }
 });

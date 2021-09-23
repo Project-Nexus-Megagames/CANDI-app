@@ -45,7 +45,7 @@ const SelectedAction = (props) => {
 				return(
 					<div>
 						<Divider vertical/>	
-						<Submission index={index} action={el} creator={props.selected.creator}/>
+						<Submission handleSelect={props.handleSelect} index={index} sumbission={el} action={props.selected} creator={props.selected.creator}/>
 					</div>
 				)
 				case 'Comment':
@@ -133,6 +133,7 @@ const SelectedAction = (props) => {
 				gamestate={props.gamestate}
 				selected={props.selected}
 			/>
+
 	</Content>		
 	);
 }

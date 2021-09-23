@@ -82,6 +82,7 @@ const initUpdates = () => {
     socket.on('clearLocalStorage', (data) => { 
         console.log('clearLocalStorage');
         localStorage.removeItem(data);
+        
     });
 
     socket.on('errorUnload', (data) => { 

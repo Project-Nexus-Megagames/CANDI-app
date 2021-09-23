@@ -1,29 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Avatar, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon, ButtonToolbar } from 'rsuite';
+import { Avatar, Slider, Panel, FlexboxGrid, Tag, CheckPicker, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon, ButtonToolbar, Loader } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
-import { actionDeleted } from '../../redux/entities/playerActions';
+import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 import AssetInfo from './AssetInfo';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class Submission extends Component {
 	state = { 
-		edit: null, // used to open edit action popup
-		resEdit: null,	// used to open action result popup
+		edit: false, // used to open edit action popup
+		deleteWarning: false, // used to open edit action popup
 		loading: false, //used for loading button 
-		effort: 1,
-		asset1: this.props.action.asset1,
-		asset2: this.props.action.asset2,
-		asset3: this.props.action.asset3,
+		effort: this.props.sumbission.effort,
+		assets: this.props.sumbission.assets,
 		id: this.props.action._id,
-		description: this.props.action.description,
-		intent: this.props.action.intent,	
-		result: this.props.action.result,
-		dieResult: this.props.action.dieResult,
-		status: this.props.action.status,
-		mechanicalEffect: this.props.action.mechanicalEffect,
-		usedAssets: [],
+		description: this.props.sumbission.description,
+		intent: this.props.sumbission.intent,	
 
 		infoModal: false,
 		infoAsset: {}
@@ -40,18 +33,14 @@ class Submission extends Component {
 		if (this.state !== prevState) {
 			localStorage.setItem('selectedActionState', JSON.stringify(this.state));
 		};
-		if (this.props.action !== prevProps.action) {
-			this.setState({ 	
-				asset1: this.props.action.asset1,
-				asset2: this.props.action.asset2,
-				asset3: this.props.action.asset3,
+		if (this.props.sumbission !== prevProps.sumbission) {
+			this.setState({ 
+				effort: this.props.sumbission.effort,
+				assets: this.props.sumbission.assets,
 				id: this.props.action._id,
-				description: this.props.action.description,
-				intent: this.props.action.intent,	
-				result: this.props.action.result,
-				dieResult: this.props.action.dieResult,
-				status: this.props.action.status,
-				mechanicalEffect: this.props.action.mechanicalEffect,
+				description: this.props.sumbission.description,
+				intent: this.props.sumbission.intent,	
+				// status: this.props.action.status,
 			});		
 		}
 	}
@@ -63,7 +52,7 @@ class Submission extends Component {
 	}
 
 	render() { 
-		const action = this.props.action;
+		const sumbission = this.props.sumbission;
 		return ( 
 			<div style={{ 	border: '3px solid #22a12a', borderRadius: '5px' }} >
 				<FlexboxGrid align="middle" style={{ backgroundColor: '#22a12a' }} justify="center">
@@ -74,14 +63,14 @@ class Submission extends Component {
 
 					<FlexboxGrid.Item colspan={15}>
 						<h5>{this.props.creator.characterName}'s Action Submission</h5>
-						<p style={slimText}>{this.getTime(this.props.action.createdAt)}</p>
+						<p style={slimText}>{this.getTime(this.props.sumbission.createdAt)}</p>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={4}>
 						<ButtonToolbar>
 							<ButtonGroup>
-								<IconButton color='blue' icon={<Icon icon="pencil" />} />
-								<IconButton color='red' icon={<Icon icon="trash2" />} />
+								<IconButton onClick={() => this.setState({ edit: true })} color='blue' icon={<Icon icon="pencil" />} />
+								<IconButton onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} /> 
 							</ButtonGroup>							
 						</ButtonToolbar>
 					</FlexboxGrid.Item>
@@ -92,41 +81,41 @@ class Submission extends Component {
 						Description
 					</p>
 					<p>
-						{action.description}	
+						{sumbission.description}	
 					</p>
 					<p style={slimText}>
 						Intent
 					</p>
 					<p>
-						{action.intent}	
+						{sumbission.intent}	
 					</p>
 					{/* <p style={slimText}>
 						Effort
 					</p>
-					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
-					<Progress.Line percent={action.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
+					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{sumbission.effort}</p>
+					<Progress.Line percent={sumbission.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
 					<Divider>Resources</Divider>
 					<FlexboxGrid>
 
 						<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(action.assets[0])}
-							{this.props.user.roles.some(el=> el === 'Control') && action.asset1 &&
+							{this.renderAsset(sumbission.assets[0])}
+							{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset1 &&
 							<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 								<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
 							</Panel>}
 						</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={8}>
-						{this.renderAsset(action.assets[1])}
-						{this.props.user.roles.some(el=> el === 'Control') && action.asset2 &&
+						{this.renderAsset(sumbission.assets[1])}
+						{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset2 &&
 							<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 								<Button onClick={() => this.controlRemove('asset2')} color='red'>Control Remove Asset</Button>									
 							</Panel>}
 						</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={8}>
-						{this.renderAsset(action.assets[2])}
-						{this.props.user.roles.some(el=> el === 'Control') && action.asset3 &&
+						{this.renderAsset(sumbission.assets[2])}
+						{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset3 &&
 							<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 								<Button onClick={() => this.controlRemove('asset3')} color='red'>Control Remove Asset</Button>									
 							</Panel>}
@@ -135,136 +124,100 @@ class Submission extends Component {
 					</FlexboxGrid>
 				</Panel>		
 
-				<Modal overflow 
-			full
-			size='lg'  
-			show={this.state.edit} 
-			onHide={() => this.closeEdit()}>
-				<Modal.Header>
-					<Modal.Title>Edit an Action</Modal.Title>
-				</Modal.Header>
+				<Modal overflow
+					full
+					size='lg'  
+					show={this.state.edit} 
+					onHide={() => this.setState({edit: false}) }>
+						<Modal.Header>
+							<Modal.Title>Submit a new action</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
+							<form>
+								<FlexboxGrid> Description
+									<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
+								</FlexboxGrid>
+								<br></br>
+								<FlexboxGrid> What you would like to happen
+									<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
+								</FlexboxGrid>
+								<FlexboxGrid>
+									<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
+										{/* <Slider graduated
+										min={0}
+										max={this.props.myCharacter.effort}
+										defaultValue={0}
+										progress
+										value={this.state.effort}
+										onChange={(event)=> this.setState({effort: event})}>
+										</Slider> */}
+										<div style={{ paddingTop: '20px', fontSize: '2em', }} >
+											Current Actions Left: {this.props.myCharacter.effort}		
+										</div>
+									
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
+										{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={4}>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
+										<CheckPicker labelKey='name' valueKey='_id' defaultValue={this.state.assets} data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</form>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button loading={this.props.actionLoading} onClick={() => this.handleSubmit()}  disabled={this.state.description.length > 10 && this.state.intent.length > 10 ? false : true} color={this.state.description.length > 10 && this.state.intent.length > 10 ? 'green' : 'red'} appearance="primary">
+    		        {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
+								this.state.intent.length < 11 ? <b>Intent text need {11 - this.state.intent.length} more characters</b> :
+								<b>Submit</b>}
+    			    </Button>
+							<Button onClick={() => this.setState({edit: false})} appearance="subtle">
+    		        Cancel
+    		   		</Button>
+    		    </Modal.Footer>
+					</Modal>
+			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>			
+
+			<Modal backdrop="static" size='sm' show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 				<Modal.Body>
-				<form>
-					<FlexboxGrid> Description
-						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
-					</FlexboxGrid>
-					<br></br>
-					<FlexboxGrid> What you would like to happen
-						<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
-					</FlexboxGrid>
-					<FlexboxGrid>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
-							<Slider graduated
-							min={0}
-							max={this.props.myCharacter.effort + this.props.action.effort}
-							defaultValue={this.state.effort}
-							progress
-							value={this.state.effort}
-							onChange={(event)=> this.setState({effort: event})}>
-							</Slider>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort + this.props.action.effort} min={0} onChange={(value)=> this.setState({effort: parseInt(value)})}></InputNumber>								
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={4}>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources
-							<InputPicker defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset1: event})}/>
-							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset2: event})}/>
-							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset3: event})}/>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-					</form>
+					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+						{'  '}
+						Warning! Are you sure you want delete your action?
+					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 				</Modal.Body>
 				<Modal.Footer>
-        <Button onClick={() => this.handleSubmit()} appearance="primary">
-            Submit
-        </Button>
-        <Button onClick={() => this.closeEdit()} appearance="subtle">
-            Cancel
-        </Button>
-        </Modal.Footer>
+           <Button onClick={() => this.deleteAction()} appearance="primary">
+						I am Sure!
+           </Button>
+           <Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
+						Nevermind
+           </Button>
+				</Modal.Footer>
 			</Modal>
-			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>			
 			</div>
 
 		);
 	}
 
-	openEdit = () => {
-		const action = this.props.action;
-
-		this.setState({ 
-			description: action.description, 
-			intent: action.intent, 
-			effort: action.effort, 
-			id: action._id, 
-			asset1: action.asset1,
-			asset2: action.asset2,
-			asset3: action.asset3,
-			edit: true })
-	}
-
 	handleSubmit = async () => {
-		this.setState({loading: true}) 
-		let action = { ...this.props.action };
-
-		// action.effort= this.state.effort
-		action.asset1= this.state.asset1
-		action.asset2= this.state.asset2
-		action.asset3= this.state.asset3
-		action.description= this.state.description
-		action.intent= this.state.intent
-		action.dieResult= this.state.dieResult
-		action.id= this.props.action._id
-		action.playerBoolean= this.state.edit	
-	
-		// console.log(action)
+		this.props.actionDispatched();
 		// 1) make a new action
-		try{
-			socket.emit('actionRequest', 'update', action); // new Socket event
-			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: '', mechanicalEffect: ''});	
-
-			this.closeEdit();
-			this.closeResult();
+		const data = {
+			id: this.props.action._id,
+			submission: {
+				effort: 1,
+				assets: this.state.assets, //this.state.asset1._id, this.state.asset2._id, this.state.asset3._id
+				description: this.state.description,
+				intent: this.state.intent,			
+				round: this.props.gamestate.round	
+			},
 		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data}`, 6000)
-		}
-		this.setState({loading: false});
+		socket.emit('actionRequest', 'update', data); // new Socket event	
 	}
 
-	handleResultSubmit = async () => {
-		this.setState({loading: true}) 
-		let action = { ...this.props.action };
-
-		action.effort= this.state.effort
-		action.asset1= this.state.asset1
-		action.asset2= this.state.asset2
-		action.asset3= this.state.asset3
-		action.description= this.state.description
-		action.intent= this.state.intent
-		action.result= this.state.result
-		action.dieResult= this.state.dieResult
-		action.status= this.state.status
-		action.id= this.props.action._id
-		action.mechanicalEffect= this.state.mechanicalEffect
-		action.playerBoolean= this.state.edit	
-	
-		// console.log(action)
-		// 1) make a new action
-		try{
-			socket.emit('actionRequest', 'update', action); // new Socket event
-			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: '', mechanicalEffect: ''});	
-
-			this.closeEdit();
-			this.closeResult();
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data}`, 6000)
-		}
-		this.setState({loading: false});
-	}
 
 	controlRemove = (asset) => {
 		const action = {
@@ -307,17 +260,11 @@ class Submission extends Component {
 		this.setState({ infoAsset: found, infoModal: true });
 	}
 
-	closeEdit = () => { 
-		this.setState({edit: false}) 
-	};
-
-	closeResult = () => { 
-		this.setState({resEdit: false}) 
-	};
 
 	deleteAction = async () => {
 		socket.emit('actionRequest', 'delete', {id: this.props.action._id}); // new Socket event
 		this.props.handleSelect(null);
+		this.setState({ deleteWarning: false });
 	};
 
 	myToggle = () => {
@@ -338,6 +285,7 @@ class Submission extends Component {
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
+	actionLoading: state.actions.loading,
 	gamestate: state.gamestate,
 	actions: state.actions.list,
 	assets: state.assets.list,
@@ -347,9 +295,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	// handleLogin: (data) => dispatch(loginUser(data))
 	deleteAction: (data) => dispatch(actionDeleted(data)),
-	updateCharacter: (data) => dispatch(characterUpdated(data))
+	actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
 
 const slimText = {

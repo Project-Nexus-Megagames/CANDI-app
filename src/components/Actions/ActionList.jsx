@@ -2,27 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {List, FlexboxGrid, Container, } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { getMyActions } from '../../redux/entities/playerActions';
+import { getMyActions, filteredActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { 
 		rounds: []
 	}
 
-	// componentDidMount = async () => {
-	// 	try {
-	// 		this.createListCatagories();
-	// 	}
-	// 	catch (err) {
-	// 		console.log(err);
-	// 	}
-	// 	}
+	componentDidMount = async () => {
+		try {
+			this.createListCatagories();
+		}
+		catch (err) {
+			console.log(err);
+		}
+		}
 
-	// 	componentDidUpdate = (prevProps) => {
-	// 		if (this.props.filteredActions !== prevProps.filteredActions) {
-	// 			this.createListCatagories();
-	// 		}
-	// 	}
+		componentDidUpdate = (prevProps) => {
+			if (this.props.filteredActions !== prevProps.filteredActions) {
+				this.createListCatagories();
+			}
+		}
 
 	listStyle (item) {
 		if (item.type === "Project") {
@@ -37,25 +37,25 @@ class ActionList extends Component {
 		else return({cursor: 'pointer'});
 	}
 
-	// createListCatagories = () => {
-	// 	const rounds = [];
-	// 	for (const action of this.props.filteredActions) {
-	// 		if (!rounds.some(el => el === action.round)) rounds.push(action.round);
-	// 	}
-	// 	rounds.reverse();
-	// 	this.setState({ rounds });
-	// }
+	createListCatagories = () => {
+		const rounds = [];
+		for (const action of this.props.filteredActions) {
+			if (!rounds.some(el => el === action.round)) rounds.push(action.round);
+		}
+		rounds.reverse();
+		this.setState({ rounds });
+	}
 
 	render() { 
 		return ( 
 			<Container>
 					<React.Fragment >
 					<List hover size="sm" >
-						{this.props.myActions.map((action, index) => ( // .filter(el => el.round === round)
+						{this.props.filteredActions.map((action, index) => ( // .filter(el => el.round === round)
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-										<div style={titleStyle}>{action.intent}</div>
+										<div style={titleStyle}>{action.name}</div>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
@@ -84,8 +84,8 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
-	myActions: getMyActions(state) 
-	// filteredActions: state.auth.control ? filteredActions(state) : 	getMyActions(state) 
+	myActions: getMyActions(state),
+	filteredActions: state.auth.control ? filteredActions(state) : 	getMyActions(state) 
 });
 
 const mapDispatchToProps = (dispatch) => ({
