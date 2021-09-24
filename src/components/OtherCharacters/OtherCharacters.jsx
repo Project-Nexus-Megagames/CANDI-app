@@ -197,6 +197,11 @@ const  OtherCharacters = (props) => {
 									<FlexboxGrid style={{paddingTop: '5px'}}>
 										<FlexboxGrid.Item colspan={12}>
 											<p>
+											<TagGroup>Controllers:
+												{selected.tags && selected.control.map((item, index) => (
+													<Tag index={index}>{item}</Tag>
+												))}	
+											</TagGroup> 
 											</p>
 											<p>
 												Character Pronouns: <b>{selected.pronouns}</b>			
