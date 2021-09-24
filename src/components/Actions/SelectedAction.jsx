@@ -59,7 +59,7 @@ const SelectedAction = (props) => {
 						return(
 							<div>
 								<Divider vertical/>	
-								<Result index={index} result={el} selected={props.selected} action={props.selected.submission}/>
+								<Result index={index} result={el} selected={props.selected} submission={props.selected.submission}/>
 							</div>
 						)
 			default:

@@ -25,7 +25,6 @@ class Submission extends Component {
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
 		const stateReplace = JSON.parse(localStorage.getItem('selectedActionState'));
-		console.dir(stateReplace);
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
@@ -230,7 +229,6 @@ class Submission extends Component {
 	renderAsset = (assetID) => {
 		if (assetID) {
 			const asset = this.props.assets.find(el => el._id === assetID)
-			console.log(asset)
 			return (
 					<Panel style={{backgroundColor: "#272b34"}} shaded bordered >
 						<FlexboxGrid align='middle'>
@@ -255,7 +253,6 @@ class Submission extends Component {
 	}
 
 	openInfo = (asset) => {
-		console.log(asset)
 		const found = this.props.assets.find(el => el._id === asset._id);
 		this.setState({ infoAsset: found, infoModal: true });
 	}

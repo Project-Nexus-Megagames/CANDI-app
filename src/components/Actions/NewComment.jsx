@@ -30,18 +30,12 @@ class NewComment extends Component {
 		if (this.state !== prevState) {
 			localStorage.setItem('NewComment', JSON.stringify(this.state));
 		};
-		if (this.props.actions !== prevProps.actions) {
-			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
-				this.props.closeNew();
-				this.setState({
-					description: '',
-				});
-			}
-			if (this.props.comment) {
-				this.setState({
-					description: this.props.comment,
-				});
-			}			
+		if (this.props.actions !== prevProps.actions && this.props.comment) {
+			console.log('yoo')
+			this.setState({
+				description: this.props.comment.body,
+			});
+			
 		}
 
 	}
@@ -95,7 +89,7 @@ class NewComment extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
+					<Button onClick={() => this.props.comment ? this.handleEditSubmit() : this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
             {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
 		
 						<b>Submit</b>}

@@ -11,7 +11,7 @@ class Comment extends Component {
     super(props);
     this.state = {
 			commentEdit: false, // used to open edit action popup
-			description: '',
+			body: this.props.comment.body,
 			deleteWarning: false, // used to open delete action popup
 			hidden: true,
 		};
@@ -21,6 +21,9 @@ class Comment extends Component {
 		// localStorage.removeItem('newActionState');
 		const stateReplace = JSON.parse(localStorage.getItem('EditComment'));
 		if (stateReplace) this.setState(stateReplace); 
+		this.setState({
+			body: this.props.comment.body,
+		});
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
@@ -28,10 +31,10 @@ class Comment extends Component {
 			localStorage.setItem('EditComment', JSON.stringify(this.state));
 		};
 		if (this.props.actions !== prevProps.actions) {
-			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
+			if (this.props.actions.some(el => el.body === this.state.body)) { // checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();
 				this.setState({
-					description: '',
+					body: this.props.comment.body,
 				});
 			}
 		}
@@ -43,7 +46,7 @@ class Comment extends Component {
 		const data = {
 			id: this.props.selected._id,
 			comment: {
-				body: this.state.description,
+				body: this.state.body,
 				status: 'Public',
 				commentor: this.props.myCharacter.characterName
 			},
@@ -66,6 +69,21 @@ class Comment extends Component {
 		}
 		socket.emit('actionRequest', 'deleteSubObject', data); // new Socket event	
 		this.setState({ deleteWarning: false });
+	}
+
+	handleEditSubmit = async () => {
+		this.props.actionDispatched();
+		// 1) make a new action
+		const data = {
+			id: this.props.selected._id,
+			comment: {
+				body: this.state.body,
+				status: 'Public',
+				_id: this.props.comment._id
+			},
+		}
+		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
+		this.setState({ commentEdit: false });
 	}
 	
 	render() { 
@@ -113,12 +131,47 @@ class Comment extends Component {
 				</Modal.Footer>
 			</Modal>	
 
-			<NewComment 
-				show={this.state.commentEdit}
-				closeNew={() => this.setState({ commentEdit: false })}
-				gamestate={this.props.gamestate}
-				comment={this.props.comment}
-				selected={this.props.selected}/>
+			<Modal overflow
+			full
+			size='lg'  
+			show={this.state.commentEdit} 
+			onHide={() => this.setState({ commentEdit: false })}>
+				<Modal.Header>
+					<Modal.Title>Edit this comment</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
+					<form>
+						<FlexboxGrid>
+						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
+
+						</FlexboxGrid.Item>
+						Body
+						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={18}>
+							<textarea rows='6' defaultValue={this.props.comment.body} value={this.state.body} style={textStyle} onChange={(event)=> this.setState({body: event.target.value})}></textarea>	
+						</FlexboxGrid.Item>
+						
+						</FlexboxGrid>
+						<br></br>
+
+						<FlexboxGrid>
+							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
+
+							</FlexboxGrid.Item>
+						</FlexboxGrid>
+					</form>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button onClick={() => this.props.comment ? this.handleEditSubmit() : this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
+            {this.state.body.length < 11 ? <b>Description text needs {11 - this.state.body.length} more characters</b> :
+		
+						<b>Submit</b>}
+    	    </Button>
+					<Button onClick={() => this.setState({ commentEdit: false })} appearance="subtle">
+            Cancel
+       		</Button>
+        </Modal.Footer>
+			</Modal>
 			</div>
 
 
@@ -127,7 +180,7 @@ class Comment extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length > 10) return false;
+		if (this.state.body.length > 10) return false;
 		else return true;
 	}
 
