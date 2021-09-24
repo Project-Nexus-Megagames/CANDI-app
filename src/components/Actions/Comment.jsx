@@ -5,11 +5,14 @@ import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket'; 
+import NewComment from './NewComment';
 class Comment extends Component {
 	constructor(props) {
     super(props);
     this.state = {
+			commentEdit: false, // used to open edit action popup
 			description: '',
+			deleteWarning: false, // used to open delete action popup
 			hidden: true,
 		};
 	}
@@ -55,6 +58,15 @@ class Comment extends Component {
 		return (<b>{day} - {time}</b>)
 	}
 
+	handleDelete = async () => {
+		// 1) make a new action
+		const data = {
+			id: this.props.selected._id,
+			comment: this.props.comment._id
+		}
+		socket.emit('actionRequest', 'deleteSubObject', data); // new Socket event	
+		this.setState({ deleteWarning: false });
+	}
 	
 	render() { 
 		return ( 
@@ -73,8 +85,8 @@ class Comment extends Component {
 					<FlexboxGrid.Item colspan={4}>
 						<ButtonToolbar>
 							<ButtonGroup>
-								<IconButton color='blue' icon={<Icon icon="pencil" />} />
-								<IconButton color='red' icon={<Icon icon="trash2" />} />
+								<IconButton onClick={() => this.setState({ commentEdit: true })} color='blue' icon={<Icon icon="pencil" />} />
+								<IconButton onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} />
 							</ButtonGroup>							
 						</ButtonToolbar>
 					</FlexboxGrid.Item>
@@ -84,47 +96,29 @@ class Comment extends Component {
 					<p>{this.props.comment.body}</p>
 				</Panel>	
 
-			<Modal overflow
-			full
-			size='lg'  
-			show={this.props.show} 
-			onHide={() => this.props.closeNew()}>
-				<Modal.Header>
-					<Modal.Title>Submit a new Comment</Modal.Title>
-				</Modal.Header>
+			<Modal backdrop="static" size='sm' show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 				<Modal.Body>
-					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
-					<form>
-						<FlexboxGrid>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
-
-						</FlexboxGrid.Item>
-						Description
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={18}>
-							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
-						</FlexboxGrid.Item>
-						
-						</FlexboxGrid>
-						<br></br>
-
-						<FlexboxGrid>
-							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
-
-							</FlexboxGrid.Item>
-						</FlexboxGrid>
-					</form>
+					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+						{'  '}
+						Warning! Are you sure you want delete your Comment?
+					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
-            {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-		
-						<b>Submit</b>}
-    	    </Button>
-					<Button onClick={() => this.props.closeNew()} appearance="subtle">
-            Cancel
-       		</Button>
-        </Modal.Footer>
-			</Modal>
+           <Button onClick={() => this.handleDelete()} appearance="primary">
+						I am Sure!
+           </Button>
+           <Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
+						Nevermind
+           </Button>
+				</Modal.Footer>
+			</Modal>	
+
+			<NewComment 
+				show={this.state.commentEdit}
+				closeNew={() => this.setState({ commentEdit: false })}
+				gamestate={this.props.gamestate}
+				comment={this.props.comment}
+				selected={this.props.selected}/>
 			</div>
 
 

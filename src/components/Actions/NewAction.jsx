@@ -59,7 +59,8 @@ class NewAction extends Component {
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'create', action); // new Socket event	
+		socket.emit('actionRequest', 'create', action); // new Socket event
+		this.props.closeNew();	
 	}
 	
 	render() { 

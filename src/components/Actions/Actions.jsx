@@ -8,13 +8,11 @@ import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
 import NewAction from './NewAction';
-import NewFeed from './NewFeed';
 import SelectedAction from './SelectedAction';
 import SelectedProject from './SelectedProject';
 const Actions = (props) => {
 	const [selected, setSelected] = React.useState(null);
 	const [showNew, setShowNew] = React.useState(false);
-	const [showFeed, setShowFeed] = React.useState(false);
 
 	useEffect(() => {
 		if (selected) {

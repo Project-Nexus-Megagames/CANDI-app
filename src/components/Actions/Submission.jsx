@@ -10,7 +10,7 @@ import AssetInfo from './AssetInfo';
 class Submission extends Component {
 	state = { 
 		edit: false, // used to open edit action popup
-		deleteWarning: false, // used to open edit action popup
+		deleteWarning: false, // used to open delete action popup
 		loading: false, //used for loading button 
 		effort: this.props.sumbission.effort,
 		assets: this.props.sumbission.assets,

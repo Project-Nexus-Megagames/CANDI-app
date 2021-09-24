@@ -66,17 +66,19 @@ const App = (props) => {
     loadGamestate();
 
     socket.on('alert', (data) => {
-      switch(data.type) {
-        case 'error': 
-          // console.log(data.message);
-          Alert.error(data.message, 6000);
-          break;
-        case 'success':
-          Alert.success(data.message, 6000);
-          break;
-        default:
-          Alert.info(data.message, 6000);
-        }
+      if (data) {
+        switch(data.type) {
+          case 'error': 
+            // console.log(data.message);
+            Alert.error(data.message, 6000);
+            break;
+          case 'success':
+            Alert.success(data.message, 6000);
+            break;
+          default:
+            Alert.info(data.message, 6000);
+          }        
+      }
     })
   }, [loadChar, loadAssets, loadGamestate, loadLocations])
 

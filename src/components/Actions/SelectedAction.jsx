@@ -52,14 +52,14 @@ const SelectedAction = (props) => {
 					return(
 						<div>
 							<Divider vertical/>	
-							<Comment index={index} comment={el} />
+							<Comment selected={props.selected} index={index} comment={el} />
 						</div>
 					)
 					case 'Result':
 						return(
 							<div>
 								<Divider vertical/>	
-								<Result index={index} result={el}  action={props.selected.submission}/>
+								<Result index={index} result={el} selected={props.selected} action={props.selected.submission}/>
 							</div>
 						)
 			default:

@@ -18,12 +18,17 @@ class NewComment extends Component {
 		// localStorage.removeItem('newActionState');
 		const stateReplace = JSON.parse(localStorage.getItem('NewComment'));
 		if (stateReplace) this.setState(stateReplace); 
+		if (this.props.comment) {
+			console.log(this.props.comment.description)
+			this.setState({
+				description: this.props.comment.body,
+			});
+		}		
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
 			localStorage.setItem('NewComment', JSON.stringify(this.state));
-			console.log(localStorage);
 		};
 		if (this.props.actions !== prevProps.actions) {
 			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
@@ -32,7 +37,13 @@ class NewComment extends Component {
 					description: '',
 				});
 			}
+			if (this.props.comment) {
+				this.setState({
+					description: this.props.comment,
+				});
+			}			
 		}
+
 	}
 	
 	handleSubmit = async () => {
@@ -48,6 +59,7 @@ class NewComment extends Component {
 			round: this.props.gamestate.round
 		}
 		socket.emit('actionRequest', 'comment', data); // new Socket event	
+		this.props.closeNew();
 	}
 	
 	render() { 

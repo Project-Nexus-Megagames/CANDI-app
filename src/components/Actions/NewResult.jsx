@@ -50,6 +50,7 @@ class NewResult extends Component {
 			round: this.props.gamestate.round
 		}
 		socket.emit('actionRequest', 'result', data); // new Socket event	
+		this.props.closeNew();
 	}
 
 	renderDice = (asset) => {

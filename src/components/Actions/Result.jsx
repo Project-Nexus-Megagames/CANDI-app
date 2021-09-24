@@ -9,7 +9,8 @@ import AssetInfo from './AssetInfo';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class Result extends Component {
 	state = { 
-		edit: null, // used to open edit action popup
+		resEdit: false, // used to open edit action popup
+		deleteWarning: false, // used to open delete action popup
 		id: this.props.action._id,
 		description: this.props.action.description,
 		dice: this.props.action.dice,
@@ -44,6 +45,15 @@ class Result extends Component {
 		return (<b>{day} - {time}</b>)
 	}
 
+	handleDelete = async () => {
+		// 1) make a new action
+		const data = {
+			id: this.props.selected._id,
+			result: this.props.result._id
+		}
+		socket.emit('actionRequest', 'deleteSubObject', data); // new Socket event	
+		this.setState({ deleteWarning: false });
+	}
 
 	render() { 
 		return ( 
@@ -63,7 +73,7 @@ class Result extends Component {
 						<ButtonToolbar>
 							<ButtonGroup>
 								<IconButton color='blue' icon={<Icon icon="pencil" />} />
-								<IconButton color='red' icon={<Icon icon="trash2" />} />
+								<IconButton onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} />
 							</ButtonGroup>							
 						</ButtonToolbar>
 					</FlexboxGrid.Item>
@@ -146,7 +156,24 @@ class Result extends Component {
 						Cancel
 					</Button>
 				</Modal.Footer>
-			</Modal>			
+			</Modal>		
+
+			<Modal backdrop="static" size='sm' show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
+				<Modal.Body>
+					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+						{'  '}
+						Warning! Are you sure you want delete your Result?
+					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+				</Modal.Body>
+				<Modal.Footer>
+           <Button onClick={() => this.handleDelete()} appearance="primary">
+						I am Sure!
+           </Button>
+           <Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
+						Nevermind
+           </Button>
+				</Modal.Footer>
+			</Modal>	
 			</div>
 		);
 	}
@@ -183,20 +210,6 @@ class Result extends Component {
 	handleResultSubmit = async () => {
 		this.setState({loading: true}) 
 		let action = { ...this.props.action };
-
-		action.effort= this.state.effort
-		action.asset1= this.state.asset1
-		action.asset2= this.state.asset2
-		action.asset3= this.state.asset3
-		action.description= this.state.description
-		action.intent= this.state.intent
-		action.result= this.state.result
-		action.dieResult= this.state.dieResult
-		action.status= this.state.status
-		action.id= this.props.action._id
-		action.mechanicalEffect= this.state.mechanicalEffect
-		action.playerBoolean= this.state.edit	
-	
 		// console.log(action)
 		// 1) make a new action
 		try{
@@ -212,12 +225,6 @@ class Result extends Component {
 		this.setState({loading: false});
 	}
 
-	openInfo = (asset) => {
-		console.log(asset)
-		const found = this.props.assets.find(el => el._id === asset._id);
-		this.setState({ infoAsset: found, infoModal: true });
-	}
-
 	closeEdit = () => { 
 		this.setState({edit: false}) 
 	};
@@ -226,14 +233,9 @@ class Result extends Component {
 		this.setState({resEdit: false}) 
 	};
 
-	deleteAction = async () => {
-		socket.emit('actionRequest', 'delete', {id: this.props.action._id}); // new Socket event
-		this.props.handleSelect(null);
-	};
-
 	myToggle = () => {
 		return (
-			<Toggle onChange={()=> this.setState({ assetBoolean: !this.state.assetBoolean })} checkedChildren="Asset" unCheckedChildren="Trait"></Toggle>			
+			<Toggle onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="Hidden" unCheckedChildren="Revealed"></Toggle>			
 		)
 	};
 
@@ -259,7 +261,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	// handleLogin: (data) => dispatch(loginUser(data))
-	deleteAction: (data) => dispatch(actionDeleted(data)),
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });
 
