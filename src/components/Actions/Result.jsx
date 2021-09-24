@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
-import { actionDeleted } from '../../redux/entities/playerActions';
+import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 import AssetInfo from './AssetInfo';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
@@ -68,13 +68,13 @@ class Result extends Component {
 		const data = {
 			id: this.props.selected._id,
 			result: {
-				description: this.props.description,
-				dice: this.props.dice,
-				resolver: this.props.myCharacter.characterName
+				description: this.state.description,
+				dice: this.state.dice,
+				id: this.props.result._id
 			},
 		}
 		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
-		this.setState({ commentEdit: false });
+		// this.setState({ resEdit: false });
 	}
 
 	render() { 
@@ -103,18 +103,18 @@ class Result extends Component {
 
 				<Panel shaded style={{ padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 					<p style={slimText}>
-							{this.state.description}	
+							{this.props.result.description}	
 						</p>
 						<p style={slimText}>
-							{this.state.dice}	
+							{this.props.result.dice}	
 						</p>
 				</Panel>	
 
 			<Modal overflow
 			full
 			size='lg'  
-			show={this.props.show} 
-			onHide={() => this.props.closeNew()}>
+			show={this.state.resEdit} 
+			onHide={() => this.setState({ resEdit: false })}>
 				<Modal.Header>
 					<Modal.Title>Submit a new Result</Modal.Title>
 				</Modal.Header>
@@ -144,12 +144,12 @@ class Result extends Component {
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
+					<Button onClick={() => this.handleEditSubmit()}  disabled={this.isDisabled()} appearance="primary">
             {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
 						this.state.dice.length < 5 ? <b>Dice text need {5 - this.state.dice.length} more characters</b> :
 						<b>Submit</b>}
     	    </Button>
-					<Button onClick={() => this.props.closeNew()} appearance="subtle">
+					<Button onClick={() => this.setState({ resEdit: false })} appearance="subtle">
             Cancel
        		</Button>
         </Modal.Footer>
@@ -173,10 +173,6 @@ class Result extends Component {
 			</Modal>	
 			</div>
 		);
-	}
-
-	handleSubmit = async () => {
-
 	}
 
 	isDisabled () {
@@ -219,7 +215,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	// handleLogin: (data) => dispatch(loginUser(data))
+	actionDispatched: (data) => dispatch(playerActionsRequested(data)),
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });
 
