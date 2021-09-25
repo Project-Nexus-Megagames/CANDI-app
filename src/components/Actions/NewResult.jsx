@@ -63,8 +63,8 @@ class NewResult extends Component {
 	render() { 
 		return ( 
 			<Modal overflow
-			full
-			size='lg'  
+			style={{ width: '90%' }}
+			size='md'  
 			show={this.props.show} 
 			onHide={() => this.props.closeNew()}>
 				<Modal.Header>

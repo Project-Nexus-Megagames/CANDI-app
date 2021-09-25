@@ -68,8 +68,8 @@ class Submission extends Component {
 					<FlexboxGrid.Item colspan={4}>
 						<ButtonToolbar>
 							<ButtonGroup>
-								<IconButton onClick={() => this.setState({ edit: true })} color='blue' icon={<Icon icon="pencil" />} />
-								<IconButton onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} /> 
+								<IconButton size='xs'  onClick={() => this.setState({ edit: true })} color='blue' icon={<Icon icon="pencil" />} />
+								<IconButton size='xs'  onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} /> 
 							</ButtonGroup>							
 						</ButtonToolbar>
 					</FlexboxGrid.Item>
@@ -124,8 +124,8 @@ class Submission extends Component {
 				</Panel>		
 
 				<Modal overflow
-					full
-					size='lg'  
+					style={{ width: '90%' }}
+					size='md'    
 					show={this.state.edit} 
 					onHide={() => this.setState({edit: false}) }>
 						<Modal.Header>

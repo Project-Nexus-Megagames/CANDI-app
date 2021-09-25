@@ -36,19 +36,19 @@ class Loading extends Component {
             <React.Fragment>
             <Content>
                 <FlexboxGrid justify="center">
-                <FlexboxGrid.Item key={1} colspan={12} style={{marginTop: '50px', cursor: 'pointer'}}>
+                <FlexboxGrid.Item key={1} colspan={24} style={{marginTop: '50px', cursor: 'pointer'}}>
                     <img style={{ maxHeight: '400px', height: '30vh' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                    <div style={{ fontSize: '0.9em', width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
                         Gamestate: <Circle percent={this.props.gamestateLoaded ? 100 : 0} showInfo={this.props.gamestateLoaded ? true: false} status={this.props.gamestateLoaded ? 'success' : 'active'} />
                     </div>  
                     </FlexboxGrid.Item>
                     
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                    <div style={{ fontSize: '0.9em', width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
                         Assets: <Circle percent={this.props.assetsLoaded ? 100 : 0} showInfo={this.props.assetsLoaded ? true: false} status={this.props.assetsLoaded ? 'success' : 'active'} />                  
                     </div>
                     {this.props.assetsFailed > 0 && <div>
@@ -62,7 +62,7 @@ class Loading extends Component {
                 </FlexboxGrid.Item>  
 
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                    <div style={{ fontSize: '0.9em', width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
                         Characters: <Circle percent={this.props.characterLoaded ? 100 : 0} showInfo={this.props.characterLoaded ? true: false} status={this.props.characterLoaded ? 'success' : 'active'} />
                     </div>
                     {this.props.charactersFailed > 0 && <div>
@@ -76,7 +76,7 @@ class Loading extends Component {
                     </FlexboxGrid.Item>                  
 
                     <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
+                    <div style={{ fontSize: '0.9em', width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center" }}>
                         Actions: <Circle percent={this.props.actionsLoaded ? 100 : 0} showInfo={this.props.actionsLoaded ? true: false} status={this.props.actionsLoaded ? 'success' : 'active'} />               
                     </div>
                     {this.props.actionsFailed > 0 && this.props.actionsFailed < 11 && <div>
@@ -98,7 +98,7 @@ class Loading extends Component {
                 </FlexboxGrid.Item>
 
                 <FlexboxGrid.Item colspan={4}>
-                    <div style={{ width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center"}}>
+                    <div style={{ fontSize: '0.9em', width: '10vw', marginTop: 10, position: 'relative', display: 'inline-block', textAlign: "center"}}>
                         Locations: <Circle percent={this.props.locationsLoaded ? 100 : 0} showInfo={this.props.locationsLoaded ? true: false} status={this.props.locationsLoaded ? 'success' : 'active'} />               
                     </div>
                     {this.props.locationsFailed > 0 && this.props.locationsFailed < 11 && <div>

@@ -3,7 +3,10 @@ import { Button, Divider, FlexboxGrid, Modal } from 'rsuite';
 
 function AssetInfo({ asset, showInfo, closeInfo }) {
 	return (
-		<Modal backdrop='static' show={showInfo} onHide={() => closeInfo()} >
+		<Modal 
+		style={{ width: '90%' }}
+ 
+		 show={showInfo} onHide={() => closeInfo()} >
 		<Modal.Header>
 					<Modal.Title>{asset.name}</Modal.Title>
 				</Modal.Header>
