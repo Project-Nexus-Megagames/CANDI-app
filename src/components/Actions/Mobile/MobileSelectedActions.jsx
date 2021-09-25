@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon } from 'rsuite';
-import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
-import { actionDeleted } from '../../redux/entities/playerActions';
-import socket from '../../socket';
-import AssetInfo from './AssetInfo';
-import NewAction from './NewAction';
-import NewComment from './NewComment';
-import NewResult from './NewResult';
-import Submission from './Submission';
-import Comment from './Comment';
-import Result from './Result';
-import MobileSelectedActions from './Mobile/MobileSelectedActions';
+import { getMyAssets, getMyUsedAssets } from '../../../redux/entities/assets';
+import { characterUpdated, getMyCharacter } from '../../../redux/entities/characters';
+import { actionDeleted } from '../../../redux/entities/playerActions';
+import Comment from '../Comment';
+import NewAction from '../NewAction';
+import NewComment from '../NewComment';
+import NewResult from '../NewResult';
+import Result from '../Result';
+import Submission from '../Submission';
 
-const SelectedAction = (props) => {
+
+const MobileSelectedAction = (props) => {
 	const [selectedArray, setSelectedArray] = React.useState([]);
 	const [add, setAdd] = React.useState(false);
 	const [submission, setSubmission] = React.useState(false);
@@ -68,15 +66,12 @@ const SelectedAction = (props) => {
 		}	
 	}
 
-	if (window.innerHeight < 900) {
-		return (<MobileSelectedActions />)
-	}
 	return ( 
-		<Content style={{overflow: 'auto', height: '100%'}} >
+		<Content style={{overflow: 'auto', height: '100%', }} >
 		<FlexboxGrid >
 			<FlexboxGrid.Item colspan={2} >
 			</FlexboxGrid.Item>
-			<FlexboxGrid.Item colspan={16} >
+			<FlexboxGrid.Item colspan={20} >
 
 			{selectedArray.map((el, index) => (
 					renderSwitch(el, index)
@@ -94,35 +89,16 @@ const SelectedAction = (props) => {
 						{props.myCharacter.tags.some(el=> el === 'Control') && <Button disabled={true} color='violet' >Effect</Button>}
 					</ButtonGroup>}						
 			</div>
-			{/* To be the Result thing  */}
-				{/* {(action.status === 'Published' || this.props.user.roles.some(el=> el === 'Control')) && 
-				<React.Fragment>
-					<Divider>Action Result</Divider>
-					<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
-						<p style={slimText}>Result</p>
-						<p>
-						{action.result}	
-					</p>
-					</Panel>		
-					{action.mechanicalEffect !== 'No Mechanical Effect Recorded Yet...' && action.mechanicalEffect !== '' && <div>
-						<Divider>Mechanical Effect</Divider>
-						<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
-						<p>
-						{action.mechanicalEffect}	
-					</p>		
-					</Panel>						
-					</div>}				
-				</React.Fragment>} */}
 			</FlexboxGrid.Item>
-			<FlexboxGrid.Item colspan={1} />
+			<FlexboxGrid.Item colspan={2} />
 		</FlexboxGrid>	
-			<NewAction
+            <NewAction
 				show={submission}
 				closeNew={() => closeIt()}
 				gamestate={props.gamestate}
 				selected={props.selected}
 			/>
-
+			
 			<NewResult
 				show={result}
 				closeNew={() => closeIt()}
@@ -162,7 +138,6 @@ const mapDispatchToProps = (dispatch) => ({
 const styleCenter = {
 	display: 'flex',
 	justifyContent: 'center',
-	alignItems: 'center',
 };
 
 const slimText = {
@@ -202,4 +177,4 @@ const textStyle = {
 	scrollbarWidth: 'none',
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectedAction);
+export default connect(mapStateToProps, mapDispatchToProps)(MobileSelectedAction);

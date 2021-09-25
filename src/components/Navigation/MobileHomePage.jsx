@@ -66,7 +66,7 @@ const HomePage = (props) => {
 
 	return ( 
 		<React.Fragment>
-				<div style={{ height: '50px', backgroundColor: '#746D75', width: "100%", fontSize: '0.966em' }}>
+				<div style={{ height: '50px', backgroundColor: '#746D75', width: "100%", fontSize: '0.966em', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37' }}>
 				<FlexboxGrid align="middle">
 					<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 						<Dropdown

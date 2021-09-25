@@ -66,8 +66,8 @@ class NewAction extends Component {
 	render() { 
 		return ( 
 			<Modal overflow
-			full
-			size='lg'  
+			style={{ width: '90%' }}
+			size='md'  
 			show={this.props.show} 
 			onHide={() => this.props.closeNew()}>
 				<Modal.Header>
@@ -111,11 +111,8 @@ class NewAction extends Component {
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} color={this.isDisabled() ? 'red' : 'green'} appearance="primary">
-            {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-						this.state.intent.length < 11 ? <b>Intent text need {11 - this.state.intent.length} more characters</b> :
-						this.props.myCharacter.effort <= 0 ? <b>No more Actions left</b> :
-						<b>Submit</b>}
-    	    </Button>
+						<b>Submit</b>
+    	   			 </Button>
 					<Button onClick={() => this.props.closeNew()} appearance="subtle">
             Cancel
        		</Button>

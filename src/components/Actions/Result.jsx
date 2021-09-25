@@ -46,6 +46,13 @@ class Result extends Component {
 		}
 	}
 
+	renderDice = (asset) => {
+		if (asset) {
+			let ass = this.props.getMyAssets.find(el => el._id === asset);
+			return(<b>{ass.dice} </b>)
+		}
+	}
+
 	getTime = (date) => {
 		let day = new Date(date).toDateString();
 		let time = new Date(date).toLocaleTimeString();

@@ -53,7 +53,7 @@ class Submission extends Component {
 	render() { 
 		const sumbission = this.props.sumbission;
 		return ( 
-			<div style={{ 	border: '3px solid #22a12a', borderRadius: '5px' }} >
+			<div style={{ border: '3px solid #22a12a', borderRadius: '5px', width: '100%', normalText }} >
 				<FlexboxGrid align="middle" style={{ backgroundColor: '#22a12a' }} justify="center">
 
 					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
@@ -180,7 +180,8 @@ class Submission extends Component {
 					</Modal>
 			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>			
 
-			<Modal backdrop="static" size='sm' show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
+			<Modal  size='sm' show={this.state.deleteWarning} 
+			onHide={() => this.setState({ deleteWarning: false })}>
 				<Modal.Body>
 					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 						{'  '}
@@ -303,6 +304,12 @@ const slimText = {
 	textAlign: "center"
 };
 
+const normalText = {
+	fontSize: '4em',
+	fontWeight: '300',
+	whiteSpace: 'nowrap',
+	textAlign: "center"
+};
 
 const textStyle = {
 	backgroundColor: '#1a1d24', 

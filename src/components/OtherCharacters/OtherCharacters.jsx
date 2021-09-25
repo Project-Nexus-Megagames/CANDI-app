@@ -90,12 +90,12 @@ const  OtherCharacters = (props) => {
 	else return ( 
 		<React.Fragment>
 		<NavigationBar/>
-		<Container style={{ height: '94vh'}}>
+		<Container style={{ height: '91vh'}}>
 		<Sidebar className="side-bar">
 			<PanelGroup>					
 				<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
 					<InputGroup>
-						<Input onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
+						<Input size='xs' onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <InputGroup.Button color='green' onClick={() => setShowNew(true)}>
       			  <Icon  icon="plus" />
       			</InputGroup.Button>}

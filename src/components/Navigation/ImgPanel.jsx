@@ -6,7 +6,7 @@ const ImgPanel = (props) => {
     
     return (
         <Link to={props.disabled ? '#' : props.to}>
-        <div style={{ border: "5px solid #ff66c4", width: '95%', borderRadius: '10px', position: 'relative', float:'left', margin: '10px', height: props.height ? props.height: '44vh', overflow: 'hidden' }}>
+        <div style={{ border: "5px solid #ff66c4", width: '90%', borderRadius: '10px', position: 'relative', float:'left', margin: '10px', height: props.height ? props.height: '44vh', overflow: 'hidden' }}>
             
             <div className="container">
                 <img src={props.img} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Content, ButtonGroup } from 'rsuite';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
 import { getMyAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
+import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
 import SelectedProject from './SelectedProject';
@@ -39,32 +40,50 @@ const Actions = (props) => {
 	// 	return assets;
 	// }
 
+	const tooltip = () => {
+		return(
+		<Tooltip>
+		  Log-Out
+		</Tooltip>			
+		)
+	}
+
+	  
+
 	if (!props.login) {
 		props.history.push('/');
 		return (<Loader inverse center content="doot..." />)
 	};
+	if (window.innerHeight < 900) {
+		return (<MobileActions />)
+	}
 	return ( 
 		<React.Fragment>
 		<NavigationBar/>
-		<Container style={{ height: '93vh'}}>
+		<Container style={{ height: '91vh',}}>
 		<Sidebar className="side-bar">
-			<PanelGroup>					
-				<Panel style={{ height: 'calc(8vh)', backgroundColor: "#000101"}}>
-					<Input onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
+			<PanelGroup> 					
+				<Panel style={{ backgroundColor: "#000101", height: '60px'}}>
+					<InputGroup>
+						<Input size="sm" style={{ width: '95%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
+						<Whisper placement="top" trigger="hover" speaker={tooltip}>
+						
+							<InputGroup.Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
+							<Icon  icon="plus" />	
+							</InputGroup.Button>							
+						</Whisper> 
+
+						
+					</InputGroup>
 				</Panel>
-				<Panel bodyFill style={{height: 'calc(78vh)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
+				<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
 					<ActionList selected={selected} handleSelect={handleSelect}/>
-				</Panel>
-				<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
-					<ButtonGroup>
-						<Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>{!props.gamestate.status === 'Active' ? <b>Round Closed</b> : props.myCharacter.effort < 1 ? <b>No Effort Left</b> :  <b>New Action</b>}</Button>
-					</ButtonGroup>
-				</Panel>			
+				</div>			
 			</PanelGroup>
 		</Sidebar>
-		<Content>
-			{selected && selected.type === 'Action' && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
-		</Content>
+
+		{selected && selected.type === 'Action' && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
+
 
 		<NewAction
 			show={showNew}
