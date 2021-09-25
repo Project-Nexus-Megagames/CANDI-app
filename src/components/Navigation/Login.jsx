@@ -38,7 +38,7 @@ const Login = props => {
 
 
     return ( 
-		<Modal backdrop="static" show={true}>
+		<Modal style={{ width: '90%' }} backdrop="static" show={true}>
 		<Modal.Header>
 			<Modal.Title>Login</Modal.Title>
 		</Modal.Header>

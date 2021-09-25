@@ -50,7 +50,7 @@ const MobileActions = (props) => {
             size='xs'
             placement={'left'}
             style={{ width: '200px' }}
-            show={showDrawer}
+            show={!selected}
             onClose={() => setShowDrawer(false)}>
              <PanelGroup> 					
 		    		<Panel style={{ backgroundColor: "#000101", height: '60px'}}>

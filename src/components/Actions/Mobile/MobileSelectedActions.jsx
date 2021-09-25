@@ -72,7 +72,7 @@ const MobileSelectedAction = (props) => {
 			<FlexboxGrid.Item colspan={2} >
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={20} >
-
+            <Button onClick={() => props.handleSelect(null)}>Close</Button>
 			{selectedArray.map((el, index) => (
 					renderSwitch(el, index)
 			))}		
@@ -130,7 +130,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	// handleLogin: (data) => dispatch(loginUser(data))
 	deleteAction: (data) => dispatch(actionDeleted(data)),
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });

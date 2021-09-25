@@ -154,7 +154,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	// handleLogin: (data) => dispatch(loginUser(data))
 	deleteAction: (data) => dispatch(actionDeleted(data)),
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });

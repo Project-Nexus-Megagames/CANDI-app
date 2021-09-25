@@ -25,15 +25,7 @@ class ActionList extends Component {
 		}
 
 	listStyle (item) {
-		if (item.type === "Project") {
-			if (item === this.props.selected)	return ({cursor: 'pointer', opacity: '0.6', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-			else return ({cursor: 'pointer', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-		}
-		else if (item.type === "Feed") {
-			if (item === this.props.selected)	return ({cursor: 'pointer', opacity: '0.6', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-			else return ({cursor: 'pointer', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-		}
-		else if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+		if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		else return({cursor: 'pointer'});
 	}
 
@@ -89,7 +81,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // handleLogin: (data) => dispatch(loginUser(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActionList);
