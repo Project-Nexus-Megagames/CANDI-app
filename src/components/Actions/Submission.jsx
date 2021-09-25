@@ -231,22 +231,15 @@ class Submission extends Component {
 		if (assetID) {
 			const asset = this.props.assets.find(el => el._id === assetID)
 			return (
-					<Panel style={{backgroundColor: "#272b34"}} shaded bordered >
-						<FlexboxGrid align='middle'>
-							<FlexboxGrid.Item colspan={20}>
-							<b>{asset.type}</b>
-							<b>{asset.name}</b>
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={4}>
-								<IconButton onClick={() => this.openInfo(asset)} color='blue' size="sm" icon={<Icon  icon="info"/>} /> 
-							</FlexboxGrid.Item >
-						</FlexboxGrid>
-					</Panel>	
+				<Panel style={{backgroundColor: "#272b34", cursor: 'pointer', textAlign: 'center', minWidth: '15vw' }} onClick={() => this.openInfo(asset)} shaded bordered >
+					<b style={normalText}>{asset.type}</b>
+					<p style={slimText}>{asset.name}</p>
+				</Panel>	
 			)
 		}
 		else {
 			return (
-					<Panel style={{backgroundColor: "#0e1013"}} shaded bordered >
+					<Panel style={{backgroundColor: "#0e1013", minWidth: '15vw'}} shaded bordered >
 						<b>Empty Slot</b>
 					</Panel>	
 			)
@@ -300,14 +293,12 @@ const mapDispatchToProps = (dispatch) => ({
 const slimText = {
 	fontSize: '0.966em',
 	fontWeight: '300',
-	whiteSpace: 'nowrap',
+	whiteSpace: ' pre-line;',
 	textAlign: "center"
 };
 
 const normalText = {
-	fontSize: '4em',
-	fontWeight: '300',
-	whiteSpace: 'nowrap',
+	fontSize: '.966em',
 	textAlign: "center"
 };
 

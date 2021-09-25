@@ -67,7 +67,7 @@ const MobileSelectedAction = (props) => {
 	}
 
 	return ( 
-		<Content style={{overflow: 'auto', height: '100%', }} >
+		<Content style={{ overflow: 'auto', height: 'calc(100% - 50px)', }} >
 		<FlexboxGrid >
 			<FlexboxGrid.Item colspan={2} >
 			</FlexboxGrid.Item>

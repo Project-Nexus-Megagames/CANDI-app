@@ -86,7 +86,7 @@ const HomePage = (props) => {
 	}
 	return ( 
 		<React.Fragment>
-				<FlexboxGrid justify="start" style={{ height: '6vh', backgroundColor: '#746D75',  color: '', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37'  }} align="middle">
+				<FlexboxGrid justify="start" style={{ height: '8vh', backgroundColor: '#746D75',  color: '', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37'  }} align="middle">
 					<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 						<Dropdown
 								renderTitle={() => {
@@ -112,7 +112,7 @@ const HomePage = (props) => {
 					<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
 				</FlexboxGrid>
 
-				<div style={{ height: '94vh', width: "100%",  }}>
+				<div style={{ height: '93vh', width: "100%",  }}>
 				<FlexboxGrid >
 
 					<FlexboxGrid.Item colspan={14}>
