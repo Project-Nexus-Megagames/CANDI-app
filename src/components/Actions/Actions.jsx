@@ -60,7 +60,7 @@ const Actions = (props) => {
 	return ( 
 		<React.Fragment>
 		<NavigationBar/>
-		<Container style={{ height: '91vh',}}>
+		<Container style={{ height: 'calc(100vh - 50px)',}}>
 		<Sidebar className="side-bar">
 			<PanelGroup> 					
 				<Panel style={{ backgroundColor: "#000101", height: '60px'}}>

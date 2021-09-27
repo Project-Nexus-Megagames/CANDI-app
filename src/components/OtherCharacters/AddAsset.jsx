@@ -8,7 +8,8 @@ class AddAsset extends Component {
 			name: '',
 			description: '',
 			uses: 0,
-			type: this.props.god ? 'Bond' : ''
+			level: '',
+			type: this.props.god ? 'GodBond' : ''	
 		},
 		hidden: true,
 		id: '',
@@ -20,9 +21,11 @@ class AddAsset extends Component {
 		this.setState({ id: char._id });
 
 		if (this.props.god) {
+			console.log('geee wizz')
 			let formValue = {...this.state.formValue}
-			formValue.type = 'Bond';
+			formValue.type = 'Wealth';
 			this.setState({formValue});
+			console.log(this.state.formValue)
 		}
 
 		const stateReplace = JSON.parse(localStorage.getItem('addAssetState'));
@@ -34,9 +37,16 @@ class AddAsset extends Component {
 			localStorage.setItem('addAssetState', JSON.stringify(this.state));
 		};
 		// Typical usage (don't forget to compare props):
-		if (this.props.characters !== prevProps.characters) {
+		if (this.props !== prevProps) {
 			this.setState({ id: this.props.character._id });
+			if (this.props.god) {
+				let formValue = {...this.state.formValue}
+				formValue.type = 'GodBond';
+				this.setState({formValue});
+			}			
 		}
+
+
 	}
 
 	handleSubmit = async () => {
@@ -45,10 +55,13 @@ class AddAsset extends Component {
 		const formValue = {
 			asset: {
 				name: this.state.formValue.name,
+				with: this.props.god ? this.props.god._id : '',
 				description: this.state.formValue.description,	
 				type: this.state.formValue.type,
 				uses: this.state.formValue.uses,
+				level: this.state.formValue.level,
 				owner: this.props.character.characterName,
+				ownerCharacter: this.props.character._id,
 				status: {
 					hidden: this.state.hidden							
 				}
@@ -86,7 +99,7 @@ class AddAsset extends Component {
 								</FormGroup>
 								{this.props.god && <FormGroup>
 									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
-									<FormControl data={godPickerData} accepter={InputPicker} />
+									<FormControl name="level" data={godPickerData} accepter={InputPicker} />
 								</FormGroup>}
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
@@ -104,7 +117,7 @@ class AddAsset extends Component {
 							<FlexboxGrid.Item colspan={12}>
 								<FormGroup>
 										<ControlLabel>Trait/Asset </ControlLabel>
-										<FormControl name='type' accepter={InputPicker} data={pickerData}/>
+										<FormControl name='type'  accepter={InputPicker} data={pickerData}/>
 								</FormGroup>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
@@ -166,8 +179,12 @@ const pickerData = [
 		value: 'Wealth'
 	},
 	{
-		label: 'Bond',
-		value: 'Bond'
+		label: 'GodBond',
+		value: 'GodBond'
+	},
+	{
+		label: 'MortalBond',
+		value: 'MortalBond'
 	},
 	{
 		label: 'Territory',

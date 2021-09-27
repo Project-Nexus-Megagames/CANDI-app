@@ -3,7 +3,7 @@ import { ControlLabel, FlexboxGrid, Tag, Icon, IconButton, Drawer, Button, Input
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
-const diabled = ['_id', '__v'];
+const disabled = ['_id', '__v'];
 class ModifyCharacter extends Component {
 	constructor(props) {
     super(props)
@@ -47,7 +47,7 @@ class ModifyCharacter extends Component {
 
 	handleInputConfirm = () => {
     const nextTags = this.state.inputValue ? [...this.state.formValue.tags, this.state.inputValue] : this.state.formValue.tag;
-		this.handleInput(nextTags, 'tag');
+		this.handleInput(nextTags, 'tags');
     this.setState({
       add: false,
       inputValue: ''
@@ -67,7 +67,7 @@ class ModifyCharacter extends Component {
 
 	handleTagRemove = (tag) => {
     const nextTags = this.state.formValue.tags.filter(item => item !== tag);
-		this.handleInput(nextTags, 'tag');
+		this.handleInput(nextTags, 'tags');
   }
 
 	renderTagAdd = () => {
@@ -102,7 +102,7 @@ class ModifyCharacter extends Component {
 						<h5>{el}</h5>
 						<Input
 							id={el}
-							disabled={diabled.some(dis => dis === el)}
+							disabled={disabled.some(dis => dis === el)}
 							type="text"
 							value={formValue[el]}
 							name={el}
@@ -118,7 +118,7 @@ class ModifyCharacter extends Component {
 						<h5>{el}</h5>
 						<InputNumber
 							id={el}
-							disabled={diabled.some(dis => dis === el)}
+							disabled={disabled.some(dis => dis === el)}
 							value={formValue[el]}
 							name={el}
 							label={el}

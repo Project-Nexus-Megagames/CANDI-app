@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
 import { getGods, getNonPlayerCharacters, getPlayerCharacters } from '../../redux/entities/characters';
 import { getGodBonds } from '../../redux/entities/assets';
-import { Tab } from 'react-bootstrap';
+import ModifyResource from './ModifyResource';
 import AddAsset from '../OtherCharacters/AddAsset';
 // import socket from '../../socket';
 
@@ -14,7 +14,7 @@ const { Column, HeaderCell, Cell } = Table;
 const Navigation = props => {
 	const [god, setGod] = React.useState(null);
 	const [bonder, setBonder] = React.useState(null);  
-	const [level, setLevel] = React.useState(null);
+	const [bond, setBond] = React.useState(null);
 
 	const history = useHistory();
 
@@ -30,20 +30,24 @@ const Navigation = props => {
         setBonder(bonder);
         setGod(god);
     }
+
+    const onBondClick = (bond) => {
+        setBond(bond);
+    }
 	
   return (
       <React.Fragment>
-        <Table autoHeight data={props.playerCharacters} dataKey={'playerName'}>
-            <Column flexGrow={2}>
+        <Table style={{ textAlign: 'center' }} autoHeight data={props.playerCharacters} dataKey={'playerName'}>
+            <Column flexGrow={1}>
                 <HeaderCell>Name</HeaderCell>
                 <Cell dataKey="characterName" />
             </Column>
             {props.godCharacters.map((god, data) => {
             console.log(data)
             return (
-                <Column flexGrow={2}>
+                <Column flexGrow={1}>
                 <HeaderCell>{god.characterName}</HeaderCell>
-                <TableStuff god={god} onClick={hitMe} godBonds={props.godBonds} dataKey="characterName"/>
+                <TableStuff  verticalAlign='middle' god={god} onBondClick={onBondClick} onClick={hitMe} godBonds={props.godBonds} dataKey="characterName"/>
                 </Column>
                 );
             })}
@@ -54,20 +58,24 @@ const Navigation = props => {
             character={bonder}
             god={god}
             closeModal={() => setGod(false)}/>}
+
+        {bond && <ModifyResource show={bond} bond={bond}
+			closeModal={() => setBond(null)}/>}
       </React.Fragment>
 
 	);
 }
 
-const TableStuff = ({ rowData, god, onClick, ...props }) => {
+const TableStuff = ({ rowData, god, onClick, onBondClick, ...props }) => {
 	// console.log(rowData._id)
 	// console.log(god.characterName)
-	const bond = props.godBonds.find(el => el.with === god._id)
-	console.log(bond)
+	const bond = props.godBonds.find(el => (el.with === god._id && el.ownerCharacter === rowData._id ))
+	// console.log(bond)
+    console.log(props.godBonds)
 	if (bond)
-		return (<Cell {...props}>Yo</Cell>)
+		return (<Cell verticalAlign='middle' {...props}><b style={{ cursor: 'pointer' }} onClick={() => onBondClick && onBondClick(bond)}>{bond.level}</b>  </Cell>)
 	else	
-		return (<div><Cell {...props}><Button onClick={() => onClick && onClick(god, rowData)}>Hit me!</Button></Cell></div>)
+		return (<Cell verticalAlign='middle' {...props}><b style={{ cursor: 'pointer' }} onClick={() => onClick && onClick(god, rowData)}>No Bond Exists!</b></Cell>)
 	  
 }
 

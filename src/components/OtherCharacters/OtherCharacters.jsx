@@ -90,18 +90,18 @@ const  OtherCharacters = (props) => {
 	else return ( 
 		<React.Fragment>
 		<NavigationBar/>
-		<Container style={{ height: '91vh'}}>
+		<Container style={{ height: 'calc(100vh - 50px)'}}>
 		<Sidebar className="side-bar">
 			<PanelGroup>					
-				<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
+				<div style={{ height: '40px', marginTop: '10px', backgroundColor: "#000101"}}>
 					<InputGroup>
 						<Input size='xs' onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <InputGroup.Button color='green' onClick={() => setShowNew(true)}>
       			  <Icon  icon="plus" />
       			</InputGroup.Button>}
 					</InputGroup>
-				</Panel>
-				<Panel bodyFill style={{height: '86vh', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
+				</div>
+				<Panel bodyFill style={{ height: 'calc(100vh - 100px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
 					<List hover size="sm">
 						{filteredCharacters.filter(el => el.tags.some(el => el === 'God')).map((character, index) => (
 							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
