@@ -89,6 +89,11 @@ export const getMyAssets = createSelector(
   (assets, char) => assets.filter(asset => (asset.ownerCharacter === char._id || asset.currentHolder === char._id))
 );
 
+export const getGodBonds = createSelector(
+  state => state.assets.list,
+  (assets) => assets.filter(asset => asset.type === 'GodBond')
+);
+
 // assets Loader into state
 export const loadAssets = payload => (dispatch, getState) => {
   return dispatch(

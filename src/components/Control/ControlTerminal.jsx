@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
-import { getBadCharacters, getMyCharacter } from '../../redux/entities/characters';
+import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters, getPlayerCharacters } from '../../redux/entities/characters';
 import { draftActions } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
-import { assetsRequested } from '../../redux/entities/assets';
+import { assetsRequested, getGodBonds } from '../../redux/entities/assets';
 import NewCharacter from './NewCharacter';
 import EditTerritory from './EditTerritory';
 import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
+import RelationshipTable from './RelationshipTable';
 
 const { Column, HeaderCell, Cell } = Table;
 class ControlTerminal extends Component {
@@ -38,8 +39,9 @@ class ControlTerminal extends Component {
 		uses: 0, 
 		used: false,
 		loading: false,
+		god: null,
+		bonder: null,
 
-		tableData: []
 	}
 
 	componentDidMount = async () => {
@@ -48,8 +50,6 @@ class ControlTerminal extends Component {
 			status: this.props.gamestate.status,
 			endTime: this.props.gamestate.endTime
 		}
-		const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
-		// await this.compileTable(copy);
 
 		let drafts = 0;
 		let awaiting= 0;
@@ -103,23 +103,6 @@ class ControlTerminal extends Component {
 		}
 	}
 
-	// compileTable = async (actions) => {
-	// 	let tableData = []
-	// 	for (const action of actions.filter(el => el.type !== 'Project')) {
-	// 		const data = {
-	// 			control: action.creator.control,
-	// 			character: action.creator,
-	// 			intent: action.intent,
-	// 			status: action.status,
-	// 			dieResult: action.dieResult,
-	// 			controlAssigned: action.controlAssigned,
-	// 			news: action.newsworthy,
-	// 		}
-	// 		tableData.push(data);
-	// 	}
-	// 	this.setState({ tableData })
-	// }
-
 	render() { 
 		if (!this.props.login) {
 			this.props.history.push('/');
@@ -168,40 +151,6 @@ class ControlTerminal extends Component {
 					<Divider>Round {this.props.gamestate.round}</Divider>					
 				</div>
 
-				{/* <Panel style={{height: '46vh'}}>
-					<Table  virtualized data={this.state.tableData} >
-
-						<Column flexGrow={2}>
-						<HeaderCell>Character</HeaderCell>
-						<Cell dataKey="character" />
-						</Column>
-
-						<Column align="left" flexGrow={3}>
-						<HeaderCell>Description</HeaderCell>
-						<Cell  dataKey="intent" />
-						</Column>
-
-						<Column align="left" flexGrow={2}>
-						<HeaderCell>Die Result</HeaderCell>
-						<Cell  dataKey="dieResult" />
-						</Column>
-
-						<Column flexGrow={1}>
-						<HeaderCell>Control Assigned</HeaderCell>
-						<Cell dataKey="controlAssigned" />
-						</Column>			
-
-						<Column flexGrow={1}>
-						<HeaderCell>Status</HeaderCell>
-						<Cell dataKey="status" />
-						</Column>	
-
-						<Column flexGrow={1}>
-						<HeaderCell>News</HeaderCell>
-						<Cell dataKey="newsworthy" />
-						</Column>	
-					</Table>
-				</Panel> */}
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="vertical" onChange={formValue => {this.setState({ formValue });}}>
@@ -261,6 +210,8 @@ class ControlTerminal extends Component {
             </Button>
 		</Modal.Footer>
 				</Modal> */}
+
+				<RelationshipTable />
 			
 				<Modal backdrop="static" size='sm' show={this.state.warning2Modal} onHide={() => this.setState({ warning2Modal: false })}>
 					<Modal.Body>
@@ -296,8 +247,8 @@ class ControlTerminal extends Component {
 				<NewCharacter show={this.state.newCharacter} 
 					closeModal={() => this.setState({ newCharacter: false })}/>
 
-				<EditTerritory show={this.state.editTerritory} 
-					closeModal={() => this.setState({ editTerritory: false })}/>
+				{/* <EditTerritory show={this.state.editTerritory} 
+					closeModal={() => this.setState({ editTerritory: false })}/> */}
 
 				<NewProject show={this.state.projectModal} 
 					closeModal={() => this.setState({ projectModal: false })}/>
@@ -341,6 +292,8 @@ class ControlTerminal extends Component {
 	filterAssets () {
 		const filtered = this.props.assets.filter(el => el.modal !== 'Wealth')
 	}
+
+
 	
 }
 
@@ -385,7 +338,7 @@ const mapStateToProps = (state) => ({
 	actions: state.actions.list,
 	draftActions: draftActions(state),
 	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined,
-	badCharacters: getBadCharacters(state)
+	badCharacters: getBadCharacters(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

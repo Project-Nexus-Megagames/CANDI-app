@@ -80,6 +80,28 @@ export const getBadCharacters = createSelector(
   )
 );
 
+export const getPlayerCharacters = createSelector(
+  state => state.characters.list,
+  (characters) => characters.filter(
+    char => char.tags.some(el => el === 'PC' )
+  )
+);
+
+export const getNonPlayerCharacters = createSelector(
+  state => state.characters.list,
+  (characters) => characters.filter(
+    char => char.tags.some(el => el === 'NPC' )
+  )
+);
+
+export const getGods = createSelector(
+  state => state.characters.list,
+  (characters) => characters.filter(
+    char => char.tags.some(el => el === 'God' )
+  )
+);
+
+
 // characters Loader into state
 export const loadCharacters = payload => (dispatch, getState) => {
   return dispatch(

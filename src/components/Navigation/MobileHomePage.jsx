@@ -97,7 +97,7 @@ const HomePage = (props) => {
 
 
 				<div style={{ height: 'calc(100% - 50px)', width: "100%", overflow: 'auto' }}>
-				<FlexboxGrid  >
+				<FlexboxGrid justify="space-around" >
 
 					<FlexboxGrid.Item colspan={24}>
 						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', position: 'relative', float:'left', display:'inline-block', margin: '10px', height: '35vh', overflow: 'hidden' }}>
@@ -109,15 +109,16 @@ const HomePage = (props) => {
 						</div>
 					</FlexboxGrid.Item>
 
-					<FlexboxGrid.Item colspan={12}>
+					<FlexboxGrid.Item colspan={11}>
 						<ImgPanel img={action} to='actions' title='Actions' body='Creating and editing Actions'/>
 					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={12}>
+					<FlexboxGrid.Item colspan={11}>
 						<ImgPanel img={myCharacter} to='character' title='My Character' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={control2} to='controllers' title='Control' body='Who is responsible?'/>
+						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
+						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={''} to='' title={''} body=''/>}
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12}>
 						<ImgPanel img={other} to='others' title={'Other Characters'} body='Character Details'/>

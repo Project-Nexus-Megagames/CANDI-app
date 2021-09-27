@@ -8,7 +8,7 @@ class AddAsset extends Component {
 			name: '',
 			description: '',
 			uses: 0,
-			type: ''
+			type: this.props.god ? 'Bond' : ''
 		},
 		hidden: true,
 		id: '',
@@ -18,6 +18,12 @@ class AddAsset extends Component {
 	componentDidMount = () => {
 		const char = this.props.character;
 		this.setState({ id: char._id });
+
+		if (this.props.god) {
+			let formValue = {...this.state.formValue}
+			formValue.type = 'Bond';
+			this.setState({formValue});
+		}
 
 		const stateReplace = JSON.parse(localStorage.getItem('addAssetState'));
 		if (stateReplace) this.setState(stateReplace); 
@@ -77,7 +83,11 @@ class AddAsset extends Component {
 								<FormGroup>
 									<ControlLabel>Hidden/Revealed</ControlLabel>
 									<FormControl accepter={this.myToggle}/>
-							</FormGroup>
+								</FormGroup>
+								{this.props.god && <FormGroup>
+									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
+									<FormControl data={godPickerData} accepter={InputPicker} />
+								</FormGroup>}
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 						<FormGroup>
@@ -122,6 +132,25 @@ class AddAsset extends Component {
 	}
 	
 }
+
+const godPickerData = [
+	{
+		label: 'Neutral',
+		value: 'Neutral',
+	},
+	{
+		label: 'Preferred',
+		value: 'Preferred'
+	},
+	{
+		label: 'Favoured',
+		value: 'Favoured'
+	},
+    {
+		label: 'Blessed',
+		value: 'Blessed'
+	},
+]
 
 const pickerData = [
 	{
