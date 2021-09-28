@@ -239,7 +239,7 @@ class Submission extends Component {
 		}
 		else {
 			return (
-					<Panel style={{backgroundColor: "#0e1013", minWidth: '15vw'}} shaded bordered >
+					<Panel style={{backgroundColor: "#0e1013", minWidth: '15vw', textAlign: 'center'}} shaded bordered >
 						<b>Empty Slot</b>
 					</Panel>	
 			)

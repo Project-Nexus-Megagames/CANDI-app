@@ -94,6 +94,11 @@ export const getGodBonds = createSelector(
   (assets) => assets.filter(asset => asset.type === 'GodBond')
 );
 
+export const getMortalBonds = createSelector(
+  state => state.assets.list,
+  (assets) => assets.filter(asset => asset.type === 'MortalBond')
+);
+
 // assets Loader into state
 export const loadAssets = payload => (dispatch, getState) => {
   return dispatch(

@@ -39,14 +39,7 @@ class AddAsset extends Component {
 		// Typical usage (don't forget to compare props):
 		if (this.props !== prevProps) {
 			this.setState({ id: this.props.character._id });
-			if (this.props.god) {
-				let formValue = {...this.state.formValue}
-				formValue.type = 'GodBond';
-				this.setState({formValue});
-			}			
 		}
-
-
 	}
 
 	handleSubmit = async () => {
@@ -97,9 +90,13 @@ class AddAsset extends Component {
 									<ControlLabel>Hidden/Revealed</ControlLabel>
 									<FormControl accepter={this.myToggle}/>
 								</FormGroup>
-								{this.props.god && <FormGroup>
+								{this.state.formValue.type === 'GodBond' && this.props.god && <FormGroup>
 									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
 									<FormControl name="level" data={godPickerData} accepter={InputPicker} />
+								</FormGroup>}
+								{this.state.formValue.type === 'MortalBond' && this.props.god && <FormGroup>
+									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
+									<FormControl name="level" data={mortalPickerData} accepter={InputPicker} />
 								</FormGroup>}
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
@@ -159,9 +156,28 @@ const godPickerData = [
 		label: 'Favoured',
 		value: 'Favoured'
 	},
-    {
+  {
 		label: 'Blessed',
 		value: 'Blessed'
+	},
+]
+
+const mortalPickerData = [
+	{
+		label: 'Neutral',
+		value: 'Neutral',
+	},
+	{
+		label: 'Warm',
+		value: 'Warm'
+	},
+	{
+		label: 'Friendly',
+		value: 'Friendly'
+	},
+  {
+		label: 'Bonded',
+		value: 'Bonded'
 	},
 ]
 

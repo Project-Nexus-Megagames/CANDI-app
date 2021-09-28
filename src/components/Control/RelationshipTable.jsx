@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Icon, IconButton, FlexboxGrid, Button, Table, Modal, Form, FormGroup } from 'rsuite';
+import { Icon, IconButton, FlexboxGrid, Button, Table, Modal, Form, FormGroup, Toggle } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { connect } from "react-redux";
 import { signOut } from '../../redux/entities/auth';
 import { getGods, getNonPlayerCharacters, getPlayerCharacters } from '../../redux/entities/characters';
-import { getGodBonds } from '../../redux/entities/assets';
+import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import ModifyResource from './ModifyResource';
 import AddAsset from '../OtherCharacters/AddAsset';
 // import socket from '../../socket';
@@ -15,8 +15,6 @@ const Navigation = props => {
 	const [god, setGod] = React.useState(null);
 	const [bonder, setBonder] = React.useState(null);  
 	const [bond, setBond] = React.useState(null);
-
-	const history = useHistory();
 
 	// useEffect(() => {
 	// 	renderTime(props.gamestate.endTime);
@@ -42,8 +40,7 @@ const Navigation = props => {
                 <HeaderCell>Name</HeaderCell>
                 <Cell dataKey="characterName" />
             </Column>
-            {props.godCharacters.map((god, data) => {
-            console.log(data)
+            {props.data.map((god, data) => {
             return (
                 <Column flexGrow={1}>
                 <HeaderCell>{god.characterName}</HeaderCell>
@@ -57,6 +54,7 @@ const Navigation = props => {
         	show={god && bonder}
             character={bonder}
             god={god}
+            godData={props.godData}
             closeModal={() => setGod(false)}/>}
 
         {bond && <ModifyResource show={bond} bond={bond}
@@ -67,8 +65,6 @@ const Navigation = props => {
 }
 
 const TableStuff = ({ rowData, god, onClick, onBondClick, ...props }) => {
-	// console.log(rowData._id)
-	// console.log(god.characterName)
 	const bond = props.godBonds.find(el => (el.with === god._id && el.ownerCharacter === rowData._id ))
 	// console.log(bond)
     console.log(props.godBonds)
@@ -83,10 +79,9 @@ const TableStuff = ({ rowData, god, onClick, onBondClick, ...props }) => {
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
-	nonPlayerCharacters: getNonPlayerCharacters(state),
     playerCharacters: getPlayerCharacters(state),
-	godCharacters: getGods(state),
 	godBonds: getGodBonds(state),
+    mortalBonds: getMortalBonds(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

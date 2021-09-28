@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag, Toggle } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters, getPlayerCharacters } from '../../redux/entities/characters';
@@ -41,6 +41,7 @@ class ControlTerminal extends Component {
 		loading: false,
 		god: null,
 		bonder: null,
+		godData: true,
 
 	}
 
@@ -113,14 +114,15 @@ class ControlTerminal extends Component {
 				<NavigationBar />
 				<div style={{height: '10vh'}} >
 					<Divider>Scott's Message of the Day:</Divider>
-					<div>
+					Well this is just a hot mess on the back end. Aorry to Control, but I do not have enough love to give to both the Front end and the Control Terminal
+					{this.props.badCharacters.length > 0 && <div>
 						<h5>There are {this.props.badCharacters.length} characters with bad email/pronouns</h5>
 						{this.props.badCharacters.map((bad, index) => (
 							<Tag color='red'>{bad.characterName}</Tag>
 						))}
-					</div>					
+					</div>}					
 				</div>
-				<div style={{height: '15vh'}}>
+				{/* <div style={{height: '15vh'}}>
 				<FlexboxGrid>
 					<FlexboxGrid.Item colspan={8}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Drafts'> {this.state.drafts} </Panel>
@@ -132,7 +134,7 @@ class ControlTerminal extends Component {
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Ready for Publishing'> {this.state.ready} </Panel>			
 					</FlexboxGrid.Item>					
 				</FlexboxGrid>					
-				</div>
+				</div> */}
 				<div  style={{height: '15vh'}}>
 					<Divider>Editing</Divider>
 					<Panel>
@@ -142,15 +144,15 @@ class ControlTerminal extends Component {
 							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
 							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
 							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
-							<Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button>
-							<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
+							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
+							{/* <Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button> */}
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
 							<Button color='violet' appearance="ghost" onClick={() => this.props.history.push('/registration')}>Registration</Button>
 						</ButtonGroup>
-					</Panel>
-					<Divider>Round {this.props.gamestate.round}</Divider>					
+					</Panel>			
 				</div>
-
+        <Toggle onChange={()=> this.setState({ godData: !this.state.godData })} checkedChildren="Mortal" unCheckedChildren="Gods"/>
+				<RelationshipTable godData={this.state.godData} data={this.state.godData ? this.props.godCharacters : this.props.nonPlayerCharacters}  />
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="vertical" onChange={formValue => {this.setState({ formValue });}}>
@@ -209,10 +211,7 @@ class ControlTerminal extends Component {
 							This warning Modal Can't stop me if I don't read it!
             </Button>
 		</Modal.Footer>
-				</Modal> */}
-
-				<RelationshipTable />
-			
+				</Modal> */}			
 				<Modal backdrop="static" size='sm' show={this.state.warning2Modal} onHide={() => this.setState({ warning2Modal: false })}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
@@ -339,6 +338,8 @@ const mapStateToProps = (state) => ({
 	draftActions: draftActions(state),
 	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 	badCharacters: getBadCharacters(state),
+	nonPlayerCharacters: getNonPlayerCharacters(state),    
+	godCharacters: getGods(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, Table, Divider} from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
-import socket from '../../socket';
-import NewCharacter from '../Control/NewCharacter';
+import socket from '../../socket'; 
+import NewCharacter from '../Control/NewCharacter'; 
+
+const { HeaderCell, Cell, Column, } = Table;
 
 const  OtherCharacters = (props) => {
 	const [selected, setSelected] = React.useState(null);
@@ -50,7 +52,6 @@ const  OtherCharacters = (props) => {
 			win.focus();	
 			console.log(temp)
 		}
-
 	}
 
 	
@@ -175,6 +176,31 @@ const  OtherCharacters = (props) => {
 		{selected &&
 			<Content style={{overflow: 'auto', height: 'auto'}}>
 				<FlexboxGrid >
+					{/*Control Panel*/}
+					{props.myCharacter.tags.some(el=> el === 'Control') && <FlexboxGrid.Item colspan={24}>
+					<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center', height: 'auto'}}>
+					<h4>Control Panel</h4>
+					<h5>Effort Left: {selected.effort} </h5>
+					<ButtonGroup style={{marginTop: '5px', }} >
+						<Button appearance={"ghost"} onClick={() => setEdit(true)}>Modify</Button>
+						<Button appearance={"ghost"} onClick={() => setAdd(true)}>+ Resources</Button>
+					</ButtonGroup>
+
+					{/* <Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+						<h5>Resources</h5>
+						<Row style={{ display: 'flex', overflow: 'auto' }}>
+						{props.assets.filter(el => el.ownerCharacter === selected._id).map((asset, index) => (
+							<Col md={6} sm={12}>
+								<Panel index={index} bordered>
+									<h5>{asset.name}</h5>
+									<b>{asset.type}</b>
+								</Panel>
+								</Col>
+						))}
+						</Row>
+					</Panel> */}
+				</Panel>
+				</FlexboxGrid.Item>}
 					<FlexboxGrid.Item colspan={24} >
 						<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 							<FlexboxGrid>
@@ -245,30 +271,77 @@ const  OtherCharacters = (props) => {
 						</Panel>
 					</FlexboxGrid.Item>
 
-					{/*Control Panel*/}
-					{props.myCharacter.tags.some(el=> el === 'Control') && <FlexboxGrid.Item colspan={24}>
-					<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center', height: '30vh'}}>
-					<h5>Effort Left: {selected.effort} </h5>
-					<ButtonGroup style={{marginTop: '5px', }} >
-						<Button appearance={"ghost"} onClick={() => setEdit(true)}>Modify</Button>
-						<Button appearance={"ghost"} onClick={() => setAdd(true)}>+ Resources</Button>
-					</ButtonGroup>
 
-					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-						<h5>Resources</h5>
-						<Row style={{ display: 'flex', overflow: 'auto' }}>
-						{props.assets.filter(el => el.ownerCharacter === selected._id).map((asset, index) => (
-							<Col md={6} sm={12}>
-								<Panel index={index} bordered>
-									<h5>{asset.name}</h5>
-									<b>{asset.type}</b>
+
+					{/*God's Bonds */}
+					{selected.tags.some(el => el === 'God') && <FlexboxGrid.Item colspan={24}>
+						<Divider>Total Bonds with {selected.characterName}</Divider>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Preferred'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Preferred').length}
 								</Panel>
-								</Col>
-						))}
-						</Row>
-					</Panel>
-				</Panel>
-				</FlexboxGrid.Item>}
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Favoured'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Favoured').length}
+								</Panel>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Blessed'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Blessed').length}
+								</Panel>
+							</FlexboxGrid.Item>						
+						</FlexboxGrid>
+					</FlexboxGrid.Item>	}	
+
+					{/*NPC's Bonds */}
+					{selected.tags.some(el => el === 'NPC') && <FlexboxGrid.Item colspan={24}>
+						<Divider>Total Bonds with {selected.characterName}</Divider>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Warm'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Warm').length}
+								</Panel>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Friendly'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Friendly').length}
+								</Panel>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Bonded'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Bonded').length}
+								</Panel>
+							</FlexboxGrid.Item>						
+						</FlexboxGrid>
+					</FlexboxGrid.Item>	}	
+
+					{/* <FlexboxGrid.Item colspan={24}>
+					<Divider>Bonds</Divider>
+						<Table data={props.assets.filter(el => el.ownerCharacter === selected._id && (el.type === 'GodBond' || el.type === 'MortalBond'))}> 
+							<Column  flexGrow={2}>
+								<HeaderCell>Bond Name</HeaderCell>
+								<Cell dataKey='name' />
+							</Column>
+
+							<Column  flexGrow={2}>
+								<HeaderCell>With</HeaderCell>
+								<Cell>
+									{rowData => {
+										let thing = props.characters.find(el => el._id === rowData.with)
+										return <b>{thing.characterName}</b>
+									}}
+								</Cell>
+							</Column>
+
+							<Column  flexGrow={2}>
+								<HeaderCell>Level</HeaderCell>
+								<Cell dataKey='level' />
+							</Column>
+
+						</Table>
+					</FlexboxGrid.Item> */}
 				</FlexboxGrid>	
 				
 			<ModifyCharacter
