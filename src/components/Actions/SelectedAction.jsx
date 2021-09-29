@@ -24,6 +24,7 @@ const SelectedAction = (props) => {
 	useEffect(() => {
 		if (props.selected) {
 			let temp = [ props.selected.submission, ...props.selected.comments, ...props.selected.results, ...props.selected.effects ];
+			temp.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
 			setSelectedArray(temp);
 		}
 	}, [props.selected]);
@@ -45,15 +46,13 @@ const SelectedAction = (props) => {
 			case 'Submission':
 				return(
 					<div>
-						<Divider vertical/>	
 						<Submission handleSelect={props.handleSelect} index={index} sumbission={el} action={props.selected} creator={props.selected.creator}/>
 					</div>
 				)
 				case 'Comment':
 					return(
 						<div>
-							<Divider vertical/>	
-							<Comment selected={props.selected} index={index} comment={el} />
+							<Comment selected={props.selected} index={index} comment={el} />								
 						</div>
 					)
 					case 'Result':
@@ -81,7 +80,7 @@ const SelectedAction = (props) => {
 			{selectedArray.map((el, index) => (
 					renderSwitch(el, index)
 			))}		
-
+			<Divider vertical/>
 			<Divider>End of Action Feed</Divider>
 
 			<div style={{ transition: '3s ease'}}>

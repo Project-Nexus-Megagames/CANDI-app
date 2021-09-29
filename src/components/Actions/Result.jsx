@@ -48,8 +48,9 @@ class Result extends Component {
 
 	renderDice = (asset) => {
 		if (asset) {
-			let ass = this.props.getMyAssets.find(el => el._id === asset);
-			return(<b>{ass.dice} </b>)
+			let ass = this.props.assets.find(el => el._id === asset);
+			const thing = ass ? (<b>{ass.dice} </b>) : (<b>?????</b>)
+			return thing;
 		}
 	}
 
@@ -93,18 +94,18 @@ class Result extends Component {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={15}>
-						<h5>Result</h5>
+						<h5>Result ({this.props.result.status})</h5>
 						<p style={slimText}>{this.getTime(this.props.result.createdAt)}</p>
 					</FlexboxGrid.Item>
 
 
 					<FlexboxGrid.Item colspan={4}>
-						<ButtonToolbar>
+						{this.props.myCharacter.tags.some(el => el === 'Control') && <ButtonToolbar>
 							<ButtonGroup>
 								<IconButton size='xs' onClick={() => this.setState({ resEdit: true })} color='blue' icon={<Icon icon="pencil" />} />
 								<IconButton size='xs' onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} />
 							</ButtonGroup>							
-						</ButtonToolbar>
+						</ButtonToolbar>}
 					</FlexboxGrid.Item>
 				</FlexboxGrid>	
 
@@ -112,9 +113,9 @@ class Result extends Component {
 					<p style={slimText}>
 							{this.props.result.description}	
 						</p>
-						<p style={slimText}>
+						{/* <p style={slimText}>
 							{this.props.result.dice}	
-						</p>
+						</p> */}
 				</Panel>	
 
 			<Modal overflow

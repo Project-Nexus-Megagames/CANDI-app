@@ -114,10 +114,8 @@ const HomePage = (props) => {
 
 				<div style={{  height: 'calc(100vh - 50px)', width: "100%",  }}>
 				<FlexboxGrid >
-
 					<FlexboxGrid.Item colspan={14}>
 						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
-
 									<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
 									<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>Version: {props.version}</p>
 						</div>
@@ -137,7 +135,15 @@ const HomePage = (props) => {
 
 					<FlexboxGrid.Item colspan={6}>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
-						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={''} to='' title={''} body=''/>}
+						{!props.myCharacter.tags.some(el=> el === 'Control') && 
+						<div  onClick={() => openNexus()} style={{ border: "5px solid #ff66c4", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
+							<div className="container">
+										<img src={props.img} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+							</div>
+								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Project Nexus</h6>
+								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Gimme money</p>
+								
+						</div>}
 						{/* <ImgPanel height={'20.5vh'} img={LeaderBoard} to='controllers' title='Control' body='Who is responsible?'/> */}
 					</FlexboxGrid.Item>
 
@@ -176,67 +182,3 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 
 //<img src={"https://i.ytimg.com/vi/flD5ZTC3juk/maxresdefault.jpg"} width="700" height="220"/>
-/*
-
-		else return ( 
-			<React.Fragment>
-				<div style={{ height: '6vh', width: "100%" }}>
-					<FlexboxGrid justify="start" style={{ backgroundColor: '#746D75',  color: '' }} align="middle">
-						<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
-							<Dropdown
-									renderTitle={() => {
-										return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x"/>} size="md" circle />;
-									}}
-								>
-									<Dropdown.Item>Version: {this.props.version}</Dropdown.Item>
-									<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
-									<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
-									<Dropdown.Item onSelect={()=> this.handleLogOut()}>Log Out</Dropdown.Item>
-								</Dropdown>					
-							</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={22}>
-							<div>
-								<p>Round: {this.props.gamestate.round} </p>	
-								{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}
-								{(hours > 0 && days <= 0) && <p>Time Left: {hours} Hours, {minutes} Minutes</p>}	
-								{(hours <= 0 && minutes > 0 && days <= 0) && <p>Time Left: {minutes} Minutes</p>}	
-								{(days + hours + minutes <= 0) && <p>Game Status: {this.props.gamestate.status}</p>}	
-							</div>									
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
-					</FlexboxGrid>
-					</div>
-				<Container style={{backgroundColor:'#880015', position: 'relative', textAlign: 'center', scrollbarWidth: 'none', scrollMargin: '0px', overflow: 'auto', }}>
-					<FlexboxGrid>
-						<FlexboxGrid.Item colspan={10}>
-									<Panel bordered style={{ height: '31.3vh' }}>
-										<Link to='actions'>
-
-												<img src={action} height='auto' alt='Failed to load img' style={{ objectFit: 'contain' }} />             
-
-										</Link>
-										<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white'}}>Actions/Feeding</h6>
-										<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white'}}>Creating and editing Actions</p>
-									</Panel>
-									<Panel bordered style={{ height: '31.3vh' }}></Panel>
-									<Panel bordered style={{ height: '31.3vh' }}></Panel>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={14}>
-									<Panel bordered style={{ height: '45vh' }}></Panel>
-									<FlexboxGrid style={{ height: '49vh' }}>
-										<FlexboxGrid.Item  colspan={8}>
-											<Panel bordered style={{ height: '49vh' }}></Panel>
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item  colspan={8}>
-											<Panel bordered style={{ height: '49vh' }}></Panel>
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item  colspan={8}>
-											<Panel bordered style={{ height: '49vh' }}></Panel>
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-				</Container>
-			</React.Fragment>
-		);
-*/

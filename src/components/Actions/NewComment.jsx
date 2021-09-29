@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Slider, InputPicker, FlexboxGrid, InputNumber, CheckPicker, Loader } from 'rsuite';
+import { Modal, Button, Slider, InputPicker, FlexboxGrid, InputNumber, CheckPicker, Loader, Toggle } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
@@ -9,17 +9,15 @@ class NewComment extends Component {
 	constructor(props) {
     super(props);
     this.state = {
-			description: '',
-			hidden: true,
+			description: '',   
 		};
 	}
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
 		const stateReplace = JSON.parse(localStorage.getItem('NewComment'));
-		if (stateReplace) this.setState(stateReplace); 
+		if (stateReplace) this.setState({ description: stateReplace}); 
 		if (this.props.comment) {
-			console.log(this.props.comment.description)
 			this.setState({
 				description: this.props.comment.body,
 			});
@@ -28,10 +26,9 @@ class NewComment extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('NewComment', JSON.stringify(this.state));
+			localStorage.setItem('NewComment', JSON.stringify(this.state.description));
 		};
 		if (this.props.actions !== prevProps.actions && this.props.comment) {
-			console.log('yoo')
 			this.setState({
 				description: this.props.comment.body,
 			});
@@ -47,7 +44,7 @@ class NewComment extends Component {
 			id: this.props.selected._id,
 			comment: {
 				body: this.state.description,
-				status: 'Public',
+				status: this.state.private ? 'Private' : 'Public',
 				commentor: this.props.myCharacter.characterName
 			},
 			round: this.props.gamestate.round
@@ -68,29 +65,18 @@ class NewComment extends Component {
 				</Modal.Header>
 				<Modal.Body>
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
+					
 					<form>
-						<FlexboxGrid>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
-
-						</FlexboxGrid.Item>
-						Description
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={18}>
-							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
-						</FlexboxGrid.Item>
-						
-						</FlexboxGrid>
+						Comment Text
 						<br></br>
+						{this.props.myCharacter.tags.some(el => el === 'Control') && <Toggle defaultChecked={this.state.private} onChange={()=> this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />}
+						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
 
-						<FlexboxGrid>
-							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
-
-							</FlexboxGrid.Item>
-						</FlexboxGrid>
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={() => this.props.comment ? this.handleEditSubmit() : this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
-            {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
+            {this.state.description.length < 11 ? <b>Text needs {11 - this.state.description.length} more characters</b> :
 		
 						<b>Submit</b>}
     	    </Button>

@@ -53,151 +53,155 @@ class Submission extends Component {
 	render() { 
 		const sumbission = this.props.sumbission;
 		return ( 
-			<div style={{ border: '3px solid #22a12a', borderRadius: '5px', width: '100%', normalText }} >
-				<FlexboxGrid align="middle" style={{ backgroundColor: '#22a12a' }} justify="center">
+			<div>
+				<Divider vertical/>	
+				<div style={{ border: '3px solid #22a12a', borderRadius: '5px', width: '100%', normalText }} >				
+					<FlexboxGrid align="middle" style={{ backgroundColor: '#22a12a' }} justify="center">
 
-					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-							<Avatar circle size="md" src={`/images/${this.props.creator.characterName}.jpg`} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />
-					</FlexboxGrid.Item>
-
-					<FlexboxGrid.Item colspan={15}>
-						<h5>{this.props.creator.characterName}'s Action Submission</h5>
-						<p style={slimText}>{this.getTime(this.props.sumbission.createdAt)}</p>
-					</FlexboxGrid.Item>
-
-					<FlexboxGrid.Item colspan={4}>
-						<ButtonToolbar>
-							<ButtonGroup>
-								<IconButton size='xs'  onClick={() => this.setState({ edit: true })} color='blue' icon={<Icon icon="pencil" />} />
-								<IconButton size='xs'  onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} /> 
-							</ButtonGroup>							
-						</ButtonToolbar>
-					</FlexboxGrid.Item>
-				</FlexboxGrid>
-				
-				<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
-					<p style={slimText}>
-						Description
-					</p>
-					<p>
-						{sumbission.description}	
-					</p>
-					<p style={slimText}>
-						Intent
-					</p>
-					<p>
-						{sumbission.intent}	
-					</p>
-					{/* <p style={slimText}>
-						Effort
-					</p>
-					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{sumbission.effort}</p>
-					<Progress.Line percent={sumbission.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
-					<Divider>Resources</Divider>
-					<FlexboxGrid>
-
-						<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(sumbission.assets[0])}
-							{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset1 &&
-							<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-								<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
-							</Panel>}
+						<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
+								<Avatar circle size="md" src={`/images/${this.props.creator.characterName}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
 						</FlexboxGrid.Item>
 
-						<FlexboxGrid.Item colspan={8}>
-						{this.renderAsset(sumbission.assets[1])}
-						{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset2 &&
-							<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-								<Button onClick={() => this.controlRemove('asset2')} color='red'>Control Remove Asset</Button>									
-							</Panel>}
+						<FlexboxGrid.Item colspan={15}>
+							<h5>{this.props.creator.characterName}'s Action Submission</h5>
+							<p style={slimText}>{this.getTime(this.props.sumbission.createdAt)}</p>
 						</FlexboxGrid.Item>
 
-						<FlexboxGrid.Item colspan={8}>
-						{this.renderAsset(sumbission.assets[2])}
-						{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset3 &&
-							<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-								<Button onClick={() => this.controlRemove('asset3')} color='red'>Control Remove Asset</Button>									
-							</Panel>}
+						<FlexboxGrid.Item colspan={4}>
+							{this.props.myCharacter._id ===this.props.action.creator._id && <ButtonToolbar>
+								<ButtonGroup>
+									<IconButton size='xs'  onClick={() => this.setState({ edit: true })} color='blue' icon={<Icon icon="pencil" />} />
+									<IconButton size='xs'  onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} /> 
+								</ButtonGroup>							
+							</ButtonToolbar>}
 						</FlexboxGrid.Item>
-
 					</FlexboxGrid>
-				</Panel>		
+					
+					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
+						<p style={slimText}>
+							Description
+						</p>
+						<p>
+							{sumbission.description}	
+						</p>
+						<p style={slimText}>
+							Intent
+						</p>
+						<p>
+							{sumbission.intent}	
+						</p>
+						{/* <p style={slimText}>
+							Effort
+						</p>
+						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{sumbission.effort}</p>
+						<Progress.Line percent={sumbission.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
+						<Divider>Resources</Divider>
+						<FlexboxGrid>
 
-				<Modal overflow
-					style={{ width: '90%' }}
-					size='md'    
-					show={this.state.edit} 
-					onHide={() => this.setState({edit: false}) }>
-						<Modal.Header>
-							<Modal.Title>Submit a new action</Modal.Title>
-						</Modal.Header>
-						<Modal.Body>
-							{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
-							<form>
-								<FlexboxGrid> Description
-									<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
-								</FlexboxGrid>
-								<br></br>
-								<FlexboxGrid> What you would like to happen
-									<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
-								</FlexboxGrid>
-								<FlexboxGrid>
-									<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
-										{/* <Slider graduated
-										min={0}
-										max={this.props.myCharacter.effort}
-										defaultValue={0}
-										progress
-										value={this.state.effort}
-										onChange={(event)=> this.setState({effort: event})}>
-										</Slider> */}
-										<div style={{ paddingTop: '20px', fontSize: '2em', }} >
-											Current Actions Left: {this.props.myCharacter.effort}		
-										</div>
-									
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-										{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item colspan={4}>
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
-										<CheckPicker labelKey='name' valueKey='_id' defaultValue={this.state.assets} data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
-									</FlexboxGrid.Item>
-								</FlexboxGrid>
-							</form>
-						</Modal.Body>
-						<Modal.Footer>
-							<Button loading={this.props.actionLoading} onClick={() => this.handleSubmit()}  disabled={this.state.description.length > 10 && this.state.intent.length > 10 ? false : true} color={this.state.description.length > 10 && this.state.intent.length > 10 ? 'green' : 'red'} appearance="primary">
-    		        {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-								this.state.intent.length < 11 ? <b>Intent text need {11 - this.state.intent.length} more characters</b> :
-								<b>Submit</b>}
-    			    </Button>
-							<Button onClick={() => this.setState({edit: false})} appearance="subtle">
-    		        Cancel
-    		   		</Button>
-    		    </Modal.Footer>
-					</Modal>
-			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>			
+							<FlexboxGrid.Item colspan={8}>
+								{this.renderAsset(sumbission.assets[0])}
+								{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset1 &&
+								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+									<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
+								</Panel>}
+							</FlexboxGrid.Item>
 
-			<Modal  size='sm' show={this.state.deleteWarning} 
-			onHide={() => this.setState({ deleteWarning: false })}>
-				<Modal.Body>
-					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
-						{'  '}
-						Warning! Are you sure you want delete your action?
-					<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
-				</Modal.Body>
-				<Modal.Footer>
-           <Button onClick={() => this.deleteAction()} appearance="primary">
-						I am Sure!
-           </Button>
-           <Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
-						Nevermind
-           </Button>
-				</Modal.Footer>
-			</Modal>
+							<FlexboxGrid.Item colspan={8}>
+							{this.renderAsset(sumbission.assets[1])}
+							{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset2 &&
+								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+									<Button onClick={() => this.controlRemove('asset2')} color='red'>Control Remove Asset</Button>									
+								</Panel>}
+							</FlexboxGrid.Item>
+
+							<FlexboxGrid.Item colspan={8}>
+							{this.renderAsset(sumbission.assets[2])}
+							{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset3 &&
+								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+									<Button onClick={() => this.controlRemove('asset3')} color='red'>Control Remove Asset</Button>									
+								</Panel>}
+							</FlexboxGrid.Item>
+
+						</FlexboxGrid>
+					</Panel>		
+
+					<Modal overflow
+						style={{ width: '90%' }}
+						size='md'    
+						show={this.state.edit} 
+						onHide={() => this.setState({edit: false}) }>
+							<Modal.Header>
+								<Modal.Title>Submit a new action</Modal.Title>
+							</Modal.Header>
+							<Modal.Body>
+								{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
+								<form>
+									<FlexboxGrid> Description
+										<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
+									</FlexboxGrid>
+									<br></br>
+									<FlexboxGrid> What you would like to happen
+										<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
+									</FlexboxGrid>
+									<FlexboxGrid>
+										<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
+											{/* <Slider graduated
+											min={0}
+											max={this.props.myCharacter.effort}
+											defaultValue={0}
+											progress
+											value={this.state.effort}
+											onChange={(event)=> this.setState({effort: event})}>
+											</Slider> */}
+											<div style={{ paddingTop: '20px', fontSize: '2em', }} >
+												Current Actions Left: {this.props.myCharacter.effort}		
+											</div>
+										
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
+											{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={4}>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
+											<CheckPicker labelKey='name' valueKey='_id' defaultValue={this.state.assets} data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+								</form>
+							</Modal.Body>
+							<Modal.Footer>
+								<Button loading={this.props.actionLoading} onClick={() => this.handleSubmit()}  disabled={this.state.description.length > 10 && this.state.intent.length > 10 ? false : true} color={this.state.description.length > 10 && this.state.intent.length > 10 ? 'green' : 'red'} appearance="primary">
+									{this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
+									this.state.intent.length < 11 ? <b>Intent text need {11 - this.state.intent.length} more characters</b> :
+									<b>Submit</b>}
+								</Button>
+								<Button onClick={() => this.setState({edit: false})} appearance="subtle">
+									Cancel
+								</Button>
+							</Modal.Footer>
+						</Modal>
+				<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>			
+
+				<Modal  size='sm' show={this.state.deleteWarning} 
+				onHide={() => this.setState({ deleteWarning: false })}>
+					<Modal.Body>
+						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+							{'  '}
+							Warning! Are you sure you want delete your action?
+						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button onClick={() => this.deleteAction()} appearance="primary">
+							I am Sure!
+						</Button>
+						<Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
+							Nevermind
+						</Button>
+					</Modal.Footer>
+				</Modal>
+				</div>				
 			</div>
+
 
 		);
 	}

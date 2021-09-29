@@ -79,28 +79,7 @@ class ControlTerminal extends Component {
 				round: this.props.gamestate.round, 
 				status: this.props.gamestate.status
 			}
-			let drafts = 0;
-			let awaiting= 0;
-			let ready = 0;
-			const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
-			await this.compileTable(copy);
-
-			for (const action of copy) {
-				switch (action.status) {
-					case "Draft":
-						drafts++;
-						break;
-					case "Ready":
-						ready++;
-						break;
-					case "Awaiting":
-						awaiting++;
-						break;
-					default:
-						break;
-				}
-			}
-			this.setState({ formValue, drafts, awaiting, ready, endTime: this.props.gamestate.endTime })			
+			this.setState({ formValue, endTime: this.props.gamestate.endTime })			
 		}
 	}
 

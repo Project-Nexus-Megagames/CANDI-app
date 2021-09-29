@@ -63,19 +63,14 @@ const Actions = (props) => {
 		<Container style={{ height: 'calc(100vh - 50px)',}}>
 		<Sidebar className="side-bar">
 			<PanelGroup> 					
-				<Panel style={{ backgroundColor: "#000101", height: '60px'}}>
+				<div style={{ height: '40px', marginTop: '5px', backgroundColor: "#000101"}}>
 					<InputGroup>
 						<Input size="sm" style={{ width: '95%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
-						<Whisper placement="top" trigger="hover" speaker={tooltip}>
-						
 							<InputGroup.Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
 							<Icon  icon="plus" />	
 							</InputGroup.Button>							
-						</Whisper> 
-
-						
 					</InputGroup>
-				</Panel>
+				</div>
 				<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
 					<ActionList selected={selected} handleSelect={handleSelect}/>
 				</div>			

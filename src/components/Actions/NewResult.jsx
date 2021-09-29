@@ -55,8 +55,9 @@ class NewResult extends Component {
 
 	renderDice = (asset) => {
 		if (asset) {
-			let ass = this.props.getMyAssets.find(el => el._id === asset);
-			return(<b>{ass.dice} </b>)
+			let ass = this.props.assets.find(el => el._id === asset);
+			const thing = ass ? (<b>{ass.dice} </b>) : (<b>?????</b>)
+			return thing;
 		}
 	}
 	
@@ -98,7 +99,7 @@ class NewResult extends Component {
 				<Modal.Footer>
 					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
             {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-						this.state.dice.length < 5 ? <b>Dice text need {5 - this.state.dice.length} more characters</b> :
+						this.state.dice.length < 5 ? <b>Dice text need {3 - this.state.dice.length} more characters</b> :
 						<b>Submit</b>}
     	    </Button>
 					<Button onClick={() => this.props.closeNew()} appearance="subtle">
@@ -110,7 +111,7 @@ class NewResult extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length < 10 || this.state.dice.length > 5) return false;
+		if (this.state.description.length < 10 || this.state.dice.length > 3) return false;
 		else return true;
 	}
 
@@ -137,6 +138,7 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	actions: state.actions.list,
+	assets: state.assets.list,
 	actionLoading: state.actions.loading,
 	usedAssets: getMyUsedAssets(state),
 	getMyAssets: getMyAssets(state),

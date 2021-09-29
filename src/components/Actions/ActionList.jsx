@@ -42,7 +42,8 @@ class ActionList extends Component {
 		return ( 
 			<Container>
 					<React.Fragment >
-					<List hover size="sm" >
+					{this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
+						<h5>Control List</h5>
 						{this.props.filteredActions.map((action, index) => ( // .filter(el => el.round === round)
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>
@@ -52,7 +53,19 @@ class ActionList extends Component {
 								</FlexboxGrid>
 							</List.Item>
 						))}
-					</List>								
+					</List>	}						
+
+					{!this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
+						{this.props.myActions.map((action, index) => ( // .filter(el => el.round === round)
+							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<div style={titleStyle}>{action.name}</div>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+					</List>	}			
 					</React.Fragment>
 			</Container>
 		);
@@ -77,7 +90,8 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
 	myActions: getMyActions(state),
-	filteredActions: state.auth.control ? filteredActions(state) : 	getMyActions(state) 
+	filteredActions: filteredActions(state)
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

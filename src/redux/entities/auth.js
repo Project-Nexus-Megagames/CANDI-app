@@ -27,12 +27,11 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      console.log(jwt)
       localStorage.setItem('nexusAuth', jwt );
       const user = jwtDecode(jwt);
       // console.log(localStorage)
 
-      if (user.roles.some(el => el === "Control")) auth.control = true;
+      // if (user.roles.some(el => el === "Control")) auth.control = true;
 
 			auth.error = null;
       auth.user = user;
