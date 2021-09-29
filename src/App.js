@@ -30,6 +30,7 @@ import NotFound from './components/Navigation/NotFound';
 import Bitsy from './components/Navigation/Bitsy';
 import myCharacter from './components/MyCharacters/myCharacter';
 import Down from './components/Navigation/Down';
+import Leaderboard from './components/Control/Leaderboard';
 
 // React App Component
 initUpdates()
@@ -117,6 +118,9 @@ const App = (props) => {
         <Route exact path='/control' render={(props) => (
           <ControlTerminal {...props} />
         )} />
+        <Route exact path='/leaderboard' render={(props) => (
+          <Leaderboard {...props} />
+        )} />
         <Route exact path='/404' render={(props) => (
           <NotFound {...props} />
         )} />
@@ -125,9 +129,6 @@ const App = (props) => {
         )} />
         <Route exact path='/registration' render={(props) => (
           <Registration {...props} />
-        )} />
-        <Route exact path='/map' render={(props) => (
-          <MapContainer {...props} />
         )} />
         <Route exact path='/down' render={(props) => (
           <Down {...props}/>
