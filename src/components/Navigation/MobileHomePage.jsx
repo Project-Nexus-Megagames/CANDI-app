@@ -6,12 +6,13 @@ import ImgPanel from './ImgPanel';
 import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
-import action from '../Images/actiommobile.png'
+import action from '../Images/actionmobile.jpg'
 import control2 from '../Images/Control.jpg'
-import other from '../Images/othercharacters.jpg'
+import other from '../Images/othercharactersmobile.jpg'
 import control from '../Images/balls.png'
 import nexus from '../Images/nexus.jpg'
 import myCharacter from '../Images/MyCharacter.jpg'
+import banner from '../Images/banner.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
@@ -100,28 +101,28 @@ const HomePage = (props) => {
 				<FlexboxGrid justify="space-around" >
 
 					<FlexboxGrid.Item colspan={24}>
-						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', position: 'relative', float:'left', display:'inline-block', margin: '10px', height: '35vh', overflow: 'hidden' }}>
+						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', position: 'relative', float:'left', display:'inline-block', margin: '10px', height: '20vh', overflow: 'hidden' }}>
 
 							<div className="container">
-									<img src={'https://cdn.discordapp.com/attachments/807365449938763796/885500753853165608/Gods_Wars_Banner.png'} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+									<img src={banner} className={'image'} height='auto' alt='Failed to load img' />             
 							</div>
 
 						</div>
 					</FlexboxGrid.Item>
 
-					<FlexboxGrid.Item colspan={11}>
-						<ImgPanel img={action} to='actions' title='Actions' body='Creating and editing Actions'/>
+					<FlexboxGrid.Item colspan={12}>
+						<ImgPanel img={action} to='actions' title='Actions' body='Creation and Edits' height='30vh'/>
 					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={11}>
-						<ImgPanel img={myCharacter} to='character' title='My Character' body='My Assets and Traits'/>
+					<FlexboxGrid.Item colspan={12}>
+						<ImgPanel img={myCharacter} to='character' title='My Character' height='30vh' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={12}>
-						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
-						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={''} to='' title={''} body=''/>}
+						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height='30vh' img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
+						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height='30vh' img={''} to='' title={''} body=''/>}
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={other} to='others' title={'Other Characters'} body='Character Details'/>
+						<ImgPanel img={other} height='30vh' to='others' title={'Other Characters'} body='Character Details'/>
 					</FlexboxGrid.Item>
 
 				</FlexboxGrid>

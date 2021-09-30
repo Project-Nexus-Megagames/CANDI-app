@@ -81,7 +81,7 @@ const HomePage = (props) => {
 		props.history.push('/down');
 		return (<Loader inverse center content="doot..." />)
 	}
-	if (window.innerHeight < 900) {
+	if (window.innerHeight < 600) {
 		return (<MobileHomePage />)
 	}
 	return ( 

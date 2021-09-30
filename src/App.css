@@ -59,6 +59,8 @@
 .image {
   opacity: 1;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
   height: auto;
   transition: .5s ease;
