@@ -5,7 +5,6 @@ import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
-import AssetInfo from './AssetInfo';
 import NewAction from './NewAction';
 import NewComment from './NewComment';
 import NewResult from './NewResult';
@@ -34,11 +33,6 @@ const SelectedAction = (props) => {
 		setResult(false);
 		setSubmission(false);
 		setComment(false);
-	}
-
-	const getTime = (date) => {
-		let day = new Date(date).toDateString();
-		return (<b>{day}</b>)
 	}
 
 	const renderSwitch = (el, index) => {
@@ -93,25 +87,6 @@ const SelectedAction = (props) => {
 						{props.myCharacter.tags.some(el=> el === 'Control') && <Button disabled={true} color='violet' >Effect</Button>}
 					</ButtonGroup>}						
 			</div>
-			{/* To be the Result thing  */}
-				{/* {(action.status === 'Published' || this.props.user.roles.some(el=> el === 'Control')) && 
-				<React.Fragment>
-					<Divider>Action Result</Divider>
-					<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
-						<p style={slimText}>Result</p>
-						<p>
-						{action.result}	
-					</p>
-					</Panel>		
-					{action.mechanicalEffect !== 'No Mechanical Effect Recorded Yet...' && action.mechanicalEffect !== '' && <div>
-						<Divider>Mechanical Effect</Divider>
-						<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
-						<p>
-						{action.mechanicalEffect}	
-					</p>		
-					</Panel>						
-					</div>}				
-				</React.Fragment>} */}
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={1} />
 		</FlexboxGrid>	
@@ -156,48 +131,5 @@ const mapDispatchToProps = (dispatch) => ({
 	deleteAction: (data) => dispatch(actionDeleted(data)),
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });
-
-const styleCenter = {
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-};
-
-const slimText = {
-	fontSize: '0.966em',
-	color: '#97969B',
-	fontWeight: '300',
-	whiteSpace: 'nowrap',
-	textAlign: "center"
-};
-
-const pickerData = [
-	{
-		label: 'Draft',
-		value: 'Draft'
-	},
-	{
-		label: 'Awaiting Resolution',
-		value: 'Awaiting'
-	},
-	{
-		label: 'Ready for Publishing',
-		value: 'Ready'
-	},
-	{
-		label: 'Published',
-		value: 'Published'
-	}
-]
-
-const textStyle = {
-	backgroundColor: '#1a1d24', 
-	border: '1.5px solid #3c3f43', 
-	borderRadius: '5px', 
-	width: '100%',
-	padding: '5px',
-	overflow: 'auto', 
-	scrollbarWidth: 'none',
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectedAction);
