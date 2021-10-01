@@ -170,6 +170,26 @@ const  OtherCharacters = (props) => {
 							</List.Item>
 						))}
 
+						{props.myCharacter.tags.some(el=> el === 'Control') && <div>
+							<h5>Control Only</h5>
+							{filteredCharacters.filter(el => !el.tags.some(el2 => (el2 === 'Control' || el2 === 'NPC' || el2 === 'PC' || el2 === 'God'))).map((character, index) => (
+								<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+									<FlexboxGrid>
+										<FlexboxGrid.Item colspan={5} style={styleCenter}>
+											<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+											<b style={titleStyle}>{character.characterName}
+												{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px' }} >Control</Tag>}
+											</b>	
+											<b style={slimText}>{character.email}</b>
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+								</List.Item>
+							))}
+						</div>}
+
+
 					</List>												
 				</Panel>							
 			</PanelGroup>
