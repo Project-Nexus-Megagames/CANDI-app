@@ -207,9 +207,10 @@ const  OtherCharacters = (props) => {
 						<Button appearance={"ghost"} onClick={() => setAdd(true)}>+ Resources</Button>
 					</ButtonGroup>
 
-					{/* <Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
 						<h5>Resources</h5>
 						<Row style={{ display: 'flex', overflow: 'auto' }}>
+						{props.assets.filter(el => el.ownerCharacter === selected._id).length === 0 && <h5>No assets assigned</h5>}
 						{props.assets.filter(el => el.ownerCharacter === selected._id).map((asset, index) => (
 							<Col md={6} sm={12}>
 								<Panel index={index} bordered>
@@ -219,7 +220,7 @@ const  OtherCharacters = (props) => {
 								</Col>
 						))}
 						</Row>
-					</Panel> */}
+					</Panel>
 				</Panel>
 				</FlexboxGrid.Item>}
 					<FlexboxGrid.Item colspan={24} >
