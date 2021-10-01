@@ -8,7 +8,6 @@ import Loading from './loading';
 // import aang from '../Images/aang.jpg'
 import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
-import control from '../Images/balls.png'
 
 import test from '../Images/test.png'
 import banner from '../Images/banner.jpg'
@@ -19,9 +18,9 @@ import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 import MobileHomePage from './MobileHomePage';
+import { Link } from 'react-router-dom';
 
 const HomePage = (props) => {
-	const [show, setShow] = React.useState(false);
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0, });
 
@@ -112,8 +111,8 @@ const HomePage = (props) => {
 					<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
 				</FlexboxGrid>
 
-				<div style={{  height: 'calc(100vh - 50px)', width: "100%",  }}>
-				<FlexboxGrid >
+				<div style={{  height: 'calc(100vh - 50px)', }}>
+				<FlexboxGrid justify="center">
 					<FlexboxGrid.Item colspan={14}>
 						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
 									<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
@@ -122,19 +121,32 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={10}>
-						<ImgPanel height={'45vh'} img={test} to='actions' title='Actions' body='Creating and editing Actions'/>
+					<Link to={'actions'}>
+      		  <div style={{ border: "5px solid #ff66c4", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '44vh', overflow: 'hidden' }}>
+            
+         	   <div className="container">
+         	       <img src={test} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+         	   </div>
+         	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Actions</h6>
+         	   <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Creating and editing Actions</p>
+            
+        		</div>
+        	</Link>
+					{/* <ImgPanel height={'45vh'} img={test} to='actions' title='Actions' body='Creating and editing Actions'/> */}
 					</FlexboxGrid.Item>
+					</FlexboxGrid>
 
+					<FlexboxGrid >
 					<FlexboxGrid.Item colspan={6}>
 						<ImgPanel img={myCharacter} to='character' title='My Character' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={control2} to='leaderboard' title='Leaderboard' body='How are things standing?'/>
+						<ImgPanel img={LeaderBoard} to='leaderboard' title='Leaderboard' body='How are things standing?'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
+						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control2} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
 						{!props.myCharacter.tags.some(el=> el === 'Control') && 
 						<div  onClick={() => openNexus()} style={{ border: "5px solid #ff66c4", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
 							<div className="container">
