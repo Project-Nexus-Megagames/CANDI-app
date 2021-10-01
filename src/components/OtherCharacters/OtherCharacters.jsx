@@ -272,7 +272,7 @@ const  OtherCharacters = (props) => {
 
 								{/*Profile Pic*/}
 								<FlexboxGrid.Item colspan={9} style={{ cursor: 'pointer' }} onClick={() => openAnvil(selected)}> 
-									<img src={selected.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/Tech Support.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '50vh' }} />
+									<img src={selected.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '50vh' }} />
 								</FlexboxGrid.Item>
 
 								{/*Lend Support*/}
