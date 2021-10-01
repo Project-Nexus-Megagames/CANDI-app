@@ -45,6 +45,16 @@ class ModifyCharacter extends Component {
 		this.setState({ loading: false });		
 	}
 
+	handleControlInputConfirm = () => {
+    const nextTags = this.state.inputValue ? [...this.state.formValue.control, this.state.inputValue] : this.state.formValue.control;
+		this.handleInput(nextTags, 'control');
+    this.setState({
+      add: false,
+			addControl: false,
+      inputValue: ''
+    });
+	}
+
 	handleInputConfirm = () => {
     const nextTags = this.state.inputValue ? [...this.state.formValue.tags, this.state.inputValue] : this.state.formValue.tag;
 		this.handleInput(nextTags, 'tags');
@@ -65,9 +75,10 @@ class ModifyCharacter extends Component {
 		}
   };
 
-	handleTagRemove = (tag) => {
+
+	handleTagRemove = (tag, type) => {
     const nextTags = this.state.formValue.tags.filter(item => item !== tag);
-		this.handleInput(nextTags, 'tags');
+		this.handleInput(nextTags, type);
   }
 
 	renderTagAdd = () => {
@@ -86,6 +97,29 @@ class ModifyCharacter extends Component {
 				<IconButton
 					className="tag-add-btn"
 					onClick={() => this.setState({ add: true })}
+					icon={<Icon icon="plus" />}
+					appearance="ghost"
+					size="xs"
+				/>
+			)
+	}
+
+	renderControlTagAdd = () => {
+		if (this.state.addControl)
+			return(
+				<Input 
+					size="xs"
+					style={{ width: 70, display: 'inline-block', }}
+					value={this.state.inputValue}
+					onChange={(inputValue) => this.setState({ inputValue })}
+					onBlur={this.handleControlInputConfirm}
+					onPressEnter={this.handleControlInputConfirm}/>
+			)
+		else 
+			return (
+				<IconButton
+					className="tag-add-btn"
+					onClick={() => this.setState({ addControl: true })}
 					icon={<Icon icon="plus" />}
 					appearance="ghost"
 					size="xs"
@@ -150,6 +184,18 @@ class ModifyCharacter extends Component {
 						</Tag>
 					))}	
 					{this.renderTagAdd()}	
+					</TagGroup>
+
+					
+					<b>Control</b>
+					<br/>		
+					<TagGroup>
+					{this.state.formValue && this.state.formValue.control && this.state.formValue.control.map((item, index) => (
+						<Tag index={index} closable onClose={() => this.handleTagRemove(item, 'control')}>
+							{item}
+						</Tag>
+					))}	
+					{this.renderControlTagAdd()}	
 					</TagGroup>
 				</Drawer.Header>
 				<Drawer.Body>

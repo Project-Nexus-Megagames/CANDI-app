@@ -27,7 +27,7 @@ class NewCharacter extends Component {
 			Scholarship: 0,
 			Pugilism: 0,
 			Glory: 0,
-			effort: 0,
+			effort: 2,
 			username: 'temp'
 		},
 		loading: false,
@@ -189,7 +189,7 @@ class NewCharacter extends Component {
 			<Drawer
 			overflow 
 			show={this.props.show} 
-			onHide={() => this.props.closeDrawer()}>
+			onHide={() => this.props.closeModal()}>
 				<Drawer.Header>
 					<Drawer.Title>New Character "{this.state.formValue.characterName}"</Drawer.Title>
 					<b>Tags</b>		
