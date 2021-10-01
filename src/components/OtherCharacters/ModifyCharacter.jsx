@@ -3,7 +3,7 @@ import { ControlLabel, FlexboxGrid, Tag, Icon, IconButton, Drawer, Button, Input
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
-const disabled = ['_id', '__v'];
+const disabled = ['_id', '__v', 'model'];
 class ModifyCharacter extends Component {
 	constructor(props) {
     super(props)
