@@ -179,7 +179,7 @@ class ModifyCharacter extends Component {
 					<b>Tags</b>		
 					<TagGroup>
 					{this.state.formValue && this.state.formValue.tags && this.state.formValue.tags.map((item, index) => (
-						<Tag index={index} closable onClose={() => this.handleTagRemove(item)}>
+						<Tag index={index} closable onClose={() => this.handleTagRemove(item, 'tags')}>
 							{item}
 						</Tag>
 					))}	
