@@ -99,6 +99,11 @@ class NewCharacter extends Component {
 		this.handleInput(nextTags, type);
   }
 
+  handleControlTagRemove = (tag, type) => {
+    const nextTags = this.state.formValue.control.filter(item => item !== tag);
+		this.handleInput(nextTags, type);
+  }
+
 	renderTagAdd = () => {
 		if (this.state.add)
 			return(
@@ -206,7 +211,7 @@ class NewCharacter extends Component {
 					<br/>		
 					<TagGroup>
 					{this.state.formValue && this.state.formValue.control && this.state.formValue.control.map((item, index) => (
-						<Tag index={index} closable onClose={() => this.handleTagRemove(item, 'control')}>
+						<Tag index={index} closable onClose={() => this.handleControlTagRemove(item, 'control')}>
 							{item}
 						</Tag>
 					))}	

@@ -258,10 +258,7 @@ const  OtherCharacters = (props) => {
 										<FlexboxGrid.Item colspan={12}>
 											<p>
 												Time Zone: <b>{selected.timeZone}</b>
-											</p>		
-											<p>
-												Controller: <b>{selected.control}</b>
-											</p>									
+											</p>										
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 									<br></br>
