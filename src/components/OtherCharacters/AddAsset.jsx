@@ -120,7 +120,7 @@ class AddAsset extends Component {
 							<FlexboxGrid.Item colspan={12}>
 								<FormGroup>
 										<ControlLabel>Trait/Asset </ControlLabel>
-										<FormControl name='type'  accepter={InputPicker} data={pickerData}/>
+										<FormControl name='type'  accepter={InputPicker} data={this.props.god ? pickerData : pickerDataNoGod}/>
 								</FormGroup>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
@@ -196,10 +196,10 @@ const pickerData = [
 		label: 'Trait',
 		value: 'Trait'
 	},
-	{
-		label: 'Wealth',
-		value: 'Wealth'
-	},
+	// {
+	// 	label: 'Wealth',
+	// 	value: 'Wealth'
+	// },
 	{
 		label: 'GodBond',
 		value: 'GodBond'
@@ -208,14 +208,28 @@ const pickerData = [
 		label: 'MortalBond',
 		value: 'MortalBond'
 	},
-	{
-		label: 'Territory',
-		value: 'Territory'
-	},
+	// {
+	// 	label: 'Territory',
+	// 	value: 'Territory'
+	// },
 	{
 		label: 'Power',
 		value: 'Power'
 	}
 ]
  
+const pickerDataNoGod = [
+	{
+		label: 'Asset',
+		value: 'Asset'
+	},
+	{
+		label: 'Trait',
+		value: 'Trait'
+	},
+	{
+		label: 'Power',
+		value: 'Power'
+	}
+]
 export default AddAsset;
