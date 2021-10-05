@@ -104,7 +104,7 @@ class NewAction extends Component {
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
-								<CheckPicker labelKey='name' valueKey='_id' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
+								<CheckPicker labelKey='name' valueKey='_id' data={this.props.getMyAssets.filter(el => banned.some(el1 => el1 !== el.level) )} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 					</form>
@@ -135,6 +135,8 @@ class NewAction extends Component {
 	}
 
 }
+
+const banned = ['Favoured', 'Blessed', 'Friendly', 'Bonded']
 
 const textStyle = {
 	backgroundColor: '#1a1d24', 

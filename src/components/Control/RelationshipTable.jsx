@@ -35,14 +35,14 @@ const Navigation = props => {
 	
   return (
       <React.Fragment>
-        <Table style={{ textAlign: 'center' }} autoHeight data={props.playerCharacters} dataKey={'playerName'}>
-            <Column flexGrow={1}>
+        <Table style={{ textAlign: 'center' }} height={500} virtualized data={props.playerCharacters} cellBordered dataKey={'playerName'}>
+            <Column minWidth={150} fixed flexGrow={4}>
                 <HeaderCell>Name</HeaderCell>
                 <Cell dataKey="characterName" />
             </Column>
             {props.data.map((god, data) => {
             return (
-                <Column flexGrow={1}>
+                <Column minWidth={100} flexGrow={2}>
                 <HeaderCell>{god.characterName}</HeaderCell>
                 <TableStuff  verticalAlign='middle' god={god} onBondClick={onBondClick} onClick={hitMe} godBonds={props.godBonds} dataKey="characterName"/>
                 </Column>
@@ -71,7 +71,7 @@ const TableStuff = ({ rowData, god, onClick, onBondClick, ...props }) => {
 	if (bond)
 		return (<Cell verticalAlign='middle' {...props}><b style={{ cursor: 'pointer' }} onClick={() => onBondClick && onBondClick(bond)}>{bond.level}</b>  </Cell>)
 	else	
-		return (<Cell verticalAlign='middle' {...props}><b style={{ cursor: 'pointer' }} onClick={() => onClick && onClick(god, rowData)}>No Bond Exists!</b></Cell>)
+		return (<Cell verticalAlign='middle' {...props}><b style={{ cursor: 'pointer' }} onClick={() => onClick && onClick(god, rowData)}>-</b></Cell>)
 	  
 }
 

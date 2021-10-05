@@ -9,6 +9,7 @@ class AddAsset extends Component {
 			description: '',
 			uses: 0,
 			level: '',
+			dice: 'd6',
 			type: this.props.god ? 'GodBond' : ''	
 		},
 		hidden: true,
@@ -84,12 +85,17 @@ class AddAsset extends Component {
 									<ControlLabel>Asset Name </ControlLabel>
 									<FormControl name="name" componentClass="textarea"/>
 							</FormGroup>
+							<FormGroup>
+									<ControlLabel>Dice</ControlLabel>
+									<FormControl name="dice" componentClass="textarea"/>
+								</FormGroup>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={6}>
 								<FormGroup>
 									<ControlLabel>Hidden/Revealed</ControlLabel>
 									<FormControl accepter={this.myToggle}/>
 								</FormGroup>
+
 								{this.state.formValue.type === 'GodBond' && this.props.god && <FormGroup>
 									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
 									<FormControl name="level" data={godPickerData} accepter={InputPicker} />

@@ -80,7 +80,7 @@ const  OtherCharacters = (props) => {
 	const filterThis = (fil) => {
 		const filtered = props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
 		char.email.toLowerCase().includes(fil.toLowerCase()) || 
-		char.characterActualName.toLowerCase().includes(fil.toLowerCase()) || 
+		
 		char.tags.some(el => el.toLowerCase().includes(fil.toLowerCase())));
 		setFilteredCharacters(filtered);
 	}

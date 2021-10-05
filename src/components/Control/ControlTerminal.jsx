@@ -93,7 +93,7 @@ class ControlTerminal extends Component {
 				<NavigationBar />
 				<div style={{height: '10vh'}} >
 					<Divider>Scott's Message of the Day:</Divider>
-					Well this is just a hot mess on the back end. Aorry to Control, but I do not have enough love to give to both the Front end and the Control Terminal
+					Well this is just a hot mess on the back end. Sorry to Control, but I do not have enough love to give to both the Front end and the Control Terminal
 					{this.props.badCharacters.length > 0 && <div>
 						<h5>There are {this.props.badCharacters.length} characters with bad email/pronouns</h5>
 						{this.props.badCharacters.map((bad, index) => (

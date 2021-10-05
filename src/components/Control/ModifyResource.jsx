@@ -72,6 +72,7 @@ class ModifyResource extends Component {
 
 	handleDelete = async () => {
 		socket.emit('assetRequest', 'delete', { id: this.state.selected }); // new Socket event	
+		this.props.closeModal();
 	}
 
 	renderAss = () => {
