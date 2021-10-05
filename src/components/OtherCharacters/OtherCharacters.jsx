@@ -27,12 +27,12 @@ const  OtherCharacters = (props) => {
 	}
 
 	const copyToClipboard = (character) => {
-		console.log(character)
-		let board = `${character.email}; `;
+		// console.log(character)
+		let board = `${character.email}`;
 
 		for (const controller of character.control) {
 			const character = props.characters.find(el => el.characterName === controller)
-			character ? board = board.concat(character.characterName, `; ${character.email}`) : console.log(controller);
+			character ? board = board.concat(`; ${character.email}`) : console.log(controller);
 		}
 
 		navigator.clipboard.writeText(board);

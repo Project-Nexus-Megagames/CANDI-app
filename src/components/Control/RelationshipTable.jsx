@@ -67,7 +67,7 @@ const Navigation = props => {
 const TableStuff = ({ rowData, god, onClick, onBondClick, ...props }) => {
 	const bond = props.godBonds.find(el => (el.with === god._id && el.ownerCharacter === rowData._id ))
 	// console.log(bond)
-    console.log(props.godBonds)
+    // console.log(props.godBonds)
 	if (bond)
 		return (<Cell verticalAlign='middle' {...props}><b style={{ cursor: 'pointer' }} onClick={() => onBondClick && onBondClick(bond)}>{bond.level}</b>  </Cell>)
 	else	
