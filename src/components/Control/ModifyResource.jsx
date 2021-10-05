@@ -91,6 +91,10 @@ class ModifyResource extends Component {
 						Bond Level
 						<InputPicker labelKey='label' valueKey='value' data={godPickerData} defaultValue={this.state.level} style={{ width: '100%' }} onChange={(event)=> this.setState({level: event})}/>						
 					</div>}
+					{this.state.type === 'MortalBond' && <div>
+						Bond Level
+						<InputPicker labelKey='label' valueKey='value' data={mortalPickerData} defaultValue={this.state.level} style={{ width: '100%' }} onChange={(event)=> this.setState({level: event})}/>						
+					</div>}
 					<Divider>Statuses</Divider>
 					<Toggle checked={this.state.used} onChange={()=> this.setState({ used: !this.state.used })} checkedChildren="Used" unCheckedChildren="Un-used"/>
 					<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="hidden" unCheckedChildren="Un-hidden"/>
@@ -122,6 +126,25 @@ const godPickerData = [
     {
 		label: 'Blessed',
 		value: 'Blessed'
+	},
+]
+
+const mortalPickerData = [
+	{
+		label: 'Neutral',
+		value: 'Neutral',
+	},
+	{
+		label: 'Warm',
+		value: 'Warm'
+	},
+	{
+		label: 'Friendly',
+		value: 'Friendly'
+	},
+  {
+		label: 'Bonded',
+		value: 'Bonded'
 	},
 ]
 

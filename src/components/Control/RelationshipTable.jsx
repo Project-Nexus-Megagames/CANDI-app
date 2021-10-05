@@ -44,7 +44,7 @@ const Navigation = props => {
             return (
                 <Column minWidth={100} flexGrow={2}>
                 <HeaderCell>{god.characterName}</HeaderCell>
-                <TableStuff  verticalAlign='middle' god={god} onBondClick={onBondClick} onClick={hitMe} godBonds={props.godBonds} dataKey="characterName"/>
+                <TableStuff  verticalAlign='middle' god={god} onBondClick={onBondClick} onClick={hitMe} mortalBonds={props.mortalBonds} godBonds={props.godBonds} dataKey="characterName"/>
                 </Column>
                 );
             })}
@@ -65,7 +65,8 @@ const Navigation = props => {
 }
 
 const TableStuff = ({ rowData, god, onClick, onBondClick, ...props }) => {
-	const bond = props.godBonds.find(el => (el.with === god._id && el.ownerCharacter === rowData._id ))
+	let bond = props.godBonds.find(el => (el.with === god._id && el.ownerCharacter === rowData._id ));
+    !bond ? bond = props.mortalBonds.find(el => (el.with === god._id && el.ownerCharacter === rowData._id )) : console.log('hi');
 	// console.log(bond)
     // console.log(props.godBonds)
 	if (bond)
