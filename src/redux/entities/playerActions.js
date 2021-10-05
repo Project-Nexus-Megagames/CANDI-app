@@ -103,6 +103,7 @@ export const loadplayerActions = payload => (dispatch, getState) => {
     url = `${baseURL}/${payload.username}`
   }  
     
+
   return dispatch(
     apiCallBegan({
       url,
