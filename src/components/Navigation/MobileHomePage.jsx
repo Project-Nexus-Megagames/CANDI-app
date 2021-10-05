@@ -8,6 +8,7 @@ import Loading from './loading';
 // import aang from '../Images/aang.jpg'
 import action from '../Images/actionmobile.jpg'
 import control2 from '../Images/Control.jpg'
+import LeaderBoard from '../Images/LeaderBoard.jpg'
 import other from '../Images/othercharactersmobile.jpg'
 import control from '../Images/balls.png'
 import nexus from '../Images/nexus.jpg'
@@ -118,8 +119,7 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={12}>
-						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height='30vh' img={control2} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
-						{!props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel height='30vh' img={''} to='' title={''} body=''/>}
+						<ImgPanel img={LeaderBoard} height='30vh' disabled to='leaderboard' title='Leaderboard' body='How are things standing?'/>
 					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12}>
 						<ImgPanel img={other} height='30vh' to='others' title={'Other Characters'} body='Character Details'/>

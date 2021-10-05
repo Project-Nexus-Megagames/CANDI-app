@@ -142,7 +142,7 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={LeaderBoard} to='leaderboard' title='Leaderboard' body='How are things standing?'/>
+						<ImgPanel img={LeaderBoard} disabled to='leaderboard' title='Leaderboard' body='How are things standing?'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
