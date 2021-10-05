@@ -12,6 +12,7 @@ class ModifyResource extends Component {
 		influence: 0,
 		id: '',
 		currentOwner: '',
+		dice: '',
 		level: '',
 		type: '',
 		selected: false,
@@ -30,6 +31,7 @@ class ModifyResource extends Component {
 			id: this.state.selected,
 			name: this.state.name,
 			description: this.state.description,
+			dice: this.state.dice,
 			uses: this.state.uses,
 			owner: this.state.owner,
 			used: this.state.used,
@@ -65,7 +67,7 @@ class ModifyResource extends Component {
 	handleChage = (event) => {
 		if (event) {
 			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, level: selected.level, type: selected.type, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden })			
+			this.setState({ selected: event, name: selected.name, description: selected.description, level: selected.level, type: selected.type, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden, dice: selected.dice })			
 		}
 		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
@@ -84,6 +86,8 @@ class ModifyResource extends Component {
 					<Divider />
 					Description:
 					<textarea rows='4' value={this.state.description} className='textStyle' onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
+					Dice
+					<textarea value={this.state.dice} className='textStyle' onChange={(event)=> this.setState({dice: event.target.value})}></textarea>	
 					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
 					Owner (Match Character's name exactly):
 					<textarea value={this.state.owner} className='textStyle' onChange={(event)=> this.setState({ owner: event.target.value })}></textarea>	
