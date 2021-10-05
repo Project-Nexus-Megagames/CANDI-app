@@ -1,120 +1,94 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Content, ButtonGroup } from 'rsuite';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
+import { getMyAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
+import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
-import NewFeed from './NewFeed';
 import SelectedAction from './SelectedAction';
-import SelectedFeed from './SelectedFeed';
 import SelectedProject from './SelectedProject';
-class Actions extends Component {
-	state = { 
-		selected: null,
-		showNew: false,
-		showFeed: false,
-	}
+const Actions = (props) => {
+	const [selected, setSelected] = React.useState(null);
+	const [showNew, setShowNew] = React.useState(false);
 
-	componentDidMount() {
-		this.setState({ selected: null });
-	}
-
-	componentDidUpdate = (prevProps) => {
-		if (this.props.actions !== prevProps.actions) {
-			if (this.state.selected) {
-				const selected = this.props.actions.find(el => el._id === this.state.selected._id)
-				this.setState({ selected })				
-			}
+	useEffect(() => {
+		if (selected) {
+			const newSelected = props.actions.find(el => el._id === selected._id);
+			setSelected(newSelected);			
 		}
+	}, [props.actions]);
+
+	const handleSelect = (fuuuck) => {
+		setSelected(fuuuck);
 	}
 
-	showNew = () => { 
-		this.setState({showNew: true}) 
+	// const filter = (fil) => {
+	// 	const filtered = props.actions.filter(action => action.description.toLowerCase().includes(fil.toLowerCase()) || 
+	// 	action.intent.toLowerCase().includes(fil.toLowerCase()) || 
+	// 	action.creator.characterName.toLowerCase().includes(fil.toLowerCase())
+	// 	);
+	// 	setState({ filtered });
+	// }
+
+	// filteredAssets = () => {
+	// 	let assets = [ ...this.props.myCharacter.lentAssets];
+	// 	assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth' || el.type === 'Power' || el.type === 'Bond'));
+	// 	return assets;
+	// }
+
+	const tooltip = () => {
+		return(
+		<Tooltip>
+		  Log-Out
+		</Tooltip>			
+		)
+	}
+
+	  
+
+	if (!props.login) {
+		props.history.push('/');
+		return (<Loader inverse center content="doot..." />)
 	};
-
-	closeNew = () => { 
-		this.setState({showNew: false}) 
-	};
-
-	handleSelect = (fuuuck) => {
-		this.setState({ selected: fuuuck })
+	if (window.innerHeight < 900) {
+		return (<MobileActions />)
 	}
+	return ( 
+		<React.Fragment>
+		<NavigationBar/>
+		<Container style={{ height: 'calc(100vh - 50px)',}}>
+		<Sidebar className="side-bar">
+			<PanelGroup> 					
+				<div style={{ height: '40px', marginTop: '5px', backgroundColor: "#000101"}}>
+					<InputGroup>
+						<Input size="sm" style={{ width: '95%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
+							<InputGroup.Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
+							<Icon  icon="plus" />	
+							</InputGroup.Button>							
+					</InputGroup>
+				</div>
+				<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
+					<ActionList selected={selected} handleSelect={handleSelect}/>
+				</div>			
+			</PanelGroup>
+		</Sidebar>
 
-	filter = (fil) => {
-		const filtered = this.props.actions.filter(action => action.description.toLowerCase().includes(fil.toLowerCase()) || 
-		action.intent.toLowerCase().includes(fil.toLowerCase()) || 
-		action.creator.characterName.toLowerCase().includes(fil.toLowerCase())
-		);
-		this.setState({ filtered });
-	}
+		{selected && selected.type === 'Action' && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
 
-	render() { 
-		if (!this.props.login) {
-			this.props.history.push('/');
-			return (<Loader inverse center content="doot..." />)
-		};
-		return ( 
-			<React.Fragment>
-			<NavigationBar/>
-			<Container style={{ height: '93vh'}}>
-			<Sidebar style={{backgroundColor: "black", }}>
-				<PanelGroup>					
-					<Panel style={{ height: 'calc(8vh)', backgroundColor: "#000101"}}>
-						<Input onChange={(value)=> this.props.setFilter(value)} value={this.props.filter} placeholder="Search"></Input>
-					</Panel>
-					<Panel bodyFill style={{height: 'calc(78vh)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
-						<ActionList selected={this.state.selected} handleSelect={this.handleSelect}/>
-					</Panel>
-					<Panel style={{ paddingTop: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '0px', backgroundColor: "#000101"}}>
-						<ButtonGroup>
-							<Button appearance='primary' disabled={this.isDisabled()} onClick={() => this.showNew()}>New Action</Button>
-							<Button color='red' appearance='primary' disabled={this.props.myCharacter.feed || this.isDisabled()} onClick={() => this.setState({showFeed: true}) }>New Feed</Button>
-						</ButtonGroup>
-					</Panel>			
-				</PanelGroup>
-			</Sidebar>
-			<Content>
-				{this.state.selected && this.state.selected.type === 'Action' && <SelectedAction user={this.props.user} handleSelect={this.handleSelect} assets={this.filteredAssets()} action={this.state.selected}/>}	
-				{this.state.selected && this.state.selected.type === 'Project' && <SelectedProject characters={this.props.characters} user={this.props.user} handleSelect={this.handleSelect} project={this.state.selected}/>}	
-				{this.state.selected && this.state.selected.type === 'Feed' && <SelectedFeed user={this.props.user} handleSelect={this.handleSelect} assets={this.filtereFeeddAssets()} action={this.state.selected}/>}	
-			</Content>
-			<NewAction
-				show={this.state.showNew}
-				assets={this.filteredAssets()}
-				showNew={this.showNew} 
-				closeNew={this.closeNew}
-				gamestate={this.props.gamestate}
-				myCharacter={this.props.myCharacter}
-			/>
-			<NewFeed 
-				show={this.state.showFeed}
-				assets={this.filtereFeeddAssets()}
-				closeFeed={() => this.setState({showFeed: false})}
-			/>
-		</Container>
-		</React.Fragment>
-		);
-	}
 
-	filteredAssets = () => {
-		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
-		assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth' || el.type === 'Power' || el.type === 'Bond'));
-		return assets;
-	}
-
-	filtereFeeddAssets = () => {
-		let assets = [...this.props.myCharacter.assets, ...this.props.myCharacter.lentAssets];
-		assets = assets.filter(el => el.status.used === false && (el.type === 'Bond' || el.type === 'Territory'));
-		return assets;
-	}
-
-	isDisabled () {
-		if (this.props.gamestate.status === 'Active') return false;
-		else return true;
-	}
+		<NewAction
+			show={showNew}
+			closeNew={() => setShowNew(false)}
+			gamestate={props.gamestate}
+			myCharacter={props.myCharacter}
+		/>
+	</Container>
+	</React.Fragment>
+	);
 }
 
 const mapStateToProps = (state) => ({
@@ -124,7 +98,8 @@ const mapStateToProps = (state) => ({
 	filter: state.actions.filter,
 	login: state.auth.login,
 	gamestate: state.gamestate,
-	myCharacter: state.auth.user ? getMyCharacter(state): undefined
+	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
+	myAssets: state.auth.user ? getMyAssets(state): undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({

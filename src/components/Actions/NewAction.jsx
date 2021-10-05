@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Slider, InputPicker, FlexboxGrid, InputNumber, Loader } from 'rsuite';
+import { Modal, Button, Slider, InputPicker, FlexboxGrid, InputNumber, CheckPicker, Loader } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
@@ -10,9 +10,7 @@ class NewAction extends Component {
     super(props);
     this.state = {
         effort: 0,
-				asset1: null,
-				asset2: null,
-				asset3: null,
+				assets: [],
 				id: '',
         description: '',
 				intent: '',	
@@ -22,52 +20,54 @@ class NewAction extends Component {
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
 		const stateReplace = JSON.parse(localStorage.getItem('newActionState'));
-		console.dir(stateReplace);
+		// console.dir(stateReplace);
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
 			localStorage.setItem('newActionState', JSON.stringify(this.state));
-			console.log(localStorage);
+			// console.log(localStorage);
 		};
 		if (this.props.actions !== prevProps.actions) {
 			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();
 				this.setState({
 					effort: 0,
-					asset1: null,
-					asset2: null,
-					asset3: null,
+					assets: [],
 					id: '',
 					description: '',
 					intent: '',	
 				});
 			}
 		}
+
 	}
 	
 	handleSubmit = async () => {
 		this.props.actionDispatched();
 		// 1) make a new action
 		const action = {
-			effort: this.state.effort,
-			asset1: this.state.asset1,
-			asset2: this.state.asset2,
-			asset3: this.state.asset3,
-			description: this.state.description,
-			intent: this.state.intent,
-			creator: this.props.myCharacter.characterName,
+			submission: {
+				effort: 1,
+				assets: this.state.assets, //this.state.asset1._id, this.state.asset2._id, this.state.asset3._id
+				description: this.state.description,
+				intent: this.state.intent,			
+				round: this.props.gamestate.round	
+			},
+			controllers: ['Test2'],
+			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'create', action); // new Socket event	
+		socket.emit('actionRequest', 'create', action); // new Socket event
+		this.props.closeNew();	
 	}
 	
 	render() { 
 		return ( 
 			<Modal overflow
-			full
-			size='lg'  
+			style={{ width: '90%' }}
+			size='md'  
 			show={this.props.show} 
 			onHide={() => this.props.closeNew()}>
 				<Modal.Header>
@@ -84,48 +84,45 @@ class NewAction extends Component {
 							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
 						</FlexboxGrid>
 						<FlexboxGrid>
-							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
-								<Slider graduated
+							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
+								{/* <Slider graduated
 								min={0}
 								max={this.props.myCharacter.effort}
 								defaultValue={0}
 								progress
 								value={this.state.effort}
 								onChange={(event)=> this.setState({effort: event})}>
-								</Slider>
+								</Slider> */}
 								<div style={{ paddingTop: '20px', fontSize: '2em', }} >
-									Current Effort Left: {this.props.myCharacter.effort}		
+									Current Actions Left: {this.props.myCharacter.effort}		
 								</div>
 
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-								<InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								
+								{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}>
 							</FlexboxGrid.Item>
-							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources
-								<InputPicker placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset1: event})}/>
-								<InputPicker placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset2: event})}/>
-								<InputPicker placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset3: event})}/>
+							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
+								<CheckPicker labelKey='name' valueKey='_id' data={this.props.getMyAssets.filter(el => banned.some(el1 => el1 !== el.level) )} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-		<Button onClick={() => this.handleSubmit()} loading={this.props.actionLoading} disabled={this.isDisabled()} appearance="primary">
-            {this.isDisabled() && <b>Text is too short</b>}
-						{!this.isDisabled() && <b>Submit</b>}
-        </Button>
-		<Button onClick={() => this.props.closeNew()} appearance="subtle">
+					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} color={this.isDisabled() ? 'red' : 'green'} appearance="primary">
+						<b>Submit</b>
+    	   			 </Button>
+					<Button onClick={() => this.props.closeNew()} appearance="subtle">
             Cancel
-        </Button>
+       		</Button>
         </Modal.Footer>
 			</Modal>
 		);
 	}
 
 	isDisabled () {
-		if (this.state.description.length > 10 && this.state.intent.length > 10 && this.state.effort > 0) return false;
+		if (this.state.description.length > 10 && this.state.intent.length > 10) return false;
 		else return true;
 	}
 
@@ -138,6 +135,8 @@ class NewAction extends Component {
 	}
 
 }
+
+const banned = ['Favoured', 'Blessed', 'Friendly', 'Bonded']
 
 const textStyle = {
 	backgroundColor: '#1a1d24', 
@@ -159,7 +158,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	updateCharacter: (data) => dispatch(characterUpdated(data)),
 	actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
 

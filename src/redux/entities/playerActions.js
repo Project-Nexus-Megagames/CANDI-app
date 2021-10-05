@@ -51,6 +51,7 @@ const slice = createSlice({
       console.log(`Payload : ${action.payload._id}`)
       const index = playerActions.list.findIndex(el => el._id === action.payload._id);
       playerActions.list[index] = action.payload;
+      playerActions.loading = false;
     }
   }
 });
@@ -77,17 +78,15 @@ export const getMyActions = createSelector(
   state => state.actions.list,
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (filter, actions, myCharacter) => actions.filter(
-    action => ((action.creator === myCharacter.characterName || action.players.some(el => el === myCharacter.characterName)) && ( action.description.toLowerCase().includes(filter.toLowerCase()) ||
-    action.intent.toLowerCase().includes(filter.toLowerCase()) ))
-  )
+    action => (( action.creator._id === myCharacter._id ) ))
+  
 );
 
 export const filteredActions = createSelector(
   state => state.actions.filter,
   state => state.actions.list,
-  (filter, actions) => actions.filter(action => action.description.toLowerCase().includes(filter.toLowerCase()) || 
-  action.intent.toLowerCase().includes(filter.toLowerCase()) || 
-  action.creator.toLowerCase().includes(filter.toLowerCase())
+  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || 
+  action.submission.intent.toLowerCase().includes(filter.toLowerCase()) 
   )
 );
 
@@ -100,9 +99,10 @@ export const draftActions = createSelector(
 export const loadplayerActions = payload => (dispatch, getState) => {
   let url = baseURL;
   
-  // if (!payload.roles.some(el => el === 'Control' )) {
-  //   url = `${baseURL}/${payload.username}`
-  // }  // NOTE TO SELF this makes players load all actions on boot, so take this out before next game
+  if (!payload.roles.some(el => el === 'Control' )) {
+    url = `${baseURL}/${payload.username}`
+  }  
+    
 
   return dispatch(
     apiCallBegan({

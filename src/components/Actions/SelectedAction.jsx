@@ -1,424 +1,119 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
 import socket from '../../socket';
-import AssetInfo from './AssetInfo';
-/* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
-class SelectedAction extends Component {
-	state = { 
-		edit: null, // used to open edit action popup
-		resEdit: null,	// used to open action result popup
-		loading: false, //used for loading button 
-		effort: 1,
-		asset1: this.props.action.asset1,
-		asset2: this.props.action.asset2,
-		asset3: this.props.action.asset3,
-		id: this.props.action._id,
-		description: this.props.action.description,
-		intent: this.props.action.intent,	
-		result: this.props.action.result,
-		dieResult: this.props.action.dieResult,
-		status: this.props.action.status,
-		mechanicalEffect: this.props.action.mechanicalEffect,
-		usedAssets: [],
+import NewAction from './NewAction';
+import NewComment from './NewComment';
+import NewResult from './NewResult';
+import Submission from './Submission';
+import Comment from './Comment';
+import Result from './Result';
+import MobileSelectedActions from './Mobile/MobileSelectedActions';
 
-		infoModal: false,
-		infoAsset: {}
-	}
+const SelectedAction = (props) => {
+	const [selectedArray, setSelectedArray] = React.useState([]);
+	const [add, setAdd] = React.useState(false);
+	const [submission, setSubmission] = React.useState(false);
+	const [result, setResult] = React.useState(false);
+	const [comment, setComment] = React.useState(false);
 
-	componentDidMount = () => {
-		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('selectedActionState'));
-		console.dir(stateReplace);
-		if (stateReplace) this.setState(stateReplace); 
-	}
-
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('selectedActionState', JSON.stringify(this.state));
-		};
-		if (this.props.action !== prevProps.action) {
-			this.setState({ 	
-				asset1: this.props.action.asset1,
-				asset2: this.props.action.asset2,
-				asset3: this.props.action.asset3,
-				id: this.props.action._id,
-				description: this.props.action.description,
-				intent: this.props.action.intent,	
-				result: this.props.action.result,
-				dieResult: this.props.action.dieResult,
-				status: this.props.action.status,
-				mechanicalEffect: this.props.action.mechanicalEffect,
-			});		
+	useEffect(() => {
+		if (props.selected) {
+			let temp = [ props.selected.submission, ...props.selected.comments, ...props.selected.results, ...props.selected.effects ];
+			// temp.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) //new Date(a.createdAt) -  new Date(b.createdAt // disabled until the updatedAt bug is worked out
+			setSelectedArray(temp);
 		}
-	}
-
-	render() { 
-		const action = this.props.action;
-		return ( 
-			<Content style={{overflow: 'auto', height: '100%'}} >
-			<FlexboxGrid >
-				<FlexboxGrid.Item colspan={2} >
-				</FlexboxGrid.Item>
-				<FlexboxGrid.Item colspan={16} >
-					<Panel style={{backgroundColor: "#15181e", textAlign: 'center', fontSize: '4em'}} shaded bordered >Type: {action.type}</Panel>	
-					<Panel shaded style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
-						<p style={{ fontSize: '300', color: '#97969B', fontWeight: 'lighter',	whiteSpace: 'nowrap',}}>
-							Created by: {action.creator}
-						</p>
-						<p style={slimText}>
-							Description
-						</p>
-						<p>
-							{action.description}	
-						</p>
-						<p style={slimText}>
-							Intent
-						</p>
-						<p>
-							{action.intent}	
-						</p>
-						<p style={slimText}>
-							Effort
-						</p>
-						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{action.effort}</p>
-						<Progress.Line percent={action.effort * 33 + 1} showInfo={false}>  </Progress.Line>
-						<Divider>Resources</Divider>
-						<FlexboxGrid>
-							<FlexboxGrid.Item colspan={8}>
-								{this.renderAsset(action.asset1)}
-								{this.props.user.roles.some(el=> el === 'Control') && action.asset1 &&
-								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-									<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
-								</Panel>}
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(action.asset2)}
-							{this.props.user.roles.some(el=> el === 'Control') && action.asset2 &&
-								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-									<Button onClick={() => this.controlRemove('asset2')} color='red'>Control Remove Asset</Button>									
-								</Panel>}
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(action.asset3)}
-							{this.props.user.roles.some(el=> el === 'Control') && action.asset3 &&
-								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-									<Button onClick={() => this.controlRemove('asset3')} color='red'>Control Remove Asset</Button>									
-								</Panel>}
-							</FlexboxGrid.Item>
-						</FlexboxGrid>
-					</Panel>
-					{(action.status === 'Published' || this.props.user.roles.some(el=> el === 'Control')) && 
-					<React.Fragment>
-						<Divider>Action Result</Divider>
-						<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
-							<p style={slimText}>Result</p>
-							<p>
-							{action.result}	
-						</p>
-						</Panel>		
-						{action.mechanicalEffect !== 'No Mechanical Effect Recorded Yet...' && action.mechanicalEffect !== '' && <div>
-							<Divider>Mechanical Effect</Divider>
-							<Panel style={{textAlign: "left", backgroundColor: "#61342e",  whiteSpace: 'pre-line'}}>
-							<p>
-							{action.mechanicalEffect}	
-						</p>		
-						</Panel>						
-						</div>}				
-					</React.Fragment>}
-
-				</FlexboxGrid.Item>
-				<FlexboxGrid.Item colspan={1} />
-				<FlexboxGrid.Item colspan={5}>
-					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-						<TagGroup >Status:
-							{action.status === 'Draft' && <Tag color='red'>Draft</Tag>}
-							{action.status === 'Awaiting' && <Tag color='blue'>Awaiting Resolution</Tag>}
-							{action.status === 'Ready' && <Tag color='violet'>Ready for Publishing</Tag>}
-							{action.status === 'Published' && <Tag color='green'>Published</Tag>}
-						</TagGroup>
-							<ButtonGroup style={{ marginTop: '5px' }} >
-								<Button appearance={"ghost"} disabled={action.status !== 'Draft'} onClick={() => this.openEdit()} >Edit</Button>
-								<Button color='red' appearance={"ghost"} disabled={(action.status !== 'Draft')} onClick={() => this.deleteAction()}>Delete</Button>
-							</ButtonGroup>
-					</Panel>
-					{this.props.user.roles.some(el=> el === 'Control') && 
-						<Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-							<ButtonGroup style={{marginTop: '5px', }} >
-								<Button appearance={"ghost"} onClick={() => this.setState({ resEdit: true })}>Edit Result</Button>
-							</ButtonGroup>
-						</Panel>}
-				</FlexboxGrid.Item>
-			</FlexboxGrid>	
-
-			<Modal overflow 
-			full
-			size='lg'  
-			show={this.state.edit} 
-			onHide={() => this.closeEdit()}>
-				<Modal.Header>
-					<Modal.Title>Edit an Action</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-				<form>
-					<FlexboxGrid> Description
-						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
-					</FlexboxGrid>
-					<br></br>
-					<FlexboxGrid> What you would like to happen
-						<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
-					</FlexboxGrid>
-					<FlexboxGrid>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>Effort
-							<Slider graduated
-							min={0}
-							max={this.props.myCharacter.effort + this.props.action.effort}
-							defaultValue={this.state.effort}
-							progress
-							value={this.state.effort}
-							onChange={(event)=> this.setState({effort: event})}>
-							</Slider>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-							<InputNumber value={this.state.effort} max={this.props.myCharacter.effort + this.props.action.effort} min={0} onChange={(value)=> this.setState({effort: parseInt(value)})}></InputNumber>								
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={4}>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources
-							<InputPicker defaultValue={this.state.asset1} placeholder="Slot 1" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset1: event})}/>
-							<InputPicker defaultValue={this.state.asset2} placeholder="Slot 2" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset2: event})}/>
-							<InputPicker defaultValue={this.state.asset3} placeholder="Slot 3" labelKey='name' valueKey='name' data={this.props.getMyAssets} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({asset3: event})}/>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-					</form>
-				</Modal.Body>
-				<Modal.Footer>
-        <Button onClick={() => this.handleSubmit()} disabled={this.state.effort === 0} appearance="primary">
-            Submit
-        </Button>
-        <Button onClick={() => this.closeEdit()} appearance="subtle">
-            Cancel
-        </Button>
-        </Modal.Footer>
-			</Modal>
-
-			<Modal overflow
-			full
-			size='lg'  
-			show={this.state.resEdit} 
-			onHide={() => this.closeResult()}>
-				<Modal.Header>
-					<Modal.Title>Edit {action.creator}'s Action Result</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<FlexboxGrid>
-						<FlexboxGrid.Item colspan={10}>
-							<p style={{  fontSize: '0.966em', color: '#97969B', fontWeight: '300',}}>
-								Description
-							</p>
-							<p>
-								{action.description}	
-							</p>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={10}>
-							<p style={{ fontSize: '0.966em', color: '#97969B', 	fontWeight: '300', }}>
-								Intent
-							</p>
-							<p>
-								{action.intent}	
-							</p>							
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={4}>
-							<p style={{ 	textAlign: "center", fontSize: '0.966em', color: '#97969B', 	fontWeight: '300',}}>
-								Effort
-							</p>
-							<p style={{ fontWeight: 'bolder', 	textAlign: "center", fontSize: 20 }} >{action.effort}</p>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-
-				<Divider></Divider>
-				<form>
-					<textarea rows='6' value={this.state.result} style={textStyle} onChange={(event)=> this.setState({result: event.target.value})}></textarea>							
-					<Divider></Divider>
-					<FlexboxGrid justify="start">
-						<FlexboxGrid.Item  colspan={11}>
-							<b>Mechanical Effects</b>
-							<textarea rows='4' value={this.state.mechanicalEffect} style={textStyle} onChange={(event)=> this.setState({mechanicalEffect: event.target.value})}></textarea>			
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={1}/>
-						<FlexboxGrid.Item colspan={12}>
-							<FlexboxGrid>
-								<FlexboxGrid.Item colspan={24}>
-									<b>Status</b>
-									<InputPicker labelKey='label' valueKey='value' data={pickerData} defaultValue={this.state.status} style={{ width: '100%' }} onChange={(event)=> this.setState({status: event})}/>
-								</FlexboxGrid.Item>
-								<FlexboxGrid.Item colspan={24}>
-									<b>Die Result</b>
-									<textarea value={this.state.dieResult} style={textStyle} onChange={(event)=> this.setState({dieResult: event.target.value})}></textarea>									
-								</FlexboxGrid.Item>
-							</FlexboxGrid>
-						</FlexboxGrid.Item>
-					</FlexboxGrid>
-				</form>
-
-				</Modal.Body>
-				<Modal.Footer>
-					<Button onClick={() => this.handleResultSubmit()} appearance="primary">
-						Submit
-					</Button>
-					<Button onClick={() => this.closeResult()} appearance="subtle">
-						Cancel
-					</Button>
-				</Modal.Footer>
-			</Modal>
-
-			<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>
-		</Content>		
-		);
-	}
-
-	openEdit = () => {
-		const action = this.props.action;
-
-		this.setState({ 
-			description: action.description, 
-			intent: action.intent, 
-			effort: action.effort, 
-			id: action._id, 
-			asset1: action.asset1,
-			asset2: action.asset2,
-			asset3: action.asset3,
-			edit: true })
-	}
-
-	handleSubmit = async () => {
-		this.setState({loading: true}) 
-		let action = { ...this.props.action };
-
-		action.effort= this.state.effort
-		action.asset1= this.state.asset1
-		action.asset2= this.state.asset2
-		action.asset3= this.state.asset3
-		action.description= this.state.description
-		action.intent= this.state.intent
-		action.dieResult= this.state.dieResult
-		action.id= this.props.action._id
-		action.playerBoolean= this.state.edit	
+	}, [props.selected]);
 	
-		// console.log(action)
-		// 1) make a new action
-		try{
-			socket.emit('actionRequest', 'update', action); // new Socket event
-			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: '', mechanicalEffect: ''});	
-
-			this.closeEdit();
-			this.closeResult();
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data}`, 6000)
-		}
-		this.setState({loading: false});
+	const closeIt =() => {
+		setAdd(false);
+		setResult(false);
+		setSubmission(false);
+		setComment(false);
 	}
 
-	handleResultSubmit = async () => {
-		this.setState({loading: true}) 
-		let action = { ...this.props.action };
-
-		action.effort= this.state.effort
-		action.asset1= this.state.asset1
-		action.asset2= this.state.asset2
-		action.asset3= this.state.asset3
-		action.description= this.state.description
-		action.intent= this.state.intent
-		action.result= this.state.result
-		action.dieResult= this.state.dieResult
-		action.status= this.state.status
-		action.id= this.props.action._id
-		action.mechanicalEffect= this.state.mechanicalEffect
-		action.playerBoolean= this.state.edit	
-	
-		// console.log(action)
-		// 1) make a new action
-		try{
-			socket.emit('actionRequest', 'update', action); // new Socket event
-			this.setState({asset1: '', asset2: '', asset3: '', effort: 0, description: '', intent: '', id: '', result: '', dieResult: 0, status: '', mechanicalEffect: ''});	
-
-			this.closeEdit();
-			this.closeResult();
-		}
-		catch (err) {
-			Alert.error(`Error: ${err.response.data}`, 6000)
-		}
-		this.setState({loading: false});
+	const renderSwitch = (el, index) => {
+		switch(el.model) {
+			case 'Submission':
+				return(
+					<div>
+						<Submission handleSelect={props.handleSelect} index={index} sumbission={el} action={props.selected} creator={props.selected.creator}/>
+					</div>
+				)
+				case 'Comment':
+					return(
+						<div>
+							<Comment selected={props.selected} index={index} comment={el} />								
+						</div>
+					)
+					case 'Result':
+						return(
+							<div>
+								<Divider vertical/>	
+								<Result index={index} result={el} selected={props.selected} submission={props.selected.submission}/>
+							</div>
+						)
+			default:
+				return(<b> Oops </b>)	
+		}	
 	}
 
-	controlRemove = (asset) => {
-		const action = {
-			asset,
-			id: this.props.action._id,
-		}
-		socket.emit('actionRequest', 'controlReject', action); // new Socket event
+	if (window.innerHeight < 900) {
+		return (<MobileSelectedActions />)
 	}
+	return ( 
+		<Content style={{overflow: 'auto', height: '100%'}} >
+		<FlexboxGrid >
+			<FlexboxGrid.Item colspan={2} >
+			</FlexboxGrid.Item>
+			<FlexboxGrid.Item colspan={16} >
 
-	renderAsset = (asset) => {
-		if (asset) {
-			return (
-					<Panel style={{backgroundColor: "#272b34"}} shaded bordered >
-						<FlexboxGrid align='middle'>
-							<FlexboxGrid.Item colspan={20}>
-							<b>{asset.type}</b>
-							<b>{asset}</b>
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={4}>
-							<IconButton onClick={() => this.openInfo(asset)} color='blue' size="sm" icon={<Icon  icon="info"/>} /> 
-							</FlexboxGrid.Item >
-						</FlexboxGrid>
-					</Panel>	
-			)
-		}
-		else {
-			return (
-					<Panel style={{backgroundColor: "#0e1013"}} shaded bordered >
-						<b>Empty Slot</b>
-					</Panel>	
-			)
-		}
-	}
+			{selectedArray.map((el, index) => (
+					renderSwitch(el, index)
+			))}		
+			<Divider vertical/>
+			<Divider>End of Action Feed</Divider>
 
-	openInfo = (asset) => {
-		const found = this.props.assetsRedux.find(el => el.name === asset)
-		this.setState({ infoAsset: found, infoModal: true });
-	}
+			<div style={{ transition: '3s ease'}}>
+				{!add && <IconButton onClick={() => setAdd(true)} color='blue' icon={<Icon icon="plus" />}></IconButton>}
+				{add &&
+					<ButtonGroup justified style={{ width: '100%', transition: '.5s' }} >
+						{/* <Button onClick={() => setSubmission(true)}  color='green' >Player Submission</Button> */}
+						<Button onClick={() => setComment(true)}color='cyan'>Comment</Button>
+						{props.myCharacter.tags.some(el=> el === 'Control') && <Button onClick={() => setResult(true)} color='blue' >Result</Button>}
+						{props.myCharacter.tags.some(el=> el === 'Control') && <Button disabled={true} color='violet' >Effect</Button>}
+					</ButtonGroup>}						
+			</div>
+			</FlexboxGrid.Item>
+			<FlexboxGrid.Item colspan={1} />
+		</FlexboxGrid>	
+			<NewAction
+				show={submission}
+				closeNew={() => closeIt()}
+				gamestate={props.gamestate}
+				selected={props.selected}
+			/>
 
-	closeEdit = () => { 
-		this.setState({edit: false}) 
-	};
+			<NewResult
+				show={result}
+				closeNew={() => closeIt()}
+				gamestate={props.gamestate}
+				submission={props.selected.submission}
+				selected={props.selected}
+			/>
 
-	closeResult = () => { 
-		this.setState({resEdit: false}) 
-	};
+			<NewComment
+				show={comment}
+				closeNew={() => closeIt()}
+				gamestate={props.gamestate}
+				selected={props.selected}
+			/>
 
-	deleteAction = async () => {
-		socket.emit('actionRequest', 'delete', {id: this.props.action._id}); // new Socket event
-		this.props.handleSelect(null);
-	};
-
-	myToggle = () => {
-		return (
-			<Toggle onChange={()=> this.setState({ assetBoolean: !this.state.assetBoolean })} checkedChildren="Asset" unCheckedChildren="Trait"></Toggle>			
-		)
-	};
-
-	formattedUsedAssets = () => {
-		let assets = [];
-		for (const asset of this.props.usedAssets) {
-			assets.push(asset.name)
-		}
-		return assets;
-	}
+	</Content>		
+	);
 }
 
 
@@ -433,46 +128,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	// handleLogin: (data) => dispatch(loginUser(data))
 	deleteAction: (data) => dispatch(actionDeleted(data)),
 	updateCharacter: (data) => dispatch(characterUpdated(data))
 });
-
-const slimText = {
-	fontSize: '0.966em',
-	color: '#97969B',
-	fontWeight: '300',
-	whiteSpace: 'nowrap',
-	textAlign: "center"
-};
-
-const pickerData = [
-	{
-		label: 'Draft',
-		value: 'Draft'
-	},
-	{
-		label: 'Awaiting Resolution',
-		value: 'Awaiting'
-	},
-	{
-		label: 'Ready for Publishing',
-		value: 'Ready'
-	},
-	{
-		label: 'Published',
-		value: 'Published'
-	}
-]
-
-const textStyle = {
-	backgroundColor: '#1a1d24', 
-	border: '1.5px solid #3c3f43', 
-	borderRadius: '5px', 
-	width: '100%',
-	padding: '5px',
-	overflow: 'auto', 
-	scrollbarWidth: 'none',
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectedAction);

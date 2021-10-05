@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {List, FlexboxGrid, Container, } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { filteredActions, getMyActions } from '../../redux/entities/playerActions';
+import { getMyActions, filteredActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { 
@@ -25,15 +25,7 @@ class ActionList extends Component {
 		}
 
 	listStyle (item) {
-		if (item.type === "Project") {
-			if (item === this.props.selected)	return ({cursor: 'pointer', opacity: '0.6', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-			else return ({cursor: 'pointer', backgroundColor: "#274472", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-		}
-		else if (item.type === "Feed") {
-			if (item === this.props.selected)	return ({cursor: 'pointer', opacity: '0.6', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-			else return ({cursor: 'pointer', backgroundColor: "#880015", textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-		}
-		else if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+		if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		else return({cursor: 'pointer'});
 	}
 
@@ -49,23 +41,32 @@ class ActionList extends Component {
 	render() { 
 		return ( 
 			<Container>
-				{this.state.rounds.map((round, index) => (
-					<React.Fragment key={index}>
-					<h6 style={{backgroundColor: "#61342e"}}>Round {round}</h6>	
-					<List key={index} hover size="sm" >
-						{this.props.filteredActions.filter(el => el.round === round).map((action, index) => (
+					<React.Fragment >
+					{this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
+						<h5>Control List</h5>
+						{this.props.filteredActions.map((action, index) => ( // .filter(el => el.round === round)
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-										<div style={titleStyle}>{action.intent}</div>
+										<div style={titleStyle}>{action.name}</div>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
 						))}
-					</List>								
-					</React.Fragment>
+					</List>	}						
 
-				))}		
+					{!this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
+						{this.props.myActions.map((action, index) => ( // .filter(el => el.round === round)
+							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<div style={titleStyle}>{action.name}</div>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+					</List>	}			
+					</React.Fragment>
 			</Container>
 		);
 	}
@@ -88,12 +89,13 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
-	// filteredActions: state.auth.control ? filteredActions(state) : 	getMyActions(state) 
+
+	myActions: getMyActions(state),
 	filteredActions: filteredActions(state)
+
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // handleLogin: (data) => dispatch(loginUser(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActionList);

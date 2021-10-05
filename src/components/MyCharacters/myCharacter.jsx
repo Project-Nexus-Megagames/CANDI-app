@@ -23,6 +23,7 @@ import {
   Grid,
   Col,
   Row,
+  List,
 } from "rsuite";
 import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated, getMyAssets } from "../../redux/entities/assets";
@@ -30,6 +31,7 @@ import socket from "../../socket";
 // import { playerActionsRequested } from "../../redux/entities/playerActions";
 import PlaceholderParagraph from "rsuite/lib/Placeholder/PlaceholderParagraph";
 import NavigationBar from "../Navigation/NavigationBar";
+import AssetInfo from "../Actions/AssetInfo";
 
 class MyCharacter extends Component {
   state = {
@@ -44,6 +46,9 @@ class MyCharacter extends Component {
     lendShow: false,
     unlend: false, // boolean for displaying the "unlend" modal
     unleanding: null, // what is being "Unlent"
+
+		infoModal: false,
+		infoAsset: {}
   };
 
   componentDidMount = () => {
@@ -89,9 +94,14 @@ class MyCharacter extends Component {
     this.setState({ unleanding, unlend: true });
   };
 
+  openInfo = (asset) => {
+		console.log(asset)
+		const found = this.props.assets.find(el => el._id === asset._id);
+		this.setState({ infoAsset: found, infoModal: true });
+	}
+
   render() {
     const playerCharacter = this.props.myCharacter;
-    const myAssets = this.props.getMyAssets;
     if (!this.props.login) {
       this.props.history.push("/");
       return <Loader inverse center content="doot..." />;
@@ -109,10 +119,11 @@ class MyCharacter extends Component {
                     src={`/images/${playerCharacter.characterName}.jpg`}
                     alt="Unable to load img"
                     width="95%"
+                    style={{ maxHeight: '50vh' }}
                   />
                 </p>
                 <p>
-                  <b>{playerCharacter.characterName}</b> {playerCharacter.tag}
+                  <b>{playerCharacter.characterName}</b> {playerCharacter.tags}
                 </p>
                 <p>
                   <b>
@@ -159,154 +170,12 @@ class MyCharacter extends Component {
             </Col>
             <Col xs={24} sm={24} md={8} className="gridbox">
 
-            <Divider style={{ marginTop: "15px", marginBottom: "0px" }}>
-                Assets
-              </Divider>
-              {myAssets.filter(el => (el.type === 'Asset' || el.type === 'Wealth') && el.status.hidden !== true ).map((asset, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {asset.uses > 0 && (
-                    <React.Fragment>
-                      <Affix>
-                        {asset.status.lent && this.rednerHolder(asset)}
-                        {!asset.status.lent && <Tag color="green">Ready</Tag>}
-                        {asset.status.lent && this.findOwner(asset._id)}
-                      </Affix>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={asset.name}
-                        bordered
-                        collapsible
-                      >
-                        <FlexboxGrid>
-                          <FlexboxGrid.Item colspan={20}>
-                            <p>{asset.description}</p>
-                          </FlexboxGrid.Item>
-                          <FlexboxGrid.Item
-                            style={{ textAlign: "center" }}
-                            colspan={4}
-                          >
-                            {asset.status.lendable && !asset.status.lent && (
-                              <Button
-                                onClick={() => this.openLend(asset)}
-                                appearance="ghost"
-                                size="sm"
-                                disabled={asset.status.used}
-                              >
-                                Lend
-                              </Button>
-                            )}
-                            {asset.status.lendable && asset.status.lent && (
-                              <Button
-                                onClick={() => this.openUnlend(asset)}
-                                appearance="ghost"
-                                size="sm"
-                              >
-                                Un-Lend
-                              </Button>
-                            )}
-                          </FlexboxGrid.Item>
-                        </FlexboxGrid>
-                        {asset.uses !== 999 && <p>Uses: {asset.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))} 
-              <Divider style={{ marginBottom: "0px" }}>
-                Traits
-              </Divider>
-              {myAssets.filter(el => el.type === 'Trait' && el.status.hidden !== true).map((trait, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {trait.uses >= 0 && ( // change this back to > 0
-                    <React.Fragment>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={trait.name}
-                        bordered
-                        collapsible
-                      >
-                        <p>{trait.description}</p>
+            <Divider>Resources</Divider>
+            {this.renderList('Asset')}
+            {this.renderList('Trait')}
+            {this.renderList('Power')}
+            {this.renderList('Bond')}
 
-                        {trait.uses !== 999 && <p>Uses: {trait.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))}
-
-              <Divider style={{ marginBottom: "0px" }}>
-                Bonds/Territories
-              </Divider>
-              {myAssets.filter(el => (el.type === 'Bond' || el.type === 'Territory') && el.status.hidden !== true).map((bond, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {bond.uses > 0 && (
-                    <React.Fragment>
-                      <Affix>
-                        {bond.status.lendable && bond.status.lent && this.rednerHolder(bond)}
-                        {bond.status.lendable && !bond.status.lent && <Tag color="green">Ready</Tag>}
-                        {bond.status.lent && this.findOwner(bond._id)}
-                      </Affix>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={bond.name + ' - ( ' + bond.level + ' )'}
-                        bordered
-                        collapsible
-                      >
-                        <p>{bond.description}</p>
-                        <FlexboxGrid.Item
-                            style={{ textAlign: "center" }}
-                            colspan={4}
-                          >
-                            {bond.status.lendable && !bond.status.lent && (
-                              <Button
-                                onClick={() => this.openLend(bond)}
-                                appearance="ghost"
-                                size="sm"
-                                disabled={bond.status.used}
-                              >
-                                Lend
-                              </Button>
-                            )}
-                            {bond.status.lendable && bond.status.lent && (
-                              <Button
-                                onClick={() => this.openUnlend(bond)}
-                                appearance="ghost"
-                                size="sm"
-                              >
-                                Un-Lend
-                              </Button>
-                            )}
-                          </FlexboxGrid.Item>
-                        {bond.uses !== 999 && <p>Uses: {bond.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))}
-
-              <Divider style={{ marginBottom: "0px" }}>Powers</Divider>
-              {myAssets.filter(el => el.type === 'Power' && el.status.hidden !== true).map((power, index) => (
-                <div key={index} style={{ paddingTop: "10px" }}>
-                  {power.uses >= 0 && ( // change this back to > 0
-                    <React.Fragment>
-                      <Panel
-                        style={{ backgroundColor: "#1a1d24" }}
-                        shaded
-                        header={power.name}
-                        bordered
-                        collapsible
-                      >
-                        <p>{power.description}</p>
-
-                        {power.uses !== 999 && <p>Uses: {power.uses}</p>}
-                      </Panel>
-                    </React.Fragment>
-                  )}
-                </div>
-              ))}
 
             </Col>
           </Row>
@@ -341,10 +210,59 @@ class MyCharacter extends Component {
 					{this.renderLendation()}
 				</Drawer.Body>
 			</Drawer>
-
+      <AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>		
       </Content>
     );
   }
+
+  renderList = (type) => {
+    return (
+      <div>
+        <h5 style={{ backgroundColor: '#746d75' }}>{type}s</h5>
+          <List autoScroll hover size="md" style={{ scrollbarWidth: 'none', overflow: 'auto', borderLeft: '1px solid rgba(255, 255, 255, 0.12)'}}>
+            {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).map((asset, index) => (
+              <List.Item style={{ textAlign: "center", cursor: 'pointer' }} onClick={() => this.openInfo(asset)}>
+                {asset.status.lendable && <FlexboxGrid>
+                <Affix>
+                  {asset.status.lent && this.rednerHolder(asset)}
+                  {!asset.status.lent && <Tag color="green">Ready</Tag>}
+                  {asset.status.lent && this.findOwner(asset._id)}
+                </Affix>
+                  <FlexboxGrid.Item colspan={20}>
+                    <p>{asset.description}</p>
+                  </FlexboxGrid.Item>
+                  <FlexboxGrid.Item style={{ textAlign: "center" }} colspan={4}>
+                    {!asset.status.lent && (
+                      <Button
+                        onClick={() => this.openLend(asset)}
+                        appearance="ghost"
+                        size="sm"
+                        disabled={asset.status.used}
+                      >
+                        Lend
+                      </Button>
+                    )}
+                    {asset.status.lent && (
+                      <Button
+                        onClick={() => this.openUnlend(asset)}
+                        appearance="ghost"
+                        size="sm"
+                      >
+                        Un-Lend
+                      </Button>
+                    )}
+                  </FlexboxGrid.Item>
+                </FlexboxGrid>}
+                {!asset.status.lendable && <div>
+                  <b>{asset.description}</b>
+                  </div>}
+                {asset.uses !== 999 && <p>Uses: {asset.uses}</p>}
+              </List.Item>
+            ))} 
+            </List>	
+      </div>
+    )
+  };
 
   rednerHolder = (asset) => {
     let holder = this.props.characters.find((el) =>
@@ -381,7 +299,7 @@ class MyCharacter extends Component {
           <Divider
             style={{ textAlign: "center", fontWeight: "bolder", fontSize: 20 }}
           >
-            {target.characterName}, {target.tag}
+            {target.characterName}
           </Divider>
           <p>{target.bio}</p>
           <Divider></Divider>
@@ -454,7 +372,7 @@ class MyCharacter extends Component {
       characterName: char.characterName,
       email: char.email,
       worldAnvil: char.worldAnvil,
-      tag: char.tag,
+      tag: char.tags,
       timeZone: char.timeZone,
       playerName: char.playerName,
       bio: char.bio,
@@ -473,7 +391,7 @@ const mapStateToProps = (state) => ({
   assets: state.assets.list,
   characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
-  getMyAssets: getMyAssets(state),
+  myAssets: getMyAssets(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -29,6 +29,8 @@ import Registration from './components/Control/Registration';
 import NotFound from './components/Navigation/NotFound';
 import Bitsy from './components/Navigation/Bitsy';
 import myCharacter from './components/MyCharacters/myCharacter';
+import Down from './components/Navigation/Down';
+import Leaderboard from './components/Control/Leaderboard';
 
 // React App Component
 initUpdates()
@@ -65,17 +67,19 @@ const App = (props) => {
     loadGamestate();
 
     socket.on('alert', (data) => {
-      switch(data.type) {
-        case 'error': 
-          // console.log(data.message);
-          Alert.error(data.message, 6000);
-          break;
-        case 'success':
-          Alert.success(data.message, 6000);
-          break;
-        default:
-          Alert.info(data.message, 6000);
-        }
+      if (data) {
+        switch(data.type) {
+          case 'error': 
+            // console.log(data.message);
+            Alert.error(data.message, 6000);
+            break;
+          case 'success':
+            Alert.success(data.message, 6000);
+            break;
+          default:
+            Alert.info(data.message, 6000);
+          }        
+      }
     })
   }, [loadChar, loadAssets, loadGamestate, loadLocations])
 
@@ -114,6 +118,9 @@ const App = (props) => {
         <Route exact path='/control' render={(props) => (
           <ControlTerminal {...props} />
         )} />
+        <Route exact path='/leaderboard' render={(props) => (
+          <Leaderboard {...props} />
+        )} />
         <Route exact path='/404' render={(props) => (
           <NotFound {...props} />
         )} />
@@ -123,8 +130,8 @@ const App = (props) => {
         <Route exact path='/registration' render={(props) => (
           <Registration {...props} />
         )} />
-        <Route exact path='/map' render={(props) => (
-          <MapContainer {...props} />
+        <Route exact path='/down' render={(props) => (
+          <Down {...props}/>
         )} />
         <Route exact path='/bitsy' render={(props) => (
           <Bitsy {...props} />

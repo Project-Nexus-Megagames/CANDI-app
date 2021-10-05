@@ -84,18 +84,9 @@ const initUpdates = () => {
         localStorage.removeItem(data);
     });
 
-/*	socket.on('updateCharacters', (data) => { store.dispatch(charactersReceived(data)) });
-	socket.on('updateCharacter', (data) => { store.dispatch(characterUpdated(data)) });
-
-
-    socket.on('updateActions', (data) => { store.dispatch(playerActionsReceived(data)) });
-    socket.on('updateAction', (data) => { store.dispatch(playerActionUpdated(data)) });
-    socket.on('actionCreated', (data) => { store.dispatch(actionAdded(data)) });
-    socket.on('actionDeleted', (data) => { store.dispatch(actionDeleted(data)) });
-    
-    socket.on('updateGamestate', (data) => { store.dispatch(gamestateReceived(data)) });
-    socket.on('updateAssets', (data) => { store.dispatch(assetsReceived(data)) });
-    */
+    socket.on('errorUnload', (data) => { 
+        console.log('errorUnload');
+    });
 }
 
 

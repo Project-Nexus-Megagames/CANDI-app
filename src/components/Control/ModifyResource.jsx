@@ -13,22 +13,16 @@ class ModifyResource extends Component {
 		id: '',
 		currentOwner: '',
 		level: '',
+		type: '',
 		selected: false,
 		loading: false
 	}
 
-	// componentDidMount = () => {
-	// 	const stateReplace = JSON.parse(localStorage.getItem('modifyResourceState'));
-	// 	console.dir(stateReplace);
-	// 	if (stateReplace) this.setState(stateReplace); 
-	// }
-
-	// componentDidUpdate = (prevProps, prevState) => {
-	// 	if (this.state !== prevState) {
-	// 		localStorage.setItem('modifyResourceState', JSON.stringify(this.state));
-	// 		console.log(localStorage);
-	// 	};
-	// };
+	componentDidMount = () => {
+		if (this.props.bond) {
+			this.handleChage(this.props.bond._id)
+		}
+	}
 		
 	assetModify = async () => {
 		this.props.assetDispatched();
@@ -71,13 +65,14 @@ class ModifyResource extends Component {
 	handleChage = (event) => {
 		if (event) {
 			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, level: selected.level, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden })			
+			this.setState({ selected: event, name: selected.name, description: selected.description, level: selected.level, type: selected.type, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden })			
 		}
 		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
 	}
 
 	handleDelete = async () => {
 		socket.emit('assetRequest', 'delete', { id: this.state.selected }); // new Socket event	
+		this.props.closeModal();
 	}
 
 	renderAss = () => {
@@ -92,8 +87,10 @@ class ModifyResource extends Component {
 					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
 					Owner (Match Character's name exactly):
 					<textarea value={this.state.owner} className='textStyle' onChange={(event)=> this.setState({ owner: event.target.value })}></textarea>	
-					Bond Level
-					<InputPicker labelKey='label' valueKey='value' data={pickerData} defaultValue={this.state.level} style={{ width: '100%' }} onChange={(event)=> this.setState({level: event})}/>
+					{this.state.type === 'GodBond' && <div>
+						Bond Level
+						<InputPicker labelKey='label' valueKey='value' data={godPickerData} defaultValue={this.state.level} style={{ width: '100%' }} onChange={(event)=> this.setState({level: event})}/>						
+					</div>}
 					<Divider>Statuses</Divider>
 					<Toggle checked={this.state.used} onChange={()=> this.setState({ used: !this.state.used })} checkedChildren="Used" unCheckedChildren="Un-used"/>
 					<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="hidden" unCheckedChildren="Un-hidden"/>
@@ -109,31 +106,54 @@ class ModifyResource extends Component {
 	}
 }
 
-const pickerData = [
-	{
-		label: 'Loathing',
-		value: 'Loathing'
-	},
-	{
-		label: 'Unfriendly',
-		value: 'Unfriendly'
-	},
+const godPickerData = [
 	{
 		label: 'Neutral',
-		value: 'Neutral'
+		value: 'Neutral',
 	},
 	{
-		label: 'Warm',
-		value: 'Warm'
+		label: 'Preferred',
+		value: 'Preferred'
 	},
 	{
-		label: 'Friendly',
-		value: 'Friendly'
+		label: 'Favoured',
+		value: 'Favoured'
+	},
+    {
+		label: 'Blessed',
+		value: 'Blessed'
+	},
+]
+
+const pickerData = [
+	{
+		label: 'Asset',
+		value: 'Asset'
 	},
 	{
-		label: 'Bonded',
-		value: 'Bonded'
+		label: 'Trait',
+		value: 'Trait'
 	},
+	{
+		label: 'Wealth',
+		value: 'Wealth'
+	},
+	{
+		label: 'GodBond',
+		value: 'GodBond'
+	},
+	{
+		label: 'MortalBond',
+		value: 'MortalBond'
+	},
+	{
+		label: 'Territory',
+		value: 'Territory'
+	},
+	{
+		label: 'Power',
+		value: 'Power'
+	}
 ]
 
 const mapStateToProps = (state) => ({

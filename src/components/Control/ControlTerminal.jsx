@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag, Toggle } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
-import { getBadCharacters, getMyCharacter } from '../../redux/entities/characters';
+import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters, getPlayerCharacters } from '../../redux/entities/characters';
 import { draftActions } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
-import { assetsRequested } from '../../redux/entities/assets';
+import { assetsRequested, getGodBonds } from '../../redux/entities/assets';
 import NewCharacter from './NewCharacter';
 import EditTerritory from './EditTerritory';
 import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
+import RelationshipTable from './RelationshipTable';
 
 const { Column, HeaderCell, Cell } = Table;
 class ControlTerminal extends Component {
@@ -38,8 +39,10 @@ class ControlTerminal extends Component {
 		uses: 0, 
 		used: false,
 		loading: false,
+		god: null,
+		bonder: null,
+		godData: true,
 
-		tableData: []
 	}
 
 	componentDidMount = async () => {
@@ -48,8 +51,6 @@ class ControlTerminal extends Component {
 			status: this.props.gamestate.status,
 			endTime: this.props.gamestate.endTime
 		}
-		const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
-		await this.compileTable(copy);
 
 		let drafts = 0;
 		let awaiting= 0;
@@ -78,46 +79,8 @@ class ControlTerminal extends Component {
 				round: this.props.gamestate.round, 
 				status: this.props.gamestate.status
 			}
-			let drafts = 0;
-			let awaiting= 0;
-			let ready = 0;
-			const copy = this.props.actions.filter(action => action.round === this.props.gamestate.round);
-			await this.compileTable(copy);
-
-			for (const action of copy) {
-				switch (action.status) {
-					case "Draft":
-						drafts++;
-						break;
-					case "Ready":
-						ready++;
-						break;
-					case "Awaiting":
-						awaiting++;
-						break;
-					default:
-						break;
-				}
-			}
-			this.setState({ formValue, drafts, awaiting, ready, endTime: this.props.gamestate.endTime })			
+			this.setState({ formValue, endTime: this.props.gamestate.endTime })			
 		}
-	}
-
-	compileTable = async (actions) => {
-		let tableData = []
-		for (const action of actions.filter(el => el.type !== 'Project')) {
-			const data = {
-				control: action.creator.control,
-				character: action.creator,
-				intent: action.intent,
-				status: action.status,
-				dieResult: action.dieResult,
-				controlAssigned: action.controlAssigned,
-				news: action.newsworthy,
-			}
-			tableData.push(data);
-		}
-		this.setState({ tableData })
 	}
 
 	render() { 
@@ -130,14 +93,15 @@ class ControlTerminal extends Component {
 				<NavigationBar />
 				<div style={{height: '10vh'}} >
 					<Divider>Scott's Message of the Day:</Divider>
-					<div>
+					Well this is just a hot mess on the back end. Sorry to Control, but I do not have enough love to give to both the Front end and the Control Terminal
+					{this.props.badCharacters.length > 0 && <div>
 						<h5>There are {this.props.badCharacters.length} characters with bad email/pronouns</h5>
 						{this.props.badCharacters.map((bad, index) => (
 							<Tag color='red'>{bad.characterName}</Tag>
 						))}
-					</div>					
+					</div>}					
 				</div>
-				<div style={{height: '15vh'}}>
+				{/* <div style={{height: '15vh'}}>
 				<FlexboxGrid>
 					<FlexboxGrid.Item colspan={8}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Drafts'> {this.state.drafts} </Panel>
@@ -149,7 +113,7 @@ class ControlTerminal extends Component {
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Ready for Publishing'> {this.state.ready} </Panel>			
 					</FlexboxGrid.Item>					
 				</FlexboxGrid>					
-				</div>
+				</div> */}
 				<div  style={{height: '15vh'}}>
 					<Divider>Editing</Divider>
 					<Panel>
@@ -159,49 +123,15 @@ class ControlTerminal extends Component {
 							<Button appearance="ghost" disabled={this.isControl()} onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
 							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
 							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
-							<Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button>
-							<Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button>
+							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
+							{/* <Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button> */}
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
 							<Button color='violet' appearance="ghost" onClick={() => this.props.history.push('/registration')}>Registration</Button>
 						</ButtonGroup>
-					</Panel>
-					<Divider>Round {this.props.gamestate.round}</Divider>					
+					</Panel>			
 				</div>
-
-				<Panel style={{height: '46vh'}}>
-					<Table  virtualized data={this.state.tableData} >
-
-						<Column flexGrow={2}>
-						<HeaderCell>Character</HeaderCell>
-						<Cell dataKey="character" />
-						</Column>
-
-						<Column align="left" flexGrow={3}>
-						<HeaderCell>Description</HeaderCell>
-						<Cell  dataKey="intent" />
-						</Column>
-
-						<Column align="left" flexGrow={2}>
-						<HeaderCell>Die Result</HeaderCell>
-						<Cell  dataKey="dieResult" />
-						</Column>
-
-						<Column flexGrow={1}>
-						<HeaderCell>Control Assigned</HeaderCell>
-						<Cell dataKey="controlAssigned" />
-						</Column>			
-
-						<Column flexGrow={1}>
-						<HeaderCell>Status</HeaderCell>
-						<Cell dataKey="status" />
-						</Column>	
-
-						<Column flexGrow={1}>
-						<HeaderCell>News</HeaderCell>
-						<Cell dataKey="newsworthy" />
-						</Column>	
-					</Table>
-				</Panel>
+        <Toggle onChange={()=> this.setState({ godData: !this.state.godData })} checkedChildren="Mortal" unCheckedChildren="Gods"/>
+				<RelationshipTable godData={this.state.godData} data={this.state.godData ? this.props.godCharacters : this.props.nonPlayerCharacters}  />
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="vertical" onChange={formValue => {this.setState({ formValue });}}>
@@ -260,8 +190,7 @@ class ControlTerminal extends Component {
 							This warning Modal Can't stop me if I don't read it!
             </Button>
 		</Modal.Footer>
-				</Modal> */}
-			
+				</Modal> */}			
 				<Modal backdrop="static" size='sm' show={this.state.warning2Modal} onHide={() => this.setState({ warning2Modal: false })}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
@@ -296,8 +225,8 @@ class ControlTerminal extends Component {
 				<NewCharacter show={this.state.newCharacter} 
 					closeModal={() => this.setState({ newCharacter: false })}/>
 
-				<EditTerritory show={this.state.editTerritory} 
-					closeModal={() => this.setState({ editTerritory: false })}/>
+				{/* <EditTerritory show={this.state.editTerritory} 
+					closeModal={() => this.setState({ editTerritory: false })}/> */}
 
 				<NewProject show={this.state.projectModal} 
 					closeModal={() => this.setState({ projectModal: false })}/>
@@ -341,6 +270,8 @@ class ControlTerminal extends Component {
 	filterAssets () {
 		const filtered = this.props.assets.filter(el => el.modal !== 'Wealth')
 	}
+
+
 	
 }
 
@@ -385,7 +316,9 @@ const mapStateToProps = (state) => ({
 	actions: state.actions.list,
 	draftActions: draftActions(state),
 	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined,
-	badCharacters: getBadCharacters(state)
+	badCharacters: getBadCharacters(state),
+	nonPlayerCharacters: getNonPlayerCharacters(state),    
+	godCharacters: getGods(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

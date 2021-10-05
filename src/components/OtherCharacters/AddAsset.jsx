@@ -8,7 +8,9 @@ class AddAsset extends Component {
 			name: '',
 			description: '',
 			uses: 0,
-			type: ''
+			level: '',
+			dice: 'd6',
+			type: this.props.god ? 'GodBond' : ''	
 		},
 		hidden: true,
 		id: '',
@@ -19,6 +21,14 @@ class AddAsset extends Component {
 		const char = this.props.character;
 		this.setState({ id: char._id });
 
+		if (this.props.god) {
+			console.log('geee wizz')
+			let formValue = {...this.state.formValue}
+			formValue.type = 'Wealth';
+			this.setState({formValue});
+			console.log(this.state.formValue)
+		}
+
 		const stateReplace = JSON.parse(localStorage.getItem('addAssetState'));
 		if (stateReplace) this.setState(stateReplace); 
 	}
@@ -28,7 +38,7 @@ class AddAsset extends Component {
 			localStorage.setItem('addAssetState', JSON.stringify(this.state));
 		};
 		// Typical usage (don't forget to compare props):
-		if (this.props.characters !== prevProps.characters) {
+		if (this.props !== prevProps) {
 			this.setState({ id: this.props.character._id });
 		}
 	}
@@ -39,10 +49,13 @@ class AddAsset extends Component {
 		const formValue = {
 			asset: {
 				name: this.state.formValue.name,
+				with: this.props.god ? this.props.god._id : '',
 				description: this.state.formValue.description,	
 				type: this.state.formValue.type,
 				uses: this.state.formValue.uses,
+				level: this.state.formValue.level,
 				owner: this.props.character.characterName,
+				ownerCharacter: this.props.character._id,
 				status: {
 					hidden: this.state.hidden							
 				}
@@ -72,12 +85,25 @@ class AddAsset extends Component {
 									<ControlLabel>Asset Name </ControlLabel>
 									<FormControl name="name" componentClass="textarea"/>
 							</FormGroup>
+							<FormGroup>
+									<ControlLabel>Dice</ControlLabel>
+									<FormControl name="dice" componentClass="textarea"/>
+								</FormGroup>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={6}>
 								<FormGroup>
 									<ControlLabel>Hidden/Revealed</ControlLabel>
 									<FormControl accepter={this.myToggle}/>
-							</FormGroup>
+								</FormGroup>
+
+								{this.state.formValue.type === 'GodBond' && this.props.god && <FormGroup>
+									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
+									<FormControl name="level" data={godPickerData} accepter={InputPicker} />
+								</FormGroup>}
+								{this.state.formValue.type === 'MortalBond' && this.props.god && <FormGroup>
+									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
+									<FormControl name="level" data={mortalPickerData} accepter={InputPicker} />
+								</FormGroup>}
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 						<FormGroup>
@@ -94,7 +120,7 @@ class AddAsset extends Component {
 							<FlexboxGrid.Item colspan={12}>
 								<FormGroup>
 										<ControlLabel>Trait/Asset </ControlLabel>
-										<FormControl name='type' accepter={InputPicker} data={pickerData}/>
+										<FormControl name='type'  accepter={InputPicker} data={this.props.god ? pickerData : pickerDataNoGod}/>
 								</FormGroup>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
@@ -123,6 +149,44 @@ class AddAsset extends Component {
 	
 }
 
+const godPickerData = [
+	{
+		label: 'Neutral',
+		value: 'Neutral',
+	},
+	{
+		label: 'Preferred',
+		value: 'Preferred'
+	},
+	{
+		label: 'Favoured',
+		value: 'Favoured'
+	},
+  {
+		label: 'Blessed',
+		value: 'Blessed'
+	},
+]
+
+const mortalPickerData = [
+	{
+		label: 'Neutral',
+		value: 'Neutral',
+	},
+	{
+		label: 'Warm',
+		value: 'Warm'
+	},
+	{
+		label: 'Friendly',
+		value: 'Friendly'
+	},
+  {
+		label: 'Bonded',
+		value: 'Bonded'
+	},
+]
+
 const pickerData = [
 	{
 		label: 'Asset',
@@ -132,22 +196,40 @@ const pickerData = [
 		label: 'Trait',
 		value: 'Trait'
 	},
+	// {
+	// 	label: 'Wealth',
+	// 	value: 'Wealth'
+	// },
 	{
-		label: 'Wealth',
-		value: 'Wealth'
+		label: 'GodBond',
+		value: 'GodBond'
 	},
 	{
-		label: 'Bond',
-		value: 'Bond'
+		label: 'MortalBond',
+		value: 'MortalBond'
 	},
-	{
-		label: 'Territory',
-		value: 'Territory'
-	},
+	// {
+	// 	label: 'Territory',
+	// 	value: 'Territory'
+	// },
 	{
 		label: 'Power',
 		value: 'Power'
 	}
 ]
  
+const pickerDataNoGod = [
+	{
+		label: 'Asset',
+		value: 'Asset'
+	},
+	{
+		label: 'Trait',
+		value: 'Trait'
+	},
+	{
+		label: 'Power',
+		value: 'Power'
+	}
+]
 export default AddAsset;

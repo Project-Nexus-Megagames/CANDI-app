@@ -1,236 +1,386 @@
-import React, { Component } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Icon, Tag, Divider, Loader} from 'rsuite';
+import React, { useEffect } from 'react';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, Table, Divider} from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
-import socket from '../../socket';
+import socket from '../../socket'; 
+import NewCharacter from '../Control/NewCharacter'; 
 
-class OtherCharacters extends Component {
-	state = { 
-		selected: null,
-		catagories: [],
-		filtered: [],
-		edit: false,
-		add: false,
-		memory: false,
-	}
+const { HeaderCell, Cell, Column, } = Table;
 
-	listStyle (item) {
-		if (item === this.state.selected) {
+const  OtherCharacters = (props) => {
+	const [selected, setSelected] = React.useState(null);
+	const [filter, setFilter] = React.useState('');
+	const [tagFilter, setTagFilter] = React.useState([]);
+	const [filteredCharacters, setFilteredCharacters] = React.useState(props.characters);
+	const [edit, setEdit] = React.useState(false);
+	const [add, setAdd] = React.useState(false);
+	const [showNew, setShowNew] = React.useState(false);
+
+	const listStyle = (item) => {
+		if (item === selected) {
 			return ({cursor: 'pointer', backgroundColor: "#212429"})
 		}
 		else return ({cursor: 'pointer'})
 	}
 
-	copyToClipboard (email, controlEmail) {
+	const copyToClipboard = (character) => {
+		// console.log(character)
+		let board = `${character.email}`;
 
-		navigator.clipboard.writeText(`${email} ${controlEmail}`);
-	}
-
-	openAnvil (url) {
-		const win = window.open(url, '_blank');
-		win.focus();
-	}
-	
-	componentDidMount = () => {
-		this.setState({ selected: null, filtered: this.props.characters });
-		this.createListCatagories(this.props.characters);
-	}
-
-	closeModal = () => {
-		this.setState({ edit: false, add: false, memory: false });
-		this.filter('')
-	}
-
-	componentDidUpdate(prevProps) {
-		// Typical usage (don't forget to compare props):
-		if (this.props.characters !== prevProps.characters) {
-			this.setState({ filtered: this.props.characters });
-			this.createListCatagories(this.props.characters);
+		for (const controller of character.control) {
+			const character = props.characters.find(el => el.characterName === controller)
+			character ? board = board.concat(`; ${character.email}`) : console.log(controller);
 		}
+
+		navigator.clipboard.writeText(board);
+		Alert.success('Email Copied!', 6000);
 	}
 
-	render() { 
-		if (!this.props.login) {
-			this.props.history.push('/');
-			return (<Loader inverse center content="doot..." />)
-		};
-		return ( 
-			<React.Fragment>
-			<NavigationBar/>
-			<Container style={{ height: '94vh'}}>
-			<Sidebar style={{backgroundColor: "black"}}>
-				<PanelGroup>					
-					<Panel style={{ height: '8vh', backgroundColor: "#000101"}}>
-						<Input onChange={(value)=> this.filter(value)} placeholder="Search by Name or Email"></Input>
-					</Panel>
-					<Panel bodyFill style={{height: '86vh', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
-					{this.state.catagories.map((catagory, index) => (
-						<React.Fragment key={index}>
-						<h6 style={{backgroundColor: "#61342e"}}>{catagory}</h6>	
-							<List hover size="sm" key={index}>
-								{this.state.filtered.filter(el => el.tag === catagory).sort((a, b) => { // sort the catagories alphabetically 
-									if(a.charName < b.charName) { return -1; }
-									if(a.charName > b.charName) { return 1; }
-									return 0;
-								}).map((character, index) => (
-									<List.Item key={index} index={index} onClick={() => this.setState({ selected: character })} style={this.listStyle(character)}>
-										<FlexboxGrid>
-											<FlexboxGrid.Item colspan={5} style={styleCenter}>
-												<Avatar src={this.props.duck ? `/duck/${character.characterName}.jpg` : `/images/${character.characterName}.jpg`} alt='?' circle/>
-											</FlexboxGrid.Item>
-											<FlexboxGrid.Item colspan={16} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
-												<b style={titleStyle}>{character.characterName}</b>
-												<b style={slimText}>{character.email}</b>
-											</FlexboxGrid.Item>
-										</FlexboxGrid>
-									</List.Item>
-								))}
-							</List>												
-						</React.Fragment>	
-					))}			
-					</Panel>							
-				</PanelGroup>
-			</Sidebar>
-			{this.state.selected &&
-				<Content style={{overflow: 'auto', height: 'auto'}}>
-					<FlexboxGrid >
-						<FlexboxGrid.Item colspan={3} >
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={14} >
-							<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
-								<h3 style={{textAlign: "center"}}> {this.state.selected.characterName}</h3>		
-								{this.state.selected.characterActualName !== 'None' && <h5 style={{textAlign: "center"}}> {this.state.selected.characterActualName}</h5>		}
-								<div>
-									<h6><IconButton placement="right" onClick={()=> this.openAnvil(this.state.selected.worldAnvil)} icon={<Icon icon="link"/>} appearance="primary">World Anvil Link</IconButton></h6>
-								</div>
-								<div>
-									Email
-								</div>
-									<FlexboxGrid>
-										<FlexboxGrid.Item colspan={22}>
-											<b>{this.state.selected.email}</b> 
-										</FlexboxGrid.Item>
-										{/*<FlexboxGrid.Item >
-											<IconButton icon={<Icon icon="envelope"/>} color="blue" circle />										
-										</FlexboxGrid.Item>*/}
-									</FlexboxGrid>
-									<Button appearance='ghost' block onClick={()=> this.copyToClipboard(this.state.selected.email, this.state.selected.controlEmail)}>Copy email to clipboard</Button>
-								<FlexboxGrid style={{paddingTop: '5px'}}>
-									<FlexboxGrid.Item colspan={12}>
-										<p>
-											Faction: <b>{this.state.selected.tag}</b>			
-										</p>
-										<p>
-											Character Pronouns: <b>{this.state.selected.pronouns}</b>			
-										</p>
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item colspan={12}>
-										<p>
-											Time Zone: <b>{this.state.selected.timeZone}</b>
-										</p>		
-										<p>
-											Controller: <b>{this.state.selected.control}</b>
-										</p>									
-									</FlexboxGrid.Item>
-								</FlexboxGrid>
-								<br></br>
-								<p style={{color: 'rgb(153, 153, 153)'}}>Bio:</p>
-								<p>{this.state.selected.bio}</p>
-								<Divider>{this.makeButton()}</Divider>
-										<FlexboxGrid>
-											<FlexboxGrid.Item colspan={12}>
-												<img src={this.props.duck? `/duck/${this.state.selected.characterName}.jpg` : `/images/${this.state.selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" />
-											</FlexboxGrid.Item>
-											<FlexboxGrid.Item colspan={12} style={{ textAlign: 'center' }}>
-												<h4>Supporters</h4>
-											<List size="md" >
-												{this.state.selected.supporters.map((supporter, index) => (
-													<List.Item key={index} index={index} size='md'>
-														<div>{supporter}</div>
-													</List.Item>
-												))}
-											</List>
-											</FlexboxGrid.Item>
-										</FlexboxGrid>
-							</Panel>
-						</FlexboxGrid.Item>
-						<FlexboxGrid.Item colspan={1} />
-				<FlexboxGrid.Item colspan={5}>
-					{this.props.user.roles.some(el=> el === 'Control') && <Panel header={"Control Panel"} style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-						<ButtonGroup style={{marginTop: '5px', }} >
-							<Button appearance={"ghost"} onClick={() => this.setState({ edit: true })}>Modify</Button>
-							<Button appearance={"ghost"} onClick={() => this.setState({ add: true })}>+ Resources</Button>
-						</ButtonGroup>
-							<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}} header="Resources" >
-						<List size="md" bordered>
-							{this.state.selected.assets.map((asset, index) => (
-								<List.Item key={index} index={index} size='md'>
-									<div>{asset.name}</div>
-								</List.Item>
-							))}
-						</List>
-					</Panel>
-					<h5>Effort Left: {this.state.selected.effort} </h5>
-					</Panel>}
-				</FlexboxGrid.Item>
-					</FlexboxGrid>	
-				<ModifyCharacter
-					show={this.state.edit}
-					selected={this.state.selected}
-					closeModal={()=> this.setState({ edit: false })}
-					// player={this.props.player????}
-				/>
-				<AddAsset 
-					show={this.state.add}
-					character={this.state.selected}
-					closeModal={() => this.setState({ add: false })}
-				/>
-			</Content>		
-			}
-		</Container>
-		</React.Fragment>
-		);
-	}
-
-	makeButton = () => {
-		if (this.state.selected.supporters.some(el => el === this.props.myCharacter.characterName)) {
-			return (<Button onClick={()=> this.lendSupp()} color='red'>Take Back Support!</Button>)
+	const openAnvil = (character) => {
+		if (character.worldAnvil) {
+			let url = character.worldAnvil;
+			const win = window.open(url, '_blank');
+			win.focus();
 		}
 		else {
-			return (<Button onClick={()=> this.lendSupp()} appearance="primary">Lend Support!</Button>)	
+			let url = 'https://godswars.miraheze.org/wiki/'
+			let temp = url.concat(character.characterName.split(' ').join('_'));		
+			const win = window.open(temp, '_blank');
+			win.focus();	
+			console.log(temp)
 		}
 	}
 
-	lendSupp = async () => {
-		socket.emit('characterRequest', 'support', { id: this.state.selected._id, supporter: this.props.myCharacter.characterName }); // new Socket event
-		this.setState({ selected: '' });
+	
+	useEffect(() => {
+		if (props.characters && selected) {
+			const updated = props.characters.find(el => el._id === selected._id);
+			setSelected(updated);
+			filterThis('');
+		}
+	}, [props.characters]);
+
+	
+	const makeButton = () => {
+		if (selected.supporters.some(el => el === props.myCharacter.characterName)) {
+			return (<Button size='xs' onClick={()=> lendSupp()} color='red'>Take Back Support!</Button>)
+		}
+		else {
+			return (<Button size='xs' onClick={()=> lendSupp()} appearance="primary">Lend Support!</Button>)	
+		}
+	}
+
+	const lendSupp = async () => {
+		socket.emit('characterRequest', 'support', { id: selected._id, supporter: props.myCharacter.characterName }); // new Socket event
 	}
 	
-	createListCatagories (characters) {
-		const catagories = [];
-		for (const character of characters) {
-			if (!catagories.some(el => el === character.tag) && character.tag !== 'NPC') catagories.push(character.tag);
-		}
-		catagories.sort((a, b) => { // sort the catagories alphabetically 
-				if(a < b) { return -1; }
-				if(a > b) { return 1; }
-				return 0;
-			});
-		catagories.push('NPC');
-		this.setState({ catagories });
-	}
-
-	filter = (fil) => {
-		const filtered = this.props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
+	const filterThis = (fil) => {
+		const filtered = props.characters.filter(char => char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
 		char.email.toLowerCase().includes(fil.toLowerCase()) || 
-		char.characterActualName.toLowerCase().includes(fil.toLowerCase()) || 
-		char.tag.toLowerCase().includes(fil.toLowerCase()));
-		this.setState({ filtered });
-		this.createListCatagories(filtered);
+		
+		char.tags.some(el => el.toLowerCase().includes(fil.toLowerCase())));
+		setFilteredCharacters(filtered);
 	}
+	
+	if (!props.login) {
+		props.history.push('/');
+		return (<Loader inverse center content="doot..." />)
+	}
+	else return ( 
+		<React.Fragment>
+		<NavigationBar/>
+		<Container style={{ height: 'calc(100vh - 50px)'}}>
+		<Sidebar className="side-bar">
+			<PanelGroup>					
+				<div style={{ height: '40px', marginTop: '10px', backgroundColor: "#000101"}}>
+					<InputGroup>
+						<Input size='xs' onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
+						{props.myCharacter.tags.some(el=> el === 'Control') && <InputGroup.Button color='green' onClick={() => setShowNew(true)}>
+      			  <Icon  icon="plus" />
+      			</InputGroup.Button>}
+					</InputGroup>
+				</div>
+				<Panel bodyFill style={{ height: 'calc(100vh - 100px)', borderRadius: '0px', overflow: 'auto', scrollbarWidth: 'none', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>					
+					<List hover size="sm">
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'God')).map((character, index) => (
+							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={5} style={styleCenter}>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<b style={titleStyle}>{character.characterName}
+											<Tag color='green' style={{ marginLeft: '15px' }} >God</Tag>
+										</b>
+										<b style={slimText}>{character.email}</b>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'PC')).map((character, index) => (
+							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={5} style={styleCenter}>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<b style={titleStyle}>{character.characterName}
+											<Tag color='cyan' style={{ marginLeft: '15px' }} >PC</Tag>
+										</b>	
+										<b style={slimText}>{character.email}</b>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+
+
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'NPC')).map((character, index) => (
+							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={5} style={styleCenter}>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<b style={titleStyle}>{character.characterName}
+											<Tag color='blue' style={{ marginLeft: '15px' }} >NPC</Tag>
+										</b>	
+										<b style={slimText}>{character.email}</b>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+
+						{filteredCharacters.filter(el => el.tags.some(el => el === 'Control')).map((character, index) => (
+							<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+								<FlexboxGrid>
+									<FlexboxGrid.Item colspan={5} style={styleCenter}>
+										<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+										<b style={titleStyle}>{character.characterName}
+											{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px' }} >Control</Tag>}
+										</b>	
+										<b style={slimText}>{character.email}</b>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							</List.Item>
+						))}
+
+						{props.myCharacter.tags.some(el=> el === 'Control') && <div>
+							<h5>Control Only</h5>
+							{filteredCharacters.filter(el => !el.tags.some(el2 => (el2 === 'Control' || el2 === 'NPC' || el2 === 'PC' || el2 === 'God'))).map((character, index) => (
+								<List.Item key={index} index={index} onClick={() => setSelected(character)} style={listStyle(character)}>
+									<FlexboxGrid>
+										<FlexboxGrid.Item colspan={5} style={styleCenter}>
+											<Avatar src={character.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt='?' circle/>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+											<b style={titleStyle}>{character.characterName}
+												{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px' }} >Control</Tag>}
+											</b>	
+											<b style={slimText}>{character.email}</b>
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+								</List.Item>
+							))}
+						</div>}
+
+
+					</List>												
+				</Panel>							
+			</PanelGroup>
+		</Sidebar>
+		{selected &&
+			<Content style={{overflow: 'auto', height: 'auto'}}>
+				<FlexboxGrid >
+					{/*Control Panel*/}
+					{props.myCharacter.tags.some(el=> el === 'Control') && <FlexboxGrid.Item colspan={24}>
+					<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center', height: 'auto'}}>
+					<h4>Control Panel</h4>
+					<h5>Effort Left: {selected.effort} </h5>
+					<ButtonGroup style={{marginTop: '5px', }} >
+						<Button appearance={"ghost"} onClick={() => setEdit(true)}>Modify</Button>
+						<Button appearance={"ghost"} onClick={() => setAdd(true)}>+ Resources</Button>
+					</ButtonGroup>
+
+					<Panel style={{backgroundColor: '#15181e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
+						<h5>Resources</h5>
+						<Row style={{ display: 'flex', overflow: 'auto' }}>
+						{props.assets.filter(el => el.ownerCharacter === selected._id).length === 0 && <h5>No assets assigned</h5>}
+						{props.assets.filter(el => el.ownerCharacter === selected._id).map((asset, index) => (
+							<Col md={6} sm={12}>
+								<Panel index={index} bordered>
+									<h5>{asset.name}</h5>
+									<b>{asset.type}</b>
+								</Panel>
+								</Col>
+						))}
+						</Row>
+					</Panel>
+				</Panel>
+				</FlexboxGrid.Item>}
+					<FlexboxGrid.Item colspan={24} >
+						<Panel style={{padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
+							<FlexboxGrid>
+								<FlexboxGrid.Item colspan={14} style={{ textAlign: 'center' }}>
+								<FlexboxGrid align='middle' style={{textAlign: "center"}}>
+										<FlexboxGrid.Item colspan={12}>
+											<h2>{selected.characterName}</h2>	
+										</FlexboxGrid.Item>		
+
+										<FlexboxGrid.Item colspan={12}>
+											<TagGroup>
+												{selected.tags && selected.tags.map((item, index) => (
+													<Tag index={index}>{item}</Tag>
+												))}	
+											</TagGroup>			
+										</FlexboxGrid.Item>					
+									</FlexboxGrid>
+
+									<Button appearance='ghost' block onClick={()=> copyToClipboard(selected)}>{selected.email}</Button>
+									<FlexboxGrid style={{paddingTop: '5px'}}>
+										<FlexboxGrid.Item colspan={12}>
+											<p>
+											<TagGroup>Controllers:
+												{selected.tags && selected.control.map((item, index) => (
+													<Tag index={index}>{item}</Tag>
+												))}	
+											</TagGroup> 
+											</p>
+											<p>
+												Character Pronouns: <b>{selected.pronouns}</b>			
+											</p>
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={12}>
+											<p>
+												Time Zone: <b>{selected.timeZone}</b>
+											</p>										
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+									<br></br>
+									<p style={{color: 'rgb(153, 153, 153)'}}>Bio</p>
+									<p>{selected.bio}</p>
+								</FlexboxGrid.Item>
+
+								<FlexboxGrid.Item colspan={1}/>
+
+								{/*Profile Pic*/}
+								<FlexboxGrid.Item colspan={9} style={{ cursor: 'pointer' }} onClick={() => openAnvil(selected)}> 
+									<img src={selected.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '50vh' }} />
+								</FlexboxGrid.Item>
+
+								{/*Lend Support*/}
+								{/* <FlexboxGrid.Item> 
+									<List autoScroll size="md" >
+										<h5 style={{ backgroundColor: '#15181e' }} >Supporters</h5>
+										<Button size='xs' onClick={()=> lendSupp()} appearance="primary">Toggle Support!</Button>
+										{selected.supporters.map((supporter, index) => (
+											<List.Item key={index} index={index} size='md'>
+												<div>{supporter}</div>
+											</List.Item>
+										))}
+									</List>
+								</FlexboxGrid.Item> */}
+
+							</FlexboxGrid>
+						</Panel>
+					</FlexboxGrid.Item>
+
+
+
+					{/*God's Bonds */}
+					{selected.tags.some(el => el === 'God') && <FlexboxGrid.Item colspan={24}>
+						<Divider>Total Bonds with {selected.characterName}</Divider>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Preferred'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Preferred').length}
+								</Panel>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Favoured'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Favoured').length}
+								</Panel>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Blessed'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Blessed').length}
+								</Panel>
+							</FlexboxGrid.Item>						
+						</FlexboxGrid>
+					</FlexboxGrid.Item>	}	
+
+					{/*NPC's Bonds */}
+					{selected.tags.some(el => el === 'NPC') && <FlexboxGrid.Item colspan={24}>
+						<Divider>Total Bonds with {selected.characterName}</Divider>
+						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Warm'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Warm').length}
+								</Panel>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Friendly'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Friendly').length}
+								</Panel>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={8}>
+								<Panel bordered style={{backgroundColor: '#272b34'}} header='Bonded'>
+									{props.assets.filter(el => el.with === selected._id && el.level === 'Bonded').length}
+								</Panel>
+							</FlexboxGrid.Item>						
+						</FlexboxGrid>
+					</FlexboxGrid.Item>	}	
+
+					{/* <FlexboxGrid.Item colspan={24}>
+					<Divider>Bonds</Divider>
+						<Table data={props.assets.filter(el => el.ownerCharacter === selected._id && (el.type === 'GodBond' || el.type === 'MortalBond'))}> 
+							<Column  flexGrow={2}>
+								<HeaderCell>Bond Name</HeaderCell>
+								<Cell dataKey='name' />
+							</Column>
+
+							<Column  flexGrow={2}>
+								<HeaderCell>With</HeaderCell>
+								<Cell>
+									{rowData => {
+										let thing = props.characters.find(el => el._id === rowData.with)
+										return <b>{thing.characterName}</b>
+									}}
+								</Cell>
+							</Column>
+
+							<Column  flexGrow={2}>
+								<HeaderCell>Level</HeaderCell>
+								<Cell dataKey='level' />
+							</Column>
+
+						</Table>
+					</FlexboxGrid.Item> */}
+				</FlexboxGrid>	
+				
+			<ModifyCharacter
+				show={edit}
+				selected={selected}
+				closeDrawer={()=> setEdit(false)}
+			/>
+			<AddAsset 
+				show={add}
+				character={selected}
+				closeModal={() => setAdd(false)}
+			/>
+
+		</Content>		
+		}
+	</Container>
+		<NewCharacter show={showNew} 
+			closeModal={() => setShowNew(false)}/>
+	</React.Fragment>
+	);
 }
 
 const styleCenter = {

@@ -44,6 +44,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       const index = characters.list.findIndex(el => el._id === action.payload._id);
       characters.list[index] = action.payload;
+      characters.loading = false;
     }
   }
 });
@@ -78,6 +79,28 @@ export const getBadCharacters = createSelector(
     char => char.controlEmail === '' || char.pronouns === ''
   )
 );
+
+export const getPlayerCharacters = createSelector(
+  state => state.characters.list,
+  (characters) => characters.filter(
+    char => char.tags.some(el => el === 'PC' )
+  )
+);
+
+export const getNonPlayerCharacters = createSelector(
+  state => state.characters.list,
+  (characters) => characters.filter(
+    char => char.tags.some(el => el === 'NPC' )
+  )
+);
+
+export const getGods = createSelector(
+  state => state.characters.list,
+  (characters) => characters.filter(
+    char => char.tags.some(el => el === 'God' )
+  )
+);
+
 
 // characters Loader into state
 export const loadCharacters = payload => (dispatch, getState) => {
