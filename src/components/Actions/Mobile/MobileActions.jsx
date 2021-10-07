@@ -45,7 +45,7 @@ const MobileActions = (props) => {
 	return ( 
 		<React.Fragment>
 		<NavigationBar/>
-		<Container style={{ height: '91vh',}}>
+		<Container>
 
         <Drawer
             size='xs'
@@ -79,15 +79,15 @@ const MobileActions = (props) => {
 		    		</div>			
 		    	</PanelGroup>
         </Drawer>
-				<button
-							onClick={() => setShowDrawer(!showDrawer)}
-							className="toggle-menu"
-							style={{
-								transform: `translate(${0}px, 100px)`
-							}}
-						></button> 
+					{!showDrawer && <button
+						onClick={() => setShowDrawer(!showDrawer)}
+						className="toggle-menu"
+						style={{
+							transform: `translate(${0}px, 100px)`, transition: '0.8s ease'
+						}}
+					/>}
 		{selected && selected.type === 'Action' && <MobileSelectedActions user={props.user} handleSelect={handleSelect} selected={selected}/>}	
-		{!selected && <h5>No Action selected</h5>}	
+		{!selected && <h5 style={{ marginTop: '40vh' }}>No Action selected</h5>}	
 
 		<NewAction
 			show={showNew}
