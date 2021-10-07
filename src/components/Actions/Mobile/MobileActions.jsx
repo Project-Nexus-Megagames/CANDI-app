@@ -50,14 +50,21 @@ const MobileActions = (props) => {
         <Drawer
             size='xs'
             placement={'left'}
-            style={{ width: '200px' }}
+						backdrop={false}
+						style={{ width: '200px', marginTop: '51px' }}
             show={showDrawer}
             onClose={() => console.log(!showDrawer)}>
              <PanelGroup> 					
 		    		<div style={{  height: '40px'}}>
-						
+						<button
+							onClick={() => setShowDrawer(!showDrawer)}
+							className="toggle-menu"
+							style={{
+								transform: `translate(${200}px, 100px)`
+							}}
+						></button> 
 		    			<InputGroup >
-							<IconButton onClick={() => history.push('/home')} icon={<Icon icon="arrow-left" />} appearance="subtle" color='cyan'  style={{ }}></IconButton>
+							
 		    				<Input size="sm" style={{ width: '40%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
 		    				<Whisper placement="top" trigger="hover" speaker={tooltip}>
         
@@ -72,9 +79,15 @@ const MobileActions = (props) => {
 		    		</div>			
 		    	</PanelGroup>
         </Drawer>
-
+				<button
+							onClick={() => setShowDrawer(!showDrawer)}
+							className="toggle-menu"
+							style={{
+								transform: `translate(${0}px, 100px)`
+							}}
+						></button> 
 		{selected && selected.type === 'Action' && <MobileSelectedActions user={props.user} handleSelect={handleSelect} selected={selected}/>}	
-
+		{!selected && <h5>No Action selected</h5>}	
 
 		<NewAction
 			show={showNew}

@@ -43,7 +43,6 @@ const MobileSelectedAction = (props) => {
 			case 'Submission':
 				return(
 					<div>
-						<Divider vertical/>	
 						<Submission handleSelect={props.handleSelect} index={index} sumbission={el} action={props.selected} creator={props.selected.creator}/>
 					</div>
 				)
@@ -72,7 +71,7 @@ const MobileSelectedAction = (props) => {
 			<FlexboxGrid.Item colspan={2} >
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={20} >
-            <Button onClick={() => props.handleSelect(null)}>Close</Button>
+
 			{selectedArray.map((el, index) => (
 					renderSwitch(el, index)
 			))}		
