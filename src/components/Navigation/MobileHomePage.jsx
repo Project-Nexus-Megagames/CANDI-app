@@ -98,7 +98,7 @@ const HomePage = (props) => {
  
 
 
-				<div style={{ height: 'calc(100% - 50px)', width: "100%", overflow: 'auto', textAlign: 'center' }}>
+				<div style={{ height: 'calc(100% - 53px)', width: "100%", overflow: 'auto', textAlign: 'center' }}>
 				<FlexboxGrid justify="space-around" >
 
 					<FlexboxGrid.Item colspan={24}>

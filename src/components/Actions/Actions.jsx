@@ -63,12 +63,12 @@ const Actions = (props) => {
 		<Container style={{ height: 'calc(100vh - 50px)',}}>
 		<Sidebar className="side-bar">
 			<PanelGroup> 					
-				<div style={{ height: '40px', marginTop: '5px', backgroundColor: "#000101"}}>
+				<div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101"}}>
 					<InputGroup>
 						<Input size="sm" style={{ width: '95%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
-							<InputGroup.Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
+							<Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
 							<Icon  icon="plus" />	
-							</InputGroup.Button>							
+							</Button>							
 					</InputGroup>
 				</div>
 				<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	

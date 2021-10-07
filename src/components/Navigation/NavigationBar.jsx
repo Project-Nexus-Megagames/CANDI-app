@@ -35,10 +35,10 @@ const Navigation = props => {
   return (
 	<div style={{ height: '50px', backgroundColor: '#746D75', width: "100%", fontSize: '0.966em', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37' }}>
 		<FlexboxGrid justify="start" align="middle">
-			<FlexboxGrid.Item onClick={()=> history.push('/home')} justify="start" colspan={2}> 
+			<FlexboxGrid.Item onClick={()=> history.push('/home')} justify="start" colspan={1}> 
 			<IconButton onClick={() => history.push('/home')} icon={<Icon icon="arrow-left" />} appearance="subtle" color='cyan'  style={{ }}></IconButton>	
 			</FlexboxGrid.Item>
-			<FlexboxGrid.Item colspan={20}>
+			<FlexboxGrid.Item colspan={22}>
 				<div>
 					<p>Round: {props.gamestate.round} </p>	
 					{(days > 0) && <p>Time Left: {days} Days, {hours} Hours </p>}

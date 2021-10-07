@@ -68,9 +68,9 @@ const MobileActions = (props) => {
 		    				<Input size="sm" style={{ width: '40%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
 		    				<Whisper placement="top" trigger="hover" speaker={tooltip}>
         
-		    					<InputGroup.Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
-		    					<Icon  icon="plus" />	
-		    					</InputGroup.Button>							
+		    					<Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
+		    						<Icon  icon="plus" />	
+		    					</Button>							
 		    				</Whisper> 
 		    			</InputGroup>
 		    		</div>
