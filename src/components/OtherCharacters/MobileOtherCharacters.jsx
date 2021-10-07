@@ -96,7 +96,6 @@ const  OtherCharacters = (props) => {
 	else return ( 
 		<React.Fragment>
 		<NavigationBar/>
-		<Container style={{ height: 'calc(100vh - 50px)'}}>
 		<Drawer className="side-bar"
 			show={showDrawer}
 			placement={'left'}
@@ -211,6 +210,8 @@ const  OtherCharacters = (props) => {
 				</div>							
 			</PanelGroup>
 		</Drawer>
+
+		<Container style={{ height: 'calc(100vh - 50px)', overflow: 'auto'}}>
 		{!showDrawer && <button
 			onClick={() => setShowDrawer(!showDrawer)}
 			className="toggle-menu"
