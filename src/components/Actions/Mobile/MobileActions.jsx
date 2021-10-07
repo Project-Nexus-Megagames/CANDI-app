@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper, Modal, Drawer } from 'rsuite';
+import { useHistory } from 'react-router';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper, Modal, Drawer, IconButton } from 'rsuite';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import { setFilter } from '../../../redux/entities/playerActions';
@@ -14,7 +15,7 @@ const MobileActions = (props) => {
 	const [selected, setSelected] = React.useState(null);
 	const [showNew, setShowNew] = React.useState(false);
     const [showDrawer, setShowDrawer] = React.useState(true);
-
+	const history = useHistory();
 	useEffect(() => {
 		if (selected) {
 			const newSelected = props.actions.find(el => el._id === selected._id);
@@ -38,7 +39,7 @@ const MobileActions = (props) => {
 	  
 
 	if (!props.login) {
-		props.history.push('/');
+		history.push('/');
 		return (<Loader inverse center content="doot..." />)
 	};
 	return ( 
@@ -50,11 +51,13 @@ const MobileActions = (props) => {
             size='xs'
             placement={'left'}
             style={{ width: '200px' }}
-            show={!selected}
-            onClose={() => setShowDrawer(false)}>
+            show={showDrawer}
+            onClose={() => console.log(!showDrawer)}>
              <PanelGroup> 					
-		    		<Panel style={{ backgroundColor: "#000101", height: '60px'}}>
-		    			<InputGroup>
+		    		<div style={{  height: '40px'}}>
+						
+		    			<InputGroup >
+							<IconButton onClick={() => history.push('/home')} icon={<Icon icon="arrow-left" />} appearance="subtle" color='cyan'  style={{ }}></IconButton>
 		    				<Input size="sm" style={{ width: '40%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
 		    				<Whisper placement="top" trigger="hover" speaker={tooltip}>
         
@@ -62,10 +65,8 @@ const MobileActions = (props) => {
 		    					<Icon  icon="plus" />	
 		    					</InputGroup.Button>							
 		    				</Whisper> 
-
-        
 		    			</InputGroup>
-		    		</Panel>
+		    		</div>
 		    		<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
 		    			<ActionList selected={selected} handleSelect={handleSelect}/>
 		    		</div>			
@@ -85,6 +86,7 @@ const MobileActions = (props) => {
 	</React.Fragment>
 	);
 }
+
 
 const mapStateToProps = (state) => ({
 	actions: state.actions.list,
