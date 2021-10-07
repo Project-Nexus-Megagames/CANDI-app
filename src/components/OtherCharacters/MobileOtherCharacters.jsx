@@ -211,7 +211,7 @@ const  OtherCharacters = (props) => {
 			</PanelGroup>
 		</Drawer>
 
-		<Container style={{ height: 'calc(100vh - 50px)', overflow: 'auto'}}>
+		<Container >
 		{!showDrawer && <button
 			onClick={() => setShowDrawer(!showDrawer)}
 			className="toggle-menu"
@@ -219,7 +219,7 @@ const  OtherCharacters = (props) => {
 				transform: `translate(${0}px, 100px)`, transition: '0.8s ease'
 			}}
 		/>}
-		{selected && <Content style={{overflow: 'auto', height: 'auto'}}>
+		{selected && <Content style={{ height: 'calc(100vh - 50px)', overflow: 'auto'}}>
 		<Grid fluid>
           <Row>
             <Col xs={24} sm={24} md={8} className="gridbox">
