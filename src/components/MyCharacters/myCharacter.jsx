@@ -24,6 +24,7 @@ import {
   Col,
   Row,
   List,
+  TagGroup,
 } from "rsuite";
 import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated, getMyAssets } from "../../redux/entities/assets";
@@ -122,9 +123,18 @@ class MyCharacter extends Component {
                     style={{ maxHeight: '50vh' }}
                   />
                 </p>
-                <p>
-                  <b>{playerCharacter.characterName}</b> {playerCharacter.tags}
-                </p>
+                 <TagGroup>
+                    Tags
+										{playerCharacter.tags && playerCharacter.tags.map((item, index) => (
+											<Tag index={index}>{item}</Tag>
+										))}	
+									</TagGroup>			
+                  <TagGroup>
+                    Control
+										{playerCharacter.control && playerCharacter.control.map((item, index) => (
+											<Tag index={index}>{item}</Tag>
+										))}	
+									</TagGroup>		
                 <p>
                   <b>
                     World Anvil Link{" "}
