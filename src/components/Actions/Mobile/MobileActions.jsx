@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper, Modal, Drawer } from 'rsuite';
+import { useHistory } from 'react-router';
+import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper, Modal, Drawer, IconButton } from 'rsuite';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import { setFilter } from '../../../redux/entities/playerActions';
@@ -14,7 +15,7 @@ const MobileActions = (props) => {
 	const [selected, setSelected] = React.useState(null);
 	const [showNew, setShowNew] = React.useState(false);
     const [showDrawer, setShowDrawer] = React.useState(true);
-
+	const history = useHistory();
 	useEffect(() => {
 		if (selected) {
 			const newSelected = props.actions.find(el => el._id === selected._id);
@@ -38,7 +39,7 @@ const MobileActions = (props) => {
 	  
 
 	if (!props.login) {
-		props.history.push('/');
+		history.push('/');
 		return (<Loader inverse center content="doot..." />)
 	};
 	return ( 
@@ -49,12 +50,21 @@ const MobileActions = (props) => {
         <Drawer
             size='xs'
             placement={'left'}
-            style={{ width: '200px' }}
-            show={!selected}
-            onClose={() => setShowDrawer(false)}>
+						backdrop={false}
+						style={{ width: '200px', marginTop: '51px' }}
+            show={showDrawer}
+            onClose={() => console.log(!showDrawer)}>
              <PanelGroup> 					
-		    		<Panel style={{ backgroundColor: "#000101", height: '60px'}}>
-		    			<InputGroup>
+		    		<div style={{  height: '40px'}}>
+						<button
+							onClick={() => setShowDrawer(!showDrawer)}
+							className="toggle-menu"
+							style={{
+								transform: `translate(${200}px, 100px)`
+							}}
+						></button> 
+		    			<InputGroup >
+							
 		    				<Input size="sm" style={{ width: '40%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
 		    				<Whisper placement="top" trigger="hover" speaker={tooltip}>
         
@@ -62,18 +72,22 @@ const MobileActions = (props) => {
 		    					<Icon  icon="plus" />	
 		    					</InputGroup.Button>							
 		    				</Whisper> 
-
-        
 		    			</InputGroup>
-		    		</Panel>
+		    		</div>
 		    		<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
 		    			<ActionList selected={selected} handleSelect={handleSelect}/>
 		    		</div>			
 		    	</PanelGroup>
         </Drawer>
-
+				<button
+							onClick={() => setShowDrawer(!showDrawer)}
+							className="toggle-menu"
+							style={{
+								transform: `translate(${0}px, 100px)`
+							}}
+						></button> 
 		{selected && selected.type === 'Action' && <MobileSelectedActions user={props.user} handleSelect={handleSelect} selected={selected}/>}	
-
+		{!selected && <h5>No Action selected</h5>}	
 
 		<NewAction
 			show={showNew}
@@ -85,6 +99,7 @@ const MobileActions = (props) => {
 	</React.Fragment>
 	);
 }
+
 
 const mapStateToProps = (state) => ({
 	actions: state.actions.list,
