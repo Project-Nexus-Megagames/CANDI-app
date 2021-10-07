@@ -43,7 +43,8 @@ class ActionList extends Component {
 			<Container>
 					<React.Fragment >
 					{this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
-						<h5>Control List</h5>
+						{/* <h5 >Control List</h5> */}
+						{this.props.filteredActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions (yet)</h5>}
 						{this.props.filteredActions.map((action, index) => ( // .filter(el => el.round === round)
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>
