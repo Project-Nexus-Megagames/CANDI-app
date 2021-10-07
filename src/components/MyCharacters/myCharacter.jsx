@@ -83,6 +83,21 @@ class MyCharacter extends Component {
     this.setState({ memory, show: true });
   };
 
+  tagStyle = (item) => {
+		switch (item) {
+			case 'Control':
+				return (<Tag style={{ color: 'black' }} color='orange' >{item}</Tag>)
+			case 'God':
+				return (<Tag color='green' >{item}</Tag>)
+			case 'NPC':
+				return (<Tag color='blue' >{item}</Tag>)
+			case 'PC':
+				return (<Tag color='cyan' >{item}</Tag>)
+			default:
+				return (<Tag >{item}</Tag>)
+		}
+	}
+
   openLend = (lending) => {
     this.setState({ lending, lendShow: true });
   };
@@ -126,7 +141,7 @@ class MyCharacter extends Component {
                  <TagGroup>
                     Tags
 										{playerCharacter.tags && playerCharacter.tags.map((item, index) => (
-											<Tag index={index}>{item}</Tag>
+											this.tagStyle(item)
 										))}	
 									</TagGroup>			
                   <TagGroup>
@@ -137,7 +152,7 @@ class MyCharacter extends Component {
 									</TagGroup>		
                 <p>
                   <b>
-                    World Anvil Link{" "}
+                   Wiki Link{" "}
                     <IconButton
                       onClick={() => this.openAnvil(playerCharacter.worldAnvil)}
                       icon={<Icon icon="link" />}
@@ -230,6 +245,7 @@ class MyCharacter extends Component {
       <div>
         <h5 style={{ backgroundColor: '#746d75' }}>{type}s</h5>
           <List autoScroll hover size="md" style={{ scrollbarWidth: 'none', overflow: 'auto', borderLeft: '1px solid rgba(255, 255, 255, 0.12)'}}>
+            {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).length === 0 && <List.Item>No {type}s</List.Item>}
             {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).map((asset, index) => (
               <List.Item style={{ textAlign: "center", cursor: 'pointer' }} onClick={() => this.openInfo(asset)}>
                 {asset.status.lendable && <FlexboxGrid>

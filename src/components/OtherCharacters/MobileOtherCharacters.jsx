@@ -73,6 +73,21 @@ const  OtherCharacters = (props) => {
 		char.tags.some(el => el.toLowerCase().includes(fil.toLowerCase())));
 		setFilteredCharacters(filtered);
 	}
+
+	const tagStyle = (item) => {
+		switch (item) {
+			case 'Control':
+				return (<Tag style={{ color: 'black' }} color='orange' >{item}</Tag>)
+			case 'God':
+				return (<Tag color='green' >{item}</Tag>)
+			case 'NPC':
+				return (<Tag color='blue' >{item}</Tag>)
+			case 'PC':
+				return (<Tag color='cyan' >{item}</Tag>)
+			default:
+				return (<Tag >{item}</Tag>)
+		}
+	}
 	
 	if (!props.login) {
 		props.history.push('/');
@@ -221,8 +236,8 @@ const  OtherCharacters = (props) => {
                 <p>
                   <h5>{selected.characterName}</h5> 
 									{selected.tags && selected.tags.map((item, index) => (
-													<Tag index={index}>{item}</Tag>
-												))}	
+										tagStyle(item)
+									))}	
                 </p>
 								<Button appearance='ghost' block onClick={()=> copyToClipboard(selected)}>{selected.email}</Button>
                 <p>

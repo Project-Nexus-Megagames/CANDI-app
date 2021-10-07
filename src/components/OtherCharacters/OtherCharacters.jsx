@@ -27,6 +27,21 @@ const  OtherCharacters = (props) => {
 		else return ({cursor: 'pointer'})
 	}
 
+	const tagStyle = (item) => {
+		switch (item) {
+			case 'Control':
+				return (<Tag style={{ color: 'black' }} color='orange' >{item}</Tag>)
+			case 'God':
+				return (<Tag color='green' >{item}</Tag>)
+			case 'NPC':
+				return (<Tag color='blue' >{item}</Tag>)
+			case 'PC':
+				return (<Tag color='cyan' >{item}</Tag>)
+			default:
+				return (<Tag >{item}</Tag>)
+		}
+	}
+
 	const copyToClipboard = (character) => {
 		// console.log(character)
 		let board = `${character.email}`;
@@ -165,7 +180,7 @@ const  OtherCharacters = (props) => {
 									</FlexboxGrid.Item>
 									<FlexboxGrid.Item colspan={19} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<b style={titleStyle}>{character.characterName}
-											{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px' }} >Control</Tag>}
+											{character.tags.some(el => el === 'Control') && <Tag color='orange' style={{ marginLeft: '15px', color: 'black' }} >Control</Tag>}
 										</b>	
 										<b style={slimText}>{character.email}</b>
 									</FlexboxGrid.Item>
@@ -236,9 +251,9 @@ const  OtherCharacters = (props) => {
 										</FlexboxGrid.Item>		
 
 										<FlexboxGrid.Item colspan={12}>
-											<TagGroup>
+											<TagGroup>Tags:
 												{selected.tags && selected.tags.map((item, index) => (
-													<Tag index={index}>{item}</Tag>
+													tagStyle(item)
 												))}	
 											</TagGroup>			
 										</FlexboxGrid.Item>					
@@ -250,7 +265,7 @@ const  OtherCharacters = (props) => {
 											<p>
 											<TagGroup>Controllers:
 												{selected.tags && selected.control.map((item, index) => (
-													<Tag index={index}>{item}</Tag>
+													<Tag style={{ color: 'black' }} color='orange' index={index}>{item}</Tag>
 												))}	
 											</TagGroup> 
 											</p>
