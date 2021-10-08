@@ -3,7 +3,6 @@ import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button,
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters, getPlayerCharacters } from '../../redux/entities/characters';
-import { draftActions } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import { assetsRequested, getGodBonds } from '../../redux/entities/assets';
 import NewCharacter from './NewCharacter';
@@ -314,7 +313,6 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	characters: state.characters.list,
 	actions: state.actions.list,
-	draftActions: draftActions(state),
 	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 	badCharacters: getBadCharacters(state),
 	nonPlayerCharacters: getNonPlayerCharacters(state),    

@@ -142,7 +142,7 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={LeaderBoard} disabled to='leaderboard' title='Leaderboard' body='How are things standing?'/>
+						<ImgPanel img={LeaderBoard} disabled to='leaderboard' title='Leaderboard' body='Disabled until Round 2...'/> 
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
@@ -150,10 +150,10 @@ const HomePage = (props) => {
 						{!props.myCharacter.tags.some(el=> el === 'Control') && 
 						<div  onClick={() => openNexus()} style={{ border: "5px solid #ff66c4", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
 							<div className="container">
-										<img src={props.img} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+										<img src={'https://nexus-central-portal.herokuapp.com/static/media/Project_Nexus_Square_new.fa96e870.png'} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
 							</div>
 								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Project Nexus</h6>
-								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Gimme money</p>
+								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Support the Programmers</p>
 								
 						</div>}
 						{/* <ImgPanel height={'20.5vh'} img={LeaderBoard} to='controllers' title='Control' body='Who is responsible?'/> */}

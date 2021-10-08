@@ -56,8 +56,13 @@ const  OtherCharacters = (props) => {
 	}
 
 	const openAnvil = (character) => {
-		if (character.worldAnvil) {
-			let url = character.worldAnvil;
+		if (character.wiki && character.wiki !== '') {
+			let url = character.wiki;
+			const win = window.open(url, '_blank');
+			win.focus();
+		}
+		else if (character.tags.some(el => el === 'God' || el === 'Gods')) {
+			let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
 			const win = window.open(url, '_blank');
 			win.focus();
 		}

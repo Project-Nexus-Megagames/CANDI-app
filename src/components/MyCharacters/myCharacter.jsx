@@ -74,10 +74,20 @@ class MyCharacter extends Component {
 	 }
 	}
 
-  openAnvil(url) {
-    const win = window.open(url, "_blank");
-    win.focus();
-  }
+	openAnvil = (character) => {
+		if (character.wiki && character.wiki !== '') {
+			let url = character.wiki;
+			const win = window.open(url, '_blank');
+			win.focus();
+		}
+		else {
+			let url = 'https://godswars.miraheze.org/wiki/'
+			let temp = url.concat(character.characterName.split(' ').join('_'));		
+			const win = window.open(temp, '_blank');
+			win.focus();	
+			console.log(temp)
+		}
+	}
 
   showMemory = (memory) => {
     this.setState({ memory, show: true });
@@ -154,7 +164,7 @@ class MyCharacter extends Component {
                   <b>
                    Wiki Link{" "}
                     <IconButton
-                      onClick={() => this.openAnvil(playerCharacter.worldAnvil)}
+                      onClick={() => this.openAnvil(playerCharacter)}
                       icon={<Icon icon="link" />}
                       appearance="primary"
                     />
