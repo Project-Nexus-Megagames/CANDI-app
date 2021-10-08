@@ -120,7 +120,7 @@ const  OtherCharacters = (props) => {
 			<PanelGroup>					
 				<div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101", margin: '1px' }}>
 					<InputGroup>
-						<Input size='xs' onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
+						<Input style={{ height: '39px' }} onChange={(value)=> filterThis(value)} placeholder="Search by Name or Email"></Input>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <Button color='green' onClick={() => setShowNew(true)}>
       			  <Icon  icon="plus" />
       			</Button>}

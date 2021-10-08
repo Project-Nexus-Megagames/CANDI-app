@@ -8,7 +8,7 @@ import Loading from './loading';
 // import aang from '../Images/aang.jpg'
 import control2 from '../Images/Control.jpg'
 import other from '../Images/othercharacters.jpg'
-
+import nexus from '../Images/nexus2.jpg'
 import test from '../Images/test.png'
 import banner from '../Images/banner.jpg'
 import myCharacter from '../Images/MyCharacter.jpg'
@@ -150,7 +150,7 @@ const HomePage = (props) => {
 						{!props.myCharacter.tags.some(el=> el === 'Control') && 
 						<div  onClick={() => openNexus()} style={{ border: "5px solid #ff66c4", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
 							<div className="container">
-										<img src={'https://nexus-central-portal.herokuapp.com/static/media/Project_Nexus_Square_new.fa96e870.png'} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+										<img src={nexus} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
 							</div>
 								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Project Nexus</h6>
 								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Support the Programmers</p>
