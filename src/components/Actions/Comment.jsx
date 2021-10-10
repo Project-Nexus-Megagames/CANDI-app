@@ -89,7 +89,7 @@ class Comment extends Component {
 	render() { 
 		return ( 
 			<div>
-				{(this.props.myCharacter.tags.some(el => el === 'Control' || el.status === 'Public')) && <div>
+				{(this.props.myCharacter.tags.some(el => el === 'Control') || this.props.comment.status === 'Public') && <div>
 				<Divider vertical/>	
 					<div style={{	border: '3px solid #00a0bd', borderRadius: '5px' }}>
 						<FlexboxGrid  style={this.props.comment.status === 'Private' ? privateComm : publicComm} align='middle' justify="start">

@@ -28,12 +28,15 @@ const HomePage = (props) => {
 		if(!props.loading && props.actionsLoaded && props.gamestateLoaded && props.charactersLoaded && props.locationsLoaded && props.assetsLoaded) {
 			setLoaded(true);
 		}		
+	}, []);
+
+	useEffect(() => {
+		renderTime(props.gamestate.endTime);
 		setInterval(() => {
 			renderTime(props.gamestate.endTime);
         //clearInterval(interval);
     }, 60000);
-		console.log(window.innerHeight)
-	}, []);
+	}, [props.gamestate.endTime]);
 
 	useEffect(() => {
 		if(!props.loading && props.actionsLoaded && props.gamestateLoaded && props.charactersLoaded && props.locationsLoaded && props.assetsLoaded) {

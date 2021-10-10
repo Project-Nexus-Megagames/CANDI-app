@@ -38,7 +38,7 @@ const Navigation = props => {
 			<FlexboxGrid.Item onClick={()=> history.push('/home')} justify="start" colspan={1}> 
 				<IconButton onClick={() => history.push('/home')} icon={<Icon icon="arrow-left" />} appearance="subtle" color='cyan'  style={{ }}></IconButton>	
 			</FlexboxGrid.Item>
-			<FlexboxGrid.Item onClick={()=> history.push('/home')} justify="start" colspan={2}/> 
+			<FlexboxGrid.Item onClick={()=> history.push('/home')} justify="start" colspan={1}/> 
 			<FlexboxGrid.Item colspan={20}>
 				<div>
 					<p>Round: {props.gamestate.round} </p>	
