@@ -414,8 +414,8 @@ class MyCharacter extends Component {
       bio: char.bio,
       icon: char.icon,
       popSupport: char.popSupport,
-      standing: this.state.formValue.textarea,
-      id: char._id
+      standingOrders: this.state.formValue.textarea,
+      _id: char._id
   }
     socket.emit('characterRequest', 'modify', data ); // new Socket event
   };
