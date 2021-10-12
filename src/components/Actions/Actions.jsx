@@ -54,7 +54,7 @@ const Actions = (props) => {
 		props.history.push('/');
 		return (<Loader inverse center content="doot..." />)
 	};
-	if (window.innerHeight < 900) {
+		if (window.innerWidth < 768) { 
 		return (<MobileActions />)
 	}
 	return ( 
