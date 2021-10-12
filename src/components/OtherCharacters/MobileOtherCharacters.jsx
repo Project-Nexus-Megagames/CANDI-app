@@ -234,6 +234,7 @@ const  OtherCharacters = (props) => {
 										onClick={() => openAnvil(selected)}
                   />
                 </p>
+								<Button appearance='ghost' block onClick={()=> copyToClipboard(selected)}>{selected.email}</Button>
                 <p>
                   <h5>{selected.characterName}</h5> 
 									<TagGroup>Tags:
@@ -244,11 +245,10 @@ const  OtherCharacters = (props) => {
 									<Divider/>
 									<TagGroup>Controllers:
 										{selected.tags && selected.control.map((item, index) => (
-											tagStyle(item)
+											<Tag style={{ color: 'black' }} color='orange' index={index}>{item}</Tag>
 										))}	
 									</TagGroup> 
                 </p>
-								<Button appearance='ghost' block onClick={()=> copyToClipboard(selected)}>{selected.email}</Button>
 								<p>
 									Character Pronouns: <b>{selected.pronouns}</b>			
 								</p>
