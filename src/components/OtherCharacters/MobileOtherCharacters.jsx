@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Grid, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, Table, Divider, Drawer} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Grid, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, Table, Divider, Drawer, Panel} from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -236,21 +236,48 @@ const  OtherCharacters = (props) => {
                 </p>
                 <p>
                   <h5>{selected.characterName}</h5> 
-									{selected.tags && selected.tags.map((item, index) => (
-										tagStyle(item)
-									))}	
+									<TagGroup>Tags:
+										{selected.tags && selected.tags.map((item, index) => (
+											tagStyle(item)
+										))}	
+									</TagGroup>	
+									<Divider/>
+									<TagGroup>Controllers:
+										{selected.tags && selected.control.map((item, index) => (
+											tagStyle(item)
+										))}	
+									</TagGroup> 
                 </p>
 								<Button appearance='ghost' block onClick={()=> copyToClipboard(selected)}>{selected.email}</Button>
-                <p>
+								<p>
+									Character Pronouns: <b>{selected.pronouns}</b>			
+								</p>
+								<p>
+									Time Zone: <b>{selected.timeZone}</b>
+								</p>		
+								<p>
                   <b>Bio:</b> {selected.bio}
                 </p>
               </div>
             </Col>
-            <Col xs={24} sm={24} md={8} className="gridbox">
-
-
-            </Col>
           </Row>
+					{selected.tags.some(el => el === 'God') && <Row>
+					 <Col xs={8} sm={8} md={8} className="gridbox">
+						 <Panel bordered style={{backgroundColor: '#272b34'}} header='Preferred'>
+								{props.assets.filter(el => el.with === selected._id && el.level === 'Preferred').length}
+							</Panel>
+						</Col>
+						<Col xs={8} sm={8} md={8} className="gridbox">
+							<Panel bordered style={{backgroundColor: '#272b34'}} header='Favoured'>
+								{props.assets.filter(el => el.with === selected._id && el.level === 'Favoured').length}
+							</Panel>
+						</Col>
+						<Col xs={8} sm={8} md={8} className="gridbox">
+							<Panel bordered style={{backgroundColor: '#272b34'}} header='Blessed'>
+								{props.assets.filter(el => el.with === selected._id && el.level === 'Blessed').length}
+							</Panel>
+						</Col>
+					</Row>}
         </Grid>
 				
 			<ModifyCharacter
