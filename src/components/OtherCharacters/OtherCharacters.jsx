@@ -254,6 +254,7 @@ const  OtherCharacters = (props) => {
 								<FlexboxGrid align='middle' style={{textAlign: "center"}}>
 										<FlexboxGrid.Item colspan={12}>
 											<h2>{selected.characterName}</h2>	
+											{selected.characterTitle !== 'None' && <h5>{selected.characterTitle}</h5>	}
 										</FlexboxGrid.Item>		
 
 										<FlexboxGrid.Item colspan={12}>
