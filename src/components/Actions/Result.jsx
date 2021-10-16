@@ -154,7 +154,7 @@ class Result extends Component {
 				<Modal.Footer>
 					<Button onClick={() => this.handleEditSubmit()}  disabled={this.isDisabled()} appearance="primary">
             {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-						this.state.dice.length < 5 ? <b>Dice text need {5 - this.state.dice.length} more characters</b> :
+						this.state.dice.length < 1 ? <b>Dice text need {1 - this.state.dice.length} more characters</b> :
 						<b>Submit</b>}
     	    </Button>
 					<Button onClick={() => this.setState({ resEdit: false })} appearance="subtle">

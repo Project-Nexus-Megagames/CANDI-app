@@ -99,7 +99,7 @@ class NewResult extends Component {
 				<Modal.Footer>
 					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
             {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-						this.state.dice.length < 5 ? <b>Dice text need {3 - this.state.dice.length} more characters</b> :
+						this.state.dice.length < 1 ? <b>Dice text need {1 - this.state.dice.length} more characters</b> :
 						<b>Submit</b>}
     	    </Button>
 					<Button onClick={() => this.props.closeNew()} appearance="subtle">
