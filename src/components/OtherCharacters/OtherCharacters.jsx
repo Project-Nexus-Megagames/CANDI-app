@@ -45,10 +45,22 @@ const  OtherCharacters = (props) => {
 	const copyToClipboard = (character) => {
 		// console.log(character)
 		let board = `${character.email}`;
+		let array = [ ...character.control ];
 
-		for (const controller of character.control) {
+		for (const controller of props.myCharacter.control) {
+			if (!array.some(el => el === controller)) {
+				array.push(controller);
+			}
+		}
+
+		for (const controller of array) {
 			const character = props.characters.find(el => el.characterName === controller)
-			character ? board = board.concat(`; ${character.email}`) : console.log(controller);
+			if (character) {
+				board = board.concat(`; ${character.email}`)
+			}
+			else 
+				console.log(`${controller} could not be added to clipboard`)
+				Alert.error(`${controller} could not be added to clipboard`, 6000);
 		}
 
 		navigator.clipboard.writeText(board);
@@ -71,7 +83,6 @@ const  OtherCharacters = (props) => {
 			let temp = url.concat(character.characterName.split(' ').join('_'));		
 			const win = window.open(temp, '_blank');
 			win.focus();	
-			console.log(temp)
 		}
 	}
 
