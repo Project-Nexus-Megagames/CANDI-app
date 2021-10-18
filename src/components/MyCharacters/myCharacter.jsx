@@ -209,7 +209,8 @@ class MyCharacter extends Component {
             {this.renderList('Asset')}
             {this.renderList('Trait')}
             {this.renderList('Power')}
-            {this.renderList('Bond')}
+            {this.renderList('GodBond')}
+            {this.renderList('MortalBond')}
 
 
             </Col>
@@ -290,7 +291,9 @@ class MyCharacter extends Component {
                   </FlexboxGrid.Item>
                 </FlexboxGrid>}
                 {!asset.status.lendable && <div>
-                  <b>{asset.description}</b>
+                  <b>{asset.name}</b>
+                  {(type === 'GodBond' || type === 'MortalBond') && 
+                  <p>{asset.level}</p>}
                   </div>}
                 {asset.uses !== 999 && <p>Uses: {asset.uses}</p>}
               </List.Item>
