@@ -164,7 +164,7 @@ class Submission extends Component {
 										<FlexboxGrid.Item colspan={4}>
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
-											<CheckPicker labelKey='name' valueKey='_id' defaultValue={this.state.assets} data={this.props.getMyAssets.filter(el => !banned.some(el1 => el1 === el.level))} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
+											<CheckPicker labelKey='name' valueKey='_id' defaultValue={this.state.assets} data={this.props.getMyAssets.filter(el => !banned.some(el1 => el1 === el.level && (el.type === 'GodBond' || el.type === 'MortalBond') ))} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</form>
