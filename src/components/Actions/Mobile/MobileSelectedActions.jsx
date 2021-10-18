@@ -71,7 +71,7 @@ const MobileSelectedAction = (props) => {
 			<FlexboxGrid.Item colspan={2} >
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={20} >
-
+			{!props.selected && <h4>No Action Selected</h4>}
 			{selectedArray.map((el, index) => (
 					renderSwitch(el, index)
 			))}		

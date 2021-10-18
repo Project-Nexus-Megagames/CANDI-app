@@ -28,7 +28,7 @@ class ModifyResource extends Component {
 	assetModify = async () => {
 		this.props.assetDispatched();
 		const data = {
-			id: this.state.selected,
+			_id: this.state.selected,
 			name: this.state.name,
 			description: this.state.description,
 			dice: this.state.dice,

@@ -8,11 +8,13 @@ import { connect } from 'react-redux';
 import socket from '../../socket'; 
 import NewCharacter from '../Control/NewCharacter'; 
 import MobileOtherCharacters from './MobileOtherCharacters';
+import DynamicForm from './DynamicForm';
 
 const { HeaderCell, Cell, Column, } = Table;
 
 const  OtherCharacters = (props) => {
 	const [selected, setSelected] = React.useState(null);
+	const [asset, setAsset] = React.useState(false);
 	const [filter, setFilter] = React.useState('');
 	const [tagFilter, setTagFilter] = React.useState([]);
 	const [filteredCharacters, setFilteredCharacters] = React.useState(props.characters);
@@ -248,7 +250,7 @@ const  OtherCharacters = (props) => {
 						{props.assets.filter(el => el.ownerCharacter === selected._id).length === 0 && <h5>No assets assigned</h5>}
 						{props.assets.filter(el => el.ownerCharacter === selected._id).map((asset, index) => (
 							<Col md={6} sm={12}>
-								<Panel index={index} bordered>
+								<Panel onClick={() => setAsset(asset)} index={index} bordered>
 									<h5>{asset.name}</h5>
 									<b>{asset.type}</b>
 								</Panel>
@@ -408,6 +410,11 @@ const  OtherCharacters = (props) => {
 				show={add}
 				character={selected}
 				closeModal={() => setAdd(false)}
+			/>
+			<DynamicForm
+				show={asset !== false}
+				selected={asset}
+				closeDrawer={()=> setAsset(false)}
 			/>
 
 		</Content>		

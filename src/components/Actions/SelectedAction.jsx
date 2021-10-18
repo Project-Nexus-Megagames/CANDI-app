@@ -71,6 +71,7 @@ const SelectedAction = (props) => {
 			</FlexboxGrid.Item>
 			<FlexboxGrid.Item colspan={16} >
 
+			{!props.selected && <h4>No Action Selected</h4>}
 			{selectedArray.map((el, index) => (
 					renderSwitch(el, index)
 			))}		

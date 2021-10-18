@@ -57,6 +57,7 @@ class ActionList extends Component {
 					</List>	}						
 
 					{!this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
+					{this.props.myActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions (yet)</h5>}
 						{this.props.myActions.map((action, index) => ( // .filter(el => el.round === round)
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
 								<FlexboxGrid>

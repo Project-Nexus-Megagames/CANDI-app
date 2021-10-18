@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import socket from '../../socket';
 
 const diabled = ['_id', '__v'];
-class ModifyCharacter extends Component {
+class DynamicForm extends Component {
 	constructor(props) {
     super(props)
     this.state = {
@@ -17,9 +17,7 @@ class ModifyCharacter extends Component {
 	componentDidMount = () => {	
 		let test = [];
 		for (const el in this.props.selected) {
-			// console.log(el)
-			test.push(el);
-
+			typeof this.props.selected[el] !== 'object' ? test.push(el) : console.log(el);
 		}
 		test.sort((a, b) => { // sort the catagories alphabetically 
 			if(a < b) { return -1; }
@@ -31,14 +29,23 @@ class ModifyCharacter extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.selected !== prevProps.selected) {
-			this.setState({ formValue: this.props.selected });		
+			let test = [];
+			for (const el in this.props.selected) {
+				typeof this.props.selected[el] !== 'object' ? test.push(el) : console.log(el);
+			}
+			test.sort((a, b) => { // sort the catagories alphabetically 
+				if(a < b) { return -1; }
+				if(a > b) { return 1; }
+				return 0;
+			});
+			this.setState({ formValue: this.props.selected, formArray: test });	
 		}
 	}
 
 	handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
-		socket.emit('characterRequest', 'modify', this.state.formValue ); // new Socket event
+		socket.emit('assetRequest', 'modify', this.state.formValue ); // new Socket event
 		this.props.closeDrawer()
 		this.setState({ loading: false });		
 	}
@@ -95,6 +102,7 @@ class ModifyCharacter extends Component {
 
 
 	render() { 
+		if (this.props.selected)
 		return ( 
 			<Drawer
 			overflow
@@ -102,7 +110,6 @@ class ModifyCharacter extends Component {
 			show={this.props.show} 
 			onHide={() => this.props.closeDrawer()}>
 				<Drawer.Header>
-					<Drawer.Title>Modify Character "{this.state.formValue.characterName}"</Drawer.Title>
 				</Drawer.Header>
 				<Drawer.Body>
 						{this.state.formArray.map((el, index) => (
@@ -110,18 +117,21 @@ class ModifyCharacter extends Component {
 							))}						
 				</Drawer.Body>
 				<Drawer.Footer>
-        <Button disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
+        <Button  onClick={() => this.handleSubmit()} appearance="primary">
             Submit
         </Button>
         <Button onClick={() => {
 				this.props.closeDrawer();
-				// localStorage.removeItem('modifyCharacterState');
+				// localStorage.removeItem('DynamicFormState');
 			}} appearance="subtle">
             Cancel
         </Button>
         </Drawer.Footer>
 			</Drawer>
 		);
+		else return (
+			<div></div>
+		)
 	}
 }
 
@@ -154,4 +164,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModifyCharacter);
+export default connect(mapStateToProps, mapDispatchToProps)(DynamicForm);
