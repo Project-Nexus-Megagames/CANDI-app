@@ -11,7 +11,6 @@ import NewResult from './NewResult';
 import Submission from './Submission';
 import Comment from './Comment';
 import Result from './Result';
-import MobileSelectedActions from './Mobile/MobileSelectedActions';
 
 const SelectedAction = (props) => {
 	const [selectedArray, setSelectedArray] = React.useState([]);
@@ -61,9 +60,6 @@ const SelectedAction = (props) => {
 		}	
 	}
 
-	if (window.innerHeight < 900) {
-		return (<MobileSelectedActions />)
-	}
 	return ( 
 		<Content style={{overflow: 'auto', height: '100%'}} >
 		<FlexboxGrid >
