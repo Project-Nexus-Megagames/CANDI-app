@@ -82,7 +82,7 @@ class NewResult extends Component {
 						<FlexboxGrid>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={4}>
 								<h5>Dice Pool</h5>
-								{this.props.selected.submission.assets.map((asset, index) => (
+								{this.props.selected && this.props.selected.submission.assets.map((asset, index) => (
 									this.renderDice(asset)
 								))} 
 							</FlexboxGrid.Item>

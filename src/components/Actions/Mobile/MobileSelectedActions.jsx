@@ -98,13 +98,13 @@ const MobileSelectedAction = (props) => {
 				selected={props.selected}
 			/>
 			
-			<NewResult
+			{props.selected && <NewResult
 				show={result}
 				closeNew={() => closeIt()}
 				gamestate={props.gamestate}
 				submission={props.selected.submission}
 				selected={props.selected}
-			/>
+			/>}
 
 			<NewComment
 				show={comment}

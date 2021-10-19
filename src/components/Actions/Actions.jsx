@@ -23,6 +23,7 @@ const Actions = (props) => {
 	}, [props.actions]);
 
 	const handleSelect = (fuuuck) => {
+		console.log(fuuuck);
 		setSelected(fuuuck);
 	}
 
