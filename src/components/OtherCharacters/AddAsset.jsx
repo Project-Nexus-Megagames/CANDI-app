@@ -29,13 +29,13 @@ class AddAsset extends Component {
 			console.log(this.state.formValue)
 		}
 
-		const stateReplace = JSON.parse(localStorage.getItem('addAssetState'));
+		const stateReplace = JSON.parse(localStorage.getItem('addAssetStateGW'));
 		if (stateReplace) this.setState(stateReplace); 
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
 		if (this.state !== prevState) {
-			localStorage.setItem('addAssetState', JSON.stringify(this.state));
+			localStorage.setItem('addAssetStateGW', JSON.stringify(this.state));
 		};
 		// Typical usage (don't forget to compare props):
 		if (this.props !== prevProps) {

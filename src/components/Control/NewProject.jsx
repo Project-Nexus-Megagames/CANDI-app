@@ -18,13 +18,13 @@ class NewProject extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newProjectState'));
+		const stateReplace = JSON.parse(localStorage.getItem('newProjectStateGW'));
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('newProjectState', JSON.stringify(this.state));
+			localStorage.setItem('newProjectStateGW', JSON.stringify(this.state));
 		};
 	}
 

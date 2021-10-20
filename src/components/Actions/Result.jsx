@@ -21,7 +21,7 @@ class Result extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('EditResult'));
+		const stateReplace = JSON.parse(localStorage.getItem('EditResultGW'));
 		if (stateReplace) this.setState(stateReplace); 
 		console.log(this.props.result)
 		this.setState({ 	
@@ -34,7 +34,7 @@ class Result extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('EditResult', JSON.stringify(this.state));
+			localStorage.setItem('EditResultGW', JSON.stringify(this.state));
 		};
 		if (this.props.result !== prevProps.result) {
 			this.setState({ 	

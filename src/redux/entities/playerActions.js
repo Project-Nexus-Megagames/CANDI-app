@@ -98,8 +98,8 @@ export const filteredActions = createSelector(
 // playerActions Loader into state
 export const loadplayerActions = payload => (dispatch, getState) => {
   let url = baseURL;
-  
-  if (!payload.roles.some(el => el === 'Control' )) {
+
+  if (!payload.roles.some(el => el === 'Control' )) { // does no longer work
     url = `${baseURL}/${payload.username}`
   }  
     

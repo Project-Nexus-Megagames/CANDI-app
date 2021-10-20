@@ -16,14 +16,14 @@ class NewResult extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newResultState'));
+		const stateReplace = JSON.parse(localStorage.getItem('newResultStateGW'));
 		console.dir(stateReplace);
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('newResultState', JSON.stringify(this.state));
+			localStorage.setItem('newResultStateGW', JSON.stringify(this.state));
 			console.log(localStorage);
 		};
 		if (this.props.actions !== prevProps.actions) {

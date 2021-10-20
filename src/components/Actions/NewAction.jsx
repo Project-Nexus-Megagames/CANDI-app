@@ -19,14 +19,14 @@ class NewAction extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newActionState'));
+		const stateReplace = JSON.parse(localStorage.getItem('newActionStateGW'));
 		// console.dir(stateReplace);
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('newActionState', JSON.stringify(this.state));
+			localStorage.setItem('newActionStateGW', JSON.stringify(this.state));
 			// console.log(localStorage);
 		};
 		if (this.props.actions !== prevProps.actions) {

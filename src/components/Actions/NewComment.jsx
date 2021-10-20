@@ -15,7 +15,7 @@ class NewComment extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('NewComment'));
+		const stateReplace = JSON.parse(localStorage.getItem('NewCommentGW'));
 		if (stateReplace) this.setState({ description: stateReplace}); 
 		if (this.props.comment) {
 			this.setState({
@@ -26,7 +26,7 @@ class NewComment extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('NewComment', JSON.stringify(this.state.description));
+			localStorage.setItem('NewCommentGW', JSON.stringify(this.state.description));
 		};
 		if (this.props.actions !== prevProps.actions && this.props.comment) {
 			this.setState({

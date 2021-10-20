@@ -24,13 +24,13 @@ class Submission extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('selectedActionState'));
+		const stateReplace = JSON.parse(localStorage.getItem('selectedActionStateGW'));
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('selectedActionState', JSON.stringify(this.state));
+			localStorage.setItem('selectedActionStateGW', JSON.stringify(this.state));
 		};
 		if (this.props.sumbission !== prevProps.sumbission) {
 			this.setState({ 

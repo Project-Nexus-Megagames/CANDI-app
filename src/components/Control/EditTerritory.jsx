@@ -18,14 +18,14 @@ class EditTerritory extends Component {
 	}
 
 	componentDidMount = () => {
-		const stateReplace = JSON.parse(localStorage.getItem('editTerritoryState'));
+		const stateReplace = JSON.parse(localStorage.getItem('editTerritoryStateGW'));
 		console.dir(stateReplace);
 		if (stateReplace) this.setState(stateReplace); 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.state !== prevState) {
-			localStorage.setItem('editTerritoryState', JSON.stringify(this.state));
+			localStorage.setItem('editTerritoryStateGW', JSON.stringify(this.state));
 			console.log(localStorage);
 		};
 	};
