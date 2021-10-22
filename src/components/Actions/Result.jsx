@@ -20,10 +20,10 @@ class Result extends Component {
 	}
 
 	componentDidMount = () => {
-		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('EditResultGW'));
-		if (stateReplace) this.setState(stateReplace); 
-		console.log(this.props.result)
+		// // localStorage.removeItem('newActionState');
+		// const stateReplace = JSON.parse(localStorage.getItem('EditResultGW'));
+		// if (stateReplace) this.setState(stateReplace); 
+		// console.log(this.props.result)
 		this.setState({ 	
 			id: this.props.result._id,
 			description: this.props.result.description,

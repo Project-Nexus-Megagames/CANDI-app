@@ -19,17 +19,17 @@ class Comment extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('EditCommentGW'));
-		if (stateReplace) this.setState(stateReplace); 
-		this.setState({
-			body: this.props.comment.body,
-		});
+		// const stateReplace = JSON.parse(localStorage.getItem('EditCommentGW'));
+		// if (stateReplace) this.setState(stateReplace); 
+		// this.setState({
+		// 	body: this.props.comment.body,
+		// });
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('EditCommentGW', JSON.stringify(this.state));
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('EditCommentGW', JSON.stringify(this.state));
+		// };
 		if (this.props.actions !== prevProps.actions) {
 			if (this.props.actions.some(el => el.body === this.state.body)) { // checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();

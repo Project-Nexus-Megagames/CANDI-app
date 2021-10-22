@@ -14,18 +14,18 @@ class NewResult extends Component {
 		};
 	}
 
-	componentDidMount = () => {
-		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newResultStateGW'));
-		console.dir(stateReplace);
-		if (stateReplace) this.setState(stateReplace); 
-	}
+	// componentDidMount = () => {
+	// 	// localStorage.removeItem('newActionState');
+	// 	const stateReplace = JSON.parse(localStorage.getItem('newResultStateGW'));
+	// 	console.dir(stateReplace);
+	// 	if (stateReplace) this.setState(stateReplace); 
+	// }
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('newResultStateGW', JSON.stringify(this.state));
-			console.log(localStorage);
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('newResultStateGW', JSON.stringify(this.state));
+		// 	console.log(localStorage);
+		// };
 		if (this.props.actions !== prevProps.actions) {
 			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();

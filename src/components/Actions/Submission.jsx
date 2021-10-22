@@ -23,16 +23,16 @@ class Submission extends Component {
 		infoAsset: {}
 	}
 
-	componentDidMount = () => {
-		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('selectedActionStateGW'));
-		if (stateReplace) this.setState(stateReplace); 
-	}
+	// componentDidMount = () => {
+	// 	// localStorage.removeItem('newActionState');
+	// 	const stateReplace = JSON.parse(localStorage.getItem('selectedActionStateGW'));
+	// 	if (stateReplace) this.setState(stateReplace); 
+	// }
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('selectedActionStateGW', JSON.stringify(this.state));
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('selectedActionStateGW', JSON.stringify(this.state));
+		// };
 		if (this.props.sumbission !== prevProps.sumbission) {
 			console.log(this.props.action.name)
 			this.setState({ 

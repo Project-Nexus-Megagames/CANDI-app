@@ -17,17 +17,17 @@ class EditTerritory extends Component {
 		loading: false
 	}
 
-	componentDidMount = () => {
-		const stateReplace = JSON.parse(localStorage.getItem('editTerritoryStateGW'));
-		console.dir(stateReplace);
-		if (stateReplace) this.setState(stateReplace); 
-	}
+	// componentDidMount = () => {
+	// 	const stateReplace = JSON.parse(localStorage.getItem('editTerritoryStateGW'));
+	// 	console.dir(stateReplace);
+	// 	if (stateReplace) this.setState(stateReplace); 
+	// }
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('editTerritoryStateGW', JSON.stringify(this.state));
-			console.log(localStorage);
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('editTerritoryStateGW', JSON.stringify(this.state));
+		// 	console.log(localStorage);
+		// };
 	};
 		
 	handleSubmit = async () => {

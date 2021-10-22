@@ -16,16 +16,16 @@ class NewProject extends Component {
 		loading: false
 	}
 
-	componentDidMount = () => {
-		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newProjectStateGW'));
-		if (stateReplace) this.setState(stateReplace); 
-	}
+	// componentDidMount = () => {
+	// 	// localStorage.removeItem('newActionState');
+	// 	const stateReplace = JSON.parse(localStorage.getItem('newProjectStateGW'));
+	// 	if (stateReplace) this.setState(stateReplace); 
+	// }
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('newProjectStateGW', JSON.stringify(this.state));
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('newProjectStateGW', JSON.stringify(this.state));
+		// };
 	}
 
 	newProject = async () => {
