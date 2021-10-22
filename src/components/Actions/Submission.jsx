@@ -15,6 +15,7 @@ class Submission extends Component {
 		effort: this.props.sumbission.effort,
 		assets: this.props.sumbission.assets,
 		id: this.props.action._id,
+		name: '',
 		description: this.props.sumbission.description,
 		intent: this.props.sumbission.intent,	
 
@@ -33,16 +34,23 @@ class Submission extends Component {
 			localStorage.setItem('selectedActionStateGW', JSON.stringify(this.state));
 		};
 		if (this.props.sumbission !== prevProps.sumbission) {
+			console.log(this.props.action.name)
 			this.setState({ 
 				effort: this.props.sumbission.effort,
 				assets: this.props.sumbission.assets,
 				id: this.props.action._id,
 				description: this.props.sumbission.description,
 				intent: this.props.sumbission.intent,	
+				name: this.props.action.name,
 				// status: this.props.action.status,
 			});		
 		}
 	}
+
+	 componentWillUnmount = () => {
+		console.log('yeet')
+		this.setState({edit: false, delete: false})
+	 }
 
 	getTime = (date) => {
 		let day = new Date(date).toDateString();
@@ -131,11 +139,15 @@ class Submission extends Component {
 						show={this.state.edit} 
 						onHide={() => this.setState({edit: false}) }>
 							<Modal.Header>
-								<Modal.Title>Submit a new action</Modal.Title>
+								<Modal.Title>
+									Edit action {this.state.name}
+									
+								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body>
 								{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 								<form>
+									<textarea rows='1' value={this.state.name} style={textStyle} onChange={(event)=> this.setState({name: event.target.value})}></textarea>
 									<FlexboxGrid> Description
 										<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
 									</FlexboxGrid>
@@ -211,6 +223,7 @@ class Submission extends Component {
 		// 1) make a new action
 		const data = {
 			id: this.props.action._id,
+			name: this.state.name,
 			submission: {
 				effort: 1,
 				assets: this.state.assets, //this.state.asset1._id, this.state.asset2._id, this.state.asset3._id

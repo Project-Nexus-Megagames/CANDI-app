@@ -27,7 +27,7 @@ class ActionList extends Component {
 	listStyle (item, index) {
 		if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', backgroundColor: '#272b34', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		if (index === 1) return ({cursor: 'pointer', backgroundColor: '#161420', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
-		else return({cursor: 'pointer'});
+		else return ({cursor: 'pointer', textAlign: "center", flexDirection: 'column', alignItems: 'center'});
 	}
 
 	createListCatagories = () => {
