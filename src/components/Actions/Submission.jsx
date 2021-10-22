@@ -71,7 +71,7 @@ class Submission extends Component {
 						</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={15}>
-							<h5>{this.props.creator.characterName}'s Action Submission</h5>
+							<h5>{this.props.action.name}</h5>
 							<p style={slimText}>{this.getTime(this.props.sumbission.createdAt)}</p>
 						</FlexboxGrid.Item>
 

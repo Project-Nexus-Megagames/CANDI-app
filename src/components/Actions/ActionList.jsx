@@ -51,6 +51,7 @@ class ActionList extends Component {
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<div style={titleStyle}>{action.name}</div>
+										<b style={slimText}>{action.creator.playerName}</b>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
@@ -86,6 +87,15 @@ const titleStyle = {
 	paddingLeft: 5,
   whiteSpace: 'nowrap',
   fontWeight: 500
+};
+
+const slimText = {	
+	fontSize: '0.966em',
+	color: '#97969B',
+	fontWeight: 'lighter',
+	paddingBottom: 5,
+	paddingLeft: 2, 
+	whiteSpace: 'nowrap',
 };
 
 const mapStateToProps = (state) => ({
