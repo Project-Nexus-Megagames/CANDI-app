@@ -24,8 +24,9 @@ class ActionList extends Component {
 			}
 		}
 
-	listStyle (item) {
-		if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+	listStyle (item, index) {
+		if (item === this.props.selected) return ({cursor: 'pointer', opacity: '0.6', backgroundColor: '#272b34', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
+		if (index === 1) return ({cursor: 'pointer', backgroundColor: '#161420', textAlign: "center", flexDirection: 'column', alignItems: 'center'})
 		else return({cursor: 'pointer'});
 	}
 
@@ -46,7 +47,7 @@ class ActionList extends Component {
 						{/* <h5 >Control List</h5> */}
 						{this.props.filteredActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions (yet)</h5>}
 						{this.props.filteredActions.map((action, index) => ( // .filter(el => el.round === round)
-							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
+							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action, (index % 2))}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<div style={titleStyle}>{action.name}</div>
@@ -59,7 +60,7 @@ class ActionList extends Component {
 					{!this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
 					{this.props.myActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions (yet)</h5>}
 						{this.props.myActions.map((action, index) => ( // .filter(el => el.round === round)
-							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action)}>
+							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action, (index % 2))}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<div style={titleStyle}>{action.name}</div>
