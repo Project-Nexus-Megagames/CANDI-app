@@ -51,7 +51,7 @@ class ActionList extends Component {
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<div style={titleStyle}>{action.name}</div>
-										<b style={slimText}>{action.creator.playerName}</b>
+										<b style={slimText}>{action.creator.characterTitle}</b>
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
