@@ -90,12 +90,12 @@ class Result extends Component {
 			<div style={{ 	border: '3px solid #00a0bd', borderRadius: '5px' }} >
 				<FlexboxGrid  style={{ backgroundColor: '#0d73d4' }} align='middle' justify="start">
 					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-							<Avatar circle size="md" src={`/images/${this.props.result.resolver}.jpg`} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />
+							<Avatar circle size="md" src={`/images/GW_Control_Icon.png`} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={15}>
 						<h5>Result ({this.props.result.status})</h5>
-						<p style={slimText}>{this.getTime(this.props.result.createdAt)}</p>
+						<p style={{...slimText, textAlign: 'center'}}>{this.getTime(this.props.result.createdAt)}</p>
 					</FlexboxGrid.Item>
 
 
@@ -184,8 +184,8 @@ class Result extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length < 10 || this.state.dice.length > 5) return false;
-		else return true;
+		if (this.state.description.length < 10 || this.state.dice.length < 1) return true;
+		else return false;
 	}
 
 	handleResultSubmit = async () => {
@@ -230,8 +230,8 @@ const mapDispatchToProps = (dispatch) => ({
 const slimText = {
 	fontSize: '0.966em',
 	fontWeight: '300',
-	whiteSpace: 'nowrap',
-	textAlign: "center"
+	whiteSpace: ' pre-line;',
+	textAlign: "left"
 };
 
 const pickerData = [

@@ -111,8 +111,8 @@ class NewResult extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length < 10 || this.state.dice.length > 3) return false;
-		else return true;
+		if (this.state.description.length < 10 || this.state.dice.length < 1) return true;
+		else return false;
 	}
 
 	formattedUsedAssets = () => {
