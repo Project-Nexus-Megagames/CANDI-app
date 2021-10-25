@@ -14,7 +14,7 @@ class Result extends Component {
 		id: this.props.result._id,
 		description: this.props.result.description ? this.props.result.description : '',
 		dice: this.props.result.dice ? this.props.result.dice : '',
-
+		private: true,
 		infoModal: false,
 		infoAsset: {}
 	}
@@ -76,6 +76,7 @@ class Result extends Component {
 		const data = {
 			id: this.props.selected._id,
 			result: {
+				status: this.state.private ? 'Private' : 'Public',
 				description: this.state.description,
 				dice: this.state.dice,
 				id: this.props.result._id
@@ -129,6 +130,7 @@ class Result extends Component {
 				<Modal.Body>
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
+						<Toggle defaultChecked={this.state.private} onChange={()=> this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />
 						<FlexboxGrid> Description
 							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
 						</FlexboxGrid>
