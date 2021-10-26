@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'
 import { connect } from 'react-redux';
-import { Avatar, Slider, Panel, FlexboxGrid, Tag, CheckPicker, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon, ButtonToolbar, Loader } from 'rsuite';
+import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
+import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 import AssetInfo from './AssetInfo';
@@ -89,15 +91,11 @@ class Submission extends Component {
 						<p style={slimText}>
 							Description
 						</p>
-						<p>
-							{sumbission.description}	
-						</p>
+						<ReactMarkdown children={sumbission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 						<p style={slimText}>
 							Intent
 						</p>
-						<p>
-							{sumbission.intent}	
-						</p>
+						<ReactMarkdown children={sumbission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 						{/* <p style={slimText}>
 							Effort
 						</p>
@@ -320,6 +318,20 @@ const normalText = {
 	fontSize: '.966em',
 	textAlign: "center"
 };
+
+const markdown = `A paragraph with *emphasis* and **strong importance**.
+
+> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+
+* Lists
+* [ ] todo
+* [x] done
+
+A table:
+
+| a | b |
+| - | - |
+`
 
 const textStyle = {
 	backgroundColor: '#1a1d24', 

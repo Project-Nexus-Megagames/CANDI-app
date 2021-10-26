@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
+import remarkGfm from 'remark-gfm';
 import { Content, Slider, Panel, FlexboxGrid, Tag, TagGroup, ButtonGroup, Button, Modal, Alert, InputPicker, InputNumber, Divider, Progress, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
@@ -111,9 +113,10 @@ class Result extends Component {
 				</FlexboxGrid>	
 
 				<Panel shaded style={{ padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
-					<p style={slimText}>
+				<ReactMarkdown children={this.props.result.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+					{/* <p style={slimText}>
 							{this.props.result.description}	
-						</p>
+						</p> */}
 						{/* <p style={slimText}>
 							{this.props.result.dice}	
 						</p> */}

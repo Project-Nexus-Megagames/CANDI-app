@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, FlexboxGrid, DatePicker, Loader, Table, Tag, Toggle } from 'rsuite';
+import ReactMarkdown from 'react-markdown'
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel,  DatePicker, Loader, Table, Tag, Toggle } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
-import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters, getPlayerCharacters } from '../../redux/entities/characters';
+import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters } from '../../redux/entities/characters';
 import NavigationBar from '../Navigation/NavigationBar';
-import { assetsRequested, getGodBonds } from '../../redux/entities/assets';
+import { assetsRequested } from '../../redux/entities/assets';
 import NewCharacter from './NewCharacter';
-import EditTerritory from './EditTerritory';
 import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
 import RelationshipTable from './RelationshipTable';
@@ -41,7 +41,6 @@ class ControlTerminal extends Component {
 		god: null,
 		bonder: null,
 		godData: true,
-
 	}
 
 	componentDidMount = async () => {
@@ -91,6 +90,7 @@ class ControlTerminal extends Component {
 			<Content style={{style1}}>
 				<NavigationBar />
 				<div style={{height: '10vh'}} >
+
 					<Divider>Scott's Message of the Day:</Divider>
 					Well this is just a hot mess on the back end. Sorry to Control, but I do not have enough love to give to both the Front end and the Control Terminal
 					{this.props.badCharacters.length > 0 && <div>
