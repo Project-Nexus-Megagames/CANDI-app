@@ -14,6 +14,7 @@ class NewAction extends Component {
 				id: '',
         description: '',
 				intent: '',	
+				name: '',	
 		};
 	}
 
@@ -76,9 +77,12 @@ class NewAction extends Component {
 				<Modal.Body>
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
-						<FlexboxGrid> Description
-							<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
-						</FlexboxGrid>
+						Action Name:
+						<textarea rows='1' value={this.state.name} style={textStyle} onChange={(event)=> this.setState({name: event.target.value})}></textarea>
+
+						Action Description
+						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
+
 						<br></br>
 						<FlexboxGrid> What you would like to happen
 							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
