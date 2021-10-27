@@ -45,7 +45,7 @@ class ActionList extends Component {
 				{this.state.rounds.map((round, index) => (
 					<div>
 					<h5 style={{ backgroundColor: '#d4af37', color: 'black' }}>Round {round}</h5>
-					{this.props.myCharacter.tags.some(el => el === 'Control') && false &&
+					{this.props.myCharacter.tags.some(el => el === 'Control') &&
 						<List hover size="sm" >
 							{/* <h5 >Control List</h5> */}
 							{this.props.filteredActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions</h5>}
@@ -61,9 +61,9 @@ class ActionList extends Component {
 							))}
 						</List>}						
 
-					{this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
+					{!this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
 					{this.props.myActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions </h5>}
-						{this.props.myActions.filter(action => action.round === round).map((action, index) => ( // .filter(el => el.round === round)
+						{this.props.myActions.map((action, index) => ( // .filter(el => el.round === round)
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action, (index % 2))}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
