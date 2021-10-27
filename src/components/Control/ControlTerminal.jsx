@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown'
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel,  DatePicker, Loader, Table, Tag, Toggle } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel,  DatePicker, Loader, Table, Tag, Toggle, FlexboxGrid } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters } from '../../redux/entities/characters';
@@ -53,20 +53,9 @@ class ControlTerminal extends Component {
 		let drafts = 0;
 		let awaiting= 0;
 		let ready = 0;
-		for (const action of this.props.actions) {
-			switch (action.status) {
-				case "Draft":
-					drafts++;
-					break;
-				case "Ready":
-					ready++;
-					break;
-				case "Awaiting":
-					awaiting++;
-					break;
-				default:
-					break;
-			}
+		for (const action of this.props.actions.filter(el => el.round === this.props.gamestate.round)) {
+			if (action.results.length === 0) drafts++;
+			else ready++;
 		}
 		this.setState({ formValue, drafts, awaiting, ready, characters: {...this.props.characters} })
 	}
@@ -100,19 +89,16 @@ class ControlTerminal extends Component {
 						))}
 					</div>}					
 				</div>
-				{/* <div style={{height: '15vh'}}>
+				<div style={{height: '15vh'}}>
 				<FlexboxGrid>
-					<FlexboxGrid.Item colspan={8}>
+					<FlexboxGrid.Item colspan={12}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Drafts'> {this.state.drafts} </Panel>
 					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={8}>
-						<Panel bordered style={{backgroundColor: '#272b34'}} header='Awaiting Resolution'> {this.state.awaiting} </Panel>
-					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={8}>
+					<FlexboxGrid.Item colspan={12}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Ready for Publishing'> {this.state.ready} </Panel>			
 					</FlexboxGrid.Item>					
 				</FlexboxGrid>					
-				</div> */}
+				</div>
 				<div  style={{height: '15vh'}}>
 					<Divider>Editing</Divider>
 					<Panel>
