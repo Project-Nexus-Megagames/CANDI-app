@@ -35,12 +35,20 @@ const Navigation = props => {
 	
   return (
       <React.Fragment>
-        <Table style={{ textAlign: 'center' }} height={500} virtualized data={props.playerCharacters} cellBordered dataKey={'playerName'}>
+        <Table style={{ textAlign: 'center' }} height={500} virtualized data={props.playerCharacters.sort((a, b) => { // sort the catagories alphabetically 
+					if(a.characterName < b.characterName) { return -1; }
+					if(a.characterName > b.characterName) { return 1; }
+					return 0;
+			    })} cellBordered dataKey={'playerName'}>
             <Column minWidth={150} fixed flexGrow={4}>
                 <HeaderCell>Name</HeaderCell>
                 <Cell dataKey="characterName" />
             </Column>
-            {props.data.map((god, data) => {
+            {props.data.sort((a, b) => { // sort the catagories alphabetically 
+					if(a.characterName < b.characterName) { return -1; }
+					if(a.characterName > b.characterName) { return 1; }
+					return 0;
+			    }).map((god, data) => {
             return (
                 <Column minWidth={100} flexGrow={2}>
                 <HeaderCell>{god.characterName}</HeaderCell>
