@@ -39,6 +39,7 @@ class NewAction extends Component {
 					id: '',
 					description: '',
 					intent: '',	
+					name: ''
 				});
 			}
 		}
@@ -56,10 +57,19 @@ class NewAction extends Component {
 				intent: this.state.intent,			
 				round: this.props.gamestate.round	
 			},
+			name: this.state.name,
 			controllers: ['Test2'],
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
+		this.setState({
+			effort: 0,
+			assets: [],
+			id: '',
+			description: '',
+			intent: '',	
+			name: ''
+		});
 		socket.emit('actionRequest', 'create', action); // new Socket event
 		this.props.closeNew();	
 	}

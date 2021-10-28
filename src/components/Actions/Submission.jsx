@@ -36,7 +36,6 @@ class Submission extends Component {
 		// 	localStorage.setItem('selectedActionStateGW', JSON.stringify(this.state));
 		// };
 		if (this.props.sumbission !== prevProps.sumbission) {
-			console.log(this.props.action.name)
 			this.setState({ 
 				effort: this.props.sumbission.effort,
 				assets: this.props.sumbission.assets,

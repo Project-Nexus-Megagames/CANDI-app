@@ -61,7 +61,8 @@ class ActionList extends Component {
 							))}
 						</List>}						
 
-					{!this.props.myCharacter.tags.some(el => el === 'Control') && <List hover size="sm" >
+					{!this.props.myCharacter.tags.some(el => el === 'Control') && 
+					<List hover size="sm" >
 					{this.props.myActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions </h5>}
 						{this.props.myActions.filter(action => action.round === round).map((action, index) => ( // .filter(el => el.round === round)
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action, (index % 2))}>
