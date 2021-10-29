@@ -35,7 +35,7 @@ import Leaderboard from './components/Control/Leaderboard';
 // React App Component
 initUpdates()
 const App = (props) => {
-  console.log(`App Version: ${props.version}`);
+  // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
   const { loadChar, loadAssets, loadGamestate, login, user, loadLocations, myCharacter, version } = props;
   useEffect(() => {
@@ -84,7 +84,6 @@ const App = (props) => {
   }, [loadChar, loadAssets, loadGamestate, loadLocations])
 
   const quack = () => {
-    console.log('hello')
     const audio = new Audio('/killsound.wav');
     audio.loop = false;
     audio.volume = 0.15;

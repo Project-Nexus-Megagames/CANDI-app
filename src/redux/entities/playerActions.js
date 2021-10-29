@@ -48,7 +48,7 @@ const slice = createSlice({
     },
     playerActionUpdated: (playerActions, action) => {
       console.log(`${action.type} Dispatched`)
-      console.log(`Payload : ${action.payload._id}`)
+      //console.log(`Payload : ${action.payload._id}`)
       const index = playerActions.list.findIndex(el => el._id === action.payload._id);
       playerActions.list[index] = action.payload;
       playerActions.loading = false;
@@ -85,8 +85,9 @@ export const getMyActions = createSelector(
 export const filteredActions = createSelector(
   state => state.actions.filter,
   state => state.actions.list,
-  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.name.toLowerCase().includes(filter.toLowerCase()) || 
-  action.submission.intent.toLowerCase().includes(filter.toLowerCase()) 
+  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.creator.characterTitle.toLowerCase().includes(filter.toLowerCase()) || action.name.toLowerCase().includes(filter.toLowerCase()) || 
+   action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  || 
+   action.submission.intent.toLowerCase().includes(filter.toLowerCase()) 
   )
 );
 

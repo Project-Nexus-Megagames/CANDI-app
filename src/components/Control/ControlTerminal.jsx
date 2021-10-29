@@ -55,7 +55,8 @@ class ControlTerminal extends Component {
 		let ready = 0;
 		for (const action of this.props.actions.filter(el => el.round === this.props.gamestate.round)) {
 			if (action.results.length === 0) drafts++;
-			else ready++;
+			else if (action.results[0].ready) ready++;
+			else awaiting++;
 		}
 		this.setState({ formValue, drafts, awaiting, ready, characters: {...this.props.characters} })
 	}
@@ -91,12 +92,15 @@ class ControlTerminal extends Component {
 				</div>
 				<div style={{height: '15vh'}}>
 				<FlexboxGrid>
-					<FlexboxGrid.Item colspan={12}>
+					<FlexboxGrid.Item colspan={8}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Drafts'> {this.state.drafts} </Panel>
 					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={12}>
-						<Panel bordered style={{backgroundColor: '#272b34'}} header='Ready for Publishing'> {this.state.ready} </Panel>			
+					<FlexboxGrid.Item colspan={8}>
+						<Panel bordered style={{backgroundColor: '#272b34'}} header='Actions with Draft Resolution'> {this.state.awaiting} </Panel>			
 					</FlexboxGrid.Item>					
+					<FlexboxGrid.Item colspan={8}>
+						<Panel bordered style={{backgroundColor: '#272b34'}} header='Resolutions Ready for Publishing'> {this.state.ready} </Panel>			
+					</FlexboxGrid.Item>		
 				</FlexboxGrid>					
 				</div>
 				<div  style={{height: '15vh'}}>

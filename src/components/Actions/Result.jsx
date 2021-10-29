@@ -88,6 +88,17 @@ class Result extends Component {
 		// this.setState({ resEdit: false });
 	}
 
+	handleReady = async () => {
+		const data = {
+			id: this.props.selected._id,
+			result: {
+				ready: !this.props.result.ready,
+				id: this.props.result._id
+			},
+		}
+		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
+	}
+
 	render() { 
 		return ( 
 			<div style={{ 	border: '3px solid #00a0bd', borderRadius: '5px' }} >
@@ -106,6 +117,7 @@ class Result extends Component {
 					<FlexboxGrid.Item colspan={4}>
 						{this.props.myCharacter.tags.some(el => el === 'Control') && <ButtonToolbar>
 							<ButtonGroup>
+								<IconButton size='xs' onClick={() => this.handleReady()} color={this.props.result.ready ? 'green' : 'orange'} icon={this.props.result.ready ? <Icon icon="check"/> : <Icon icon="close"/>} />
 								<IconButton size='xs' onClick={() => this.setState({ resEdit: true })} color='blue' icon={<Icon icon="pencil" />} />
 								<IconButton size='xs' onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} />
 							</ButtonGroup>							
@@ -192,10 +204,6 @@ class Result extends Component {
 	isDisabled () {
 		if (this.state.description.length < 10 || this.state.dice.length < 1) return true;
 		else return false;
-	}
-
-	handleResultSubmit = async () => {
-
 	}
 
 	closeResult = () => { 
