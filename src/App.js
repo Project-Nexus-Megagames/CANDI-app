@@ -31,6 +31,7 @@ import Bitsy from './components/Navigation/Bitsy';
 import myCharacter from './components/MyCharacters/myCharacter';
 import Down from './components/Navigation/Down';
 import Leaderboard from './components/Control/Leaderboard';
+import { signOut } from './redux/entities/auth';
 
 // React App Component
 initUpdates()
@@ -75,6 +76,10 @@ const App = (props) => {
             break;
           case 'success':
             Alert.success(data.message, 6000);
+            break;
+          case 'logout':
+            console.log
+            window.location.reload(false);
             break;
           default:
             Alert.info(data.message, 6000);
@@ -158,7 +163,8 @@ const mapDispatchToProps = (dispatch) => ({
   loadChar: (data) => dispatch(loadCharacters()),
 	loadAssets: (data) => dispatch(loadAssets()),
   loadLocations: (data) => dispatch(loadLocations()),
-	loadGamestate: (data) => dispatch(loadGamestate())
+	loadGamestate: (data) => dispatch(loadGamestate()),
+	logOut: () => dispatch(signOut()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

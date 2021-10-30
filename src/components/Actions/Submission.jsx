@@ -78,10 +78,10 @@ class Submission extends Component {
 						</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={4}>
-							{this.props.myCharacter._id ===this.props.action.creator._id && <ButtonToolbar>
+							{(this.props.myCharacter._id ===this.props.action.creator._id || this.props.myCharacter.tags.some(el => el === 'Control')) && <ButtonToolbar>
 								<ButtonGroup>
-									<IconButton disabled={this.props.gamestate.status !== 'Active' || this.props.gamestate.round > this.props.action.round} size='xs'  onClick={() => this.setState({ edit: true })} color='blue' icon={<Icon icon="pencil" />} />
-									<IconButton disabled={this.props.gamestate.status !== 'Active' || this.props.gamestate.round > this.props.action.round} size='xs'  onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} /> 
+									<IconButton disabled={(this.props.gamestate.status !== 'Active' || this.props.gamestate.round > this.props.action.round) && !this.props.myCharacter.tags.some(el => el === 'Control')} size='xs'  onClick={() => this.setState({ edit: true })} color='blue' icon={<Icon icon="pencil" />} />
+									<IconButton disabled={(this.props.gamestate.status !== 'Active' || this.props.gamestate.round > this.props.action.round) && !this.props.myCharacter.tags.some(el => el === 'Control')} size='xs'  onClick={() => this.setState({ deleteWarning: true })} color='red' icon={<Icon icon="trash2" />} /> 
 								</ButtonGroup>							
 							</ButtonToolbar>}
 						</FlexboxGrid.Item>
