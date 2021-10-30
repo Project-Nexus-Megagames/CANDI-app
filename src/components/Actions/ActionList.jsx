@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {List, FlexboxGrid, Container, } from 'rsuite';
+import {List, FlexboxGrid, Container, Tag } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { getMyActions, filteredActions, loadAllActions } from '../../redux/entities/playerActions';
 
@@ -49,12 +49,20 @@ class ActionList extends Component {
 						<List hover size="sm" >
 							{/* <h5 >Control List</h5> */}
 							{this.props.filteredActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions</h5>}
-							{this.props.filteredActions.filter(action => action.round === round).map((action, index) => ( // .filter(el => el.round === round)
+							{this.props.filteredActions.filter(action => action.round === round).sort((a, b) => { // sort the catagories alphabetically 
+												if(a.creator.characterTitle < b.creator.characterTitle) { return -1; }
+												if(a.creator.characterTitle > b.creator.characterTitle) { return 1; }
+												return 0;
+											}).map((action, index) => ( // .filter(el => el.round === round)
 								<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action, (index % 2))}>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 											<div style={titleStyle}>{action.name}</div>
-											<b style={slimText}>{action.creator.characterTitle}</b>
+											<b style={slimText}>
+												{action.creator.characterTitle} - 
+												{action.results.length > 0 && action.results[0].ready && <Tag color='green'>R Ready</Tag>}
+												{action.results.length > 0 && action.results[0].ready === false && <Tag color='orange'>R Draft</Tag>}
+												</b>
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
