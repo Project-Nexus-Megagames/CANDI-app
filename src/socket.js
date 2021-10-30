@@ -7,7 +7,7 @@ const socket = io(URL, { autoConnect: false });
 
 // DEBUG event showing any event thrown over the socket in console
 socket.onAny((event, ...args) => {
-  console.log(event);
+  console.log(args);
 });
 
 export function initConnection(user, character, version) {
