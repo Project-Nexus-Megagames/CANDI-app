@@ -67,6 +67,8 @@ const App = (props) => {
     loadLocations();
     loadGamestate();
 
+    console.log(socket)
+
     socket.on('alert', (data) => {
       if (data) {
         switch(data.type) {

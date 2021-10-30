@@ -62,6 +62,10 @@ const slice = createSlice({
 			auth.lastLogin = null;
 			auth.error = null;
 		},
+    usersRecieved: (auth, action) => {
+      console.log(`${action.type} Dispatched`)
+      auth.users = action.payload
+    },
 		updateUser: (auth, action) => {
 			console.log(`${action.type} Dispatched`);
 			auth.user = action.payload.user;
