@@ -67,7 +67,10 @@ const App = (props) => {
     loadLocations();
     loadGamestate();
 
-    console.log(socket)
+    socket.onAny((event, ...args) => {
+      console.log(args);
+    });
+
 
     socket.on('alert', (data) => {
       if (data) {
