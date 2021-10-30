@@ -78,7 +78,6 @@ const App = (props) => {
             Alert.success(data.message, 6000);
             break;
           case 'logout':
-            console.log
             window.location.reload(false);
             break;
           default:
