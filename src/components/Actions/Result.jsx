@@ -125,7 +125,7 @@ class Result extends Component {
 					</FlexboxGrid.Item>
 				</FlexboxGrid>	
 
-				<Panel shaded style={{ padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
+				{(this.props.myCharacter.tags.some(el => el === 'Control') || this.props.result.status === 'Public') && <Panel shaded style={{ padding: "0px", textAlign: "left", backgroundColor: "#15181e", whiteSpace: 'pre-line'}}>
 				<ReactMarkdown children={this.props.result.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 					{/* <p style={slimText}>
 							{this.props.result.description}	
@@ -133,7 +133,7 @@ class Result extends Component {
 						{/* <p style={slimText}>
 							{this.props.result.dice}	
 						</p> */}
-				</Panel>	
+				</Panel>	}
 
 			<Modal overflow
 			style={{ width: '90%' }}
