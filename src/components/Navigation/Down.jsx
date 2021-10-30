@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, ButtonGroup, Content, FlexboxGrid } from 'rsuite';
+import { Button, ButtonGroup, Content, FlexboxGrid, Loader } from 'rsuite';
 import { signOut } from '../../redux/entities/auth';
 // const { Circle } = Progress;
 
@@ -18,7 +18,7 @@ class Down extends Component {
                 </FlexboxGrid>
             </Content>
             <p>CANDI is offline for maintenence. Please check in Discord for annoncements regarding this down time.</p>
-			{this.props.user.roles.some(el=> el === 'Control') && <div>
+			{this.props.user && this.props.user.roles.some(el=> el === 'Control') && <div>
 				<p>... unless you are control. Which if you can read this, you are. Go right in but shit might break yo</p>
 				<Button onClick={()=> this.props.history.push('/control')}>Take me to Control Terminal</Button>
 				<Button onClick={()=> this.props.history.push('/actions')}>Take me to Actions</Button>
