@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={24} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px', height: '30vh' }} src='https://c.tenor.com/8k9yFg-2jrgAAAAC/halloween-pumpkin.gif'  alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px', height: '30vh' }} src={spook[rand]}  alt={'Loading...'} onClick={()=> this.bored()} />  
                     {/* src={spook[rand]} */}
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
@@ -167,9 +167,53 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Loading);
 
+
 const spook = [
-'https://64.media.tumblr.com/1e2d8e69846451ed7c7975b1329c1385/tumblr_inline_pas1tk2i871vk3kbi_400.gifv'
+    'https://media4.giphy.com/media/tJMVqwkdUIuL0Eiam3/source.gif',
+    'https://media2.giphy.com/media/l0HlCkojKEiPhw86Y/giphy.gif',
+    'https://media2.giphy.com/media/65Mt9P22p2zMzpDPZ7/giphy.gif',
+    'https://media4.giphy.com/media/3o7TKpmHsAZiTTekve/giphy.gif',
+    'https://media1.giphy.com/media/12mbWQRCFxOzp6/giphy.gif',
+    'https://media1.giphy.com/media/UrljInRDir27u/giphy.gif',
+    'https://media4.giphy.com/media/b04Dkxq5AUOCA/giphy.gif',
+    'https://media0.giphy.com/media/9V8Zkw4N7wef4wVTMj/giphy.gif',
+    'https://media0.giphy.com/media/3o7TKFiWSXV7JjjLFu/giphy.gif',
+    'https://media0.giphy.com/media/26BRCc2VNkdZ5tjvG/giphy.gif',
+    'https://media4.giphy.com/media/QBkBsqCs1fzB6lWtAg/giphy.gif',
+    'https://media3.giphy.com/media/1wqpNgYn6Ioi5KFpYu/giphy.gif',
+    'https://media3.giphy.com/media/NReptqJMy4AEqVBMLy/giphy.gif',
+    'https://media3.giphy.com/media/dAROqk8Rj2hijvQSZ6/giphy.gif',
+    'https://media2.giphy.com/media/J3FG7OCZ41ECEGg5xK/giphy.gif',
+    'https://media0.giphy.com/media/26BRxmqeqsRPBBOpy/giphy.gif',
+    'https://media3.giphy.com/media/1NTrtg7jDz8XwSObFE/giphy.gif',
+    'https://media1.giphy.com/media/623LlMM8HuzF2gD12N/giphy.gif',
+    'https://media0.giphy.com/media/WFk0kxBWUgDjgmN2G9/giphy.gif',
+    'https://media4.giphy.com/media/26xBtwZMRHvhP4WAM/giphy.gif',
+    'https://media3.giphy.com/media/dt0T8TI3Kizyctrxh9/giphy.gif',
+    'https://media4.giphy.com/media/kbnUIUVY7YHNhe5tbb/giphy.gif',
+    'https://media0.giphy.com/media/1qk24adSnJ1OOJLpZM/giphy.gif',
+    'https://media3.giphy.com/media/hS9SwD4UcQH5OJBeV4/giphy.gif',
+    'https://i.imgur.com/vxfXBNl.gif',
+    'https://media1.giphy.com/media/1wlWr2HGewrBcLAAQ0/giphy.gif',
+    'https://media3.giphy.com/media/1qj35KDHtfyLn8bwqh/giphy.gif',
+    'https://media0.giphy.com/media/1zi2j6wyS4LQLJahuJ/giphy.gif',
+    'https://media3.giphy.com/media/l3fQ6Fh6Ze3rMXn4A/giphy.gif',
+    'https://media4.giphy.com/media/uBy3vPgqr6zPuZjLzC/giphy.gif',
+    'https://media1.giphy.com/media/39jP8ygazzD3RQ2MpE/giphy.gif',
+    'https://media1.giphy.com/media/l0MYzoJm5MTpmiqd2/giphy.gif?cid=ecf05e47b8e1e8u4a4zom62y0n8jmo9qxapszq2o39s4h97w&rid=giphy.gif',
+    'https://media0.giphy.com/media/ec4eYyyV3lDdZQN3tM/giphy.gif',
+    'https://media.giphy.com/media/KfHdqUYph81ult6hiP/giphy.gif',
+    'https://media.giphy.com/media/U7yEG153QrpXnviwWd/giphy.gif',
+    'https://media0.giphy.com/media/iIYWG1FvZCv5FJS6iY/giphy.gif', //ouiji video call
+    'https://media.giphy.com/media/gI6SlmfHfmRd2imYAD/giphy.gif',
+    'https://media.giphy.com/media/lMwyhPnj7Xp2adc5qp/giphy.gif',
+    'https://media.giphy.com/media/f7N10M1qz4I2M29DNP/giphy.gif'
 ]
+
+
+// const victoria = [
+// 'https://64.media.tumblr.com/1e2d8e69846451ed7c7975b1329c1385/tumblr_inline_pas1tk2i871vk3kbi_400.gifv'
+// ]
 
 const bored = [
     'https://www.youtube.com/watch?v=QSS3GTmKWVA', // Freddie Mercury gets Trapped in a Slide and Calls out for Mamma (ASMR)
