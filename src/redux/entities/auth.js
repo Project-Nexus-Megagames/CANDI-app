@@ -81,7 +81,8 @@ export const {
 	loginSocket,
 	clearAuthError,
 	signOut,
-	updateUser
+	updateUser,
+  usersRecieved
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export

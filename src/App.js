@@ -31,7 +31,7 @@ import Bitsy from './components/Navigation/Bitsy';
 import myCharacter from './components/MyCharacters/myCharacter';
 import Down from './components/Navigation/Down';
 import Leaderboard from './components/Control/Leaderboard';
-import { signOut } from './redux/entities/auth';
+import { signOut, usersRecieved } from './redux/entities/auth';
 
 // React App Component
 initUpdates()
@@ -68,7 +68,7 @@ const App = (props) => {
     loadGamestate();
 
     socket.onAny((event, ...args) => {
-      console.log(args);
+      props.usersRecieved(...args);
     });
 
 
@@ -168,6 +168,7 @@ const mapDispatchToProps = (dispatch) => ({
 	loadAssets: (data) => dispatch(loadAssets()),
   loadLocations: (data) => dispatch(loadLocations()),
 	loadGamestate: (data) => dispatch(loadGamestate()),
+	usersRecieved: (data) => dispatch(usersRecieved(data)),
 	logOut: () => dispatch(signOut()),
 });
 

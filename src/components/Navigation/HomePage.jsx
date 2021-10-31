@@ -19,6 +19,7 @@ import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 import MobileHomePage from './MobileHomePage';
 import { Link } from 'react-router-dom';
+import UserList from './UserList';
 
 const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
@@ -100,7 +101,8 @@ const HomePage = (props) => {
 								<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 								<Dropdown.Item onSelect={()=> handleLogOut()}>Log Out</Dropdown.Item>
 								<Dropdown.Item onSelect={()=> props.toggleDuck()}>Quack</Dropdown.Item>
-							</Dropdown>					
+							</Dropdown>			
+							
 						</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={22}>
 						<div>
@@ -111,15 +113,18 @@ const HomePage = (props) => {
 							{(clock.days + clock.hours + clock.minutes <= 0) && <p>Game Status: {props.gamestate.status}</p>}	
 						</div>									
 					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+					<FlexboxGrid.Item colspan={1}>
+					{props.myCharacter.tags.some(el=> el === 'Control') &&	<UserList />	}
+					</FlexboxGrid.Item>
 				</FlexboxGrid>
 
 				<div style={{  height: 'calc(100vh - 50px)', }}>
 				<FlexboxGrid justify="center">
 					<FlexboxGrid.Item colspan={14}>
 						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
-									<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
-									<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>Version: {props.version}</p>
+							<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
+							<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>Version: {props.version}</p>
+							
 						</div>
 					</FlexboxGrid.Item>
 
