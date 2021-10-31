@@ -100,7 +100,7 @@ const HomePage = (props) => {
 								<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
 								<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 								<Dropdown.Item onSelect={()=> handleLogOut()}>Log Out</Dropdown.Item>
-								<Dropdown.Item onSelect={()=> props.toggleDuck()}>Quack</Dropdown.Item>
+								<Dropdown.Item onSelect={()=> props.toggleDuck()}>Spook</Dropdown.Item>
 							</Dropdown>			
 							
 						</FlexboxGrid.Item>

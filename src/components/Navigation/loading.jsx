@@ -37,7 +37,8 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={24} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px', height: '30vh' }} src={spook[rand]} alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px', height: '30vh' }} src='https://c.tenor.com/8k9yFg-2jrgAAAAC/halloween-pumpkin.gif'  alt={'Loading...'} onClick={()=> this.bored()} />  
+                    {/* src={spook[rand]} */}
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
                 <FlexboxGrid  justify="center" >

@@ -43,7 +43,7 @@ const slice = createSlice({
       gamestate.list.push(action.payload);
     },
     toggleDuck: (gamestate, action) => {
-      console.og(`${action.type} Dispatched`)
+      console.log(`${action.type} Dispatched`)
       gamestate.duck = !gamestate.duck;
     }
   }
