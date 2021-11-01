@@ -120,17 +120,18 @@ const HomePage = (props) => {
 
 				<div style={{  height: 'calc(100vh - 50px)', }}>
 				<FlexboxGrid justify="center">
+				
 					<FlexboxGrid.Item colspan={14}>
 						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
 							<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
 							<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>Version: {props.version}</p>
-							
 						</div>
 					</FlexboxGrid.Item>
+					
 
 					<FlexboxGrid.Item colspan={10}>
 					<Link to={'actions'}>
-      		  <div style={{ border: "5px solid #ff66c4", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '44vh', overflow: 'hidden' }}>
+      		  <div style={{ border: "5px solid #ff66c4", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '45vh', overflow: 'hidden' }}>
             
          	   <div className="container">
          	       <img src={test} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             

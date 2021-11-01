@@ -68,7 +68,10 @@ const App = (props) => {
     loadGamestate();
 
     socket.onAny((event, ...args) => {
-      props.usersRecieved(...args);
+      console.log(event)
+      if (event === 'clients') {
+        props.usersRecieved(...args);
+      }
     });
 
 

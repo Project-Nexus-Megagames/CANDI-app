@@ -151,6 +151,14 @@ class AddAsset extends Component {
 
 const godPickerData = [
 	{
+		label: 'Condemned',
+		value: 'Condemned',
+	},
+	{
+		label: 'Disfavored ',
+		value: 'Disfavored ',
+	},
+	{
 		label: 'Neutral',
 		value: 'Neutral',
 	},
@@ -169,6 +177,14 @@ const godPickerData = [
 ]
 
 const mortalPickerData = [
+	{
+		label: 'Loathing',
+		value: 'Loathing',
+	},
+	{
+		label: 'Unfriendly',
+		value: 'Unfriendly',
+	},
 	{
 		label: 'Neutral',
 		value: 'Neutral',
