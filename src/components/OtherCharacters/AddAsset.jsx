@@ -53,6 +53,7 @@ class AddAsset extends Component {
 				description: this.state.formValue.description,	
 				type: this.state.formValue.type,
 				uses: this.state.formValue.uses,
+				dice: this.state.formValue.dice,
 				level: this.state.formValue.level,
 				owner: this.props.character.characterName,
 				ownerCharacter: this.props.character._id,
