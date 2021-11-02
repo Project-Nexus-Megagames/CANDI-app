@@ -151,7 +151,7 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={LeaderBoard} disabled={!props.myCharacter.tags.some(el => el === 'Control')} to='leaderboard' title='Leaderboard' body='Disabled until Round 2...'/> 
+						<ImgPanel img={LeaderBoard} to='leaderboard' title='Leaderboard' body=''/> 
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
