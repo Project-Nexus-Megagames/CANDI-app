@@ -9,6 +9,7 @@ import socket from '../../socket';
 import NewCharacter from '../Control/NewCharacter'; 
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
+import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 
 const { HeaderCell, Cell, Column, } = Table;
 
@@ -337,17 +338,17 @@ const  OtherCharacters = (props) => {
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={8}>
 								<Panel bordered style={{backgroundColor: '#272b34'}} header='Preferred'>
-									{props.assets.filter(el => el.with === selected._id && el.level === 'Preferred').length}
+									{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Preferred').length}
 								</Panel>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
 								<Panel bordered style={{backgroundColor: '#272b34'}} header='Favoured'>
-									{props.assets.filter(el => el.with === selected._id && el.level === 'Favoured').length}
+									{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Favoured').length}
 								</Panel>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
 								<Panel bordered style={{backgroundColor: '#272b34'}} header='Blessed'>
-									{props.assets.filter(el => el.with === selected._id && el.level === 'Blessed').length}
+									{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Blessed').length}
 								</Panel>
 							</FlexboxGrid.Item>						
 						</FlexboxGrid>
@@ -359,17 +360,17 @@ const  OtherCharacters = (props) => {
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={8}>
 								<Panel bordered style={{backgroundColor: '#272b34'}} header='Warm'>
-									{props.assets.filter(el => el.with === selected._id && el.level === 'Warm').length}
+									{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Warm').length}
 								</Panel>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
 								<Panel bordered style={{backgroundColor: '#272b34'}} header='Friendly'>
-									{props.assets.filter(el => el.with === selected._id && el.level === 'Friendly').length}
+									{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Friendly').length}
 								</Panel>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={8}>
 								<Panel bordered style={{backgroundColor: '#272b34'}} header='Bonded'>
-									{props.assets.filter(el => el.with === selected._id && el.level === 'Bonded').length}
+									{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Bonded').length}
 								</Panel>
 							</FlexboxGrid.Item>						
 						</FlexboxGrid>
@@ -454,6 +455,8 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	assets: state.assets.list,
+	godBonds: getGodBonds(state),
+	mortalBonds: getMortalBonds(state),
 	login: state.auth.login,
 	characters: state.characters.list,
 	duck: state.gamestate.duck,
