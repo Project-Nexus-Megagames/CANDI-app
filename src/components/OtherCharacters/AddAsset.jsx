@@ -156,8 +156,8 @@ const godPickerData = [
 		value: 'Condemned',
 	},
 	{
-		label: 'Disfavored ',
-		value: 'Disfavored ',
+		label: 'Disfavoured',
+		value: 'Disfavoured',
 	},
 	{
 		label: 'Neutral',

@@ -15,7 +15,8 @@ const  Leaderboard = (props) => {
 			// console.log(char.characterName)
 			let charBonds = bonds.filter(bond => bond.ownerCharacter === char._id );
 
-			const Justice = calculate(charBonds, ['Zeus', 'Hera']);
+			// console.log('===Justice===')
+			const Justice = calculate(charBonds, ['Zeus', 'Hera']); 
 			const Trickery = calculate(charBonds, ['Hermese']);
 			const Balance = calculate(charBonds, ['Demeter']);
 			const Hedonism = calculate(charBonds, ['Dionysus']);
@@ -23,9 +24,10 @@ const  Leaderboard = (props) => {
 			const Arts = calculate(charBonds, ['Apollo']);
 			const Sporting = calculate(charBonds, ['Artemis']);
 			const Fabrication = calculate(charBonds, ['Hephaestus']);
+			// console.log('===Scholarship===')
 			const Scholarship = calculate(charBonds, ['Athena']);
 			const Pugilism = calculate(charBonds, ['Hephaestus']);
-			const Glory = calculate(charBonds, ['Zeus', 'Hades', 'Poseiden']);
+			// const Glory = calculate(charBonds, ['Zeus', 'Hades', 'Poseiden']);
 
 			// console.log(Scholarship)
 			// console.log(Scholarship + char.Scholarship)
@@ -42,7 +44,18 @@ const  Leaderboard = (props) => {
         Fabrication: Fabrication + char.Fabrication,
         Scholarship: Scholarship + char.Scholarship,
         Pugilism: Pugilism + char.Pugilism,
-        Glory: Glory + char.Glory,
+        // Glory: Glory + char.Glory,
+				originalJustice: char.Justice,
+        originalTrickery: char.Trickery,
+        originalBalance: char.Balance,
+        originalHedonism: char.Hedonism,
+        originalBonding: char.Bonding,
+        originalArts: char.Arts,
+        originalSporting: char.Sporting,
+        originalFabrication: char.Fabrication,
+        originalScholarship: char.Scholarship,
+        originalPugilism: char.Pugilism,
+        // originalGlory: char.Glory,
 			}
 			array.push(character)
 			// console.log(array[0]);
@@ -51,14 +64,26 @@ const  Leaderboard = (props) => {
 		setCopy(array);
 	}, []);
 
-	const calculate = (charBonds, gods) => {
+	const calculate = (charBonds, gods, show) => {
 		let array = charBonds.filter(bond => gods.some(god => god === bond.with.characterName));
+		if (show && show === 'Martin Keene') {
+			console.log(show)
+			console.log(`Preferred: + ${(array.filter(el => el.level=== 'Preferred').length)}`);
+			console.log(`Favoured + ${(array.filter(el => el.level === 'Favoured').length * 3)}`);
+			console.log(`Blessed + ${(array.filter(el => el.level === 'Blessed').length * 6)}`);
+			console.log(`Bonded + ${(array.filter(el => el.level === 'Bonded').length * 3)}`);
+			console.log(`Disfavoured - ${(array.filter(el => el.level === 'Disfavoured').length )}`);
+			console.log(`Condemned - ${(array.filter(el => el.level === 'Condemned').length ) * 3}\n`);		
+			console.log()	
+		}
+
+
 		return (
 		(array.filter(el => el.level=== 'Preferred').length) +
-		(array.filter(el => el.level === 'Favored').length * 3) +
+		(array.filter(el => el.level === 'Favoured').length * 3) +
 		(array.filter(el => el.level === 'Blessed').length * 6) +
 		(array.filter(el => el.level === 'Bonded').length * 3) -
-		(array.filter(el => el.level === 'Disavowed').length ) -
+		(array.filter(el => el.level === 'Disfavoured').length ) -
 		(array.filter(el => el.level === 'Condemned').length * 3))
 	}
 	
@@ -87,7 +112,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Justice}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Justice} ({character.originalJustice})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -110,7 +137,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Trickery}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Trickery} ({character.originalTrickery})
+												</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -133,7 +162,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Balance}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Balance} ({character.originalBalance})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -156,7 +187,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Hedonism}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Hedonism} ({character.originalHedonism})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -179,7 +212,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Bonding}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Bonding} ({character.originalBonding})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -202,7 +237,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Arts}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Arts} ({character.originalArts})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -225,7 +262,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Sporting}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Sporting} ({character.originalSporting})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -248,7 +287,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Fabrication}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Sporting} ({character.originalSporting})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -271,7 +312,9 @@ const  Leaderboard = (props) => {
 											{character.characterName}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && character.Scholarship}
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Scholarship} ({character.originalScholarship})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
@@ -294,7 +337,9 @@ const  Leaderboard = (props) => {
 												{character.characterName}
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={2}>
-												{props.myCharacter.tags.some(el => el === 'Control') && character.Pugilism}
+												{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Sporting} ({character.originalSporting})
+											</div>}
 											</FlexboxGrid.Item>
 										</FlexboxGrid>
 									</List.Item>

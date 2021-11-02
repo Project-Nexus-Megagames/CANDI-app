@@ -116,6 +116,14 @@ class ModifyResource extends Component {
 
 const godPickerData = [
 	{
+		label: 'Condemned',
+		value: 'Condemned',
+	},
+	{
+		label: 'Disfavoured',
+		value: 'Disfavoured',
+	},
+	{
 		label: 'Neutral',
 		value: 'Neutral',
 	},
@@ -127,13 +135,21 @@ const godPickerData = [
 		label: 'Favoured',
 		value: 'Favoured'
 	},
-    {
+  {
 		label: 'Blessed',
 		value: 'Blessed'
 	},
 ]
 
 const mortalPickerData = [
+	{
+		label: 'Loathing',
+		value: 'Loathing',
+	},
+	{
+		label: 'Unfriendly',
+		value: 'Unfriendly',
+	},
 	{
 		label: 'Neutral',
 		value: 'Neutral',
@@ -152,36 +168,6 @@ const mortalPickerData = [
 	},
 ]
 
-const pickerData = [
-	{
-		label: 'Asset',
-		value: 'Asset'
-	},
-	{
-		label: 'Trait',
-		value: 'Trait'
-	},
-	{
-		label: 'Wealth',
-		value: 'Wealth'
-	},
-	{
-		label: 'GodBond',
-		value: 'GodBond'
-	},
-	{
-		label: 'MortalBond',
-		value: 'MortalBond'
-	},
-	{
-		label: 'Territory',
-		value: 'Territory'
-	},
-	{
-		label: 'Power',
-		value: 'Power'
-	}
-]
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
