@@ -25,6 +25,7 @@ import {
   Row,
   List,
   TagGroup,
+  Sidebar,
 } from "rsuite";
 import { getMyCharacter } from "../../redux/entities/characters";
 import { assetLent, assetUpdated, getMyAssets } from "../../redux/entities/assets";
@@ -133,7 +134,7 @@ class MyCharacter extends Component {
       return <Loader inverse center content="doot..." />;
     }
     return (
-      <Content style={{ overflow: "auto", height: "94vh", }}>
+      <Content >
       <NavigationBar/>
         <Grid fluid>
           <Row>
@@ -203,16 +204,17 @@ class MyCharacter extends Component {
                 </Form>
               </Panel>
             </Col>
-            <Col xs={24} sm={24} md={8} className="gridbox">
+            <Col >
+            <div >
+            <List xs={24} sm={24} md={8} hover autoScroll size="lg" style={{ height: 'calc(100vh - 50px)', scrollbarWidth: 'none', borderLeft: '1px solid rgba(255, 255, 255, 0.12)', overflow: 'scroll'}}>
+              {this.renderList('Asset', 'indigo')}
+              {this.renderList('Trait', 'teal')}
+              {this.renderList('Power', 'purple')}
+              {this.renderList('GodBond', 'brown')}
+              {this.renderList('MortalBond', '#985cad')}
 
-            <Divider>Resources</Divider>
-            {this.renderList('Asset')}
-            {this.renderList('Trait')}
-            {this.renderList('Power')}
-            {this.renderList('GodBond')}
-            {this.renderList('MortalBond')}
-
-
+            </List>	
+            </div>
             </Col>
           </Row>
         </Grid>
@@ -251,24 +253,21 @@ class MyCharacter extends Component {
     );
   }
 
-  renderList = (type) => {
+  renderList = (type, color) => {
     return (
-      <div>
-        <h5 style={{ backgroundColor: '#746d75' }}>{type}s</h5>
-          <List autoScroll hover size="md" style={{ scrollbarWidth: 'none', overflow: 'auto', borderLeft: '1px solid rgba(255, 255, 255, 0.12)'}}>
+      <div >
+        <h5 style={{ backgroundColor: color }}>{type}s</h5>
             {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).length === 0 && <List.Item>No {type}s</List.Item>}
             {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).map((asset, index) => (
               <List.Item style={{ textAlign: "center", cursor: 'pointer' }} onClick={() => this.openInfo(asset)}>
-                {asset.status.lendable && <FlexboxGrid>
-                <Affix>
+                {asset.status.lendable && <div>
+
+                    <b>{asset.name}</b>
+                    <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{asset.description}</p>
+                   
                   {asset.status.lent && this.rednerHolder(asset)}
                   {!asset.status.lent && <Tag color="green">Ready</Tag>}
                   {asset.status.lent && this.findOwner(asset._id)}
-                </Affix>
-                  <FlexboxGrid.Item colspan={20}>
-                    <p>{asset.description}</p>
-                  </FlexboxGrid.Item>
-                  <FlexboxGrid.Item style={{ textAlign: "center" }} colspan={4}>
                     {!asset.status.lent && (
                       <Button
                         onClick={() => this.openLend(asset)}
@@ -288,17 +287,17 @@ class MyCharacter extends Component {
                         Un-Lend
                       </Button>
                     )}
-                  </FlexboxGrid.Item>
-                </FlexboxGrid>}
+                </div>}
                 {!asset.status.lendable && <div>
                   <b>{asset.name}</b>
+                  <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{asset.description}</p>
                   {(type === 'GodBond' || type === 'MortalBond') && 
-                  <p>{asset.level}</p>}
+                  <b>Level: {asset.level}</b>}
                   </div>}
                 {asset.uses !== 999 && <p>Uses: {asset.uses}</p>}
+                {asset.uses === 999 && <p>Uses: Unlimited</p>}
               </List.Item>
             ))} 
-            </List>	
       </div>
     )
   };
