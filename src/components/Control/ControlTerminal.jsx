@@ -79,18 +79,26 @@ class ControlTerminal extends Component {
 		return ( 
 			<Content style={{style1}}>
 				<NavigationBar />
-				<div style={{height: '10vh'}} >
-
-					<Divider>Scott's Message of the Day:</Divider>
-					Well this is just a hot mess on the back end. Sorry to Control, but I do not have enough love to give to both the Front end and the Control Terminal
-					{this.props.badCharacters.length > 0 && <div>
-						<h5>There are {this.props.badCharacters.length} characters with bad email/pronouns</h5>
-						{this.props.badCharacters.map((bad, index) => (
-							<Tag color='red'>{bad.characterName}</Tag>
-						))}
-					</div>}					
+				<div>
+					
+					<Panel>
+						<ButtonGroup >
+							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
+							<Button appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
+							<Button appearance="ghost" onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
+							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
+							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
+							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
+							{/* <Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button> */}
+							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
+							<Button color='violet' appearance="ghost" onClick={() => this.props.history.push('/registration')}>Registration</Button>
+							<Button color='violet' appearance="ghost" onClick={() => socket.emit('assetRequest', 'unhide' )}>Unhide all Assets</Button>
+						</ButtonGroup>
+					</Panel>			
 				</div>
+
 				<div style={{height: '15vh'}}>
+					Actions
 				<FlexboxGrid>
 					<FlexboxGrid.Item colspan={8}>
 						<Panel bordered style={{backgroundColor: '#272b34'}} header='Drafts'> {this.state.drafts} </Panel>
@@ -103,22 +111,19 @@ class ControlTerminal extends Component {
 					</FlexboxGrid.Item>		
 				</FlexboxGrid>					
 				</div>
-				<div  style={{height: '15vh'}}>
-					<Divider>Editing</Divider>
-					<Panel>
-						<ButtonGroup >
-							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
-							<Button appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
-							<Button appearance="ghost" onClick={() => this.setState({ gsModal: true })} >Edit Game State</Button>
-							<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>Edit or Delete Resources</Button>
-							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
-							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
-							{/* <Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button> */}
-							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
-							<Button color='violet' appearance="ghost" onClick={() => this.props.history.push('/registration')}>Registration</Button>
-						</ButtonGroup>
-					</Panel>			
+
+				<div style={{height: '15vh'}}>
+					Characters
+				<FlexboxGrid>
+				<FlexboxGrid.Item colspan={12}>
+						<Panel bordered style={{backgroundColor: '#272b34'}} header='Zero Efforts'> {this.props.characters.filter(el => el.effort <= 0).length} </Panel>
+					</FlexboxGrid.Item>
+					<FlexboxGrid.Item colspan={12}>
+						<Panel bordered style={{backgroundColor: '#272b34'}} header='Hidden Asssets'> {this.props.assets.filter(el => el.status.hidden === true).length} </Panel>			
+					</FlexboxGrid.Item>					
+				</FlexboxGrid>					
 				</div>
+
         <Toggle onChange={()=> this.setState({ godData: !this.state.godData })} checkedChildren="Mortal" unCheckedChildren="Gods"/>
 				<RelationshipTable godData={this.state.godData} data={this.state.godData ? this.props.godCharacters : this.props.nonPlayerCharacters}  />
 

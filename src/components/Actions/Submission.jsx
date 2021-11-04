@@ -305,7 +305,7 @@ const mapDispatchToProps = (dispatch) => ({
 	actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
 
-const banned = ['Loathing', 'Unfriendly', 'Neutral', 'Preferred', 'Warm',]
+const banned = ['Condemned', 'Disfavoured', 'Loathing', 'Unfriendly', 'Neutral', 'Preferred', 'Warm',]
 
 const slimText = {
 	fontSize: '0.966em',
@@ -318,20 +318,6 @@ const normalText = {
 	fontSize: '.966em',
 	textAlign: "center"
 };
-
-const markdown = `A paragraph with *emphasis* and **strong importance**.
-
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-
-* Lists
-* [ ] todo
-* [x] done
-
-A table:
-
-| a | b |
-| - | - |
-`
 
 const textStyle = {
 	backgroundColor: '#1a1d24', 

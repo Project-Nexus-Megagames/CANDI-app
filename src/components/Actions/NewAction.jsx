@@ -150,7 +150,7 @@ class NewAction extends Component {
 
 }
 
-const banned = ['Loathing', 'Unfriendly', 'Neutral', 'Preferred', 'Warm',]
+const banned = ['Condemned', 'Disfavoured', 'Loathing', 'Unfriendly', 'Neutral', 'Preferred', 'Warm',]
 
 const textStyle = {
 	backgroundColor: '#1a1d24', 
