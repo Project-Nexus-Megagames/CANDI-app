@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, IconButton, Drawer, Button, InputNumber, Input } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, IconButton, Drawer, Button, InputNumber, Input, Toggle } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
-const diabled = ['_id', '__v'];
+const diabled = ['_id', '__v', 'model', 'type'];
 class DynamicForm extends Component {
 	constructor(props) {
     super(props)
@@ -54,6 +54,13 @@ class DynamicForm extends Component {
     if (id === '_id') {
 			console.log('id!!!!')
     }
+		else if (typeof value === 'boolean') {
+			let formValue = { ...this.state.formValue };
+			let status = { ...this.state.formValue.status };
+			status[id] = value;
+			formValue.status = status;
+			this.setState({ formValue });		
+    }
 		else {
 			let formValue = { ...this.state.formValue };
 			formValue[id] = value;
@@ -100,7 +107,7 @@ class DynamicForm extends Component {
 		}	
 	}
 
-
+// onChange={()=> this.setState({ private: !this.state.private })} 
 	render() { 
 		if (this.props.selected)
 		return ( 
@@ -114,7 +121,17 @@ class DynamicForm extends Component {
 				<Drawer.Body>
 						{this.state.formArray.map((el, index) => (
 								this.renderSwitch(el)
-							))}						
+							))}			
+
+					{/* This is not Dynamic I stand in a house made of lies */}
+					{Object.keys(this.props.selected.status).map((keyName, i) => (
+						<div>
+   						<li key={i}>
+   						    <span>{keyName}</span>
+   						</li>
+							<Toggle onChange={value => this.handleInput(value, keyName)} defaultChecked={this.props.selected.status[keyName]} checkedChildren="True" unCheckedChildren="False" />
+						</div>
+					))}			
 				</Drawer.Body>
 				<Drawer.Footer>
         <Button  onClick={() => this.handleSubmit()} appearance="primary">

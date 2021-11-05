@@ -252,9 +252,15 @@ const  OtherCharacters = (props) => {
 						{props.assets.filter(el => el.ownerCharacter === selected._id).length === 0 && <h5>No assets assigned</h5>}
 						{props.assets.filter(el => el.ownerCharacter === selected._id).map((asset, index) => (
 							<Col md={6} sm={12}>
+								
 								<Panel onClick={() => setAsset(asset)} index={index} bordered>
 									<h5>{asset.name}</h5>
 									<b>{asset.type}</b>
+									{asset.status.hidden && <Tag color='blue'>Hidden</Tag>}
+									{asset.status.lendable && <Tag color='blue'>lendable</Tag>}
+									{asset.status.lent && <Tag color='blue'>lent</Tag>}
+									{asset.status.used && <Tag color='blue'>used</Tag>}
+									{asset.status.multiUse && <Tag color='blue'>multiUse</Tag>}
 								</Panel>
 								</Col>
 						))}
