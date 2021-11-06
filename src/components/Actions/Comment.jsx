@@ -191,7 +191,7 @@ const privateComm = {
 }
 
 const infoComm = {
-	backgroundColor: '#ff66c4', 
+	backgroundColor: '#531ba8', 
 }
 
 const slimText = {
