@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={24} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px', height: '30vh' }} src={spook[rand]}  alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px', height: '30vh' }} src={victoria[rand]}  alt={'Loading...'} onClick={()=> this.bored()} />  
                     {/* src={spook[rand]} */}
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
@@ -211,9 +211,9 @@ const spook = [
 ]
 
 
-// const victoria = [
-// 'https://64.media.tumblr.com/1e2d8e69846451ed7c7975b1329c1385/tumblr_inline_pas1tk2i871vk3kbi_400.gifv'
-// ]
+const victoria = [
+'https://64.media.tumblr.com/1e2d8e69846451ed7c7975b1329c1385/tumblr_inline_pas1tk2i871vk3kbi_400.gifv'
+]
 
 const bored = [
     'https://www.youtube.com/watch?v=QSS3GTmKWVA', // Freddie Mercury gets Trapped in a Slide and Calls out for Mamma (ASMR)
@@ -339,6 +339,6 @@ const loadingMsg = [
     'Queen Victoria ruled the United Kingdom from 1837 to 1901',
 ]
 
-const rand = (Math.floor(Math.random() * spook.length ));
+const rand = (Math.floor(Math.random() * victoria.length ));
 const duckRand = (Math.floor(Math.random() * duck.length ));
 const rand1 = (Math.floor(Math.random() * loadingMsg.length ));
