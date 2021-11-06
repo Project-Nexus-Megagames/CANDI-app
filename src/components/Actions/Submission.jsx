@@ -106,26 +106,16 @@ class Submission extends Component {
 
 							<FlexboxGrid.Item colspan={8}>
 								{this.renderAsset(sumbission.assets[0])}
-								{this.props.myCharacter.tags.some(el => el === 'Control') && sumbission.asset1 &&
-								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-									<Button onClick={() => this.controlRemove('asset1')} color='red'>Control Remove Asset</Button>									
-								</Panel>}
 							</FlexboxGrid.Item>
 
 							<FlexboxGrid.Item colspan={8}>
 							{this.renderAsset(sumbission.assets[1])}
-							{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset2 &&
-								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-									<Button onClick={() => this.controlRemove('asset2')} color='red'>Control Remove Asset</Button>									
-								</Panel>}
+
 							</FlexboxGrid.Item>
 
 							<FlexboxGrid.Item colspan={8}>
 							{this.renderAsset(sumbission.assets[2])}
-							{this.props.user.roles.some(el=> el === 'Control') && sumbission.asset3 &&
-								<Panel style={{backgroundColor: '#61342e', border: '2px solid rgba(255, 255, 255, 0.12)', textAlign: 'center'}}>
-									<Button onClick={() => this.controlRemove('asset3')} color='red'>Control Remove Asset</Button>									
-								</Panel>}
+
 							</FlexboxGrid.Item>
 
 						</FlexboxGrid>
@@ -247,11 +237,15 @@ class Submission extends Component {
 			const asset = this.props.assets.find(el => el._id === assetID)
 			return (
 				<Panel style={{backgroundColor: "#272b34", textAlign: 'center', minWidth: '15vw' }} shaded bordered >
-					<b style={normalText}>{asset.type}</b>	<IconButton size='xs' appearance={'link'} onClick={() => this.openInfo(asset)} color='blue' icon={<Icon icon="info" />} />
+					<b style={normalText}>{asset.type}</b>
+					<ButtonGroup>
+						<IconButton size='xs' appearance={'link'} onClick={() => this.openInfo(asset)} color='blue' icon={<Icon icon="info" />} />
+						{this.props.myCharacter.tags.some(el => el === 'Control') &&
+									<IconButton size='sm' onClick={() => this.controlRemove(asset._id)} color='red' icon={<Icon icon="exit" />}></IconButton>}
+					</ButtonGroup>
 					<p style={slimText}>{asset.name}</p>
 					{asset.status.used && <Tag>Used</Tag>}
-					{this.props.myCharacter.tags.some(el => el === 'Control') &&
-									<Button size='sm' onClick={() => this.controlRemove(asset._id)} color='red'>Control Remove Asset</Button>}	
+						
 				</Panel>	
 			)
 		}
