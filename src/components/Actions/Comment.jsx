@@ -92,7 +92,7 @@ class Comment extends Component {
 				{(this.props.myCharacter.tags.some(el => el === 'Control') || this.props.comment.status === 'Public') && <div>
 				<Divider vertical/>	
 					<div style={{	border: '3px solid #00a0bd', borderRadius: '5px' }}>
-						<FlexboxGrid  style={this.props.comment.status === 'Private' ? privateComm : publicComm} align='middle' justify="start">
+						<FlexboxGrid  style={this.props.comment.status === 'Private' ? privateComm : this.props.comment.type === 'Info' ? infoComm : publicComm} align='middle' justify="start">
 							<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
 									<Avatar circle size="md" src={`/images/${this.props.comment.commentor}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
 							</FlexboxGrid.Item>
@@ -188,6 +188,10 @@ const publicComm = {
 
 const privateComm = {
 	backgroundColor: '#61342e', 
+}
+
+const infoComm = {
+	backgroundColor: '#ff66c4', 
 }
 
 const slimText = {
