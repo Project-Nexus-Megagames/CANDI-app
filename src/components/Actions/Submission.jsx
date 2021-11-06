@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import { connect } from 'react-redux';
-import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader } from 'rsuite';
+import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
@@ -249,6 +249,7 @@ class Submission extends Component {
 				<Panel style={{backgroundColor: "#272b34", cursor: 'pointer', textAlign: 'center', minWidth: '15vw' }} onClick={() => this.openInfo(asset)} shaded bordered >
 					<b style={normalText}>{asset.type}</b>
 					<p style={slimText}>{asset.name}</p>
+					{asset.status.used && <Tag>Used</Tag>}
 				</Panel>	
 			)
 		}

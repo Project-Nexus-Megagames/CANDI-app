@@ -79,9 +79,26 @@ class ControlTerminal extends Component {
 		return ( 
 			<Content style={{style1}}>
 				<NavigationBar />
-				<div>
-					
-					<Panel>
+
+				<Panel style={{ backgroundColor: '#272b34'}}>
+				<FlexboxGrid >
+					<FlexboxGrid.Item style={{ border: "3px solid #ff66c4" }}colspan={4}>
+						<Panel style={{ height: '11vh' }} ><h5>Draft Actions</h5> {this.state.drafts} </Panel>
+					</FlexboxGrid.Item>
+					<FlexboxGrid.Item style={{ border: "3px solid #ff66c4" }}colspan={4}>
+						<Panel style={{ height: '11vh' }}  ><h5>Draft Resolution</h5> {this.state.awaiting} </Panel>
+					</FlexboxGrid.Item>					
+					<FlexboxGrid.Item style={{ border: "3px solid #ff66c4" }}colspan={4}>
+						<Panel style={{ height: '11vh' }} ><h5>Resolutions Ready</h5> {this.state.ready} </Panel>		
+					</FlexboxGrid.Item>		
+				<FlexboxGrid.Item style={{ border: "3px solid #d066ff" }} colspan={6}>
+						<Panel style={{ height: '11vh' }} ><h5>Zero Efforts</h5> {this.props.characters.filter(el => el.effort <= 0).length} </Panel>		
+					</FlexboxGrid.Item>
+					<FlexboxGrid.Item style={{ border: "3px solid #d066ff" }} colspan={6}>
+						<Panel style={{ height: '11vh'  }} ><h5>Hidden Asssets</h5> {this.props.assets.filter(el => el.status.hidden === true).length} </Panel>		
+					</FlexboxGrid.Item>					
+				</FlexboxGrid>	
+				<div style={{ marginTop: '10px' }}>
 						<ButtonGroup >
 							<Button appearance="ghost" color='red' onClick={() => this.setState({ warningModal: true })}>Close Actions</Button>
 							<Button appearance="ghost" color='green' onClick={() => this.setState({ warning2Modal: true })}>Publish Resolutions</Button>
@@ -91,40 +108,13 @@ class ControlTerminal extends Component {
 							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
 							{/* <Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button> */}
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
-							<Button color='violet' appearance="ghost" onClick={() => this.props.history.push('/registration')}>Registration</Button>
-							<Button color='violet' appearance="ghost" onClick={() => socket.emit('assetRequest', 'unhide' )}>Unhide all Assets</Button>
-						</ButtonGroup>
-					</Panel>			
-				</div>
+							<Button color='violet' onClick={() => this.props.history.push('/registration')}>Registration</Button>
+							<Button color='violet' onClick={() => socket.emit('assetRequest', 'unhide' )}>Unhide all Assets</Button>
+						</ButtonGroup>	
+				</div >				
+				</Panel>
 
-				<div style={{height: '15vh'}}>
-					Actions
-				<FlexboxGrid>
-					<FlexboxGrid.Item colspan={8}>
-						<Panel bordered style={{backgroundColor: '#272b34'}} header='Drafts'> {this.state.drafts} </Panel>
-					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={8}>
-						<Panel bordered style={{backgroundColor: '#272b34'}} header='Actions with Draft Resolution'> {this.state.awaiting} </Panel>			
-					</FlexboxGrid.Item>					
-					<FlexboxGrid.Item colspan={8}>
-						<Panel bordered style={{backgroundColor: '#272b34'}} header='Resolutions Ready for Publishing'> {this.state.ready} </Panel>			
-					</FlexboxGrid.Item>		
-				</FlexboxGrid>					
-				</div>
-
-				<div style={{height: '15vh'}}>
-					Characters
-				<FlexboxGrid>
-				<FlexboxGrid.Item colspan={12}>
-						<Panel bordered style={{backgroundColor: '#272b34'}} header='Zero Efforts'> {this.props.characters.filter(el => el.effort <= 0).length} </Panel>
-					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={12}>
-						<Panel bordered style={{backgroundColor: '#272b34'}} header='Hidden Asssets'> {this.props.assets.filter(el => el.status.hidden === true).length} </Panel>			
-					</FlexboxGrid.Item>					
-				</FlexboxGrid>					
-				</div>
-
-        <Toggle onChange={()=> this.setState({ godData: !this.state.godData })} checkedChildren="Mortal" unCheckedChildren="Gods"/>
+        <Toggle style={{ marginTop: '10px' }} onChange={()=> this.setState({ godData: !this.state.godData })} checkedChildren="Mortal" unCheckedChildren="Gods"/>
 				<RelationshipTable godData={this.state.godData} data={this.state.godData ? this.props.godCharacters : this.props.nonPlayerCharacters}  />
 
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 

@@ -35,7 +35,7 @@ const Navigation = props => {
 	
   return (
       <React.Fragment>
-        <Table style={{ textAlign: 'center' }} height={500} virtualized data={props.playerCharacters.sort((a, b) => { // sort the catagories alphabetically 
+        <Table style={{ textAlign: 'center' }} height={650} virtualized data={props.playerCharacters.sort((a, b) => { // sort the catagories alphabetically 
 					if(a.characterName < b.characterName) { return -1; }
 					if(a.characterName > b.characterName) { return 1; }
 					return 0;
