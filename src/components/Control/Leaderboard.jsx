@@ -13,7 +13,7 @@ const  Leaderboard = (props) => {
 		let array = [];
 		const bonds = [ ...props.godBonds, ...props.mortalBonds];
 		for (const char of props.characters.filter(el => el.tags.some(tag => tag === 'PC'))) {
-			console.log(char.characterName)
+			// console.log(char.characterName)
 			let charBonds = bonds.filter(bond => bond.ownerCharacter === char._id );
 
 			// console.log('===Justice===')
@@ -26,10 +26,10 @@ const  Leaderboard = (props) => {
 			const Sporting = calculate(charBonds, ['Artemis']);
 			const Fabrication = calculate(charBonds, ['Hephaestus']);
 			const Scholarship = calculate(charBonds, ['Athena']);
-			const Pugilism = calculate(charBonds, ['Ares'], char.characterName);
+			const Pugilism = calculate(charBonds, ['Ares']);
 			// const Glory = calculate(charBonds, ['Zeus', 'Hades', 'Poseidon']);
 
-			console.log(char.Pugilism)
+			// console.log(char.Pugilism)
 			// console.log(Scholarship + char.Scholarship)
 			const character = {
 				characterName: char.characterName,
@@ -66,23 +66,25 @@ const  Leaderboard = (props) => {
 
 	const calculate = (charBonds, gods, show) => {
 		let array = charBonds.filter(bond => gods.some(god => god === bond.with.characterName));
-		if (show && show === 'Chandra L. Aurelian') {
+		let bonding = 0;
+		if (gods.some(god => god === 'Aphrodite')) bonding = (charBonds.filter(el => el.level === 'Bonded').length * 3);
+
+		if (show && show === 'CHARACTER NAME HERE') {
 			console.log(show)
 			console.log(`Preferred: + ${(array.filter(el => el.level=== 'Preferred').length)}`);
 			console.log(`Favoured + ${(array.filter(el => el.level === 'Favoured').length * 3)}`);
 			console.log(`Blessed + ${(array.filter(el => el.level === 'Blessed').length * 6)}`);
-			console.log(`Bonded + ${(array.filter(el => el.level === 'Bonded').length * 3)}`);
+			console.log(`Bonded + ${bonding}`);
 			console.log(`Disfavoured - ${(array.filter(el => el.level === 'Disfavoured').length )}`);
 			console.log(`Condemned - ${(array.filter(el => el.level === 'Condemned').length ) * 3}\n`);		
 			console.log()	
 		}
 
-
 		return (
 		(array.filter(el => el.level=== 'Preferred').length) +
 		(array.filter(el => el.level === 'Favoured').length * 3) +
 		(array.filter(el => el.level === 'Blessed').length * 6) +
-		(array.filter(el => el.level === 'Bonded').length * 3) -
+		bonding -
 		(array.filter(el => el.level === 'Disfavoured').length ) -
 		(array.filter(el => el.level === 'Condemned').length * 3))
 	}
