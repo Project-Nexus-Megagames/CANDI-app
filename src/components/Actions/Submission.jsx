@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import { connect } from 'react-redux';
-import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag } from 'rsuite';
+import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
@@ -20,6 +20,9 @@ class Submission extends Component {
 		name: '',
 		description: this.props.sumbission.description,
 		intent: this.props.sumbission.intent,	
+		
+		add: false,
+		inputValue: '',
 
 		infoModal: false,
 		infoAsset: {}
@@ -43,7 +46,7 @@ class Submission extends Component {
 				description: this.props.sumbission.description,
 				intent: this.props.sumbission.intent,	
 				name: this.props.action.name,
-				// status: this.props.action.status,
+				tags: this.props.action.tags,
 			});		
 		}
 	}
@@ -57,6 +60,39 @@ class Submission extends Component {
 		let day = new Date(date).toDateString();
 		let time = new Date(date).toLocaleTimeString();
 		return (<b>{day} - {time}</b>)
+	}
+
+	handleInputConfirm = () => {
+    const nextTags = this.state.inputValue ? [...this.props.action.tags, this.state.inputValue] : this.props.action.tags;
+    this.setState({
+			tags: nextTags,
+      add: false,
+      inputValue: ''
+    });
+		socket.emit('actionRequest', 'tags', { id: this.props.action._id, tags: nextTags }); // new Socket event	
+  }
+
+	renderTagAdd = () => {
+		if (this.state.add)
+			return(
+				<Input 
+					size="xs"
+					style={{ width: 70, display: 'inline-block', }}
+					value={this.state.inputValue}
+					onChange={(inputValue) => this.setState({ inputValue })}
+					onBlur={this.handleInputConfirm}
+					onPressEnter={this.handleInputConfirm}/>
+			)
+		else 
+			return (
+				<IconButton
+					className="tag-add-btn"
+					onClick={() => this.setState({ add: true })}
+					icon={<Icon icon="plus" />}
+					appearance="ghost"
+					size="xs"
+				/>
+			)
 	}
 
 	render() { 
@@ -75,6 +111,13 @@ class Submission extends Component {
 							<h5>{this.props.action.name}</h5>
 							{this.props.action.creator.characterTitle}/{this.props.action.creator.characterName}
 							<p style={slimText}>{this.getTime(this.props.sumbission.createdAt)}</p>
+							{this.props.action.tags.length === 0 && <b>No Tags</b>}
+							{this.props.myCharacter.tags.some(el => el === 'Control') && this.props.action.tags.map((item, index) => (
+								<Tag index={index} closable onClose={() => this.handleTagRemove(item, 'tags')}>
+									{item}
+								</Tag>
+							))}	
+							{this.renderTagAdd()}
 						</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={4}>
@@ -207,11 +250,12 @@ class Submission extends Component {
 	}
 
 	handleSubmit = async () => {
-		this.props.actionDispatched();
+		// this.props.actionDispatched();
 		// 1) make a new action
 		const data = {
 			id: this.props.action._id,
 			name: this.state.name,
+			tags: this.state.tags,
 			submission: {
 				effort: 1,
 				assets: this.state.assets, //this.state.asset1._id, this.state.asset2._id, this.state.asset3._id
@@ -222,6 +266,8 @@ class Submission extends Component {
 		}
 		socket.emit('actionRequest', 'update', data); // new Socket event	
 	}
+
+
 
 
 	controlRemove = (asset) => {

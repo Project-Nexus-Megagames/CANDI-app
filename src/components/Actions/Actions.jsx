@@ -66,7 +66,7 @@ const Actions = (props) => {
 				<div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101"}}>
 					<InputGroup>
 						<Input size="sm" style={{ height: '39px' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
-							<Button appearance='primary' color='green' disabled={props.gamestate.status !== 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
+							<Button appearance='primary' color='green' disabled={(props.gamestate.status !== 'Active' || props.myCharacter.effort < 1) && !props.myCharacter.tags.some(el => el === 'Control')} onClick={() => setShowNew(true)}>
 							<Icon  icon="plus" />	
 							</Button>							
 					</InputGroup>
