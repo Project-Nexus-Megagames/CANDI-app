@@ -82,14 +82,14 @@ class ModifyResource extends Component {
 			return (
 				<Panel>
 					Name: {this.state.name}
-					{/* <textarea value={this.state.name} className='textStyle' onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	 */}
+					<textarea value={this.state.name} className='textStyle' onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	
 					<Divider />
 					Description:
 					<textarea rows='4' value={this.state.description} className='textStyle' onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
 					Dice
 					<textarea value={this.state.dice} className='textStyle' onChange={(event)=> this.setState({dice: event.target.value})}></textarea>	
 					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
-					Owner (Match Character's name exactly):
+					Owner
 					<textarea value={this.state.owner} className='textStyle' onChange={(event)=> this.setState({ owner: event.target.value })}></textarea>	
 					{this.state.type === 'GodBond' && <div>
 						Bond Level

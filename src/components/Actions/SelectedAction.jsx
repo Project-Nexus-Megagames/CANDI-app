@@ -11,6 +11,8 @@ import NewResult from './NewResult';
 import Submission from './Submission';
 import Comment from './Comment';
 import Result from './Result';
+import NewEffects from './NewEffect';
+import Effect from './Effect';
 
 const SelectedAction = (props) => {
 	const [selectedArray, setSelectedArray] = React.useState([]);
@@ -18,6 +20,7 @@ const SelectedAction = (props) => {
 	const [submission, setSubmission] = React.useState(false);
 	const [result, setResult] = React.useState(false);
 	const [comment, setComment] = React.useState(false);
+	const [effect, setEffect] = React.useState(false); 
 
 	useEffect(() => {
 		if (props.selected) {
@@ -32,6 +35,7 @@ const SelectedAction = (props) => {
 		setResult(false);
 		setSubmission(false);
 		setComment(false);
+		setEffect(false);
 	}
 
 	const renderSwitch = (el, index) => {
@@ -53,6 +57,13 @@ const SelectedAction = (props) => {
 							<div>
 								<Divider vertical/>	
 								<Result index={index} result={el} selected={props.selected} submission={props.selected.submission}/>
+							</div>
+						)
+					case 'Effect':
+						return(
+							<div>
+								<Divider vertical/>	
+								<Effect selected={props.selected} index={index} effect={el}/>
 							</div>
 						)
 			default:
@@ -81,7 +92,7 @@ const SelectedAction = (props) => {
 						{/* <Button onClick={() => setSubmission(true)}  color='green' >Player Submission</Button> */}
 						<Button onClick={() => setComment(true)}color='cyan'>Comment</Button>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <Button onClick={() => setResult(true)} color='blue' >Result</Button>}
-						{props.myCharacter.tags.some(el=> el === 'Control') && <Button disabled={true} color='violet' >Effect</Button>}
+						{props.myCharacter.tags.some(el=> el === 'Control') && <Button onClick={() => setEffect(true)} color='violet' >Effect</Button>}
 					</ButtonGroup>}						
 			</div>
 			</FlexboxGrid.Item>
@@ -107,6 +118,13 @@ const SelectedAction = (props) => {
 				closeNew={() => closeIt()}
 				gamestate={props.gamestate}
 				selected={props.selected}
+			/>
+
+			<NewEffects 
+				show={effect}
+				action={props.selected}
+				selected={props.selected}
+				hide={() => closeIt()}
 			/>
 
 	</Content>		
