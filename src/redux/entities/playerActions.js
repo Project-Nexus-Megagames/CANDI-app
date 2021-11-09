@@ -87,7 +87,8 @@ export const filteredActions = createSelector(
   state => state.actions.list,
   (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.creator.characterTitle.toLowerCase().includes(filter.toLowerCase()) || 
    action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  || 
-   action.submission.intent.toLowerCase().includes(filter.toLowerCase()) 
+   action.submission.intent.toLowerCase().includes(filter.toLowerCase()) || 
+   action.tags.some(el => el.toLowerCase().includes(filter.toLowerCase()))
   )
 );
 

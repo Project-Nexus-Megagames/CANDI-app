@@ -65,11 +65,23 @@ class Submission extends Component {
 	handleInputConfirm = () => {
     const nextTags = this.state.inputValue ? [...this.props.action.tags, this.state.inputValue] : this.props.action.tags;
     this.setState({
-			tags: nextTags,
       add: false,
       inputValue: ''
     });
-		socket.emit('actionRequest', 'tags', { id: this.props.action._id, tags: nextTags }); // new Socket event	
+		const data = {
+			id: this.props.action._id,
+			tags: nextTags,
+		}
+		socket.emit('actionRequest', 'update', data); // new Socket event	
+  }
+
+	handleTagRemove = (tag, type) => {
+    const nextTags = this.props.action.tags.filter(item => item !== tag);
+		const data = {
+			id: this.props.action._id,
+			tags: nextTags,
+		}
+		socket.emit('actionRequest', 'update', data); // new Socket event	
   }
 
 	renderTagAdd = () => {

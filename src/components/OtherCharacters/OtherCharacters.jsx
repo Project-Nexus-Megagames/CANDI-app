@@ -117,7 +117,8 @@ const  OtherCharacters = (props) => {
 		char.characterName.toLowerCase().includes(fil.toLowerCase()) || 
 		char.email.toLowerCase().includes(fil.toLowerCase()) || 
 		char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || 
-		char.tags.some(el => el.toLowerCase().includes(fil.toLowerCase())));
+		char.tags.some(el => el.toLowerCase().includes(fil.toLowerCase()))
+		);
 		setFilteredCharacters(filtered);
 	}
 	
