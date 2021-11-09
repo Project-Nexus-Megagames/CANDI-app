@@ -14,10 +14,10 @@ const NewEffects = (props) => {
 			case 'bond':
 				let bonds = [];
 				for (const bond of props.assets.filter(el => (el.type === 'GodBond' || el.type === 'MortalBond') && el.ownerCharacter === props.selected.creator._id)) {
-					console.log(bond.with)
 					const bondData = {
 						name: `${bond.name} - ${bond.with.characterName} - ${bond.level}`,
 						level: bond.level,
+						type: bond.type,
 						_id: bond._id
 					};
 					bonds.push(bondData)			
@@ -26,10 +26,11 @@ const NewEffects = (props) => {
 				break;
 			case 'asset':
 				let assets = [];
-				for (const bond of props.assets.filter(el => (el.type !== 'GodBond' || el.type !== 'MortalBond') && el.ownerCharacter === props.selected.creator._id)) {
+				for (const bond of props.assets.filter(el => (el.type !== 'GodBond' && el.type !== 'MortalBond') && el.ownerCharacter === props.selected.creator._id)) {
 					console.log(bond.with)
 					const bondData = {
 						name: `${bond.type} '${bond.name}' - (${bond.dice})`,
+						type: bond.type,
 						_id: bond._id
 					};
 					assets.push(bondData)			
@@ -134,7 +135,7 @@ const NewEffects = (props) => {
 					{renderAss()}
 				</div>}
 				{(type === 'bond' || type === 'asset') && <div>
-					<SelectPicker block placeholder={`Edit ${type}`} onChange={(event) => handleSelect(event)} data={array} valueKey='_id' labelKey='name'></SelectPicker>
+					<SelectPicker block placeholder={`Edit ${type}`} onChange={(event) => handleSelect(event)} data={array} valueKey='_id' labelKey='name' groupBy='type'></SelectPicker>
 					{renderAss()}
 				</div>}
 				{(type === 'aspect') && selected && <div>
