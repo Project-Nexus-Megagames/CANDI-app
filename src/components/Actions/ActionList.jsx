@@ -39,6 +39,15 @@ class ActionList extends Component {
 		this.setState({ rounds });
 	}
 
+	tagStyle = (item) => {
+		switch (item.toLowerCase()) {
+			case 'news':
+				return (<Tag style={{ color: 'black' }} color='orange' >{item}</Tag>)
+			default:
+				break;
+		}
+	}
+
 	render() { 
 		return ( 
 			<Container>
@@ -61,7 +70,7 @@ class ActionList extends Component {
 											<b style={slimText}>
 												{action.creator.characterTitle} - 
 												{action.results.length > 0 && action.results[0].ready && <Tag color='green'>R Ready</Tag>}
-												{action.results.length > 0 && action.results[0].ready === false && <Tag color='orange'>R Draft</Tag>}
+												{action.tags.map(tag => this.tagStyle(tag))}
 												</b>
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
