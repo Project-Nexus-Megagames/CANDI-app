@@ -259,15 +259,15 @@ class MyCharacter extends Component {
         <h5 style={{ backgroundColor: color }}>{type}s</h5>
             {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).length === 0 && <List.Item>No {type}s</List.Item>}
             {this.props.myAssets.filter(el => (el.status.hidden !== true && el.uses > 0 && el.type === type) ).map((asset, index) => (
-              <List.Item style={{ textAlign: "center", cursor: 'pointer' }} onClick={() => this.openInfo(asset)}>
+              <List.Item style={{ textAlign: "center", }} >
                 {asset.status.lendable && <div>
 
-                    <b>{asset.name}</b>
+                    <b>{asset.name}</b><IconButton size='xs' appearance={'link'} onClick={() => this.openInfo(asset)} color='blue' icon={<Icon icon="info" />} />
                     <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{asset.description}</p>
                    
                   {asset.status.lent && this.rednerHolder(asset)}
                   {!asset.status.lent && <Tag color="green">Ready</Tag>}
-                  {asset.status.lent && this.findOwner(asset._id)}
+                  {asset.currentHolder && asset.currentHolder === this.props.myCharacter.characterName && <Tag color="blue">Borrowed from: {asset.currentHolder}</Tag>}
                     {!asset.status.lent && (
                       <Button
                         onClick={() => this.openLend(asset)}
@@ -289,7 +289,7 @@ class MyCharacter extends Component {
                     )}
                 </div>}
                 {!asset.status.lendable && <div>
-                  <b>{asset.name}</b>
+                  <b>{asset.name}</b><IconButton size='xs' appearance={'link'} onClick={() => this.openInfo(asset)} color='blue' icon={<Icon icon="info" />} />
                   <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{asset.description}</p>
                   {(type === 'GodBond' || type === 'MortalBond') && 
                   <b>Level: {asset.level}</b>}
@@ -303,23 +303,12 @@ class MyCharacter extends Component {
   };
 
   rednerHolder = (asset) => {
-    let holder = this.props.characters.find((el) =>
-      el.lentAssets.some((el2) => el2._id === asset._id)
-    );
+    let holder = this.props.characters.find((el) => el._id === asset.currentHolder);
+    console.log(holder)
     if (!holder) holder = this.props.myCharacter;
     return <Tag color="violet">Lent to: {holder.characterName}</Tag>;
   };
 
-  findOwner = (id) => {
-    for (const character of this.props.characters) {
-      if (
-        character.assets.some((el) => el._id === id)
-      ) {
-        return <Tag color="blue">Borrowed from: {character.characterName}</Tag>;
-      }
-    }
-    return <Tag color="blue">Borrowed from: ???</Tag>;
-  };
 
   renderLendation = () => {
     if (this.state.target === null || this.state.target === undefined) {
@@ -381,7 +370,6 @@ class MyCharacter extends Component {
       id: this.state.lending._id,
       target: this.state.target,
       lendingBoolean: true,
-      owner: this.props.myCharacter._id
     };
     
     socket.emit('assetRequest', 'lend',  data ); // new Socket event
@@ -390,13 +378,8 @@ class MyCharacter extends Component {
   };
 
   handleTakeback = async () => {
-    const holder = this.props.characters.find((el) =>
-      el.lentAssets.some((el2) => el2._id === this.state.unleanding._id)
-    );
-
     const data = {
       id: this.state.unleanding._id,
-      target: holder._id,
       lendingBoolean: false,
       owner: this.props.myCharacter._id
     };

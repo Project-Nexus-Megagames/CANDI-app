@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
-import { getMyAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -10,7 +9,6 @@ import ActionList from './ActionList';
 import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
-import SelectedProject from './SelectedProject';
 const Actions = (props) => {
 	const [selected, setSelected] = React.useState(null);
 	const [showNew, setShowNew] = React.useState(false);
@@ -100,7 +98,6 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
-	myAssets: state.auth.user ? getMyAssets(state): undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({
