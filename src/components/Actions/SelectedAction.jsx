@@ -85,7 +85,7 @@ const SelectedAction = (props) => {
 			<Divider vertical/>
 			<Divider>End of Action Feed</Divider>
 
-			<div style={{ transition: '3s ease'}}>
+			<div style={{ transition: '3s ease', marginBottom: '30px'}}>
 				{!add && <IconButton onClick={() => setAdd(true)} color='blue' icon={<Icon icon="plus" />}></IconButton>}
 				{add &&
 					<ButtonGroup justified style={{ width: '100%', transition: '.5s' }} >

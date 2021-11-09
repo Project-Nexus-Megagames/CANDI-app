@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux'; // Redux store provider
-import { Alert, Modal, SelectPicker, CheckPicker, Divider, Tag, Button, TagGroup, FlexboxGrid, List, ButtonGroup, Loader, Row, Col, Panel, InputPicker, Placeholder } from 'rsuite';
+import { Alert, Modal, SelectPicker, CheckPicker, Divider, Tag, Button, TagGroup, FlexboxGrid, List, ButtonGroup, Loader, Row, Col, Panel, InputPicker, Placeholder, InputNumber } from 'rsuite';
 import socket from '../../socket';
+import { getGods, } from '../../redux/entities/characters';
 
-const Effects = (props) => {
+const NewEffects = (props) => {
 	const [type, setType] = React.useState('');
 	const [selected, setSelected] = React.useState(undefined);
 	const [array, setArray] = React.useState([]);
@@ -35,6 +36,12 @@ const Effects = (props) => {
 				}
 				setArray(assets);
 				break;
+				case 'aspect':
+					setSelected(props.selected.creator);
+					break;
+				case 'new':
+					setSelected({ name: '', description: '', dice: '', level: '', ownerCharacter: props.selected.creator._id, });
+					break;
 			default:
 				break;
 		}
@@ -49,6 +56,11 @@ const Effects = (props) => {
 	const handleSelect = (selected) => {
 		selected = props.assets.find(el => el._id === selected)
 		setSelected(selected);
+	}
+
+	const handleType = (type) => {
+		setType(type);
+		setSelected(undefined);
 	}
 
 	const handleEdit = (type, change) => {
@@ -82,7 +94,8 @@ const Effects = (props) => {
 					<textarea rows='4' value={selected.description} className='textStyle' onChange={event => handleEdit('description', event.target.value)}></textarea>	
 					Dice
 					<textarea value={selected.dice} className='textStyle' onChange={event => handleEdit('dice', event.target.value)}></textarea>	
-
+					Uses
+					<InputNumber value={selected.uses} onChange={(value) => handleEdit('uses', value)}/>
 					{selected.type === 'GodBond' && <div>
 						Bond Level
 						<InputPicker labelKey='label' valueKey='value' data={godPickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={event => handleEdit('level', event)}/>						
@@ -108,15 +121,35 @@ const Effects = (props) => {
 			{<Modal.Body>
 
 				<ButtonGroup>
-					<Button appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'green'} onClick={() => setType('bond')} >Edit Bond</Button>
-					<Button appearance={type !== 'asset' ? 'ghost' : 'primary'} color={'blue'} onClick={() => setType('asset')} >Edit Resource</Button>
-					<Button disabled={true} appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={() => setType('aspect')} >Change Aspect Point</Button>
-					<Button disabled={true} appearance={type !== 'new' ? 'ghost' : 'primary'} color={'green'} onClick={() => setType('new')} >New Resource</Button>
+					<Button appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'cyan'} onClick={type !== 'bond' ? () => handleType('bond') : undefined} >Edit Bond</Button>
+					<Button appearance={type !== 'asset' ? 'ghost' : 'primary'} color={'blue'} onClick={type !== 'asset' ? () => handleType('asset') : undefined} >Edit Resource</Button>
+					<Button appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'aspect' ? () => handleType('aspect') : undefined} >Change Aspect Point</Button>
+					<Button appearance={type !== 'new' ? 'ghost' : 'primary'} color={'green'} onClick={type !== 'new' ? () => handleType('new') : undefined} >New Resource</Button>
 				</ButtonGroup>
 				<Divider />
-				{(type === 'bond' || type === 'asset') && <div>
-					<SelectPicker block placeholder="Edit Bond" onChange={(event) => handleSelect(event)} data={array} valueKey='_id' labelKey='name'></SelectPicker>
+				{(type === 'new') && selected && <div>
+					Type
+					<InputPicker labelKey='label' valueKey='value' data={pickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={event => handleEdit('type', event)}/>
+					{(selected.type === 'GodBond') && <SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={props.gods} valueKey='_id' labelKey='characterName' />}
 					{renderAss()}
+				</div>}
+				{(type === 'bond' || type === 'asset') && <div>
+					<SelectPicker block placeholder={`Edit ${type}`} onChange={(event) => handleSelect(event)} data={array} valueKey='_id' labelKey='name'></SelectPicker>
+					{renderAss()}
+				</div>}
+				{(type === 'aspect') && selected && <div>
+					<FlexboxGrid>
+						{aspects.sort((a, b) => { // sort the catagories alphabetically 
+							if(a < b) { return -1; }
+							if(a > b) { return 1; }
+							return 0;
+						}).map((aspect, index) => (
+							<FlexboxGrid.Item index={index} colspan={8}>
+								{aspect}
+								<InputNumber index={index} value={selected[aspect]} onChange={(value) => handleEdit(aspect, value)}/>
+							</FlexboxGrid.Item>
+						))}
+					</FlexboxGrid>
 				</div>}
 			</Modal.Body>}
 			<Modal.Footer>
@@ -181,11 +214,49 @@ const mortalPickerData = [
 	},
 ];
 
+let aspects = [
+	"Justice",
+	"Trickery",
+	"Balance",
+	"Hedonism",
+	"Bonding",
+	"Arts",
+	"Sporting",
+	"Fabrication",
+	"Scholarship",
+	"Pugilism",
+	"Glory",
+];
+
+const pickerData = [
+	{
+		label: 'Asset',
+		value: 'Asset'
+	},
+	{
+		label: 'Trait',
+		value: 'Trait'
+	},
+	{
+		label: 'Power',
+		value: 'Power'
+	},
+	{
+		label: 'GodBond',
+		value: 'GodBond'
+	},
+	{
+		label: 'MortalBond',
+		value: 'MortalBond'
+	},
+]
+
 const mapStateToProps = state => ({
 	assets: state.assets.list,
 	characters: state.characters.list,
+	gods: getGods(state),
 });
 
 const mapDispatchToProps = dispatch => ({
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Effects);
+export default connect(mapStateToProps, mapDispatchToProps)(NewEffects);
