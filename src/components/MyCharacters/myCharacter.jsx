@@ -266,7 +266,8 @@ class MyCharacter extends Component {
                     <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{asset.description}</p>
                    
                   {asset.status.lent && this.rednerHolder(asset)}
-                  {!asset.status.lent && <Tag color="green">Ready</Tag>}
+                  {!asset.status.lent && !asset.status.used && <Tag color="green">Ready</Tag>}
+                  {asset.status.used && <Tag color="red">Used</Tag>}
                   {asset.currentHolder && asset.currentHolder === this.props.myCharacter.characterName && <Tag color="blue">Borrowed from: {asset.currentHolder}</Tag>}
                     {!asset.status.lent && (
                       <Button
@@ -283,6 +284,7 @@ class MyCharacter extends Component {
                         onClick={() => this.openUnlend(asset)}
                         appearance="ghost"
                         size="sm"
+                        disabled={asset.status.used}
                       >
                         Un-Lend
                       </Button>
@@ -304,7 +306,6 @@ class MyCharacter extends Component {
 
   rednerHolder = (asset) => {
     let holder = this.props.characters.find((el) => el._id === asset.currentHolder);
-    console.log(holder)
     if (!holder) holder = this.props.myCharacter;
     return <Tag color="violet">Lent to: {holder.characterName}</Tag>;
   };
@@ -349,6 +350,7 @@ class MyCharacter extends Component {
   };
 
   renderUnLendation = () => {
+    let holder = this.props.characters.find((el) => el._id === this.state.unleanding.currentHolder);
     if (this.state.unleanding === null) {
       return (
         <Placeholder.Paragraph rows={15}>
@@ -359,7 +361,7 @@ class MyCharacter extends Component {
       return (
         <p>
           Are you sure you want to take back your {this.state.unleanding.name}{" "}
-          from {this.state.unleanding.currentHolder}?
+          from {holder.characterName}?
         </p>
       );
     }
