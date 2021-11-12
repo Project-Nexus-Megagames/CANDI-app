@@ -43,7 +43,7 @@ const SelectedAction = (props) => {
 			case 'Submission':
 				return(
 					<div>
-						<Submission handleSelect={props.handleSelect} index={index} sumbission={el} action={props.selected} creator={props.selected.creator}/>
+						<Submission handleSelect={props.handleSelect} index={index} submission={el} action={props.selected} creator={props.selected.creator}/>
 					</div>
 				)
 				case 'Comment':

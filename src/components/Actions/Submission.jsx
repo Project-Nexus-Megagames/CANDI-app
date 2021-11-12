@@ -14,12 +14,12 @@ class Submission extends Component {
 		edit: false, // used to open edit action popup
 		deleteWarning: false, // used to open delete action popup
 		loading: false, //used for loading button 
-		effort: this.props.sumbission.effort,
-		assets: this.props.sumbission.assets,
+		effort: this.props.submission.effort,
+		assets: this.props.submission.assets,
 		id: this.props.action._id,
-		name: '',
-		description: this.props.sumbission.description,
-		intent: this.props.sumbission.intent,	
+		name: this.props.action.name,
+		description: this.props.submission.description,
+		intent: this.props.submission.intent,	
 		
 		add: false,
 		inputValue: '',
@@ -38,13 +38,13 @@ class Submission extends Component {
 		// if (this.state !== prevState) {
 		// 	localStorage.setItem('selectedActionStateGW', JSON.stringify(this.state));
 		// };
-		if (this.props.sumbission !== prevProps.sumbission) {
+		if (this.props.submission !== prevProps.submission) {
 			this.setState({ 
-				effort: this.props.sumbission.effort,
-				assets: this.props.sumbission.assets,
+				effort: this.props.submission.effort,
+				assets: this.props.submission.assets,
 				id: this.props.action._id,
-				description: this.props.sumbission.description,
-				intent: this.props.sumbission.intent,	
+				description: this.props.submission.description,
+				intent: this.props.submission.intent,	
 				name: this.props.action.name,
 				tags: this.props.action.tags,
 			});		
@@ -108,7 +108,7 @@ class Submission extends Component {
 	}
 
 	render() { 
-		const sumbission = this.props.sumbission;
+		const submission = this.props.submission;
 		return ( 
 			<div>
 				<Divider vertical/>	
@@ -122,7 +122,7 @@ class Submission extends Component {
 						<FlexboxGrid.Item colspan={15}>
 							<h5>{this.props.action.name}</h5>
 							{this.props.action.creator.characterTitle}/{this.props.action.creator.characterName}
-							<p style={slimText}>{this.getTime(this.props.sumbission.createdAt)}</p>
+							<p style={slimText}>{this.getTime(this.props.submission.createdAt)}</p>
 							{this.props.action.tags.length === 0 && <b>No Tags</b>}
 							{this.props.myCharacter.tags.some(el => el === 'Control') && this.props.action.tags.map((item, index) => (
 								<Tag index={index} closable onClose={() => this.handleTagRemove(item, 'tags')}>
@@ -146,30 +146,30 @@ class Submission extends Component {
 						<p style={slimText}>
 							Description
 						</p>
-						<ReactMarkdown children={sumbission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+						<ReactMarkdown children={submission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 						<p style={slimText}>
 							Intent
 						</p>
-						<ReactMarkdown children={sumbission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+						<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 						{/* <p style={slimText}>
 							Effort
 						</p>
-						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{sumbission.effort}</p>
-						<Progress.Line percent={sumbission.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
+						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{submission.effort}</p>
+						<Progress.Line percent={submission.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
 						<Divider>Resources</Divider>
 						<FlexboxGrid>
 
 							<FlexboxGrid.Item colspan={8}>
-								{this.renderAsset(sumbission.assets[0])}
+								{this.renderAsset(submission.assets[0])}
 							</FlexboxGrid.Item>
 
 							<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(sumbission.assets[1])}
+							{this.renderAsset(submission.assets[1])}
 
 							</FlexboxGrid.Item>
 
 							<FlexboxGrid.Item colspan={8}>
-							{this.renderAsset(sumbission.assets[2])}
+							{this.renderAsset(submission.assets[2])}
 
 							</FlexboxGrid.Item>
 
@@ -189,13 +189,19 @@ class Submission extends Component {
 							</Modal.Header>
 							<Modal.Body>
 								{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
-								<form>
+								<form>Name
+									{(10 - this.state.name.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.name.length} more characters...</Tag>}
+									{(10 - this.state.name.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
 									<textarea rows='1' value={this.state.name} style={textStyle} onChange={(event)=> this.setState({name: event.target.value})}></textarea>
 									<FlexboxGrid> Description
+										{(10 - this.state.description.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.description.length} more characters...</Tag>}
+										{(10 - this.state.description.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
 										<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
 									</FlexboxGrid>
 									<br></br>
-									<FlexboxGrid> What you would like to happen
+									<FlexboxGrid> Intent										
+										{(10 - this.state.intent.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.intent.length} more characters...</Tag>}
+										{(10 - this.state.intent.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
 										<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
 									</FlexboxGrid>
 									<FlexboxGrid>
@@ -225,10 +231,8 @@ class Submission extends Component {
 								</form>
 							</Modal.Body>
 							<Modal.Footer>
-								<Button loading={this.props.actionLoading} onClick={() => this.handleSubmit()}  disabled={this.state.description.length > 10 && this.state.intent.length > 10 ? false : true} color={this.state.description.length > 10 && this.state.intent.length > 10 ? 'green' : 'red'} appearance="primary">
-									{this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-									this.state.intent.length < 11 ? <b>Intent text need {11 - this.state.intent.length} more characters</b> :
-									<b>Submit</b>}
+								<Button loading={this.props.actionLoading} onClick={() => this.handleSubmit()}  disabled={this.state.description.length < 10 || this.state.intent.length < 10 || this.state.name.length < 10} color={this.state.description.length > 10 && this.state.intent.length > 10 ? 'green' : 'red'} appearance="primary">
+									<b>Submit</b>
 								</Button>
 								<Button onClick={() => this.setState({edit: false})} appearance="subtle">
 									Cancel
