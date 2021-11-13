@@ -7,6 +7,7 @@ import { characterUpdated, getMyCharacter } from '../../redux/entities/character
 import { connect } from 'react-redux';
 import socket from '../../socket'; 
 import NewCharacter from '../Control/NewCharacter'; 
+import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 
 const { HeaderCell, Cell, Column, } = Table;
 
@@ -28,10 +29,22 @@ const  OtherCharacters = (props) => {
 	const copyToClipboard = (character) => {
 		// console.log(character)
 		let board = `${character.email}`;
+		let array = [ ...character.control ];
 
-		for (const controller of character.control) {
+		for (const controller of props.myCharacter.control) {
+			if (!array.some(el => el === controller)) {
+				array.push(controller);
+			}
+		}
+
+		for (const controller of array) {
 			const character = props.characters.find(el => el.characterName === controller)
-			character ? board = board.concat(`; ${character.email}`) : console.log(controller);
+			if (character) {
+				board = board.concat(`; ${character.email}`)
+			}
+			else 
+				console.log(`${controller} could not be added to clipboard`)
+				Alert.error(`${controller} could not be added to clipboard`, 6000);
 		}
 
 		navigator.clipboard.writeText(board);
@@ -261,20 +274,40 @@ const  OtherCharacters = (props) => {
               </div>
             </Col>
           </Row>
+					
+					{/*God's Bonds */}
 					{selected.tags.some(el => el === 'God') && <Row>
 					 <Col xs={8} sm={8} md={8} className="gridbox">
 						 <Panel bordered style={{backgroundColor: '#272b34'}} header='Preferred'>
-								{props.assets.filter(el => el.with === selected._id && el.level === 'Preferred').length}
+								{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Preferred').length}
 							</Panel>
 						</Col>
 						<Col xs={8} sm={8} md={8} className="gridbox">
 							<Panel bordered style={{backgroundColor: '#272b34'}} header='Favoured'>
-								{props.assets.filter(el => el.with === selected._id && el.level === 'Favoured').length}
+								{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Favoured').length}
 							</Panel>
 						</Col>
 						<Col xs={8} sm={8} md={8} className="gridbox">
 							<Panel bordered style={{backgroundColor: '#272b34'}} header='Blessed'>
-								{props.assets.filter(el => el.with === selected._id && el.level === 'Blessed').length}
+								{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Blessed').length}
+							</Panel>
+						</Col>
+					</Row>}
+
+					{selected.tags.some(el => el === 'NPC') && <Row>
+					 <Col xs={8} sm={8} md={8} className="gridbox">
+						 <Panel bordered style={{backgroundColor: '#272b34'}} header='Warm'>
+								{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Warm').length}
+							</Panel>
+						</Col>
+						<Col xs={8} sm={8} md={8} className="gridbox">
+							<Panel bordered style={{backgroundColor: '#272b34'}} header='Friendly'>
+								{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Friendly').length}
+							</Panel>
+						</Col>
+						<Col xs={8} sm={8} md={8} className="gridbox">
+							<Panel bordered style={{backgroundColor: '#272b34'}} header='Bonded'>
+								{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Bonded').length}
 							</Panel>
 						</Col>
 					</Row>}
@@ -326,6 +359,8 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	assets: state.assets.list,
+	godBonds: getGodBonds(state),
+	mortalBonds: getMortalBonds(state),
 	login: state.auth.login,
 	characters: state.characters.list,
 	duck: state.gamestate.duck,

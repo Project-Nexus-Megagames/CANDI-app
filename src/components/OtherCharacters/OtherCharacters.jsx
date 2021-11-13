@@ -337,8 +337,6 @@ const  OtherCharacters = (props) => {
 						</Panel>
 					</FlexboxGrid.Item>
 
-
-
 					{/*God's Bonds */}
 					{selected.tags.some(el => el === 'God') && <FlexboxGrid.Item colspan={24}>
 						<Divider>Total Bonds with {selected.characterName}</Divider>
