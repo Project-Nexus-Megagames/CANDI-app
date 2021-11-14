@@ -297,7 +297,7 @@ class Submission extends Component {
 	renderAsset = (assetID) => {
 		if (assetID) {
 			const asset = this.props.assets.find(el => el._id === assetID)
-			return (
+			if (asset) return (
 				<Panel style={{backgroundColor: "#272b34", textAlign: 'center', minWidth: '15vw' }} shaded bordered >
 					<b style={normalText}>{asset.type}</b>
 					<ButtonGroup>
@@ -309,6 +309,9 @@ class Submission extends Component {
 					{asset.status.used && <Tag>Used</Tag>}
 						
 				</Panel>	
+			)
+			else return (
+				<Panel>Could not render for asset {assetID}</Panel>
 			)
 		}
 		else {
