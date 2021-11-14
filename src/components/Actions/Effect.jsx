@@ -80,7 +80,6 @@ class Effect extends Component {
 		return ( 
 			<div>
 				{(this.props.myCharacter.tags.some(el => el === 'Control') || this.props.effect.status === 'Public') && <div>
-				<Divider vertical/>	
 					<div style={{	border: '3px solid #531ba8', borderRadius: '5px' }}>
 						<FlexboxGrid  style={infoComm} align='middle' justify="start">
 							<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
