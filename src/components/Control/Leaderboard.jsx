@@ -9,6 +9,20 @@ const  Leaderboard = (props) => {
 	const [copy, setCopy] = React.useState([]);
 	const [number, setNumber] = React.useState(3);
 
+	const aspects = [
+		'Justice',
+		'Trickery',
+		'Balance',
+		'Hedonism',
+		'Bonding',
+		'Arts',
+		'Sporting',
+		'Fabrication',
+		'Scholarship',
+		'Pugilism',
+		'Glory',
+	]
+
 	useEffect(() => {
 		let array = [];
 		const bonds = [ ...props.godBonds, ...props.mortalBonds];
@@ -27,12 +41,13 @@ const  Leaderboard = (props) => {
 			const Fabrication = calculate(charBonds, ['Hephaestus']);
 			const Scholarship = calculate(charBonds, ['Athena']);
 			const Pugilism = calculate(charBonds, ['Ares']);
-			// const Glory = calculate(charBonds, ['Zeus', 'Hades', 'Poseidon']);
+			const Glory = calculate(charBonds, ['Zeus', 'Hades', 'Poseidon']);
 
 			// console.log(char.Pugilism)
 			// console.log(Scholarship + char.Scholarship)
 			const character = {
 				characterName: char.characterName,
+				_id: char._id,
 				tags: char.tags,
 				Justice: Justice + char.Justice,
         Trickery: Trickery + char.Trickery,
@@ -44,7 +59,7 @@ const  Leaderboard = (props) => {
         Fabrication: Fabrication + char.Fabrication,
         Scholarship: Scholarship + char.Scholarship,
         Pugilism: Pugilism + char.Pugilism,
-        // Glory: Glory + char.Glory,
+        Glory: Glory + (char.Glory * 1.25),
 				originalJustice: char.Justice,
         originalTrickery: char.Trickery,
         originalBalance: char.Balance,
@@ -55,12 +70,25 @@ const  Leaderboard = (props) => {
         originalFabrication: char.Fabrication,
         originalScholarship: char.Scholarship,
         originalPugilism: char.Pugilism,
-        // originalGlory: char.Glory,
+        originalGlory: char.Glory,
+				total: Justice + char.Justice + 
+					char.Trickery +  Trickery + 
+					char.Balance +  Balance + 
+					char.Hedonism +  Hedonism + 
+					char.Bonding +  Bonding + 
+					char.Arts +  Arts + 
+					char.Sporting +  Sporting + 
+					char.Fabrication +  Fabrication + 
+					char.Scholarship +  Scholarship + 
+					(char.Glory * 1.25) + Glory
 			}
-			array.push(character)
-			// console.log(array[0]);
+			array.push(character);
 		}
-		// console.log(array)
+
+		for (const ass of aspects) {
+			bonus(array, ass)
+		}
+
 		setCopy(array);
 	}, []);
 
@@ -69,7 +97,7 @@ const  Leaderboard = (props) => {
 		let bonding = 0;
 		if (gods.some(god => god === 'Aphrodite')) bonding = (charBonds.filter(el => el.level === 'Bonded').length * 3);
 
-		if (show && show === 'CHARACTER NAME HERE') {
+		if (show && show === 'CHARACTER NAME HERE') { // Diagnostic tool
 			console.log(show)
 			console.log(`Preferred: + ${(array.filter(el => el.level=== 'Preferred').length)}`);
 			console.log(`Favoured + ${(array.filter(el => el.level === 'Favoured').length * 3)}`);
@@ -88,6 +116,13 @@ const  Leaderboard = (props) => {
 		(array.filter(el => el.level === 'Disfavoured').length ) -
 		(array.filter(el => el.level === 'Condemned').length * 3))
 	}
+
+	const bonus = (characters, aspect) => { 		
+		characters.sort(function(a, b){return b[aspect] - a[aspect]})
+		characters[0].total = characters[0].total + 3;
+		characters[1].total = characters[1].total + 2;
+		characters[2].total = characters[2].total + 1;
+	}
 	
 	if (!props.login) {
 		props.history.push('/');
@@ -98,7 +133,59 @@ const  Leaderboard = (props) => {
 		<React.Fragment>
 			<NavigationBar/>
 				<h3>Leaderboard</h3>
-				{props.myCharacter.tags.some(el => el === 'Control') && <Button onClick={() => setNumber(100)}>Show All</Button>}
+				{props.myCharacter.tags.some(el => el === 'Control') && <Button onClick={() => setNumber(number === 3 ? 100 : 3)}>Show All</Button>}
+
+				{props.myCharacter.tags.some(el => el === 'Control') && <Col xs={24} sm={24} md={24} className="gridbox">
+							<div style={{ border: '3px solid pink', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: 'pink', color: 'black' }}>total</h5>
+								<List hover size="sm">
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.total - a.total}).splice(0, number).map((character, index) => (
+									<List.Item key={index} index={index}>
+									<FlexboxGrid>
+										<FlexboxGrid.Item colspan={2}>
+											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={20}>
+											{character.characterName}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={2}>
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.total}
+												</div>}
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+								</List.Item>
+								))}
+								</List>
+              </div>
+        </Col>}
+
+				<Col xs={24} sm={24} md={24} className="gridbox">
+							<div style={{ border: '3px solid Yellow', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: 'yellow', color: 'black' }}>Glory</h5>
+								<List hover size="sm">
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Glory - a.Glory}).splice(0, number).map((character, index) => (
+									<List.Item key={index} index={index}>
+									<FlexboxGrid>
+										<FlexboxGrid.Item colspan={2}>
+											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={20}>
+											{character.characterName}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={2}>
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Glory} ({character.originalGlory})
+												</div>}
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+								</List.Item>
+								))}
+								</List>
+              </div>
+        </Col>
+
+
         <Grid fluid>
           <Row>
             <Col xs={24} sm={24} md={12} className="gridbox">
