@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux'; // Redux store provider
 import { Alert, Modal, SelectPicker, CheckPicker, Divider, Tag, Button, TagGroup, FlexboxGrid, List, ButtonGroup, Loader, Row, Col, Panel, InputPicker, Placeholder, InputNumber } from 'rsuite';
 import socket from '../../socket';
-import { getGods, } from '../../redux/entities/characters';
+import { getGods, getNonPlayerCharacters, } from '../../redux/entities/characters';
 
 const NewEffects = (props) => {
 	const [type, setType] = React.useState('');
@@ -132,6 +132,7 @@ const NewEffects = (props) => {
 					Type
 					<InputPicker labelKey='label' valueKey='value' data={pickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={event => handleEdit('type', event)}/>
 					{(selected.type === 'GodBond') && <SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={props.gods} valueKey='_id' labelKey='characterName' />}
+					{(selected.type === 'MortalBond') && <SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={props.mortals} valueKey='_id' labelKey='characterName' />}
 					{renderAss()}
 				</div>}
 				{(type === 'bond' || type === 'asset') && <div>
@@ -256,6 +257,7 @@ const mapStateToProps = state => ({
 	assets: state.assets.list,
 	characters: state.characters.list,
 	gods: getGods(state),
+	mortals: getNonPlayerCharacters(state),
 });
 
 const mapDispatchToProps = dispatch => ({
