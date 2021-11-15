@@ -71,22 +71,30 @@ const  OtherCharacters = (props) => {
 	}
 
 	const openAnvil = (character) => {
-		if (character.wiki && character.wiki !== '') {
-			let url = character.wiki;
-			const win = window.open(url, '_blank');
-			win.focus();
-		}
-		else if (character.tags.some(el => el === 'God' || el === 'Gods')) {
-			let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
-			const win = window.open(url, '_blank');
-			win.focus();
+		if (character.characterName === 'The Box') {
+			const audio = new Audio('/candi1.mp3');
+			audio.loop = true;
+			audio.play();  
 		}
 		else {
-			let url = 'https://godswars.miraheze.org/wiki/'
-			let temp = url.concat(character.characterName.split(' ').join('_'));		
-			const win = window.open(temp, '_blank');
-			win.focus();	
+			if (character.wiki && character.wiki !== '') {
+				let url = character.wiki;
+				const win = window.open(url, '_blank');
+				win.focus();
+			}
+			else if (character.tags.some(el => el === 'God' || el === 'Gods')) {
+				let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
+				const win = window.open(url, '_blank');
+				win.focus();
+			}
+			else {
+				let url = 'https://godswars.miraheze.org/wiki/'
+				let temp = url.concat(character.characterName.split(' ').join('_'));		
+				const win = window.open(temp, '_blank');
+				win.focus();	
+			}			
 		}
+
 	}
 
 	
@@ -293,7 +301,7 @@ const  OtherCharacters = (props) => {
 										<FlexboxGrid.Item colspan={12}>
 											<p>
 											<TagGroup>Controllers:
-												{selected.tags && selected.control.map((item, index) => (
+												{selected.control && selected.control.map((item, index) => (
 													<Tag style={{ color: 'black' }} color='orange' index={index}>{item}</Tag>
 												))}	
 											</TagGroup> 

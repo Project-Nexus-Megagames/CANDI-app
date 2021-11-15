@@ -127,12 +127,6 @@ class MyCharacter extends Component {
 		this.setState({ infoAsset: found, infoModal: true });
 	}
 
-  handleBox = () => {
-    const audio = new Audio('/candi1.mp3');
-    audio.loop = true;
-    audio.play();  
-  }
-
   render() {
     const playerCharacter = this.props.myCharacter;
     if (!this.props.login) {
@@ -180,7 +174,6 @@ class MyCharacter extends Component {
                 <p>
                   <b>Bio:</b> {playerCharacter.bio}
                 </p>
-                <Button onClick={() => this.handleBox()}>The Box</Button>
               </div>
             </Col>
             <Col xs={24} sm={24} md={8} className="gridbox">
