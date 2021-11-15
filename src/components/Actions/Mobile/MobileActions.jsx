@@ -74,7 +74,7 @@ const MobileActions = (props) => {
 		    				</Whisper> 
 		    			</InputGroup>
 		    		</div>
-		    		<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
+		    		<div bodyFill style={{height: 'calc(100vh - 80px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
 		    			<ActionList selected={selected} handleSelect={handleSelect}/>
 		    		</div>			
 		    	</PanelGroup>
