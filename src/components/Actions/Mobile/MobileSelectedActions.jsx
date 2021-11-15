@@ -5,6 +5,7 @@ import { getMyAssets, getMyUsedAssets } from '../../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../../redux/entities/characters';
 import { actionDeleted } from '../../../redux/entities/playerActions';
 import Comment from '../Comment';
+import Effect from '../Effect';
 import NewAction from '../NewAction';
 import NewComment from '../NewComment';
 import NewResult from '../NewResult';
@@ -43,14 +44,13 @@ const MobileSelectedAction = (props) => {
 			case 'Submission':
 				return(
 					<div>
-						<Submission handleSelect={props.handleSelect} index={index} sumbission={el} action={props.selected} creator={props.selected.creator}/>
+						<Submission handleSelect={props.handleSelect} index={index} submission={el} action={props.selected} creator={props.selected.creator}/>
 					</div>
 				)
 				case 'Comment':
 					return(
 						<div>
-							<Divider vertical/>	
-							<Comment selected={props.selected} index={index} comment={el} />
+							<Comment selected={props.selected} index={index} comment={el} />								
 						</div>
 					)
 					case 'Result':
@@ -58,6 +58,13 @@ const MobileSelectedAction = (props) => {
 							<div>
 								<Divider vertical/>	
 								<Result index={index} result={el} selected={props.selected} submission={props.selected.submission}/>
+							</div>
+						)
+					case 'Effect':
+						return(
+							<div>
+								<Divider vertical/>	
+								<Effect selected={props.selected} index={index} effect={el}/>
 							</div>
 						)
 			default:
