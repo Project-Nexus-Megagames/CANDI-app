@@ -70,6 +70,7 @@ class ActionList extends Component {
 											<b style={slimText}>
 												{action.creator.characterTitle} - 
 												{action.results.length > 0 && action.results[0].ready && <Tag color='green'>R Ready</Tag>}
+												{action.effects.length > 0 && <Tag color='violet'>{action.effects.length} Effects</Tag>}
 												{action.tags.map(tag => this.tagStyle(tag))}
 												</b>
 										</FlexboxGrid.Item>
