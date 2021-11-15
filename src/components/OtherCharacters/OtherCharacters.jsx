@@ -46,28 +46,35 @@ const  OtherCharacters = (props) => {
 	}
 
 	const copyToClipboard = (character) => {
-		// console.log(character)
-		let board = `${character.email}`;
-		let array = [ ...character.control ];
+		if (character.characterName === 'The Box') {
+			const audio = new Audio('/candi1.mp3');
+			audio.loop = true;
+			audio.play();  
+		}
+		else {
+			let board = `${character.email}`;
+			let array = [ ...character.control ];
 
-		for (const controller of props.myCharacter.control) {
-			if (!array.some(el => el === controller)) {
-				array.push(controller);
+			for (const controller of props.myCharacter.control) {
+				if (!array.some(el => el === controller)) {
+					array.push(controller);
+				}
 			}
+
+			for (const controller of array) {
+				const character = props.characters.find(el => el.characterName === controller)
+				if (character) {
+					board = board.concat(`; ${character.email}`)
+				}
+				else 
+					console.log(`${controller} could not be added to clipboard`)
+					Alert.error(`${controller} could not be added to clipboard`, 6000);
+			}
+
+			navigator.clipboard.writeText(board);
+			Alert.success('Email Copied!', 6000);			
 		}
 
-		for (const controller of array) {
-			const character = props.characters.find(el => el.characterName === controller)
-			if (character) {
-				board = board.concat(`; ${character.email}`)
-			}
-			else 
-				console.log(`${controller} could not be added to clipboard`)
-				Alert.error(`${controller} could not be added to clipboard`, 6000);
-		}
-
-		navigator.clipboard.writeText(board);
-		Alert.success('Email Copied!', 6000);
 	}
 
 	const openAnvil = (character) => {
