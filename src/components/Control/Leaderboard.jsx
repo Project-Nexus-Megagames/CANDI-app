@@ -88,7 +88,7 @@ const  Leaderboard = (props) => {
 		}
 
 		for (const ass of aspects) {
-			// bonus(array, ass)
+			bonus(array, ass)
 		}
 
 		setCopy(array);
