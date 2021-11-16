@@ -31,7 +31,7 @@ const  Leaderboard = (props) => {
 			let charBonds = bonds.filter(bond => bond.ownerCharacter === char._id );
 
 			// console.log('===Justice===')
-			const Justice = calculate(charBonds, ['Hera']); 
+			const Justice = calculate(charBonds, ['Hera']);
 			const Trickery = calculate(charBonds, ['Hermes']);
 			const Balance = calculate(charBonds, ['Demeter']);
 			const Hedonism = calculate(charBonds, ['Dionysus']);
@@ -39,7 +39,7 @@ const  Leaderboard = (props) => {
 			const Arts = calculate(charBonds, ['Apollo']);
 			const Sporting = calculate(charBonds, ['Artemis']);
 			const Fabrication = calculate(charBonds, ['Hephaestus']);
-			const Scholarship = calculate(charBonds, ['Athena']);
+			const Scholarship = calculate(charBonds, ['Athena'], char.characterName);
 			const Pugilism = calculate(charBonds, ['Ares']);
 			const Glory = calculate(charBonds, ['Zeus', 'Hades', 'Poseidon']);
 
@@ -47,6 +47,7 @@ const  Leaderboard = (props) => {
 			// console.log(Scholarship + char.Scholarship)
 			const character = {
 				characterName: char.characterName,
+				characterTitle: char.characterTitle,
 				_id: char._id,
 				tags: char.tags,
 				Justice: Justice + char.Justice,
@@ -80,13 +81,14 @@ const  Leaderboard = (props) => {
 					char.Sporting +  Sporting + 
 					char.Fabrication +  Fabrication + 
 					char.Scholarship +  Scholarship + 
+					char.Pugilism +  Pugilism + 
 					(char.Glory * 1.25) + Glory
 			}
 			array.push(character);
 		}
 
 		for (const ass of aspects) {
-			bonus(array, ass)
+			// bonus(array, ass)
 		}
 
 		setCopy(array);
@@ -97,7 +99,7 @@ const  Leaderboard = (props) => {
 		let bonding = 0;
 		if (gods.some(god => god === 'Aphrodite')) bonding = (charBonds.filter(el => el.level === 'Bonded').length * 3);
 
-		if (show && show === 'CHARACTER NAME HERE') { // Diagnostic tool
+		if (show && show === 'Anne Grath') { // Diagnostic tool
 			console.log(show)
 			console.log(`Preferred: + ${(array.filter(el => el.level=== 'Preferred').length)}`);
 			console.log(`Favoured + ${(array.filter(el => el.level === 'Favoured').length * 3)}`);
@@ -119,9 +121,11 @@ const  Leaderboard = (props) => {
 
 	const bonus = (characters, aspect) => { 		
 		characters.sort(function(a, b){return b[aspect] - a[aspect]})
+		if (characters[0] === 'Martin Keene') console.log(characters[0].total)
 		characters[0].total = characters[0].total + 3;
 		characters[1].total = characters[1].total + 2;
 		characters[2].total = characters[2].total + 1;
+		if (characters[0] === 'Martin Keene') console.log(characters[0].total)
 	}
 	
 	if (!props.login) {
@@ -146,7 +150,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -171,7 +175,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -199,7 +203,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -224,7 +228,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -249,7 +253,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -274,7 +278,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -299,7 +303,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -324,7 +328,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -349,7 +353,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -374,7 +378,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -399,7 +403,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterName}
+											{character.characterTitle}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -424,7 +428,7 @@ const  Leaderboard = (props) => {
 												<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={20}>
-												{character.characterName}
+												{character.characterTitle}
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={2}>
 												{props.myCharacter.tags.some(el => el === 'Control') && <div>
