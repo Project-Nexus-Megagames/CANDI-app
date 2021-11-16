@@ -189,39 +189,11 @@ const  Leaderboard = (props) => {
               </div>
         </Col>
 
-
-        <Grid fluid>
-          <Row>
-            <Col xs={24} sm={24} md={12} className="gridbox">
-              <div style={{ border: '3px solid gray', borderRadius: '5px', width: '100%', }} >
-							<h5 style={{ backgroundColor: 'gray' }}>Justice</h5>
-							<List hover size="sm">
-								{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Justice - a.Justice}).splice(0, number).map((character, index) => (
-									<List.Item key={index} index={index}>
-									<FlexboxGrid>
-										<FlexboxGrid.Item colspan={2}>
-											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
-												{character.Justice} ({character.originalJustice})
-											</div>}
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-								</List.Item>
-							))}
-						</List>
-              </div>
-            </Col>
-
-						<Col xs={24} sm={24} md={12} className="gridbox">
-							<div style={{ border: '3px solid Yellow', borderRadius: '5px', width: '100%', }} >
-								<h5 style={{ backgroundColor: 'yellow', color: 'black' }}>Trickery</h5>
+				<Col xs={24} sm={24} md={12} className="gridbox">
+							<div style={{ border: '3px solid Brown', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: 'Brown' }}>Arts</h5>
 								<List hover size="sm">
-									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Trickery - a.Trickery}).splice(0, number).map((character, index) => (
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Arts - a.Arts}).splice(0, number).map((character, index) => (
 									<List.Item key={index} index={index}>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={2}>
@@ -232,17 +204,17 @@ const  Leaderboard = (props) => {
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
-												{character.Trickery} ({character.originalTrickery})
-												</div>}
+												{character.Arts} ({character.originalArts})
+											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
 								))}
 								</List>
               </div>
-            </Col>
+            </Col>	
 
-            <Col xs={24} sm={24} md={12} className="gridbox">
+						            <Col xs={24} sm={24} md={12} className="gridbox">
 							<div style={{ border: '3px solid #22a12a', borderRadius: '5px', width: '100%', }} >
 								<h5 style={{ backgroundColor: '#22a12a' }}>Balance</h5>
 								<List hover size="sm">
@@ -258,6 +230,56 @@ const  Leaderboard = (props) => {
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
 												{character.Balance} ({character.originalBalance})
+											</div>}
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+								</List.Item>
+								))}
+								</List>
+              </div>
+            </Col>
+
+						<Col xs={24} sm={24} md={12} className="gridbox">
+							<div style={{ border: '3px solid  #0f8095', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: ' #0f8095' }}>Bonding</h5>
+								<List hover size="sm">
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Bonding - a.Bonding}).splice(0, number).map((character, index) => (
+									<List.Item key={index} index={index}>
+									<FlexboxGrid>
+										<FlexboxGrid.Item colspan={2}>
+											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={20}>
+											{character.characterTitle}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={2}>
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Bonding} ({character.originalBonding})
+											</div>}
+										</FlexboxGrid.Item>
+									</FlexboxGrid>
+								</List.Item>
+								))}
+								</List>
+              </div>
+            </Col>		
+
+						<Col xs={24} sm={24} md={12} className="gridbox">
+							<div style={{ border: '3px solid Orange', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: 'Orange' }}>Fabrication</h5>
+								<List hover size="sm">
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Fabrication - a.Fabrication}).splice(0, number).map((character, index) => (
+									<List.Item key={index} index={index}>
+									<FlexboxGrid>
+										<FlexboxGrid.Item colspan={2}>
+											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={20}>
+											{character.characterTitle}
+										</FlexboxGrid.Item>
+										<FlexboxGrid.Item colspan={2}>
+											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Fabrication} ({character.originalFabrication})
 											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
@@ -292,11 +314,13 @@ const  Leaderboard = (props) => {
               </div>
             </Col>
 
-						<Col xs={24} sm={24} md={12} className="gridbox">
-							<div style={{ border: '3px solid  #0f8095', borderRadius: '5px', width: '100%', }} >
-								<h5 style={{ backgroundColor: ' #0f8095' }}>Bonding</h5>
-								<List hover size="sm">
-									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Bonding - a.Bonding}).splice(0, number).map((character, index) => (
+        <Grid fluid>
+          <Row>
+            <Col xs={24} sm={24} md={12} className="gridbox">
+              <div style={{ border: '3px solid gray', borderRadius: '5px', width: '100%', }} >
+							<h5 style={{ backgroundColor: 'gray' }}>Justice</h5>
+							<List hover size="sm">
+								{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Justice - a.Justice}).splice(0, number).map((character, index) => (
 									<List.Item key={index} index={index}>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={2}>
@@ -307,21 +331,46 @@ const  Leaderboard = (props) => {
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
-												{character.Bonding} ({character.originalBonding})
+												{character.Justice} ({character.originalJustice})
 											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
+							))}
+						</List>
+              </div>
+            </Col>
+
+						<Col xs={24} sm={24} md={12} className="gridbox">
+							<div style={{ border: '3px solid #8a0303', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: '#8a0303' }}>Pugilism</h5>
+								<List hover size="sm">
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Pugilism - a.Pugilism}).splice(0, number).map((character, index) => (
+									<List.Item key={index} index={index}>
+										<FlexboxGrid>
+											<FlexboxGrid.Item colspan={2}>
+												<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
+											</FlexboxGrid.Item>
+											<FlexboxGrid.Item colspan={20}>
+												{character.characterTitle}
+											</FlexboxGrid.Item>
+											<FlexboxGrid.Item colspan={2}>
+												{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{character.Pugilism} ({character.originalPugilism})
+											</div>}
+											</FlexboxGrid.Item>
+										</FlexboxGrid>
+									</List.Item>
 								))}
 								</List>
               </div>
             </Col>
 
 						<Col xs={24} sm={24} md={12} className="gridbox">
-							<div style={{ border: '3px solid Brown', borderRadius: '5px', width: '100%', }} >
-								<h5 style={{ backgroundColor: 'Brown' }}>Arts</h5>
+							<div style={{ border: '3px solid #4169e1', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: '#4169e1', color: 'black' }}>Scholarship</h5>
 								<List hover size="sm">
-									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Arts - a.Arts}).splice(0, number).map((character, index) => (
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Scholarship - a.Scholarship}).splice(0, number).map((character, index) => (
 									<List.Item key={index} index={index}>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={2}>
@@ -332,7 +381,7 @@ const  Leaderboard = (props) => {
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
-												{character.Arts} ({character.originalArts})
+												{character.Scholarship} ({character.originalScholarship})
 											</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
@@ -368,10 +417,10 @@ const  Leaderboard = (props) => {
             </Col>
 
 						<Col xs={24} sm={24} md={12} className="gridbox">
-							<div style={{ border: '3px solid Orange', borderRadius: '5px', width: '100%', }} >
-								<h5 style={{ backgroundColor: 'Orange' }}>Fabrication</h5>
+							<div style={{ border: '3px solid Yellow', borderRadius: '5px', width: '100%', }} >
+								<h5 style={{ backgroundColor: 'yellow', color: 'black' }}>Trickery</h5>
 								<List hover size="sm">
-									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Fabrication - a.Fabrication}).splice(0, number).map((character, index) => (
+									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Trickery - a.Trickery}).splice(0, number).map((character, index) => (
 									<List.Item key={index} index={index}>
 									<FlexboxGrid>
 										<FlexboxGrid.Item colspan={2}>
@@ -382,61 +431,11 @@ const  Leaderboard = (props) => {
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
-												{character.Fabrication} ({character.originalFabrication})
-											</div>}
+												{character.Trickery} ({character.originalTrickery})
+												</div>}
 										</FlexboxGrid.Item>
 									</FlexboxGrid>
 								</List.Item>
-								))}
-								</List>
-              </div>
-            </Col>
-
-						<Col xs={24} sm={24} md={12} className="gridbox">
-							<div style={{ border: '3px solid #4169e1', borderRadius: '5px', width: '100%', }} >
-								<h5 style={{ backgroundColor: '#4169e1', color: 'black' }}>Scholarship</h5>
-								<List hover size="sm">
-									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Scholarship - a.Scholarship}).splice(0, number).map((character, index) => (
-									<List.Item key={index} index={index}>
-									<FlexboxGrid>
-										<FlexboxGrid.Item colspan={2}>
-											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
-												{character.Scholarship} ({character.originalScholarship})
-											</div>}
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-								</List.Item>
-								))}
-								</List>
-              </div>
-            </Col>
-
-						<Col xs={24} sm={24} md={12} className="gridbox">
-							<div style={{ border: '3px solid #8a0303', borderRadius: '5px', width: '100%', }} >
-								<h5 style={{ backgroundColor: '#8a0303' }}>Pugilism</h5>
-								<List hover size="sm">
-									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.Pugilism - a.Pugilism}).splice(0, number).map((character, index) => (
-									<List.Item key={index} index={index}>
-										<FlexboxGrid>
-											<FlexboxGrid.Item colspan={2}>
-												<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
-											</FlexboxGrid.Item>
-											<FlexboxGrid.Item colspan={20}>
-												{character.characterTitle}
-											</FlexboxGrid.Item>
-											<FlexboxGrid.Item colspan={2}>
-												{props.myCharacter.tags.some(el => el === 'Control') && <div>
-												{character.Pugilism} ({character.originalPugilism})
-											</div>}
-											</FlexboxGrid.Item>
-										</FlexboxGrid>
-									</List.Item>
 								))}
 								</List>
               </div>
