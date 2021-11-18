@@ -150,11 +150,14 @@ class NewAction extends Component {
 	}
 
 	formattedUsedAssets = () => {
-		let assets = [];
-		for (const asset of this.props.usedAssets) {
-			assets.push(asset.name)
+		let temp = []; 
+		let assets = this.props.getMyAssets.filter(el => !banned.some(el1 => el1 === el.level && (el.type === 'GodBond' || el.type === 'MortalBond')));
+		assets = assets.filter(el => el.uses <= 0 || el.status.used)
+		console.log(assets)
+		for (const asset of assets) {
+			temp.push(asset._id)
 		}
-		return assets;
+		return temp;
 	}
 
 }

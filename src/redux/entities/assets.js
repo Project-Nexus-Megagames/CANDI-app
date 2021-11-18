@@ -79,7 +79,7 @@ export const getMyUsedAssets = createSelector(
     char => char.username === state.auth.user.username
     ),
   (assets, char) => assets.filter(
-    asset => (asset.owner === char.characterName || asset.currentHolder === char.characterName) && (asset.status.used && asset.uses > 0) === true
+    asset => (asset.owner === char.characterName || asset.currentHolder === char.characterName) && (asset.status.used && asset.uses <= 0) 
   )
 );
 

@@ -24,6 +24,8 @@ const  Leaderboard = (props) => {
 	]
 
 	useEffect(() => {
+
+		if (props.login) {		
 		let array = [];
 		const bonds = [ ...props.godBonds, ...props.mortalBonds];
 		for (const char of props.characters.filter(el => el.tags.some(tag => tag === 'PC'))) {
@@ -92,6 +94,7 @@ const  Leaderboard = (props) => {
 		}
 
 		setCopy(array);
+		}
 	}, []);
 
 	const calculate = (charBonds, gods, show) => {
@@ -175,7 +178,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -200,7 +203,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -225,7 +228,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -250,7 +253,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -275,7 +278,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -300,7 +303,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -327,7 +330,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -352,7 +355,7 @@ const  Leaderboard = (props) => {
 												<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={20}>
-												{character.characterTitle}
+												{character.characterName} ({character.characterTitle})
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={2}>
 												{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -377,7 +380,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -402,7 +405,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
@@ -427,7 +430,7 @@ const  Leaderboard = (props) => {
 											<b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={20}>
-											{character.characterTitle}
+											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
 											{props.myCharacter.tags.some(el => el === 'Control') && <div>
