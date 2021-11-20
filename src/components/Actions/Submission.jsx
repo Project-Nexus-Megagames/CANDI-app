@@ -123,13 +123,13 @@ class Submission extends Component {
 							<h5>{this.props.action.name}</h5>
 							{this.props.action.creator.characterTitle}/{this.props.action.creator.characterName}
 							<p style={slimText}>{this.getTime(this.props.submission.createdAt)}</p>
-							{this.props.action.tags.length === 0 && <b>No Tags</b>}
+							{this.props.myCharacter.tags.some(el => el === 'Control') && this.props.action.tags.length === 0 && <b>No Tags</b>}
 							{this.props.myCharacter.tags.some(el => el === 'Control') && this.props.action.tags.map((item, index) => (
 								<Tag index={index} closable onClose={() => this.handleTagRemove(item, 'tags')}>
 									{item}
 								</Tag>
 							))}	
-							{this.renderTagAdd()}
+							{this.props.myCharacter.tags.some(el => el === 'Control') && this.renderTagAdd()}
 						</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={4}>
