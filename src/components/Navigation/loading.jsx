@@ -212,7 +212,7 @@ const spook = [
 
 
 const victoria = [
-'https://64.media.tumblr.com/1e2d8e69846451ed7c7975b1329c1385/tumblr_inline_pas1tk2i871vk3kbi_400.gifv'
+'https://media3.giphy.com/media/o5mRxg8xPTJRu/giphy.gif?cid=790b7611b334eec6979bb01912b9422824a858e7b1bd05a2&rid=giphy.gif&ct=g'
 ]
 
 const bored = [

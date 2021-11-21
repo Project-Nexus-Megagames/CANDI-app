@@ -145,7 +145,7 @@ class NewAction extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length > 10 && this.state.intent.length > 10 && this.state.name.length > 10) return false;
+		if (this.state.description.length >= 10 && this.state.intent.length >= 10 && this.state.name.length >= 10) return false;
 		else return true;
 	}
 
