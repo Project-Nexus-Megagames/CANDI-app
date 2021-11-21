@@ -123,8 +123,8 @@ class Loading extends Component {
                 </FlexboxGrid>
             </Content>
             <Divider/>
-                    {/* <b>Quack quack quack quack? Quack quack! Quack!!!</b> */}
-                <b>{loadingMsg[rand1]}</b>
+              {rand1 % 2 === 1 && <b>The Queen is not Amused</b>}
+              {rand1 % 2 === 0 && <b>{loadingMsg[rand1]}</b>}
         </React.Fragment>
         );        
     }
