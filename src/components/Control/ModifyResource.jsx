@@ -57,7 +57,7 @@ class ModifyResource extends Component {
 					{this.state.selected && 
 					<ButtonGroup>
 						<Button loading={this.props.assetLoading} onClick={() => this.assetModify()} color="blue">Edit</Button>
-						<Button disabled loading={this.props.assetLoading} onClick={() => this.handleDelete()} color="red">Delete</Button>								
+						<Button loading={this.props.assetLoading} onClick={() => this.handleDelete()} color="red">Delete</Button>								
 					</ButtonGroup>}
 				</Modal.Footer>
 		</Modal>
