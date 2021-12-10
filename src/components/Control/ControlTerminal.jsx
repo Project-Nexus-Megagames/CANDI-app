@@ -110,6 +110,7 @@ class ControlTerminal extends Component {
 							<Button color='orange' appearance="ghost" onClick={() => this.setState({ newCharacter: true })}>New Character</Button>
 							<Button color='violet' onClick={() => this.props.history.push('/registration')}>Registration</Button>
 							<Button color='violet' onClick={() => socket.emit('assetRequest', 'unhide' )}>Unhide all Assets</Button>
+							{/* {<Button color='violet' onClick={() => this.props.history.push('/bitsy')}>Secret</Button>} */}
 						</ButtonGroup>	
 				</div >				
 				</Panel>
