@@ -12,6 +12,7 @@ const Bitsy = (props) => {
 	const [seconds, setSeconds] = React.useState(0);
 	const [minutes, setMinutes] = React.useState(0);
 	const [hours, setHours] = React.useState(0);
+	const [name, setName] = React.useState('');
 
   useEffect(() => {
     if (props.duck) props.toggleDuck()
@@ -22,7 +23,7 @@ const Bitsy = (props) => {
       console.log(data)
       if (data) {
         switch(data.action) {
-          case 'feed': 
+          case 'feed': 1
             setAnimation('/images/Eating Bitsy.gif')
             break;
           case 'play': 
@@ -51,7 +52,6 @@ const Bitsy = (props) => {
         setHours(hours);
   
         const interval = setInterval(() => {
-          console.log('bitsy')
           let countDownDate = new Date(props.myCharacter.bitsy).getTime();
           const now = new Date().getTime();
           let distance =  countDownDate - now;
@@ -82,9 +82,32 @@ const Bitsy = (props) => {
       charcater: props.myCharacter._id,
       action: type
     };
-  
     socket.emit('gamestateRequest', 'easterEgg', data ); // new Socket event
   }
+
+  const generateName = async (type) => {
+    const coin = Math.floor(Math.random() * 6);
+    switch (coin) {
+      case 0:
+        setName(`${adj[(Math.floor(Math.random() * adj.length ))]} ${food[(Math.floor(Math.random() * food.length ))]}`);
+        break;
+      case 1:
+        setName(`${food[(Math.floor(Math.random() * food.length ))]} ${food[(Math.floor(Math.random() * food.length ))]}`);
+        break;
+      case 2:
+        setName(`${adj[(Math.floor(Math.random() * adj.length ))]} ${physical[(Math.floor(Math.random() * physical.length ))]}`);
+        break;
+      case 3:
+        setName(`${physical[(Math.floor(Math.random() * physical.length ))]} ${physical[(Math.floor(Math.random() * physical.length ))]}`);
+        break;
+      case 4:
+        setName(`${adj[(Math.floor(Math.random() * adj.length ))]} ${adj[(Math.floor(Math.random() * adj.length ))]}`);
+        break;
+      default: 
+        setName(premade[(Math.floor(Math.random() * premade.length ))]);
+    }  
+  };
+
 	if (!props.login) {
 		props.history.push('/');
 		return (<Loader inverse center content="doot..." />)
@@ -110,10 +133,122 @@ const Bitsy = (props) => {
         <ButtonGroup>
           <Button disabled={hours + minutes + seconds > 0} onClick={() => handleAction('feed')} >Feed</Button>
           <Button disabled={hours + minutes + seconds > 0} onClick={() => handleAction('play')}>Play</Button>          
+          <Button  onClick={() => generateName()}>Name</Button>  
         </ButtonGroup>
       </ButtonToolbar>
+      <b style={{ textTransform: 'capitalize' }} >{name}</b>
+     
     </React.Fragment>
 	)};
+
+
+  const adj = [
+    'Big',
+    'Little',
+    'Medium-Sized',
+    'agreeable',
+    'alive',
+    'average',
+    'black',
+    'blue',
+    'bored',
+    'cheerful',
+    'crazy',
+    'defiant',
+    'dizzy',
+    'fancy',
+    'friendly',
+    'happy',
+    'lazy',
+    'lucky',
+    'nutty',
+    'odd',
+    'poor',
+    'ugly',
+    'zealous',
+    'flat',
+    'red',
+    'half',
+    'snot',
+    'no',
+    'wide',
+    'grip',
+    '',
+    '',
+  ];
+
+  const food = [
+    'cheese',
+    'oat',
+    'food',
+    'mushroom',
+    'shroom',
+    'Beetle',
+    'ale',
+    'bread',
+    'beef',
+    'grog',
+    'onion',
+    'gruel',
+    'slug',
+    'snail',
+    'grub',
+    'Bone',
+    'pudding',
+    'moss',
+    'frog',
+    'rat',
+    'worm',
+    'swine',
+    'chowder',
+    'chicken',
+    'moss',
+    'weed',
+    'cake',
+    'noodle',
+    '',
+    '',
+  ]
+
+  const physical = [
+    'brain',
+    'wart',
+    'arm',
+    'foot',
+    'feet',
+    'tooth',
+    'toe',
+    'nose',
+    'bone',
+    'wit',
+    'face',
+    'ear',
+    'ears',
+    'head',
+    'zit',
+    'nut',
+    'jaw',
+    'wig',
+    '',
+    '',
+  ]
+
+  const premade = [
+    'zagg',
+    'Chickenbrain',
+    'Beetle',
+    'One-Eye',
+    'gak',
+    'krug',
+    'Pest',
+    'Candlestick',
+    'No-Ear',
+    'Craig',
+    'Leech',
+    'Owlbear Oats™',
+    'mushroom shroom',
+    'Twiggy'
+  ]
 
 const mapStateToProps = (state) => ({
 	locations: state.locations.list,
