@@ -23,7 +23,7 @@ const Bitsy = (props) => {
       console.log(data)
       if (data) {
         switch(data.action) {
-          case 'feed': 1
+          case 'feed': 
             setAnimation('/images/Eating Bitsy.gif')
             break;
           case 'play': 
@@ -89,22 +89,22 @@ const Bitsy = (props) => {
     const coin = Math.floor(Math.random() * 6);
     switch (coin) {
       case 0:
-        setName(`${adj[(Math.floor(Math.random() * adj.length ))]} ${food[(Math.floor(Math.random() * food.length ))]}`);
+        setName(`${adjGob[(Math.floor(Math.random() * adjGob.length ))]} ${food[(Math.floor(Math.random() * food.length ))]}`);
         break;
       case 1:
         setName(`${food[(Math.floor(Math.random() * food.length ))]} ${food[(Math.floor(Math.random() * food.length ))]}`);
         break;
       case 2:
-        setName(`${adj[(Math.floor(Math.random() * adj.length ))]} ${physical[(Math.floor(Math.random() * physical.length ))]}`);
+        setName(`${adjGob[(Math.floor(Math.random() * adjGob.length ))]} ${physical[(Math.floor(Math.random() * physical.length ))]}`);
         break;
       case 3:
         setName(`${physical[(Math.floor(Math.random() * physical.length ))]} ${physical[(Math.floor(Math.random() * physical.length ))]}`);
         break;
       case 4:
-        setName(`${adj[(Math.floor(Math.random() * adj.length ))]} ${adj[(Math.floor(Math.random() * adj.length ))]}`);
+        setName(`${adjGob[(Math.floor(Math.random() * adjGob.length ))]} ${adjGob[(Math.floor(Math.random() * adjGob.length ))]}`);
         break;
       default: 
-        setName(premade[(Math.floor(Math.random() * premade.length ))]);
+        setName(premadeGob[(Math.floor(Math.random() * premadeGob.length ))]);
     }  
   };
 
@@ -142,7 +142,7 @@ const Bitsy = (props) => {
 	)};
 
 
-  const adj = [
+  const adjGob = [
     'Big',
     'Little',
     'Medium-Sized',
@@ -233,7 +233,7 @@ const Bitsy = (props) => {
     '',
   ]
 
-  const premade = [
+  const premadeGob = [
     'zagg',
     'Chickenbrain',
     'Beetle',
