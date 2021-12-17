@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {List, FlexboxGrid, Container, Tag } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { getMyActions, filteredActions, loadAllActions } from '../../redux/entities/playerActions';
+import { getMyActions, filteredActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { 
@@ -127,7 +127,7 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
 
-	myActions: getMyActions(state),
+	myActions: state.actions.list,// getMyActions(state),
 	filteredActions: filteredActions(state)
 
 });

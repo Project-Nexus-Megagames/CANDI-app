@@ -6,7 +6,7 @@ import { loadAssets } from '../../redux/entities/assets';
 import { authReceived, loginUser } from '../../redux/entities/auth';
 import { loadCharacters } from '../../redux/entities/characters';
 import { loadGamestate } from '../../redux/entities/gamestate';
-import { loadplayerActions } from '../../redux/entities/playerActions';
+import { loadAllActions, loadplayerActions } from '../../redux/entities/playerActions';
 
 const { StringType } = Schema.Types;
 
@@ -86,7 +86,7 @@ const mapDispatchToProps = (dispatch) => ({
 	handleLogin: (data) => dispatch(loginUser(data)),
 	tokenLogin: (data) => dispatch(authReceived(data)),
 	loadChar: (data) => dispatch(loadCharacters()),
-	loadAction: (data) => dispatch(loadplayerActions(data)),
+	loadAction: (data) => dispatch(loadAllActions(data)),// dispatch(loadplayerActions(data)),
 	loadAssets: (data) => dispatch(loadAssets()),
 	loadGamestate: (data) => dispatch(loadGamestate())
 	// updateUser: (user) => dispatch(updateUser({ user }))
