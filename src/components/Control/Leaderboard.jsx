@@ -140,11 +140,11 @@ const  Leaderboard = (props) => {
 		<React.Fragment>
 			<NavigationBar/>
 				<h3>Leaderboard</h3>
-				{props.myCharacter.tags.some(el => el === 'Control') && <Button onClick={() => setNumber(number === 3 ? 100 : 3)}>Show All</Button>}
+				{<Button onClick={() => setNumber(number === 3 ? 100 : 3)}>Show All</Button>}
 
-				{props.myCharacter.tags.some(el => el === 'Control') && <Col xs={24} sm={24} md={24} className="gridbox">
+				{<Col xs={24} sm={24} md={24} className="gridbox">
 							<div style={{ border: '3px solid pink', borderRadius: '5px', width: '100%', }} >
-								<h5 style={{ backgroundColor: 'pink', color: 'black' }}>total</h5>
+								<h5 style={{ backgroundColor: 'pink', color: 'black' }}>Total</h5>
 								<List hover size="sm">
 									{copy.filter(el => el.tags.some(tag => tag === 'PC')).sort(function(a, b){return b.total - a.total}).splice(0, number).map((character, index) => (
 									<List.Item key={index} index={index}>
@@ -156,7 +156,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.total}
 												</div>}
 										</FlexboxGrid.Item>
@@ -181,7 +181,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Glory} ({character.originalGlory})
 												</div>}
 										</FlexboxGrid.Item>
@@ -206,7 +206,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Arts} ({character.originalArts})
 											</div>}
 										</FlexboxGrid.Item>
@@ -231,7 +231,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Balance} ({character.originalBalance})
 											</div>}
 										</FlexboxGrid.Item>
@@ -256,7 +256,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Bonding} ({character.originalBonding})
 											</div>}
 										</FlexboxGrid.Item>
@@ -281,7 +281,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Fabrication} ({character.originalFabrication})
 											</div>}
 										</FlexboxGrid.Item>
@@ -306,7 +306,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Hedonism} ({character.originalHedonism})
 											</div>}
 										</FlexboxGrid.Item>
@@ -333,7 +333,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Justice} ({character.originalJustice})
 											</div>}
 										</FlexboxGrid.Item>
@@ -358,7 +358,7 @@ const  Leaderboard = (props) => {
 												{character.characterName} ({character.characterTitle})
 											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={2}>
-												{props.myCharacter.tags.some(el => el === 'Control') && <div>
+												{<div>
 												{character.Pugilism} ({character.originalPugilism})
 											</div>}
 											</FlexboxGrid.Item>
@@ -383,7 +383,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Scholarship} ({character.originalScholarship})
 											</div>}
 										</FlexboxGrid.Item>
@@ -408,7 +408,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Sporting} ({character.originalSporting})
 											</div>}
 										</FlexboxGrid.Item>
@@ -433,7 +433,7 @@ const  Leaderboard = (props) => {
 											{character.characterName} ({character.characterTitle})
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={2}>
-											{props.myCharacter.tags.some(el => el === 'Control') && <div>
+											{<div>
 												{character.Trickery} ({character.originalTrickery})
 												</div>}
 										</FlexboxGrid.Item>
