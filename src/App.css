@@ -82,29 +82,12 @@
   opacity: 1;
 }
 
-.north:hover {
-  opacity: .5;
-}
-
-.east:hover {
-  opacity: .5;
-}
-
-.south:hover {
-  opacity: .5;
-}
-
-.west:hover {
-  opacity: .5;
-}
-.central:hover {
-  opacity: .5;
-}
-
-.misc:hover {
-  opacity: .5;
-}
-
+.slim-text {
+	font-size: '0.966em';
+	font-weight: '300';
+	white-space: 'nowrap';
+	text-align: "center";
+};
 
 .toggle-menu {
   height: 50px;

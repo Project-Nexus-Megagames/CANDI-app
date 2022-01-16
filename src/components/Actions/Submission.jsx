@@ -238,7 +238,7 @@ class Submission extends Component {
 									Cancel
 								</Button>
 							</Modal.Footer>
-						</Modal>
+					</Modal>
 				<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={()=> this.setState({infoModal: false})}/>			
 
 				<Modal  size='sm' show={this.state.deleteWarning} 
@@ -282,9 +282,6 @@ class Submission extends Component {
 		}
 		socket.emit('actionRequest', 'update', data); // new Socket event	
 	}
-
-
-
 
 	controlRemove = (asset) => {
 		const action = {

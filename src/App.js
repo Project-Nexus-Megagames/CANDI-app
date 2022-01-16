@@ -32,6 +32,7 @@ import myCharacter from './components/MyCharacters/myCharacter';
 import Down from './components/Navigation/Down';
 import Leaderboard from './components/Control/Leaderboard';
 import { signOut, usersRecieved } from './redux/entities/auth';
+import Quests from './components/Control/Quests';
 
 // React App Component
 initUpdates()
@@ -131,6 +132,9 @@ const App = (props) => {
         )} />
         <Route exact path='/leaderboard' render={(props) => (
           <Leaderboard {...props} />
+        )} />
+        <Route exact path='/quests' render={(props) => (
+          <Quests {...props} />
         )} />
         <Route exact path='/404' render={(props) => (
           <NotFound {...props} />

@@ -92,19 +92,17 @@ class NewAction extends Component {
 						{(10 - this.state.name.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
 						<textarea rows='1' value={this.state.name} style={textStyle} onChange={(event)=> this.setState({name: event.target.value})}></textarea>
 
-						Description
+						Description:
 						{(10 - this.state.description.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.description.length} more characters...</Tag>}
 						{(10 - this.state.description.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
 
 						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
 
 						<br></br>
-						<FlexboxGrid>Intent
-						
-							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
+						<FlexboxGrid>Intent:						
 							{(10 - this.state.intent.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.intent.length} more characters...</Tag>}
 							{(10 - this.state.intent.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
-
+							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>						
 						</FlexboxGrid>
 						<FlexboxGrid>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>

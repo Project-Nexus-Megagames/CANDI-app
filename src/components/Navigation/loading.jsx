@@ -37,7 +37,7 @@ class Loading extends Component {
             <Content>
                 <FlexboxGrid justify="center">
                 <FlexboxGrid.Item key={1} colspan={24} style={{marginTop: '50px', cursor: 'pointer'}}>
-                    <img style={{ maxHeight: '400px', height: '30vh' }} src={victoria[rand]}  alt={'Loading...'} onClick={()=> this.bored()} />  
+                    <img style={{ maxHeight: '400px', height: '30vh' }} src={gamePhotos[rand]}  alt={'Loading...'} onClick={()=> this.bored()} />  
                     {/* src={spook[rand]} */}
                 </FlexboxGrid.Item>
                 </FlexboxGrid>
@@ -211,8 +211,8 @@ const spook = [
 ]
 
 
-const victoria = [
-'https://media3.giphy.com/media/o5mRxg8xPTJRu/giphy.gif?cid=790b7611b334eec6979bb01912b9422824a858e7b1bd05a2&rid=giphy.gif&ct=g'
+const gamePhotos = [
+'https://i.pinimg.com/originals/19/eb/f3/19ebf370a04aa86972768fe7435c4d94.gif'
 ]
 
 const bored = [
@@ -289,60 +289,13 @@ const birthday = [
     'https://media1.tenor.com/images/b7e33bd26c649ee7ee5114835cad8898/tenor.gif?itemid=13929089'
 ]
 
-const duck = [
-    'https://media1.tenor.com/images/a6fe1299a96e143c3249edbe50f4a55f/tenor.gif?itemid=4522389',
-    'https://media1.tenor.com/images/0e004747d2e41dcd26fdd39a10df50b1/tenor.gif?itemid=15884158',
-    'https://media1.tenor.com/images/f85dcbdc742c0e32bc933fc2002f0bcd/tenor.gif?itemid=15449339',
-    'https://media1.tenor.com/images/f89ea03a4f7bfdd47980a04e5a0c964f/tenor.gif?itemid=16629770',
-    'https://media2.giphy.com/media/rtRflhLVzbNWU/giphy.gif?cid=790b7611acef6b0baf91079205a45b562faac7ca2a35735e&rid=giphy.gif&ct=s'
-]
-
 const loadingMsg = [
-    'Thank you all for taking time to make this game happen.',  
+    // 'Thank you all for taking time to make this game happen.',  
     'pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ \'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI',
     'Help I\'m a man stuck inside a loading screen let me out!',
-    'C.A.N.D.I stands for the "Control Actions \'N Distributing Inputs"! \nLook I really just wanted to call it CANDI. It\'s my app and I\'ll call it whatever I want!',
-    'You have two actions per turn to use however your character sees fit!',
-    'You can apply three dice (traits, assets, or bonds) to each action you take per turn',
-    'Each trait, asset, or bond will have a dice value corresponding to the dice that will be added to the roll (d4, d6, d8, or d10)',
-    'There are 10 Aspects that demigods can score points in for the Gods’ Wars competition',
-    'The top 6 demigods with the most points at the end of Gods’ Wars will ascend to Godhood',
-    'There are 13 Gods sponsoring 2 demigods each in this Gods’ Wars competition',
-    'Tiresias is a God who isn’t sponsoring any demigods, as they are the neutral arbitrator of Gods’ Wars',
-    'Each God in the Competition will give out Quests. Solving these will get you more divine power or artifacts',
-    'Zeus, Poseidon, and Hades are considered the Big 3 Gods, as the most powerful of the Olympians, and the rulers of the three realms.',
-    'Victor Moore and Lilian Thompson have both been declared as the “catch” of the Season',
-    'The London Season refers to a period of several months during the spring in which London’s upper class, the tonne, socialize- largely with the purpose of finding a spouse',
-    'The tonne or ton was England’s high society during the reign of George IV and later. The word means “manners” or “style”',
-    'At the end of the game, the top 3 scorers in each Aspect will get bonus points for the overall competition',
-    'Hera’s Aspect is Justice, ensuring that the wicked are punished and the virtuous are rewarded',
-    'Aphrodite’s Aspect is Bonding, developing relationships with others (whether romantic or not)',
-    'Apollo’s Aspect is Arts, displaying expertise in artistic pursuits',
-    'Artemis’ Aspect is Sporting, taking actions related to sports and especially hunting',
-    'Dionysus’ Aspect is Hedonism, indulging yourself and enjoying a bit of revelry',
-    'Hephaestus’ Aspect is Fabrication, making or crafting something incredible',
-    'Athena’s Aspect is scholarship, learning and seeking knowledge',
-    'Ares’ Aspect is Pugilism, fighting both physical, verbal, or otherwise',
-    'Hermes’ Aspect is Trickery, engaging in dishonesty, double-crossing, and/or deceit',
-    'Demeter’s Aspect is Balance, ensuring a balance between industry and the environment',
-    'Zeus, Poseidon, and Hades don’t have a specific Aspect, but doing Quests or earning devotion for them will gain you points in Glory',
-    'Points in Glory (the “Aspect” of Zeus, Poseidon, and Hades) are worth slightly more ',
-    'Defying the Aoratos and displaying powers to mortals will result in forgetfulness or even complete amnesia',
-    'The upper class or aristocracy includes people born into nobility who own the majority of the land',
-    'The bourgeoisie or middle working class includes professionals and some tradespeople',
-    ' The lower classes include the working class or labourers as well as the poor who did not work and received public charity',
-    'Rules of Etiquette: You must never approach people of higher rank in person, unless being introduced by a mutual friend, or having first contacted them by letter.',
-    'Rules of Etiquette: Unmarried people should never address other unmarried people in person without an introduction or a chaperone ',
-    'Rules of Etiquette: An unmarried person never walks out alone. They need a chaperone.',
-    'Rules of Etiquette: An unmarried person can never ride alone in a closed carriage with another unmarried person who is not a relative.',
-    'Rules of Etiquette: An unmarried person cannot receive an unmarried guest at home if they are alone. A chaperone must be present.',
-    'Rules of Etiquette: No impure conversations should be held in front of an unmarried person',
-    'Rules of Etiquette: No sexual contact is allowed before marriage. Innocence is demanded in marital partners.',
-    'Rules of Etiquette: No sexual contact is allowed outside of wedlock.',
-    'Rules of Etiquette: No children should be had outside of wedlock.',
-    'Queen Victoria ruled the United Kingdom from 1837 to 1901',
+    'C.A.N.D.I stands for the "Controling Actions \'N Distributing Inputs"! \nLook I really just wanted to call it CANDI. It\'s my app and I\'ll call it whatever I want!',
+
 ]
 
-const rand = (Math.floor(Math.random() * victoria.length ));
-const duckRand = (Math.floor(Math.random() * duck.length ));
+const rand = (Math.floor(Math.random() * gamePhotos.length ));
 const rand1 = (Math.floor(Math.random() * loadingMsg.length ));

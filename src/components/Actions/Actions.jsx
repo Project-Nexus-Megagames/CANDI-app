@@ -76,7 +76,7 @@ const Actions = (props) => {
 		</Sidebar>
 
 		{!selected && <h4 style={{ width: '100%' }}>No Action Selected</h4>}
-		{selected && selected.type === 'Action' && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
+		{selected &&  <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
 
 
 		<NewAction
