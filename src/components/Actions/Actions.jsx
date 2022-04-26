@@ -37,15 +37,6 @@ const Actions = (props) => {
 	// 	assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth' || el.type === 'Power' || el.type === 'Bond'));
 	// 	return assets;
 	// }
-
-	const tooltip = () => {
-		return(
-		<Tooltip>
-		  Log-Out
-		</Tooltip>			
-		)
-	}
-
 	  
 
 	if (!props.login) {

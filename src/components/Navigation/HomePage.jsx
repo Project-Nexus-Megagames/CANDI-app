@@ -6,13 +6,13 @@ import ImgPanel from './ImgPanel';
 import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
-import control2 from '../Images/Control.jpg'
-import other from '../Images/othercharacters.jpg'
-import nexus from '../Images/nexus2.jpg'
-import test from '../Images/test.png'
+import control2 from '../Images/test.jpg'
+import other from '../Images/other.jpg'
+import nexus from '../Images/test.jpg'
 import banner from '../Images/banner.jpg'
-import myCharacter from '../Images/MyCharacter.jpg'
-import LeaderBoard from '../Images/LeaderBoard.jpg'
+import actions from '../Images/actions.jpg'
+import myCharacter from '../Images/test.jpg'
+import Map from '../Images/map.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
@@ -134,7 +134,7 @@ const HomePage = (props) => {
       		  <div style={{ border: "5px solid #ff66c4", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '45vh', overflow: 'hidden' }}>
             
          	   <div className="container">
-         	       <img src={test} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+         	       <img src={actions} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
          	   </div>
          	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Actions</h6>
          	   <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Creating and editing Actions</p>
@@ -151,8 +151,7 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel height={'21vh'} img={LeaderBoard} to='quests' title='quests' body=''/> 
-						<ImgPanel height={'22vh'} img={LeaderBoard} to='leaderboard' title='Leaderboard' body='Who is in the lead?'/> 
+						<ImgPanel  img={Map} to='map' title='map' body='Here be Dragons...'/> 
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
@@ -166,7 +165,7 @@ const HomePage = (props) => {
 								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Support the Programmers</p>
 								
 						</div>}
-						{/* <ImgPanel height={'20.5vh'} img={LeaderBoard} to='controllers' title='Control' body='Who is responsible?'/> */}
+						{/* <ImgPanel height={'20.5vh'} img={Map} to='controllers' title='Control' body='Who is responsible?'/> */}
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>

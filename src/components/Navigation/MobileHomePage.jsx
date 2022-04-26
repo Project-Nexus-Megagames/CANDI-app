@@ -6,22 +6,16 @@ import ImgPanel from './ImgPanel';
 import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
-import action from '../Images/actionmobile.jpg'
-import control2 from '../Images/Control.jpg'
-import LeaderBoard from '../Images/LeaderBoard.jpg'
-import other from '../Images/othercharactersmobile.jpg'
-import control from '../Images/balls.png'
-import nexus from '../Images/nexus.jpg'
-import myCharacter from '../Images/MyCharacter.jpg'
-import banner from '../Images/banner.jpg'
+import action from '../Images/test.jpg'
+import other from '../Images/test.jpg'
+import myCharacter from '../Images/test.jpg'
+import banner from '../Images/test.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
-import { Link } from 'react-router-dom';
 import { toggleDuck } from '../../redux/entities/gamestate';
 
 const HomePage = (props) => {
-	const [show, setShow] = React.useState(false);
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0, });
 
@@ -118,9 +112,6 @@ const HomePage = (props) => {
 						<ImgPanel img={myCharacter} to='character' title='My Character' height='30vh' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
-					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={LeaderBoard} height='30vh' to='leaderboard' title='Leaderboard' body='How are things standing?'/>
-					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12}>
 						<ImgPanel img={other} height='30vh' to='others' title={'Other Characters'} body='Character Details'/>
 					</FlexboxGrid.Item>

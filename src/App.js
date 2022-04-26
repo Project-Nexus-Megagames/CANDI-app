@@ -12,7 +12,6 @@ import HomePage from './components/Navigation/HomePage';
 import MyCharacter from './components/MyCharacters/myCharacter';
 import OtherCharacters from './components/OtherCharacters/OtherCharacters';
 import ControlTerminal from './components/Control/ControlTerminal';
-// import Registration from './components/Control/Registration';
 
 import Login from './components/Navigation/Login';
 import initUpdates from './redux/initUpdate';
@@ -24,15 +23,14 @@ import socket from './socket';
 import NoCharacter from './components/Navigation/NoCharacter';
 
 import { initConnection } from './socket';
-import MapContainer from './components/Navigation/Test';
 import Registration from './components/Control/Registration';
 import NotFound from './components/Navigation/NotFound';
 import Bitsy from './components/Navigation/Bitsy';
-import myCharacter from './components/MyCharacters/myCharacter';
 import Down from './components/Navigation/Down';
 import Leaderboard from './components/Control/Leaderboard';
 import { signOut, usersRecieved } from './redux/entities/auth';
 import Quests from './components/Control/Quests';
+import Map from './components/Map/Map';
 
 // React App Component
 initUpdates()
@@ -135,6 +133,9 @@ const App = (props) => {
         )} />
         <Route exact path='/quests' render={(props) => (
           <Quests {...props} />
+        )} />
+        <Route exact path='/map' render={(props) => (
+            <Map {...props} />
         )} />
         <Route exact path='/404' render={(props) => (
           <NotFound {...props} />

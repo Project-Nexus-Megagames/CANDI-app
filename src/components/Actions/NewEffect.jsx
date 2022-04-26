@@ -37,12 +37,9 @@ const NewEffects = (props) => {
 				}
 				setArray(assets);
 				break;
-				case 'aspect':
-					setSelected(props.selected.creator);
-					break;
-				case 'new':
-					setSelected({ name: '', description: '', dice: '', level: '', ownerCharacter: props.selected.creator._id, });
-					break;
+			case 'new':
+				setSelected({ name: '', description: '', dice: '', level: '', ownerCharacter: props.selected.creator._id, });
+				break;
 			default:
 				break;
 		}
@@ -72,7 +69,6 @@ const NewEffects = (props) => {
 
 	const handleSubmit = async () => { 
 		try {
-			// props.assetDispatched();
 			const data = {
 				type,
 				action: props.action._id,
@@ -124,7 +120,7 @@ const NewEffects = (props) => {
 				<ButtonGroup>
 					<Button appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'cyan'} onClick={type !== 'bond' ? () => handleType('bond') : undefined} >Edit Bond</Button>
 					<Button appearance={type !== 'asset' ? 'ghost' : 'primary'} color={'blue'} onClick={type !== 'asset' ? () => handleType('asset') : undefined} >Edit Resource</Button>
-					<Button appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'aspect' ? () => handleType('aspect') : undefined} >Change Aspect Point</Button>
+					<Button appearance={type !== 'map' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined} >Lock/Unlock Map Tile</Button>
 					<Button appearance={type !== 'new' ? 'ghost' : 'primary'} color={'green'} onClick={type !== 'new' ? () => handleType('new') : undefined} >New Resource</Button>
 				</ButtonGroup>
 				<Divider />
@@ -139,19 +135,8 @@ const NewEffects = (props) => {
 					<SelectPicker block placeholder={`Edit ${type}`} onChange={(event) => handleSelect(event)} data={array} valueKey='_id' labelKey='name' groupBy='type'></SelectPicker>
 					{renderAss()}
 				</div>}
-				{(type === 'aspect') && selected && <div>
-					<FlexboxGrid>
-						{aspects.sort((a, b) => { // sort the catagories alphabetically 
-							if(a < b) { return -1; }
-							if(a > b) { return 1; }
-							return 0;
-						}).map((aspect, index) => (
-							<FlexboxGrid.Item index={index} colspan={8}>
-								{aspect}
-								<InputNumber index={index} value={selected[aspect]} onChange={(value) => handleEdit(aspect, value)}/>
-							</FlexboxGrid.Item>
-						))}
-					</FlexboxGrid>
+				{(type === 'map') && selected && <div>
+					{/* TO DO Put map form here */}
 				</div>}
 			</Modal.Body>}
 			<Modal.Footer>
