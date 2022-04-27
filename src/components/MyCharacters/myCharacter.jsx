@@ -210,8 +210,6 @@ class MyCharacter extends Component {
               {this.renderList('Asset', 'indigo')}
               {this.renderList('Trait', 'teal')}
               {this.renderList('Power', 'purple')}
-              {this.renderList('GodBond', 'brown')}
-              {this.renderList('MortalBond', '#985cad')}
 
             </List>	
             </div>
@@ -293,7 +291,7 @@ class MyCharacter extends Component {
                 {!asset.status.lendable && <div>
                   <b>{asset.name}</b><IconButton size='xs' appearance={'link'} onClick={() => this.openInfo(asset)} color='blue' icon={<Icon icon="info" />} />
                   <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{asset.description}</p>
-                  {(type === 'GodBond' || type === 'MortalBond') && 
+                  {asset.level && 
                   <b>Level: {asset.level}</b>}
                   </div>}
                 {asset.uses !== 999 && <p>Uses: {asset.uses}</p>}

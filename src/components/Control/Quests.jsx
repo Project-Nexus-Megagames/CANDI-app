@@ -118,12 +118,4 @@ const publicComm = {
 	backgroundColor: '#00a0bd', 
 }
 
-const privateComm = {
-	backgroundColor: '#61342e', 
-}
-
-const infoComm = {
-	backgroundColor: '#531ba8', 
-}
-
 export default connect(mapStateToProps, mapDispatchToProps)(Quests);

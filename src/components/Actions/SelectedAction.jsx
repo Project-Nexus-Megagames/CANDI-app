@@ -101,6 +101,7 @@ const SelectedAction = (props) => {
 			<NewAction
 				show={submission}
 				closeNew={() => closeIt()}
+				
 				gamestate={props.gamestate}
 				selected={props.selected}
 			/>

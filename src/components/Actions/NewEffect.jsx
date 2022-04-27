@@ -201,20 +201,6 @@ const mortalPickerData = [
 	},
 ];
 
-let aspects = [
-	"Justice",
-	"Trickery",
-	"Balance",
-	"Hedonism",
-	"Bonding",
-	"Arts",
-	"Sporting",
-	"Fabrication",
-	"Scholarship",
-	"Pugilism",
-	"Glory",
-];
-
 const pickerData = [
 	{
 		label: 'Asset',
@@ -227,14 +213,6 @@ const pickerData = [
 	{
 		label: 'Power',
 		value: 'Power'
-	},
-	{
-		label: 'GodBond',
-		value: 'GodBond'
-	},
-	{
-		label: 'MortalBond',
-		value: 'MortalBond'
 	},
 ]
 

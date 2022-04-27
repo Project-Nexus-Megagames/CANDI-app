@@ -51,7 +51,7 @@ const HexMap = (props) => {
   
   function hoverChange(data) {
     let div = document.getElementById(data.target.id);
-    div.style.backgroundImage= "url(" + "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Flag_of_Libya_%281977%E2%80%932011%2C_3-2%29.svg/1200px-Flag_of_Libya_%281977%E2%80%932011%2C_3-2%29.svg.png" + ")"
+    // div.style.border= "url(" + "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Flag_of_Libya_%281977%E2%80%932011%2C_3-2%29.svg/1200px-Flag_of_Libya_%281977%E2%80%932011%2C_3-2%29.svg.png" + ")"
     props.handleHover(data.target.id)
   }
   

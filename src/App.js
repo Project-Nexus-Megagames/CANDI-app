@@ -9,7 +9,7 @@ import './App.css';
 import Actions from './components/Actions/Actions';
 import Control from './components/Control/control';
 import HomePage from './components/Navigation/HomePage';
-import MyCharacter from './components/MyCharacters/myCharacter';
+import MyCharacter from './components/MyCharacters/MyCharacter';
 import OtherCharacters from './components/OtherCharacters/OtherCharacters';
 import ControlTerminal from './components/Control/ControlTerminal';
 
@@ -27,7 +27,6 @@ import Registration from './components/Control/Registration';
 import NotFound from './components/Navigation/NotFound';
 import Bitsy from './components/Navigation/Bitsy';
 import Down from './components/Navigation/Down';
-import Leaderboard from './components/Control/Leaderboard';
 import { signOut, usersRecieved } from './redux/entities/auth';
 import Quests from './components/Control/Quests';
 import Map from './components/Map/Map';
@@ -127,9 +126,6 @@ const App = (props) => {
         )} />
         <Route exact path='/control' render={(props) => (
           <ControlTerminal {...props} />
-        )} />
-        <Route exact path='/leaderboard' render={(props) => (
-          <Leaderboard {...props} />
         )} />
         <Route exact path='/quests' render={(props) => (
           <Quests {...props} />
