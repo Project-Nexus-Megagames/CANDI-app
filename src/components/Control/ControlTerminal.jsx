@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReactMarkdown from 'react-markdown'
-import { ButtonGroup, Content, InputNumber, InputPicker, Divider, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel,  DatePicker, Loader, Table, Tag, Toggle, FlexboxGrid } from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel,  DatePicker, Loader, FlexboxGrid } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getBadCharacters, getGods, getMyCharacter, getNonPlayerCharacters } from '../../redux/entities/characters';
@@ -9,9 +8,6 @@ import { assetsRequested } from '../../redux/entities/assets';
 import NewCharacter from './NewCharacter';
 import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
-import RelationshipTable from './RelationshipTable';
-
-const { Column, HeaderCell, Cell } = Table;
 class ControlTerminal extends Component {
 	state = { 
 		gsModal: false,
@@ -115,9 +111,6 @@ class ControlTerminal extends Component {
 				</div >				
 				</Panel>
 
-        <Toggle style={{ marginTop: '10px' }} onChange={()=> this.setState({ godData: !this.state.godData })} checkedChildren="Mortal" unCheckedChildren="Gods"/>
-				<RelationshipTable godData={this.state.godData} data={this.state.godData ? this.props.godCharacters : this.props.nonPlayerCharacters}  />
-
 				<Modal size='sm' show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })} > 
 					<Form formValue={this.state.formValue} layout="vertical" onChange={formValue => {this.setState({ formValue });}}>
 						<FormGroup>
@@ -160,22 +153,6 @@ class ControlTerminal extends Component {
 		</Modal.Footer>
 				</Modal>
 
-				{/* <Modal backdrop="static" size='sm' show={this.state.scottModal} onHide={() => this.setState({ scottModal: false })}>
-					<Modal.Body>
-						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
-							{'  '}
-						HEY! This is Scott. Do NOT edit assets to reduce their usage for purposes of people using them on actions. This will mess up the automation I am working on and players will get confused.
-							<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
-					</Modal.Body>
-					<Modal.Footer>
-            <Button onClick={() => this.setState({ assModal: true })} appearance="primary">
-							I understand
-            </Button>
-            <Button onClick={() => this.setState({ scottModal: false })} appearance="subtle">
-							This warning Modal Can't stop me if I don't read it!
-            </Button>
-		</Modal.Footer>
-				</Modal> */}			
 				<Modal backdrop="static" size='sm' show={this.state.warning2Modal} onHide={() => this.setState({ warning2Modal: false })}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
@@ -184,7 +161,7 @@ class ControlTerminal extends Component {
 							<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }}/>
 							<ul>
 								<li>
-									Make all actions that are "Ready for Publishing" to "Published"
+									Push all actions that are "Ready for Publishing" to "Published"
 								</li>
 								<li>
 									Recall all Lent Assets to their owners

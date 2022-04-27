@@ -335,92 +335,9 @@ const  OtherCharacters = (props) => {
 									<img src={selected.tags.some(el => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${selected.characterName}.jpg`} alt="Img could not be displayed" width="90%" style={{ maxHeight: '50vh' }} />
 								</FlexboxGrid.Item>
 
-								{/*Lend Support*/}
-								{/* <FlexboxGrid.Item> 
-									<List autoScroll size="md" >
-										<h5 style={{ backgroundColor: '#15181e' }} >Supporters</h5>
-										<Button size='xs' onClick={()=> lendSupp()} appearance="primary">Toggle Support!</Button>
-										{selected.supporters.map((supporter, index) => (
-											<List.Item key={index} index={index} size='md'>
-												<div>{supporter}</div>
-											</List.Item>
-										))}
-									</List>
-								</FlexboxGrid.Item> */}
-
 							</FlexboxGrid>
 						</Panel>
 					</FlexboxGrid.Item>
-
-					{/*God's Bonds */}
-					{selected.tags.some(el => el === 'God') && <FlexboxGrid.Item colspan={24}>
-						<Divider>Total Bonds with {selected.characterName}</Divider>
-						<FlexboxGrid>
-							<FlexboxGrid.Item colspan={8}>
-								<Panel bordered style={{backgroundColor: '#272b34'}} header='Preferred'>
-									{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Preferred').length}
-								</Panel>
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-								<Panel bordered style={{backgroundColor: '#272b34'}} header='Favoured'>
-									{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Favoured').length}
-								</Panel>
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-								<Panel bordered style={{backgroundColor: '#272b34'}} header='Blessed'>
-									{props.godBonds.filter(el => el.with._id === selected._id && el.level === 'Blessed').length}
-								</Panel>
-							</FlexboxGrid.Item>						
-						</FlexboxGrid>
-					</FlexboxGrid.Item>	}	
-
-					{/*NPC's Bonds */}
-					{selected.tags.some(el => el === 'NPC') && <FlexboxGrid.Item colspan={24}>
-						<Divider>Total Bonds with {selected.characterName}</Divider>
-						<FlexboxGrid>
-							<FlexboxGrid.Item colspan={8}>
-								<Panel bordered style={{backgroundColor: '#272b34'}} header='Warm'>
-									{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Warm').length}
-								</Panel>
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-								<Panel bordered style={{backgroundColor: '#272b34'}} header='Friendly'>
-									{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Friendly').length}
-								</Panel>
-							</FlexboxGrid.Item>
-							<FlexboxGrid.Item colspan={8}>
-								<Panel bordered style={{backgroundColor: '#272b34'}} header='Bonded'>
-									{props.mortalBonds.filter(el => el.with._id === selected._id && el.level === 'Bonded').length}
-								</Panel>
-							</FlexboxGrid.Item>						
-						</FlexboxGrid>
-					</FlexboxGrid.Item>	}	
-
-					{/* <FlexboxGrid.Item colspan={24}>
-					<Divider>Bonds</Divider>
-						<Table data={props.assets.filter(el => el.ownerCharacter === selected._id && (el.type === 'GodBond' || el.type === 'MortalBond'))}> 
-							<Column  flexGrow={2}>
-								<HeaderCell>Bond Name</HeaderCell>
-								<Cell dataKey='name' />
-							</Column>
-
-							<Column  flexGrow={2}>
-								<HeaderCell>With</HeaderCell>
-								<Cell>
-									{rowData => {
-										let thing = props.characters.find(el => el._id === rowData.with)
-										return <b>{thing.characterName}</b>
-									}}
-								</Cell>
-							</Column>
-
-							<Column  flexGrow={2}>
-								<HeaderCell>Level</HeaderCell>
-								<Cell dataKey='level' />
-							</Column>
-
-						</Table>
-					</FlexboxGrid.Item> */}
 				</FlexboxGrid>	
 				
 			<ModifyCharacter

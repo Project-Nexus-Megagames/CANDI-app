@@ -54,7 +54,6 @@
 .container {
   position: relative;
   width: 100%;
-  cursor: pointer;
 }
 
 .image {
@@ -148,7 +147,7 @@
    display: inline-block;
    color: #fff;
    text-shadow: -1px 1px #000000;
-   background-color: #ffa8a8;
+   background-color: #524fff;
    width: 100px; 
    height: 100px;
    /* background: grey; */
@@ -159,7 +158,9 @@
   transition: background-image 0.2s ease-in-out;
  }
  .hexagon:hover {
+   opacity: 0.9;
    cursor: pointer;
+   text-shadow: -1px 1px #00aeff;
  }
 
  .toggle-menu {
@@ -185,6 +186,6 @@
 .center {
   position: absolute;
   top: 40%;
-  right: 20%;
+  right: 40%;
   font-size: 18px;
 }
