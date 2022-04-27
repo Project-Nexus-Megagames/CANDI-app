@@ -100,10 +100,6 @@ const NewEffects = (props) => {
     setSelected(selected);
   };
 
-  const handleUnlockLoc = (selected) => {
-    console.log(selected);
-  };
-
   const handleType = (type) => {
     setType(type);
     setSelected(undefined);
@@ -122,6 +118,7 @@ const NewEffects = (props) => {
         action: props.action._id,
         document: selected,
       };
+      console.log(data);
       socket.emit("actionRequest", "effect", data); // new Socket event
     } catch (err) {
       Alert.error(`Error: ${err.body} ${err.message}`, 5000);
@@ -282,17 +279,16 @@ const NewEffects = (props) => {
             <div>
               <CheckPicker
                 placeholder="Select Location(s) to unlock..."
-                onChange={(event) => handleUnlockLoc(event)}
+                onChange={(event) => handleSubmit(event)}
                 data={locations}
                 valueKey="_id"
                 labelKey="name"
               />
             </div>
-            // 			1) In NewEffect.jsx , I listed a TO DO spot where I need a form for the map hex. This form should automatically know who the Character is from the Action, this comes from props.selected.creator._id
-
+            // 1) In NewEffect.jsx , I listed a TO DO spot where I need a form for the map hex. This form should automatically know who the Character is from the Action, this comes from props.selected.creator._id
             // Control should be able to select any number of locations for the player to unlock
-
             // 2) Hook up the front end form to the back end logic
+            // TODO: Write backend logic in sockets
           )}
         </Modal.Body>
       }
