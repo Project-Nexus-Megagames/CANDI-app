@@ -100,6 +100,16 @@ const NewEffects = (props) => {
     setSelected(selected);
   };
 
+  const handleLocSelect = (selected) => {
+    let selectedLocations = [];
+
+    for (const el of selected) {
+      selectedLocations = locations.find((loc) => loc._id === el);
+    }
+    console.log(selectedLocations);
+    setSelected(selectedLocations);
+  };
+
   const handleType = (type) => {
     setType(type);
     setSelected(undefined);
@@ -117,6 +127,7 @@ const NewEffects = (props) => {
         type,
         action: props.action._id,
         document: selected,
+        owner: props.selected.creator._id,
       };
       console.log(data);
       socket.emit("actionRequest", "effect", data); // new Socket event
@@ -279,7 +290,7 @@ const NewEffects = (props) => {
             <div>
               <CheckPicker
                 placeholder="Select Location(s) to unlock..."
-                onChange={(event) => handleSubmit(event)}
+                onChange={(event) => handleLocSelect(event)}
                 data={locations}
                 valueKey="_id"
                 labelKey="name"
