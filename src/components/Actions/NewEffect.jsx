@@ -102,12 +102,10 @@ const NewEffects = (props) => {
 
   const handleLocSelect = (selected) => {
     let selectedLocations = [];
-
     for (const el of selected) {
       const loc = locations.find((loc) => loc._id === el);
       selectedLocations.push(loc);
     }
-    console.log(selectedLocations);
     setSelected(selectedLocations);
   };
 
@@ -130,7 +128,7 @@ const NewEffects = (props) => {
         document: selected,
         owner: props.selected.creator._id,
       };
-      console.log(data);
+      console.log(data.owner);
       socket.emit("actionRequest", "effect", data); // new Socket event
     } catch (err) {
       Alert.error(`Error: ${err.body} ${err.message}`, 5000);
@@ -228,7 +226,7 @@ const NewEffects = (props) => {
               color={"orange"}
               onClick={type !== "map" ? () => handleType("map") : undefined}
             >
-              Lock/Unlock Map Tile
+              Unlock Map Tile
             </Button>
             <Button
               appearance={type !== "new" ? "ghost" : "primary"}
@@ -291,7 +289,7 @@ const NewEffects = (props) => {
             <div>
               <CheckPicker
                 placeholder="Select Location(s) to unlock..."
-                onChange={(event) => handleLocSelect(event)}
+                onSelect={(event) => handleLocSelect(event)}
                 data={locations}
                 valueKey="_id"
                 labelKey="name"
