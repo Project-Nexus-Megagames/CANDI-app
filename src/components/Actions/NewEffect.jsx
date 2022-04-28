@@ -104,7 +104,8 @@ const NewEffects = (props) => {
     let selectedLocations = [];
 
     for (const el of selected) {
-      selectedLocations = locations.find((loc) => loc._id === el);
+      const loc = locations.find((loc) => loc._id === el);
+      selectedLocations.push(loc);
     }
     console.log(selectedLocations);
     setSelected(selectedLocations);
