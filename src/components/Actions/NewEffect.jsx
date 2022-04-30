@@ -295,10 +295,6 @@ const NewEffects = (props) => {
                 labelKey="name"
               />
             </div>
-            // 1) In NewEffect.jsx , I listed a TO DO spot where I need a form for the map hex. This form should automatically know who the Character is from the Action, this comes from props.selected.creator._id
-            // Control should be able to select any number of locations for the player to unlock
-            // 2) Hook up the front end form to the back end logic
-            // TODO: Write backend logic in sockets
           )}
         </Modal.Body>
       }

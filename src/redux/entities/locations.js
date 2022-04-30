@@ -2,11 +2,10 @@ import { createSelector, createSlice } from "@reduxjs/toolkit"; // Import from r
 import { gameServer } from "../../config";
 import { apiCallBegan } from "../api"; // Import Redux API call
 
-
 // Create entity slice of the store
 const slice = createSlice({
   name: "locations",
-	initialState: {
+  initialState: {
     list: [],
     loading: false,
     loaded: false,
@@ -16,7 +15,7 @@ const slice = createSlice({
   // Reducers - Events
   reducers: {
     locationsRequested: (locations, action) => {
-      console.log(`${action.type} Dispatched...`)
+      console.log(`${action.type} Dispatched...`);
       locations.loading = true;
     },
     locationsReceived: (locations, action) => {
@@ -32,20 +31,24 @@ const slice = createSlice({
       locations.loading = false;
     },
     locationAdded: (locations, action) => {
-      console.log(`${action.type} Dispatched`)
+      console.log(`${action.type} Dispatched`);
       locations.list.push(action.payload);
     },
     locationDeleted: (locations, action) => {
-      console.log(`${action.type} Dispatched`)
-      const index = locations.list.findIndex(el => el._id === action.payload._id);
+      console.log(`${action.type} Dispatched`);
+      const index = locations.list.findIndex(
+        (el) => el._id === action.payload._id
+      );
       locations.list.splice(index, 1);
     },
     locationUpdated: (locations, action) => {
-      console.log(`${action.type} Dispatched`)
-      const index = locations.list.findIndex(el => el._id === action.payload._id);
+      console.log(`${action.type} Dispatched`);
+      const index = locations.list.findIndex(
+        (el) => el._id === action.payload._id
+      );
       locations.list[index] = action.payload;
-    }
-  }
+    },
+  },
 });
 
 // Action Export
@@ -55,7 +58,7 @@ export const {
   locationsReceived,
   locationsRequested,
   locationsRequestFailed,
-  locationUpdated
+  locationUpdated,
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export
@@ -65,23 +68,28 @@ const url = `${gameServer}api/locations`;
 
 // Selector
 export const getMyLocation = createSelector(
-  state => state.locations.list,
-  state => state.auth.user,
-  (locations, user) => locations.find(
-    loc => loc.currentOwner === user.username
-  )
+  (state) => state.locations.list,
+  (state) => state.auth.user,
+  (locations, user) =>
+    locations.find((loc) => loc.currentOwner === user.username)
 );
 
+export const getLocationById = (locationId) =>
+  createSelector(
+    (state) => state.locations,
+    (locations) => locations.list.find((loc) => loc._id === locationId)
+  );
+
 // locations Loader into state
-export const loadLocations = payload => (dispatch, getState) => {
+export const loadLocations = (payload) => (dispatch, getState) => {
   return dispatch(
     apiCallBegan({
       url,
-      method: 'get',
+      method: "get",
       data: payload,
-      onStart:locationsRequested.type,
+      onStart: locationsRequested.type,
       onSuccess: locationsReceived.type,
-      onError:locationsRequestFailed.type
+      onError: locationsRequestFailed.type,
     })
   );
 };
