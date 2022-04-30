@@ -16,36 +16,31 @@ import RenderCharName from "./RenderCharName";
 const LockMap = (props) => {
   const locations = useSelector((state) => state.locations.list);
   const [selectedLoc, setSelectedLoc] = useState("");
+  const [charsToRemove, setCharsToRemove] = useState("");
   const loc = useSelector(getLocationById(selectedLoc));
 
-  const handleSubmit = () => {
-    try {
-    } catch (err) {}
+  const handleExit = () => {
+    setCharsToRemove("");
+    setSelectedLoc("");
+    props.closeModal();
   };
 
-  //   assetModify = async () => {
-  //     this.props.assetDispatched();
-  //     const data = {
-  //         _id: this.state.selected,
-  //         name: this.state.name,
-  //         description: this.state.description,
-  //         dice: this.state.dice,
-  //         uses: this.state.uses,
-  //         owner: this.state.owner,
-  //         used: this.state.used,
-  //         level: this.state.level,
-  //         lendable: this.state.lendable,
-  //         hidden: this.state.hidden
-  //     }
-  //     socket.emit('assetRequest', 'modify',  data ); // new Socket event
-  //     this.setState({ selected: null, });
-  //     this.props.closeModal()
-  // }
+  const handleSubmit = () => {
+    const data = { loc, charsToRemove };
+    try {
+      socket.emit("locationRequest", "lockLocation", data);
+    } catch (err) {}
+    handleExit();
+  };
 
-  const handleChange = (event) => {
+  const handleLocChange = (event) => {
     if (event) {
       setSelectedLoc(event);
     }
+  };
+
+  const handleCharChange = (charIds) => {
+    setCharsToRemove(charIds);
   };
 
   const renderUnlockedCharacters = (loc) => {
@@ -53,10 +48,10 @@ const LockMap = (props) => {
     if (data.length === 0)
       return <div>No character has unlocked this location yet!</div>;
     return (
-      <CheckboxGroup>
+      <CheckboxGroup onChange={(value) => handleCharChange(value)}>
         {data.map((item) => (
-          <Checkbox key={data.indexOf(item)}>
-            <RenderCharName userId={item} />{" "}
+          <Checkbox value={item} key={item}>
+            <RenderCharName userId={item} />
           </Checkbox>
         ))}
       </CheckboxGroup>
@@ -81,8 +76,7 @@ const LockMap = (props) => {
       size="lg"
       show={props.show}
       onHide={() => {
-        props.closeModal();
-        setSelectedLoc("");
+        handleExit();
       }}
     >
       <Modal.Header>
@@ -92,20 +86,20 @@ const LockMap = (props) => {
         <SelectPicker
           block
           placeholder="Lock a MapTile"
-          onChange={(event) => handleChange(event)}
+          onChange={(event) => handleLocChange(event)}
           data={locations}
           valueKey="_id"
           labelKey="name"
         />
       </Panel>
       <Panel>{renderLocation()}</Panel>
-      {/* //             <Modal.Footer>
-//                 {this.state.selected &&
-//                 <ButtonGroup>
-//                     <Button loading={this.props.assetLoading} onClick={() => this.assetModify()} color="blue">Edit</Button>
-//                     <Button loading={this.props.assetLoading} onClick={() => this.handleDelete()} color="red">Delete</Button>
-//                 </ButtonGroup>}
-//             </Modal.Footer> */}
+      <Modal.Footer>
+        <ButtonGroup>
+          <Button onClick={() => handleSubmit()} color="red">
+            Lock Map
+          </Button>
+        </ButtonGroup>
+      </Modal.Footer>
     </Modal>
   );
 };
