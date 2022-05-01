@@ -11,11 +11,11 @@ import {
 } from "rsuite";
 import socket from "../../socket";
 import { getLocationById } from "../../redux/entities/locations";
-import RenderCharName from "./RenderCharName";
 import _ from "lodash";
 
 const LockMap = (props) => {
   const locations = useSelector((state) => state.locations.list);
+  const characters = useSelector((state) => state.characters.list);
   const sortedLocations = _.sortBy(locations, "name");
   const [selectedLoc, setSelectedLoc] = useState("");
   const [charsToDisplay, setCharsToDisplay] = useState("");
@@ -43,19 +43,28 @@ const LockMap = (props) => {
   };
 
   const handleCharChange = (charIds) => {
-    console.log(charIds);
     setCharsToRemove(charIds);
+  };
+
+  const filterForUnlockedCharacters = (charIds) => {
+    let chars = [];
+    for (const el of charIds) {
+      chars.push(characters.find((char) => char._id === el));
+    }
+    chars = _.sortBy(chars, "characterName");
+    return chars;
   };
 
   const renderUnlockedCharacters = (loc) => {
     const data = loc.unlockedBy;
     if (data.length === 0)
       return <div>No character has unlocked this location yet!</div>;
+    const chars = filterForUnlockedCharacters(data);
     return (
       <CheckboxGroup onChange={(value) => handleCharChange(value)}>
-        {data.map((item) => (
-          <Checkbox value={item} key={item}>
-            <RenderCharName userId={item} />
+        {chars.map((item) => (
+          <Checkbox value={item._id} key={item._id}>
+            {item.characterName}
           </Checkbox>
         ))}
       </CheckboxGroup>
