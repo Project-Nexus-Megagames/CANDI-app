@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useDebugValue, useState } from "react";
 import { useSelector } from "react-redux"; // Redux store provider
 import {
   Modal,
@@ -12,10 +12,13 @@ import {
 import socket from "../../socket";
 import { getLocationById } from "../../redux/entities/locations";
 import RenderCharName from "./RenderCharName";
+import _ from "lodash";
 
 const LockMap = (props) => {
   const locations = useSelector((state) => state.locations.list);
+  const sortedLocations = _.sortBy(locations, "name");
   const [selectedLoc, setSelectedLoc] = useState("");
+  const [charsToDisplay, setCharsToDisplay] = useState("");
   const [charsToRemove, setCharsToRemove] = useState("");
   const loc = useSelector(getLocationById(selectedLoc));
 
@@ -40,6 +43,7 @@ const LockMap = (props) => {
   };
 
   const handleCharChange = (charIds) => {
+    console.log(charIds);
     setCharsToRemove(charIds);
   };
 
@@ -87,7 +91,7 @@ const LockMap = (props) => {
           block
           placeholder="Lock a MapTile"
           onChange={(event) => handleLocChange(event)}
-          data={locations}
+          data={sortedLocations}
           valueKey="_id"
           labelKey="name"
         />
