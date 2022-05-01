@@ -21,6 +21,7 @@ import {
   InputNumber,
 } from "rsuite";
 import socket from "../../socket";
+import _ from "lodash";
 
 import {
   getGods,
@@ -34,6 +35,7 @@ const NewEffects = (props) => {
 
   const assets = useSelector((state) => state.assets.list);
   const locations = useSelector((state) => state.locations.list);
+  const sortedLocations = _.sortBy(locations, "name");
   const gods = useSelector(getGods);
   const mortals = useSelector(getNonPlayerCharacters);
 
@@ -290,7 +292,7 @@ const NewEffects = (props) => {
               <CheckPicker
                 placeholder="Select Location(s) to unlock..."
                 onSelect={(event) => handleLocSelect(event)}
-                data={locations}
+                data={sortedLocations}
                 valueKey="_id"
                 labelKey="name"
               />
