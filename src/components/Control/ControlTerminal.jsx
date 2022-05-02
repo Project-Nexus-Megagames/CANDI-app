@@ -377,17 +377,17 @@ class ControlTerminal extends Component {
       status: this.state.formValue.status,
       endTime: this.state.endTime,
     };
-    socket.emit("gamestateRequest", "modify", data); // new Socket event
+    socket.emit('request', { route: 'gamestate', action: 'modify', data });
     this.setState({ gsModal: false });
   };
 
   closeDraft = async () => {
-    socket.emit("gamestateRequest", "closeRound", "Hello"); // new Socket event
+    socket.emit('request', { route: 'gamestate', action: 'closeRound' });
     this.setState({ warningModal: false });
   };
 
   publishActions = async () => {
-    socket.emit("gamestateRequest", "nextRound", "Hello"); // new Socket event
+    socket.emit('request', { route: 'gamestate', action: 'nextRound' });
     this.setState({ warning2Modal: false });
   };
 
