@@ -49,7 +49,7 @@ class NewResult extends Component {
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'result', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'result', data });
 		this.props.closeNew();
 	}
 

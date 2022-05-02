@@ -72,7 +72,7 @@ class Submission extends Component {
 			id: this.props.action._id,
 			tags: nextTags,
 		}
-		socket.emit('actionRequest', 'update', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'update', data });
   }
 
 	handleTagRemove = (tag, type) => {
@@ -81,7 +81,7 @@ class Submission extends Component {
 			id: this.props.action._id,
 			tags: nextTags,
 		}
-		socket.emit('actionRequest', 'update', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'update', data });
   }
 
 	renderTagAdd = () => {
@@ -280,15 +280,15 @@ class Submission extends Component {
 				round: this.props.gamestate.round	
 			},
 		}
-		socket.emit('actionRequest', 'update', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'update', data });
 	}
 
 	controlRemove = (asset) => {
-		const action = {
+		const data = {
 			asset,
 			id: this.props.action._id,
 		}
-		socket.emit('actionRequest', 'controlReject', action); // new Socket event
+		socket.emit('request', { route: 'action', action: 'controlReject', data });
 	}
 
 	renderAsset = (assetID) => {
@@ -327,7 +327,7 @@ class Submission extends Component {
 
 
 	deleteAction = async () => {
-		socket.emit('actionRequest', 'delete', {id: this.props.action._id}); // new Socket event
+		socket.emit('request', { route: 'action', action: 'delete', data: {id: this.props.action._id} });
 		this.props.handleSelect(null);
 		this.setState({ deleteWarning: false });
 	};

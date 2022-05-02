@@ -49,7 +49,7 @@ class NewAction extends Component {
 	handleSubmit = async () => {
 		this.props.actionDispatched();
 		// 1) make a new action
-		const action = {
+		const data = {
 			submission: {
 				effort: 1,
 				assets: this.state.assets, //this.state.asset1._id, this.state.asset2._id, this.state.asset3._id
@@ -70,7 +70,7 @@ class NewAction extends Component {
 			intent: '',	
 			name: ''
 		});
-		socket.emit('actionRequest', 'create', action); // new Socket event
+		socket.emit('request', { route: 'action', action: 'create', data });
 		this.props.closeNew();	
 	}
 	

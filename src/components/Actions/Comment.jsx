@@ -52,7 +52,7 @@ class Comment extends Component {
 			},
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'comment', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'comment', data});
 	}
 
 	getTime = (date) => {
@@ -67,7 +67,7 @@ class Comment extends Component {
 			id: this.props.selected._id,
 			comment: this.props.comment._id
 		}
-		socket.emit('actionRequest', 'deleteSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'deleteSubObject', data});
 		this.setState({ deleteWarning: false });
 	}
 
@@ -82,7 +82,7 @@ class Comment extends Component {
 				_id: this.props.comment._id
 			},
 		}
-		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'updateSubObject', data});
 		this.setState({ commentEdit: false });
 	}
 	

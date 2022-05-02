@@ -131,7 +131,7 @@ const NewEffects = (props) => {
         owner: props.selected.creator._id,
       };
       console.log(data.owner);
-      socket.emit("actionRequest", "effect", data); // new Socket event
+      socket.emit('request', { route: 'action', action: 'effect', data });
     } catch (err) {
       Alert.error(`Error: ${err.body} ${err.message}`, 5000);
     }

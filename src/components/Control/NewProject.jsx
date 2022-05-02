@@ -40,7 +40,7 @@ class NewProject extends Component {
 			round: this.props.gamestate.round, 
 			status: 'Published',
 		}
-		socket.emit('actionRequest', 'createProject', data ); // new Socket event
+		socket.emit('request', { route: 'action', action: 'createProject', data });
 		this.props.closeModal()
 	}
 

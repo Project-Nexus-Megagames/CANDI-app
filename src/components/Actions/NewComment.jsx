@@ -49,7 +49,7 @@ class NewComment extends Component {
 			},
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'comment', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'comment', data });
 		this.props.closeNew();
 	}
 	

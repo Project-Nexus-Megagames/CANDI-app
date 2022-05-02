@@ -68,7 +68,7 @@ class Result extends Component {
 			id: this.props.selected._id,
 			result: this.props.result._id
 		}
-		socket.emit('actionRequest', 'deleteSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'deleteSubObject', data });
 		this.setState({ deleteWarning: false });
 	}
 
@@ -84,7 +84,7 @@ class Result extends Component {
 				id: this.props.result._id
 			},
 		}
-		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'updateSubObject', data });
 		// this.setState({ resEdit: false });
 	}
 
@@ -96,7 +96,7 @@ class Result extends Component {
 				id: this.props.result._id
 			},
 		}
-		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'updateSubObject', data });
 	}
 
 	render() { 

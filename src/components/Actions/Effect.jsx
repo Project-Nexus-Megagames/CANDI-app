@@ -42,7 +42,7 @@ class Effect extends Component {
 			},
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'effect', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'effect', data});
 	}
 
 	getTime = (date) => {
@@ -57,7 +57,7 @@ class Effect extends Component {
 			id: this.props.selected._id,
 			effect: this.props.effect._id
 		}
-		socket.emit('actionRequest', 'deleteSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'deleteSubObject', data});
 		this.setState({ deleteWarning: false });
 	}
 
@@ -72,7 +72,7 @@ class Effect extends Component {
 				id: this.props.effect._id
 			},
 		}
-		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'updateSubObject', data});
 		this.setState({ effectEdit: false });
 	}
 	
