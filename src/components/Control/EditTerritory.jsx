@@ -28,7 +28,7 @@ class EditTerritory extends Component {
 			currentOwner: this.state.currentOwner
 		}
 		this.setState({ loading: true });			
-		socket.emit('locationRequest', 'modify', data ); // new Socket event
+		socket.emit('request', { route: 'location', action: 'modify', data });	
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	}

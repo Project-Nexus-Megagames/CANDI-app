@@ -31,7 +31,7 @@ const LockMap = (props) => {
   const handleSubmit = () => {
     const data = { loc, charsToRemove };
     try {
-      socket.emit("locationRequest", "lockLocation", data);
+      socket.emit('request', { route: 'location', action: 'lockLocation', data });
     } catch (err) {}
     handleExit();
   };
