@@ -124,7 +124,7 @@ const  OtherCharacters = (props) => {
 	}
 
 	const lendSupp = async () => {
-		socket.emit('characterRequest', 'support', { id: selected._id, supporter: props.myCharacter.characterName }); // new Socket event
+    socket.emit('request', { route: 'character', action: 'support', data: { id: selected._id, supporter: props.myCharacter.characterName } });
 	}
 	
 	const filterThis = (fil) => {

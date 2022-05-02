@@ -58,7 +58,7 @@ class NewCharacter extends Component {
 	handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
-		socket.emit('characterRequest', 'create', this.state.formValue ); // new Socket event
+		socket.emit('request', { route: 'character', action: 'create', data: this.state.formValue });
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	}

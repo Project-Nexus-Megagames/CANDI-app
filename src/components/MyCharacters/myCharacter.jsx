@@ -490,7 +490,7 @@ class MyCharacter extends Component {
       standingOrders: this.state.formValue.textarea,
       _id: char._id,
     };
-    socket.emit("characterRequest", "modify", data); // new Socket event
+    socket.emit('request', { route: 'character', action: 'modify', data });
   };
 }
 
