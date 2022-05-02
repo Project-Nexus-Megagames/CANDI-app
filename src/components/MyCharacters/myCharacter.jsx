@@ -460,7 +460,7 @@ class MyCharacter extends Component {
       lendingBoolean: true,
     };
 
-    socket.emit("assetRequest", "lend", data); // new Socket event
+    socket.emit('request', { route: 'asset', action: 'lend', data });
     this.setState({ lending: null, target: null });
     this.closeLend();
   };
@@ -471,7 +471,7 @@ class MyCharacter extends Component {
       lendingBoolean: false,
       owner: this.props.myCharacter._id,
     };
-    socket.emit("assetRequest", "lend", data); // new Socket event
+    socket.emit('request', { route: 'asset', action: 'lend', data });
     this.setState({ unlend: false });
   };
 

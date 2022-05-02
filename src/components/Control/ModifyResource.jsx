@@ -39,7 +39,7 @@ class ModifyResource extends Component {
 			lendable: this.state.lendable,
 			hidden: this.state.hidden	
 		}
-		socket.emit('assetRequest', 'modify',  data ); // new Socket event	
+    socket.emit('request', { route: 'asset', action: 'modify', data });
 		this.setState({ selected: null, });
 		this.props.closeModal()
 	}
@@ -73,7 +73,7 @@ class ModifyResource extends Component {
 	}
 
 	handleDelete = async () => {
-		socket.emit('assetRequest', 'delete', { id: this.state.selected }); // new Socket event	
+    socket.emit('request', { route: 'asset', action: 'delete', data: { id: this.state.selected } });
 		this.props.closeModal();
 	}
 

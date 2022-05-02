@@ -212,7 +212,7 @@ class ControlTerminal extends Component {
               </Button>
               <Button
                 color="violet"
-                onClick={() => socket.emit("assetRequest", "unhide")}
+                onClick={ () => socket.emit('request', { route: 'action', action: 'unhide' }) }
               >
                 Unhide all Assets
               </Button>
@@ -368,7 +368,7 @@ class ControlTerminal extends Component {
   };
 
   handleDelete = async () => {
-    socket.emit("assetRequest", "delete", { id: this.state.selected }); // new Socket event
+    socket.emit('request', { route: 'asset', action: 'delete', data: { id: this.state.selected } });
   };
 
   editGameState = async () => {

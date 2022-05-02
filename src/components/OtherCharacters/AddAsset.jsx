@@ -46,7 +46,7 @@ class AddAsset extends Component {
 	handleSubmit = async () => {
 		this.setState({ loading: true });
 		// 1) make a new asset
-		const formValue = {
+		const data = {
 			asset: {
 				name: this.state.formValue.name,
 				with: this.props.god ? this.props.god._id : '',
@@ -63,7 +63,7 @@ class AddAsset extends Component {
 			},
 			id: this.props.character._id, 
 	 }
-	 socket.emit('assetRequest', 'create', formValue); // new Socket event	
+	 socket.emit('request', { route: 'asset', action: 'create', data });	
 	 this.setState({ loading: false, formValue: { name: '', description: '', type: '' }, hidden: true });
 	 this.props.closeModal();
 	 }
