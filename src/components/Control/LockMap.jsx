@@ -1,4 +1,4 @@
-import React, { useDebugValue, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux"; // Redux store provider
 import {
   Modal,
@@ -31,7 +31,11 @@ const LockMap = (props) => {
   const handleSubmit = () => {
     const data = { loc, charsToRemove };
     try {
-      socket.emit('request', { route: 'location', action: 'lockLocation', data });
+      socket.emit("request", {
+        route: "location",
+        action: "lockLocation",
+        data,
+      });
     } catch (err) {}
     handleExit();
   };
@@ -57,12 +61,14 @@ const LockMap = (props) => {
 
   const renderUnlockedCharacters = (loc) => {
     const data = loc.unlockedBy;
+    console.log(data);
     if (data.length === 0)
       return <div>No character has unlocked this location yet!</div>;
-    const chars = filterForUnlockedCharacters(data);
+    // const chars = filterForUnlockedCharacters(data);
+    // console.log(chars);
     return (
       <CheckboxGroup onChange={(value) => handleCharChange(value)}>
-        {chars.map((item) => (
+        {data.map((item) => (
           <Checkbox value={item._id} key={item._id}>
             {item.characterName}
           </Checkbox>

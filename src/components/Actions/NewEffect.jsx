@@ -32,10 +32,11 @@ const NewEffects = (props) => {
   const [type, setType] = useState("");
   const [selected, setSelected] = useState(undefined);
   const [array, setArray] = useState([]);
+  const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 
   const assets = useSelector((state) => state.assets.list);
   const locations = useSelector((state) => state.locations.list);
-  const sortedLocations = _.sortBy(locations, "name");
+  const sortedLocations = _.sortBy(locationsToDisplay, "name");
   const gods = useSelector(getGods);
   const mortals = useSelector(getNonPlayerCharacters);
 
@@ -91,6 +92,27 @@ const NewEffects = (props) => {
     }
   }, [type]);
 
+  useEffect(() => {
+    console.log("fired");
+    let locSelect = [];
+    locations.forEach((el) => {
+      if (
+        el.unlockedBy.findIndex(
+          (id) => id._id === props.selected.creator._id
+        ) !== -1
+      )
+        return;
+      console.log(
+        el.unlockedBy.findIndex((id) => id._id === props.selected.creator._id),
+        el.name,
+        el.unlockedBy,
+        props.selected.creator._id
+      );
+      locSelect.push(el);
+    });
+    setLocationsToDisplay(locSelect);
+  }, []);
+
   const handleExit = () => {
     setType("");
     setSelected(undefined);
@@ -131,7 +153,7 @@ const NewEffects = (props) => {
         owner: props.selected.creator._id,
       };
       console.log(data.owner);
-      socket.emit('request', { route: 'action', action: 'effect', data });
+      socket.emit("request", { route: "action", action: "effect", data });
     } catch (err) {
       Alert.error(`Error: ${err.body} ${err.message}`, 5000);
     }
@@ -382,6 +404,10 @@ const pickerData = [
   {
     label: "Power",
     value: "Power",
+  },
+  {
+    label: "Bond",
+    value: "bond",
   },
 ];
 
