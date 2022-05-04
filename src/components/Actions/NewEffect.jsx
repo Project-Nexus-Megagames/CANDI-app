@@ -19,6 +19,7 @@ import {
   InputPicker,
   Placeholder,
   InputNumber,
+  Checkbox,
 } from "rsuite";
 import socket from "../../socket";
 import _ from "lodash";
@@ -33,6 +34,7 @@ const NewEffects = (props) => {
   const [selected, setSelected] = useState(undefined);
   const [array, setArray] = useState([]);
   const [locationsToDisplay, setLocationsToDisplay] = useState([]);
+  const [arcane, setArcane] = useState(false);
 
   const assets = useSelector((state) => state.assets.list);
   const locations = useSelector((state) => state.locations.list);
@@ -93,7 +95,6 @@ const NewEffects = (props) => {
   }, [type]);
 
   useEffect(() => {
-    console.log("fired");
     let locSelect = [];
     locations.forEach((el) => {
       if (
@@ -144,6 +145,10 @@ const NewEffects = (props) => {
     setSelected(temp);
   };
 
+  const handleArcane = () => {
+    setArcane(!arcane);
+  };
+
   const handleSubmit = async () => {
     try {
       const data = {
@@ -151,8 +156,8 @@ const NewEffects = (props) => {
         action: props.action._id,
         document: selected,
         owner: props.selected.creator._id,
+        arcane,
       };
-      console.log(data.owner);
       socket.emit("request", { route: "action", action: "effect", data });
     } catch (err) {
       Alert.error(`Error: ${err.body} ${err.message}`, 5000);
@@ -199,6 +204,20 @@ const NewEffects = (props) => {
                 style={{ width: "100%" }}
                 onChange={(event) => handleEdit("level", event)}
               />
+            </div>
+          )}
+          {selected.type === "Asset" && (
+            <div>
+              Arcane
+              <Checkbox onChange={handleArcane} checked={arcane}>
+                Arcane
+              </Checkbox>
+            </div>
+          )}
+          {selected.type === "Trait" && (
+            <div>
+              Arcane
+              {/* <Checkbox /> */}
             </div>
           )}
           {selected.type === "MortalBond" && (
