@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-	Checkbox,
 	InputPicker,
 	Modal,
 	Button,
@@ -12,16 +11,13 @@ import {
 	Toggle,
 	Placeholder
 } from 'rsuite';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import socket from '../../socket';
-import _ from 'lodash';
-import assets from '../../redux/entities/assets';
 
 const ModifyResource = (props) => {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [uses, setUses] = useState(0);
-	const [influence, setInfluence] = useState(0);
 	const [level, setLevel] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [lendable, setLendable] = useState(false);
@@ -35,8 +31,6 @@ const ModifyResource = (props) => {
 	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
-	const characters = useSelector((state) => state.characters.list);
-	const actions = useSelector((state) => state.actions.list);
 
 	useEffect(() => {
 		if (props.bond) {
@@ -179,22 +173,6 @@ const ModifyResource = (props) => {
 							/>
 						</div>
 					)}
-					{type === 'Asset' && (
-						<div>
-							Arcane
-							<Checkbox onChange={handleArcane} checked={arcane}>
-								Arcane
-							</Checkbox>
-						</div>
-					)}
-					{type === 'Trait' && (
-						<div>
-							Arcane
-							<Checkbox onChange={handleArcane} checked={arcane}>
-								Arcane
-							</Checkbox>
-						</div>
-					)}
 					<Divider>Statuses</Divider>
 					<Toggle
 						checked={used}
@@ -214,6 +192,22 @@ const ModifyResource = (props) => {
 						checkedChildren="lendable"
 						unCheckedChildren="Un-lendable"
 					/>
+					{type === 'Asset' && (
+						<Toggle
+							onChange={handleArcane}
+							checked={arcane}
+							checkedChildren="Arcane"
+							unCheckedChildren="Not Arcane"
+						></Toggle>
+					)}
+					{type === 'Trait' && (
+						<Toggle
+							onChange={handleArcane}
+							checked={arcane}
+							checkedChildren="Arcane"
+							unCheckedChildren="Not Arcane"
+						></Toggle>
+					)}
 				</Panel>
 			);
 		} else {
@@ -227,7 +221,7 @@ const ModifyResource = (props) => {
 
 	return (
 		<Modal
-			loading={assets.loading}
+			loading={loading}
 			size="sm"
 			show={props.show}
 			onHide={() => props.closeModal()}
@@ -245,14 +239,14 @@ const ModifyResource = (props) => {
 				{selected && (
 					<ButtonGroup>
 						<Button
-							loading={assets.loading}
+							loading={loading}
 							onClick={() => assetModify()}
 							color="blue"
 						>
 							Edit
 						</Button>
 						<Button
-							loading={assets.loading}
+							loading={loading}
 							onClick={() => handleDelete()}
 							color="red"
 						>
