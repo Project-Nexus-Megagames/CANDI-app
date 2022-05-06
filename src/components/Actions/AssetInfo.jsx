@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Button, Divider, FlexboxGrid, Modal } from 'rsuite';
+import React from 'react';
+import { Button, Divider,  Modal } from 'rsuite';
 
 function AssetInfo({ asset, showInfo, closeInfo }) {
 	return (
-		<Modal 
+		<Modal
 		style={{ width: '90%' }}
- 
+
 		 show={showInfo} onHide={() => closeInfo()} >
 		<Modal.Header>
 					<Modal.Title>{asset.name}</Modal.Title>
@@ -23,7 +23,7 @@ function AssetInfo({ asset, showInfo, closeInfo }) {
 						Close
 					</Button>
 				</Modal.Footer>
-		</Modal>	
+		</Modal>
 	);
 }
 

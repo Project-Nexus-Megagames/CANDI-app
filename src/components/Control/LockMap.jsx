@@ -18,7 +18,6 @@ const LockMap = (props) => {
   const characters = useSelector((state) => state.characters.list);
   const sortedLocations = _.sortBy(locations, "name");
   const [selectedLoc, setSelectedLoc] = useState("");
-  const [charsToDisplay, setCharsToDisplay] = useState("");
   const [charsToRemove, setCharsToRemove] = useState("");
   const loc = useSelector(getLocationById(selectedLoc));
 
@@ -64,8 +63,8 @@ const LockMap = (props) => {
     console.log(data);
     if (data.length === 0)
       return <div>No character has unlocked this location yet!</div>;
-    // const chars = filterForUnlockedCharacters(data);
-    // console.log(chars);
+    const chars = filterForUnlockedCharacters(data);
+    console.log(chars);
     return (
       <CheckboxGroup onChange={(value) => handleCharChange(value)}>
         {data.map((item) => (
