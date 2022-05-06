@@ -108,10 +108,12 @@ const NewEffects = (props) => {
 	}, [locations, props.selected.creator._id]);
 
 	useEffect(() => {
-		let temp = { ...selected };
-		if (arcane) temp.name = temp.name + ' (Arcane)';
-		else temp.name = temp.name.replace(' (Arcane)', '');
-		setSelected(temp);
+		if (selected) {
+			let temp = { ...selected };
+			if (arcane) temp.name = temp.name + ' (Arcane)';
+			else temp.name = temp.name.replace(' (Arcane)', '');
+			setSelected(temp);
+		}
 	}, [arcane]);
 
 	const handleExit = () => {
