@@ -12,7 +12,8 @@ import {
 	InputPicker,
 	Placeholder,
 	InputNumber,
-	Checkbox
+	Checkbox,
+	Toggle
 } from 'rsuite';
 import socket from '../../socket';
 import _ from 'lodash';
@@ -107,14 +108,14 @@ const NewEffects = (props) => {
 		setLocationsToDisplay(locSelect);
 	}, [locations, props.selected.creator._id]);
 
-	useEffect(() => {
-		if (selected) {
-			let temp = { ...selected };
-			if (arcane) temp.name = temp.name + ' (Arcane)';
-			else temp.name = temp.name.replace(' (Arcane)', '');
-			setSelected(temp);
-		}
-	}, [arcane]);
+	//useEffect(() => {
+	//	if (selected) {
+	//		let temp = { ...selected };
+	//		if (arcane) temp.name = temp.name + ' (Arcane)';
+	//		else temp.name = temp.name.replace(' (Arcane)', '');
+	//		setSelected(temp);
+	//	}
+	//}, [arcane]);
 
 	const handleExit = () => {
 		setType('');
@@ -213,18 +214,26 @@ const NewEffects = (props) => {
 					)}
 					{selected.type === 'Asset' && (
 						<div>
+							<Divider />
 							Arcane
-							<Checkbox onChange={handleArcane} checked={arcane}>
-								Arcane
-							</Checkbox>
+							<Toggle
+								onChange={handleArcane}
+								checked={arcane}
+								checkedChildren="Arcane"
+								unCheckedChildren="Not Arcane"
+							></Toggle>
 						</div>
 					)}
 					{selected.type === 'Trait' && (
 						<div>
+							<Divider />
 							Arcane
-							<Checkbox onChange={handleArcane} checked={arcane}>
-								Arcane
-							</Checkbox>
+							<Toggle
+								onChange={handleArcane}
+								checked={arcane}
+								checkedChildren="Arcane"
+								unCheckedChildren="Not Arcane"
+							></Toggle>
 						</div>
 					)}
 					{selected.type === 'MortalBond' && (
