@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, ButtonGroup, Content, FlexboxGrid, Loader } from 'rsuite';
+import { Button, Content, FlexboxGrid, } from 'rsuite';
 import { signOut } from '../../redux/entities/auth';
 // const { Circle } = Progress;
 

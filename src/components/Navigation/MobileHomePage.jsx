@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid, Panel } from 'rsuite';
+import { Icon, Dropdown, IconButton, FlexboxGrid, } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
-import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
 import action from '../Images/test.jpg'
@@ -54,11 +53,6 @@ const HomePage = (props) => {
 		setClock({ hours, minutes, days });
 	}
 
-
-	const openNexus = () => {
-		const win = window.open('https://www.patreon.com/wcmprojectnexus', '_blank');
-		win.focus();
-	}
 
 	return ( 
 		<React.Fragment>

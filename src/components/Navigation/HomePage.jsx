@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid, Panel } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
-import Loading from './loading';
+import Loading from './Loading';
 
 // import aang from '../Images/aang.jpg'
 import control2 from '../Images/test.jpg'
@@ -84,9 +84,9 @@ const HomePage = (props) => {
 		props.history.push('/down');
 		return (<Loader inverse center content="doot..." />)
 	}
-		if (window.innerWidth < 768) {
-		return (<MobileHomePage />)
-	}
+	// 	if (window.innerWidth < 768) {
+	// 	return (<MobileHomePage />)
+	// }
 	return ( 
 		<React.Fragment>
 				<FlexboxGrid justify="start" style={{ height: '50px', backgroundColor: '#746D75',  color: '', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37'  }} align="middle">

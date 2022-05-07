@@ -20,7 +20,7 @@ const slice = createSlice({
   // Reducers - Events
   reducers: { // this will become hadleLogin from app.js
     loginRequested: (auth, action) => {
-      console.log(`${action.type} Dispatched...`)
+      console.log(`${action.type} Dispatched...`);
       auth.loading = true;
     },
     authReceived: (auth, action) => {
@@ -31,7 +31,7 @@ const slice = createSlice({
       const user = jwtDecode(jwt);
       // console.log(localStorage)
 
-      // if (user.roles.some(el => el === "Control")) auth.control = true;
+      if (user.roles.some(el => el === "Control")) auth.control = true;
 
 			auth.error = null;
       auth.user = user;
@@ -49,6 +49,19 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       auth.socket = action.payload.me;
 		},
+    finishLoading: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      auth.loadComplete = true;
+    },
+    setCharacter: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      auth.character = action.payload;
+      if (action.payload.tags.some(el => el === "control")) auth.control = true;
+      // initConnection(auth.user, auth.team, auth.version);
+    },
+    setControl: (auth, action) => {
+      auth.control = action.payload.control;
+    },
 		clearAuthError: (auth, action) => {
 			console.log(`${action.type} Dispatched`);
 			auth.error = null;
@@ -82,7 +95,10 @@ export const {
 	clearAuthError,
 	signOut,
 	updateUser,
-  usersRecieved
+  usersRecieved, 
+  finishLoading,
+  setCharacter,
+  setControl
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Content, FlexboxGrid, Button, Modal, Icon, Loader, Sidebar, Divider, Panel, Tag, ButtonGroup } from 'rsuite';
+import { Container, Content, Icon, Loader, Sidebar, Divider, } from 'rsuite';
 import { useHistory } from "react-router-dom";
 import { MapInteractionCSS } from 'react-map-interaction';
 import HexMap from './HexMap';
@@ -8,7 +8,8 @@ import socket from '../../socket';
 import NavigationBar from '../Navigation/NavigationBar';
 
 
-const Map = ({ locations, login, loading, characters, user, myCharacter, military }) => {
+const Map = (props) => {
+	const { locations, login, loading, characters, user, myCharacter, military } = props;
 	const defaultTerr = { name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0, coords: { x: 0, y: 0 }}
   const [value, setValue] = React.useState({ scale: 1, translation: { x: 0, y: 0 }});
 	const [territory, setTerritory] = React.useState(defaultTerr);
@@ -51,24 +52,25 @@ const Map = ({ locations, login, loading, characters, user, myCharacter, militar
 		}
 		else {
 			setTerritory({
-				name: 'unknown',
-				description: 'unknown',
+				name: 'Undiscovered Territory',
+				description: 'Here be Monsters...',
 				currentOwner: value,
 				influence: -999,
-				coords: { x: 0, y: 0 }
+				coords: { x: parseInt(x[0]), y: parseInt(x[1]) }
 			})
 		}
   }
 
 	const getHexId = (row, col) => {
 	const Letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	var letterIndex = row;
+	var letterIndex = parseInt(row);
 	var letters = "";
 	while(letterIndex > 25)
 	{
 		letters = [letterIndex%26] + letters;
 		letterIndex -= 26;
 	}
+	
 	return `${Letters[letterIndex] + letters + (col + 1)}`;
 };
 
@@ -91,7 +93,6 @@ const Map = ({ locations, login, loading, characters, user, myCharacter, militar
             <MapInteractionCSS minScale={1} maxScale={4} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
  							<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={locations}/>
             </MapInteractionCSS>       
-
           </div>
         </Content>
 			<Sidebar width={250} style={{transition: '0.8s ease'}}>
@@ -111,10 +112,8 @@ const Map = ({ locations, login, loading, characters, user, myCharacter, militar
 
 			{tab === 'info' && <div>
 				<h3>{territory.name}</h3>
-	  	 <Divider>{territory.coords ? getHexId(territory.coords.x+3, territory.coords.y+3) : <b>Bad Coords</b>} - ({territory.coords.x}, {territory.coords.y}) </Divider>
-			 	<ButtonGroup>
-					<Button appearance={mission !== 'move' ? 'ghost' : 'primary'} color={'green'} onClick={() => setMission('move')} >Move</Button>
-				</ButtonGroup>
+	  		<Divider>{territory.coords ? getHexId(territory.coords.x, territory.coords.y) : <b>Bad Coords</b>} - ({territory.coords.x}, {territory.coords.y}) </Divider>
+				<p>{territory.description}</p>
 			</div>}
 
 			</div>   
