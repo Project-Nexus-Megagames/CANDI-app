@@ -108,15 +108,6 @@ const NewEffects = (props) => {
 		setLocationsToDisplay(locSelect);
 	}, [locations, props.selected.creator._id]);
 
-	//useEffect(() => {
-	//	if (selected) {
-	//		let temp = { ...selected };
-	//		if (arcane) temp.name = temp.name + ' (Arcane)';
-	//		else temp.name = temp.name.replace(' (Arcane)', '');
-	//		setSelected(temp);
-	//	}
-	//}, [arcane]);
-
 	const handleExit = () => {
 		setType('');
 		setSelected(undefined);

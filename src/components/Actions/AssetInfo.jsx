@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Divider, Modal, Tag } from 'rsuite';
 
 function AssetInfo({ asset, showInfo, closeInfo }) {
@@ -10,11 +10,9 @@ function AssetInfo({ asset, showInfo, closeInfo }) {
 	};
 
 	const handleShow = () => {
-		console.log(asset);
 		if (asset.tags) {
 			for (const el of asset.tags) {
 				if (el === 'arcane') setArcane(true);
-				console.log(el);
 			}
 		}
 	};

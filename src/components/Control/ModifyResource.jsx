@@ -60,12 +60,8 @@ const ModifyResource = (props) => {
 	useEffect(() => {
 		let tempTags = tags;
 		if (arcane) {
-			if (name.toLowerCase().indexOf(' (arcane)') === -1) {
-				setName(name + ' (Arcane)');
-			}
 			setTags([...tempTags, 'arcane']);
 		} else {
-			setName(name.replace(' (Arcane)', ''));
 			setTags(tags.filter((el) => el !== 'arcane'));
 		}
 	}, [arcane]);
