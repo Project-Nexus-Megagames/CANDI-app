@@ -101,7 +101,7 @@
   border-left: 0;
 }
 
-p {
+.p-left {
   text-align: left;
 }
 
@@ -192,4 +192,11 @@ p {
   top: 40%;
   right: 40%;
   font-size: 18px;
+}
+
+.dicovered-text {
+  position: absolute;
+  top: 35%;
+  right: 20%;
+  font-size: 12px;
 }

@@ -9,7 +9,7 @@ const HexMap = (props) => {
   const createHex = () => {
     console.log('Rendering Hex Map...')
     const container = document.querySelector('.container');
-    const hexagonPattern = [4, 5, 6, 5, 4, 3,];
+    const hexagonPattern = [5, 6, 5, 4, 3, 2];
     
     for (let i = 0; i < hexagonPattern.length; i++) {
       const row = document.createElement('div');
@@ -22,10 +22,10 @@ const HexMap = (props) => {
         hexagon.key = getHexId(i, j)
         hexagon.id =  `${i}${j}`
         hexagon.style.backgroundImage = loc ? 
-         "url(" + "https://image.shutterstock.com/shutterstock/photos/589738649/display_1500/stock-vector-treasure-island-and-pirate-map-illustration-of-a-cartoon-treasure-island-and-its-map-with-skull-589738649.jpg" + ")" :
+         "url(/images/Test_Hex.jpg)" :
          'url("/images/fog.png")'
         const text = document.createElement('div')
-        text.classList.add('center');
+        !loc ? text.classList.add('center') : text.classList.add('dicovered-text') ;
         text.id =  `${i}${j}`
         text.innerHTML = loc ? loc.name : getHexId(i, j);
         

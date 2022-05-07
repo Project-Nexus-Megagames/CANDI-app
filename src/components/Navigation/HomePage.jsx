@@ -9,7 +9,7 @@ import Loading from './Loading';
 import control2 from '../Images/test.jpg'
 import other from '../Images/other.jpg'
 import nexus from '../Images/test.jpg'
-import banner from '../Images/banner.jpg'
+import banner from '../Images/banner1.jpg'
 import actions from '../Images/actions.jpg'
 import myCharacter from '../Images/test.jpg'
 import Map from '../Images/map.jpg'
@@ -122,8 +122,8 @@ const HomePage = (props) => {
 				<FlexboxGrid justify="center">
 				
 					<FlexboxGrid.Item colspan={14}>
-						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
-							<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
+						<div style={{ border: "5px solid #d4af37", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
+							<img src={banner} className={'image'} style={{ maxWidth: '100%', height: '100%'  }} alt='Failed to load img' />             
 							<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>Version: {props.version}</p>
 						</div>
 					</FlexboxGrid.Item>
@@ -131,13 +131,13 @@ const HomePage = (props) => {
 
 					<FlexboxGrid.Item colspan={10}>
 					<Link to={'actions'}>
-      		  <div style={{ border: "5px solid #ff66c4", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '45vh', overflow: 'hidden' }}>
+      		  <div style={{ border: "5px solid #d4af37", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '45vh', overflow: 'hidden' }}>
             
          	   <div className="container">
          	       <img src={actions} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
          	   </div>
-         	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Actions</h6>
-         	   <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Creating and editing Actions</p>
+         	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#663300' }}>  - Actions -  </h6>
+         	   <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#663300', fontSize: '0.966em',}}>{""} Creating and editing Actions </p>
             
         		</div>
         	</Link>
@@ -151,13 +151,13 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel  img={Map} to='Map' title='map' body='Here be Dragons...'/> 
+						<ImgPanel  img={Map} to='Map' title='Map' body='Here be Dragons...'/> 
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
 						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control2} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
 						{!props.myCharacter.tags.some(el=> el === 'Control') && 
-						<div  onClick={() => openNexus()} style={{ border: "5px solid #ff66c4", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
+						<div  onClick={() => openNexus()} style={{ border: "5px solid #d4af37", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
 							<div className="container">
 										<img src={nexus} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
 							</div>

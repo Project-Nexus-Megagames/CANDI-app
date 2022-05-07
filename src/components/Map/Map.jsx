@@ -113,7 +113,7 @@ const Map = (props) => {
 			{tab === 'info' && <div>
 				<h3>{territory.name}</h3>
 	  		<Divider>{territory.coords ? getHexId(territory.coords.x, territory.coords.y) : <b>Bad Coords</b>} - ({territory.coords.x}, {territory.coords.y}) </Divider>
-				<p>{territory.description}</p>
+				<p className='p-left' >{territory.description}</p>
 			</div>}
 
 			</div>   

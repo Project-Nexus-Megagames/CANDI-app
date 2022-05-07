@@ -67,11 +67,11 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/locations`;
 
 // Selector
-export const getMyLocation = createSelector(
+export const getMyLocations = createSelector(
   (state) => state.locations.list,
-  (state) => state.auth.user,
-  (locations, user) =>
-    locations.find((loc) => loc.currentOwner === user.username)
+  (state) => state.auth.character,
+  (locations, character) =>
+    locations.filter((loc) => loc.unlockedBy.some(el => el._id === character._id))
 );
 
 export const getLocationById = (locationId) =>
