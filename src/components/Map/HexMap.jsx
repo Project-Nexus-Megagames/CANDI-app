@@ -1,6 +1,7 @@
 
 import { connect } from 'react-redux';
 import React, { useEffect } from 'react';
+import { getMyLocations } from '../../redux/entities/locations';
 
 const HexMap = (props) => {
 	const [hexagons, setHexagons] = React.useState([]); 
@@ -20,7 +21,9 @@ const HexMap = (props) => {
         hexagon.classList.add('container');
         hexagon.key = getHexId(i, j)
         hexagon.id =  `${i}${j}`
-        hexagon.style.backgroundImage= "url(" + "https://image.shutterstock.com/shutterstock/photos/589738649/display_1500/stock-vector-treasure-island-and-pirate-map-illustration-of-a-cartoon-treasure-island-and-its-map-with-skull-589738649.jpg" + ")"
+        hexagon.style.backgroundImage = loc ? 
+         "url(" + "https://image.shutterstock.com/shutterstock/photos/589738649/display_1500/stock-vector-treasure-island-and-pirate-map-illustration-of-a-cartoon-treasure-island-and-its-map-with-skull-589738649.jpg" + ")" :
+         'url("/images/fog.png")'
         const text = document.createElement('div')
         text.classList.add('center');
         text.id =  `${i}${j}`
@@ -57,7 +60,6 @@ const HexMap = (props) => {
   
   function hoverOut(data) {
     let div = document.getElementById(data.target.id);
-    div.style.backgroundImage= "url(" + "https://image.shutterstock.com/shutterstock/photos/589738649/display_1500/stock-vector-treasure-island-and-pirate-map-illustration-of-a-cartoon-treasure-island-and-its-map-with-skull-589738649.jpg" + ")"
   }
 
   useEffect(() => {
@@ -66,7 +68,7 @@ const HexMap = (props) => {
 
     return (
       <div style={{   }}>
-        <h2>Behold, the galaxy</h2>
+        <h2>Tempest Map</h2>
         <hr />
         <div className="container">
         </div>
@@ -75,7 +77,7 @@ const HexMap = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-	locations: state.locations.list,
+	locations: state.auth.character ? getMyLocations(state) : []
 });
 
 const mapDispatchToProps = (dispatch) => ({
