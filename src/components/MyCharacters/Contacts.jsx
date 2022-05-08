@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-	InputPicker,
+	CheckPicker,
 	Modal,
 	Button,
 	SelectPicker,
@@ -19,11 +19,9 @@ import {
 import socket from '../../socket';
 import _ from 'lodash';
 
-// TODO: filter Characters so that "I" am not displayed in list of characters to share contacts with
-// TODO: show list with my own unlocked contacts
-
 const Contacts = (props) => {
 	const [selected, setSelected] = useState('');
+	const [charsToUnlock, setCharsToUnlock] = useState([]);
 	const myCharacter = useSelector(getMyCharacter);
 	const playerCharacters = useSelector(getPlayerCharacters);
 	const allCharacters = useSelector((state) => state.characters.list);
@@ -35,10 +33,9 @@ const Contacts = (props) => {
 
 	const contactShare = async () => {
 		const data = {
-			_id: selected._id // character I'm sharing contacts with
-			// charsToUnlock  -- characters that should be unlocked for them
+			_id: selected._id, // character I'm sharing contacts with
+			chars: charsToUnlock
 		};
-		console.log(data);
 		socket.emit('request', { route: 'character', action: 'share', data });
 		props.closeModal();
 		setSelected('');
@@ -47,6 +44,12 @@ const Contacts = (props) => {
 	const handleChange = (event) => {
 		if (event) {
 			setSelected(playerCharacters.find((el) => el._id === event));
+		}
+	};
+
+	const handleShare = (event) => {
+		if (event) {
+			setCharsToUnlock(event);
 		}
 	};
 
@@ -62,14 +65,14 @@ const Contacts = (props) => {
 				<Panel>
 					Selected: {selected.characterName}
 					{selected && (
-						<SelectPicker
+						<CheckPicker
 							block
-							placeholder="Select Contact to Share"
-							onChange={(event) => handleChange(event)}
+							placeholder="Select Contact(s) to Share"
+							onChange={(event) => handleShare(event)}
 							data={myUnlockedCharacters}
 							valueKey="_id"
 							labelKey="characterName"
-						></SelectPicker>
+						></CheckPicker>
 					)}
 					<Divider />
 				</Panel>
