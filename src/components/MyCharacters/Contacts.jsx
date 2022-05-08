@@ -37,8 +37,7 @@ const Contacts = (props) => {
 			chars: charsToUnlock
 		};
 		socket.emit('request', { route: 'character', action: 'share', data });
-		props.closeModal();
-		setSelected('');
+		handleExit();
 	};
 
 	const handleChange = (event) => {
