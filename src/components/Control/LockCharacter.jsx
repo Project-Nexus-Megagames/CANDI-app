@@ -59,11 +59,9 @@ const LockCharacter = (props) => {
 
 	const renderUnlockedCharacters = (char) => {
 		const data = char.unlockedBy;
-		console.log(data);
 		if (data.length === 0)
 			return <div>No character has unlocked this character yet!</div>;
 		const chars = filterForUnlockedCharacters(data);
-		console.log(chars);
 		return (
 			<CheckboxGroup onChange={(value) => handleCharsToRemoveChange(value)}>
 				{chars.map((item) => (
