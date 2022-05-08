@@ -30,8 +30,8 @@ const LockCharacter = (props) => {
 		const data = { char, charsToRemove };
 		try {
 			socket.emit('request', {
-				route: 'location',
-				action: 'lockLocation',
+				route: 'character',
+				action: 'lockCharacter',
 				data
 			});
 		} catch (err) {}
@@ -57,8 +57,8 @@ const LockCharacter = (props) => {
 		return chars;
 	};
 
-	const renderUnlockedCharacters = (loc) => {
-		const data = loc.unlockedBy;
+	const renderUnlockedCharacters = (char) => {
+		const data = char.unlockedBy;
 		console.log(data);
 		if (data.length === 0)
 			return <div>No character has unlocked this character yet!</div>;
@@ -66,7 +66,7 @@ const LockCharacter = (props) => {
 		console.log(chars);
 		return (
 			<CheckboxGroup onChange={(value) => handleCharsToRemoveChange(value)}>
-				{data.map((item) => (
+				{chars.map((item) => (
 					<Checkbox value={item._id} key={item._id}>
 						{item.characterName}
 					</Checkbox>
@@ -115,7 +115,7 @@ const LockCharacter = (props) => {
 			<Modal.Footer>
 				<ButtonGroup>
 					<Button onClick={() => handleSubmit()} color="red">
-						Lock Map
+						Lock Character
 					</Button>
 				</ButtonGroup>
 			</Modal.Footer>

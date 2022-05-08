@@ -86,6 +86,22 @@ const NewEffects = (props) => {
 					ownerCharacter: props.selected.creator._id
 				});
 				break;
+			//default:
+			//	break;
+			case 'character':
+				let charSelect = [];
+				characters.forEach((el) => {
+					if (
+						el.unlockedBy.findIndex(
+							(id) => id === props.selected.creator._id
+						) !== -1
+					) {
+						return;
+					} else if (el._id === props.selected.creator._id) return;
+					else charSelect.push(el);
+				});
+				setCharactersToDisplay(charSelect);
+				break;
 			default:
 				break;
 		}
@@ -95,6 +111,7 @@ const NewEffects = (props) => {
 		() => {
 			let locSelect = [];
 			locations.forEach((el) => {
+				console.log(el.unlockedBy, props.selected.creator._id);
 				if (
 					el.unlockedBy.findIndex(
 						(id) => id._id === props.selected.creator._id
@@ -108,20 +125,6 @@ const NewEffects = (props) => {
 		[locations, props.selected.creator._id],
 		selected
 	);
-
-	useEffect(() => {
-		let charSelect = [];
-		characters.forEach((el) => {
-			if (
-				el.unlockedBy.findIndex(
-					(id) => id._id === props.selected.creator._id
-				) !== -1
-			)
-				return;
-			charSelect.push(el);
-		});
-		setCharactersToDisplay(charSelect);
-	}, [characters, props.selected.creator._id]);
 
 	const handleExit = () => {
 		setType('');
@@ -145,12 +148,12 @@ const NewEffects = (props) => {
 	};
 
 	const handleCharSelect = (selected) => {
-		let selectedLocations = [];
+		let selectedCharacters = [];
 		for (const el of selected) {
-			const loc = locations.find((loc) => loc._id === el);
-			selectedLocations.push(loc);
+			const char = characters.find((char) => char._id === el);
+			selectedCharacters.push(char);
 		}
-		setSelected(selectedLocations);
+		setSelected(selectedCharacters);
 	};
 
 	const handleType = (type) => {
