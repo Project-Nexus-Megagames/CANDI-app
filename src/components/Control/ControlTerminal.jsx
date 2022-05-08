@@ -30,6 +30,7 @@ import NewCharacter from './NewCharacter';
 import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
+import LockCharacter from './LockCharacter';
 
 class ControlTerminal extends Component {
 	state = {
@@ -39,6 +40,7 @@ class ControlTerminal extends Component {
 		scottModal: false,
 		assModal: false,
 		mapModal: false,
+		charLockModal: false,
 		projectModal: false,
 		newCharater: false,
 		editTerritory: false,
@@ -104,6 +106,8 @@ class ControlTerminal extends Component {
 
 	render() {
 		const setMapModal = (params) => this.setState({ mapModal: params });
+		const setCharLockModal = (params) =>
+			this.setState({ charLockModal: params });
 		if (!this.props.login) {
 			this.props.history.push('/');
 			return <Loader inverse center content="doot..." />;
@@ -193,6 +197,12 @@ class ControlTerminal extends Component {
 								onClick={() => this.setState({ mapModal: true })}
 							>
 								Lock Map Tile
+							</Button>
+							<Button
+								appearance="ghost"
+								onClick={() => this.setState({ charLockModal: true })}
+							>
+								Lock Character
 							</Button>
 							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
 							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
@@ -352,6 +362,12 @@ class ControlTerminal extends Component {
 					open={true}
 					show={this.state.mapModal}
 					closeModal={() => setMapModal(false)}
+				/>
+
+				<LockCharacter
+					open={true}
+					show={this.state.charLockModal}
+					closeModal={() => setCharLockModal(false)}
 				/>
 
 				{/* <EditTerritory show={this.state.editTerritory}

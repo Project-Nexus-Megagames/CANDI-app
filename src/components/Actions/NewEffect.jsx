@@ -28,10 +28,13 @@ const NewEffects = (props) => {
 	const [selected, setSelected] = useState(undefined);
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
+	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
 	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
 	const locations = useSelector((state) => state.locations.list);
+	const characters = useSelector((state) => state.characters.list);
+	const sortedCharacters = _.sortBy(charactersToDisplay, 'characterName');
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
 	const gods = useSelector(getGods);
 	const mortals = useSelector(getNonPlayerCharacters);
@@ -88,25 +91,37 @@ const NewEffects = (props) => {
 		}
 	}, [type, assets, props.selected.creator._id]);
 
+	useEffect(
+		() => {
+			let locSelect = [];
+			locations.forEach((el) => {
+				if (
+					el.unlockedBy.findIndex(
+						(id) => id._id === props.selected.creator._id
+					) !== -1
+				)
+					return;
+				locSelect.push(el);
+			});
+			setLocationsToDisplay(locSelect);
+		},
+		[locations, props.selected.creator._id],
+		selected
+	);
+
 	useEffect(() => {
-		let locSelect = [];
-		locations.forEach((el) => {
+		let charSelect = [];
+		characters.forEach((el) => {
 			if (
 				el.unlockedBy.findIndex(
 					(id) => id._id === props.selected.creator._id
 				) !== -1
 			)
 				return;
-			console.log(
-				el.unlockedBy.findIndex((id) => id._id === props.selected.creator._id),
-				el.name,
-				el.unlockedBy,
-				props.selected.creator._id
-			);
-			locSelect.push(el);
+			charSelect.push(el);
 		});
-		setLocationsToDisplay(locSelect);
-	}, [locations, props.selected.creator._id]);
+		setCharactersToDisplay(charSelect);
+	}, [characters, props.selected.creator._id]);
 
 	const handleExit = () => {
 		setType('');
@@ -121,6 +136,15 @@ const NewEffects = (props) => {
 	};
 
 	const handleLocSelect = (selected) => {
+		let selectedLocations = [];
+		for (const el of selected) {
+			const loc = locations.find((loc) => loc._id === el);
+			selectedLocations.push(loc);
+		}
+		setSelected(selectedLocations);
+	};
+
+	const handleCharSelect = (selected) => {
 		let selectedLocations = [];
 		for (const el of selected) {
 			const loc = locations.find((loc) => loc._id === el);
@@ -279,6 +303,15 @@ const NewEffects = (props) => {
 							Unlock Map Tile
 						</Button>
 						<Button
+							appearance={type !== 'character' ? 'ghost' : 'primary'}
+							color={'orange'}
+							onClick={
+								type !== 'character' ? () => handleType('character') : undefined
+							}
+						>
+							Unlock Character
+						</Button>
+						<Button
 							appearance={type !== 'new' ? 'ghost' : 'primary'}
 							color={'green'}
 							onClick={type !== 'new' ? () => handleType('new') : undefined}
@@ -343,6 +376,17 @@ const NewEffects = (props) => {
 								data={sortedLocations}
 								valueKey="_id"
 								labelKey="name"
+							/>
+						</div>
+					)}
+					{type === 'character' && (
+						<div>
+							<CheckPicker
+								placeholder="Select character(s) to unlock..."
+								onSelect={(event) => handleCharSelect(event)}
+								data={sortedCharacters}
+								valueKey="_id"
+								labelKey="characterName"
 							/>
 						</div>
 					)}
