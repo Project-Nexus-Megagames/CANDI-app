@@ -44,6 +44,7 @@ const Contacts = (props) => {
 	const handleChange = (event) => {
 		if (event) {
 			setSelected(playerCharacters.find((el) => el._id === event));
+			setCharsToUnlock([]);
 		}
 	};
 
@@ -53,12 +54,18 @@ const Contacts = (props) => {
 		}
 	};
 
+	const handleExit = () => {
+		props.closeModal();
+		setSelected('');
+		setCharsToUnlock([]);
+	};
+
 	const renderCharacters = () => {
 		if (selected) {
 			let myUnlockedCharacters = [];
 			for (const el of allCharacters) {
 				if (el.unlockedBy.some((id) => id === myCharacter._id))
-					myUnlockedCharacters.push(el);
+					if (el._id !== selected._id) myUnlockedCharacters.push(el);
 				myUnlockedCharacters = _.sortBy(myUnlockedCharacters, 'characterName');
 			}
 			return (
@@ -67,6 +74,7 @@ const Contacts = (props) => {
 					{selected && (
 						<CheckPicker
 							block
+							value={charsToUnlock}
 							placeholder="Select Contact(s) to Share"
 							onChange={(event) => handleShare(event)}
 							data={myUnlockedCharacters}
@@ -87,14 +95,7 @@ const Contacts = (props) => {
 	};
 
 	return (
-		<Modal
-			size="sm"
-			show={props.show}
-			onHide={() => {
-				props.closeModal();
-				setSelected('');
-			}}
-		>
+		<Modal size="sm" show={props.show} onHide={() => handleExit()}>
 			<SelectPicker
 				block
 				placeholder="Select Character to Share with"
