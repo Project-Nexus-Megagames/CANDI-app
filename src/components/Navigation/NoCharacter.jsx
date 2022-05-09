@@ -6,14 +6,6 @@ import { signOut } from '../../redux/entities/auth';
 // const { Circle } = Progress;
 
 class NoCharacter extends Component {
-    constructor(props) {
-		super(props);
-		this.state = {
-		};
-	}
-
-    componentDidUpdate = (prevProps) => {
-    }
 
     render() {
         return ( 
@@ -31,10 +23,10 @@ class NoCharacter extends Component {
         );        
     }
 
-		handleLogOut = async () => {
-			this.props.logOut()
-			this.props.history.push('/login');
-		}
+	handleLogOut = async () => {
+		this.props.logOut();
+		this.props.history.push('/login');
+	}
 }
 
 const mapStateToProps = (state) => ({

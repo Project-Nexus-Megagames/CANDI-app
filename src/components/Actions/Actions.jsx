@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
+import { Container, Sidebar, Input, ButtonGroup, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { setFilter } from '../../redux/entities/playerActions';
+import { getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
 import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
+
 const Actions = (props) => {
 	const [selected, setSelected] = React.useState(null);
 	const [showNew, setShowNew] = React.useState(false);
@@ -55,9 +56,18 @@ const Actions = (props) => {
 				<div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101"}}>
 					<InputGroup>
 						<Input size="sm" style={{ height: '39px' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
-							<Button appearance='primary' color='green' disabled={(props.gamestate.status !== 'Active' || props.myCharacter.effort < 1) && !props.myCharacter.tags.some(el => el === 'Control')} onClick={() => setShowNew(true)}>
-							<Icon  icon="plus" />	
-							</Button>							
+						{<Whisper placement="right" trigger="focus" 
+							speaker={<Tooltip>
+								<ButtonGroup>
+									<Button color='violet' onClick={() => setShowNew('explore')}>New Explore</Button>
+									<Button disabled={props.myCharacter.effort < 1} color='green' onClick={() => setShowNew('default')}>New Action</Button>
+								</ButtonGroup>
+							</Tooltip>}>
+							<Button appearance='primary' color='green' disabled={(props.gamestate.status !== 'Active') && !props.myCharacter.tags.some(el => el === 'Control')} >
+								<Icon  icon="plus" />	
+							</Button>					
+						</Whisper> }
+				
 					</InputGroup>
 				</div>
 				<div bodyFill style={{height: 'calc(100vh - 80px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
@@ -88,6 +98,7 @@ const mapStateToProps = (state) => ({
 	filter: state.actions.filter,
 	login: state.auth.login,
 	gamestate: state.gamestate,
+	myActions: getMyActions(state),
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
 });
 

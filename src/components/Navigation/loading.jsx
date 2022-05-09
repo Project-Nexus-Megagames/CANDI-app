@@ -20,24 +20,26 @@ const Loading = (props) => {
 	const history = useHistory();
 
 	useEffect(() => {
-		setSections(Object.keys(props.entities).sort());
-		if(props.actionsFailed < 10) {
+		if (props.login) {
+			setSections(Object.keys(props.entities).sort());
+			if(props.actionsFailed < 10) {
 			if (props.actionsFailed < 4) {
 					props.loadAction(props.user);
 			}
 			else {
 					props.loadAllActions();
 			}
-	}
-	if(props.assetsFailed < 10) {
-			props.loadAssets();
-	}    
-	if(props.locationsFailed < 10) {
-			props.loadLocations();
-	}    
-	if(props.charactersFailed < 10) {
-			props.loadChar();
-	}    
+			}
+			if(props.assetsFailed < 10) {
+					props.loadAssets();
+			}    
+			if(props.locationsFailed < 10) {
+					props.loadLocations();
+			}    
+			if(props.charactersFailed < 10) {
+					props.loadChar();
+			}   
+		} 
 	}, []);
 	
 
