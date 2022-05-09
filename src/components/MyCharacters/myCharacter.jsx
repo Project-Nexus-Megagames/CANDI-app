@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-	FlexboxGrid,
 	Loader,
 	Panel,
 	IconButton,
@@ -14,7 +13,6 @@ import {
 	ControlLabel,
 	Divider,
 	Content,
-	Affix,
 	Tag,
 	Modal,
 	Drawer,
@@ -24,8 +22,7 @@ import {
 	Col,
 	Row,
 	List,
-	TagGroup,
-	Sidebar
+	TagGroup
 } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import {

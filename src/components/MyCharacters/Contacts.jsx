@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	CheckPicker,
 	Modal,
@@ -6,15 +6,14 @@ import {
 	SelectPicker,
 	ButtonGroup,
 	Panel,
-	InputNumber,
 	Divider,
-	Toggle,
 	Placeholder
 } from 'rsuite';
 import { useSelector } from 'react-redux';
 import {
 	getMyCharacter,
-	getPlayerCharacters
+	getPlayerCharacters,
+	getMyUnlockedCharacters
 } from '../../redux/entities/characters';
 import socket from '../../socket';
 import _ from 'lodash';
@@ -24,7 +23,9 @@ const Contacts = (props) => {
 	const [charsToUnlock, setCharsToUnlock] = useState([]);
 	const myCharacter = useSelector(getMyCharacter);
 	const playerCharacters = useSelector(getPlayerCharacters);
-	const allCharacters = useSelector((state) => state.characters.list);
+	const myUnlockedCharacters = useSelector(
+		getMyUnlockedCharacters(myCharacter._id)
+	);
 
 	const charactersToDisplay = _.sortBy(
 		playerCharacters.filter((el) => el._id !== myCharacter._id),
@@ -61,12 +62,15 @@ const Contacts = (props) => {
 
 	const renderCharacters = () => {
 		if (selected) {
-			let myUnlockedCharacters = [];
-			for (const el of allCharacters) {
-				if (el.unlockedBy.some((id) => id === myCharacter._id))
-					if (el._id !== selected._id) myUnlockedCharacters.push(el);
-				myUnlockedCharacters = _.sortBy(myUnlockedCharacters, 'characterName');
+			let unlockedCharactersForSelector = [];
+			for (const el of myUnlockedCharacters) {
+				if (el._id !== selected._id) unlockedCharactersForSelector.push(el);
 			}
+			unlockedCharactersForSelector = _.sortBy(
+				unlockedCharactersForSelector,
+				'characterName'
+			);
+
 			return (
 				<Panel>
 					Selected: {selected.characterName}
@@ -76,7 +80,7 @@ const Contacts = (props) => {
 							value={charsToUnlock}
 							placeholder="Select Contact(s) to Share"
 							onChange={(event) => handleShare(event)}
-							data={myUnlockedCharacters}
+							data={unlockedCharactersForSelector}
 							valueKey="_id"
 							labelKey="characterName"
 						></CheckPicker>
