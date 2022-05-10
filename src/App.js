@@ -9,7 +9,7 @@ import "./App.css";
 import Actions from "./components/Actions/Actions";
 import Control from "./components/Control/control";
 import HomePage from "./components/Navigation/HomePage";
-import MyCharacter from "./components/MyCharacters/MyCharacter";
+import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
 
@@ -36,16 +36,7 @@ initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const {
-    loadChar,
-    loadAssets,
-    loadGamestate,
-    login,
-    user,
-    loadLocations,
-    myCharacter,
-    version,
-  } = props;
+  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations, myCharacter, version, } = props;
 
   useEffect(() => {
     const theme = "dark";
@@ -133,7 +124,7 @@ const App = (props) => {
         <Route
           exact
           path="/character"
-          render={(props) => <MyCharacter {...props} />}
+          render={(props) => <CharacterProfile {...props} />}
         />
         <Route
           exact

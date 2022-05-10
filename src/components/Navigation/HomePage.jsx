@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid, Panel } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
-import Loading from './Loading';
 
 // import aang from '../Images/aang.jpg'
 import control2 from '../Images/test.jpg'
@@ -20,6 +19,7 @@ import { toggleDuck } from '../../redux/entities/gamestate';
 import MobileHomePage from './MobileHomePage';
 import { Link } from 'react-router-dom';
 import UserList from './UserList';
+import LoadingNew from './LoadingNew';
 
 const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
@@ -74,7 +74,7 @@ const HomePage = (props) => {
 		return (<Loader inverse center content="doot..." />)
 	};
 	if (!loaded) {
-		return (<Loading />)
+		return (<LoadingNew />)
 	}
 	else if (props.login && !props.myCharacter) {
 		props.history.push('/no-character');

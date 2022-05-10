@@ -3,24 +3,16 @@ import { connect } from 'react-redux';
 import { Progress,	Loader,	Panel,	Icon,	IconStack,	Row,	Col, Button } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 
-import {
-	finishLoading,
-	setControl,
-	signOut,
-	setCharacter
-} from '../../redux/entities/auth';
+import { finishLoading,	setControl,	signOut,	setCharacter } from '../../redux/entities/auth';
 import { loadCharacters } from '../../redux/entities/characters';
 import { loadGamestate } from '../../redux/entities/gamestate';
 import { loadLocations } from '../../redux/entities/locations';
-import {
-	loadplayerActions,
-	loadAllActions
-} from '../../redux/entities/playerActions';
+import {	loadplayerActions,	loadAllActions } from '../../redux/entities/playerActions';
 import { loadAssets } from '../../redux/entities/assets';
 
 const { Line, Circle } = Progress;
 
-const Loading = (props) => {
+const LoadingNew = (props) => {
 	const [message, setMessage] = React.useState('Scott quip goes here...');
 	const [sections, setSections] = React.useState([]);
 
@@ -162,7 +154,7 @@ const mapDispatchToProps = (dispatch) => ({
 	isControl: (payload) => dispatch(setControl(payload))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Loading);
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingNew);
 
 const gamePhotos = ['https://acegif.com/wp-content/gifs/pirate-flag-1.gif'];
 

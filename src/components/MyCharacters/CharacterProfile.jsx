@@ -1,42 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-	Loader,
-	Panel,
-	IconButton,
-	Icon,
-	Form,
-	FormGroup,
-	Button,
-	ButtonToolbar,
-	FormControl,
-	ControlLabel,
-	Divider,
-	Content,
-	Tag,
-	Modal,
-	Drawer,
-	SelectPicker,
-	Placeholder,
-	Grid,
-	Col,
-	Row,
-	List,
-	TagGroup
-} from 'rsuite';
+import { Loader,	Panel,	IconButton,	Icon,	Form,	FormGroup,	Button,	ButtonToolbar,	FormControl,	ControlLabel,	Divider,	Content,	Tag,	Modal,	Drawer,	SelectPicker,	Placeholder,	Grid,	Col,	Row,	List,	TagGroup} from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import {
-	assetLent,
-	assetUpdated,
-	getMyAssets
-} from '../../redux/entities/assets';
+import { assetLent,	assetUpdated,	getMyAssets} from '../../redux/entities/assets';
 import socket from '../../socket';
 // import { playerActionsRequested } from "../../redux/entities/playerActions";
 import NavigationBar from '../Navigation/NavigationBar';
 import AssetInfo from '../Actions/AssetInfo';
 import Contacts from '../MyCharacters/Contacts';
 
-class MyCharacter extends Component {
+class CharacterProfile extends Component {
 	state = {
 		formValue: {
 			textarea: ''
@@ -526,4 +499,4 @@ const mapDispatchToProps = (dispatch) => ({
 	lendAsset: (data) => dispatch(assetLent(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyCharacter);
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterProfile);
