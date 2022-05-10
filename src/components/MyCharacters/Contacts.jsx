@@ -28,7 +28,7 @@ const Contacts = (props) => {
 	);
 
 	const charactersToDisplay = _.sortBy(
-		playerCharacters.filter((el) => el._id !== myCharacter._id),
+		myUnlockedCharacters.filter((el) => el.tags.some((tag) => tag === 'PC')),
 		'characterName'
 	);
 
