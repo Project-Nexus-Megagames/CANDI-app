@@ -108,7 +108,7 @@ const NewEffects = (props) => {
 					console.log(el.unlockedBy, props.selected.creator._id);
 					if (
 						el.unlockedBy.findIndex(
-							(id) => id === props.selected.creator._id
+							(id) => id._id === props.selected.creator._id
 						) !== -1
 					)
 						return;
