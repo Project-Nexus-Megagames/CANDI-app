@@ -102,29 +102,24 @@ const NewEffects = (props) => {
 				});
 				setCharactersToDisplay(charSelect);
 				break;
+			case 'map':
+				let locSelect = [];
+				locations.forEach((el) => {
+					console.log(el.unlockedBy, props.selected.creator._id);
+					if (
+						el.unlockedBy.findIndex(
+							(id) => id === props.selected.creator._id
+						) !== -1
+					)
+						return;
+					locSelect.push(el);
+				});
+				setLocationsToDisplay(locSelect);
+				break;
 			default:
 				break;
 		}
-	}, [type, assets, props.selected.creator._id]);
-
-	useEffect(
-		() => {
-			let locSelect = [];
-			locations.forEach((el) => {
-				console.log(el.unlockedBy, props.selected.creator._id);
-				if (
-					el.unlockedBy.findIndex(
-						(id) => id._id === props.selected.creator._id
-					) !== -1
-				)
-					return;
-				locSelect.push(el);
-			});
-			setLocationsToDisplay(locSelect);
-		},
-		[locations, props.selected.creator._id],
-		selected
-	);
+	}, [type, assets, props.selected.creator._id, characters, locations]);
 
 	const handleExit = () => {
 		setType('');
