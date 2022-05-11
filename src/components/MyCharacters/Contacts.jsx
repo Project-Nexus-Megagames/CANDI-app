@@ -32,6 +32,8 @@ const Contacts = (props) => {
 		'characterName'
 	);
 
+	console.log(charactersToDisplay);
+
 	const contactShare = async () => {
 		const data = {
 			_id: selected._id, // character I'm sharing contacts with
