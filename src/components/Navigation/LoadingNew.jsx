@@ -14,42 +14,20 @@ const { Line, Circle } = Progress;
 
 const LoadingNew = (props) => {
 	const [message, setMessage] = React.useState('Scott quip goes here...');
-	const [sections, setSections] = React.useState([]);
+	const [sections, setSections] = React.useState(Object.keys(props.entities).sort());
 
 	let done = Object.keys(props.entities)
 		.sort()
 		.filter((key) => props.entities[key].lastFetch !== null);
 	const history = useHistory();
 
-	useEffect(() => {
-		if (props.login) {
-			setSections(Object.keys(props.entities).sort());
-			if(props.actionsFailed < 10) {
-			if (props.actionsFailed < 4) {
-				props.loadAction(props.user);
-			} else {
-				props.loadAllActions();
-			}
-			}
-			if(props.assetsFailed < 10) {
-					props.loadAssets();
-			}    
-			if(props.locationsFailed < 10) {
-					props.loadLocations();
-			}    
-			if(props.charactersFailed < 10) {
-					props.loadChar();
-			}   
-		} 
-	}, []);
+	
 
-	if (
-		sections.length > 0 &&
-		Math.floor((done.length / sections.length) * 100) >= 100
-	) {
+	if (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100) {
 		const character = props.entities.characters.list.find(
 			(el) => el.username === props.auth.user.username
 		);
+		console.log('AAAAAASDAWSDAWDADAD')
 
 		if (props.auth.user.roles.some((el) => el === 'Control')) {
 			character ? props.setCharacter(character) : console.log(character);

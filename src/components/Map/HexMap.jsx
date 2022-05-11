@@ -1,7 +1,6 @@
 
 import { connect } from 'react-redux';
 import React, { useEffect } from 'react';
-import { getMyLocations } from '../../redux/entities/locations';
 
 const HexMap = (props) => {
 	const [hexagons, setHexagons] = React.useState([]); 
@@ -77,7 +76,6 @@ const HexMap = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-	locations: state.auth.character ? getMyLocations(state) : []
 });
 
 const mapDispatchToProps = (dispatch) => ({

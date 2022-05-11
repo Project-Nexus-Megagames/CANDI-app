@@ -114,10 +114,6 @@ const App = (props) => {
           : {}
       }
     >
-      {/*style={props.loading ? loading : done} */}
-      {/*  props.login && props.myCharacter && !props.loading && <Header>
-        <NavigationBar/>
-      </Header> */}
       <Switch>
         <Route exact path="/login" render={(props) => <Login {...props} />} />
         <Route exact path="/home" render={(props) => <HomePage {...props} />} />

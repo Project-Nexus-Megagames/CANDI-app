@@ -5,11 +5,12 @@ import { useHistory } from "react-router-dom";
 import { MapInteractionCSS } from 'react-map-interaction';
 import HexMap from './HexMap';
 import socket from '../../socket';
+import { getMyLocations } from '../../redux/entities/locations';
 import NavigationBar from '../Navigation/NavigationBar';
 
 
 const Map = (props) => {
-	const { locations, login, loading, characters, user, myCharacter, military } = props;
+	const { locations, login, loading, unlockedLocations, control, myCharacter, military } = props;
 	const defaultTerr = { name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0, coords: { x: 0, y: 0 }}
   const [value, setValue] = React.useState({ scale: 1, translation: { x: 0, y: 0 }});
 	const [territory, setTerritory] = React.useState(defaultTerr);
@@ -91,7 +92,7 @@ const Map = (props) => {
         <Content>
           <div style={{ width: '100%', height: '100%' }}> 
             <MapInteractionCSS minScale={1} maxScale={4} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
- 							<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={locations}/>
+ 							<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>
             </MapInteractionCSS>       
           </div>
         </Content>
@@ -111,9 +112,15 @@ const Map = (props) => {
         ><Icon icon='info-circle' /></button>
 
 			{tab === 'info' && <div>
+				{unlockedLocations.length}
 				<h3>{territory.name}</h3>
 	  		<Divider>{territory.coords ? getHexId(territory.coords.x, territory.coords.y) : <b>Bad Coords</b>} - ({territory.coords.x}, {territory.coords.y}) </Divider>
 				<p className='p-left' >{territory.description}</p>
+				<Divider>Unlocked By</Divider>
+				{territory.unlockedBy && territory.unlockedBy.map(el => (
+					<div>{el.playerName}</div>
+					
+				))}
 			</div>}
 
 			</div>   
@@ -127,7 +134,9 @@ const Map = (props) => {
 }
 
 const mapStateToProps = (state) => ({
+	unlockedLocations: state.auth.character ? getMyLocations(state) : [],
 	locations: state.locations.list,
+	control: state.auth.control,
 	characters: state.characters.list,
   login: state.auth.login,
 	loading: state.auth.loading,
