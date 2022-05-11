@@ -169,7 +169,7 @@ const OtherCharacters = (props) => {
 
 	const filterThis = (fil) => {
 		let filtered = [];
-		if (myCharacter.tags.filter((el) => el.some === 'Control')) {
+		if (myCharacter.tags.some((el) => el.some === 'Control')) {
 			filtered = props.characters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
