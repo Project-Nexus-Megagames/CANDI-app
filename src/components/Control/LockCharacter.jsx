@@ -48,21 +48,19 @@ const LockCharacter = (props) => {
 		setCharsToRemove(charIds);
 	};
 
-	const filterForUnlockedCharacters = (charIds) => {
-		let chars = [];
-		for (const el of charIds) {
-			chars.push(characters.find((char) => char._id === el));
-		}
-		chars = _.sortBy(chars, 'characterName');
-		return chars;
-	};
+	//const filterForUnlockedCharacters = (charIds) => {
+	//	let chars = [];
+	//	for (const el of charIds) {
+	//		chars.push(characters.find((char) => char._id === el));
+	//	}
+	//	chars = _.sortBy(chars, 'characterName');
+	//	return chars;
+	//};
 
 	const renderUnlockedCharacters = (char) => {
 		const data = char.unlockedBy;
-		console.log(data);
 		if (data.length === 0)
 			return <div>No character has unlocked this character yet!</div>;
-		const chars = filterForUnlockedCharacters(data);
 		return (
 			<CheckboxGroup onChange={(value) => handleCharsToRemoveChange(value)}>
 				{data.map((item) => (

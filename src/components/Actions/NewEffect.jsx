@@ -91,7 +91,7 @@ const NewEffects = (props) => {
 				characters.forEach((el) => {
 					if (
 						el.unlockedBy.findIndex(
-							(id) => id === props.selected.creator._id
+							(id) => id._id === props.selected.creator._id
 						) !== -1
 					) {
 						return;
