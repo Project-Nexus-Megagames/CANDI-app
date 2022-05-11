@@ -42,8 +42,8 @@ import {
 const { HeaderCell, Cell, Column } = Table;
 
 const OtherCharacters = (props) => {
-	const characters = useSelector((state) => state.characters.list);
-	const MyUnlockedCharacters = useSelector(getMyUnlockedCharacters);
+	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
+	const myCharacter = useSelector(getMyCharacter);
 	const [selected, setSelected] = React.useState(null);
 	const [asset, setAsset] = React.useState(false);
 	const [filter, setFilter] = React.useState('');
@@ -168,13 +168,24 @@ const OtherCharacters = (props) => {
 	};
 
 	const filterThis = (fil) => {
-		const filtered = props.characters.filter(
-			(char) =>
-				char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
-				char.email.toLowerCase().includes(fil.toLowerCase()) ||
-				char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
-				char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
-		);
+		let filtered = [];
+		if (myCharacter.tags.filter((el) => el.some === 'Control')) {
+			filtered = props.characters.filter(
+				(char) =>
+					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
+					char.email.toLowerCase().includes(fil.toLowerCase()) ||
+					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
+					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
+			);
+		} else {
+			filtered = myUnlockedCharacters.filter(
+				(char) =>
+					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
+					char.email.toLowerCase().includes(fil.toLowerCase()) ||
+					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
+					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
+			);
+		}
 		setFilteredCharacters(filtered);
 	};
 
@@ -182,6 +193,7 @@ const OtherCharacters = (props) => {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
 	}
+
 	if (window.innerWidth < 768) {
 		return <MobileOtherCharacters />;
 	} else
@@ -223,131 +235,131 @@ const OtherCharacters = (props) => {
 								}}
 							>
 								<List hover size="sm">
-									{MyUnlockedCharacters.filter((el) =>
-										el.tags.some((el) => el === 'God')
-									).map((character, index) => (
-										<List.Item
-											key={index}
-											index={index}
-											onClick={() => setSelected(character)}
-											style={listStyle(character)}
-										>
-											<FlexboxGrid>
-												<FlexboxGrid.Item colspan={5} style={styleCenter}>
-													<Avatar
-														src={
-															character.tags.some((el) => el === 'Control')
-																? `/images/GW_Control_Icon.png`
-																: `/images/${character.characterName}.jpg`
-														}
-														alt="?"
-														circle
-													/>
-												</FlexboxGrid.Item>
-												<FlexboxGrid.Item
-													colspan={19}
-													style={{
-														...styleCenter,
-														flexDirection: 'column',
-														alignItems: 'flex-start',
-														overflow: 'hidden'
-													}}
-												>
-													<b style={titleStyle}>
-														{character.characterName}
-														<Tag color="green" style={{ marginLeft: '15px' }}>
-															God
-														</Tag>
-													</b>
-													<b style={slimText}>{character.email}</b>
-												</FlexboxGrid.Item>
-											</FlexboxGrid>
-										</List.Item>
-									))}
+									{filteredCharacters
+										.filter((el) => el.tags.some((el) => el === 'God'))
+										.map((character, index) => (
+											<List.Item
+												key={index}
+												index={index}
+												onClick={() => setSelected(character)}
+												style={listStyle(character)}
+											>
+												<FlexboxGrid>
+													<FlexboxGrid.Item colspan={5} style={styleCenter}>
+														<Avatar
+															src={
+																character.tags.some((el) => el === 'Control')
+																	? `/images/GW_Control_Icon.png`
+																	: `/images/${character.characterName}.jpg`
+															}
+															alt="?"
+															circle
+														/>
+													</FlexboxGrid.Item>
+													<FlexboxGrid.Item
+														colspan={19}
+														style={{
+															...styleCenter,
+															flexDirection: 'column',
+															alignItems: 'flex-start',
+															overflow: 'hidden'
+														}}
+													>
+														<b style={titleStyle}>
+															{character.characterName}
+															<Tag color="green" style={{ marginLeft: '15px' }}>
+																God
+															</Tag>
+														</b>
+														<b style={slimText}>{character.email}</b>
+													</FlexboxGrid.Item>
+												</FlexboxGrid>
+											</List.Item>
+										))}
 
-									{MyUnlockedCharacters.filter((el) =>
-										el.tags.some((el) => el === 'PC')
-									).map((character, index) => (
-										<List.Item
-											key={index}
-											index={index}
-											onClick={() => setSelected(character)}
-											style={listStyle(character)}
-										>
-											<FlexboxGrid>
-												<FlexboxGrid.Item colspan={5} style={styleCenter}>
-													<Avatar
-														src={
-															character.tags.some((el) => el === 'Control')
-																? `/images/GW_Control_Icon.png`
-																: `/images/${character.characterName}.jpg`
-														}
-														alt="?"
-														circle
-													/>
-												</FlexboxGrid.Item>
-												<FlexboxGrid.Item
-													colspan={19}
-													style={{
-														...styleCenter,
-														flexDirection: 'column',
-														alignItems: 'flex-start',
-														overflow: 'hidden'
-													}}
-												>
-													<b style={titleStyle}>
-														{character.characterName}
-														<Tag color="cyan" style={{ marginLeft: '15px' }}>
-															PC
-														</Tag>
-													</b>
-													<b style={slimText}>{character.email}</b>
-												</FlexboxGrid.Item>
-											</FlexboxGrid>
-										</List.Item>
-									))}
+									{filteredCharacters
+										.filter((el) => el.tags.some((el) => el === 'PC'))
+										.map((character, index) => (
+											<List.Item
+												key={index}
+												index={index}
+												onClick={() => setSelected(character)}
+												style={listStyle(character)}
+											>
+												<FlexboxGrid>
+													<FlexboxGrid.Item colspan={5} style={styleCenter}>
+														<Avatar
+															src={
+																character.tags.some((el) => el === 'Control')
+																	? `/images/GW_Control_Icon.png`
+																	: `/images/${character.characterName}.jpg`
+															}
+															alt="?"
+															circle
+														/>
+													</FlexboxGrid.Item>
+													<FlexboxGrid.Item
+														colspan={19}
+														style={{
+															...styleCenter,
+															flexDirection: 'column',
+															alignItems: 'flex-start',
+															overflow: 'hidden'
+														}}
+													>
+														<b style={titleStyle}>
+															{character.characterName}
+															<Tag color="cyan" style={{ marginLeft: '15px' }}>
+																PC
+															</Tag>
+														</b>
+														<b style={slimText}>{character.email}</b>
+													</FlexboxGrid.Item>
+												</FlexboxGrid>
+											</List.Item>
+										))}
 
-									{MyUnlockedCharacters.filter((el) =>
-										el.tags.some((el) => el === 'NPC')
-									).map((character, index) => (
-										<List.Item
-											key={index}
-											index={index}
-											onClick={() => setSelected(character)}
-											style={listStyle(character)}
-										>
-											<FlexboxGrid>
-												<FlexboxGrid.Item colspan={5} style={styleCenter}>
-													<Avatar
-														src={
-															character.tags.some((el) => el === 'Control')
-																? `/images/GW_Control_Icon.png`
-																: `/images/${character.characterName}.jpg`
-														}
-														alt="?"
-														circle
-													/>
-												</FlexboxGrid.Item>
-												<FlexboxGrid.Item
-													colspan={19}
-													style={{
-														...styleCenter,
-														flexDirection: 'column',
-														alignItems: 'flex-start',
-														overflow: 'hidden'
-													}}
-												>
-													<b style={titleStyle}>
-														{character.characterName}
-														<Tag color="blue" style={{ marginLeft: '15px' }}>
-															NPC
-														</Tag>
-													</b>
-													<b style={slimText}>{character.email}</b>
-												</FlexboxGrid.Item>
-											</FlexboxGrid>
-										</List.Item>
-									))}
+									{filteredCharacters
+										.filter((el) => el.tags.some((el) => el === 'NPC'))
+										.map((character, index) => (
+											<List.Item
+												key={index}
+												index={index}
+												onClick={() => setSelected(character)}
+												style={listStyle(character)}
+											>
+												<FlexboxGrid>
+													<FlexboxGrid.Item colspan={5} style={styleCenter}>
+														<Avatar
+															src={
+																character.tags.some((el) => el === 'Control')
+																	? `/images/GW_Control_Icon.png`
+																	: `/images/${character.characterName}.jpg`
+															}
+															alt="?"
+															circle
+														/>
+													</FlexboxGrid.Item>
+													<FlexboxGrid.Item
+														colspan={19}
+														style={{
+															...styleCenter,
+															flexDirection: 'column',
+															alignItems: 'flex-start',
+															overflow: 'hidden'
+														}}
+													>
+														<b style={titleStyle}>
+															{character.characterName}
+															<Tag color="blue" style={{ marginLeft: '15px' }}>
+																NPC
+															</Tag>
+														</b>
+														<b style={slimText}>{character.email}</b>
+													</FlexboxGrid.Item>
+												</FlexboxGrid>
+											</List.Item>
+										))}
 
 									{filteredCharacters
 										.filter((el) => el.tags.some((el) => el === 'Control'))
