@@ -169,7 +169,7 @@ const OtherCharacters = (props) => {
 
 	const filterThis = (fil) => {
 		let filtered = [];
-		if (myCharacter.tags.some((el) => el.some === 'Control')) {
+		if (props.myCharacter.tags.indexOf('Control') !== -1) {
 			filtered = props.characters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
@@ -178,6 +178,7 @@ const OtherCharacters = (props) => {
 					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
 			);
 		} else {
+			console.log('boop');
 			filtered = myUnlockedCharacters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
