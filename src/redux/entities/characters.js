@@ -107,10 +107,11 @@ export const getCharacterById = (charId) =>
     (characters) => characters.list.find((char) => char._id === charId)
   );
 
-	export const getMyUnlockedCharacters = (charId) => createSelector(
+	export const getMyUnlockedCharacters  = createSelector(
 		(state) => state.characters.list,
-		(characters) =>
-			characters.filter((char) => char.unlockedBy.some((el) => el._id === charId))
+		(state) => state.auth.character,
+		(characters, character) =>
+			characters.filter((char) => char.unlockedBy.some((el) => el._id === character._id))
 	);
 
 // characters Loader into state

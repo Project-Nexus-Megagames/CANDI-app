@@ -11,7 +11,6 @@ import {
 } from 'rsuite';
 import { useSelector } from 'react-redux';
 import {
-	getMyCharacter,
 	getPlayerCharacters,
 	getMyUnlockedCharacters
 } from '../../redux/entities/characters';
@@ -21,18 +20,13 @@ import _ from 'lodash';
 const Contacts = (props) => {
 	const [selected, setSelected] = useState('');
 	const [charsToUnlock, setCharsToUnlock] = useState([]);
-	const myCharacter = useSelector(getMyCharacter);
 	const playerCharacters = useSelector(getPlayerCharacters);
-	const myUnlockedCharacters = useSelector(
-		getMyUnlockedCharacters(myCharacter._id)
-	);
+	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
 
 	const charactersToDisplay = _.sortBy(
 		myUnlockedCharacters.filter((el) => el.tags.some((tag) => tag === 'PC')),
 		'characterName'
 	);
-
-	console.log(charactersToDisplay);
 
 	const contactShare = async () => {
 		const data = {
