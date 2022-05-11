@@ -86,8 +86,6 @@ const NewEffects = (props) => {
 					ownerCharacter: props.selected.creator._id
 				});
 				break;
-			//default:
-			//	break;
 			case 'character':
 				let charSelect = [];
 				characters.forEach((el) => {
@@ -137,7 +135,7 @@ const NewEffects = (props) => {
 		let selectedLocations = [];
 		for (const el of selected) {
 			const loc = locations.find((loc) => loc._id === el);
-			selectedLocations.push(loc);
+			selectedLocations.push(loc._id);
 		}
 		setSelected(selectedLocations);
 	};
@@ -146,7 +144,7 @@ const NewEffects = (props) => {
 		let selectedCharacters = [];
 		for (const el of selected) {
 			const char = characters.find((char) => char._id === el);
-			selectedCharacters.push(char);
+			selectedCharacters.push(char._id);
 		}
 		setSelected(selectedCharacters);
 	};
