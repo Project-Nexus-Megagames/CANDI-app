@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import { connect } from 'react-redux';
-import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input } from 'rsuite';
+import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
@@ -112,8 +112,8 @@ class Submission extends Component {
 		return ( 
 			<div>
 				<Divider vertical/>	
-				<div style={{ border: '3px solid #22a12a', borderRadius: '5px', width: '100%', normalText }} >				
-					<FlexboxGrid align="middle" style={{ backgroundColor: '#22a12a' }} justify="center">
+				<div style={{ border: this.props.action.type === 'default' ? '4px solid #4caf50' : '3px solid #ff9800', borderRadius: '5px', width: '100%', normalText }} >				
+					<FlexboxGrid align="middle" style={{  }} justify="center">
 
 						<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
 								<Avatar circle size="md" src={`/images/${this.props.creator.characterName}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
@@ -182,56 +182,58 @@ class Submission extends Component {
 						show={this.state.edit} 
 						onHide={() => this.setState({edit: false}) }>
 							<Modal.Header>
-								<Modal.Title>
-									Edit action {this.state.name}
-									
-								</Modal.Title>
+								<Modal.Title>Edit {this.props.action.type} action {this.state.name}</Modal.Title>
 							</Modal.Header>
 							<Modal.Body>
-								{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
-								<form>Name
-									{(10 - this.state.name.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.name.length} more characters...</Tag>}
-									{(10 - this.state.name.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
-									<textarea rows='1' value={this.state.name} style={textStyle} onChange={(event)=> this.setState({name: event.target.value})}></textarea>
-									<FlexboxGrid> Description
-										{(10 - this.state.description.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.description.length} more characters...</Tag>}
-										{(10 - this.state.description.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
-										<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
-									</FlexboxGrid>
-									<br></br>
-									<FlexboxGrid> Intent										
-										{(10 - this.state.intent.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.intent.length} more characters...</Tag>}
-										{(10 - this.state.intent.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
-										<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>							
-									</FlexboxGrid>
-									<FlexboxGrid>
-										<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
-											{/* <Slider graduated
-											min={0}
-											max={this.props.myCharacter.effort}
-											defaultValue={0}
-											progress
-											value={this.state.effort}
-											onChange={(event)=> this.setState({effort: event})}>
-											</Slider> */}
-											<div style={{ paddingTop: '20px', fontSize: '2em', }} >
-												Current Actions Left: {this.props.myCharacter.effort}		
-											</div>
-										
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
-											{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item colspan={4}>
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
-											<CheckPicker labelKey='name' valueKey='_id' defaultValue={this.state.assets} data={this.props.getMyAssets.filter(el => !banned.some(el1 => el1 === el.level && (el.type === 'GodBond' || el.type === 'MortalBond') ))} style={{ width: '100%' }} onChange={(event)=> this.setState({ assets: event })}/>
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-								</form>
-							</Modal.Body>
+					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
+					<form>
+						Name:
+						{(10 - this.state.name.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.name.length} more characters...</Tag>}
+						{(10 - this.state.name.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
+						<textarea rows='1' value={this.state.name} style={textStyle} onChange={(event)=> this.setState({name: event.target.value})}></textarea>
+
+						Description:
+						{(10 - this.state.description.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.description.length} more characters...</Tag>}
+						{(10 - this.state.description.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
+
+						<textarea rows='6' value={this.state.description} style={textStyle} onChange={(event)=> this.setState({description: event.target.value})}></textarea>							
+
+						<br></br>
+						<FlexboxGrid>Intent:						
+							{(10 - this.state.intent.length) > 0 && <Tag style={{ color: 'black' }} color={'orange'}>{10 - this.state.intent.length} more characters...</Tag>}
+							{(10 - this.state.intent.length) <= 0 && <Tag color={'green'}><Icon icon='check' /></Tag>}
+							<textarea rows='6' value={this.state.intent} style={textStyle} onChange={(event)=> this.setState({intent: event.target.value})} ></textarea>						
+						</FlexboxGrid>
+						{this.props.action.type === 'default' &&  <FlexboxGrid>
+							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={6}>
+								<h5 style={{ textAlign: 'center' }}>
+									Effort {this.state.effort} / {this.props.myCharacter.effort + submission.effort}
+									{this.state.effort === 0 && <Tag style={{ color: 'black' }} color={'orange'}>Need Effort</Tag>}
+								</h5> 
+								
+								<Slider graduated
+									min={0}
+									max={this.props.myCharacter.effort + submission.effort}
+									defaultValue={submission.effort}
+									progress
+									value={this.state.effort}
+									onChange={(event)=> this.setState({effort: event})}>
+								</Slider> 
+
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} colspan={2}>
+								{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={4}>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item style={{paddingTop: '5px', paddingLeft: '10px', textAlign: 'left'}}  colspan={10}> Resources	
+								<CheckPicker labelKey='name' valueKey='_id' data={this.props.getMyAssets.filter(el => !banned.some(el1 => el1 === el.level && (el.type === 'GodBond' || el.type === 'MortalBond') ))} style={{ width: '100%' }} disabledItemValues={this.formattedUsedAssets()} onChange={(event)=> this.setState({ assets: event })}/>
+							</FlexboxGrid.Item>
+						</FlexboxGrid>}
+					</form>
+				</Modal.Body>
 							<Modal.Footer>
-								<Button loading={this.props.actionLoading} onClick={() => this.handleSubmit()}  disabled={this.state.description.length < 10 || this.state.intent.length < 10 || this.state.name.length < 10} color={this.state.description.length > 10 && this.state.intent.length > 10 ? 'green' : 'red'} appearance="primary">
+								<Button loading={this.props.actionLoading} onClick={() => this.handleSubmit()}  disabled={this.state.effort <= 0 || this.state.description.length < 10 || this.state.intent.length < 10 || this.state.name.length < 10} color={this.state.description.length > 10 && this.state.intent.length > 10 ? 'green' : 'red'} appearance="primary">
 									<b>Submit</b>
 								</Button>
 								<Button onClick={() => this.setState({edit: false})} appearance="subtle">
@@ -273,7 +275,7 @@ class Submission extends Component {
 			name: this.state.name,
 			tags: this.state.tags,
 			submission: {
-				effort: 1,
+				effort: this.state.effort,
 				assets: this.state.assets, //this.state.asset1._id, this.state.asset2._id, this.state.asset3._id
 				description: this.state.description,
 				intent: this.state.intent,			

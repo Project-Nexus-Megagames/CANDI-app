@@ -79,7 +79,14 @@ export const getMyActions = createSelector(
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (filter, actions, myCharacter) => actions.filter(
     action => (( action.creator._id === myCharacter._id ) ))
-  
+);
+
+export const getCurrentExplores = createSelector(
+  state => state.gamestate.round,
+  state => state.auth.character,
+  state => state.actions.list,
+  (round, user, actions) => actions.find(
+    action => (( action.creator._id == user._id && action.round === round && action.type === 'explore') ))
 );
 
 export const filteredActions = createSelector(

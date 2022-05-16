@@ -68,7 +68,7 @@ class ActionList extends Component {
 										<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 											<div style={titleStyle}>{action.name}</div>
 											<b style={slimText}>
-												{action.creator.characterTitle} - 
+												{<Tag style={{ color: 'black', textTransform: 'capitalize' }} color={ action.type === 'explore' ? 'orange' : 'green'}>{action.type}</Tag>}
 												{action.results.length > 0 && action.results[0].ready && <Tag color='green'>R Ready</Tag>}
 												{action.effects.length > 0 && <Tag color='violet'>{action.effects.length} Effects</Tag>}
 												{action.tags.map(tag => this.tagStyle(tag))}

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container, Sidebar, Input, ButtonGroup, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { getMyActions, setFilter } from '../../redux/entities/playerActions';
+import { getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
@@ -55,19 +55,14 @@ const Actions = (props) => {
 			<PanelGroup> 					
 				<div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101"}}>
 					<InputGroup>
-						<Input size="sm" style={{ height: '39px' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
-						{<Whisper placement="right" trigger="focus" 
-							speaker={<Tooltip>
-								<ButtonGroup>
-									<Button color='violet' onClick={() => setShowNew('explore')}>New Explore</Button>
-									<Button disabled={props.myCharacter.effort < 1} color='green' onClick={() => setShowNew('default')}>New Action</Button>
-								</ButtonGroup>
-							</Tooltip>}>
-							<Button appearance='primary' color='green' disabled={(props.gamestate.status !== 'Active') && !props.myCharacter.tags.some(el => el === 'Control')} >
-								<Icon  icon="plus" />	
-							</Button>					
+						<Input size="lg" style={{ height: '42px' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
+						{<Whisper placement="top" trigger="hover" speaker={<Tooltip><b>{true ? 'Create New Explore Action' : 'No Explore Left'}</b></Tooltip>}>
+								<Button disabled={props.explore} style={{color: 'black', borderRadius: '0px' }} color='orange' onClick={() => setShowNew('explore')}><Icon  icon="explore" /></Button>
 						</Whisper> }
-				
+						{<Whisper placement="top" trigger="hover" speaker={<Tooltip><b>{props.myCharacter.effort > 0 ? `Create New Default Action (${props.myCharacter.effort})` : 'No Actions Left'}</b></Tooltip>}>
+								<Button style={{borderRadius: '0px', }} disabled={props.myCharacter.effort < 1} color='green' onClick={() => setShowNew('default')}><Icon  icon="plus" />	</Button>
+						</Whisper> }
+
 					</InputGroup>
 				</div>
 				<div bodyFill style={{height: 'calc(100vh - 80px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
@@ -93,6 +88,7 @@ const Actions = (props) => {
 
 const mapStateToProps = (state) => ({
 	actions: state.actions.list,
+	explore: state.auth.user ? getCurrentExplores(state) : 'undefined',
 	user: state.auth.user,
 	control: state.auth.control,
 	filter: state.actions.filter,

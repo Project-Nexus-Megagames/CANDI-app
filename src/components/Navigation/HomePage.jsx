@@ -136,7 +136,7 @@ const HomePage = (props) => {
          	   <div className="container">
          	       <img src={actions} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
          	   </div>
-         	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#663300' }}>  - Actions -  </h6>
+         	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#663300' }}>  ~ Actions ~  </h6>
          	   <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#663300', fontSize: '0.966em',}}>{""} Creating and editing Actions </p>
             
         		</div>
@@ -147,21 +147,21 @@ const HomePage = (props) => {
 
 					<FlexboxGrid >
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={myCharacter} to='character' title='My Character' body='My Assets and Traits'/>
+						<ImgPanel img={myCharacter} to='character' title='~ My Character ~' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel  img={Map} to='Map' title='Map' body='Here be Dragons...'/> 
+						<ImgPanel  img={Map} to='Map' title='~ Map ~' body='Here be Dragons...'/> 
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control2} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
+						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control2} to='control' title={'~ Control Terminal ~'} body='"Now he gets it!"'/>}
 						{!props.myCharacter.tags.some(el=> el === 'Control') && 
 						<div  onClick={() => openNexus()} style={{ border: "5px solid #d4af37", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
 							<div className="container">
 										<img src={nexus} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
 							</div>
-								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Project Nexus</h6>
+								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>~ Project Nexus ~</h6>
 								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Support the Programmers</p>
 								
 						</div>}
@@ -169,7 +169,7 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={other} to='others' title={'Other Characters'} body='Character Details'/>
+						<ImgPanel img={other} to='others' title={'~ Other Characters ~'} body='Character Details'/>
 					</FlexboxGrid.Item>
 
 

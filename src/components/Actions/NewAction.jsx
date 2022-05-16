@@ -77,15 +77,15 @@ class NewAction extends Component {
 	
 	render() { 
 		return ( 
-			<Modal overflow
-			style={{ width: '90%', border: '5px white' }}
+			<Modal overflow 
+			style={{ width: '90%',  }}
 			size='md'  
 			show={this.props.show} 
 			onHide={() => this.props.closeNew()}>
-				<Modal.Header>
+				<Modal.Header >
 					<Modal.Title>Submit a new {this.props.show} Action</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>
+				<Modal.Body style={{ border: this.props.show === 'default' ? '4px solid #4caf50' : '4px solid #ff9800', borderRadius: '5px', padding: '15px' }} >
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
 						Name:
@@ -131,15 +131,19 @@ class NewAction extends Component {
 							</FlexboxGrid.Item>
 						</FlexboxGrid>}
 					</form>
+					<div style={{ justifyContent: 'end', display: 'flex', marginTop: '15px' }} >
+						{this.props.show === 'default' && <Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled() || this.state.effort <= 0} color={this.isDisabled() ? 'red' : 'green'} appearance="primary">
+							<b>Submit</b>
+								</Button>}
+						{this.props.show === 'explore' && <Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} color={this.isDisabled() ? 'red' : 'green'} appearance="primary"><b>Submit</b></Button>}
+						<Button onClick={() => this.props.closeNew()} appearance="subtle">
+							Cancel
+						</Button>						
+					</div>
+
 				</Modal.Body>
 				<Modal.Footer>
-					{this.props.show === 'default' && <Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled() || this.state.effort <= 0} color={this.isDisabled() ? 'red' : 'green'} appearance="primary">
-						<b>Submit</b>
-    	   			 </Button>}
-					{this.props.show === 'explore' && <Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} color={this.isDisabled() ? 'red' : 'green'} appearance="primary"><b>Submit</b></Button>}
-					<Button onClick={() => this.props.closeNew()} appearance="subtle">
-            Cancel
-       		</Button>
+
         </Modal.Footer>
 			</Modal>
 		);
