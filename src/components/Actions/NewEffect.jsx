@@ -29,6 +29,8 @@ const NewEffects = (props) => {
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
+	const [injuriesToRemove, setInjuriesToRemove] = useState([]);
+	const [injury, setInjury] = useState([]);
 	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
@@ -121,6 +123,8 @@ const NewEffects = (props) => {
 
 	const handleExit = () => {
 		setType('');
+		setInjuriesToRemove([]);
+		setInjury({});
 		setSelected(undefined);
 		props.hide();
 		setArcane(false);
@@ -149,6 +153,18 @@ const NewEffects = (props) => {
 		setSelected(selectedCharacters);
 	};
 
+	const handleAddInjury = (duration) => {
+		setSelected({
+			received: props.selected.round,
+			duration,
+			actionTitle: props.selected.name
+		});
+	};
+
+	const handleHealInjuries = () => {
+		console.log('boop');
+	};
+
 	const handleType = (type) => {
 		setType(type);
 		setSelected(undefined);
@@ -166,6 +182,27 @@ const NewEffects = (props) => {
 		setArcane(!arcane);
 	};
 
+	const renderInjuries = () => {
+		const char = characters.find((el) => el._id === props.selected.creator._id);
+		if (char.injuries.length === 0)
+			return (
+				<div>{char.characterName} currently does not have any injuries</div>
+			);
+		const existingInjuries = char.injuries.map((injury) => (
+			<li>{injury.received}</li>
+		));
+		return (
+			<div>
+				<ul>{existingInjuries}</ul>
+				<Button>Heal Injury</Button>
+			</div>
+		);
+	};
+
+	const handleHealInjury = () => {
+		console.log('that is better');
+	};
+
 	const handleSubmit = async () => {
 		try {
 			const data = {
@@ -175,6 +212,7 @@ const NewEffects = (props) => {
 				owner: props.selected.creator._id,
 				arcane
 			};
+			console.log(data);
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
 			Alert.error(`Error: ${err.body} ${err.message}`, 5000);
@@ -272,7 +310,7 @@ const NewEffects = (props) => {
 	};
 
 	return (
-		<Modal size="sm" placement="right" show={props.show} onHide={handleExit}>
+		<Modal size="m" placement="right" show={props.show} onHide={handleExit}>
 			<Modal.Header></Modal.Header>
 			{
 				<Modal.Body>
@@ -306,6 +344,26 @@ const NewEffects = (props) => {
 							}
 						>
 							Unlock Character
+						</Button>
+						<Button
+							appearance={type !== 'addInjury' ? 'ghost' : 'primary'}
+							color={'orange'}
+							onClick={
+								type !== 'addInjury' ? () => handleType('addInjury') : undefined
+							}
+						>
+							Add an injury
+						</Button>
+						<Button
+							appearance={type !== 'healInjuries' ? 'ghost' : 'primary'}
+							color={'orange'}
+							onClick={
+								type !== 'healInjuries'
+									? () => handleType('healInjuries')
+									: undefined
+							}
+						>
+							Heal Injuries
 						</Button>
 						<Button
 							appearance={type !== 'new' ? 'ghost' : 'primary'}
@@ -384,6 +442,23 @@ const NewEffects = (props) => {
 								valueKey="_id"
 								labelKey="characterName"
 							/>
+						</div>
+					)}
+					{type === 'healInjuries' && (
+						<div>
+							<Divider>Heal Injuries</Divider>
+							{renderInjuries()}
+						</div>
+					)}
+					{type === 'addInjury' && (
+						<div>
+							<Divider>Add Injury</Divider>
+							<div>Enter Duration. Input 99 for permanent injury!</div>
+							<InputNumber
+								min={0}
+								onChange={(value) => handleAddInjury(value)}
+							/>
+							{/*TODO Add info about existing injury(ies)*/}
 						</div>
 					)}
 				</Modal.Body>
