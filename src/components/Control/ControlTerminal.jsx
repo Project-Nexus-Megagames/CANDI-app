@@ -31,6 +31,7 @@ import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
 import LockCharacter from './LockCharacter';
+import HealInjury from './HealInjury';
 
 class ControlTerminal extends Component {
 	state = {
@@ -41,6 +42,7 @@ class ControlTerminal extends Component {
 		assModal: false,
 		mapModal: false,
 		charLockModal: false,
+		injuryModal: false,
 		projectModal: false,
 		newCharater: false,
 		editTerritory: false,
@@ -106,6 +108,7 @@ class ControlTerminal extends Component {
 
 	render() {
 		const setMapModal = (params) => this.setState({ mapModal: params });
+		const setInjuryModal = (params) => this.setState({ injuryModal: params });
 		const setCharLockModal = (params) =>
 			this.setState({ charLockModal: params });
 		if (!this.props.login) {
@@ -203,6 +206,12 @@ class ControlTerminal extends Component {
 								onClick={() => this.setState({ charLockModal: true })}
 							>
 								Lock Character
+							</Button>
+							<Button
+								appearance="ghost"
+								onClick={() => this.setState({ injuryModal: true })}
+							>
+								Heal Injuries
 							</Button>
 							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
 							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
@@ -356,8 +365,6 @@ class ControlTerminal extends Component {
 					closeModal={() => this.setState({ newCharacter: false })}
 				/>
 
-				{/* TODO: create LockMapTile modal */}
-
 				<LockMap
 					open={true}
 					show={this.state.mapModal}
@@ -368,6 +375,12 @@ class ControlTerminal extends Component {
 					open={true}
 					show={this.state.charLockModal}
 					closeModal={() => setCharLockModal(false)}
+				/>
+
+				<HealInjury
+					open={true}
+					show={this.state.injuryModal}
+					closeModal={() => setInjuryModal(false)}
 				/>
 
 				{/* <EditTerritory show={this.state.editTerritory}
