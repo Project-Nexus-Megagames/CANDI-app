@@ -13,6 +13,7 @@ import {
 	Placeholder,
 	InputNumber,
 	Checkbox,
+	CheckboxGroup,
 	Toggle
 } from 'rsuite';
 import socket from '../../socket';
@@ -29,8 +30,6 @@ const NewEffects = (props) => {
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
-	const [injuriesToRemove, setInjuriesToRemove] = useState([]);
-	const [injury, setInjury] = useState([]);
 	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
@@ -123,8 +122,6 @@ const NewEffects = (props) => {
 
 	const handleExit = () => {
 		setType('');
-		setInjuriesToRemove([]);
-		setInjury({});
 		setSelected(undefined);
 		props.hide();
 		setArcane(false);
@@ -161,8 +158,8 @@ const NewEffects = (props) => {
 		});
 	};
 
-	const handleHealInjuries = () => {
-		console.log('boop');
+	const handleHealInjuries = (injuries) => {
+		setSelected(injuries);
 	};
 
 	const handleType = (type) => {
@@ -188,19 +185,22 @@ const NewEffects = (props) => {
 			return (
 				<div>{char.characterName} currently does not have any injuries</div>
 			);
-		const existingInjuries = char.injuries.map((injury) => (
-			<li>{injury.received}</li>
-		));
 		return (
 			<div>
-				<ul>{existingInjuries}</ul>
-				<Button>Heal Injury</Button>
+				<CheckboxGroup
+					name="injuryList"
+					onChange={(value) => {
+						handleHealInjuries(value);
+					}}
+				>
+					{char.injuries.map((injury, index) => (
+						<Checkbox value={injury._id} key={index}>
+							{injury.label}
+						</Checkbox>
+					))}
+				</CheckboxGroup>
 			</div>
 		);
-	};
-
-	const handleHealInjury = () => {
-		console.log('that is better');
 	};
 
 	const handleSubmit = async () => {
@@ -458,7 +458,6 @@ const NewEffects = (props) => {
 								min={0}
 								onChange={(value) => handleAddInjury(value)}
 							/>
-							{/*TODO Add info about existing injury(ies)*/}
 						</div>
 					)}
 				</Modal.Body>
