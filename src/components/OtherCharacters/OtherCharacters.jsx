@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import {
 	ButtonGroup,
@@ -12,7 +12,6 @@ import {
 	PanelGroup,
 	FlexboxGrid,
 	Avatar,
-	IconButton,
 	Col,
 	Tag,
 	Row,
@@ -21,8 +20,7 @@ import {
 	Alert,
 	InputGroup,
 	Icon,
-	Table,
-	Divider
+	Table
 } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
@@ -43,17 +41,16 @@ const { HeaderCell, Cell, Column } = Table;
 
 const OtherCharacters = (props) => {
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
-	const myCharacter = useSelector(getMyCharacter);
-	const [selected, setSelected] = React.useState(null);
-	const [asset, setAsset] = React.useState(false);
-	const [filter, setFilter] = React.useState('');
-	const [tagFilter, setTagFilter] = React.useState([]);
-	const [filteredCharacters, setFilteredCharacters] = React.useState(
+	const [selected, setSelected] = useState(null);
+	const [asset, setAsset] = useState(false);
+	const [filter, setFilter] = useState('');
+	const [tagFilter, setTagFilter] = useState([]);
+	const [filteredCharacters, setFilteredCharacters] = useState(
 		props.characters
 	);
-	const [edit, setEdit] = React.useState(false);
-	const [add, setAdd] = React.useState(false);
-	const [showNew, setShowNew] = React.useState(false);
+	const [edit, setEdit] = useState(false);
+	const [add, setAdd] = useState(false);
+	const [showNew, setShowNew] = useState(false);
 
 	const listStyle = (item) => {
 		if (item === selected) {
