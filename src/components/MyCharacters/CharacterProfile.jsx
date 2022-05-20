@@ -1,8 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Loader,	Panel,	IconButton,	Icon,	Form,	FormGroup,	Button,	ButtonToolbar,	FormControl,	ControlLabel,	Divider,	Content,	Tag,	Modal,	Drawer,	SelectPicker,	Placeholder,	Grid,	Col,	Row,	List,	TagGroup} from 'rsuite';
+import {
+	Loader,
+	Panel,
+	IconButton,
+	Icon,
+	Form,
+	FormGroup,
+	Button,
+	ButtonToolbar,
+	FormControl,
+	ControlLabel,
+	Divider,
+	Content,
+	Tag,
+	Modal,
+	Drawer,
+	SelectPicker,
+	Placeholder,
+	Grid,
+	Col,
+	Row,
+	List,
+	TagGroup
+} from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { assetLent,	assetUpdated,	getMyAssets} from '../../redux/entities/assets';
+import {
+	assetLent,
+	assetUpdated,
+	getMyAssets
+} from '../../redux/entities/assets';
 import socket from '../../socket';
 // import { playerActionsRequested } from "../../redux/entities/playerActions";
 import NavigationBar from '../Navigation/NavigationBar';
@@ -146,13 +173,16 @@ class CharacterProfile extends Component {
 								</TagGroup>
 								<p>
 									<b>
-										Wiki Link{' '}
+										Wiki Link
 										<IconButton
 											onClick={() => this.openAnvil(playerCharacter)}
 											icon={<Icon icon="link" />}
 											appearance="primary"
 										/>
 									</b>
+								</p>
+								<p>
+									<b>Current injuries:</b> {playerCharacter.injuries.length}
 								</p>
 								<p>
 									<b>Bio:</b> {playerCharacter.bio}
