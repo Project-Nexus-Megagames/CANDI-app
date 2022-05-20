@@ -195,7 +195,7 @@ const NewEffects = (props) => {
 				>
 					{char.injuries.map((injury, index) => (
 						<Checkbox value={injury._id} key={index}>
-							{injury.label}
+							Injury received in <i>{injury.label}</i>.
 						</Checkbox>
 					))}
 				</CheckboxGroup>

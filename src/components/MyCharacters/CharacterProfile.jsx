@@ -181,9 +181,7 @@ class CharacterProfile extends Component {
 										/>
 									</b>
 								</p>
-								<p>
-									<b>Current injuries:</b> {playerCharacter.injuries.length}
-								</p>
+
 								<p>
 									<b>Bio:</b> {playerCharacter.bio}
 								</p>
@@ -225,6 +223,18 @@ class CharacterProfile extends Component {
 										Share My Contacts with Another Character
 									</Button>
 								</ButtonToolbar>
+							</Panel>
+							<Panel header="My Injuries" style={{ width: '95%' }}>
+								<p>
+									<b>Current injuries:</b> {playerCharacter.injuries.length}
+								</p>
+								<List>
+									{playerCharacter.injuries.map((injury, index) => (
+										<List.Item key={index}>
+											Injury received in <i>{injury.label}</i>.
+										</List.Item>
+									))}
+								</List>
 							</Panel>
 						</Col>
 						<Col>
