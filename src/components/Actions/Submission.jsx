@@ -600,7 +600,6 @@ class Submission extends Component {
 				)
 		);
 		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
-		console.log(assets);
 		for (const asset of assets) {
 			temp.push(asset._id);
 		}

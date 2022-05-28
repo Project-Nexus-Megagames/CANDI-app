@@ -229,11 +229,21 @@ class CharacterProfile extends Component {
 									<b>Current injuries:</b> {playerCharacter.injuries.length}
 								</p>
 								<List>
-									{playerCharacter.injuries.map((injury, index) => (
-										<List.Item key={index}>
-											Injury received in <i>{injury.label}</i>.
-										</List.Item>
-									))}
+									{playerCharacter.injuries.map((injury, index) => {
+										let autoheal = '';
+										if (injury.permanent) {
+											autoheal = 'Permanent injury';
+										} else {
+											const expires = injury.duration + injury.received;
+											autoheal = `Will heal at the end of round ${expires}`;
+										}
+										return (
+											<List.Item value={injury._id} key={index}>
+												<b>{injury.name}</b> received from action "
+												{injury.actionTitle}". ({autoheal}).
+											</List.Item>
+										);
+									})}
 								</List>
 							</Panel>
 						</Col>

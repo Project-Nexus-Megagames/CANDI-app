@@ -113,6 +113,7 @@ export const getMyUnlockedCharacters  = createSelector(
 	(characters, character) =>
 		characters.filter((char) => char.unlockedBy.some((el) => el._id === character._id))
 );
+
 // characters Loader into state
 export const loadCharacters = (payload) => (dispatch, getState) => {
   return dispatch(

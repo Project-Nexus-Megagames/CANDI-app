@@ -75,11 +75,21 @@ const HealInjury = (props) => {
 						handleHealInjuries(value);
 					}}
 				>
-					{char.injuries.map((injury, index) => (
-						<Checkbox value={injury._id} key={index}>
-							Injury received in <i>{injury.label}</i>.
-						</Checkbox>
-					))}
+					{char.injuries.map((injury, index) => {
+						let autoheal = '';
+						if (injury.permanent) {
+							autoheal = 'Permanent injury';
+						} else {
+							const expires = injury.duration + injury.received;
+							autoheal = `Will heal at the end of round ${expires}`;
+						}
+						return (
+							<Checkbox value={injury._id} key={index}>
+								<b>{injury.name}</b> received from action "{injury.actionTitle}
+								". ({autoheal}).
+							</Checkbox>
+						);
+					})}
 				</CheckboxGroup>
 			</div>
 		);

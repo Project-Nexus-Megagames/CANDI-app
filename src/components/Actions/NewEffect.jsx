@@ -14,7 +14,8 @@ import {
 	InputNumber,
 	Checkbox,
 	CheckboxGroup,
-	Toggle
+	Toggle,
+	Input
 } from 'rsuite';
 import socket from '../../socket';
 import _ from 'lodash';
@@ -87,6 +88,14 @@ const NewEffects = (props) => {
 					ownerCharacter: props.selected.creator._id
 				});
 				break;
+			case 'addInjury':
+				setSelected({
+					name: '',
+					duration: '0',
+					ownerCharacter: props.selected.creator._id,
+					permanent: false
+				});
+				break;
 			case 'character':
 				let charSelect = [];
 				characters.forEach((el) => {
@@ -150,12 +159,12 @@ const NewEffects = (props) => {
 		setSelected(selectedCharacters);
 	};
 
-	const handleAddInjury = (duration) => {
-		setSelected({
-			received: props.selected.round,
-			duration,
-			actionTitle: props.selected.name
-		});
+	const handleAddInjury = (type, change) => {
+		let temp = { ...selected };
+		temp[type] = change;
+		temp.received = props.selected.round;
+		temp.actionTitle = props.selected.name;
+		setSelected(temp);
 	};
 
 	const handleHealInjuries = (injuries) => {
@@ -193,11 +202,20 @@ const NewEffects = (props) => {
 						handleHealInjuries(value);
 					}}
 				>
-					{char.injuries.map((injury, index) => (
-						<Checkbox value={injury._id} key={index}>
-							Injury received in <i>{injury.label}</i>.
-						</Checkbox>
-					))}
+					{char.injuries.map((injury, index) => {
+						let autoheal = '';
+						if (injury.permanent) {
+							autoheal = 'Permanent injury';
+						} else {
+							const expires = injury.duration + injury.received;
+							autoheal = `Autoheal at the end of round ${expires}`;
+						}
+						return (
+							<Checkbox value={injury._id} key={index}>
+								{injury.name} ({autoheal}).
+							</Checkbox>
+						);
+					})}
 				</CheckboxGroup>
 			</div>
 		);
@@ -276,12 +294,11 @@ const NewEffects = (props) => {
 					{selected.type === 'Trait' && (
 						<div>
 							<Divider />
-							Arcane
 							<Toggle
 								onChange={handleArcane}
 								checked={arcane}
-								checkedChildren="Arcane"
-								unCheckedChildren="Not Arcane"
+								checkedChildren=" Arcane"
+								unCheckedChildren=" Not Arcane"
 							></Toggle>
 						</div>
 					)}
@@ -450,14 +467,30 @@ const NewEffects = (props) => {
 							{renderInjuries()}
 						</div>
 					)}
-					{type === 'addInjury' && (
+					{type === 'addInjury' && selected && (
 						<div>
 							<Divider>Add Injury</Divider>
-							<div>Enter Duration. Input 99 for permanent injury!</div>
-							<InputNumber
-								min={0}
-								onChange={(value) => handleAddInjury(value)}
-							/>
+							<div>Title:</div>
+							<Input
+								onChange={(value) => handleAddInjury('name', value)}
+								style={{ marginBottom: ' 10px' }}
+							></Input>
+							{!selected.permanent && (
+								<div>
+									Duration:
+									<InputNumber
+										min={0}
+										onChange={(value) => handleAddInjury('duration', value)}
+										style={{ marginBottom: ' 10px' }}
+									/>
+								</div>
+							)}
+							<Toggle
+								onChange={(checked) => handleAddInjury('permanent', checked)}
+								checked={selected.permanent}
+								checkedChildren="Permanent Injury"
+								unCheckedChildren="Not Permanent"
+							></Toggle>
 						</div>
 					)}
 				</Modal.Body>
