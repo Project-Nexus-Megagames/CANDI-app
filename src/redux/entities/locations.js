@@ -74,6 +74,12 @@ export const getMyLocations = createSelector(
     locations.filter((loc) => loc.unlockedBy.some(el => el._id === character._id))
 );
 
+export const getLocationsByCharacterId = (characterId) => createSelector(
+	(state) => state.locations.list,
+	(locations) =>
+	locations.filter((loc) => loc.unlockedBy.some(el => el._id === characterId))
+)
+
 export const getLocationById = (locationId) =>
   createSelector(
     (state) => state.locations,

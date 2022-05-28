@@ -10,25 +10,29 @@ import {
 	Panel
 } from 'rsuite';
 import socket from '../../socket';
-import { getLocationById } from '../../redux/entities/locations';
+import { getLocationsByCharacterId } from '../../redux/entities/locations';
+import { getCharacterById } from '../../redux/entities/characters';
 import _ from 'lodash';
 
 const LockMap = (props) => {
-	const locations = useSelector((state) => state.locations.list);
 	const characters = useSelector((state) => state.characters.list);
-	const sortedLocations = _.sortBy(locations, 'name');
-	const [selectedLoc, setSelectedLoc] = useState('');
-	const [charsToRemove, setCharsToRemove] = useState('');
-	const loc = useSelector(getLocationById(selectedLoc));
+	const sortedCharacters = _.sortBy(characters, 'characterName');
+	const [selectedChar, setSelectedChar] = useState('');
+	const [locsToRemove, setLocsToRemove] = useState('');
+	const char = useSelector(getCharacterById(selectedChar));
+	const unlockedLocations = useSelector(
+		getLocationsByCharacterId(selectedChar)
+	);
+	const sortedLocations = _.sortBy(unlockedLocations, 'name');
 
 	const handleExit = () => {
-		setCharsToRemove('');
-		setSelectedLoc('');
+		setSelectedChar('');
+		setLocsToRemove('');
 		props.closeModal();
 	};
 
 	const handleSubmit = () => {
-		const data = { loc, charsToRemove };
+		const data = { selectedChar, locsToRemove };
 		try {
 			socket.emit('request', {
 				route: 'location',
@@ -39,36 +43,24 @@ const LockMap = (props) => {
 		handleExit();
 	};
 
-	const handleLocChange = (event) => {
+	const handleCharChange = (event) => {
 		if (event) {
-			setSelectedLoc(event);
+			setSelectedChar(event);
 		}
 	};
 
-	const handleCharChange = (charIds) => {
-		setCharsToRemove(charIds);
+	const handleLocChange = (locIds) => {
+		setLocsToRemove(locIds);
 	};
 
-	const filterForUnlockedCharacters = (charIds) => {
-		let chars = [];
-		for (const el of charIds) {
-			chars.push(characters.find((char) => char._id === el));
-		}
-		chars = _.sortBy(chars, 'characterName');
-		return chars;
-	};
-
-	const renderUnlockedCharacters = (loc) => {
-		const data = loc.unlockedBy;
-		if (data.length === 0)
-			return <div>No character has unlocked this location yet!</div>;
-		const chars = filterForUnlockedCharacters(data);
-		console.log(chars);
+	const renderUnlockedLocations = (charId) => {
+		if (unlockedLocations.length === 0)
+			return <div>This characters hasn't unlocked any locations yet!</div>;
 		return (
-			<CheckboxGroup onChange={(value) => handleCharChange(value)}>
-				{data.map((item) => (
+			<CheckboxGroup onChange={(value) => handleLocChange(value)}>
+				{sortedLocations.map((item) => (
 					<Checkbox value={item._id} key={item._id}>
-						{item.characterName}
+						{item.name}
 					</Checkbox>
 				))}
 			</CheckboxGroup>
@@ -76,12 +68,14 @@ const LockMap = (props) => {
 	};
 
 	const renderLocation = () => {
-		if (!loc) return <div>Please Select a location!</div>;
+		if (!selectedChar) return <div>Please Select a Character!</div>;
 
 		return (
 			<div>
-				<div style={{ fontWeight: 'bold', fontSize: '16px' }}>{loc.name}</div>
-				{renderUnlockedCharacters(loc)}
+				<div style={{ fontWeight: 'bold', fontSize: '16px' }}>
+					{char.characterName}
+				</div>
+				{renderUnlockedLocations(selectedChar)}
 			</div>
 		);
 	};
@@ -102,11 +96,11 @@ const LockMap = (props) => {
 			<Panel>
 				<SelectPicker
 					block
-					placeholder="Lock a MapTile"
-					onChange={(event) => handleLocChange(event)}
-					data={sortedLocations}
+					placeholder="Select a Character"
+					onChange={(event) => handleCharChange(event)}
+					data={sortedCharacters}
 					valueKey="_id"
-					labelKey="name"
+					labelKey="characterName"
 				/>
 			</Panel>
 			<Panel>{renderLocation()}</Panel>
