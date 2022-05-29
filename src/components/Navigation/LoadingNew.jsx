@@ -31,7 +31,6 @@ const LoadingNew = (props) => {
 		const character = props.entities.characters.list.find(
 			(el) => el.username === props.auth.user.username
 		);
-		console.log('AAAAAASDAWSDAWDADAD')
 
 		if (props.auth.user.roles.some((el) => el === 'Control')) {
 			character ? props.setCharacter(character) : console.log(character);

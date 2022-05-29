@@ -16,25 +16,11 @@ const Login = (props) => {
   const history = useHistory();
 
   useEffect(() => {
-    let loginToken = localStorage.getItem("candi-token");
-    console.log("LoginToken " + loginToken);
-    if (loginToken !== null && props.login === false) {
+    let token = localStorage.getItem("candi-token");
+    console.log("token " + token);
+    if (token !== null && props.login === false) {
       console.log("Attempting to login!");
-      const fetchData = async () => {
-        try {
-          const { data } = await axios.request({
-            url: "https://nexus-central-portal.herokuapp.com/auth/tokenLogin",
-            method: "post",
-            data: { token: loginToken },
-          });
-          console.log(data.token);
-          tokenLogin({ token: data.token });
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      fetchData();
-      // make sure to catch any error
+			tokenLogin({ token });
     }
   }, [props.login]);
 
@@ -53,7 +39,6 @@ const Login = (props) => {
   const onSubmit = async () => {
 		remember ? localStorage.setItem('candi-token', login.user)
 			: localStorage.removeItem('candi-token');
-		
 		props.handleLogin(login);
 	}
 

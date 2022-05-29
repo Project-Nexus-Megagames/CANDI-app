@@ -27,9 +27,9 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      localStorage.setItem('nexusAuth', jwt );
+      localStorage.setItem('candi-token', jwt );
       const user = jwtDecode(jwt);
-      // console.log(localStorage)
+      console.log(localStorage)
 
       if (user.roles.some(el => el === "Control")) auth.control = true;
 
