@@ -175,7 +175,6 @@ const OtherCharacters = (props) => {
 					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
 			);
 		} else {
-			console.log('boop');
 			filtered = myUnlockedCharacters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||

@@ -41,6 +41,8 @@ const NewEffects = (props) => {
 	const gods = useSelector(getGods);
 	const mortals = useSelector(getNonPlayerCharacters);
 
+	// TODO REFACTOR CONTACT UNLOCK
+
 	useEffect(() => {
 		switch (type) {
 			case 'bond':
@@ -98,22 +100,17 @@ const NewEffects = (props) => {
 				break;
 			case 'character':
 				let charSelect = [];
-				characters.forEach((el) => {
-					if (
-						el.unlockedBy.findIndex(
-							(id) => id._id === props.selected.creator._id
-						) !== -1
-					) {
-						return;
-					} else if (el._id === props.selected.creator._id) return;
-					else charSelect.push(el);
+				let playerContacts = props.selected.creator.knownContacts;
+				characters.forEach((char) => {
+					if (playerContacts.findIndex((id) => id === char._id) !== -1) return;
+					else if (char._id === props.selected.creator._id) return;
+					else charSelect.push(char);
 				});
 				setCharactersToDisplay(charSelect);
 				break;
 			case 'map':
 				let locSelect = [];
 				locations.forEach((el) => {
-					console.log(el.unlockedBy, props.selected.creator._id);
 					if (
 						el.unlockedBy.findIndex(
 							(id) => id._id === props.selected.creator._id
@@ -127,7 +124,14 @@ const NewEffects = (props) => {
 			default:
 				break;
 		}
-	}, [type, assets, props.selected.creator._id, characters, locations]);
+	}, [
+		type,
+		assets,
+		props.selected.creator._id,
+		characters,
+		locations,
+		props.selected.creator.knownContacts
+	]);
 
 	const handleExit = () => {
 		setType('');
@@ -151,12 +155,7 @@ const NewEffects = (props) => {
 	};
 
 	const handleCharSelect = (selected) => {
-		let selectedCharacters = [];
-		for (const el of selected) {
-			const char = characters.find((char) => char._id === el);
-			selectedCharacters.push(char._id);
-		}
-		setSelected(selectedCharacters);
+		setSelected(selected);
 	};
 
 	const handleAddInjury = (type, change) => {
@@ -230,7 +229,6 @@ const NewEffects = (props) => {
 				owner: props.selected.creator._id,
 				arcane
 			};
-			console.log(data);
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
 			Alert.error(`Error: ${err.body} ${err.message}`, 5000);

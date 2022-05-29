@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import {
 	Modal,
@@ -10,28 +10,38 @@ import {
 	Panel
 } from 'rsuite';
 import socket from '../../socket';
-import { getCharacterById } from '../../redux/entities/characters';
+import {
+	getCharacterById,
+	getPlayerCharacters
+} from '../../redux/entities/characters';
 import _ from 'lodash';
 
-const LockCharacter = (props) => {
+const ManageContacts = (props) => {
 	const characters = useSelector((state) => state.characters.list);
-	const sortedCharacters = _.sortBy(characters, 'characterName');
+	const playerCharacters = useSelector(getPlayerCharacters);
+	const sortedCharacters = _.sortBy(playerCharacters, 'characterName');
 	const [selectedChar, setSelectedChar] = useState('');
-	const [charsToRemove, setCharsToRemove] = useState('');
 	const char = useSelector(getCharacterById(selectedChar));
+	const [contacts, setContacts] = useState([]);
+
+	useEffect(() => {
+		if (char) {
+			setContacts(char.knownContacts);
+		}
+	}, [char]);
 
 	const handleExit = () => {
-		setCharsToRemove('');
+		setContacts([]);
 		setSelectedChar('');
 		props.closeModal();
 	};
 
 	const handleSubmit = () => {
-		const data = { char, charsToRemove };
+		const data = { charId: char._id, contacts };
 		try {
 			socket.emit('request', {
 				route: 'character',
-				action: 'lockCharacter',
+				action: 'manageContacts',
 				data
 			});
 		} catch (err) {}
@@ -44,26 +54,19 @@ const LockCharacter = (props) => {
 		}
 	};
 
-	const handleCharsToRemoveChange = (charIds) => {
-		setCharsToRemove(charIds);
+	const handleContactChange = (charIds) => {
+		setContacts(charIds);
 	};
 
-	//const filterForUnlockedCharacters = (charIds) => {
-	//	let chars = [];
-	//	for (const el of charIds) {
-	//		chars.push(characters.find((char) => char._id === el));
-	//	}
-	//	chars = _.sortBy(chars, 'characterName');
-	//	return chars;
-	//};
-
-	const renderUnlockedCharacters = (char) => {
-		const data = char.unlockedBy;
-		if (data.length === 0)
-			return <div>No character has unlocked this character yet!</div>;
+	const renderContacts = (char) => {
+		let contactsToManage = characters.filter((el) => el._id !== char._id);
+		contactsToManage = _.sortBy(contactsToManage, 'characterName');
 		return (
-			<CheckboxGroup onChange={(value) => handleCharsToRemoveChange(value)}>
-				{data.map((item) => (
+			<CheckboxGroup
+				value={contacts}
+				onChange={(value) => handleContactChange(value)}
+			>
+				{contactsToManage.map((item) => (
 					<Checkbox value={item._id} key={item._id}>
 						{item.characterName}
 					</Checkbox>
@@ -74,13 +77,12 @@ const LockCharacter = (props) => {
 
 	const renderCharacter = () => {
 		if (!char) return <div>Please Select a character!</div>;
-
 		return (
 			<div>
 				<div style={{ fontWeight: 'bold', fontSize: '16px' }}>
 					{char.characterName}
 				</div>
-				{renderUnlockedCharacters(char)}
+				{renderContacts(char)}
 			</div>
 		);
 	};
@@ -96,12 +98,12 @@ const LockCharacter = (props) => {
 			}}
 		>
 			<Modal.Header>
-				<Modal.Title>Lock Character for Character</Modal.Title>
+				<Modal.Title>Manage a PC's Contacts</Modal.Title>
 			</Modal.Header>
 			<Panel>
 				<SelectPicker
 					block
-					placeholder="Lock a Character"
+					placeholder="Choose PC"
 					onChange={(event) => handleCharChange(event)}
 					data={sortedCharacters}
 					valueKey="_id"
@@ -112,7 +114,7 @@ const LockCharacter = (props) => {
 			<Modal.Footer>
 				<ButtonGroup>
 					<Button onClick={() => handleSubmit()} color="red">
-						Lock Character
+						Change Contacts
 					</Button>
 				</ButtonGroup>
 			</Modal.Footer>
@@ -120,4 +122,4 @@ const LockCharacter = (props) => {
 	);
 };
 
-export default LockCharacter;
+export default ManageContacts;

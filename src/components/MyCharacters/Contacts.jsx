@@ -12,15 +12,17 @@ import {
 import { useSelector } from 'react-redux';
 import {
 	getPlayerCharacters,
-	getMyUnlockedCharacters,
-	getMyCharacter
+	getMyCharacter,
+	getMyUnlockedCharacters
 } from '../../redux/entities/characters';
 import socket from '../../socket';
 import _ from 'lodash';
 
+// TODO REFACTOR TO KNOWNCONTACTS
+
 const Contacts = (props) => {
 	const [selected, setSelected] = useState('');
-	const [charsToUnlock, setCharsToUnlock] = useState([]);
+	const [charsToShare, setCharsToShare] = useState([]);
 	const playerCharacters = useSelector(getPlayerCharacters);
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
 	const charactersToShareWith = _.sortBy(
@@ -30,8 +32,8 @@ const Contacts = (props) => {
 
 	const contactShare = async () => {
 		const data = {
-			_id: selected._id, // character I'm sharing contacts with
-			chars: charsToUnlock
+			charId: selected._id, // character I'm sharing contacts with
+			chars: charsToShare
 		};
 		socket.emit('request', { route: 'character', action: 'share', data });
 		handleExit();
@@ -40,23 +42,24 @@ const Contacts = (props) => {
 	const handleChange = (event) => {
 		if (event) {
 			setSelected(playerCharacters.find((el) => el._id === event));
-			setCharsToUnlock([]);
+			setCharsToShare([]);
 		}
 	};
 
 	const handleShare = (event) => {
 		if (event) {
-			setCharsToUnlock(event);
+			setCharsToShare(event);
 		}
 	};
 
 	const handleExit = () => {
 		props.closeModal();
 		setSelected('');
-		setCharsToUnlock([]);
+		setCharsToShare([]);
 	};
 
 	const renderCharacters = () => {
+		console.log(selected);
 		if (selected) {
 			let unlockedCharactersToShare = [];
 			for (const el of myUnlockedCharacters) {
@@ -73,7 +76,7 @@ const Contacts = (props) => {
 					{selected && (
 						<CheckPicker
 							block
-							value={charsToUnlock}
+							value={charsToShare}
 							placeholder="Select Contact(s) to Share"
 							onChange={(event) => handleShare(event)}
 							data={unlockedCharactersToShare}
@@ -108,7 +111,7 @@ const Contacts = (props) => {
 				{selected && (
 					<ButtonGroup>
 						<Button onClick={() => contactShare()} color="blue">
-							Edit
+							Share-yo-ho!
 						</Button>
 					</ButtonGroup>
 				)}

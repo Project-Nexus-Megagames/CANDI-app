@@ -30,7 +30,7 @@ import NewCharacter from './NewCharacter';
 import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
-import LockCharacter from './LockCharacter';
+import ManageContacts from './ManageContacts';
 import HealInjury from './HealInjury';
 
 class ControlTerminal extends Component {
@@ -205,7 +205,7 @@ class ControlTerminal extends Component {
 								appearance="ghost"
 								onClick={() => this.setState({ charLockModal: true })}
 							>
-								Lock Character
+								Manage Character Contacts
 							</Button>
 							<Button
 								appearance="ghost"
@@ -371,7 +371,7 @@ class ControlTerminal extends Component {
 					closeModal={() => setMapModal(false)}
 				/>
 
-				<LockCharacter
+				<ManageContacts
 					open={true}
 					show={this.state.charLockModal}
 					closeModal={() => setCharLockModal(false)}

@@ -111,7 +111,7 @@ export const getMyUnlockedCharacters  = createSelector(
 	(state) => state.characters.list,
 	(state) => state.auth.character,
 	(characters, character) =>
-		characters.filter((char) => char.unlockedBy.some((el) => el._id === character._id))
+		characters.filter((char) => character.knownContacts.some((el) => el === char._id))
 );
 
 // characters Loader into state
