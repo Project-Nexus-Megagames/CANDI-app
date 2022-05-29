@@ -325,7 +325,7 @@ const NewEffects = (props) => {
 	};
 
 	return (
-		<Modal size="m" placement="right" show={props.show} onHide={handleExit}>
+		<Modal size="lg" placement="right" show={props.show} onHide={handleExit}>
 			<Modal.Header></Modal.Header>
 			{
 				<Modal.Body>
@@ -362,7 +362,7 @@ const NewEffects = (props) => {
 						</Button>
 						<Button
 							appearance={type !== 'addInjury' ? 'ghost' : 'primary'}
-							color={'orange'}
+							color={'red'}
 							onClick={
 								type !== 'addInjury' ? () => handleType('addInjury') : undefined
 							}
