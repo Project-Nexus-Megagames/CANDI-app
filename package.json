@@ -1,7 +1,7 @@
 {
   "name": "candi_app",
   "version": "0.1.0",
-  "description": "The CANDI App for whatever PbEM game is running",
+  "description": "The CANDI App for tempest PbEM game is running, mostly saving package.json",
   "author": "Scott McMann & John T. Cleveland",
   "private": true,
   "dependencies": {
