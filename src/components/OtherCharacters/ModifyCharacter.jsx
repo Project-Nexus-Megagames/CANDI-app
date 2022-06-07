@@ -40,7 +40,7 @@ class ModifyCharacter extends Component {
 	handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
-		socket.emit('characterRequest', 'modify', this.state.formValue ); // new Socket event
+    socket.emit('request', { route: 'character', action: 'modify', data: this.state.formValue });
 		this.props.closeDrawer()
 		this.setState({ loading: false });		
 	}

@@ -29,14 +29,14 @@ class AddAsset extends Component {
 			console.log(this.state.formValue)
 		}
 
-		const stateReplace = JSON.parse(localStorage.getItem('addAssetState'));
-		if (stateReplace) this.setState(stateReplace); 
+		// const stateReplace = JSON.parse(localStorage.getItem('addAssetStateGW'));
+		// if (stateReplace) this.setState(stateReplace); 
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
-		if (this.state !== prevState) {
-			localStorage.setItem('addAssetState', JSON.stringify(this.state));
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('addAssetStateGW', JSON.stringify(this.state));
+		// };
 		// Typical usage (don't forget to compare props):
 		if (this.props !== prevProps) {
 			this.setState({ id: this.props.character._id });
@@ -46,13 +46,14 @@ class AddAsset extends Component {
 	handleSubmit = async () => {
 		this.setState({ loading: true });
 		// 1) make a new asset
-		const formValue = {
+		const data = {
 			asset: {
 				name: this.state.formValue.name,
 				with: this.props.god ? this.props.god._id : '',
 				description: this.state.formValue.description,	
 				type: this.state.formValue.type,
 				uses: this.state.formValue.uses,
+				dice: this.state.formValue.dice,
 				level: this.state.formValue.level,
 				owner: this.props.character.characterName,
 				ownerCharacter: this.props.character._id,
@@ -62,7 +63,7 @@ class AddAsset extends Component {
 			},
 			id: this.props.character._id, 
 	 }
-	 socket.emit('assetRequest', 'create', formValue); // new Socket event	
+	 socket.emit('request', { route: 'asset', action: 'create', data });	
 	 this.setState({ loading: false, formValue: { name: '', description: '', type: '' }, hidden: true });
 	 this.props.closeModal();
 	 }
@@ -151,6 +152,14 @@ class AddAsset extends Component {
 
 const godPickerData = [
 	{
+		label: 'Condemned',
+		value: 'Condemned',
+	},
+	{
+		label: 'Disfavoured',
+		value: 'Disfavoured',
+	},
+	{
 		label: 'Neutral',
 		value: 'Neutral',
 	},
@@ -169,6 +178,14 @@ const godPickerData = [
 ]
 
 const mortalPickerData = [
+	{
+		label: 'Loathing',
+		value: 'Loathing',
+	},
+	{
+		label: 'Unfriendly',
+		value: 'Unfriendly',
+	},
 	{
 		label: 'Neutral',
 		value: 'Neutral',

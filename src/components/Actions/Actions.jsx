@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, Panel, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
-import { getMyAssets } from '../../redux/entities/assets';
+import { Container, Sidebar, Input, ButtonGroup, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { setFilter } from '../../redux/entities/playerActions';
+import { getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
 import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
-import SelectedProject from './SelectedProject';
+
 const Actions = (props) => {
 	const [selected, setSelected] = React.useState(null);
 	const [showNew, setShowNew] = React.useState(false);
@@ -39,22 +38,13 @@ const Actions = (props) => {
 	// 	assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth' || el.type === 'Power' || el.type === 'Bond'));
 	// 	return assets;
 	// }
-
-	const tooltip = () => {
-		return(
-		<Tooltip>
-		  Log-Out
-		</Tooltip>			
-		)
-	}
-
 	  
 
 	if (!props.login) {
 		props.history.push('/');
 		return (<Loader inverse center content="doot..." />)
 	};
-	if (window.innerHeight < 900) {
+		if (window.innerWidth < 768) { 
 		return (<MobileActions />)
 	}
 	return ( 
@@ -63,21 +53,26 @@ const Actions = (props) => {
 		<Container style={{ height: 'calc(100vh - 50px)',}}>
 		<Sidebar className="side-bar">
 			<PanelGroup> 					
-				<div style={{ height: '40px', marginTop: '5px', backgroundColor: "#000101"}}>
+				<div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101"}}>
 					<InputGroup>
-						<Input size="sm" style={{ width: '95%' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
-							<InputGroup.Button appearance='primary' color='green' disabled={!props.gamestate.status === 'Active' || props.myCharacter.effort < 1} onClick={() => setShowNew(true)}>
-							<Icon  icon="plus" />	
-							</InputGroup.Button>							
+						<Input size="lg" style={{ height: '42px' }} onChange={(value)=> props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
+						{<Whisper placement="top" trigger="hover" speaker={<Tooltip><b>{true ? 'Create New Explore Action' : 'No Explore Left'}</b></Tooltip>}>
+								<Button disabled={props.explore} style={{color: 'black', borderRadius: '0px' }} color='orange' onClick={() => setShowNew('explore')}><Icon  icon="explore" /></Button>
+						</Whisper> }
+						{<Whisper placement="top" trigger="hover" speaker={<Tooltip><b>{props.myCharacter.effort > 0 ? `Create New Default Action (${props.myCharacter.effort})` : 'No Actions Left'}</b></Tooltip>}>
+								<Button style={{borderRadius: '0px', }} disabled={props.myCharacter.effort < 1} color='green' onClick={() => setShowNew('default')}><Icon  icon="plus" />	</Button>
+						</Whisper> }
+
 					</InputGroup>
 				</div>
-				<div bodyFill style={{height: 'calc(91vh - 120px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
+				<div bodyFill style={{height: 'calc(100vh - 80px)', scrollbarWidth: 'none', overflow: 'auto', borderRadius: '0px', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>	
 					<ActionList selected={selected} handleSelect={handleSelect}/>
-				</div>			
+				</div>	ActionList		
 			</PanelGroup>
 		</Sidebar>
 
-		{selected && selected.type === 'Action' && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
+		{!selected && <h4 style={{ width: '100%' }}>No Action Selected</h4>}
+		{selected &&  <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected}/>}	
 
 
 		<NewAction
@@ -93,13 +88,14 @@ const Actions = (props) => {
 
 const mapStateToProps = (state) => ({
 	actions: state.actions.list,
+	explore: state.auth.user ? getCurrentExplores(state) : 'undefined',
 	user: state.auth.user,
 	control: state.auth.control,
 	filter: state.actions.filter,
 	login: state.auth.login,
 	gamestate: state.gamestate,
+	myActions: getMyActions(state),
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
-	myAssets: state.auth.user ? getMyAssets(state): undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({

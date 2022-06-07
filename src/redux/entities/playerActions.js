@@ -48,7 +48,7 @@ const slice = createSlice({
     },
     playerActionUpdated: (playerActions, action) => {
       console.log(`${action.type} Dispatched`)
-      console.log(`Payload : ${action.payload._id}`)
+      //console.log(`Payload : ${action.payload._id}`)
       const index = playerActions.list.findIndex(el => el._id === action.payload._id);
       playerActions.list[index] = action.payload;
       playerActions.loading = false;
@@ -79,27 +79,36 @@ export const getMyActions = createSelector(
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (filter, actions, myCharacter) => actions.filter(
     action => (( action.creator._id === myCharacter._id ) ))
-  
+);
+
+export const getCurrentExplores = createSelector(
+  state => state.gamestate.round,
+  state => state.auth.character,
+  state => state.actions.list,
+  (round, user, actions) => actions.find(
+    action => (( action.creator._id == user._id && action.round === round && action.type === 'explore') ))
 );
 
 export const filteredActions = createSelector(
   state => state.actions.filter,
   state => state.actions.list,
-  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || 
-  action.submission.intent.toLowerCase().includes(filter.toLowerCase()) 
+  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.creator.characterTitle.toLowerCase().includes(filter.toLowerCase()) || 
+   action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  || 
+   action.submission.intent.toLowerCase().includes(filter.toLowerCase()) || 
+   action.tags.some(el => el.toLowerCase().includes(filter.toLowerCase()))
   )
 );
 
-export const draftActions = createSelector(
-  state => state.actions.list,
-  (actions) => actions.filter(el => el.status.draft === true)
-);
+//  export const draftActions = createSelector(
+//   state => state.actions.list,
+//   (actions) => actions.filter(el => el.status.draft === true)
+// );
 
 // playerActions Loader into state
 export const loadplayerActions = payload => (dispatch, getState) => {
   let url = baseURL;
-  
-  if (!payload.roles.some(el => el === 'Control' )) {
+
+  if (!payload.roles.some(el => el === 'Control' )) { // does no longer work
     url = `${baseURL}/${payload.username}`
   }  
     

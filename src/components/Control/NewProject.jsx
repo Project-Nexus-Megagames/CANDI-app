@@ -16,16 +16,16 @@ class NewProject extends Component {
 		loading: false
 	}
 
-	componentDidMount = () => {
-		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newProjectState'));
-		if (stateReplace) this.setState(stateReplace); 
-	}
+	// componentDidMount = () => {
+	// 	// localStorage.removeItem('newActionState');
+	// 	const stateReplace = JSON.parse(localStorage.getItem('newProjectStateGW'));
+	// 	if (stateReplace) this.setState(stateReplace); 
+	// }
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('newProjectState', JSON.stringify(this.state));
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('newProjectStateGW', JSON.stringify(this.state));
+		// };
 	}
 
 	newProject = async () => {
@@ -40,7 +40,7 @@ class NewProject extends Component {
 			round: this.props.gamestate.round, 
 			status: 'Published',
 		}
-		socket.emit('actionRequest', 'createProject', data ); // new Socket event
+		socket.emit('request', { route: 'action', action: 'createProject', data });
 		this.props.closeModal()
 	}
 

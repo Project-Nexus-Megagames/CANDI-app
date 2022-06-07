@@ -20,18 +20,18 @@ const slice = createSlice({
   // Reducers - Events
   reducers: { // this will become hadleLogin from app.js
     loginRequested: (auth, action) => {
-      console.log(`${action.type} Dispatched...`)
+      console.log(`${action.type} Dispatched...`);
       auth.loading = true;
     },
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      localStorage.setItem('nexusAuth', jwt );
+      localStorage.setItem('candi-token', jwt );
       const user = jwtDecode(jwt);
-      // console.log(localStorage)
+      console.log(localStorage)
 
-      // if (user.roles.some(el => el === "Control")) auth.control = true;
+      if (user.roles.some(el => el === "Control")) auth.control = true;
 
 			auth.error = null;
       auth.user = user;
@@ -49,6 +49,19 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       auth.socket = action.payload.me;
 		},
+    finishLoading: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      auth.loadComplete = true;
+    },
+    setCharacter: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      auth.character = action.payload;
+      if (action.payload.tags.some(el => el === "control")) auth.control = true;
+      // initConnection(auth.user, auth.team, auth.version);
+    },
+    setControl: (auth, action) => {
+      auth.control = action.payload.control;
+    },
 		clearAuthError: (auth, action) => {
 			console.log(`${action.type} Dispatched`);
 			auth.error = null;
@@ -62,6 +75,10 @@ const slice = createSlice({
 			auth.lastLogin = null;
 			auth.error = null;
 		},
+    usersRecieved: (auth, action) => {
+      console.log(`${action.type} Dispatched`)
+      auth.users = action.payload
+    },
 		updateUser: (auth, action) => {
 			console.log(`${action.type} Dispatched`);
 			auth.user = action.payload.user;
@@ -77,7 +94,11 @@ export const {
 	loginSocket,
 	clearAuthError,
 	signOut,
-	updateUser
+	updateUser,
+  usersRecieved, 
+  finishLoading,
+  setCharacter,
+  setControl
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export

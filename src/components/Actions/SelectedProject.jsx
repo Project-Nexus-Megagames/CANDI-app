@@ -125,12 +125,12 @@ class SelectedProject extends Component {
 			playerBoolean: true,
 			id: this.props.project._id
 		}
-		socket.emit('actionRequest', 'update',  data2 ); // new Socket event		
+		socket.emit('request', { route: 'update', action: 'updateSubObject', data2 });
 		this.setState({ projectModal: false });
 	}
 
 	deleteProject = async () => {
-		socket.emit('actionRequest', 'delete', { id: this.props.project._id}); // new Socket event		
+		socket.emit('request', { route: 'action', action: 'delete', data: { id: this.props.project._id} });	
 		this.props.handleSelect(null);
 	}
 

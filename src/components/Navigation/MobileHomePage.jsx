@@ -1,27 +1,20 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid, Panel } from 'rsuite';
+import { Icon, Dropdown, IconButton, FlexboxGrid, } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
-import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
-import action from '../Images/actionmobile.jpg'
-import control2 from '../Images/Control.jpg'
-import LeaderBoard from '../Images/LeaderBoard.jpg'
-import other from '../Images/othercharactersmobile.jpg'
-import control from '../Images/balls.png'
-import nexus from '../Images/nexus.jpg'
-import myCharacter from '../Images/MyCharacter.jpg'
-import banner from '../Images/banner.jpg'
+import action from '../Images/test.jpg'
+import other from '../Images/test.jpg'
+import myCharacter from '../Images/test.jpg'
+import banner from '../Images/test.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
-import { Link } from 'react-router-dom';
 import { toggleDuck } from '../../redux/entities/gamestate';
 
 const HomePage = (props) => {
-	const [show, setShow] = React.useState(false);
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0, });
 
@@ -61,11 +54,6 @@ const HomePage = (props) => {
 	}
 
 
-	const openNexus = () => {
-		const win = window.open('https://www.patreon.com/wcmprojectnexus', '_blank');
-		win.focus();
-	}
-
 	return ( 
 		<React.Fragment>
 				<div style={{ height: '50px', backgroundColor: '#746D75', width: "100%", fontSize: '0.966em', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37' }}>
@@ -98,7 +86,7 @@ const HomePage = (props) => {
  
 
 
-				<div style={{ height: 'calc(100% - 50px)', width: "100%", overflow: 'auto', textAlign: 'center' }}>
+				<div style={{ height: 'calc(100% - 53px)', width: "100%", overflow: 'auto', textAlign: 'center' }}>
 				<FlexboxGrid justify="space-around" >
 
 					<FlexboxGrid.Item colspan={24}>
@@ -118,9 +106,6 @@ const HomePage = (props) => {
 						<ImgPanel img={myCharacter} to='character' title='My Character' height='30vh' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
-					<FlexboxGrid.Item colspan={12}>
-						<ImgPanel img={LeaderBoard} height='30vh' disabled to='leaderboard' title='Leaderboard' body='How are things standing?'/>
-					</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={12}>
 						<ImgPanel img={other} height='30vh' to='others' title={'Other Characters'} body='Character Details'/>
 					</FlexboxGrid.Item>

@@ -160,7 +160,7 @@ class Registration extends Component {
 			email: this.state.selected.email,
 		}
 		try{
-			socket.emit('characterRequest', 'register',  data ); // new Socket event
+			socket.emit('request', { route: 'character', action: 'register', data });
 			// await axios.patch(`${gameServer}api/characters/register`,  data );
 			// Alert.success('User successfully given their character');
 			this.setState({ selected: null, target: null });

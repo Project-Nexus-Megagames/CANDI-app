@@ -16,19 +16,6 @@ class EditTerritory extends Component {
 		selected: false,
 		loading: false
 	}
-
-	componentDidMount = () => {
-		const stateReplace = JSON.parse(localStorage.getItem('editTerritoryState'));
-		console.dir(stateReplace);
-		if (stateReplace) this.setState(stateReplace); 
-	}
-
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('editTerritoryState', JSON.stringify(this.state));
-			console.log(localStorage);
-		};
-	};
 		
 	handleSubmit = async () => {
 		// 1) make a new action
@@ -41,7 +28,7 @@ class EditTerritory extends Component {
 			currentOwner: this.state.currentOwner
 		}
 		this.setState({ loading: true });			
-		socket.emit('locationRequest', 'modify', data ); // new Socket event
+		socket.emit('request', { route: 'location', action: 'modify', data });	
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	}

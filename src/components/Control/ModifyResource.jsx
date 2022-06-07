@@ -1,123 +1,272 @@
-import React, { Component } from 'react';
-import { ControlLabel, Form, FormControl, InputPicker, Modal, Button, SelectPicker, ButtonGroup, Panel, InputNumber, Divider, Toggle, Placeholder } from 'rsuite';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import {
+	InputPicker,
+	Modal,
+	Button,
+	SelectPicker,
+	ButtonGroup,
+	Panel,
+	InputNumber,
+	Divider,
+	Toggle,
+	Placeholder
+} from 'rsuite';
+import { useSelector } from 'react-redux';
 import socket from '../../socket';
-import { assetsRequested } from '../../redux/entities/assets';
 
-class ModifyResource extends Component {
-	state = { 
-		name: '',
-		description: '',
-		uses: 0,
-		influence: 0,
-		id: '',
-		currentOwner: '',
-		dice: '',
-		level: '',
-		type: '',
-		selected: false,
-		loading: false
-	}
+const ModifyResource = (props) => {
+	const [name, setName] = useState('');
+	const [description, setDescription] = useState('');
+	const [uses, setUses] = useState(0);
+	const [level, setLevel] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [lendable, setLendable] = useState(false);
+	const [hidden, setHidden] = useState(false);
+	const [owner, setOwner] = useState('');
+	const [tags, setTags] = useState([]);
+	const [dice, setDice] = useState('');
+	const [selected, setSelected] = useState('');
+	const [used, setUsed] = useState(false);
+	const [type, setType] = useState('');
+	const [arcane, setArcane] = useState(false);
 
-	componentDidMount = () => {
-		if (this.props.bond) {
-			this.handleChage(this.props.bond._id)
+	const assets = useSelector((state) => state.assets.list);
+
+	useEffect(() => {
+		if (props.bond) {
+			handleChange(props.bond._id);
 		}
-	}
-		
-	assetModify = async () => {
-		this.props.assetDispatched();
+	});
+
+	useEffect(() => {
+		setName(selected.name);
+		setDescription(selected.description);
+		setLevel(selected.level);
+		setType(selected.type);
+		setUses(selected.uses);
+		setOwner(selected.owner);
+		setTags(selected.tags);
+		if (selected.tags) {
+			setArcane(selected.tags.some((el) => el === 'arcane'));
+		}
+		if (selected.status) {
+			setUsed(selected.status.used);
+			setLendable(selected.status.lendable);
+			setHidden(selected.status.hidden);
+			setDice(selected.dice);
+		}
+	}, [selected]);
+
+	useEffect(() => {
+		let tempTags = tags;
+		if (arcane) {
+			setTags([...tempTags, 'arcane']);
+		} else {
+			setTags(tags.filter((el) => el !== 'arcane'));
+		}
+	}, [arcane]);
+
+	const assetModify = async () => {
 		const data = {
-			id: this.state.selected,
-			name: this.state.name,
-			description: this.state.description,
-			dice: this.state.dice,
-			uses: this.state.uses,
-			owner: this.state.owner,
-			used: this.state.used,
-			level: this.state.level,
-			lendable: this.state.lendable,
-			hidden: this.state.hidden	
-		}
-		socket.emit('assetRequest', 'modify',  data ); // new Socket event	
-		this.setState({ selected: null, });
-		this.props.closeModal()
-	}
+			_id: selected._id,
+			name,
+			description,
+			dice,
+			uses,
+			owner,
+			used,
+			level,
+			lendable,
+			hidden,
+			tags,
+			type
+		};
+		console.log(data);
+		socket.emit('request', { route: 'asset', action: 'modify', data });
+		props.closeModal();
+		setSelected('');
+	};
 
-	render() { 
-		return ( 
-			<Modal 
-			loading={this.props.assetLoading} 
-			size='sm' 
-			show={this.props.show} 
-			onHide={() => this.props.closeModal()}>
-			<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => this.handleChage(event)} data={this.props.assets.filter(el => el.model !== 'Wealth')} valueKey='_id' labelKey='name'></SelectPicker>
-				{this.renderAss()}
-				<Modal.Footer>
-					{this.state.selected && 
-					<ButtonGroup>
-						<Button loading={this.props.assetLoading} onClick={() => this.assetModify()} color="blue">Edit</Button>
-						<Button loading={this.props.assetLoading} onClick={() => this.handleDelete()} color="red">Delete</Button>								
-					</ButtonGroup>}
-				</Modal.Footer>
-		</Modal>
-		);
-	}
-
-	handleChage = (event) => {
+	const handleChange = (event) => {
 		if (event) {
-			const selected = this.props.assets.find(el => el._id === event);
-			this.setState({ selected: event, name: selected.name, description: selected.description, level: selected.level, type: selected.type, uses: selected.uses, owner: selected.owner, used: selected.status.used, lendable: selected.status.lendable, hidden: selected.status.hidden, dice: selected.dice })			
+			setSelected(assets.find((el) => el._id === event));
+			console.log(selected.status);
 		}
-		else this.setState({ selected: '', name: '', description: '', uses: 0 })			
-	}
+	};
 
-	handleDelete = async () => {
-		socket.emit('assetRequest', 'delete', { id: this.state.selected }); // new Socket event	
-		this.props.closeModal();
-	}
+	const handleArcane = () => {
+		setArcane(!arcane);
+	};
 
-	renderAss = () => {
-		if (this.state.selected) {
+	const handleDelete = async () => {
+		socket.emit('request', {
+			route: 'asset',
+			action: 'delete',
+			data: { id: selected }
+		});
+		props.closeModal();
+		setSelected('');
+	};
+
+	const renderAss = () => {
+		if (selected) {
 			return (
 				<Panel>
-					Name: {this.state.name}
-					{/* <textarea value={this.state.name} className='textStyle' onChange={(event)=> this.setState({ name: event.target.value })}></textarea>	 */}
+					Name: {name}
+					<textarea
+						value={name}
+						className="textStyle"
+						onChange={(event) => setName(event.target.value)}
+					></textarea>
 					<Divider />
 					Description:
-					<textarea rows='4' value={this.state.description} className='textStyle' onChange={(event)=> this.setState({description: event.target.value})}></textarea>	
+					<textarea
+						rows="4"
+						value={description}
+						className="textStyle"
+						onChange={(event) => setDescription(event.target.value)}
+					></textarea>
 					Dice
-					<textarea value={this.state.dice} className='textStyle' onChange={(event)=> this.setState({dice: event.target.value})}></textarea>	
-					Uses: <InputNumber value={this.state.uses} onChange={(event)=> this.setState({uses: event})}></InputNumber>
-					Owner (Match Character's name exactly):
-					<textarea value={this.state.owner} className='textStyle' onChange={(event)=> this.setState({ owner: event.target.value })}></textarea>	
-					{this.state.type === 'GodBond' && <div>
-						Bond Level
-						<InputPicker labelKey='label' valueKey='value' data={godPickerData} defaultValue={this.state.level} style={{ width: '100%' }} onChange={(event)=> this.setState({level: event})}/>						
-					</div>}
-					{this.state.type === 'MortalBond' && <div>
-						Bond Level
-						<InputPicker labelKey='label' valueKey='value' data={mortalPickerData} defaultValue={this.state.level} style={{ width: '100%' }} onChange={(event)=> this.setState({level: event})}/>						
-					</div>}
+					<textarea
+						value={dice}
+						className="textStyle"
+						onChange={(event) => setDice(event.target.value)}
+					></textarea>
+					Uses:{' '}
+					<InputNumber
+						value={uses}
+						onChange={(event) => setUses(event)}
+					></InputNumber>
+					Owner
+					<textarea
+						value={owner}
+						className="textStyle"
+						onChange={(event) => setOwner(event.target.value)}
+					></textarea>
+					{type === 'GodBond' && (
+						<div>
+							Bond Level
+							<InputPicker
+								labelKey="label"
+								valueKey="value"
+								data={godPickerData}
+								defaultValue={level}
+								style={{ width: '100%' }}
+								onChange={(event) => setLevel(event)}
+							/>
+						</div>
+					)}
+					{type === 'MortalBond' && (
+						<div>
+							Bond Level
+							<InputPicker
+								labelKey="label"
+								valueKey="value"
+								data={mortalPickerData}
+								defaultValue={level}
+								style={{ width: '100%' }}
+								onChange={(event) => setLevel(event)}
+							/>
+						</div>
+					)}
 					<Divider>Statuses</Divider>
-					<Toggle checked={this.state.used} onChange={()=> this.setState({ used: !this.state.used })} checkedChildren="Used" unCheckedChildren="Un-used"/>
-					<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="hidden" unCheckedChildren="Un-hidden"/>
-					<Toggle checked={this.state.lendable} onChange={()=> this.setState({ lendable: !this.state.lendable })} checkedChildren="lendable" unCheckedChildren="Un-lendable"/>
-				</Panel>			
-			)			
-		}
-		else {
+					<Toggle
+						checked={used}
+						onChange={() => setUsed(!used)}
+						checkedChildren="Used"
+						unCheckedChildren="Un-used"
+					/>
+					<Toggle
+						checked={hidden}
+						onChange={() => setHidden(!hidden)}
+						checkedChildren="hidden"
+						unCheckedChildren="Un-hidden"
+					/>
+					<Toggle
+						checked={lendable}
+						onChange={() => setLendable(!lendable)}
+						checkedChildren="lendable"
+						unCheckedChildren="Un-lendable"
+					/>
+					{type === 'Asset' && (
+						<Toggle
+							onChange={handleArcane}
+							checked={arcane}
+							checkedChildren="Arcane"
+							unCheckedChildren="Not Arcane"
+						></Toggle>
+					)}
+					{type === 'Trait' && (
+						<Toggle
+							onChange={handleArcane}
+							checked={arcane}
+							checkedChildren="Arcane"
+							unCheckedChildren="Not Arcane"
+						></Toggle>
+					)}
+				</Panel>
+			);
+		} else {
 			return (
-				<Placeholder.Paragraph rows={5} >Awaiting Selection</Placeholder.Paragraph>
-			)
+				<Placeholder.Paragraph rows={5}>
+					Awaiting Selection
+				</Placeholder.Paragraph>
+			);
 		}
-	}
-}
+	};
+
+	return (
+		<Modal
+			loading={loading}
+			size="sm"
+			show={props.show}
+			onHide={() => props.closeModal()}
+		>
+			<SelectPicker
+				block
+				placeholder="Edit or Delete Asset/Trait"
+				onChange={(event) => handleChange(event)}
+				data={assets.filter((el) => el.model !== 'Wealth')}
+				valueKey="_id"
+				labelKey="name"
+			></SelectPicker>
+			{renderAss()}
+			<Modal.Footer>
+				{selected && (
+					<ButtonGroup>
+						<Button
+							loading={loading}
+							onClick={() => assetModify()}
+							color="blue"
+						>
+							Edit
+						</Button>
+						<Button
+							loading={loading}
+							onClick={() => handleDelete()}
+							color="red"
+						>
+							Delete
+						</Button>
+					</ButtonGroup>
+				)}
+			</Modal.Footer>
+		</Modal>
+	);
+};
 
 const godPickerData = [
 	{
+		label: 'Condemned',
+		value: 'Condemned'
+	},
+	{
+		label: 'Disfavoured',
+		value: 'Disfavoured'
+	},
+	{
 		label: 'Neutral',
-		value: 'Neutral',
+		value: 'Neutral'
 	},
 	{
 		label: 'Preferred',
@@ -127,16 +276,24 @@ const godPickerData = [
 		label: 'Favoured',
 		value: 'Favoured'
 	},
-    {
+	{
 		label: 'Blessed',
 		value: 'Blessed'
-	},
-]
+	}
+];
 
 const mortalPickerData = [
 	{
+		label: 'Loathing',
+		value: 'Loathing'
+	},
+	{
+		label: 'Unfriendly',
+		value: 'Unfriendly'
+	},
+	{
 		label: 'Neutral',
-		value: 'Neutral',
+		value: 'Neutral'
 	},
 	{
 		label: 'Warm',
@@ -146,54 +303,10 @@ const mortalPickerData = [
 		label: 'Friendly',
 		value: 'Friendly'
 	},
-  {
+	{
 		label: 'Bonded',
 		value: 'Bonded'
-	},
-]
-
-const pickerData = [
-	{
-		label: 'Asset',
-		value: 'Asset'
-	},
-	{
-		label: 'Trait',
-		value: 'Trait'
-	},
-	{
-		label: 'Wealth',
-		value: 'Wealth'
-	},
-	{
-		label: 'GodBond',
-		value: 'GodBond'
-	},
-	{
-		label: 'MortalBond',
-		value: 'MortalBond'
-	},
-	{
-		label: 'Territory',
-		value: 'Territory'
-	},
-	{
-		label: 'Power',
-		value: 'Power'
 	}
-]
+];
 
-const mapStateToProps = (state) => ({
-	user: state.auth.user,
-	assetLoading: state.assets.loading,
-	assets: state.assets.list,
-	login: state.auth.login,
-	gamestate: state.gamestate,
-	characters: state.characters.list,
-	actions: state.actions.list,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-	assetDispatched: (data) => dispatch(assetsRequested(data))});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ModifyResource);
+export default ModifyResource;

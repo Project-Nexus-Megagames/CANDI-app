@@ -16,17 +16,6 @@ class NewCharacter extends Component {
 			bio: '',
 			characterTitle: 'ex: The Agent',
 			pronouns: '',
-			Justice: 0,
-			Trickery: 0,
-			Balance: 0,
-			Hedonism: 0,
-			Bonding: 0,
-			Arts: 0,
-			Sporting: 0,
-			Fabrication: 0,
-			Scholarship: 0,
-			Pugilism: 0,
-			Glory: 0,
 			effort: 2,
 			username: 'temp'
 		},
@@ -58,7 +47,7 @@ class NewCharacter extends Component {
 	handleSubmit = async () => {
 		// 1) make a new action
 		this.setState({ loading: true });			
-		socket.emit('characterRequest', 'create', this.state.formValue ); // new Socket event
+		socket.emit('request', { route: 'character', action: 'create', data: this.state.formValue });
 		this.props.closeModal()
 		this.setState({ loading: false });		
 	}

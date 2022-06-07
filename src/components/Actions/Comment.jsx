@@ -19,17 +19,17 @@ class Comment extends Component {
 
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('EditComment'));
-		if (stateReplace) this.setState(stateReplace); 
-		this.setState({
-			body: this.props.comment.body,
-		});
+		// const stateReplace = JSON.parse(localStorage.getItem('EditCommentGW'));
+		// if (stateReplace) this.setState(stateReplace); 
+		// this.setState({
+		// 	body: this.props.comment.body,
+		// });
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('EditComment', JSON.stringify(this.state));
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('EditCommentGW', JSON.stringify(this.state));
+		// };
 		if (this.props.actions !== prevProps.actions) {
 			if (this.props.actions.some(el => el.body === this.state.body)) { // checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();
@@ -52,7 +52,7 @@ class Comment extends Component {
 			},
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'comment', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'comment', data});
 	}
 
 	getTime = (date) => {
@@ -67,7 +67,7 @@ class Comment extends Component {
 			id: this.props.selected._id,
 			comment: this.props.comment._id
 		}
-		socket.emit('actionRequest', 'deleteSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'deleteSubObject', data});
 		this.setState({ deleteWarning: false });
 	}
 
@@ -82,17 +82,17 @@ class Comment extends Component {
 				_id: this.props.comment._id
 			},
 		}
-		socket.emit('actionRequest', 'updateSubObject', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'updateSubObject', data});
 		this.setState({ commentEdit: false });
 	}
 	
 	render() { 
 		return ( 
 			<div>
-				{(this.props.myCharacter.tags.some(el => el === 'Control' || el.status === 'Public')) && <div>
+				{(this.props.myCharacter.tags.some(el => el === 'Control') || this.props.comment.status === 'Public') && <div>
 				<Divider vertical/>	
 					<div style={{	border: '3px solid #00a0bd', borderRadius: '5px' }}>
-						<FlexboxGrid  style={this.props.comment.status === 'Private' ? privateComm : publicComm} align='middle' justify="start">
+						<FlexboxGrid  style={this.props.comment.status === 'Private' ? privateComm : this.props.comment.type === 'Info' ? infoComm : publicComm} align='middle' justify="start">
 							<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
 									<Avatar circle size="md" src={`/images/${this.props.comment.commentor}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
 							</FlexboxGrid.Item>
@@ -188,6 +188,10 @@ const publicComm = {
 
 const privateComm = {
 	backgroundColor: '#61342e', 
+}
+
+const infoComm = {
+	backgroundColor: '#531ba8', 
 }
 
 const slimText = {

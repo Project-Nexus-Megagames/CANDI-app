@@ -14,18 +14,18 @@ class NewResult extends Component {
 		};
 	}
 
-	componentDidMount = () => {
-		// localStorage.removeItem('newActionState');
-		const stateReplace = JSON.parse(localStorage.getItem('newResultState'));
-		console.dir(stateReplace);
-		if (stateReplace) this.setState(stateReplace); 
-	}
+	// componentDidMount = () => {
+	// 	// localStorage.removeItem('newActionState');
+	// 	const stateReplace = JSON.parse(localStorage.getItem('newResultStateGW'));
+	// 	console.dir(stateReplace);
+	// 	if (stateReplace) this.setState(stateReplace); 
+	// }
 
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('newResultState', JSON.stringify(this.state));
-			console.log(localStorage);
-		};
+		// if (this.state !== prevState) {
+		// 	localStorage.setItem('newResultStateGW', JSON.stringify(this.state));
+		// 	console.log(localStorage);
+		// };
 		if (this.props.actions !== prevProps.actions) {
 			if (this.props.actions.some(el => el.description === this.state.description)) { // checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();
@@ -49,7 +49,7 @@ class NewResult extends Component {
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
 		}
-		socket.emit('actionRequest', 'result', data); // new Socket event	
+		socket.emit('request', { route: 'action', action: 'result', data });
 		this.props.closeNew();
 	}
 
@@ -82,7 +82,7 @@ class NewResult extends Component {
 						<FlexboxGrid>
 							<FlexboxGrid.Item style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}} align="middle" colspan={4}>
 								<h5>Dice Pool</h5>
-								{this.props.selected.submission.assets.map((asset, index) => (
+								{this.props.selected && this.props.selected.submission.assets.map((asset, index) => (
 									this.renderDice(asset)
 								))} 
 							</FlexboxGrid.Item>
@@ -99,7 +99,7 @@ class NewResult extends Component {
 				<Modal.Footer>
 					<Button onClick={() => this.handleSubmit()}  disabled={this.isDisabled()} appearance="primary">
             {this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> :
-						this.state.dice.length < 5 ? <b>Dice text need {3 - this.state.dice.length} more characters</b> :
+						this.state.dice.length < 1 ? <b>Dice text need {1 - this.state.dice.length} more characters</b> :
 						<b>Submit</b>}
     	    </Button>
 					<Button onClick={() => this.props.closeNew()} appearance="subtle">
@@ -111,8 +111,8 @@ class NewResult extends Component {
 	}
 
 	isDisabled () {
-		if (this.state.description.length < 10 || this.state.dice.length > 3) return false;
-		else return true;
+		if (this.state.description.length < 10 || this.state.dice.length < 1) return true;
+		else return false;
 	}
 
 	formattedUsedAssets = () => {

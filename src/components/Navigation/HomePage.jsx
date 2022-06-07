@@ -3,22 +3,23 @@ import { connect } from 'react-redux';
 import { Container, Icon, Row, Col, Loader, Dropdown, IconButton, FlexboxGrid, Panel } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
-import Loading from './loading';
 
 // import aang from '../Images/aang.jpg'
-import control2 from '../Images/Control.jpg'
-import other from '../Images/othercharacters.jpg'
-
-import test from '../Images/test.png'
-import banner from '../Images/banner.jpg'
-import myCharacter from '../Images/MyCharacter.jpg'
-import LeaderBoard from '../Images/LeaderBoard.jpg'
+import control2 from '../Images/test.jpg'
+import other from '../Images/other.jpg'
+import nexus from '../Images/test.jpg'
+import banner from '../Images/banner1.jpg'
+import actions from '../Images/actions.jpg'
+import myCharacter from '../Images/test.jpg'
+import Map from '../Images/map.jpg'
 
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 import MobileHomePage from './MobileHomePage';
 import { Link } from 'react-router-dom';
+import UserList from './UserList';
+import LoadingNew from './LoadingNew';
 
 const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
@@ -28,12 +29,15 @@ const HomePage = (props) => {
 		if(!props.loading && props.actionsLoaded && props.gamestateLoaded && props.charactersLoaded && props.locationsLoaded && props.assetsLoaded) {
 			setLoaded(true);
 		}		
+	}, []);
+
+	useEffect(() => {
+		renderTime(props.gamestate.endTime);
 		setInterval(() => {
 			renderTime(props.gamestate.endTime);
         //clearInterval(interval);
     }, 60000);
-		console.log(window.innerHeight)
-	}, []);
+	}, [props.gamestate.endTime]);
 
 	useEffect(() => {
 		if(!props.loading && props.actionsLoaded && props.gamestateLoaded && props.charactersLoaded && props.locationsLoaded && props.assetsLoaded) {
@@ -70,7 +74,7 @@ const HomePage = (props) => {
 		return (<Loader inverse center content="doot..." />)
 	};
 	if (!loaded) {
-		return (<Loading />)
+		return (<LoadingNew />)
 	}
 	else if (props.login && !props.myCharacter) {
 		props.history.push('/no-character');
@@ -80,9 +84,9 @@ const HomePage = (props) => {
 		props.history.push('/down');
 		return (<Loader inverse center content="doot..." />)
 	}
-	if (window.innerHeight < 601 || window.innerWidth < 1300) {
-		return (<MobileHomePage />)
-	}
+	// 	if (window.innerWidth < 768) {
+	// 	return (<MobileHomePage />)
+	// }
 	return ( 
 		<React.Fragment>
 				<FlexboxGrid justify="start" style={{ height: '50px', backgroundColor: '#746D75',  color: '', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37'  }} align="middle">
@@ -96,8 +100,9 @@ const HomePage = (props) => {
 								<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
 								<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 								<Dropdown.Item onSelect={()=> handleLogOut()}>Log Out</Dropdown.Item>
-								<Dropdown.Item onSelect={()=> props.toggleDuck()}>Quack</Dropdown.Item>
-							</Dropdown>					
+								<Dropdown.Item onSelect={()=> props.toggleDuck()}>Spook</Dropdown.Item>
+							</Dropdown>			
+							
 						</FlexboxGrid.Item>
 					<FlexboxGrid.Item colspan={22}>
 						<div>
@@ -108,27 +113,31 @@ const HomePage = (props) => {
 							{(clock.days + clock.hours + clock.minutes <= 0) && <p>Game Status: {props.gamestate.status}</p>}	
 						</div>									
 					</FlexboxGrid.Item>
-					<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+					<FlexboxGrid.Item colspan={1}>
+					{props.myCharacter.tags.some(el=> el === 'Control') &&	<UserList />	}
+					</FlexboxGrid.Item>
 				</FlexboxGrid>
 
 				<div style={{  height: 'calc(100vh - 50px)', }}>
 				<FlexboxGrid justify="center">
+				
 					<FlexboxGrid.Item colspan={14}>
-						<div style={{ border: "5px solid #ff66c4", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
-									<img src={banner} className={'image'} style={{ maxWidth: '100%', objectFit: 'scale-down'}} alt='Failed to load img' />             
-									<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>Version: {props.version}</p>
+						<div style={{ border: "5px solid #d4af37", borderRadius: '10px', margin: '10px', height: '45vh', overflow: 'hidden' }}>
+							<img src={banner} className={'image'} style={{ maxWidth: '100%', height: '100%'  }} alt='Failed to load img' />             
+							<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', fontSize: '0.966em',}}>Version: {props.version}</p>
 						</div>
 					</FlexboxGrid.Item>
+					
 
 					<FlexboxGrid.Item colspan={10}>
 					<Link to={'actions'}>
-      		  <div style={{ border: "5px solid #ff66c4", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '44vh', overflow: 'hidden' }}>
+      		  <div style={{ border: "5px solid #d4af37", width: '94%', borderRadius: '10px', position: 'relative', margin: '10px', height: props.height ? props.height: '45vh', overflow: 'hidden' }}>
             
          	   <div className="container">
-         	       <img src={test} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+         	       <img src={actions} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
          	   </div>
-         	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Actions</h6>
-         	   <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Creating and editing Actions</p>
+         	   <h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#663300' }}>  ~ Actions ~  </h6>
+         	   <p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#663300', fontSize: '0.966em',}}>{""} Creating and editing Actions </p>
             
         		</div>
         	</Link>
@@ -138,29 +147,29 @@ const HomePage = (props) => {
 
 					<FlexboxGrid >
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={myCharacter} to='character' title='My Character' body='My Assets and Traits'/>
+						<ImgPanel img={myCharacter} to='character' title='~ My Character ~' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={LeaderBoard} disabled to='leaderboard' title='Leaderboard' body='How are things standing?'/>
+						<ImgPanel  img={Map} to='Map' title='~ Map ~' body='Here be Dragons...'/> 
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control2} to='control' title={'Control Terminal'} body='"Now he gets it!"'/>}
+						{props.myCharacter.tags.some(el=> el === 'Control') && <ImgPanel  img={control2} to='control' title={'~ Control Terminal ~'} body='"Now he gets it!"'/>}
 						{!props.myCharacter.tags.some(el=> el === 'Control') && 
-						<div  onClick={() => openNexus()} style={{ border: "5px solid #ff66c4", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
+						<div  onClick={() => openNexus()} style={{ border: "5px solid #d4af37", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
 							<div className="container">
-										<img src={props.img} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+										<img src={nexus} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
 							</div>
-								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>Project Nexus</h6>
-								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Gimme money</p>
+								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>~ Project Nexus ~</h6>
+								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Support the Programmers</p>
 								
 						</div>}
-						{/* <ImgPanel height={'20.5vh'} img={LeaderBoard} to='controllers' title='Control' body='Who is responsible?'/> */}
+						{/* <ImgPanel height={'20.5vh'} img={Map} to='controllers' title='Control' body='Who is responsible?'/> */}
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={other} to='others' title={'Other Characters'} body='Character Details'/>
+						<ImgPanel img={other} to='others' title={'~ Other Characters ~'} body='Character Details'/>
 					</FlexboxGrid.Item>
 
 
