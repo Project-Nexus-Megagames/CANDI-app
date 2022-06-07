@@ -21,12 +21,12 @@ const HexMap = (props) => {
         hexagon.key = getHexId(i, j)
         hexagon.id =  `${i}${j}`
         hexagon.style.backgroundImage = loc ? 
-         "url(/images/Test_Hex.jpg)" :
-         'url("/images/fog.png")'
+         `url(/images/map/${getHexId(i, j)}.jpg)` :
+         'url("/images/map/fog.jpg")'
         const text = document.createElement('div')
         !loc ? text.classList.add('center') : text.classList.add('dicovered-text') ;
         text.id =  `${i}${j}`
-        text.innerHTML = loc ? loc.name : getHexId(i, j);
+        text.innerHTML = getHexId(i, j);
         
         hexagon.appendChild(text);
   
