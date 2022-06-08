@@ -1,103 +1,127 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Tag, Icon, IconButton, Drawer, Button, InputNumber, Input, TagGroup } from 'rsuite';
+import {
+	Tag,
+	Icon,
+	IconButton,
+	Drawer,
+	Button,
+	InputNumber,
+	Input,
+	TagGroup
+} from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
 const disabled = ['_id', '__v', 'model'];
 class ModifyCharacter extends Component {
 	constructor(props) {
-    super(props)
-    this.state = {
-		formValue: { ...this.props.selected },
-		formArray: [],
-		add: false,
-		inputValue: '',
-
-    }
-	this.handleInput = this.handleInput.bind(this);
+		super(props);
+		this.state = {
+			formValue: { ...this.props.selected },
+			formArray: [],
+			add: false,
+			inputValue: ''
+		};
+		this.handleInput = this.handleInput.bind(this);
 	}
 
-	componentDidMount = () => {	
+	componentDidMount = () => {
 		let test = [];
 		for (const el in this.props.selected) {
 			// console.log(el)
-			typeof this.props.selected[el] !== 'object' ? test.push(el) : console.log(el);
+			typeof this.props.selected[el] !== 'object'
+				? test.push(el)
+				: console.log(el);
 		}
-		test.sort((a, b) => { // sort the catagories alphabetically 
-			if(a < b) { return -1; }
-			if(a > b) { return 1; }
+		test.sort((a, b) => {
+			// sort the catagories alphabetically
+			if (a < b) {
+				return -1;
+			}
+			if (a > b) {
+				return 1;
+			}
 			return 0;
 		});
-		this.setState({ formValue: this.props.selected, formArray: test });	
-	}
+		this.setState({ formValue: this.props.selected, formArray: test });
+	};
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.selected !== prevProps.selected) {
-			this.setState({ formValue: this.props.selected });		
+			this.setState({ formValue: this.props.selected });
 		}
-	}
+	};
 
 	handleSubmit = async () => {
 		// 1) make a new action
-		this.setState({ loading: true });			
-    socket.emit('request', { route: 'character', action: 'modify', data: this.state.formValue });
-		this.props.closeDrawer()
-		this.setState({ loading: false });		
-	}
+		this.setState({ loading: true });
+		socket.emit('request', {
+			route: 'character',
+			action: 'modify',
+			data: this.state.formValue
+		});
+		this.props.closeDrawer();
+		this.setState({ loading: false });
+	};
 
 	handleControlInputConfirm = () => {
-    const nextTags = this.state.inputValue ? [...this.state.formValue.control, this.state.inputValue] : this.state.formValue.control;
+		const nextTags = this.state.inputValue
+			? [...this.state.formValue.control, this.state.inputValue]
+			: this.state.formValue.control;
 		this.handleInput(nextTags, 'control');
-    this.setState({
-      add: false,
+		this.setState({
+			add: false,
 			addControl: false,
-      inputValue: ''
-    });
-	}
+			inputValue: ''
+		});
+	};
 
 	handleInputConfirm = () => {
-    const nextTags = this.state.inputValue ? [...this.state.formValue.tags, this.state.inputValue] : this.state.formValue.tags;
+		const nextTags = this.state.inputValue
+			? [...this.state.formValue.tags, this.state.inputValue]
+			: this.state.formValue.tags;
 		this.handleInput(nextTags, 'tags');
-    this.setState({
-      add: false,
-      inputValue: ''
-    });
-  }
+		this.setState({
+			add: false,
+			inputValue: ''
+		});
+	};
 
-  handleInput = (value, id) => {
-    if (id === '_id') {
-			console.log('id!!!!')
-    }
-		else {
+	handleInput = (value, id) => {
+		if (id === '_id') {
+			console.log('id!!!!');
+		} else {
 			let formValue = { ...this.state.formValue };
 			formValue[id] = value;
-			this.setState({ formValue });			
+			this.setState({ formValue });
 		}
-  };
-
+	};
 
 	handleTagRemove = (tag, type) => {
-    const nextTags = this.state.formValue.tags.filter(item => item !== tag);
+		const nextTags = this.state.formValue.tags.filter((item) => item !== tag);
 		this.handleInput(nextTags, type);
-  }
+	};
 
-  handleControlTagRemove = (tag, type) => {
-    const nextTags = this.state.formValue.control.filter(item => item !== tag);
+	handleControlTagRemove = (tag, type) => {
+		const nextTags = this.state.formValue.control.filter(
+			(item) => item !== tag
+		);
 		this.handleInput(nextTags, type);
-  }
+	};
 
 	renderTagAdd = () => {
 		if (this.state.add)
-			return(
-				<Input 
+			return (
+				<Input
 					size="xs"
-					style={{ width: 70, display: 'inline-block', }}
+					style={{ width: 70, display: 'inline-block' }}
 					value={this.state.inputValue}
 					onChange={(inputValue) => this.setState({ inputValue })}
 					onBlur={this.handleInputConfirm}
-					onPressEnter={this.handleInputConfirm}/>
-			)
-		else 
+					onPressEnter={this.handleInputConfirm}
+				/>
+			);
+		else
 			return (
 				<IconButton
 					className="tag-add-btn"
@@ -106,21 +130,22 @@ class ModifyCharacter extends Component {
 					appearance="ghost"
 					size="xs"
 				/>
-			)
-	}
+			);
+	};
 
 	renderControlTagAdd = () => {
 		if (this.state.addControl)
-			return(
-				<Input 
+			return (
+				<Input
 					size="xs"
-					style={{ width: 70, display: 'inline-block', }}
+					style={{ width: 70, display: 'inline-block' }}
 					value={this.state.inputValue}
 					onChange={(inputValue) => this.setState({ inputValue })}
 					onBlur={this.handleControlInputConfirm}
-					onPressEnter={this.handleControlInputConfirm}/>
-			)
-		else 
+					onPressEnter={this.handleControlInputConfirm}
+				/>
+			);
+		else
 			return (
 				<IconButton
 					className="tag-add-btn"
@@ -129,96 +154,114 @@ class ModifyCharacter extends Component {
 					appearance="ghost"
 					size="xs"
 				/>
-			)
-	}
+			);
+	};
 
 	renderSwitch = (el) => {
 		let formValue = this.state.formValue;
-		switch(typeof formValue[el]) {
+		switch (typeof formValue[el]) {
 			case 'string':
-				return(
+				return (
 					<div>
 						<h5>{el}</h5>
 						<Input
 							id={el}
-							disabled={disabled.some(dis => dis === el)}
+							disabled={disabled.some((dis) => dis === el)}
 							type="text"
 							value={formValue[el]}
 							name={el}
 							label={el}
 							placeholder={el}
-							onChange={value => this.handleInput(value, el)}
-						/>								
-					</div>				
-				)
-				case 'number':
-					return(
+							onChange={(value) => this.handleInput(value, el)}
+						/>
+					</div>
+				);
+			case 'number':
+				return (
 					<div>
 						<h5>{el}</h5>
 						<InputNumber
 							id={el}
-							disabled={disabled.some(dis => dis === el)}
+							disabled={disabled.some((dis) => dis === el)}
 							value={formValue[el]}
 							name={el}
 							label={el}
 							placeholder={el}
-							onChange={value => this.handleInput(value, el)}
+							onChange={(value) => this.handleInput(value, el)}
 						/>
 					</div>
-					)
+				);
 			default:
-				return(<b>{formValue[el]}</b>)	
-		}	
-	}
+				return <b>{formValue[el]}</b>;
+		}
+	};
 
-
-	render() { 
-		return ( 
+	render() {
+		return (
 			<Drawer
-			overflow
-			size='sm'  
-			show={this.props.show} 
-			onHide={() => this.props.closeDrawer()}>
+				overflow
+				size="sm"
+				show={this.props.show}
+				onHide={() => this.props.closeDrawer()}
+			>
 				<Drawer.Header>
-					<Drawer.Title>Modify Character "{this.state.formValue.characterName}"</Drawer.Title>			
-					<b>Tags</b>		
+					<Drawer.Title>
+						Modify Character "{this.state.formValue.characterName}"
+					</Drawer.Title>
+					<b>Tags</b>
 					<TagGroup>
-					{this.state.formValue && this.state.formValue.tags && this.state.formValue.tags.map((item, index) => (
-						<Tag index={index} closable onClose={() => this.handleTagRemove(item, 'tags')}>
-							{item}
-						</Tag>
-					))}	
-					{this.renderTagAdd()}	
+						{this.state.formValue &&
+							this.state.formValue.tags &&
+							this.state.formValue.tags.map((item, index) => (
+								<Tag
+									index={index}
+									closable
+									onClose={() => this.handleTagRemove(item, 'tags')}
+								>
+									{item}
+								</Tag>
+							))}
+						{this.renderTagAdd()}
 					</TagGroup>
 
-					
 					<b>Control</b>
-					<br/>		
+					<br />
 					<TagGroup>
-					{this.state.formValue && this.state.formValue.control && this.state.formValue.control.map((item, index) => (
-						<Tag index={index} closable onClose={() => this.handleControlTagRemove(item, 'control')}>
-							{item}
-						</Tag>
-					))}	
-					{this.renderControlTagAdd()}	
+						{this.state.formValue &&
+							this.state.formValue.control &&
+							this.state.formValue.control.map((item, index) => (
+								<Tag
+									index={index}
+									closable
+									onClose={() => this.handleControlTagRemove(item, 'control')}
+								>
+									{item}
+								</Tag>
+							))}
+						{this.renderControlTagAdd()}
 					</TagGroup>
 				</Drawer.Header>
 				<Drawer.Body>
-					{this.state.formArray.map((el, index) => (
-							this.renderSwitch(el)
-						))}						
+					{this.state.formArray.map((el, index) => this.renderSwitch(el))}
 				</Drawer.Body>
 				<Drawer.Footer>
-        <Button disabled={(this.state.formValue.status === null)} onClick={() => this.handleSubmit()} appearance="primary">
-            Submit
-        </Button>
-        <Button onClick={() => {
-				this.props.closeDrawer();
-				// localStorage.removeItem('modifyCharacterState');
-			}} appearance="subtle">
-            Cancel
-        </Button>
-        </Drawer.Footer>
+					<Button
+						disabled={this.state.formValue.status === null}
+						onClick={() => this.handleSubmit()}
+						appearance="primary"
+					>
+						Submit
+					</Button>
+					<Button
+						onClick={() => {
+							this.props.closeDrawer();
+							// localStorage.removeItem('modifyCharacterState');
+						}}
+						appearance="subtle"
+					>
+						Cancel
+					</Button>
+				</Drawer.Footer>
 			</Drawer>
 		);
 	}
@@ -248,7 +291,7 @@ class ModifyCharacter extends Component {
 // ]
 
 const mapStateToProps = (state) => ({
-	characters: state.characters.list,
+	characters: state.characters.list
 });
 
 const mapDispatchToProps = (dispatch) => ({});

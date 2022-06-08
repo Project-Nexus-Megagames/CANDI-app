@@ -19,8 +19,7 @@ import {
 	TagGroup,
 	Alert,
 	InputGroup,
-	Icon,
-	Table
+	Icon
 } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
@@ -37,14 +36,10 @@ import {
 	getMyUnlockedCharacters
 } from './../../redux/entities/characters';
 
-const { HeaderCell, Cell, Column } = Table;
-
 const OtherCharacters = (props) => {
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
-	const [filter, setFilter] = useState('');
-	const [tagFilter, setTagFilter] = useState([]);
 	const [filteredCharacters, setFilteredCharacters] = useState(
 		props.characters
 	);
@@ -136,8 +131,10 @@ const OtherCharacters = (props) => {
 			setSelected(updated);
 			filterThis('');
 		}
-	}, [props.characters]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [props.characters, selected]);
 
+	// eslint-disable-next-line no-unused-vars
 	const makeButton = () => {
 		if (
 			selected.supporters.some((el) => el === props.myCharacter.characterName)
