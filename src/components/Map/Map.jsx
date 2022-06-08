@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container, Content, Icon, Loader, Sidebar, Divider, } from 'rsuite';
 import { useHistory } from "react-router-dom";
-import { MapInteractionCSS } from 'react-map-interaction';
 import HexMap from './HexMap';
 import socket from '../../socket';
 import { getMyLocations } from '../../redux/entities/locations';
@@ -91,9 +90,7 @@ const Map = (props) => {
       <Container  style={{ height: 'calc(100vh - 50px)',}}> 
         <Content>
           <div style={{ width: '100%', height: '100%' }}> 
-            <MapInteractionCSS minScale={1} maxScale={4} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
- 							<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>
-            </MapInteractionCSS>       
+  					<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>     
           </div>
         </Content>
 			<Sidebar width={250} style={{transition: '0.8s ease'}}>
