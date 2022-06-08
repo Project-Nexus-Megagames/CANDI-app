@@ -19,7 +19,7 @@ const ModifyResource = (props) => {
 	const [description, setDescription] = useState('');
 	const [uses, setUses] = useState(0);
 	const [level, setLevel] = useState('');
-	const [loading, setLoading] = useState(false);
+	const [loading] = useState(false);
 	const [lendable, setLendable] = useState(false);
 	const [hidden, setHidden] = useState(false);
 	const [owner, setOwner] = useState('');
@@ -64,6 +64,7 @@ const ModifyResource = (props) => {
 		} else {
 			setTags(tags.filter((el) => el !== 'arcane'));
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [arcane]);
 
 	const assetModify = async () => {

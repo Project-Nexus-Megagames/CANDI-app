@@ -432,7 +432,7 @@ class ControlTerminal extends Component {
 	}
 
 	filterAssets() {
-		const filtered = this.props.assets.filter((el) => el.modal !== 'Wealth');
+		this.props.assets.filter((el) => el.modal !== 'Wealth');
 	}
 }
 

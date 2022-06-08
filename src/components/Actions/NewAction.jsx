@@ -8,14 +8,10 @@ import {
 	FlexboxGrid,
 	Icon,
 	CheckPicker,
-	Loader,
-	InputNumber
+	Loader
 } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import {
-	getMyCharacter,
-	characterUpdated
-} from '../../redux/entities/characters';
+import { getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 class NewAction extends Component {
