@@ -334,13 +334,13 @@ class CharacterProfile extends Component {
 				<h5 style={{ backgroundColor: color }}>{type}s</h5>
 				{this.props.myAssets.filter(
 					(el) => el.status.hidden !== true && el.uses > 0 && el.type === type
-				).length === 0 && <List.Item>No {type}s</List.Item>}
+				).length === 0 && <List.Item key={type}>No {type}s</List.Item>}
 				{this.props.myAssets
 					.filter(
 						(el) => el.status.hidden !== true && el.uses > 0 && el.type === type
 					)
 					.map((asset, index) => (
-						<List.Item style={{ textAlign: 'center' }}>
+						<List.Item style={{ textAlign: 'center' }} key={index}>
 							{asset.status.lendable && (
 								<div>
 									<b>{asset.name}</b>

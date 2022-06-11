@@ -1,20 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Progress,	Loader,	Panel,	Icon,	IconStack,	Row,	Col, Button } from 'rsuite';
+import {
+	Progress,
+	Loader,
+	Panel,
+	Icon,
+	IconStack,
+	Row,
+	Col,
+	Button
+} from 'rsuite';
 import { useHistory } from 'react-router-dom';
 
-import { finishLoading,	setControl,	signOut,	setCharacter } from '../../redux/entities/auth';
+import {
+	finishLoading,
+	setControl,
+	signOut,
+	setCharacter
+} from '../../redux/entities/auth';
 import { loadCharacters } from '../../redux/entities/characters';
 import { loadGamestate } from '../../redux/entities/gamestate';
 import { loadLocations } from '../../redux/entities/locations';
-import {	loadplayerActions,	loadAllActions } from '../../redux/entities/playerActions';
+import {
+	loadplayerActions,
+	loadAllActions
+} from '../../redux/entities/playerActions';
 import { loadAssets } from '../../redux/entities/assets';
 
-const { Line, Circle } = Progress;
+const { Line } = Progress;
 
 const LoadingNew = (props) => {
-	const [message, setMessage] = React.useState('Scott quip goes here...');
-	const [sections, setSections] = React.useState(Object.keys(props.entities).sort());
+	const [message] = useState('Scott quip goes here...');
+	const [sections] = useState(Object.keys(props.entities).sort());
 
 	let done = Object.keys(props.entities)
 		.sort()
@@ -22,12 +39,15 @@ const LoadingNew = (props) => {
 	const history = useHistory();
 
 	const boredClick = () => {
-		const random = (Math.floor(Math.random() * bored.length ));
+		const random = Math.floor(Math.random() * bored.length);
 		const win = window.open(bored[random], '_blank');
 		win.focus();
-	}
+	};
 
-	if (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100) {
+	if (
+		sections.length > 0 &&
+		Math.floor((done.length / sections.length) * 100) >= 100
+	) {
 		const character = props.entities.characters.list.find(
 			(el) => el.username === props.auth.user.username
 		);
@@ -87,7 +107,7 @@ const LoadingNew = (props) => {
 			<Row>
 				{sections.map((section, index) => (
 					<Col key={index} md={4} sm={8}>
-						<Panel boardered key={index} index={index}>
+						<Panel bordered key={index} index={index}>
 							<IconStack>
 								{props.entities[section].lastFetch ? (
 									<Icon icon="check" stack="1x" style={{ color: 'green' }} />
@@ -197,7 +217,7 @@ const bored = [
 	'https://www.youtube.com/watch?v=d1rtJ3DbwIw', // Just a Jug of Chocolate Milk being Cut in Half
 	'https://www.youtube.com/watch?v=EwAajOtfNT8', // two dudes in a hot tub
 	'https://www.youtube.com/watch?v=XKqqqO83yp0', // Guy blow dries his tongue then eats a cracker...
-	'https://www.youtube.com/watch?v=GfCqnHgXwBo',  // How to troll a parade
+	'https://www.youtube.com/watch?v=GfCqnHgXwBo', // How to troll a parade
 	'https://www.youtube.com/watch?v=TLV30GuX-ug', // this is the ideal doggy type
 	'https://www.youtube.com/watch?v=nqhLn76kCv0', // Epic Skeletor He Man Money Super Market Commercial
 	'https://pointerpointer.com/',
@@ -213,4 +233,4 @@ const bored = [
 	'https://www.youtube.com/watch?v=D6aVzIWT7oM&t=14s&ab_channel=AllyourbasicGerrard', // Global Club Soccer Rankings
 	'https://www.youtube.com/watch?v=x0WQOGVLLGw&ab_channel=weyrdmusicman', // Xenophobia
 	'https://www.youtube.com/watch?v=9klzZsVw-cQ&ab_channel=KotteAnimation'
-] // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
+]; // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
