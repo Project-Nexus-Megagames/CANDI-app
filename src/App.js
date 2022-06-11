@@ -1,4 +1,4 @@
-import React, { useEffect, version } from "react"; // React imports
+import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
 import { Alert } from "rsuite";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -93,6 +93,7 @@ const App = (props) => {
         }
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadChar, loadAssets, loadGamestate, loadLocations]);
 
   const quack = () => {
