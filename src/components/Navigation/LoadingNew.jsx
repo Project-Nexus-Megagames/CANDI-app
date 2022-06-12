@@ -20,6 +20,7 @@ import {
 } from '../../redux/entities/auth';
 import { loadCharacters } from '../../redux/entities/characters';
 import { loadGamestate } from '../../redux/entities/gamestate';
+import { loadGameConfig } from '../../redux/entities/gameConfig';
 import { loadLocations } from '../../redux/entities/locations';
 import {
 	loadplayerActions,
@@ -149,6 +150,7 @@ const mapDispatchToProps = (dispatch) => ({
 	loadAssets: () => dispatch(loadAssets()),
 	loadLocations: () => dispatch(loadLocations()),
 	loadGamestate: () => dispatch(loadGamestate()),
+	loadGameConfig: () => dispatch(loadGameConfig()),
 	setCharacter: (payload) => dispatch(setCharacter(payload)),
 	finishLoading: () => dispatch(finishLoading()),
 	logOut: () => dispatch(signOut()),

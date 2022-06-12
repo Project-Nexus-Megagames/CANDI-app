@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
 	Container,
@@ -18,6 +18,7 @@ import {
 	getMyActions,
 	setFilter
 } from '../../redux/entities/playerActions';
+import { useSelector } from 'react-redux';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
@@ -26,8 +27,8 @@ import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
 
 const Actions = (props) => {
-	const [selected, setSelected] = React.useState(null);
-	const [showNew, setShowNew] = React.useState(false);
+	const [selected, setSelected] = useState(null);
+	const [showNew, setShowNew] = useState(false);
 
 	useEffect(() => {
 		if (selected) {
@@ -61,6 +62,7 @@ const Actions = (props) => {
 	if (window.innerWidth < 768) {
 		return <MobileActions />;
 	}
+	console.log('gameconfig', props);
 	return (
 		<React.Fragment>
 			<NavigationBar />
@@ -176,6 +178,7 @@ const mapStateToProps = (state) => ({
 	filter: state.actions.filter,
 	login: state.auth.login,
 	gamestate: state.gamestate,
+	gameConfig: state.gameConfig,
 	myActions: getMyActions(state),
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
 });

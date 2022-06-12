@@ -30,13 +30,14 @@ import Down from "./components/Navigation/Down";
 import { signOut, usersRecieved } from "./redux/entities/auth";
 import Quests from "./components/Control/Quests";
 import Map from "./components/Map/Map";
+import { loadGameConfig } from './redux/entities/gameConfig';
 
 // React App Component
 initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations, myCharacter, version, } = props;
+  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig } = props;
 
   useEffect(() => {
     const theme = "dark";
@@ -67,7 +68,7 @@ const App = (props) => {
     loadAssets();
     loadLocations();
     loadGamestate();
-
+		loadGameConfig();
     socket.onAny((event, ...args) => {
       console.log(event);
       if (event === "clients") {
@@ -94,7 +95,7 @@ const App = (props) => {
       }
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadChar, loadAssets, loadGamestate, loadLocations]);
+  }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 
   const quack = () => {
     const audio = new Audio("/skullsound2.mp3");
@@ -171,6 +172,7 @@ const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   error: state.auth.error,
   login: state.auth.login,
+	gameConfig: state.gameConfig,
   version: state.gamestate.version,
   characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
@@ -182,6 +184,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadAssets: (data) => dispatch(loadAssets()),
   loadLocations: (data) => dispatch(loadLocations()),
   loadGamestate: (data) => dispatch(loadGamestate()),
+	loadGameConfig: (data) => dispatch(loadGameConfig()),
   usersRecieved: (data) => dispatch(usersRecieved(data)),
   logOut: () => dispatch(signOut()),
 });

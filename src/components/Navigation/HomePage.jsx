@@ -31,6 +31,7 @@ const HomePage = (props) => {
 			props.gamestateLoaded &&
 			props.charactersLoaded &&
 			props.locationsLoaded &&
+			//props.gameConfigLoaded &&
 			props.assetsLoaded
 		) {
 			setLoaded(true);
@@ -53,9 +54,10 @@ const HomePage = (props) => {
 			props.gamestateLoaded &&
 			props.charactersLoaded &&
 			props.locationsLoaded &&
+			// props.gameConfigLoaded &&
 			props.assetsLoaded
 		) {
-			setTimeout(() => setLoaded(true), 1000);
+			setTimeout(() => setLoaded(true), 2000);
 		}
 	}, [props]);
 
@@ -363,6 +365,7 @@ const mapStateToProps = (state) => ({
 	loading: state.auth.loading,
 	gamestate: state.gamestate,
 	gamestateLoaded: state.gamestate.loaded,
+	//gameConfigLoaded: state.gameConfig.loaded,
 	actionsLoaded: state.actions.loaded,
 	charactersLoaded: state.characters.loaded,
 	assetsLoaded: state.assets.loaded,

@@ -5,14 +5,16 @@ import characters from "./entities/characters";
 import playerActions from "./entities/playerActions";
 import gamestate from "./entities/gamestate";
 import locations from "./entities/locations";
+import gameConfig from "./entities/gameConfig";
 
 // Main Store reducer
 export default combineReducers({
-  // auth/playerCharacter, actions, players(aka characters), 
+  // auth/playerCharacter, actions, players(aka characters),
   auth,
   actions: playerActions,
   assets,
-  characters, 
+  characters,
   gamestate,
-  locations
+  locations,
+	gameConfig
 });
