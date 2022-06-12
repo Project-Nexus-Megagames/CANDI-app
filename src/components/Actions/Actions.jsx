@@ -19,6 +19,8 @@ import {
 	setFilter
 } from '../../redux/entities/playerActions';
 import { useSelector } from 'react-redux';
+import { DocPass } from '@rsuite/icons';
+
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
@@ -26,9 +28,13 @@ import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
 
+import _ from 'lodash';
+
 const Actions = (props) => {
 	const [selected, setSelected] = useState(null);
 	const [showNew, setShowNew] = useState(false);
+	const gameConfig = useSelector((state) => state.gameConfig);
+	const myCharacter = useSelector(getMyCharacter);
 
 	useEffect(() => {
 		if (selected) {
@@ -41,20 +47,6 @@ const Actions = (props) => {
 		setSelected(fuuuck);
 	};
 
-	// const filter = (fil) => {
-	// 	const filtered = props.actions.filter(action => action.description.toLowerCase().includes(fil.toLowerCase()) ||
-	// 	action.intent.toLowerCase().includes(fil.toLowerCase()) ||
-	// 	action.creator.characterName.toLowerCase().includes(fil.toLowerCase())
-	// 	);
-	// 	setState({ filtered });
-	// }
-
-	// filteredAssets = () => {
-	// 	let assets = [ ...this.props.myCharacter.lentAssets];
-	// 	assets = assets.filter(el => el.status.used === false && (el.type === 'Asset' || el.type === 'Trait' || el.type === 'Wealth' || el.type === 'Power' || el.type === 'Bond'));
-	// 	return assets;
-	// }
-
 	if (!props.login) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
@@ -62,7 +54,22 @@ const Actions = (props) => {
 	if (window.innerWidth < 768) {
 		return <MobileActions />;
 	}
-	console.log('gameconfig', props);
+
+	const myEfforts = myCharacter.effort;
+	const actionTypes = [];
+
+	for (const actionType of gameConfig.actionTypes)
+		actionTypes.push(actionType.type);
+
+	const showExplore = actionTypes.some((el) => el === 'Explore') === true;
+	const showFeed = actionTypes.some((el) => el === 'Feed') === true;
+	const showAgenda = actionTypes.some((el) => el === 'Agenda') === true;
+
+	const exploreEffort = _.find(myEfforts, { type: 'Explore' })?.amount;
+	const normalEffort = _.find(myEfforts, { type: 'Normal' })?.amount;
+	const feedEffort = _.find(myEfforts, { type: 'Feed' })?.amount;
+	const agendaEffort = _.find(myEfforts, { type: 'Agenda' })?.amount;
+
 	return (
 		<React.Fragment>
 			<NavigationBar />
@@ -84,7 +91,7 @@ const Actions = (props) => {
 									value={props.filter}
 									placeholder="Search"
 								></Input>
-								{
+								{showExplore && (
 									<Whisper
 										placement="top"
 										trigger="hover"
@@ -99,7 +106,6 @@ const Actions = (props) => {
 										}
 									>
 										<Button
-											disabled={props.explore}
 											style={{ color: 'black', borderRadius: '0px' }}
 											color="orange"
 											onClick={() => setShowNew('explore')}
@@ -107,7 +113,49 @@ const Actions = (props) => {
 											<Icon icon="explore" />
 										</Button>
 									</Whisper>
-								}
+								)}
+								{showFeed && (
+									<Whisper
+										placement="top"
+										trigger="hover"
+										speaker={
+											<Tooltip>
+												<b>
+													{true ? 'Create New Feed Action' : 'No Feed Left'}
+												</b>
+											</Tooltip>
+										}
+									>
+										<Button
+											style={{ color: 'black', borderRadius: '0px' }}
+											color="orange"
+											onClick={() => setShowNew('feed')}
+										>
+											<Icon icon="ios" />
+										</Button>
+									</Whisper>
+								)}
+								{showAgenda && (
+									<Whisper
+										placement="top"
+										trigger="hover"
+										speaker={
+											<Tooltip>
+												<b>
+													{true ? 'Create New Agenda Action' : 'No Agenda Left'}
+												</b>
+											</Tooltip>
+										}
+									>
+										<Button
+											style={{ color: 'black', borderRadius: '0px' }}
+											color="orange"
+											onClick={() => setShowNew('agenda')}
+										>
+											<DocPass />
+										</Button>
+									</Whisper>
+								)}
 								{
 									<Whisper
 										placement="top"
@@ -115,8 +163,8 @@ const Actions = (props) => {
 										speaker={
 											<Tooltip>
 												<b>
-													{props.myCharacter.effort > 0
-														? `Create New Default Action (${props.myCharacter.effort})`
+													{normalEffort > 0
+														? `Create New Default Action (${normalEffort})`
 														: 'No Actions Left'}
 												</b>
 											</Tooltip>
@@ -124,7 +172,7 @@ const Actions = (props) => {
 									>
 										<Button
 											style={{ borderRadius: '0px' }}
-											disabled={props.myCharacter.effort < 1}
+											disabled={normalEffort < 1}
 											color="green"
 											onClick={() => setShowNew('default')}
 										>
@@ -163,7 +211,7 @@ const Actions = (props) => {
 					show={showNew}
 					closeNew={() => setShowNew(false)}
 					gamestate={props.gamestate}
-					myCharacter={props.myCharacter}
+					myCharacter={myCharacter}
 				/>
 			</Container>
 		</React.Fragment>
@@ -178,9 +226,7 @@ const mapStateToProps = (state) => ({
 	filter: state.actions.filter,
 	login: state.auth.login,
 	gamestate: state.gamestate,
-	gameConfig: state.gameConfig,
-	myActions: getMyActions(state),
-	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
+	myActions: getMyActions(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
