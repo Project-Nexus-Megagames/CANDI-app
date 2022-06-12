@@ -21,10 +21,9 @@ const slice = createSlice({
     },
     gameConfigReceived: (gameConfig, action) => {
 			console.log(`${action.type} Dispatched...`);
-			console.log(action);
-			gameConfig.gamestate = action.payload[0].gamestate;
-			gameConfig.name = action.payload[0].name;
-			gameConfig.actionTypes = action.payload[0].actionTypes;
+			gameConfig.gamestate = action.payload.gamestate;
+			gameConfig.name = action.payload.name;
+			gameConfig.actionTypes = action.payload.actionTypes;
       gameConfig.loading = false;
       gameConfig.lastFetch = Date.now();
       gameConfig.loaded = true;
