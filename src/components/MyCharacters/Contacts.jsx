@@ -23,7 +23,6 @@ import _ from 'lodash';
 const Contacts = (props) => {
 	const [selected, setSelected] = useState('');
 	const [charsToShare, setCharsToShare] = useState([]);
-	const myChar = useSelector(getMyCharacter);
 	const playerCharacters = useSelector(getPlayerCharacters);
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
 	console.log(myUnlockedCharacters);
