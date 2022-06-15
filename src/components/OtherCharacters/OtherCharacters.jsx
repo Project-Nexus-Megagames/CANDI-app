@@ -34,19 +34,13 @@ import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import {
 	getMyCharacter,
-	getMyUnlockedCharacters
 } from './../../redux/entities/characters';
 
-const { HeaderCell, Cell, Column } = Table;
-
 const OtherCharacters = (props) => {
-	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
-	const [filter, setFilter] = useState('');
-	const [tagFilter, setTagFilter] = useState([]);
 	const [filteredCharacters, setFilteredCharacters] = useState(
-		props.characters
+		props.control ? props.characters : props.myCharacter.knownContacts
 	);
 	const [edit, setEdit] = useState(false);
 	const [add, setAdd] = useState(false);
@@ -138,31 +132,6 @@ const OtherCharacters = (props) => {
 		}
 	}, [props.characters]);
 
-	const makeButton = () => {
-		if (
-			selected.supporters.some((el) => el === props.myCharacter.characterName)
-		) {
-			return (
-				<Button size="xs" onClick={() => lendSupp()} color="red">
-					Take Back Support!
-				</Button>
-			);
-		} else {
-			return (
-				<Button size="xs" onClick={() => lendSupp()} appearance="primary">
-					Lend Support!
-				</Button>
-			);
-		}
-	};
-
-	const lendSupp = async () => {
-		socket.emit('request', {
-			route: 'character',
-			action: 'support',
-			data: { id: selected._id, supporter: props.myCharacter.characterName }
-		});
-	};
 
 	const filterThis = (fil) => {
 		let filtered = [];
@@ -175,7 +144,7 @@ const OtherCharacters = (props) => {
 					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
 			);
 		} else {
-			filtered = myUnlockedCharacters.filter(
+			filtered = props.myUnlockedCharacters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
 					char.email.toLowerCase().includes(fil.toLowerCase()) ||
@@ -704,6 +673,7 @@ const mapStateToProps = (state) => ({
 	mortalBonds: getMortalBonds(state),
 	login: state.auth.login,
 	characters: state.characters.list,
+	control: state.auth.control,
 	duck: state.gamestate.duck,
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
 });

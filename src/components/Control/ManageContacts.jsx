@@ -90,7 +90,7 @@ const ManageContacts = (props) => {
 	return (
 		<Modal
 			overflow
-			full
+			
 			size="lg"
 			show={props.show}
 			onHide={() => {
@@ -99,8 +99,6 @@ const ManageContacts = (props) => {
 		>
 			<Modal.Header>
 				<Modal.Title>Manage a PC's Contacts</Modal.Title>
-			</Modal.Header>
-			<Panel>
 				<SelectPicker
 					block
 					placeholder="Choose PC"
@@ -109,8 +107,11 @@ const ManageContacts = (props) => {
 					valueKey="_id"
 					labelKey="characterName"
 				/>
-			</Panel>
-			<Panel>{renderCharacter()}</Panel>
+			</Modal.Header>
+			<Modal.Body>
+				<Panel>{renderCharacter()}</Panel>
+			</Modal.Body>
+			
 			<Modal.Footer>
 				<ButtonGroup>
 					<Button onClick={() => handleSubmit()} color="red">

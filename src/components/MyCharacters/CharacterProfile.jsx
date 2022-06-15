@@ -156,6 +156,7 @@ class CharacterProfile extends Component {
 										width="95%"
 										style={{ maxHeight: '50vh' }}
 									/>
+									<h5>{playerCharacter.characterName}</h5>
 								</p>
 								<TagGroup>
 									Tags
