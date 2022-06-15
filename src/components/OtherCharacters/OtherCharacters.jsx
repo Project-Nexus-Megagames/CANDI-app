@@ -40,7 +40,7 @@ const OtherCharacters = (props) => {
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
 	const [filteredCharacters, setFilteredCharacters] = useState(
-		props.control ? props.characters : props.myCharacter.knownContacts
+		props.control ? props.characters : props.myCharacter ? props.myCharacter.knownContacts : []
 	);
 	const [edit, setEdit] = useState(false);
 	const [add, setAdd] = useState(false);
@@ -135,7 +135,7 @@ const OtherCharacters = (props) => {
 
 	const filterThis = (fil) => {
 		let filtered = [];
-		if (props.myCharacter.tags.indexOf('Control') !== -1) {
+		if (props.myCharacter && props.myCharacter.tags.indexOf('Control') !== -1) {
 			filtered = props.characters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
@@ -155,14 +155,11 @@ const OtherCharacters = (props) => {
 		setFilteredCharacters(filtered);
 	};
 
-	if (!props.login) {
+	if (!props.login || !props.myCharacter) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
 	}
-
-	if (window.innerWidth < 768) {
-		return <MobileOtherCharacters />;
-	} else
+	else
 		return (
 			<React.Fragment>
 				<NavigationBar />
@@ -601,8 +598,8 @@ const OtherCharacters = (props) => {
 											{/*Profile Pic*/}
 											<FlexboxGrid.Item
 												colspan={9}
-												style={{ cursor: 'pointer' }}
-												onClick={() => openAnvil(selected)}
+												// style={{ cursor: 'pointer' }}
+												// onClick={() => openAnvil(selected)}
 											>
 												<img
 													src={
@@ -675,7 +672,7 @@ const mapStateToProps = (state) => ({
 	characters: state.characters.list,
 	control: state.auth.control,
 	duck: state.gamestate.duck,
-	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
+	myCharacter: state.auth.character
 });
 
 const mapDispatchToProps = (dispatch) => ({

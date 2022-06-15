@@ -172,16 +172,7 @@ class CharacterProfile extends Component {
 											<Tag index={index}>{item}</Tag>
 										))}
 								</TagGroup>
-								<p>
-									<b>
-										Wiki Link
-										<IconButton
-											onClick={() => this.openAnvil(playerCharacter)}
-											icon={<Icon icon="link" />}
-											appearance="primary"
-										/>
-									</b>
-								</p>
+
 
 								<p>
 									<b>Bio:</b> {playerCharacter.bio}
