@@ -24,6 +24,7 @@ const slice = createSlice({
 			gameConfig.gamestate = action.payload.gamestate;
 			gameConfig.name = action.payload.name;
 			gameConfig.actionTypes = action.payload.actionTypes;
+			gameConfig.actionAndEffortTypes = action.payload.actionAndEffortTypes;
       gameConfig.loading = false;
       gameConfig.lastFetch = Date.now();
       gameConfig.loaded = true;
@@ -53,7 +54,7 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/gameConfig`;
 
 // gameConfig Loader into state
-export const loadGameConfig = payload => (dispatch, getState) => {
+export const loadGameConfig = payload => (dispatch) => {
 	console.log(payload, url)
   return dispatch(
 

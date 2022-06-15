@@ -65,10 +65,10 @@ const Actions = (props) => {
 	const showFeed = actionTypes.some((el) => el === 'Feed') === true;
 	const showAgenda = actionTypes.some((el) => el === 'Agenda') === true;
 
-	const exploreEffort = _.find(myEfforts, { type: 'Explore' })?.amount;
+	//const exploreEffort = _.find(myEfforts, { type: 'Explore' })?.amount;
 	const normalEffort = _.find(myEfforts, { type: 'Normal' })?.amount;
-	const feedEffort = _.find(myEfforts, { type: 'Feed' })?.amount;
-	const agendaEffort = _.find(myEfforts, { type: 'Agenda' })?.amount;
+	// const feedEffort = _.find(myEfforts, { type: 'Feed' })?.amount;
+	//const agendaEffort = _.find(myEfforts, { type: 'Agenda' })?.amount;
 
 	return (
 		<React.Fragment>

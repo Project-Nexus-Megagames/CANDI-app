@@ -5,9 +5,7 @@ import { getMyCharacter } from '../../redux/entities/characters';
 import { filteredActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
-	state = {
-		rounds: []
-	};
+	state = { rounds: [] };
 
 	componentDidMount = async () => {
 		try {
