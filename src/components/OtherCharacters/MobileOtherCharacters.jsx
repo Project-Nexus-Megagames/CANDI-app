@@ -264,7 +264,7 @@ const  OtherCharacters = (props) => {
                     alt="Unable to load img"
                     width="95%"
                     style={{ maxHeight: '40vh', cursor: 'pointer' }}
-										onClick={() => openAnvil(selected)}
+										// onClick={() => openAnvil(selected)}
                   />
                 </p>
 								<Button appearance='ghost' block onClick={()=> copyToClipboard(selected)}>{selected.email}</Button>

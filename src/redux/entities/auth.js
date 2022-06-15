@@ -68,7 +68,7 @@ const slice = createSlice({
 		},
 		signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('nexusAuth');
+      localStorage.removeItem('candi-token');
 			auth.user = null;
 			auth.login = false;
 			auth.loading = false;

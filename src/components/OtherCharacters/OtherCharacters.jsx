@@ -34,19 +34,13 @@ import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import {
 	getMyCharacter,
-	getMyUnlockedCharacters
 } from './../../redux/entities/characters';
 
-const { HeaderCell, Cell, Column } = Table;
-
 const OtherCharacters = (props) => {
-	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
-	const [filter, setFilter] = useState('');
-	const [tagFilter, setTagFilter] = useState([]);
 	const [filteredCharacters, setFilteredCharacters] = useState(
-		props.characters
+		props.control ? props.characters : props.myCharacter ? props.myCharacter.knownContacts : []
 	);
 	const [edit, setEdit] = useState(false);
 	const [add, setAdd] = useState(false);
@@ -138,35 +132,10 @@ const OtherCharacters = (props) => {
 		}
 	}, [props.characters]);
 
-	const makeButton = () => {
-		if (
-			selected.supporters.some((el) => el === props.myCharacter.characterName)
-		) {
-			return (
-				<Button size="xs" onClick={() => lendSupp()} color="red">
-					Take Back Support!
-				</Button>
-			);
-		} else {
-			return (
-				<Button size="xs" onClick={() => lendSupp()} appearance="primary">
-					Lend Support!
-				</Button>
-			);
-		}
-	};
-
-	const lendSupp = async () => {
-		socket.emit('request', {
-			route: 'character',
-			action: 'support',
-			data: { id: selected._id, supporter: props.myCharacter.characterName }
-		});
-	};
 
 	const filterThis = (fil) => {
 		let filtered = [];
-		if (props.myCharacter.tags.indexOf('Control') !== -1) {
+		if (props.myCharacter && props.myCharacter.tags.indexOf('Control') !== -1) {
 			filtered = props.characters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
@@ -175,7 +144,7 @@ const OtherCharacters = (props) => {
 					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
 			);
 		} else {
-			filtered = myUnlockedCharacters.filter(
+			filtered = props.myUnlockedCharacters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
 					char.email.toLowerCase().includes(fil.toLowerCase()) ||
@@ -186,14 +155,11 @@ const OtherCharacters = (props) => {
 		setFilteredCharacters(filtered);
 	};
 
-	if (!props.login) {
+	if (!props.login || !props.myCharacter) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
 	}
-
-	if (window.innerWidth < 768) {
-		return <MobileOtherCharacters />;
-	} else
+	else
 		return (
 			<React.Fragment>
 				<NavigationBar />
@@ -632,8 +598,8 @@ const OtherCharacters = (props) => {
 											{/*Profile Pic*/}
 											<FlexboxGrid.Item
 												colspan={9}
-												style={{ cursor: 'pointer' }}
-												onClick={() => openAnvil(selected)}
+												// style={{ cursor: 'pointer' }}
+												// onClick={() => openAnvil(selected)}
 											>
 												<img
 													src={
@@ -704,8 +670,9 @@ const mapStateToProps = (state) => ({
 	mortalBonds: getMortalBonds(state),
 	login: state.auth.login,
 	characters: state.characters.list,
+	control: state.auth.control,
 	duck: state.gamestate.duck,
-	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
+	myCharacter: state.auth.character
 });
 
 const mapDispatchToProps = (dispatch) => ({
