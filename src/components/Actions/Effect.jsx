@@ -83,7 +83,7 @@ class Effect extends Component {
 					<div style={{	border: '3px solid #531ba8', borderRadius: '5px' }}>
 						<FlexboxGrid  style={infoComm} align='middle' justify="start">
 							<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-									<Avatar circle size="md" src={`/images/GW_Control_Icon.png`} alt="?" style={{ maxHeight: '50vh' }} />
+									<Avatar circle size="md" src={`/images/control.png`} alt="?" style={{ maxHeight: '50vh' }} />
 							</FlexboxGrid.Item>
 
 							<FlexboxGrid.Item colspan={15}>

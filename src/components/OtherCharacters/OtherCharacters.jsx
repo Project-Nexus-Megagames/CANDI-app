@@ -144,7 +144,7 @@ const OtherCharacters = (props) => {
 					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
 			);
 		} else {
-			filtered = props.myUnlockedCharacters.filter(
+			filtered = props.myCharacter.knownContacts.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
 					char.email.toLowerCase().includes(fil.toLowerCase()) ||
@@ -198,47 +198,7 @@ const OtherCharacters = (props) => {
 								}}
 							>
 								<List hover size="sm">
-									{filteredCharacters
-										.filter((el) => el.tags.some((el) => el === 'God'))
-										.map((character, index) => (
-											<List.Item
-												key={index}
-												index={index}
-												onClick={() => setSelected(character)}
-												style={listStyle(character)}
-											>
-												<FlexboxGrid>
-													<FlexboxGrid.Item colspan={5} style={styleCenter}>
-														<Avatar
-															src={
-																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
-																	: `/images/${character.characterName}.jpg`
-															}
-															alt="?"
-															circle
-														/>
-													</FlexboxGrid.Item>
-													<FlexboxGrid.Item
-														colspan={19}
-														style={{
-															...styleCenter,
-															flexDirection: 'column',
-															alignItems: 'flex-start',
-															overflow: 'hidden'
-														}}
-													>
-														<b style={titleStyle}>
-															{character.characterName}
-															<Tag color="green" style={{ marginLeft: '15px' }}>
-																God
-															</Tag>
-														</b>
-														<b style={slimText}>{character.email}</b>
-													</FlexboxGrid.Item>
-												</FlexboxGrid>
-											</List.Item>
-										))}
+
 
 									{filteredCharacters
 										.filter((el) => el.tags.some((el) => el === 'PC'))
@@ -254,7 +214,7 @@ const OtherCharacters = (props) => {
 														<Avatar
 															src={
 																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
+																	? `/images/control.png`
 																	: `/images/${character.characterName}.jpg`
 															}
 															alt="?"
@@ -296,7 +256,7 @@ const OtherCharacters = (props) => {
 														<Avatar
 															src={
 																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
+																	? `/images/control.png`
 																	: `/images/${character.characterName}.jpg`
 															}
 															alt="?"
@@ -338,7 +298,7 @@ const OtherCharacters = (props) => {
 														<Avatar
 															src={
 																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
+																	? `/images/control.png`
 																	: `/images/${character.characterName}.jpg`
 															}
 															alt="?"
@@ -401,7 +361,7 @@ const OtherCharacters = (props) => {
 																		character.tags.some(
 																			(el) => el === 'Control'
 																		)
-																			? `/images/GW_Control_Icon.png`
+																			? `/images/control.png`
 																			: `/images/${character.characterName}.jpg`
 																	}
 																	alt="?"
@@ -604,7 +564,7 @@ const OtherCharacters = (props) => {
 												<img
 													src={
 														selected.tags.some((el) => el === 'Control')
-															? `/images/GW_Control_Icon.png`
+															? `/images/control.png`
 															: `/images/${selected.characterName}.jpg`
 													}
 													alt="Img could not be displayed"

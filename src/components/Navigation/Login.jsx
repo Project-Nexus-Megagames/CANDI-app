@@ -125,7 +125,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   handleLogin: (data) => dispatch(loginUser(data)),
   tokenLogin: (data) => dispatch(authReceived(data)),
-	loadAction: (data) => dispatch(loadAllActions(data)),// dispatch(loadplayerActions(data)),
+	loadAction: (data) => dispatch(loadplayerActions(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
