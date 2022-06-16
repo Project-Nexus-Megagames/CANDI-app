@@ -3,12 +3,10 @@ import { connect } from 'react-redux';
 import React, { useEffect } from 'react';
 
 const HexMap = (props) => {
-	const [hexagons, setHexagons] = React.useState([]); 
-
   const createHex = () => {
     console.log('Rendering Hex Map...')
     const container = document.querySelector('.container');
-    const hexagonPattern = [5, 6, 5, 4, 3, 2];
+    const hexagonPattern = [3, 4, 5, 4, 3, ];
     
     for (let i = 0; i < hexagonPattern.length; i++) {
       const row = document.createElement('div');

@@ -99,11 +99,6 @@ export const filteredActions = createSelector(
   )
 );
 
-//  export const draftActions = createSelector(
-//   state => state.actions.list,
-//   (actions) => actions.filter(el => el.status.draft === true)
-// );
-
 // playerActions Loader into state
 export const loadplayerActions = payload => (dispatch, getState) => {
   let url = baseURL;

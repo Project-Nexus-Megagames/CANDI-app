@@ -147,7 +147,7 @@ const HomePage = (props) => {
 
 					<FlexboxGrid >
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel img={myCharacter} to='character' title='~ My Character ~' body='My Assets and Traits'/>
+						<ImgPanel img={`/images/${props.myCharacter.characterName}.jpg`} to='character' title='~ My Character ~' body='My Assets and Traits'/>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
@@ -159,10 +159,10 @@ const HomePage = (props) => {
 						{!props.myCharacter.tags.some(el=> el === 'Control') && 
 						<div  onClick={() => openNexus()} style={{ border: "5px solid #d4af37", width: '90%', borderRadius: '10px', position: 'relative', margin: '10px', height: '44vh', overflow: 'hidden' }}>	
 							<div className="container">
-										<img src={nexus} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
+										<img  src={nexus} className={props.disabled ? 'image disabled' : 'image'} height='auto' alt='Failed to load img' />             
 							</div>
-								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#800080' }}>~ Project Nexus ~</h6>
-								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#800080', fontSize: '0.966em',}}>Support the Programmers</p>
+								<h6 style={{position: 'absolute', bottom: '25px', left: '15px', color:'white', background: '#663300' }}>~ Project Nexus ~</h6>
+								<p style={{position: 'absolute', bottom: '10px', left: '15px', color:'white', background: '#663300', fontSize: '0.966em',}}>Support the Programmers</p>
 								
 						</div>}
 						{/* <ImgPanel height={'20.5vh'} img={Map} to='controllers' title='Control' body='Who is responsible?'/> */}

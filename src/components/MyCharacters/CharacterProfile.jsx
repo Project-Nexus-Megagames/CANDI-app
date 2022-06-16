@@ -302,7 +302,7 @@ class CharacterProfile extends Component {
 							valueKey="_id"
 							labelKey="characterName"
 							disabledItemValues={[playerCharacter._id]}
-							data={this.props.characters}
+							data={playerCharacter.knownContacts}
 						/>
 						{this.renderLendation()}
 					</Drawer.Body>

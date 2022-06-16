@@ -104,7 +104,7 @@ class Result extends Component {
 			<div style={{ 	border: '3px solid #00a0bd', borderRadius: '5px' }} >
 				<FlexboxGrid  style={{ backgroundColor: '#0d73d4' }} align='middle' justify="start">
 					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-							<Avatar circle size="md" src={`/images/GW_Control_Icon.png`} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />							
+							<Avatar circle size="md" src={`/images/control.png`} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />							
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={15}>
