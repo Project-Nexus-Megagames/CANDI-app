@@ -257,7 +257,7 @@ const OtherCharacters = (props) => {
 															src={
 																character.tags.some((el) => el === 'Control')
 																	? `/images/control.png`
-																	: `/images/${character.characterName}.jpg`
+																	: `/images/${character.characterName === '???' ? 'Unknown' : character.characterName}.jpg`
 															}
 															alt="?"
 															circle
