@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	ButtonGroup,
-	Button,
-	Content,
-	Container,
-	Sidebar,
-	Input,
-	Panel,
-	List,
-	PanelGroup,
-	FlexboxGrid,
-	Avatar,
-	Col,
-	Tag,
-	Row,
-	Loader,
-	TagGroup,
-	Alert,
-	InputGroup,
-	Icon,
-	Table
-} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
 import NewCharacter from '../Control/NewCharacter';
-import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import {
@@ -38,9 +16,7 @@ import {
 const OtherCharacters = (props) => {
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
-	const [filteredCharacters, setFilteredCharacters] = useState(
-		props.myCharacter ? props.myCharacter.knownContacts : []
-	);
+	const [filteredCharacters, setFilteredCharacters] = useState([]);
 	const [edit, setEdit] = useState(false);
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
@@ -100,29 +76,6 @@ const OtherCharacters = (props) => {
 		}
 	};
 
-	const openAnvil = (character) => {
-		if (character.characterName === 'The Box') {
-			const audio = new Audio('/candi1.mp3');
-			audio.loop = true;
-			audio.play();
-		} else {
-			if (character.wiki && character.wiki !== '') {
-				let url = character.wiki;
-				const win = window.open(url, '_blank');
-				win.focus();
-			} else if (character.tags.some((el) => el === 'God' || el === 'Gods')) {
-				let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
-				const win = window.open(url, '_blank');
-				win.focus();
-			} else {
-				let url = 'https://godswars.miraheze.org/wiki/';
-				let temp = url.concat(character.characterName.split(' ').join('_'));
-				const win = window.open(temp, '_blank');
-				win.focus();
-			}
-		}
-	};
-
 	useEffect(() => {
 		if (props.characters && selected) {
 			const updated = props.characters.find((el) => el._id === selected._id);
@@ -153,6 +106,12 @@ const OtherCharacters = (props) => {
 		}
 		setFilteredCharacters(filtered);
 	};
+
+	useEffect(() => {
+		if (props.characters && props.myCharacter) {
+			setFilteredCharacters(props.myCharacter.tags.some((el) => el === 'Control') ? props.characters : props.myCharacter.knownContacts);
+		}
+	}, [props.characters, props.myCharacter]);
 
 	if (!props.login || !props.myCharacter) {
 		props.history.push('/');
@@ -332,60 +291,6 @@ const OtherCharacters = (props) => {
 											</List.Item>
 										))}
 
-									{props.myCharacter.tags.some((el) => el === 'Control') && (
-										<div>
-											<h5>Control Only</h5>
-											{props.characters
-												.map((character, index) => (
-													<List.Item
-														key={index}
-														index={index}
-														onClick={() => setSelected(character)}
-														style={listStyle(character)}
-													>
-														<FlexboxGrid>
-															<FlexboxGrid.Item colspan={5} style={styleCenter}>
-																<Avatar
-																	src={
-																		character.tags.some(
-																			(el) => el === 'Control'
-																		)
-																			? `/images/control.png`
-																			: `/images/${character.characterName}.jpg`
-																	}
-																	alt="?"
-																	circle
-																/>
-															</FlexboxGrid.Item>
-															<FlexboxGrid.Item
-																colspan={19}
-																style={{
-																	...styleCenter,
-																	flexDirection: 'column',
-																	alignItems: 'flex-start',
-																	overflow: 'hidden'
-																}}
-															>
-																<b style={titleStyle}>
-																	{character.characterName}
-																	{character.tags.some(
-																		(el) => el === 'Control'
-																	) && (
-																		<Tag
-																			color="orange"
-																			style={{ marginLeft: '15px' }}
-																		>
-																			Control
-																		</Tag>
-																	)}
-																</b>
-																<b style={slimText}>{character.email}</b>
-															</FlexboxGrid.Item>
-														</FlexboxGrid>
-													</List.Item>
-												))}
-										</div>
-									)}
 								</List>
 							</div>
 						</PanelGroup>
@@ -616,9 +521,9 @@ const mapStateToProps = (state) => ({
 	gamestate: state.gamestate,
 	assets: state.assets.list,
 	godBonds: getGodBonds(state),
-	mortalBonds: getMortalBonds(state),
+	mortalBonds: getMortalBonds(state),	
+  characters: state.characters.list,
 	login: state.auth.login,
-	characters: state.characters.list,
 	control: state.auth.control,
 	duck: state.gamestate.duck,
 	myCharacter: state.auth.character
