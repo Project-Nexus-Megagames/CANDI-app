@@ -44,11 +44,6 @@
     "server": "npm run server --prefix ../CANDI-server",
     "dev": "concurrently \"npm run sever\" \"npm run client\""
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
