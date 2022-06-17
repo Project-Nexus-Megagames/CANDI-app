@@ -90,9 +90,7 @@ const Map = (props) => {
       <Container  style={{ height: 'calc(100vh - 50px)',}}> 
         <Content>
           <div style={{ width: '100%', height: '100%' }}> 
-						<motion.div drag>
-							<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>
-						</motion.div>     
+						<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>  
           </div>
         </Content>
 			<Sidebar width={250} style={{transition: '0.8s ease'}}>

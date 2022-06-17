@@ -1,6 +1,7 @@
 
 import { connect } from 'react-redux';
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const HexMap = (props) => {
   const createHex = () => {
@@ -67,8 +68,9 @@ const HexMap = (props) => {
       <div style={{   }}>
         <h2>Tempest Map</h2>
         <hr />
-        <div className="container">
-        </div>
+        <motion.div drag dragMomentum={false} >
+          <div className="container" />
+        </motion.div>
       </div>
     );
 }
