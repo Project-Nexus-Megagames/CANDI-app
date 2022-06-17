@@ -32,9 +32,17 @@ class ActionList extends Component {
 
 	createListCatagories = () => {
 		const rounds = [];
-		for (const action of this.props.filteredActions) {
-			if (!rounds.some(el => el === action.round)) rounds.push(action.round);
+		if (this.props.control) {
+			for (const action of this.props.filteredActions) {
+				if (!rounds.some(el => el === action.round)) rounds.push(action.round);
+			}			
 		}
+		else {
+			for (const action of this.props.myActions) {
+				if (!rounds.some(el => el === action.round)) rounds.push(action.round);
+			}			
+		}
+
 		rounds.reverse();
 		this.setState({ rounds });
 	}
@@ -82,11 +90,12 @@ class ActionList extends Component {
 					{!this.props.myCharacter.tags.some(el => el === 'Control') && 
 					<List hover size="sm" >
 					{this.props.myActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions </h5>}
-						{this.props.myActions.filter(action => action.round === round).map((action, index) => ( // .filter(el => el.round === round)
+						{this.props.myActions.filter(action => action.round === round).map((action, index) => (
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action, (index % 2))}>
 								<FlexboxGrid>
 									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<div style={titleStyle}>{action.name}</div>
+										{<Tag style={{ color: 'black', textTransform: 'capitalize' }} color={ action.type === 'explore' ? 'orange' : 'green'}>{action.type}</Tag>}
 									</FlexboxGrid.Item>
 								</FlexboxGrid>
 							</List.Item>
@@ -126,8 +135,9 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state): undefined,
+	control: state.auth.control,
 
-	myActions: state.actions.list,// getMyActions(state),
+	myActions: getMyActions(state),
 	filteredActions: filteredActions(state)
 
 });

@@ -104,16 +104,10 @@ const Map = (props) => {
           minHeight: '100vh'
         }}
       >
-				<button
-          onClick={() => handleTab('info')}
-          className="toggle-menu"
-					style={{transform: `translate(${-20}px, ${100}px)`,	backgroundColor: '#087ad1' }}
-        ><Icon icon='info-circle' /></button>
 
 			{tab === 'info' && <div>
-				{unlockedLocations.length}
 				<h3>{territory.name}</h3>
-	  		<Divider>{territory.coords ? getHexId(territory.coords.x, territory.coords.y) : <b>Bad Coords</b>} - ({territory.coords.x}, {territory.coords.y}) </Divider>
+				<Divider>{territory.coords ? getHexId(territory.coords.x, territory.coords.y) : <b>Bad Coords</b>} - ({territory.coords.x}, {territory.coords.y}) </Divider>
 				<p className='p-left' >{territory.description}</p>
 				<Divider>Unlocked By</Divider>
 				{territory.unlockedBy && territory.unlockedBy.map(el => (

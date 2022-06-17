@@ -29,9 +29,6 @@ const slice = createSlice({
       let jwt = action.payload.token;
       localStorage.setItem('candi-token', jwt );
       const user = jwtDecode(jwt);
-      console.log(localStorage)
-
-      if (user.roles.some(el => el === "Control")) auth.control = true;
 
 			auth.error = null;
       auth.user = user;
@@ -56,7 +53,7 @@ const slice = createSlice({
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);
       auth.character = action.payload;
-      if (action.payload.tags.some(el => el === "control")) auth.control = true;
+      if (action.payload.tags.some(el => el.toLowerCase() === "control")) auth.control = true;
       // initConnection(auth.user, auth.team, auth.version);
     },
     setControl: (auth, action) => {
@@ -68,7 +65,7 @@ const slice = createSlice({
 		},
 		signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('nexusAuth');
+      localStorage.removeItem('candi-token');
 			auth.user = null;
 			auth.login = false;
 			auth.loading = false;
