@@ -27,7 +27,6 @@ import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
-import socket from '../../socket';
 import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
@@ -40,7 +39,7 @@ const OtherCharacters = (props) => {
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
 	const [filteredCharacters, setFilteredCharacters] = useState(
-		props.control ? props.characters : props.myCharacter ? props.myCharacter.knownContacts : []
+		props.myCharacter ? props.myCharacter.knownContacts : []
 	);
 	const [edit, setEdit] = useState(false);
 	const [add, setAdd] = useState(false);
@@ -336,17 +335,7 @@ const OtherCharacters = (props) => {
 									{props.myCharacter.tags.some((el) => el === 'Control') && (
 										<div>
 											<h5>Control Only</h5>
-											{filteredCharacters
-												.filter(
-													(el) =>
-														!el.tags.some(
-															(el2) =>
-																el2 === 'Control' ||
-																el2 === 'NPC' ||
-																el2 === 'PC' ||
-																el2 === 'God'
-														)
-												)
+											{props.characters
 												.map((character, index) => (
 													<List.Item
 														key={index}

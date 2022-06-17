@@ -29,9 +29,6 @@ const slice = createSlice({
       let jwt = action.payload.token;
       localStorage.setItem('candi-token', jwt );
       const user = jwtDecode(jwt);
-      console.log(localStorage)
-
-      if (user.roles.some(el => el === "Control")) auth.control = true;
 
 			auth.error = null;
       auth.user = user;
