@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Content, Icon, Loader, Sidebar, Divider, } from 'rsuite';
 import { useHistory } from "react-router-dom";
 import HexMap from './HexMap';
-import socket from '../../socket';
 import { getMyLocations } from '../../redux/entities/locations';
 import NavigationBar from '../Navigation/NavigationBar';
+import { motion } from 'framer-motion';
 
 
 const Map = (props) => {
@@ -90,7 +90,9 @@ const Map = (props) => {
       <Container  style={{ height: 'calc(100vh - 50px)',}}> 
         <Content>
           <div style={{ width: '100%', height: '100%' }}> 
-  					<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>     
+						<motion.div drag>
+							<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>
+						</motion.div>     
           </div>
         </Content>
 			<Sidebar width={250} style={{transition: '0.8s ease'}}>
@@ -102,7 +104,7 @@ const Map = (props) => {
           minHeight: '100vh'
         }}
       >
-				 <button
+				<button
           onClick={() => handleTab('info')}
           className="toggle-menu"
 					style={{transform: `translate(${-20}px, ${100}px)`,	backgroundColor: '#087ad1' }}
