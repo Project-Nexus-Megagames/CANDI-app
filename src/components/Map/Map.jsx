@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { Container, Content, Icon, Loader, Sidebar, Divider, } from 'rsuite';
 import { useHistory } from "react-router-dom";
 import HexMap from './HexMap';
 import { getMyLocations } from '../../redux/entities/locations';
 import NavigationBar from '../Navigation/NavigationBar';
-import { motion } from 'framer-motion';
+import { MapInteractionCSS } from 'react-map-interaction';
 
 
 const Map = (props) => {
@@ -13,10 +13,7 @@ const Map = (props) => {
 	const defaultTerr = { name: 'Hover over territory to see details',  description: '?????',  currentOwner: '????????',  influence: 0, coords: { x: 0, y: 0 }}
   const [value, setValue] = React.useState({ scale: 1, translation: { x: 0, y: 0 }});
 	const [territory, setTerritory] = React.useState(defaultTerr);
-	const [selected, setSelected] = React.useState(false);
-	const [tab, setTab] = React.useState('info');
-	const [mission, setMission] = React.useState(undefined); 
-  const [start, setStart] = React.useState();
+  const constraintsRef = useRef(null);
 
 	const history = useHistory();
   
@@ -26,11 +23,6 @@ const Map = (props) => {
 	const clickHandlerer = (type, unit, coords) => {
 		console.log(type)
 		switch (type) {
-			case 'Military':
-				setSelected(unit);
-				setStart(coords)
-				setTerritory(false)
-				break;
 			case 'hex':
 				const loc = locations.find(el => el.coords.x === coords.q && el.coords.y === coords.r);
 				loc ? setTerritory(loc) : console.log('loc undefined');
@@ -74,12 +66,6 @@ const Map = (props) => {
 	return `${Letters[letterIndex] + letters + (col + 1)}`;
 };
 
-	const handleTab = (type) => {
-		setTab(type);
-		setMission(false);
-		setTerritory(defaultTerr)
-}
-
   if (!login && !loading) {
     history.push('/');
     return (<Loader inverse center content="doot..." />)
@@ -87,23 +73,17 @@ const Map = (props) => {
 	return ( // 
     <React.Fragment>
 			<NavigationBar/>
-      <Container  style={{ height: 'calc(100vh - 50px)',}}> 
-        <Content>
-          <div style={{ width: '100%', height: '100%' }}> 
-						<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>  
-          </div>
+      <Container  style={{ height: 'calc(100vh - 50px)', }}> 
+        <Content ref={constraintsRef}>
+				<MapInteractionCSS minScale={1} maxScale={4} value={value} onChange={(value) => handleIt(value)} style={{ overflow: 'hidden', height: '100%' }} showControls={true} plusBtnContents={<Icon style={{ color: 'black' }} icon="plus"/>} minusBtnContents={<Icon style={{ color: 'black' }} icon="minus"/>}>
+					<HexMap handleHover={handleHover} handleClick={clickHandlerer} locations={unlockedLocations}/>  
+				</MapInteractionCSS>
+						
         </Content>
-			<Sidebar width={250} style={{transition: '0.8s ease'}}>
+			{props.control && <Sidebar width={250} style={{transition: '0.8s ease'}}>
 								
-      <div
-        className="side-bar"
-        style={{
-          width: 250,
-          minHeight: '100vh'
-        }}
-      >
-
-			{tab === 'info' && <div>
+			{<div className="side-bar">
+				<h5>This is a Control Only Panel.</h5>
 				<h3>{territory.name}</h3>
 				<Divider>{territory.coords ? getHexId(territory.coords.x, territory.coords.y) : <b>Bad Coords</b>} - ({territory.coords.x}, {territory.coords.y}) </Divider>
 				<p className='p-left' >{territory.description}</p>
@@ -114,9 +94,9 @@ const Map = (props) => {
 				))}
 			</div>}
 
-			</div>   
+ 
 			
-		</Sidebar>
+		</Sidebar>}
 
       </Container>      
     </React.Fragment>

@@ -69,6 +69,7 @@ const slice = createSlice({
 			auth.user = null;
 			auth.login = false;
 			auth.loading = false;
+      auth.control = false,
 			auth.lastLogin = null;
 			auth.error = null;
 		},
