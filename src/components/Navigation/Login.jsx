@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import {  Button, Container, Form,  FormControl, Modal,  Schema,  Checkbox,  FormGroup,   FlexboxGrid, ControlLabel,} from "rsuite";
 import { loadAllActions, loadplayerActions } from '../../redux/entities/playerActions';
 import { authReceived, loginUser } from "../../redux/entities/auth";
-import axios from "axios";
 import banner from '../Images/banner1.jpg'
 
 const { StringType } = Schema.Types;

@@ -1,6 +1,7 @@
 
 import { connect } from 'react-redux';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const HexMap = (props) => {
   const createHex = () => {
@@ -22,7 +23,7 @@ const HexMap = (props) => {
          `url(/images/map/${getHexId(i, j)}.jpg)` :
          'url("/images/map/fog.jpg")'
         const text = document.createElement('div')
-        !loc ? text.classList.add('center') : text.classList.add('dicovered-text') ;
+        text.classList.add('center');
         text.id =  `${i}${j}`
         text.innerHTML = getHexId(i, j);
         
@@ -63,13 +64,10 @@ const HexMap = (props) => {
     createHex()
 	}, []);
 
+  const constraintsRef = useRef(null);
+
     return (
-      <div style={{   }}>
-        <h2>Tempest Map</h2>
-        <hr />
-        <div className="container">
-        </div>
-      </div>
+            <div className="container" />
     );
 }
 

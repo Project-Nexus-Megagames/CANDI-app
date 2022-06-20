@@ -13,8 +13,27 @@ import { loadAssets } from '../../redux/entities/assets';
 const { Line, Circle } = Progress;
 
 const LoadingNew = (props) => {
+
 	const [message, setMessage] = React.useState('Scott quip goes here...');
+	const [show, setShow] = React.useState(false);
 	const [sections, setSections] = React.useState(Object.keys(props.entities).sort());
+
+	useEffect(() => {
+		setInterval(() => {
+			setMessage(loadingMsg[Math.floor(Math.random() * loadingMsg.length)])
+    }, 5000);
+
+		setTimeout(() => {
+			setShow(true)
+    }, 5000);
+  }, []);
+
+	useEffect(() => {
+		if (props.actionsFailed > 0) {
+			props.loadAllActions()
+		}
+  }, [props.actionsFailed]);
+
 
 	let done = Object.keys(props.entities)
 		.sort()
@@ -63,7 +82,6 @@ const LoadingNew = (props) => {
 					>
 						Log Out
 					</Button>
-					{/* <img height={500} src='https://live.staticflickr.com/4782/40236389964_fe77df66a3_b.jpg' alt='failed to find team assigned'/> */}
 				</div>
 			);
 		}
@@ -78,7 +96,7 @@ const LoadingNew = (props) => {
 				onClick={() => boredClick()}
 			/>
 			{/* src={spook[rand]} */}
-			{<h5>{loadingMsg[rand1]}</h5>}
+			{<h5>{message}</h5>}
 			<Line
 				percent={Math.floor((done.length / sections.length) * 100)}
 				status="active"
@@ -100,12 +118,8 @@ const LoadingNew = (props) => {
 					</Col>
 				))}
 			</Row>
-			<Loader
-				center
-				content={`${message} - ${Math.floor(
-					(done.length / sections.length) * 100
-				)}%`}
-			/>
+			
+			{show && <Button onClick={() => { props.logOut();	history.push('/login');	}}>If you can see this, you are likely stuck. Log Out?</Button>}
 		</div>
 	);
 };
@@ -143,10 +157,14 @@ const loadingMsg = [
 	// 'Thank you all for taking time to make this game happen.',
 	"pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ 'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI",
 	"Help I'm a man stuck inside a loading screen let me out!",
-	"C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!"
+	"C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!",
+	"Why is pirating so addictive? They say once ye lose yer first hand, ye get hooked!",
+	"How do pirates know that they are pirates? They think, therefore they ARRRR!!!!!",
+	"What has 8 legs, 8 arms, and 8 eyes? 8 pirates.",
+	"What do ye call a pirate with two eyes and two legs? A rookie.",
+	"Easter Egg: Try clicking on 'Spook' next to the log out button...",
 ];
 const rand = Math.floor(Math.random() * gamePhotos.length);
-const rand1 = Math.floor(Math.random() * loadingMsg.length);
 
 const bored = [
 	'https://www.youtube.com/watch?v=QSS3GTmKWVA', // Freddie Mercury gets Trapped in a Slide and Calls out for Mamma (ASMR)

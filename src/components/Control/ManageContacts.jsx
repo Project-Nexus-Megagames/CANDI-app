@@ -26,7 +26,11 @@ const ManageContacts = (props) => {
 
 	useEffect(() => {
 		if (char) {
-			setContacts(char.knownContacts);
+			let array = []
+			for (const c of char.knownContacts) {
+				array.push(c._id)
+			}
+			setContacts(array);
 		}
 	}, [char]);
 

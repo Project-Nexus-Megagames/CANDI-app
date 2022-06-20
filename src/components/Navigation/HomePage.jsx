@@ -151,7 +151,7 @@ const HomePage = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel disabled img={Map} to='Map' title='~ Map ~' body='Here be Dragons...'/> 
+						<ImgPanel img={Map} to='Map' title='~ Map ~' body='Here be Dragons...'/> 
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={6}>
@@ -193,6 +193,7 @@ const mapStateToProps = (state) => ({
 	version: state.gamestate.version,
 	duck: state.gamestate.duck,
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	control: state.auth.control,
 });
 
 const mapDispatchToProps = (dispatch) => ({
