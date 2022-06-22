@@ -1,29 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-	Loader,
-	Panel,
-	IconButton,
-	Icon,
-	Form,
-	FormGroup,
-	Button,
-	ButtonToolbar,
-	FormControl,
-	ControlLabel,
-	Divider,
-	Content,
-	Tag,
-	Modal,
-	Drawer,
-	SelectPicker,
-	Placeholder,
-	Grid,
-	Col,
-	Row,
-	List,
-	TagGroup
-} from 'rsuite';
+import { Loader, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Tag, Modal, Drawer, SelectPicker, Placeholder, Grid, Col, Row, List, TagGroup } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import {
 	assetLent,
@@ -125,12 +102,10 @@ class CharacterProfile extends Component {
 	};
 
 	handleSharingContacts = () => {
-		console.log('boop');
 		this.setState({ showContacts: true });
 	};
 
 	openInfo = (asset) => {
-		console.log(asset);
 		const found = this.props.assets.find((el) => el._id === asset._id);
 		this.setState({ infoAsset: found, infoModal: true });
 	};
