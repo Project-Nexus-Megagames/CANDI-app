@@ -18,7 +18,8 @@ import {
 	Loader,
 	Tag,
 	Input,
-	Slider
+	Slider,
+	Progress
 } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -249,11 +250,13 @@ class Submission extends Component {
 							children={submission.intent}
 							remarkPlugins={[remarkGfm]}
 						></ReactMarkdown>
-						{/* <p style={slimText}>
-							Effort
-						</p>
-						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{submission.effort}</p>
-						<Progress.Line percent={submission.effort * 33 + 1} showInfo={false}>  </Progress.Line> */}
+
+						{this.props.action.type === 'default' && <div>
+							<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{submission.effort} Effort</p>
+							<Progress.Line percent={submission.effort * 33 + 1} showInfo={false}>  </Progress.Line>							
+						</div>}
+
+
 						<Divider>Resources</Divider>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={8}>
