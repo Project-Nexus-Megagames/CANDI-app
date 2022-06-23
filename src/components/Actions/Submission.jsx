@@ -2,25 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { connect } from 'react-redux';
-import {
-	Avatar,
-	Panel,
-	FlexboxGrid,
-	CheckPicker,
-	ButtonGroup,
-	Button,
-	Modal,
-	Divider,
-	Toggle,
-	IconButton,
-	Icon,
-	ButtonToolbar,
-	Loader,
-	Tag,
-	Input,
-	Slider,
-	Progress
-} from 'rsuite';
+import { 	Avatar, 	Panel, 	FlexboxGrid, 	CheckPicker, 	ButtonGroup, 	Button, 	Modal, 	Divider, 	Toggle, 	IconButton, 	Icon, 	ButtonToolbar, 	Loader, 	Tag, 	Input, 	Slider, 	Progress } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import {
@@ -428,7 +410,7 @@ class Submission extends Component {
 								loading={this.props.actionLoading}
 								onClick={() => this.handleSubmit()}
 								disabled={
-									this.state.effort <= 0 ||
+									(this.props.action.type === 'default' && this.state.effort <= 0) ||
 									this.state.description.length < 10 ||
 									this.state.intent.length < 10 ||
 									this.state.name.length < 10
