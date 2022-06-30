@@ -14,7 +14,7 @@ const { Line, Circle } = Progress;
 
 const LoadingNew = (props) => {
 
-	const [message, setMessage] = React.useState('Scott quip goes here...');
+	const [message, setMessage] = React.useState(loadingMsg[Math.floor(Math.random() * loadingMsg.length)]);
 	const [show, setShow] = React.useState(false);
 	const [sections, setSections] = React.useState(Object.keys(props.entities).sort());
 
