@@ -12,6 +12,7 @@ import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import {
 	getMyCharacter,
 } from './../../redux/entities/characters';
+import socket from '../../socket';
 
 const OtherCharacters = (props) => {
 	const [selected, setSelected] = useState(null);
@@ -46,11 +47,23 @@ const OtherCharacters = (props) => {
 		}
 	};
 
+	const arrg = async () => {
+		const data = {
+			character: props.myCharacter.characterName,
+			email: props.myCharacter.email,
+		}
+		try{
+			socket.emit('request', { route: 'character', action: 'pirate', data });
+		}
+		catch (err) {
+			console.log(err)
+			Alert.error(`Error: ${err}`, 5000);
+		}
+	}
+
 	const copyToClipboard = (character) => {
-		if (character.characterName === 'The Box') {
-			const audio = new Audio('/candi1.mp3');
-			audio.loop = true;
-			audio.play();
+		if (character.characterName === 'Black Bob') {
+			arrg()
 		} else {
 			let board = `${character.email}`;
 			let array = [...character.control];

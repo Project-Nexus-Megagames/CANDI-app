@@ -12,6 +12,7 @@ import socket from '../../socket';
 import NavigationBar from '../Navigation/NavigationBar';
 import AssetInfo from '../Actions/AssetInfo';
 import Contacts from '../MyCharacters/Contacts';
+import { Link } from 'react-router-dom';
 
 class CharacterProfile extends Component {
 	state = {
@@ -181,6 +182,9 @@ class CharacterProfile extends Component {
 									</FormGroup>
 								</Form>
 							</Panel>
+							<Link to={'yoho'}>
+										<b style={{ color: '#0f131a' }} >Arrg</b>
+							</Link>
 							<Panel header="My Contacts" style={{ width: '95%' }}>
 								<ButtonToolbar>
 									<Button

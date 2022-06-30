@@ -50,7 +50,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       //console.log(`Payload : ${action.payload._id}`)
       const index = playerActions.list.findIndex(el => el._id === action.payload._id);
-      playerActions.list[index] = action.payload;
+      index > -1 ? playerActions.list[index] = action.payload : playerActions.list.push(action.payload);
       playerActions.loading = false;
     }
   }
