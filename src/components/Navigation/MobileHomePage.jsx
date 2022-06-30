@@ -47,7 +47,6 @@ const HomePage = (props) => {
 		) {
 			setTimeout(() => setLoaded(true), 1000);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props]);
 
 	const handleLogOut = () => {

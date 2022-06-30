@@ -112,7 +112,6 @@ const OtherCharacters = (props) => {
 			setSelected(updated);
 			filterThis('');
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.characters, selected]);
 
 	const filterThis = (fil) => {

@@ -34,6 +34,7 @@ const HealInjury = (props) => {
 				action: 'healInjury',
 				data
 			});
+			// eslint-disable-next-line no-empty
 		} catch (err) {}
 		handleExit();
 	};
@@ -85,8 +86,9 @@ const HealInjury = (props) => {
 						}
 						return (
 							<Checkbox value={injury._id} key={index}>
-								<b>{injury.name}</b> received from action "{injury.actionTitle}
-								". ({autoheal}).
+								<b>{injury.name}</b> received from action &quot;
+								{injury.actionTitle}
+								&quot;. ({autoheal}).
 							</Checkbox>
 						);
 					})}
@@ -106,7 +108,7 @@ const HealInjury = (props) => {
 			}}
 		>
 			<Modal.Header>
-				<Modal.Title>Play God and Heal a Character's Injuries</Modal.Title>
+				<Modal.Title>Play God and Heal a Character&apos;s Injuries</Modal.Title>
 			</Modal.Header>
 			<Panel>
 				<SelectPicker

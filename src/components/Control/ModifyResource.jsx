@@ -64,7 +64,6 @@ const ModifyResource = (props) => {
 		} else {
 			setTags(tags.filter((el) => el !== 'arcane'));
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [arcane]);
 
 	const assetModify = async () => {

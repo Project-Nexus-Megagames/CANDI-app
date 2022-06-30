@@ -131,7 +131,6 @@ const OtherCharacters = (props) => {
 			setSelected(updated);
 			filterThis('');
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.characters, selected]);
 
 	// eslint-disable-next-line no-unused-vars

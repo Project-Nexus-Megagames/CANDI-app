@@ -32,7 +32,6 @@ const Login = (props) => {
 			console.log('Attempting to login!');
 			tokenLogin({ token });
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.login]);
 
 	useEffect(() => {

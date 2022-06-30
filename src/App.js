@@ -12,6 +12,7 @@ import HomePage from "./components/Navigation/HomePage";
 import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
+import GameConfig from "./components/GameConfig/gameConfig";
 
 import Login from "./components/Navigation/Login";
 import initUpdates from "./redux/initUpdate";
@@ -94,7 +95,6 @@ const App = (props) => {
         }
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 
   const quack = () => {
@@ -138,6 +138,11 @@ const App = (props) => {
           exact
           path="/actions"
           render={(props) => <Actions {...props} />}
+        />
+				<Route
+          exact
+          path="/gameConfig"
+          render={(props) => <GameConfig {...props} />}
         />
         <Route
           exact
