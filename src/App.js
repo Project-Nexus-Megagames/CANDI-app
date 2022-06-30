@@ -142,7 +142,7 @@ const App = (props) => {
           path="/control"
           render={(props) => <ControlTerminal {...props} />}
         />
-        <Route exact path="/quests" render={(props) => <Quests {...props} />} />
+        <Route exact path="/yoho" render={(props) => <Quests {...props} />} />
         <Route exact path="/map" render={(props) => <Map {...props} />} />
         <Route exact path="/404" render={(props) => <NotFound {...props} />} />
         <Route
