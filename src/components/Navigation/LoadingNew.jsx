@@ -155,14 +155,15 @@ const gamePhotos = ['https://acegif.com/wp-content/gifs/pirate-flag-1.gif'];
 
 const loadingMsg = [
 	// 'Thank you all for taking time to make this game happen.',
-	"pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ 'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI",
-	"Help I'm a man stuck inside a loading screen let me out!",
-	"C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!",
-	"Why is pirating so addictive? They say once ye lose yer first hand, ye get hooked!",
-	"How do pirates know that they are pirates? They think, therefore they ARRRR!!!!!",
-	"What has 8 legs, 8 arms, and 8 eyes? 8 pirates.",
-	"What do ye call a pirate with two eyes and two legs? A rookie.",
-	"Easter Egg: Try clicking on 'Spook' next to the log out button...",
+	// "pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ 'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI",
+	// "Help I'm a man stuck inside a loading screen let me out!",
+	// "C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!",
+	// "Why is pirating so addictive? They say once ye lose yer first hand, ye get hooked!",
+	// "How do pirates know that they are pirates? They think, therefore they ARRRR!!!!!",
+	// "What has 8 legs, 8 arms, and 8 eyes? 8 pirates.",
+	// "What do ye call a pirate with two eyes and two legs? A rookie.",
+	// "Easter Egg: Try clicking on 'Spook' next to the log out button...",
+	"Beware the REAL STICKY deception. Stay the course."
 ];
 const rand = Math.floor(Math.random() * gamePhotos.length);
 
