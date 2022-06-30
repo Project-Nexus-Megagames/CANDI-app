@@ -25,7 +25,7 @@ const LoadingNew = (props) => {
 
 		setTimeout(() => {
 			setShow(true)
-    }, 5000);
+    }, 7000);
   }, []);
 
 	useEffect(() => {
@@ -41,8 +41,8 @@ const LoadingNew = (props) => {
 	const history = useHistory();
 
 	const boredClick = () => {
-		const random = (Math.floor(Math.random() * bored.length ));
-		const win = window.open(bored[random], '_blank');
+		const random = (Math.floor(Math.random() * pirate.length ));
+		const win = window.open(pirate[random], '_blank');
 		win.focus();
 	}
 
@@ -165,6 +165,13 @@ const loadingMsg = [
 	"Easter Egg: Try clicking on 'Spook' next to the log out button...",
 ];
 const rand = Math.floor(Math.random() * gamePhotos.length);
+
+const pirate = [
+	"https://www.youtube.com/watch?v=b9oI_8YG6Vs&ab_channel=Sw4y",
+	"https://www.youtube.com/watch?v=XaWU1CmrJNc&ab_channel=VeggieTalesOfficial",
+	"https://www.youtube.com/watch?v=gQy0PJEkQhA&ab_channel=EurovisionSongContest",
+	"https://www.youtube.com/watch?v=iPAr7kL-mmg&ab_channel=Glittersharks"
+]
 
 const bored = [
 	'https://www.youtube.com/watch?v=QSS3GTmKWVA', // Freddie Mercury gets Trapped in a Slide and Calls out for Mamma (ASMR)

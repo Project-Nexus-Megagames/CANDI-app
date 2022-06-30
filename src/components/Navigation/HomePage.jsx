@@ -41,7 +41,7 @@ const HomePage = (props) => {
 
 	useEffect(() => {
 		if(!props.loading && props.actionsLoaded && props.gamestateLoaded && props.charactersLoaded && props.locationsLoaded && props.assetsLoaded) {
-			setTimeout(() => setLoaded(true), 1000)	
+			setTimeout(() => setLoaded(true), 2000)	
 		}	
 	}, [props]);
 
