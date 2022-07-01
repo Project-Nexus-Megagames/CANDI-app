@@ -370,8 +370,7 @@ class Submission extends Component {
 												textAlign: 'left'
 											}}
 											colspan={2}
-										>
-											{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
+										>						 
 										</FlexboxGrid.Item>
 										<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 										<FlexboxGrid.Item
@@ -387,17 +386,10 @@ class Submission extends Component {
 											<CheckPicker
 												labelKey="name"
 												valueKey="_id"
-												data={this.props.getMyAssets.filter(
-													(el) =>
-														!banned.some(
-															(el1) =>
-																el1 === el.level &&
-																(el.type === 'GodBond' ||
-																	el.type === 'MortalBond')
-														)
-												)}
+												data={this.props.getMyAssets}
 												style={{ width: '100%' }}
-												disabledItemValues={this.formattedUsedAssets()}
+												defaultValue={this.props.submission.assets}
+												disabledItemValues={this.formattedUsedAssets(this.props.submission.assets)}
 												onChange={(event) => this.setState({ assets: event })}
 											/>
 										</FlexboxGrid.Item>
@@ -574,17 +566,11 @@ class Submission extends Component {
 		);
 	};
 
-	formattedUsedAssets = () => {
+	formattedUsedAssets = (submissionAssets) => {
 		let temp = [];
-		let assets = this.props.getMyAssets.filter(
-			(el) =>
-				!banned.some(
-					(el1) =>
-						el1 === el.level &&
-						(el.type === 'GodBond' || el.type === 'MortalBond')
-				)
-		);
+		let assets = this.props.getMyAssets;
 		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
+		assets = assets.filter(el => !submissionAssets.some(sub => sub === el._id) )
 		for (const asset of assets) {
 			temp.push(asset._id);
 		}
