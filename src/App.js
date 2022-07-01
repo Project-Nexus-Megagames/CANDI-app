@@ -12,7 +12,7 @@ import HomePage from "./components/Navigation/HomePage";
 import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
-import GameConfig from "./components/GameConfig/GameConfigNew";
+import GameConfig from "./components/GameConfig/GameConfig";
 
 import Login from "./components/Navigation/Login";
 import initUpdates from "./redux/initUpdate";
