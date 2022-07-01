@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
-import {
-	Input,
-	Form,
-	SelectPicker,
-	ButtonGroup,
-	Button,
-	CheckboxGroup,
-	Checkbox,
-	Panel
-} from 'rsuite';
+import { Input, Form, ButtonGroup, Button } from 'rsuite';
 import socket from '../../socket';
 
 function GameConfig() {
