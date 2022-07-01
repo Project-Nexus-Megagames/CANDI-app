@@ -5,10 +5,11 @@ import { Input, Form, ButtonGroup, Button } from 'rsuite';
 import socket from '../../socket';
 
 function GameConfig() {
+	const config = useSelector((state) => state.gameConfig);
 	const { register, control, handleSubmit, reset, formState, setValue } =
 		useForm({
 			defaultValues: {
-				types: ['']
+				types: [' ']
 			}
 		});
 	const { errors } = formState;
@@ -39,14 +40,14 @@ function GameConfig() {
 				<div key={i} className="list-group list-group-flush">
 					<div className="list-group-item">
 						<div>
-							<Input placeholder=" " type="text" {...register(`types.${i}`)} />
+							<Input key={item.id} type="text" {...register(`types.${i}`)} />
 						</div>
 					</div>
 				</div>
 			))}
 
 			<ButtonGroup>
-				<Button onClick={() => append({ type: '' })}>Add Type</Button>
+				<Button onClick={() => append(' ')}>Add Type</Button>
 				<Button type="submit" className="btn btn-primary mr-1">
 					Create Initial Config
 				</Button>

@@ -55,7 +55,6 @@ const url = `${gameServer}api/gameConfig`;
 
 // gameConfig Loader into state
 export const loadGameConfig = payload => (dispatch) => {
-	console.log(payload, url)
   return dispatch(
 
     apiCallBegan({

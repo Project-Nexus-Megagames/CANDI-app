@@ -115,7 +115,7 @@ export const getMyUnlockedCharacters  = createSelector(
 );
 
 // characters Loader into state
-export const loadCharacters = (payload) => (dispatch, getState) => {
+export const loadCharacters = (payload) => (dispatch) => {
   return dispatch(
     apiCallBegan({
       url,
