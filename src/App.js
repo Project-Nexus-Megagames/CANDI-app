@@ -12,7 +12,7 @@ import HomePage from "./components/Navigation/HomePage";
 import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
-import GameConfig from "./components/GameConfig/gameConfig";
+import GameConfig from "./components/GameConfig/GameConfigNew";
 
 import Login from "./components/Navigation/Login";
 import initUpdates from "./redux/initUpdate";
@@ -185,11 +185,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadChar: (data) => dispatch(loadCharacters()),
-  loadAssets: (data) => dispatch(loadAssets()),
-  loadLocations: (data) => dispatch(loadLocations()),
-  loadGamestate: (data) => dispatch(loadGamestate()),
-	loadGameConfig: (data) => dispatch(loadGameConfig()),
+  loadChar: () => dispatch(loadCharacters()),
+  loadAssets: () => dispatch(loadAssets()),
+  loadLocations: () => dispatch(loadLocations()),
+  loadGamestate: () => dispatch(loadGamestate()),
+	loadGameConfig: () => dispatch(loadGameConfig()),
   usersRecieved: (data) => dispatch(usersRecieved(data)),
   logOut: () => dispatch(signOut()),
 });
