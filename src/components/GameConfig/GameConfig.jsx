@@ -147,13 +147,15 @@ function GameConfig() {
 													Public Action
 												</Checkbox>
 											</FormControl>
+											<Button size="xs" onClick={() => remove(i)}>
+												-
+											</Button>
 										</HStack>
 									</Box>
 								</div>
 							</div>
 						</div>
 					))}
-
 					<ButtonGroup>
 						<Button
 							onClick={() =>
