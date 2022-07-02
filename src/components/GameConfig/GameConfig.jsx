@@ -11,7 +11,10 @@ import {
 	Box,
 	FormLabel,
 	Input,
-	Text
+	Text,
+	Checkbox,
+	CheckboxGroup,
+	Stack
 } from '@chakra-ui/react';
 
 function GameConfig() {
@@ -24,8 +27,9 @@ function GameConfig() {
 						type: '',
 						minEffort: 0,
 						maxEffort: 0,
+						assetTypes: [''],
 						maxAssets: 0,
-						status: [''],
+						public: false,
 						icon: ''
 					}
 				]
@@ -81,7 +85,7 @@ function GameConfig() {
 									<Box>
 										<HStack spacing="24px">
 											<FormControl variant="floating">
-												<FormLabel>Type</FormLabel>
+												<FormLabel>Type of Action</FormLabel>
 												<Input
 													key={item.id}
 													type="text"
@@ -97,6 +101,52 @@ function GameConfig() {
 														errors.actionTypes[i].type.message}
 												</Text>
 											</FormControl>
+											<FormControl variant="floating">
+												<FormLabel>Types of Resources</FormLabel>
+												<CheckboxGroup key={item.id}>
+													<Stack spacing={[1, 5]} direction={['column', 'row']}>
+														<Checkbox
+															value="asset"
+															{...register(`actionTypes.${i}.assetTypes`)}
+														>
+															Asset
+														</Checkbox>
+														<Checkbox
+															value="trait"
+															{...register(`actionTypes.${i}.assetTypes`)}
+														>
+															Trait
+														</Checkbox>
+													</Stack>
+												</CheckboxGroup>
+											</FormControl>
+											<FormControl variant="floating">
+												<FormLabel>Max Amount of Resources</FormLabel>
+												<Input
+													key={item.id}
+													type="number"
+													size="md"
+													variant="outline"
+													{...register(
+														`actionTypes.${i}.maxAssets`,
+														validation.maxAssets
+													)}
+												/>
+												<Text fontSize="sm" color="red.500">
+													{errors.actionTypes?.[i]?.maxAssets &&
+														errors.actionTypes[i].maxAssets.message}
+												</Text>
+											</FormControl>
+											<FormControl variant="floating">
+												<Checkbox
+													key={item.id}
+													type="text"
+													size="md"
+													{...register(`actionTypes.${i}.public`)}
+												>
+													Public Action
+												</Checkbox>
+											</FormControl>
 										</HStack>
 									</Box>
 								</div>
@@ -111,8 +161,9 @@ function GameConfig() {
 									type: '',
 									minEffort: 0,
 									maxEffort: 0,
+									assetTypes: [''],
 									maxAssets: 0,
-									status: [''],
+									public: false,
 									icon: ''
 								})
 							}
