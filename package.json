@@ -5,6 +5,9 @@
   "author": "Scott McMann & John T. Cleveland",
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^1.8.6",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
     "@reduxjs/toolkit": "^1.8.2",
     "@rsuite/icons": "^1.0.2",
     "@testing-library/jest-dom": "^5.11.6",
@@ -13,6 +16,7 @@
     "axios": "^0.21.4",
     "bootstrap": "^4.5.3",
     "d3": "^6.6.2",
+    "framer-motion": "^6.3.16",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "react": "^17.0.2",

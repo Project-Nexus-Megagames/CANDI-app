@@ -2,6 +2,7 @@ import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
 import { Alert } from "rsuite";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { ChakraProvider } from '@chakra-ui/react';
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
@@ -116,57 +117,59 @@ const App = (props) => {
           : {}
       }
     >
-      <Switch>
-        <Route exact path="/login" render={(props) => <Login {...props} />} />
-        <Route exact path="/home" render={(props) => <HomePage {...props} />} />
-        <Route
-          exact
-          path="/character"
-          render={(props) => <CharacterProfile {...props} />}
-        />
-        <Route
-          exact
-          path="/controllers"
-          render={(props) => <Control {...props} />}
-        />
-        <Route
-          exact
-          path="/others"
-          render={(props) => <OtherCharacters {...props} />}
-        />
-        <Route
-          exact
-          path="/actions"
-          render={(props) => <Actions {...props} />}
-        />
-				<Route
-          exact
-          path="/gameConfig"
-          render={(props) => <GameConfig {...props} />}
-        />
-        <Route
-          exact
-          path="/control"
-          render={(props) => <ControlTerminal {...props} />}
-        />
-        <Route exact path="/quests" render={(props) => <Quests {...props} />} />
-        <Route exact path="/map" render={(props) => <Map {...props} />} />
-        <Route exact path="/404" render={(props) => <NotFound {...props} />} />
-        <Route
-          exact
-          path="/no-character"
-          render={(props) => <NoCharacter {...props} />}
-        />
-        <Route
-          exact
-          path="/registration"
-          render={(props) => <Registration {...props} />}
-        />
-        <Route exact path="/down" render={(props) => <Down {...props} />} />
-        <Route exact path="/bitsy" render={(props) => <Bitsy {...props} />} />
-        <Redirect from="/" exact to="login" />
-        <Redirect to="/404" />
-      </Switch>
+			<ChakraProvider>
+				<Switch>
+					<Route exact path="/login" render={(props) => <Login {...props} />} />
+					<Route exact path="/home" render={(props) => <HomePage {...props} />} />
+					<Route
+						exact
+						path="/character"
+						render={(props) => <CharacterProfile {...props} />}
+					/>
+					<Route
+						exact
+						path="/controllers"
+						render={(props) => <Control {...props} />}
+					/>
+					<Route
+						exact
+						path="/others"
+						render={(props) => <OtherCharacters {...props} />}
+					/>
+					<Route
+						exact
+						path="/actions"
+						render={(props) => <Actions {...props} />}
+					/>
+					<Route
+						exact
+						path="/gameConfig"
+						render={(props) => <GameConfig {...props} />}
+					/>
+					<Route
+						exact
+						path="/control"
+						render={(props) => <ControlTerminal {...props} />}
+					/>
+					<Route exact path="/quests" render={(props) => <Quests {...props} />} />
+					<Route exact path="/map" render={(props) => <Map {...props} />} />
+					<Route exact path="/404" render={(props) => <NotFound {...props} />} />
+					<Route
+						exact
+						path="/no-character"
+						render={(props) => <NoCharacter {...props} />}
+					/>
+					<Route
+						exact
+						path="/registration"
+						render={(props) => <Registration {...props} />}
+					/>
+					<Route exact path="/down" render={(props) => <Down {...props} />} />
+					<Route exact path="/bitsy" render={(props) => <Bitsy {...props} />} />
+					<Redirect from="/" exact to="login" />
+					<Redirect to="/404" />
+				</Switch>
+			</ChakraProvider>
     </div>
   );
 };
