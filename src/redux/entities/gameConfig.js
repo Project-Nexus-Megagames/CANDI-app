@@ -10,8 +10,8 @@ const slice = createSlice({
     loading: false,
     loaded: false,
     lastFetch: null,
-		gamestate: {},
-		actionTypes: []
+		actionTypes: [],
+		effortTypes: [],
   },
   // Reducers - Events
   reducers: {
@@ -33,16 +33,21 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       gameConfig.loading = false;
     },
-    gameConfigAdded: (gameConfig, action) => {
+    actionTypesAdded: (state, action) => {
       console.log(`${action.type} Dispatched`)
-      gameConfig.list.push(action.payload);
+      state.actionTypes = action.payload.actionTypes;
+    },
+		effortTypesAdded: (state, action) => {
+      console.log(`${action.type} Dispatched`)
+      state.effortTypes = action.payload.effortTypes;
     }
   }
 });
 
 // Action Export
 export const {
-  gameConfigAdded,
+  actionTypesAdded,
+	effortTypesAdded,
   gameConfigReceived,
   gameConfigRequested,
   gameConfigRequestFailed,

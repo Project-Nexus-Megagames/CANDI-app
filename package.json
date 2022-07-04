@@ -48,7 +48,7 @@
     "eject": "react-scripts eject",
     "client": "react-scripts start",
     "server": "npm run server --prefix ../CANDI-server",
-    "dev": "concurrently \"npm run sever\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint"
   },
   "browserslist": {
