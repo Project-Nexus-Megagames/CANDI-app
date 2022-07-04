@@ -100,7 +100,8 @@ const NewEffects = (props) => {
 				break;
 			case 'character':
 				let charSelect = [];
-				let playerContacts = props.selected.creator.knownContacts;
+				let playerContacts = characters.find(char => char._id === props.selected.creator._id);
+				playerContacts ? playerContacts = playerContacts.knownContacts : [];
 				characters.forEach((char) => {
 					if (playerContacts.findIndex((id) => id === char._id) !== -1) return;
 					else if (char._id === props.selected.creator._id) return;
@@ -264,19 +265,6 @@ const NewEffects = (props) => {
 						value={selected.uses}
 						onChange={(value) => handleEdit('uses', value)}
 					/>
-					{selected.type === 'GodBond' && (
-						<div>
-							Bond Level
-							<InputPicker
-								labelKey="label"
-								valueKey="value"
-								data={godPickerData}
-								defaultValue={selected.level}
-								style={{ width: '100%' }}
-								onChange={(event) => handleEdit('level', event)}
-							/>
-						</div>
-					)}
 					{selected.type === 'Asset' && (
 						<div>
 							<Divider />
@@ -508,33 +496,6 @@ const NewEffects = (props) => {
 		</Modal>
 	);
 };
-
-const godPickerData = [
-	{
-		label: 'Condemned',
-		value: 'Condemned'
-	},
-	{
-		label: 'Disfavoured',
-		value: 'Disfavoured'
-	},
-	{
-		label: 'Neutral',
-		value: 'Neutral'
-	},
-	{
-		label: 'Preferred',
-		value: 'Preferred'
-	},
-	{
-		label: 'Favoured',
-		value: 'Favoured'
-	},
-	{
-		label: 'Blessed',
-		value: 'Blessed'
-	}
-];
 
 const mortalPickerData = [
 	{

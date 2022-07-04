@@ -200,3 +200,7 @@
   right: 20%;
   font-size: 12px;
 }
+
+.rs-list {
+  scrollbar-width: thin;
+}
