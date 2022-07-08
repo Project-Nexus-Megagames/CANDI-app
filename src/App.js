@@ -14,6 +14,7 @@ import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
 import GameConfig from "./components/GameConfig/GameConfigStep1";
+import GameConfig2 from "./components/GameConfig/GameConfigStep2";
 
 import Login from "./components/Navigation/Login";
 import initUpdates from "./redux/initUpdate";
@@ -145,6 +146,11 @@ const App = (props) => {
 						exact
 						path="/gameConfig"
 						render={(props) => <GameConfig {...props} />}
+					/>
+										<Route
+						exact
+						path="/gameConfig2"
+						render={(props) => <GameConfig2 {...props} />}
 					/>
 					<Route
 						exact

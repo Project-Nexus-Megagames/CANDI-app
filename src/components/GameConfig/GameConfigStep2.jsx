@@ -17,7 +17,7 @@ import {
 	Stack
 } from '@chakra-ui/react';
 
-function GameConfig() {
+function GameConfig2() {
 	const config = useSelector((state) => state.gameConfig);
 	const { register, control, handleSubmit, reset, formState, setValue } =
 		useForm({
@@ -40,7 +40,7 @@ function GameConfig() {
 		name: 'actionTypes',
 		control
 	});
-
+	// TODO: add minErffort, etc, >0
 	const validation = {
 		type: {
 			required: 'Type is required',
@@ -189,4 +189,4 @@ function GameConfig() {
 	);
 }
 
-export default GameConfig;
+export default GameConfig2;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Button, ButtonGroup } from 'rsuite';
-import { actionTypesAdded } from '../../redux/entities/gameConfig';
+import { effortTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
 import {
 	HStack,
@@ -12,34 +12,28 @@ import {
 	Box,
 	FormLabel,
 	Input,
-	Text,
-	Checkbox,
-	CheckboxGroup,
-	Stack
+	Text
 } from '@chakra-ui/react';
 
 function GameConfig() {
 	const config = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
+
+	//TODO: add validation for EffortAmount, incl >0
 	const { register, control, handleSubmit, reset, formState, setValue } =
 		useForm({
 			defaultValues: {
-				actionTypes: [
+				effortTypes: [
 					{
 						type: '',
-						minEffort: 0,
-						maxEffort: 0,
-						assetTypes: [''],
-						maxAssets: 0,
-						public: false,
-						icon: ''
+						effortAmount: 0
 					}
 				]
 			}
 		});
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
-		name: 'actionTypes',
+		name: 'effortTypes',
 		control
 	});
 
@@ -54,10 +48,7 @@ function GameConfig() {
 				value: 300,
 				message: "That's way too long, try again"
 			}
-		},
-		minEffort: { required: 'Min Effort is required' },
-		maxEffort: { required: 'Max Effort is required' },
-		maxAssets: { required: 'Max Assets is required' }
+		}
 	};
 
 	const handleError = (errors) => {
@@ -66,7 +57,7 @@ function GameConfig() {
 
 	const onSubmit = (data) => {
 		console.log(data);
-		dispatch(actionTypesAdded(data));
+		dispatch(effortTypesAdded(data));
 		//try {
 		//	socket.emit('request', {
 		//		route: 'gameConfig',
@@ -88,40 +79,21 @@ function GameConfig() {
 									<Box>
 										<HStack spacing="24px">
 											<FormControl variant="floating">
-												<FormLabel>Type of Action</FormLabel>
+												<FormLabel>Type of Effort</FormLabel>
 												<Input
 													key={item.id}
 													type="text"
 													size="md"
 													variant="outline"
 													{...register(
-														`actionTypes.${i}.type`,
+														`effortTypes.${i}.type`,
 														validation.type
 													)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.actionTypes?.[i]?.type &&
-														errors.actionTypes[i].type.message}
+													{errors.effortTypes?.[i]?.type &&
+														errors.effortTypes[i].type.message}
 												</Text>
-											</FormControl>
-											<FormControl variant="floating">
-												<FormLabel>Types of Resources</FormLabel>
-												<CheckboxGroup key={item.id}>
-													<Stack spacing={[1, 5]} direction={['column', 'row']}>
-														<Checkbox
-															value="asset"
-															{...register(`actionTypes.${i}.assetTypes`)}
-														>
-															Asset
-														</Checkbox>
-														<Checkbox
-															value="trait"
-															{...register(`actionTypes.${i}.assetTypes`)}
-														>
-															Trait
-														</Checkbox>
-													</Stack>
-												</CheckboxGroup>
 											</FormControl>
 											<FormControl variant="floating">
 												<FormLabel>Max Amount of Resources</FormLabel>
@@ -130,25 +102,8 @@ function GameConfig() {
 													type="number"
 													size="md"
 													variant="outline"
-													{...register(
-														`actionTypes.${i}.maxAssets`,
-														validation.maxAssets
-													)}
+													{...register(`effortTypes.${i}.effortAmount`)}
 												/>
-												<Text fontSize="sm" color="red.500">
-													{errors.actionTypes?.[i]?.maxAssets &&
-														errors.actionTypes[i].maxAssets.message}
-												</Text>
-											</FormControl>
-											<FormControl variant="floating">
-												<Checkbox
-													key={item.id}
-													type="text"
-													size="md"
-													{...register(`actionTypes.${i}.public`)}
-												>
-													Public Action
-												</Checkbox>
 											</FormControl>
 											<Button size="xs" onClick={() => remove(i)}>
 												-
@@ -164,19 +119,14 @@ function GameConfig() {
 							onClick={() =>
 								append({
 									type: '',
-									minEffort: 0,
-									maxEffort: 0,
-									assetTypes: [''],
-									maxAssets: 0,
-									public: false,
-									icon: ''
+									effortAmount: 0
 								})
 							}
 						>
 							Add Type
 						</Button>
 						<Button type="submit" className="btn btn-primary mr-1">
-							Create Initial Config
+							Next
 						</Button>
 						<Button
 							onClick={() => reset()}

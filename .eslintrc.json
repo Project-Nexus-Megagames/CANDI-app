@@ -26,7 +26,10 @@
 			"no-constant-condition": "off",
 			"react/react-in-jsx-scope": "warn",
 			"react/no-unescaped-entities": "off",
-			"react/jsx-key": "warn"
+			"react/jsx-key": "warn",
+			"no-children-prop": "off",
+			"no-case-declarations": "off",
+			"no-mixed-spaces-and-tabs": "warn"
 
 		}
 }
