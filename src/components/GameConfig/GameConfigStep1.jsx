@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { Button, ButtonGroup } from 'rsuite';
 import { effortTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
@@ -18,6 +19,7 @@ import {
 function GameConfig() {
 	const config = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	//TODO: add validation for EffortAmount, incl >0
 	const { register, control, handleSubmit, reset, formState, setValue } =
@@ -58,14 +60,7 @@ function GameConfig() {
 	const onSubmit = (data) => {
 		console.log(data);
 		dispatch(effortTypesAdded(data));
-		//try {
-		//	socket.emit('request', {
-		//		route: 'gameConfig',
-		//		action: 'create',
-		//		data
-		//	});
-		//	// eslint-disable-next-line no-empty
-		//} catch (err) {}
+		history.push('./GameConfig2');
 	};
 
 	return (
@@ -141,5 +136,4 @@ function GameConfig() {
 		</form>
 	);
 }
-
 export default GameConfig;

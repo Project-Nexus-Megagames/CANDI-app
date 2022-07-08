@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux'; // Redux store provider
+import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Button, ButtonGroup } from 'rsuite';
+import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
 import {
 	HStack,
@@ -19,6 +20,8 @@ import {
 
 function GameConfig2() {
 	const config = useSelector((state) => state.gameConfig);
+	const dispatch = useDispatch();
+
 	const { register, control, handleSubmit, reset, formState, setValue } =
 		useForm({
 			defaultValues: {
@@ -63,7 +66,10 @@ function GameConfig2() {
 	};
 
 	function onSubmit(data) {
-		console.log(data);
+		dispatch(actionTypesAdded(data));
+		let configToBeSent = { ...config };
+		configToBeSent.actionTypes = data.actionTypes;
+		console.log(configToBeSent);
 		//try {
 		//	socket.emit('request', {
 		//		route: 'gameConfig',
