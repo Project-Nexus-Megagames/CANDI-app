@@ -41,13 +41,17 @@ function GameConfig() {
 		type: {
 			required: 'Type is required',
 			pattern: {
-				value: /^[a-zA-Z0-9_.-]+$/,
+				value: /^[a-zA-Z0-9_.-\s]+$/,
 				message: "That's not a valid type where I come from..."
 			},
 			maxLength: {
 				value: 300,
 				message: "That's way too long, try again"
 			}
+		},
+		effortAmount: {
+			required: 'Effort Amount is required',
+			min: { value: 0, message: 'Must be larger than 0' }
 		}
 	};
 
@@ -89,14 +93,21 @@ function GameConfig() {
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
-												<FormLabel>Max Amount of Resources</FormLabel>
+												<FormLabel>Amount of Effort</FormLabel>
 												<Input
 													key={item.id}
 													type="number"
 													size="md"
 													variant="outline"
-													{...register(`effortTypes.${i}.effortAmount`)}
+													{...register(
+														`effortTypes.${i}.effortAmount`,
+														validation.effortAmount
+													)}
 												/>
+												<Text fontSize="sm" color="red.500">
+													{errors.effortTypes?.[i]?.effortAmount &&
+														errors.effortTypes[i].effortAmount.message}
+												</Text>
 											</FormControl>
 											<Button size="xs" onClick={() => remove(i)}>
 												-

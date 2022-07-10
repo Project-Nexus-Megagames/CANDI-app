@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { Button, ButtonGroup } from 'rsuite';
 import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
@@ -15,7 +15,8 @@ import {
 	Text,
 	Checkbox,
 	CheckboxGroup,
-	Stack
+	Stack,
+	Select
 } from '@chakra-ui/react';
 
 function GameConfig2() {
@@ -47,7 +48,7 @@ function GameConfig2() {
 		type: {
 			required: 'Type is required',
 			pattern: {
-				value: /^[a-zA-Z0-9_.-]+$/,
+				value: /^[a-zA-Z0-9_.-\s]+$/,
 				message: "That's not a valid type where I come from..."
 			},
 			maxLength: {
@@ -55,9 +56,18 @@ function GameConfig2() {
 				message: "That's way too long, try again"
 			}
 		},
-		minEffort: { required: 'Min Effort is required' },
-		maxEffort: { required: 'Max Effort is required' },
-		maxAssets: { required: 'Max Assets is required' }
+		minEffort: {
+			required: 'Min Effort is required',
+			min: { value: 0, message: 'Must be larger than 0' }
+		},
+		maxEffort: {
+			required: 'Max Effort is required',
+			min: { value: 0, message: 'Must be larger than 0' }
+		},
+		maxAssets: {
+			required: 'Max Assets is required',
+			min: { value: 0, message: 'Must be larger than 0' }
+		}
 	};
 
 	const handleError = (errors) => {
@@ -142,6 +152,52 @@ function GameConfig2() {
 												<Text fontSize="sm" color="red.500">
 													{errors.actionTypes?.[i]?.maxAssets &&
 														errors.actionTypes[i].maxAssets.message}
+												</Text>
+											</FormControl>
+											<FormControl>
+												<Select
+													label="Type of Effort"
+													{...register(`actionTypes.${i}.effortType`)}
+												>
+													{config.effortTypes.map((item) => (
+														<option key={item.type} value={item.type}>
+															{item.type}
+														</option>
+													))}
+												</Select>
+											</FormControl>
+											<FormControl variant="floating">
+												<FormLabel>Min Effort</FormLabel>
+												<Input
+													key={item.id}
+													type="number"
+													size="md"
+													variant="outline"
+													{...register(
+														`actionTypes.${i}.minEffort`,
+														validation.minEffort
+													)}
+												/>
+												<Text fontSize="sm" color="red.500">
+													{errors.actionTypes?.[i]?.minEffort &&
+														errors.actionTypes[i].minEffort.message}
+												</Text>
+											</FormControl>
+											<FormControl variant="floating">
+												<FormLabel>Max Effort</FormLabel>
+												<Input
+													key={item.id}
+													type="number"
+													size="md"
+													variant="outline"
+													{...register(
+														`actionTypes.${i}.maxEffort`,
+														validation.maxEffort
+													)}
+												/>
+												<Text fontSize="sm" color="red.500">
+													{errors.actionTypes?.[i]?.maxEffort &&
+														errors.actionTypes[i].maxEffort.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
