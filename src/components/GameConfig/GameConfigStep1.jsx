@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
+import React from 'react';
+import { useDispatch } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { Button, ButtonGroup } from 'rsuite';
 import { effortTypesAdded } from '../../redux/entities/gameConfig';
-import socket from '../../socket';
+
 import {
 	HStack,
 	VStack,
@@ -17,22 +17,20 @@ import {
 } from '@chakra-ui/react';
 
 function GameConfig() {
-	const config = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
 	const history = useHistory();
 
 	//TODO: add validation for EffortAmount, incl >0
-	const { register, control, handleSubmit, reset, formState, setValue } =
-		useForm({
-			defaultValues: {
-				effortTypes: [
-					{
-						type: '',
-						effortAmount: 0
-					}
-				]
-			}
-		});
+	const { register, control, handleSubmit, reset, formState } = useForm({
+		defaultValues: {
+			effortTypes: [
+				{
+					type: '',
+					effortAmount: 0
+				}
+			]
+		}
+	});
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
 		name: 'effortTypes',

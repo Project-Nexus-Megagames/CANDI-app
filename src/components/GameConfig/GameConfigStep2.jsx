@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Button, ButtonGroup } from 'rsuite';
@@ -22,22 +22,21 @@ function GameConfig2() {
 	const config = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
 
-	const { register, control, handleSubmit, reset, formState, setValue } =
-		useForm({
-			defaultValues: {
-				actionTypes: [
-					{
-						type: '',
-						minEffort: 0,
-						maxEffort: 0,
-						assetTypes: [''],
-						maxAssets: 0,
-						public: false,
-						icon: ''
-					}
-				]
-			}
-		});
+	const { register, control, handleSubmit, reset, formState } = useForm({
+		defaultValues: {
+			actionTypes: [
+				{
+					type: '',
+					minEffort: 0,
+					maxEffort: 0,
+					assetTypes: [],
+					maxAssets: 0,
+					public: false,
+					icon: ''
+				}
+			]
+		}
+	});
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
 		name: 'actionTypes',
@@ -69,15 +68,17 @@ function GameConfig2() {
 		dispatch(actionTypesAdded(data));
 		let configToBeSent = { ...config };
 		configToBeSent.actionTypes = data.actionTypes;
-		console.log(configToBeSent);
-		//try {
-		//	socket.emit('request', {
-		//		route: 'gameConfig',
-		//		action: 'create',
-		//		data
-		//	});
-		//	// eslint-disable-next-line no-empty
-		//} catch (err) {}
+		try {
+			socket.emit('request', {
+				route: 'gameConfig',
+				action: 'create',
+				data: configToBeSent
+			});
+			console.log('try block called');
+			// eslint-disable-next-line no-empty
+		} catch (err) {
+			console.log('catch block called', err);
+		}
 	}
 
 	return (

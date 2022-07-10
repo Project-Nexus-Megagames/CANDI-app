@@ -154,6 +154,9 @@ const HomePage = (props) => {
 						<Dropdown.Item onSelect={() => props.toggleDuck()}>
 							Spook
 						</Dropdown.Item>
+						<Dropdown.Item>
+							<Link to="gameConfig">Game Config</Link>
+						</Dropdown.Item>
 					</Dropdown>
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={22}>

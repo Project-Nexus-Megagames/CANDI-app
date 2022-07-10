@@ -21,7 +21,6 @@ const slice = createSlice({
     },
     gameConfigReceived: (gameConfig, action) => {
 			console.log(`${action.type} Dispatched...`);
-			gameConfig.gamestate = action.payload.gamestate;
 			gameConfig.name = action.payload.name;
 			gameConfig.actionTypes = action.payload.actionTypes;
 			gameConfig.actionAndEffortTypes = action.payload.actionAndEffortTypes;
