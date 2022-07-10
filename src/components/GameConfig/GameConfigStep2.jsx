@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { Button, ButtonGroup } from 'rsuite';
 import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
@@ -20,26 +20,16 @@ import {
 } from '@chakra-ui/react';
 
 function GameConfig2() {
-	const config = useSelector((state) => state.gameConfig);
+	const oldConfig = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
 
 	const { register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
-			actionTypes: [
-				{
-					type: '',
-					minEffort: 0,
-					maxEffort: 0,
-					assetTypes: [],
-					maxAssets: 0,
-					public: false,
-					icon: ''
-				}
-			]
+			effortTypes: [oldConfig.actionTypes]
 		}
 	});
 	const { errors } = formState;
-	const { fields, append, remove } = useFieldArray({
+	const { fields, append, remove, update } = useFieldArray({
 		name: 'actionTypes',
 		control
 	});
@@ -70,13 +60,22 @@ function GameConfig2() {
 		}
 	};
 
+	useEffect(() => {
+		oldConfig.actionTypes.forEach((type, index) => {
+			console.log(type);
+			Object.keys(type).forEach((key) => {
+				update(index, type[key]);
+			});
+		});
+	}, [oldConfig, update]);
+
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
 	};
 
 	function onSubmit(data) {
 		dispatch(actionTypesAdded(data));
-		let configToBeSent = { ...config };
+		let configToBeSent = { ...oldConfig };
 		configToBeSent.actionTypes = data.actionTypes;
 		try {
 			socket.emit('request', {
@@ -108,6 +107,7 @@ function GameConfig2() {
 													type="text"
 													size="md"
 													variant="outline"
+													defaultValue={oldConfig.actionTypes?.[i]?.type}
 													{...register(
 														`actionTypes.${i}.type`,
 														validation.type
@@ -120,17 +120,20 @@ function GameConfig2() {
 											</FormControl>
 											<FormControl variant="floating">
 												<FormLabel>Types of Resources</FormLabel>
-												<CheckboxGroup key={item.id}>
+												<CheckboxGroup
+													key={item.id}
+													defaultValue={oldConfig.actionTypes?.[i]?.assetType}
+												>
 													<Stack spacing={[1, 5]} direction={['column', 'row']}>
 														<Checkbox
 															value="asset"
-															{...register(`actionTypes.${i}.assetTypes`)}
+															{...register(`actionTypes.${i}.assetType`)}
 														>
 															Asset
 														</Checkbox>
 														<Checkbox
 															value="trait"
-															{...register(`actionTypes.${i}.assetTypes`)}
+															{...register(`actionTypes.${i}.assetType`)}
 														>
 															Trait
 														</Checkbox>
@@ -144,6 +147,7 @@ function GameConfig2() {
 													type="number"
 													size="md"
 													variant="outline"
+													defaultValue={oldConfig.actionTypes?.[i]?.maxAssets}
 													{...register(
 														`actionTypes.${i}.maxAssets`,
 														validation.maxAssets
@@ -158,8 +162,9 @@ function GameConfig2() {
 												<Select
 													label="Type of Effort"
 													{...register(`actionTypes.${i}.effortType`)}
+													defaultValue={oldConfig.actionTypes?.[i]?.effortType}
 												>
-													{config.effortTypes.map((item) => (
+													{oldConfig.effortTypes.map((item) => (
 														<option key={item.type} value={item.type}>
 															{item.type}
 														</option>
@@ -173,6 +178,7 @@ function GameConfig2() {
 													type="number"
 													size="md"
 													variant="outline"
+													defaultValue={oldConfig.actionTypes?.[i]?.minEffort}
 													{...register(
 														`actionTypes.${i}.minEffort`,
 														validation.minEffort
@@ -190,6 +196,7 @@ function GameConfig2() {
 													type="number"
 													size="md"
 													variant="outline"
+													defaultValue={oldConfig.actionTypes?.[i]?.maxEffort}
 													{...register(
 														`actionTypes.${i}.maxEffort`,
 														validation.maxEffort
@@ -205,6 +212,7 @@ function GameConfig2() {
 													key={item.id}
 													type="text"
 													size="md"
+													defaultValue={oldConfig.actionTypes?.[i]?.public}
 													{...register(`actionTypes.${i}.public`)}
 												>
 													Public Action

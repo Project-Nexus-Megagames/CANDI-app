@@ -23,6 +23,7 @@ const slice = createSlice({
 			console.log(`${action.type} Dispatched...`);
 			gameConfig.name = action.payload.name;
 			gameConfig.actionTypes = action.payload.actionTypes;
+			gameConfig.effortTypes = action.payload.effortTypes;
 			gameConfig.actionAndEffortTypes = action.payload.actionAndEffortTypes;
       gameConfig.loading = false;
       gameConfig.lastFetch = Date.now();

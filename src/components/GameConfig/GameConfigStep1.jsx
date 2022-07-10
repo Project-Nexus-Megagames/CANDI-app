@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch } from 'react-redux'; // Redux store provider
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { Button, ButtonGroup } from 'rsuite';
@@ -19,20 +19,18 @@ import {
 function GameConfig() {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const oldConfig = useSelector((state) => state.gameConfig);
+	console.log(oldConfig.effortTypes);
 
 	//TODO: add validation for EffortAmount, incl >0
 	const { register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
-			effortTypes: [
-				{
-					type: '',
-					effortAmount: 0
-				}
-			]
+			effortTypes: [oldConfig.effortTypes]
 		}
 	});
+
 	const { errors } = formState;
-	const { fields, append, remove } = useFieldArray({
+	const { fields, append, remove, update } = useFieldArray({
 		name: 'effortTypes',
 		control
 	});
@@ -55,12 +53,19 @@ function GameConfig() {
 		}
 	};
 
+	useEffect(() => {
+		oldConfig.effortTypes.forEach((type, index) => {
+			Object.keys(type).forEach((key) => {
+				update(index, type[key]);
+			});
+		});
+	}, [oldConfig, update]);
+
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
 	};
 
 	const onSubmit = (data) => {
-		console.log(data);
 		dispatch(effortTypesAdded(data));
 		history.push('./GameConfig2');
 	};
@@ -82,11 +87,13 @@ function GameConfig() {
 													type="text"
 													size="md"
 													variant="outline"
+													defaultValue={oldConfig.effortTypes?.[i]?.type}
 													{...register(
 														`effortTypes.${i}.type`,
 														validation.type
 													)}
 												/>
+
 												<Text fontSize="sm" color="red.500">
 													{errors.effortTypes?.[i]?.type &&
 														errors.effortTypes[i].type.message}
@@ -99,6 +106,9 @@ function GameConfig() {
 													type="number"
 													size="md"
 													variant="outline"
+													defaultValue={
+														oldConfig.effortTypes?.[i]?.effortAmount
+													}
 													{...register(
 														`effortTypes.${i}.effortAmount`,
 														validation.effortAmount
