@@ -6,7 +6,6 @@ import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
 import { characterUpdated } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
-import socket from '../../socket';
 import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
@@ -30,22 +29,22 @@ const OtherCharacters = (props) => {
 		} else return { cursor: 'pointer' };
 	};
 
-	const tagStyle = (item) => {
+	const tagStyle = (item, index) => {
 		switch (item) {
 			case 'Control':
 				return (
-					<Tag style={{ color: 'black' }} color="orange">
+					<Tag index={index} style={{ color: 'black' }} color="orange">
 						{item}
 					</Tag>
 				);
 			case 'God':
-				return <Tag color="green">{item}</Tag>;
+				return <Tag index={index} color="green">{item}</Tag>;
 			case 'NPC':
-				return <Tag color="blue">{item}</Tag>;
+				return <Tag index={index} color="blue">{item}</Tag>;
 			case 'PC':
-				return <Tag color="cyan">{item}</Tag>;
+				return <Tag index={index} color="cyan">{item}</Tag>;
 			default:
-				return <Tag>{item}</Tag>;
+				return <Tag index={index}>{item}</Tag>;
 		}
 	};
 
@@ -167,8 +166,7 @@ const OtherCharacters = (props) => {
 									)}
 								</InputGroup>
 							</div>
-							<div
-								bodyFill
+							<div							
 								style={{
 									height: 'calc(100vh - 80px)',
 									borderRadius: '0px',
@@ -179,53 +177,11 @@ const OtherCharacters = (props) => {
 							>
 								<List hover size="sm">
 									{filteredCharacters
-										.filter((el) => el.tags.some((el) => el === 'God'))
-										.map((character, index) => (
-											<List.Item
-												key={index}
-												index={index}
-												onClick={() => setSelected(character)}
-												style={listStyle(character)}
-											>
-												<FlexboxGrid>
-													<FlexboxGrid.Item colspan={5} style={styleCenter}>
-														<Avatar
-															src={
-																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
-																	: `/images/${character.characterName}.jpg`
-															}
-															alt="?"
-															circle
-														/>
-													</FlexboxGrid.Item>
-													<FlexboxGrid.Item
-														colspan={19}
-														style={{
-															...styleCenter,
-															flexDirection: 'column',
-															alignItems: 'flex-start',
-															overflow: 'hidden'
-														}}
-													>
-														<b style={titleStyle}>
-															{character.characterName}
-															<Tag color="green" style={{ marginLeft: '15px' }}>
-																God
-															</Tag>
-														</b>
-														<b style={slimText}>{character.email}</b>
-													</FlexboxGrid.Item>
-												</FlexboxGrid>
-											</List.Item>
-										))}
-
-									{filteredCharacters
 										.filter((el) => el.tags.some((el) => el === 'PC'))
-										.map((character, index) => (
+										.map((character) => (
 											<List.Item
-												key={index}
-												index={index}
+												key={character._id}
+												index={character._id}
 												onClick={() => setSelected(character)}
 												style={listStyle(character)}
 											>
@@ -264,10 +220,10 @@ const OtherCharacters = (props) => {
 
 									{filteredCharacters
 										.filter((el) => el.tags.some((el) => el === 'NPC'))
-										.map((character, index) => (
+										.map((character) => (
 											<List.Item
-												key={index}
-												index={index}
+												key={character._id}
+												index={character._id}
 												onClick={() => setSelected(character)}
 												style={listStyle(character)}
 											>
@@ -436,7 +392,7 @@ const OtherCharacters = (props) => {
 											}}
 										>
 											<h4>Control Panel</h4>
-											<h5>Effort Left: {selected.effort} </h5>
+											<h5>Effort Left: TODO DISPLAY EFFORT HERE </h5>
 											<ButtonGroup style={{ marginTop: '5px' }}>
 												<Button
 													appearance={'ghost'}
@@ -467,10 +423,9 @@ const OtherCharacters = (props) => {
 													{props.assets
 														.filter((el) => el.ownerCharacter === selected._id)
 														.map((asset, index) => (
-															<Col md={6} sm={12}>
+															<Col index={index} key={index} md={6} sm={12}>
 																<Panel
 																	onClick={() => setAsset(asset)}
-																	index={index}
 																	bordered
 																>
 																	<h5>{asset.name}</h5>
@@ -498,6 +453,7 @@ const OtherCharacters = (props) => {
 										</Panel>
 									</FlexboxGrid.Item>
 								)}
+								
 								<FlexboxGrid.Item colspan={24}>
 									<Panel
 										style={{
@@ -528,7 +484,7 @@ const OtherCharacters = (props) => {
 															Tags:
 															{selected.tags &&
 																selected.tags.map((item, index) =>
-																	tagStyle(item)
+																	tagStyle(item, index)
 																)}
 														</TagGroup>
 													</FlexboxGrid.Item>
@@ -551,6 +507,7 @@ const OtherCharacters = (props) => {
 																		<Tag
 																			style={{ color: 'black' }}
 																			color="orange"
+																			key={index}
 																			index={index}
 																		>
 																			{item}

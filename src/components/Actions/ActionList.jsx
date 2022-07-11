@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List, FlexboxGrid, Container, Tag } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { filteredActions } from '../../redux/entities/playerActions';
 
 class ActionList extends Component {
 	state = { rounds: [] };
@@ -16,7 +15,7 @@ class ActionList extends Component {
 	};
 
 	componentDidUpdate = (prevProps) => {
-		if (this.props.filteredActions !== prevProps.filteredActions) {
+		if (this.props.actions !== prevProps.actions) {
 			this.createListCatagories();
 		}
 	};
@@ -50,7 +49,7 @@ class ActionList extends Component {
 
 	createListCatagories = () => {
 		const rounds = [];
-		for (const action of this.props.filteredActions) {
+		for (const action of this.props.actions) {
 			if (!rounds.some((el) => el === action.round)) rounds.push(action.round);
 		}
 		rounds.reverse();
@@ -74,20 +73,21 @@ class ActionList extends Component {
 		return (
 			<Container>
 				{this.state.rounds.map((round, index) => (
-					<div>
+					<div index={index}>
 						<h5 style={{ backgroundColor: '#d4af37', color: 'black' }}>
 							Round {round}
 						</h5>
-						{this.props.myCharacter.tags.some((el) => el === 'Control') && (
+						
 							<List hover size="sm">
+								{this.props.actionTypes.map((actionType, index) => {
+									return (
+										<div index={index}>
+											<h5>{actionType}</h5>
+
+											<List hover size="sm">
 								{/* <h5 >Control List</h5> */}
-								{this.props.filteredActions.length === 0 && (
-									<h5 style={{ textAlign: 'center', marginTop: '40vh' }}>
-										No Actions
-									</h5>
-								)}
-								{this.props.filteredActions
-									.filter((action) => action.round === round)
+								{this.props.actions
+									.filter((action) => action.round === round && action.type === actionType)
 									.sort((a, b) => {
 										// sort the catagories alphabetically
 										if (a.creator.characterTitle < b.creator.characterTitle) {
@@ -153,48 +153,13 @@ class ActionList extends Component {
 											</List.Item>
 										)
 									)}
+											</List>
+											
+										
+										</div>
+									)							
+								})}
 							</List>
-						)}
-
-						{!this.props.myCharacter.tags.some((el) => el === 'Control') && (
-							<List hover size="sm">
-								{this.props.myActions.length === 0 && (
-									<h5 style={{ textAlign: 'center', marginTop: '40vh' }}>
-										No Actions{' '}
-									</h5>
-								)}
-								{this.props.myActions
-									.filter((action) => action.round === round)
-									.map(
-										(
-											action,
-											index // .filter(el => el.round === round)
-										) => (
-											<List.Item
-												key={index}
-												index={index}
-												size={'sm'}
-												onClick={() => this.props.handleSelect(action)}
-												style={this.listStyle(action, index % 2)}
-											>
-												<FlexboxGrid>
-													<FlexboxGrid.Item
-														colspan={24}
-														style={{
-															...styleCenter,
-															flexDirection: 'column',
-															alignItems: 'flex-start',
-															overflow: 'hidden'
-														}}
-													>
-														<div style={titleStyle}>{action.name}</div>
-													</FlexboxGrid.Item>
-												</FlexboxGrid>
-											</List.Item>
-										)
-									)}
-							</List>
-						)}
 					</div>
 				))}
 			</Container>
@@ -228,9 +193,6 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
-
-	myActions: state.actions.list, // getMyActions(state),
-	filteredActions: filteredActions(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({});

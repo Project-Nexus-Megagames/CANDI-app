@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import {
-	Container,
-	Sidebar,
-	Input,
-	PanelGroup,
-	Button,
-	Loader,
-	Icon,
-	InputGroup,
-	Tooltip,
-	Whisper
-} from 'rsuite';
+import { Container, Sidebar, Input, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import {
+	filteredActions,
 	getCurrentExplores,
 	getMyActions,
 	setFilter
@@ -47,6 +37,13 @@ const Actions = (props) => {
 		setSelected(fuuuck);
 	};
 
+	const getIcon = (type) => {
+		switch(type){
+			default: 
+				return(<Icon icon="plus" />)
+		}
+	};
+
 	if (!props.login) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
@@ -59,7 +56,7 @@ const Actions = (props) => {
 	const actionTypes = [];
 
 	for (const actionType of gameConfig.actionTypes)
-		actionTypes.push(actionType.type);
+	actionTypes.push(actionType.type);
 
 	const showExplore = actionTypes.some((el) => el === 'Explore') === true;
 	const showFeed = actionTypes.some((el) => el === 'Feed') === true;
@@ -74,7 +71,7 @@ const Actions = (props) => {
 		<React.Fragment>
 			<NavigationBar />
 			<Container style={{ height: 'calc(100vh - 50px)' }}>
-				<Sidebar className="side-bar">
+				<Sidebar >
 					<PanelGroup>
 						<div
 							style={{
@@ -91,95 +88,30 @@ const Actions = (props) => {
 									value={props.filter}
 									placeholder="Search"
 								></Input>
-								{showExplore && (
+								{actionTypes.map((type, index) => (
 									<Whisper
-										placement="top"
-										trigger="hover"
-										speaker={
-											<Tooltip>
-												<b>
-													{true
-														? 'Create New Explore Action'
-														: 'No Explore Left'}
-												</b>
-											</Tooltip>
-										}
+									key={index}
+									placement="top"
+									trigger="hover"
+									speaker={
+										<Tooltip>
+											<b>
+												{true
+													? `Create New ${type} Action`
+													: `'No ${type} Left'`}
+											</b>
+										</Tooltip>
+									}
+								>
+									<Button
+										style={{ color: 'black', borderRadius: '0px' }}
+										color="orange"
+										onClick={() => setShowNew(type)}
 									>
-										<Button
-											style={{ color: 'black', borderRadius: '0px' }}
-											color="orange"
-											onClick={() => setShowNew('explore')}
-										>
-											<Icon icon="explore" />
-										</Button>
-									</Whisper>
-								)}
-								{showFeed && (
-									<Whisper
-										placement="top"
-										trigger="hover"
-										speaker={
-											<Tooltip>
-												<b>
-													{true ? 'Create New Feed Action' : 'No Feed Left'}
-												</b>
-											</Tooltip>
-										}
-									>
-										<Button
-											style={{ color: 'black', borderRadius: '0px' }}
-											color="orange"
-											onClick={() => setShowNew('feed')}
-										>
-											<Icon icon="ios" />
-										</Button>
-									</Whisper>
-								)}
-								{showAgenda && (
-									<Whisper
-										placement="top"
-										trigger="hover"
-										speaker={
-											<Tooltip>
-												<b>
-													{true ? 'Create New Agenda Action' : 'No Agenda Left'}
-												</b>
-											</Tooltip>
-										}
-									>
-										<Button
-											style={{ color: 'black', borderRadius: '0px' }}
-											color="orange"
-											onClick={() => setShowNew('agenda')}
-										>
-											<DocPass />
-										</Button>
-									</Whisper>
-								)}
-								{
-									<Whisper
-										placement="top"
-										trigger="hover"
-										speaker={
-											<Tooltip>
-												<b>
-													{normalEffort > 0
-														? `Create New Default Action (${normalEffort})`
-														: 'No Actions Left'}
-												</b>
-											</Tooltip>
-										}
-									>
-										<Button
-											style={{ borderRadius: '0px' }}
-											disabled={normalEffort < 1}
-											color="green"
-											onClick={() => setShowNew('default')}
-										>
-											<Icon icon="plus" />{' '}
-										</Button>
-									</Whisper>
-								}
+										{getIcon(type)}
+									</Button>
+								</Whisper>
+								))}
 							</InputGroup>
 						</div>
 						<div
@@ -192,7 +124,7 @@ const Actions = (props) => {
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 							}}
 						>
-							<ActionList selected={selected} handleSelect={handleSelect} />
+							<ActionList actions={props.control ? props.filteredActions : props.myActions} actionTypes={actionTypes} selected={selected} handleSelect={handleSelect} />
 						</div>{' '}
 						ActionList
 					</PanelGroup>
@@ -226,7 +158,8 @@ const mapStateToProps = (state) => ({
 	filter: state.actions.filter,
 	login: state.auth.login,
 	gamestate: state.gamestate,
-	myActions: getMyActions(state)
+	myActions: getMyActions(state),
+	filteredActions: filteredActions(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

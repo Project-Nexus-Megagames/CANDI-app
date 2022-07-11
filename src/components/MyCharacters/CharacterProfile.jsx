@@ -93,22 +93,22 @@ class CharacterProfile extends Component {
 		this.setState({ memory, show: true });
 	};
 
-	tagStyle = (item) => {
+	tagStyle = (item, index) => {
 		switch (item) {
 			case 'Control':
 				return (
-					<Tag style={{ color: 'black' }} color="orange">
+					<Tag index={index} style={{ color: 'black' }} color="orange">
 						{item}
 					</Tag>
 				);
 			case 'God':
-				return <Tag color="green">{item}</Tag>;
+				return <Tag index={index} color="green">{item}</Tag>;
 			case 'NPC':
-				return <Tag color="blue">{item}</Tag>;
+				return <Tag index={index} color="blue">{item}</Tag>;
 			case 'PC':
-				return <Tag color="cyan">{item}</Tag>;
+				return <Tag index={index} color="cyan">{item}</Tag>;
 			default:
-				return <Tag>{item}</Tag>;
+				return <Tag index={index}>{item}</Tag>;
 		}
 	};
 
@@ -161,7 +161,7 @@ class CharacterProfile extends Component {
 									Tags
 									{playerCharacter.tags &&
 										playerCharacter.tags.map((item, index) =>
-											this.tagStyle(item)
+											this.tagStyle(item, index)
 										)}
 								</TagGroup>
 								<TagGroup>

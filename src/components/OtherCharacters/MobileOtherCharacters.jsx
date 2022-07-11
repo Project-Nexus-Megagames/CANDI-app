@@ -1,33 +1,9 @@
 import React, { useEffect } from 'react';
-import {
-	Button,
-	Content,
-	Container,
-	Input,
-	Grid,
-	List,
-	PanelGroup,
-	FlexboxGrid,
-	Avatar,
-	Col,
-	Tag,
-	Row,
-	Loader,
-	TagGroup,
-	Alert,
-	InputGroup,
-	Icon,
-	Divider,
-	Drawer,
-	Panel
-} from 'rsuite';
+import { Button, Content, Container, Input, Grid, List, PanelGroup, FlexboxGrid, Avatar, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, Divider, Drawer, Panel } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
-import {
-	characterUpdated,
-	getMyCharacter
-} from '../../redux/entities/characters';
+import { characterUpdated,	getMyCharacter } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
 import NewCharacter from '../Control/NewCharacter';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
@@ -150,8 +126,7 @@ const OtherCharacters = (props) => {
 		return (
 			<React.Fragment>
 				<NavigationBar />
-				<Drawer
-					className="side-bar"
+				<Drawer					
 					show={showDrawer}
 					placement={'left'}
 					backdrop={false}
@@ -477,7 +452,7 @@ const OtherCharacters = (props) => {
 												<TagGroup>
 													Tags:
 													{selected.tags &&
-														selected.tags.map((item, index) => tagStyle(item))}
+														selected.tags.map((item) => tagStyle(item))}
 												</TagGroup>
 												<Divider />
 												<TagGroup>
@@ -487,6 +462,7 @@ const OtherCharacters = (props) => {
 															<Tag
 																style={{ color: 'black' }}
 																color="orange"
+																key={index}
 																index={index}
 															>
 																{item}
@@ -551,56 +527,6 @@ const OtherCharacters = (props) => {
 														(el) =>
 															el.with._id === selected._id &&
 															el.level === 'Blessed'
-													).length
-												}
-											</Panel>
-										</Col>
-									</Row>
-								)}
-
-								{selected.tags.some((el) => el === 'NPC') && (
-									<Row>
-										<Col xs={8} sm={8} md={8} className="gridbox">
-											<Panel
-												bordered
-												style={{ backgroundColor: '#272b34' }}
-												header="Warm"
-											>
-												{
-													props.mortalBonds.filter(
-														(el) =>
-															el.with._id === selected._id &&
-															el.level === 'Warm'
-													).length
-												}
-											</Panel>
-										</Col>
-										<Col xs={8} sm={8} md={8} className="gridbox">
-											<Panel
-												bordered
-												style={{ backgroundColor: '#272b34' }}
-												header="Friendly"
-											>
-												{
-													props.mortalBonds.filter(
-														(el) =>
-															el.with._id === selected._id &&
-															el.level === 'Friendly'
-													).length
-												}
-											</Panel>
-										</Col>
-										<Col xs={8} sm={8} md={8} className="gridbox">
-											<Panel
-												bordered
-												style={{ backgroundColor: '#272b34' }}
-												header="Bonded"
-											>
-												{
-													props.mortalBonds.filter(
-														(el) =>
-															el.with._id === selected._id &&
-															el.level === 'Bonded'
 													).length
 												}
 											</Panel>

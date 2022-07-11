@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row, Panel } from 'rsuite';
+import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
