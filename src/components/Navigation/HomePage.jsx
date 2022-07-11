@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Loader, Dropdown, IconButton, FlexboxGrid } from 'rsuite';
+import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row, Panel } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
@@ -101,9 +101,7 @@ const HomePage = (props) => {
 		props.history.push('/down');
 		return <Loader inverse center content="doot..." />;
 	}
-	// 	if (window.innerWidth < 768) {
-	// 	return (<MobileHomePage />)
-	// }
+
 	return (
 		<React.Fragment>
 			<FlexboxGrid
@@ -187,10 +185,9 @@ const HomePage = (props) => {
 				</FlexboxGrid.Item>
 			</FlexboxGrid>
 
-			<div style={{ height: 'calc(100vh - 50px)' }}>
-				<FlexboxGrid justify="center">
-					<FlexboxGrid.Item colspan={14}>
-						<div
+			<Row>
+				<Col lg={12} md={24} >
+				<div
 							style={{
 								border: '5px solid #d4af37',
 								borderRadius: '10px',
@@ -216,89 +213,46 @@ const HomePage = (props) => {
 							>
 								Version: {props.version}
 							</p>
-						</div>
-					</FlexboxGrid.Item>
+				</div>
+				</Col>
 
-					<FlexboxGrid.Item colspan={10}>
-						<Link to={'actions'}>
-							<div
-								style={{
-									border: '5px solid #d4af37',
-									width: '94%',
-									borderRadius: '10px',
-									position: 'relative',
-									margin: '10px',
-									height: props.height ? props.height : '45vh',
-									overflow: 'hidden'
-								}}
-							>
-								<div className="container">
-									<img
-										src={actions}
-										className={props.disabled ? 'image disabled' : 'image'}
-										height="auto"
-										alt="Failed to load img"
-									/>
-								</div>
-								<h6
-									style={{
-										position: 'absolute',
-										bottom: '25px',
-										left: '15px',
-										color: 'white',
-										background: '#663300'
-									}}
-								>
-									{' '}
-									~ Actions ~{' '}
-								</h6>
-								<p
-									style={{
-										position: 'absolute',
-										bottom: '10px',
-										left: '15px',
-										color: 'white',
-										background: '#663300',
-										fontSize: '0.966em'
-									}}
-								>
-									{''} Creating and editing Actions{' '}
-								</p>
-							</div>
-						</Link>
-						{/* <ImgPanel height={'45vh'} img={test} to='actions' title='Actions' body='Creating and editing Actions'/> */}
-					</FlexboxGrid.Item>
-				</FlexboxGrid>
+				<Col lg={12} md={12} >
+					<ImgPanel
+						img={actions}
+						to="actions"
+						title="~ Actions ~"
+						body="Do the thing"
+					/>
+				</Col>
 
-				<FlexboxGrid>
-					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel
-							img={myCharacter}
-							to="character"
-							title="~ My Character ~"
-							body="My Assets and Traits"
-						/>
-					</FlexboxGrid.Item>
+				<Col lg={6} md={12}>
+					<ImgPanel
+						img={myCharacter}
+						to="character"
+						title="~ My Character ~"
+						body="My Assets and Traits"
+					/>
+				</Col>
 
-					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel
-							img={Map}
-							to="Map"
-							title="~ Map ~"
-							body="Here be Dragons..."
-						/>
-					</FlexboxGrid.Item>
+				<Col lg={6} md={24}>
+					<ImgPanel
+						img={Map}
+						to="Map"
+						title="~ Map ~"
+						body="Here be Dragons..."
+					/>					
+				</Col>
 
-					<FlexboxGrid.Item colspan={6}>
-						{props.myCharacter.tags.some((el) => el === 'Control') && (
+				<Col lg={6} md={12}>
+					{props.myCharacter.tags.some((el) => el === 'Control') && (
 							<ImgPanel
 								img={control2}
 								to="control"
 								title={'~ Control Terminal ~'}
 								body='"Now he gets it!"'
 							/>
-						)}
-						{!props.myCharacter.tags.some((el) => el === 'Control') && (
+					)}
+					{!props.myCharacter.tags.some((el) => el === 'Control') && (
 							<div
 								onClick={() => openNexus()}
 								style={{
@@ -343,20 +297,19 @@ const HomePage = (props) => {
 									Support the Programmers
 								</p>
 							</div>
-						)}
-						{/* <ImgPanel height={'20.5vh'} img={Map} to='controllers' title='Control' body='Who is responsible?'/> */}
-					</FlexboxGrid.Item>
+					)}				
+				</Col>
 
-					<FlexboxGrid.Item colspan={6}>
-						<ImgPanel
-							img={other}
-							to="others"
-							title={'~ Other Characters ~'}
-							body="Character Details"
-						/>
-					</FlexboxGrid.Item>
-				</FlexboxGrid>
-			</div>
+				<Col lg={6} md={12}>
+					<ImgPanel
+						img={other}
+						to="others"
+						title={'~ Other Characters ~'}
+						body="Character Details"
+					/>					
+				</Col>
+
+			</Row>
 		</React.Fragment>
 	);
 };

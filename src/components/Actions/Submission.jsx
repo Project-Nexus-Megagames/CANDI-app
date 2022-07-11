@@ -30,24 +30,28 @@ import socket from '../../socket';
 import AssetInfo from './AssetInfo';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class Submission extends Component {
-	state = {
-		edit: false, // used to open edit action popup
-		deleteWarning: false, // used to open delete action popup
-		loading: false, //used for loading button
-		effort: this.props.submission.effort,
-		assets: this.props.submission.assets,
-		id: this.props.action._id,
-		name: this.props.action.name,
-		description: this.props.submission.description,
-		intent: this.props.submission.intent,
-		numberOfInjuries: this.props.action.numberOfInjuries,
+	constructor(props) {
+		super(props);
+		this.state = {
+			edit: false, // used to open edit action popup
+			deleteWarning: false, // used to open delete action popup
+			loading: false, //used for loading button
+			effort: this.props.submission.effort,
+			assets: this.props.submission.assets,
+			id: this.props.action._id,
+			name: this.props.action.name,
+			description: this.props.submission.description,
+			intent: this.props.submission.intent,
+			numberOfInjuries: this.props.action.numberOfInjuries,
+	
+			add: false,
+			inputValue: '',
+	
+			infoModal: false,
+			infoAsset: {}
+		};
+	}
 
-		add: false,
-		inputValue: '',
-
-		infoModal: false,
-		infoAsset: {}
-	};
 
 	// componentDidMount = () => {
 	// 	// localStorage.removeItem('newActionState');

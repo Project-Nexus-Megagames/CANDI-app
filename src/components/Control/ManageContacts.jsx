@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	Modal,
-	SelectPicker,
-	ButtonGroup,
-	Button,
-	CheckboxGroup,
-	Checkbox,
-	Panel
-} from 'rsuite';
+import { Modal,	SelectPicker,	ButtonGroup, Button, CheckboxGroup, Checkbox, Panel } from 'rsuite';
 import socket from '../../socket';
-import {
-	getCharacterById,
-	getPlayerCharacters
-} from '../../redux/entities/characters';
+import { getCharacterById,	getPlayerCharacters } from '../../redux/entities/characters';
 import _ from 'lodash';
 
 const ManageContacts = (props) => {
@@ -39,12 +28,10 @@ const ManageContacts = (props) => {
 	const handleSubmit = () => {
 		const data = { charId: char._id, contacts };
 		try {
-			socket.emit('request', {
-				route: 'character',
-				action: 'manageContacts',
-				data
-			});
-		} catch (err) {}
+			socket.emit('request', { route: 'character',	action: 'manageContacts',	data });
+		} catch (err) {
+			console.log(err);
+		}
 		handleExit();
 	};
 

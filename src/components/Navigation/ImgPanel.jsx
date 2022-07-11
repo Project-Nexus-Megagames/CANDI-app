@@ -7,11 +7,9 @@ const ImgPanel = (props) => {
 			<div
 				style={{
 					border: '5px solid #d4af37',
-					width: '90%',
 					borderRadius: '10px',
-					position: 'relative',
 					margin: '10px',
-					height: props.height ? props.height : '44vh',
+					height: '45vh',
 					overflow: 'hidden'
 				}}
 			>

@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import {
-	Progress,
-	Loader,
-	Panel,
-	Icon,
-	IconStack,
-	Row,
-	Col,
-	Button
-} from 'rsuite';
+import { Progress, Loader, Panel, Icon, IconStack, Row, Col, Button } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -22,10 +13,7 @@ import { loadCharacters } from '../../redux/entities/characters';
 import { loadGamestate } from '../../redux/entities/gamestate';
 import { loadGameConfig } from '../../redux/entities/gameConfig';
 import { loadLocations } from '../../redux/entities/locations';
-import {
-	loadplayerActions,
-	loadAllActions
-} from '../../redux/entities/playerActions';
+import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
 import { loadAssets } from '../../redux/entities/assets';
 
 const { Line } = Progress;

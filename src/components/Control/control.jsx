@@ -42,7 +42,7 @@ class Control extends Component {
 		if (!this.props.login) {
 			this.props.history.push('/');
 			return (<Loader inverse center content="doot..." />)
-		};
+		}
 		return ( 
 			<React.Fragment>
 			<NavigationBar/>

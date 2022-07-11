@@ -1,26 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	ButtonGroup,
-	Button,
-	Content,
-	Container,
-	Sidebar,
-	Input,
-	Panel,
-	List,
-	PanelGroup,
-	FlexboxGrid,
-	Avatar,
-	Col,
-	Tag,
-	Row,
-	Loader,
-	TagGroup,
-	Alert,
-	InputGroup,
-	Icon
-} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -31,10 +11,7 @@ import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
-import {
-	getMyCharacter,
-	getMyUnlockedCharacters
-} from './../../redux/entities/characters';
+import { getMyCharacter, getMyUnlockedCharacters } from './../../redux/entities/characters';
 
 const OtherCharacters = (props) => {
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
@@ -133,33 +110,6 @@ const OtherCharacters = (props) => {
 		}
 	}, [props.characters, selected]);
 
-	// eslint-disable-next-line no-unused-vars
-	const makeButton = () => {
-		if (
-			selected.supporters.some((el) => el === props.myCharacter.characterName)
-		) {
-			return (
-				<Button size="xs" onClick={() => lendSupp()} color="red">
-					Take Back Support!
-				</Button>
-			);
-		} else {
-			return (
-				<Button size="xs" onClick={() => lendSupp()} appearance="primary">
-					Lend Support!
-				</Button>
-			);
-		}
-	};
-
-	const lendSupp = async () => {
-		socket.emit('request', {
-			route: 'character',
-			action: 'support',
-			data: { id: selected._id, supporter: props.myCharacter.characterName }
-		});
-	};
-
 	const filterThis = (fil) => {
 		let filtered = [];
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
@@ -194,7 +144,7 @@ const OtherCharacters = (props) => {
 			<React.Fragment>
 				<NavigationBar />
 				<Container style={{ height: 'calc(100vh - 50px)' }}>
-					<Sidebar className="side-bar">
+					<Sidebar >
 						<PanelGroup>
 							<div
 								style={{
