@@ -73,7 +73,16 @@ function GameConfig2() {
 		console.log('ERROR', errors);
 	};
 
+	function hasDuplicates(a) {
+		let actionNames = [];
+		for (const el of a) actionNames.push(el.type);
+		const noDups = new Set(actionNames);
+		return actionNames.length !== noDups.size;
+	}
+
 	function onSubmit(data) {
+		if (hasDuplicates(data.actionTypes))
+			return alert('Effort Types have to be unique');
 		dispatch(actionTypesAdded(data));
 		let configToBeSent = { ...oldConfig };
 		configToBeSent.actionTypes = data.actionTypes;
@@ -84,7 +93,6 @@ function GameConfig2() {
 				data: configToBeSent
 			});
 			console.log('try block called');
-			// eslint-disable-next-line no-empty
 		} catch (err) {
 			console.log('catch block called', err);
 		}
@@ -246,13 +254,13 @@ function GameConfig2() {
 						<Button type="submit" className="btn btn-primary mr-1">
 							Create Initial Config
 						</Button>
-						<Button
+						{/*<Button
 							onClick={() => reset()}
 							type="button"
 							className="btn btn-secondary mr-1"
 						>
 							Reset
-						</Button>
+						</Button>*/}
 					</ButtonGroup>
 				</VStack>
 			</Flex>

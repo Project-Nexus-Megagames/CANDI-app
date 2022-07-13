@@ -20,7 +20,6 @@ function GameConfig() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const oldConfig = useSelector((state) => state.gameConfig);
-	console.log(oldConfig.effortTypes);
 
 	//TODO: add validation for EffortAmount, incl >0
 	const { register, control, handleSubmit, reset, formState } = useForm({
@@ -65,7 +64,16 @@ function GameConfig() {
 		console.log('ERROR', errors);
 	};
 
+	function hasDuplicates(a) {
+		let effortNames = [];
+		for (const el of a) effortNames.push(el.type);
+		const noDups = new Set(effortNames);
+		return effortNames.length !== noDups.size;
+	}
+
 	const onSubmit = (data) => {
+		if (hasDuplicates(data.effortTypes))
+			return alert('Effort Types have to be unique');
 		dispatch(effortTypesAdded(data));
 		history.push('./GameConfig2');
 	};
@@ -142,13 +150,13 @@ function GameConfig() {
 						<Button type="submit" className="btn btn-primary mr-1">
 							Next
 						</Button>
-						<Button
+						{/*<Button
 							onClick={() => reset()}
 							type="button"
 							className="btn btn-secondary mr-1"
 						>
 							Reset
-						</Button>
+						</Button>*/}
 					</ButtonGroup>
 				</VStack>
 			</Flex>
