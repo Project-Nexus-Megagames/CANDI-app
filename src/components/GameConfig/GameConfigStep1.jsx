@@ -53,12 +53,17 @@ function GameConfig() {
 	};
 
 	useEffect(() => {
-		oldConfig.effortTypes.forEach((type, index) => {
-			Object.keys(type).forEach((key) => {
-				update(index, type[key]);
-			});
+		const resetValues = [];
+		oldConfig.effortTypes.forEach((type) => {
+			let a = {};
+			a.type = type.type;
+			a.effortAmount = type.effortAmount;
+			resetValues.push(a);
 		});
-	}, [oldConfig, update]);
+		reset({
+			effortTypes: resetValues
+		});
+	}, [reset]);
 
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
@@ -150,13 +155,13 @@ function GameConfig() {
 						<Button type="submit" className="btn btn-primary mr-1">
 							Next
 						</Button>
-						{/*<Button
+						<Button
 							onClick={() => reset()}
 							type="button"
 							className="btn btn-secondary mr-1"
 						>
 							Reset
-						</Button>*/}
+						</Button>
 					</ButtonGroup>
 				</VStack>
 			</Flex>
