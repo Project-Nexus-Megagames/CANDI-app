@@ -60,14 +60,33 @@ function GameConfig2() {
 		}
 	};
 
+	//useEffect(() => {
+	//	oldConfig.actionTypes.forEach((type, index) => {
+	//		console.log(type);
+	//		Object.keys(type).forEach((key) => {
+	//			update(index, type[key]);
+	//		});
+	//	});
+	//}, [oldConfig, update]);
+
 	useEffect(() => {
-		oldConfig.actionTypes.forEach((type, index) => {
-			console.log(type);
-			Object.keys(type).forEach((key) => {
-				update(index, type[key]);
-			});
+		const resetValues = [];
+		oldConfig.actionTypes.forEach((type) => {
+			let a = {};
+			a.type = type.type;
+			a.effortAmount = type.effortAmount;
+			a.assetType = type.assetType;
+			a.maxAssets = type.maxAssets;
+			a.effortType = type.effortType;
+			a.minEffort = type.minEffort;
+			a.maxEffort = type.maxEffort;
+			a.public = type.public;
+			resetValues.push(a);
 		});
-	}, [oldConfig, update]);
+		reset({
+			actionTypes: resetValues
+		});
+	}, [reset]);
 
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
@@ -254,13 +273,13 @@ function GameConfig2() {
 						<Button type="submit" className="btn btn-primary mr-1">
 							Create Initial Config
 						</Button>
-						{/*<Button
+						<Button
 							onClick={() => reset()}
 							type="button"
 							className="btn btn-secondary mr-1"
 						>
 							Reset
-						</Button>*/}
+						</Button>
 					</ButtonGroup>
 				</VStack>
 			</Flex>
