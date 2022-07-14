@@ -29,7 +29,7 @@ function GameConfig() {
 	});
 
 	const { errors } = formState;
-	const { fields, append, remove, update } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		name: 'effortTypes',
 		control
 	});

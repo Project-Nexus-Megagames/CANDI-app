@@ -15,8 +15,7 @@ import {
 	Text,
 	Checkbox,
 	CheckboxGroup,
-	Stack,
-	Select
+	Stack
 } from '@chakra-ui/react';
 
 function GameConfig2() {
@@ -25,11 +24,11 @@ function GameConfig2() {
 
 	const { register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
-			effortTypes: [oldConfig.actionTypes]
+			actionTypes: [oldConfig.actionTypes]
 		}
 	});
 	const { errors } = formState;
-	const { fields, append, remove, update } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		name: 'actionTypes',
 		control
 	});
@@ -60,15 +59,6 @@ function GameConfig2() {
 		}
 	};
 
-	//useEffect(() => {
-	//	oldConfig.actionTypes.forEach((type, index) => {
-	//		console.log(type);
-	//		Object.keys(type).forEach((key) => {
-	//			update(index, type[key]);
-	//		});
-	//	});
-	//}, [oldConfig, update]);
-
 	useEffect(() => {
 		const resetValues = [];
 		oldConfig.actionTypes.forEach((type) => {
@@ -77,7 +67,7 @@ function GameConfig2() {
 			a.effortAmount = type.effortAmount;
 			a.assetType = type.assetType;
 			a.maxAssets = type.maxAssets;
-			a.effortType = type.effortType;
+			a.effortTypes = type.effortTypes;
 			a.minEffort = type.minEffort;
 			a.maxEffort = type.maxEffort;
 			a.public = type.public;
@@ -101,7 +91,7 @@ function GameConfig2() {
 
 	function onSubmit(data) {
 		if (hasDuplicates(data.actionTypes))
-			return alert('Effort Types have to be unique');
+			return alert('Action Types have to be unique');
 		dispatch(actionTypesAdded(data));
 		let configToBeSent = { ...oldConfig };
 		configToBeSent.actionTypes = data.actionTypes;
@@ -151,7 +141,7 @@ function GameConfig2() {
 													key={item.id}
 													defaultValue={oldConfig.actionTypes?.[i]?.assetType}
 												>
-													<Stack spacing={[1, 5]} direction={['column', 'row']}>
+													<Stack spacing={[1]} direction={['column']}>
 														<Checkbox
 															value="asset"
 															{...register(`actionTypes.${i}.assetType`)}
@@ -168,7 +158,7 @@ function GameConfig2() {
 												</CheckboxGroup>
 											</FormControl>
 											<FormControl variant="floating">
-												<FormLabel>Max Amount of Resources</FormLabel>
+												<FormLabel>Max Resources</FormLabel>
 												<Input
 													key={item.id}
 													type="number"
@@ -186,17 +176,23 @@ function GameConfig2() {
 												</Text>
 											</FormControl>
 											<FormControl>
-												<Select
-													label="Type of Effort"
-													{...register(`actionTypes.${i}.effortType`)}
-													defaultValue={oldConfig.actionTypes?.[i]?.effortType}
+												<FormLabel>Types of Effort</FormLabel>
+												<CheckboxGroup
+													key={item.id}
+													defaultValue={oldConfig.actionTypes?.[i]?.effortTypes}
 												>
-													{oldConfig.effortTypes.map((item) => (
-														<option key={item.type} value={item.type}>
-															{item.type}
-														</option>
-													))}
-												</Select>
+													<Stack spacing={[1]} direction={['column']}>
+														{oldConfig.effortTypes.map((item) => (
+															<Checkbox
+																value={item.type}
+																key={item.id}
+																{...register(`actionTypes.${i}.effortTypes`)}
+															>
+																{item.type}
+															</Checkbox>
+														))}
+													</Stack>
+												</CheckboxGroup>
 											</FormControl>
 											<FormControl variant="floating">
 												<FormLabel>Min Effort</FormLabel>
@@ -261,7 +257,8 @@ function GameConfig2() {
 									type: '',
 									minEffort: 0,
 									maxEffort: 0,
-									assetTypes: [''],
+									assetType: [''],
+									effortTypes: [''],
 									maxAssets: 0,
 									public: false,
 									icon: ''
