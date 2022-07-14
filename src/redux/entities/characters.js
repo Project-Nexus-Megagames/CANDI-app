@@ -75,14 +75,6 @@ export const getMyCharacter = createSelector(
     characters.find((char) => char.username === user.username)
 );
 
-export const getBadCharacters = createSelector(
-  (state) => state.characters.list,
-  (characters) =>
-    characters.filter(
-      (char) => char.controlEmail === "" || char.pronouns === ""
-    )
-);
-
 export const getPlayerCharacters = createSelector(
   (state) => state.characters.list,
   (characters) =>
@@ -110,8 +102,11 @@ export const getCharacterById = (charId) =>
 export const getMyUnlockedCharacters  = createSelector(
 	(state) => state.characters.list,
 	(state) => state.auth.character,
-	(characters, character) =>
-		characters.filter((char) => character.knownContacts.some((el) => el._id === char._id))
+	(characters, character) => {
+    if (!character) return [];
+    return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id))
+  }
+		
 );
 
 // characters Loader into state

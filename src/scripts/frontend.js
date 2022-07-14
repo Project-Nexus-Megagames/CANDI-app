@@ -72,21 +72,9 @@ function getCountdownHours(start, end) {
 	return Math.abs(countDownDate - now) / 36e5;
 }
 
-function getThisTeam(teams, character) {
-	const found = (teams.find(el => el.characters.some(char => char === character) ))
-	return(found ? found.name : 'No Team found')
-}
-
-function getThisAccount(accounts, account) {
-	const found = (accounts.find(el => el._id === account) )
-	return(found ? found.name : 'No Account found')
-}
-
 function getThisEffort(efforts, type) {
-	console.log(efforts);
-	console.log(type)
 	const found = type ?  (efforts.find(el => el.type.toLowerCase() === type.toLowerCase()) ) : false;
 	return(found ? found.amount : -999)
 }
 
-export { getIcon, getThisTeam, getCountdownHours, getThisAccount, getFadedColor, getThisEffort };
+export { getIcon, getCountdownHours, getFadedColor, getThisEffort };

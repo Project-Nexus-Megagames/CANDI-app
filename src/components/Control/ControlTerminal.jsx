@@ -1,33 +1,10 @@
 import React, { Component } from 'react';
-import {
-	ButtonGroup,
-	Content,
-	InputNumber,
-	InputPicker,
-	Panel,
-	Button,
-	Icon,
-	Modal,
-	Form,
-	FormGroup,
-	FormControl,
-	ControlLabel,
-	DatePicker,
-	Loader,
-	FlexboxGrid
-} from 'rsuite';
+import { ButtonGroup, Content, InputNumber, InputPicker, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, DatePicker, Loader, FlexboxGrid } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
-import {
-	getBadCharacters,
-	getGods,
-	getMyCharacter,
-	getNonPlayerCharacters
-} from '../../redux/entities/characters';
+import { getMyCharacter } from '../../redux/entities/characters';
 import NavigationBar from '../Navigation/NavigationBar';
-import { assetsRequested } from '../../redux/entities/assets';
 import NewCharacter from './NewCharacter';
-import NewProject from './NewProject';
 import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
 import ManageContacts from './ManageContacts';
@@ -38,7 +15,6 @@ class ControlTerminal extends Component {
 		gsModal: false,
 		warningModal: false,
 		warning2Modal: false,
-		scottModal: false,
 		assModal: false,
 		mapModal: false,
 		charLockModal: false,
@@ -116,7 +92,7 @@ class ControlTerminal extends Component {
 			return <Loader inverse center content="doot..." />;
 		}
 		return (
-			<Content style={{ style1 }}>
+			<Content >
 				<NavigationBar />
 
 				<Panel style={{ backgroundColor: '#272b34' }}>
@@ -160,35 +136,20 @@ class ControlTerminal extends Component {
 						>
 							<Panel style={{ height: '11vh' }}>
 								<h5>Hidden Asssets</h5>{' '}
-								{
-									this.props.assets.filter((el) => el.status.hidden === true)
-										.length
-								}{' '}
+								{this.props.assets.filter((el) => el.status.hidden === true).length}{' '}
+								{this.props.assets.filter((el) => el.status.hidden === true).length > 0 && <Button
+								color="violet"
+								onClick={() =>socket.emit('request', { route: 'action', action: 'unhide' })	}
+							>
+								Unhide all Assets
+							</Button>}
 							</Panel>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 					<div style={{ marginTop: '10px' }}>
-						<ButtonGroup>
-							<Button
-								appearance="ghost"
-								color="red"
-								onClick={() => this.setState({ warningModal: true })}
-							>
-								Close Actions
-							</Button>
-							<Button
-								appearance="ghost"
-								color="green"
-								onClick={() => this.setState({ warning2Modal: true })}
-							>
-								Publish Resolutions
-							</Button>
-							<Button
-								appearance="ghost"
-								onClick={() => this.setState({ gsModal: true })}
-							>
-								Edit Game State
-							</Button>
+
+
+
 							<Button
 								appearance="ghost"
 								onClick={() => this.setState({ assModal: true })}
@@ -201,47 +162,73 @@ class ControlTerminal extends Component {
 							>
 								Lock Map Tile
 							</Button>
-							<Button
-								appearance="ghost"
-								onClick={() => this.setState({ charLockModal: true })}
-							>
-								Manage Character Contacts
-							</Button>
+
 							<Button
 								appearance="ghost"
 								onClick={() => this.setState({ injuryModal: true })}
 							>
 								Heal Injuries
 							</Button>
-							{/* <Button appearance="ghost" onClick={() => this.setState({ scottModal: true })}>Edit or Delete Resources</Button> */}
 							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
-							{/* <Button color='orange' appearance="ghost" onClick={() => this.setState({ projectModal: true })}>New Project</Button> */}
-							<Button
-								color="orange"
-								appearance="ghost"
-								onClick={() => this.setState({ newCharacter: true })}
-							>
-								New Character
-							</Button>
-							<Button
-								color="violet"
-								onClick={() => this.props.history.push('/registration')}
-							>
-								Registration
-							</Button>
-							<Button
-								color="violet"
-								onClick={() =>
-									socket.emit('request', { route: 'action', action: 'unhide' })
-								}
-							>
-								Unhide all Assets
-							</Button>
+
+
+
+
 							{/* {<Button color='violet' onClick={() => this.props.history.push('/bitsy')}>Secret</Button>} */}
-						</ButtonGroup>
+
 					</div>
 				</Panel>
 
+				<Panel header={'Round Editing'} bordered style={{ border: '5px solid red' }}>
+					<ButtonGroup>
+						<Button
+								appearance="ghost"
+								color="red"
+								onClick={() => this.setState({ warningModal: true })}
+							>
+								Close Actions
+							</Button>
+							<Button
+								appearance="ghost"
+								color="green"
+								onClick={() => this.setState({ warning2Modal: true })}
+							>
+								Publish Resolutions
+						</Button>
+						<Button
+								appearance="ghost"
+								onClick={() => this.setState({ gsModal: true })}
+							>
+								Edit Game State
+							</Button>
+					</ButtonGroup>
+				</Panel>
+
+				<Panel header={'Character'} bordered style={{ border: '5px solid gold' }}>
+					<ButtonGroup>
+						<Button
+							color="orange"
+							appearance="ghost"
+							onClick={() => this.setState({ newCharacter: true })}
+						>
+							New Character
+						</Button>
+						<Button
+							appearance="ghost"
+							onClick={() => this.setState({ charLockModal: true })}
+						>
+							Manage Character Contacts
+						</Button>
+						<Button
+							color="violet"
+							onClick={() => this.props.history.push('/registration')}
+						>
+							Registration
+						</Button>						
+					</ButtonGroup>
+				</Panel>
+
+				{/* TODO pull these out into individual components */}
 				<Modal
 					size="sm"
 					show={this.state.gsModal}
@@ -274,7 +261,7 @@ class ControlTerminal extends Component {
 							<ControlLabel>End Time</ControlLabel>
 							<DatePicker
 								value={this.state.endTime}
-								onChange={this.handleDate}
+								onChange={(value) => this.setState({ endTime: value })}
 								format="YYYY-MM-DD HH:mm"
 							></DatePicker>
 						</FormGroup>
@@ -383,27 +370,12 @@ class ControlTerminal extends Component {
 					closeModal={() => setInjuryModal(false)}
 				/>
 
-				{/* <EditTerritory show={this.state.editTerritory}
-					closeModal={() => this.setState({ editTerritory: false })}/> */}
-
-				<NewProject
-					show={this.state.projectModal}
-					closeModal={() => this.setState({ projectModal: false })}
-				/>
 			</Content>
 		);
 	}
 
 	handleDate = (value) => {
 		this.setState({ endTime: value });
-	};
-
-	handleDelete = async () => {
-		socket.emit('request', {
-			route: 'asset',
-			action: 'delete',
-			data: { id: this.state.selected }
-		});
 	};
 
 	editGameState = async () => {
@@ -426,21 +398,9 @@ class ControlTerminal extends Component {
 		this.setState({ warning2Modal: false });
 	};
 
-	isControl() {
-		if (this.props.user.roles.some((el) => el === 'Control')) return false;
-		else return true;
-	}
-
-	filterAssets() {
-		this.props.assets.filter((el) => el.modal !== 'Wealth');
-	}
 }
 
-const style1 = {
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center'
-};
+
 
 const pickerData = [
 	{
@@ -457,32 +417,16 @@ const pickerData = [
 	}
 ];
 
-// const textStyle = {
-// 	backgroundColor: '#1a1d24',
-// 	border: '1.5px solid #3c3f43',
-// 	borderRadius: '5px',
-// 	width: '100%',
-// 	padding: '5px',
-// 	overflow: 'auto',
-// 	scrollbarWidth: 'none',
-// }
-
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
-	assetLoading: state.assets.loading,
 	assets: state.assets.list,
 	login: state.auth.login,
 	gamestate: state.gamestate,
 	characters: state.characters.list,
 	actions: state.actions.list,
-	playerCharacter: state.auth.user ? getMyCharacter(state) : undefined,
-	badCharacters: getBadCharacters(state),
-	nonPlayerCharacters: getNonPlayerCharacters(state),
-	godCharacters: getGods(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	assetDispatched: (data) => dispatch(assetsRequested(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlTerminal);
