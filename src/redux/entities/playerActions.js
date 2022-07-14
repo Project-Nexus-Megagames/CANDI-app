@@ -92,7 +92,7 @@ export const getCurrentExplores = createSelector(
 
 export const filteredActions = createSelector(
   state => state.actions.filter,
-  state => state.actions.list,
+  state => state.actions.list.filter(el => el.submission),
   (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.creator.characterTitle.toLowerCase().includes(filter.toLowerCase()) ||
    action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  ||
    action.submission.intent.toLowerCase().includes(filter.toLowerCase()) ||

@@ -88,7 +88,7 @@ const Actions = (props) => {
 									value={props.filter}
 									placeholder="Search"
 								></Input>
-								{actionTypes.map((type, index) => (
+								{gameConfig.actionTypes.map((actionType, index) => (
 									<Whisper
 									key={index}
 									placement="top"
@@ -97,8 +97,8 @@ const Actions = (props) => {
 										<Tooltip>
 											<b>
 												{true
-													? `Create New ${type} Action`
-													: `'No ${type} Left'`}
+													? `Create New "${actionType.type}" Action`
+													: `'No ${actionType.type} Left'`}
 											</b>
 										</Tooltip>
 									}
@@ -106,16 +106,15 @@ const Actions = (props) => {
 									<Button
 										style={{ color: 'black', borderRadius: '0px' }}
 										color="orange"
-										onClick={() => setShowNew(type)}
+										onClick={() => setShowNew(actionType)}
 									>
-										{getIcon(type)}
+										{getIcon(actionType.type)}
 									</Button>
 								</Whisper>
 								))}
 							</InputGroup>
 						</div>
 						<div
-							bodyFill
 							style={{
 								height: 'calc(100vh - 80px)',
 								scrollbarWidth: 'none',

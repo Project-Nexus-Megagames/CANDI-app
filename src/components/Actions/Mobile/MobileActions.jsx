@@ -92,7 +92,6 @@ const MobileActions = (props) => {
 							</InputGroup>
 						</div>
 						<div
-							bodyFill
 							style={{
 								height: 'calc(100vh - 80px)',
 								scrollbarWidth: 'none',

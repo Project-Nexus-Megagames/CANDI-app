@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List, FlexboxGrid, Container, Tag } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
+import { getFadedColor } from '../../scripts/frontend';
 
 class ActionList extends Component {
 	state = { rounds: [] };
@@ -126,13 +127,10 @@ class ActionList extends Component {
 																<Tag
 																	style={{
 																		color: 'black',
-																		textTransform: 'capitalize'
+																		textTransform: 'capitalize',
+																		backgroundColor: getFadedColor(action.type)
+
 																	}}
-																	color={
-																		action.type === 'explore'
-																			? 'orange'
-																			: 'green'
-																	}
 																>
 																	{action.type}
 																</Tag>

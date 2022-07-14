@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-	Modal,
-	Button,
-	Slider,
-	Tag,
-	FlexboxGrid,
-	Icon,
-	CheckPicker,
-	Loader
-} from 'rsuite';
+import { Modal, Button, Slider, Tag, FlexboxGrid, Icon, CheckPicker, Loader } from 'rsuite';
+import { getFadedColor, getThisEffort } from '../../scripts/frontend';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
@@ -60,7 +52,7 @@ class NewAction extends Component {
 	};
 
 	handleSubmit = async () => {
-		this.props.actionDispatched();
+	//	this.props.actionDispatched();
 		// 1) make a new action
 		const data = {
 			submission: {
@@ -72,24 +64,26 @@ class NewAction extends Component {
 			},
 			name: this.state.name,
 			controllers: ['Test2'],
-			type: this.props.show,
+			type: this.props.show.type,
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round,
 			numberOfInjuries: this.props.myCharacter.injuries.length
 		};
-		this.setState({
-			effort: 0,
-			assets: [],
-			id: '',
-			description: '',
-			intent: '',
-			name: ''
-		});
+		// this.setState({
+		// 	effort: 0,
+		// 	assets: [],
+		// 	id: '',
+		// 	description: '',
+		// 	intent: '',
+		// 	name: ''
+		// });
 		socket.emit('request', { route: 'action', action: 'create', data });
-		this.props.closeNew();
+//		this.props.closeNew();
 	};
 
+
 	render() {
+		const effort = getThisEffort(this.props.myCharacter.effort, this.props.show.type)
 		return (
 			<Modal
 				overflow
@@ -99,17 +93,10 @@ class NewAction extends Component {
 				onHide={() => this.props.closeNew()}
 			>
 				<Modal.Header>
-					<Modal.Title>Submit a new {this.props.show} Action</Modal.Title>
+					<Modal.Title>Submit a new {this.props.show.type} Action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body
-					style={{
-						border:
-							this.props.show === 'default'
-								? '4px solid #4caf50'
-								: '4px solid #ff9800',
-						borderRadius: '5px',
-						padding: '15px'
-					}}
+					style={{ border: `4px solid ${getFadedColor(this.props.show.type)}`, borderRadius: '5px', padding: '15px' }}
 				>
 					{this.props.actionLoading && (
 						<Loader backdrop content="loading..." vertical />
@@ -173,7 +160,8 @@ class NewAction extends Component {
 								}
 							></textarea>
 						</FlexboxGrid>
-						{this.props.show === 'default' && (
+
+						{(
 							<FlexboxGrid>
 								<FlexboxGrid.Item
 									style={{
@@ -185,7 +173,7 @@ class NewAction extends Component {
 									colspan={6}
 								>
 									<h5 style={{ textAlign: 'center' }}>
-										Effort {this.state.effort} / {this.props.myCharacter.effort}
+										Effort {this.state.effort} / {effort}
 										{this.state.effort === 0 && (
 											<Tag style={{ color: 'black' }} color={'orange'}>
 												Need Effort
@@ -195,7 +183,7 @@ class NewAction extends Component {
 									<Slider
 										graduated
 										min={0}
-										max={this.props.myCharacter.effort}
+										max={effort}
 										defaultValue={0}
 										progress
 										value={this.state.effort}
@@ -210,7 +198,6 @@ class NewAction extends Component {
 									}}
 									colspan={2}
 								>
-									{/* <InputNumber value={this.state.effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 								<FlexboxGrid.Item
@@ -226,14 +213,7 @@ class NewAction extends Component {
 									<CheckPicker
 										labelKey="name"
 										valueKey="_id"
-										data={this.props.getMyAssets.filter(
-											(el) =>
-												!banned.some(
-													(el1) =>
-														el1 === el.level &&
-														(el.type === 'GodBond' || el.type === 'MortalBond')
-												)
-										)}
+										data={this.props.getMyAssets}
 										style={{ width: '100%' }}
 										disabledItemValues={this.formattedUsedAssets()}
 										onChange={(event) => this.setState({ assets: event })}
@@ -241,6 +221,7 @@ class NewAction extends Component {
 								</FlexboxGrid.Item>
 							</FlexboxGrid>
 						)}
+
 					</form>
 					<div
 						style={{
@@ -249,26 +230,15 @@ class NewAction extends Component {
 							marginTop: '15px'
 						}}
 					>
-						{this.props.show === 'default' && (
+
 							<Button
 								onClick={() => this.handleSubmit()}
-								disabled={this.isDisabled() || this.state.effort <= 0}
-								color={this.isDisabled() ? 'red' : 'green'}
+								disabled={this.isDisabled(effort)}
+								color={this.isDisabled(effort) ? 'red' : 'green'}
 								appearance="primary"
 							>
 								<b>Submit</b>
 							</Button>
-						)}
-						{this.props.show === 'explore' && (
-							<Button
-								onClick={() => this.handleSubmit()}
-								disabled={this.isDisabled()}
-								color={this.isDisabled() ? 'red' : 'green'}
-								appearance="primary"
-							>
-								<b>Submit</b>
-							</Button>
-						)}
 						<Button onClick={() => this.props.closeNew()} appearance="subtle">
 							Cancel
 						</Button>
@@ -279,14 +249,15 @@ class NewAction extends Component {
 		);
 	}
 
-	isDisabled() {
+	isDisabled(effort) {
 		if (
-			this.state.description.length >= 10 &&
-			this.state.intent.length >= 10 &&
-			this.state.name.length >= 10
+			this.state.description.length < 10 ||
+			this.state.intent.length < 10 ||
+			this.state.name.length < 10
 		)
-			return false;
-		else return true;
+			return true;
+		if (effort < 1 || this.state.effort <= 0) return true;
+		else return false;
 	}
 
 	formattedUsedAssets = () => {
