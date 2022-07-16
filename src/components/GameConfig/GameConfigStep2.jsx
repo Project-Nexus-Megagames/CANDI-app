@@ -32,7 +32,7 @@ function GameConfig2() {
 		name: 'actionTypes',
 		control
 	});
-	// TODO: add minErffort, etc, >0
+
 	const validation = {
 		type: {
 			required: 'Type is required',
@@ -62,16 +62,16 @@ function GameConfig2() {
 	useEffect(() => {
 		const resetValues = [];
 		oldConfig.actionTypes.forEach((type) => {
-			let a = {};
-			a.type = type.type;
-			a.effortAmount = type.effortAmount;
-			a.assetType = type.assetType;
-			a.maxAssets = type.maxAssets;
-			a.effortTypes = type.effortTypes;
-			a.minEffort = type.minEffort;
-			a.maxEffort = type.maxEffort;
-			a.public = type.public;
-			resetValues.push(a);
+			let value = {};
+			value.type = type.type;
+			value.effortAmount = type.effortAmount;
+			value.assetType = type.assetType;
+			value.maxAssets = type.maxAssets;
+			value.effortTypes = type.effortTypes;
+			value.minEffort = type.minEffort;
+			value.maxEffort = type.maxEffort;
+			value.public = type.public;
+			resetValues.push(value);
 		});
 		reset({
 			actionTypes: resetValues
@@ -101,7 +101,6 @@ function GameConfig2() {
 				action: 'create',
 				data: configToBeSent
 			});
-			console.log('try block called');
 		} catch (err) {
 			console.log('catch block called', err);
 		}

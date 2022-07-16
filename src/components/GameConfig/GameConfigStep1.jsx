@@ -21,7 +21,6 @@ function GameConfig() {
 	const history = useHistory();
 	const oldConfig = useSelector((state) => state.gameConfig);
 
-	//TODO: add validation for EffortAmount, incl >0
 	const { register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
 			effortTypes: [oldConfig.effortTypes]
