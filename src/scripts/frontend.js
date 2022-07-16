@@ -1,15 +1,17 @@
 import { Icon } from "rsuite";
 
 function getFadedColor(color, fade = 1) {
+	console.log(color)
 	switch (color) {
 		case 'Agenda':
-			return `rgba( 235, 223, 59, ${fade} )`;
-		case 'bio':
-			return `rgba( 0, 181, 0, ${fade} )`;
+			return `#22a12a`;
+		case 'Agenda-rs':
+			return 'green'
+
 		case 'Normal':
-			return `rgba( 0, 71, 171, ${fade} )`;
-		case 'chemical':
-			return `rgba( 232, 70, 178, ${fade} )`;
+			return `#5b26b0`;
+		case 'Normal-rs':
+			return `violet`;
 
 		case 'weapon':
 			return `rgba( 255, 79, 57, ${fade} )`;

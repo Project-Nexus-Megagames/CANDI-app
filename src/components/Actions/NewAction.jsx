@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Slider, Tag, FlexboxGrid, Icon, CheckPicker, Loader } from 'rsuite';
+import { Modal, Button, Slider, Tag, FlexboxGrid, Icon, CheckPicker, Loader, Whisper, Tooltip, ButtonGroup, ButtonToolbar } from 'rsuite';
 import { getFadedColor, getThisEffort } from '../../scripts/frontend';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -13,6 +13,7 @@ class NewAction extends Component {
 			effort: 0,
 			assets: [],
 			id: '',
+			type: 'Normal',
 			description: '',
 			intent: '',
 			name: ''
@@ -63,8 +64,8 @@ class NewAction extends Component {
 				round: this.props.gamestate.round
 			},
 			name: this.state.name,
-			controllers: ['Test2'],
-			type: this.props.show.type,
+			controllers: this.props.myCharacter.controllers,
+			type: this.state.type,
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round,
 			numberOfInjuries: this.props.myCharacter.injuries.length
@@ -83,24 +84,55 @@ class NewAction extends Component {
 
 
 	render() {
-		const effort = getThisEffort(this.props.myCharacter.effort, this.props.show.type)
+		const effort = getThisEffort(this.props.myCharacter.effort, this.state.type)
 		return (
 			<Modal
 				overflow
 				style={{ width: '90%' }}
 				size="md"
-				show={this.props.show}
+				show={this.props.show !== false}
 				onHide={() => this.props.closeNew()}
 			>
 				<Modal.Header>
-					<Modal.Title>Submit a new {this.props.show.type} Action</Modal.Title>
+					<Modal.Title>Submit a new ~{this.state.type}~ Action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body
-					style={{ border: `4px solid ${getFadedColor(this.props.show.type)}`, borderRadius: '5px', padding: '15px' }}
+					style={{ border: `4px solid ${getFadedColor(this.state.type)}`, borderRadius: '5px', padding: '15px' }}
 				>
 					{this.props.actionLoading && (
 						<Loader backdrop content="loading..." vertical />
 					)}
+					<ButtonToolbar>
+						<ButtonGroup justified>
+							{this.props.gameConfig.actionTypes.map((actionType,) => (
+								<Whisper
+								placement="top"
+								trigger="hover"
+								speaker={
+									<Tooltip>
+										<b>
+											{true
+												? `Create New "${actionType.type}" Action`
+												: `'No ${actionType.type} Left'`}
+										</b>
+									</Tooltip>
+								}
+							>
+								<Button
+									style={{ }}
+									onClick={() => this.setState({ 'type': actionType.type })}
+									color={getFadedColor(`${actionType.type}-rs`)}
+									appearance={this.state.type === actionType.type ? 'default' : 'ghost'}
+								>
+									{this.getIcon(actionType.type)}
+								</Button>
+							</Whisper>
+							))}						
+						</ButtonGroup>						
+					</ButtonToolbar>
+
+
+
 					<form>
 						Name:
 						{10 - this.state.name.length > 0 && (
@@ -249,6 +281,15 @@ class NewAction extends Component {
 		);
 	}
 
+	getIcon (type) {
+		switch(type){
+			case 'Normal':
+				return(<Icon icon="pencil" />)
+			default: 
+				return(<Icon icon="plus" />)
+		}
+	}
+
 	isDisabled(effort) {
 		if (
 			this.state.description.length < 10 ||
@@ -262,14 +303,7 @@ class NewAction extends Component {
 
 	formattedUsedAssets = () => {
 		let temp = [];
-		let assets = this.props.getMyAssets.filter(
-			(el) =>
-				!banned.some(
-					(el1) =>
-						el1 === el.level &&
-						(el.type === 'GodBond' || el.type === 'MortalBond')
-				)
-		);
+		let assets = this.props.getMyAssets
 		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
 		for (const asset of assets) {
 			temp.push(asset._id);
@@ -277,16 +311,6 @@ class NewAction extends Component {
 		return temp;
 	};
 }
-
-const banned = [
-	'Condemned',
-	'Disfavoured',
-	'Loathing',
-	'Unfriendly',
-	'Neutral',
-	'Preferred',
-	'Warm'
-];
 
 const textStyle = {
 	backgroundColor: '#1a1d24',

@@ -187,3 +187,11 @@
   right: 20%;
   font-size: 12px;
 }
+
+button {
+	color: whitesmoke;
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 10px;
+}
