@@ -83,7 +83,7 @@ class ActionList extends Component {
 								{this.props.actionTypes.map((actionType, index) => {
 									return (
 										<div index={index}>
-											<h5>{actionType}</h5>
+											{this.props.actions.filter((action) => action.round === round && action.type === actionType).length > 0 && <h5>{actionType}</h5>}
 
 											<List hover size="sm">
 								{/* <h5 >Control List</h5> */}

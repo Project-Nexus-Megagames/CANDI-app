@@ -103,7 +103,7 @@ const Actions = (props) => {
 									<Button
 										style={{ color: 'black', borderRadius: '0px' }}
 										color="green"
-										onClick={() => setShowNew('actionType')}
+										onClick={() => setShowNew(true)}
 									>
 										<Icon icon="plus" />
 									</Button>
