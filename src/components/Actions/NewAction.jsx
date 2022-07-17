@@ -7,7 +7,7 @@ import { getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 const NewAction = (props) => {
-	const [effort, setEffort] = React.useState({ type: 'Normal', amount: 0 });
+	const [effort, setEffort] = React.useState({ effortType: 'Normal', amount: 0 });
 	const [resource, setResource] = React.useState([]);
 	const [type, setType] = React.useState('');
 	const [description, setDescription] = React.useState('');
@@ -19,7 +19,7 @@ const NewAction = (props) => {
 	useEffect(() => {
 		if (type) {
 			console.log(getThisEffort(props.myCharacter.effort, type))
-			setEffort({ type: type, amount: 0})
+			setEffort({ effortType: type, amount: 0})
 		}
 	}, [type]);
 	
@@ -122,10 +122,10 @@ const NewAction = (props) => {
 				onHide={() => props.closeNew()}
 			>
 				<Modal.Header>
-					<Modal.Title>Submit a new ~{effort.type}~ Action</Modal.Title>
+					<Modal.Title>Submit a new ~{type}~ Action</Modal.Title>
 				</Modal.Header>
 				<Modal.Body
-					style={{ border: `4px solid ${getFadedColor(effort.type)}`, borderRadius: '5px', padding: '15px' }}
+					style={{ border: `4px solid ${getFadedColor(effort.effortType)}`, borderRadius: '5px', padding: '15px' }}
 				>
 					{props.actionLoading && (
 						<Loader backdrop content="loading..." vertical />
@@ -229,7 +229,7 @@ const NewAction = (props) => {
 									colspan={6}
 								>
 									<h5 style={{ textAlign: 'center' }}>
-										Effort {effort.amount} / {getThisEffort(props.myCharacter.effort, effort.type)}
+										Effort {effort.amount} / {getThisEffort(props.myCharacter.effort, effort.effortType)}
 										{effort.amount === 0 && (
 											<Tag style={{ color: 'black' }} color={'orange'}>
 												Need Effort
@@ -237,8 +237,8 @@ const NewAction = (props) => {
 										)}
 									</h5>
 									<InputGroup>
-										<InputPicker style={{ width: 250 }} cleanable={false} labelKey='value' valueKey='value' data={[ { value: 'Normal' }, { value: 'Agenda' }]} value={effort.type} onChange={(event)=> {editState(event, 'effort'); }} />	
-										<InputNumber style={{ width: 150 }} value={effort.amount} max={getMax(effort.type)} min={0} onChange={(event)=> editState(parseInt(event), 'effort')}></InputNumber>
+										<InputPicker style={{ width: 250 }} cleanable={false} labelKey='value' valueKey='value' data={[ { value: 'Normal' }, { value: 'Agenda' }]} value={effort.effortType} onChange={(event)=> {editState(event, 'effort'); }} />	
+										<InputNumber style={{ width: 150 }} value={effort.amount} max={getMax(effort.effortType)} min={0} onChange={(event)=> editState(parseInt(event), 'effort')}></InputNumber>
 									</InputGroup>	
 									{/* <Slider
 										graduated
