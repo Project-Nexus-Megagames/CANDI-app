@@ -1,6 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row } from 'rsuite';
+import {
+	Icon,
+	Loader,
+	Dropdown,
+	IconButton,
+	FlexboxGrid,
+	Col,
+	Row
+} from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
@@ -155,6 +163,9 @@ const HomePage = (props) => {
 						<Dropdown.Item>
 							<Link to="gameConfig">Game Config</Link>
 						</Dropdown.Item>
+						<Dropdown.Item>
+							<Link to="uploadtest">Upload Test</Link>
+						</Dropdown.Item>
 					</Dropdown>
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={22}>
@@ -186,37 +197,37 @@ const HomePage = (props) => {
 			</FlexboxGrid>
 
 			<Row>
-				<Col lg={12} md={24} >
-				<div
+				<Col lg={12} md={24}>
+					<div
+						style={{
+							border: '5px solid #d4af37',
+							borderRadius: '10px',
+							margin: '10px',
+							height: '45vh',
+							overflow: 'hidden'
+						}}
+					>
+						<img
+							src={banner}
+							className={'image'}
+							style={{ maxWidth: '100%', height: '100%' }}
+							alt="Failed to load img"
+						/>
+						<p
 							style={{
-								border: '5px solid #d4af37',
-								borderRadius: '10px',
-								margin: '10px',
-								height: '45vh',
-								overflow: 'hidden'
+								position: 'absolute',
+								bottom: '10px',
+								left: '15px',
+								color: 'white',
+								fontSize: '0.966em'
 							}}
 						>
-							<img
-								src={banner}
-								className={'image'}
-								style={{ maxWidth: '100%', height: '100%' }}
-								alt="Failed to load img"
-							/>
-							<p
-								style={{
-									position: 'absolute',
-									bottom: '10px',
-									left: '15px',
-									color: 'white',
-									fontSize: '0.966em'
-								}}
-							>
-								Version: {props.version}
-							</p>
-				</div>
+							Version: {props.version}
+						</p>
+					</div>
 				</Col>
 
-				<Col lg={12} md={12} >
+				<Col lg={12} md={12}>
 					<ImgPanel
 						img={actions}
 						to="actions"
@@ -240,64 +251,64 @@ const HomePage = (props) => {
 						to="Map"
 						title="~ Map ~"
 						body="Here be Dragons..."
-					/>					
+					/>
 				</Col>
 
 				<Col lg={6} md={12}>
 					{props.myCharacter.tags.some((el) => el === 'Control') && (
-							<ImgPanel
-								img={control2}
-								to="control"
-								title={'~ Control Terminal ~'}
-								body='"Now he gets it!"'
-							/>
+						<ImgPanel
+							img={control2}
+							to="control"
+							title={'~ Control Terminal ~'}
+							body='"Now he gets it!"'
+						/>
 					)}
 					{!props.myCharacter.tags.some((el) => el === 'Control') && (
-							<div
-								onClick={() => openNexus()}
+						<div
+							onClick={() => openNexus()}
+							style={{
+								border: '5px solid #d4af37',
+								width: '90%',
+								borderRadius: '10px',
+								position: 'relative',
+								margin: '10px',
+								height: '44vh',
+								overflow: 'hidden'
+							}}
+						>
+							<div className="container">
+								<img
+									src={nexus}
+									className={props.disabled ? 'image disabled' : 'image'}
+									height="auto"
+									alt="Failed to load img"
+								/>
+							</div>
+							<h6
 								style={{
-									border: '5px solid #d4af37',
-									width: '90%',
-									borderRadius: '10px',
-									position: 'relative',
-									margin: '10px',
-									height: '44vh',
-									overflow: 'hidden'
+									position: 'absolute',
+									bottom: '25px',
+									left: '15px',
+									color: 'white',
+									background: '#800080'
 								}}
 							>
-								<div className="container">
-									<img
-										src={nexus}
-										className={props.disabled ? 'image disabled' : 'image'}
-										height="auto"
-										alt="Failed to load img"
-									/>
-								</div>
-								<h6
-									style={{
-										position: 'absolute',
-										bottom: '25px',
-										left: '15px',
-										color: 'white',
-										background: '#800080'
-									}}
-								>
-									~ Project Nexus ~
-								</h6>
-								<p
-									style={{
-										position: 'absolute',
-										bottom: '10px',
-										left: '15px',
-										color: 'white',
-										background: '#800080',
-										fontSize: '0.966em'
-									}}
-								>
-									Support the Programmers
-								</p>
-							</div>
-					)}				
+								~ Project Nexus ~
+							</h6>
+							<p
+								style={{
+									position: 'absolute',
+									bottom: '10px',
+									left: '15px',
+									color: 'white',
+									background: '#800080',
+									fontSize: '0.966em'
+								}}
+							>
+								Support the Programmers
+							</p>
+						</div>
+					)}
 				</Col>
 
 				<Col lg={6} md={12}>
@@ -306,9 +317,8 @@ const HomePage = (props) => {
 						to="others"
 						title={'~ Other Characters ~'}
 						body="Character Details"
-					/>					
+					/>
 				</Col>
-
 			</Row>
 		</React.Fragment>
 	);
