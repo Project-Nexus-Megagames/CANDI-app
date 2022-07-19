@@ -28,6 +28,7 @@ import {
 } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 import AssetInfo from './AssetInfo';
+import { getFadedColor, getThisEffort } from '../../scripts/frontend';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 class Submission extends Component {
 	constructor(props) {
@@ -286,7 +287,7 @@ class Submission extends Component {
 								Edit {this.props.action.type} action {this.state.name}
 							</Modal.Title>
 						</Modal.Header>
-						<Modal.Body>
+						<Modal.Body style={{ border: `4px solid ${getFadedColor(this.props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
 							{this.props.actionLoading && (
 								<Loader backdrop content="loading..." vertical />
 							)}
@@ -351,7 +352,7 @@ class Submission extends Component {
 										}
 									></textarea>
 								</FlexboxGrid>
-								{this.props.action.type === 'default' && (
+								{true && (
 									<FlexboxGrid>
 										<FlexboxGrid.Item
 											style={{
@@ -363,8 +364,7 @@ class Submission extends Component {
 											colspan={6}
 										>
 											<h5 style={{ textAlign: 'center' }}>
-												Effort {this.state.effort} /{' '}
-												{this.props.myCharacter.effort + submission.effort}
+												Effort {this.state.effort.amount} / {getThisEffort(this.props.myCharacter.effort, submission.effort.effortType) + submission.effort.amount}
 												{this.state.effort === 0 && (
 													<Tag style={{ color: 'black' }} color={'orange'}>
 														Need Effort
@@ -375,10 +375,10 @@ class Submission extends Component {
 											<Slider
 												graduated
 												min={0}
-												max={this.props.myCharacter.effort + submission.effort}
-												defaultValue={submission.effort}
+												max={getThisEffort(this.props.myCharacter.effort, submission.effort.effortType) + submission.effort.amount}
+												defaultValue={submission.effort.amount}
 												progress
-												value={this.state.effort}
+												value={this.state.effort.amount}
 												onChange={(event) => this.setState({ effort: event })}
 											></Slider>
 										</FlexboxGrid.Item>
