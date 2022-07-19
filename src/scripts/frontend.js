@@ -1,7 +1,6 @@
 import { Icon } from "rsuite";
 
 function getFadedColor(color, fade = 1) {
-	console.log(color)
 	switch (color) {
 		case 'Agenda':
 			return `#22a12a`;
