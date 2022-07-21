@@ -84,9 +84,23 @@
 .slim-text {
 	font-size: '0.966em';
 	font-weight: '300';
-	white-space: 'nowrap';
+	white-space: 'pre-line';
 	text-align: "center";
 };
+
+.textStyle {
+  background-color: #1a1d24;
+	border: 1.5px solid #3c3f43;
+	border-radius: 5px;
+	width: 100%;
+	padding: 5px;
+	overflow: auto;
+}
+
+.normalText {
+	font-size: .966em;
+	text-align: center
+}
 
 .p-left {
   text-align: left;

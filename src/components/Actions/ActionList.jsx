@@ -157,7 +157,7 @@ class ActionList extends Component {
 										</div>
 									)							
 								})}
-							</List>
+								</List>
 					</div>
 				))}
 			</Container>

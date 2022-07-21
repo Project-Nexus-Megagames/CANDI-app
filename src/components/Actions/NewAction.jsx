@@ -13,7 +13,6 @@ const NewAction = (props) => {
 	const [description, setDescription] = React.useState('');
 	const [intent, setIntent] = React.useState('');
 	const [name, setName] = React.useState('');
-	const [available, setAvailable] = React.useState(getThisEffort(props.myCharacter.effort, 'Normal'));
 	const [max, setMax] = React.useState(0);
 
 
