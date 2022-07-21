@@ -143,10 +143,10 @@ const Submission = (props) => {
 	};
 
 	const handleSubmit = async () => {
-		props.actionDispatched();
+		// props.actionDispatched();
 		// 1) make a new action
 		const data = {
-			id: this.props.action._id,
+			id: props.action._id,
 			name: name,
 			tags: tags,
 			submission: {
