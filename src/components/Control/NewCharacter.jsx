@@ -17,14 +17,13 @@ import socket from '../../socket';
 import _ from 'lodash';
 
 const NewCharacter = (props) => {
-	const characters = useSelector((state) => state.characters.list);
 	const gameConfig = useSelector((state) => state.gameConfig);
 
 	const effortTypes = gameConfig.effortTypes;
 
-	const { register, control, handleSubmit, reset, formState } = useForm({
+	const { register, control, handleSubmit, reset, formState, watch } = useForm({
 		defaultValues: {
-			characterName: 'Test',
+			characterName: 'New Character',
 			email: '',
 			wiki: '',
 			tags: ['NPC'],
@@ -39,6 +38,12 @@ const NewCharacter = (props) => {
 		}
 	});
 	const { errors } = formState;
+	const watchCharName = watch('characterName', 'New Character');
+
+	useEffect(() => {
+		const subscription = watch();
+		return () => subscription.unsubscribe();
+	}, [watch]);
 
 	const handleExit = () => {
 		props.closeModal();
@@ -69,7 +74,7 @@ const NewCharacter = (props) => {
 			}}
 		>
 			<Modal.Header>
-				<Modal.Title>New Character</Modal.Title>
+				<Modal.Title>New Character "{watchCharName}"</Modal.Title>
 			</Modal.Header>
 			<form onSubmit={handleSubmit(onSubmit, handleError)}>
 				<Panel>
@@ -83,12 +88,57 @@ const NewCharacter = (props) => {
 						></Input>
 					</FormControl>
 					<FormControl>
+						<FormLabel>Pronouns </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('pronouns')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Player Name </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('playerName')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>User Name </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('username')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Time Zone </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('timeZone')}
+						></Input>
+					</FormControl>
+					<FormControl>
 						<FormLabel>Bio </FormLabel>
 						<Input
 							type="text"
 							size="md"
 							variant="outline"
 							{...register('bio')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Wiki </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('wiki')}
 						></Input>
 					</FormControl>
 					<FormControl>
@@ -109,6 +159,12 @@ const NewCharacter = (props) => {
 							{...register('email')}
 						></Input>
 					</FormControl>
+
+					{/*defaultValues: {
+			tags: ['NPC'],
+			control: ["Add Controller's Name"],
+			effort: [{ type: '', amount: 0 }],
+		}*/}
 				</Panel>
 
 				<Modal.Footer>
