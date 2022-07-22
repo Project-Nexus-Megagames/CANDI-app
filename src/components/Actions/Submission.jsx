@@ -331,8 +331,8 @@ const Submission = (props) => {
 							children={submission.intent}
 							remarkPlugins={[remarkGfm]}
 						></ReactMarkdown>
-						<p className='slim-text'>
-							Effort
+						<p class ='slim-text'>
+							Effort ({submission.effort.effortType})
 						</p>
 						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{submission.effort.amount}</p>
 						<Progress.Line percent={submission.effort.amount * 33 + 1} showInfo={false}>  </Progress.Line>
