@@ -1,21 +1,30 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'; // Redux store provider
+import { Modal, ButtonGroup, Button, Panel } from 'rsuite';
 import {
-	Drawer,
-	Button,
-	InputNumber,
+	HStack,
+	VStack,
+	Flex,
+	FormControl,
+	Box,
+	FormLabel,
 	Input,
-	IconButton,
-	Icon,
-	TagGroup,
-	Tag
-} from 'rsuite';
-import { connect } from 'react-redux';
+	Text,
+	Stack
+} from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import socket from '../../socket';
+import _ from 'lodash';
 
-class NewCharacter extends Component {
-	state = {
-		formValue: {
-			characterName: '',
+const NewCharacter = (props) => {
+	const characters = useSelector((state) => state.characters.list);
+	const gameConfig = useSelector((state) => state.gameConfig);
+
+	const effortTypes = gameConfig.effortTypes;
+
+	const { register, control, handleSubmit, reset, formState } = useForm({
+		defaultValues: {
+			characterName: 'Test',
 			email: '',
 			wiki: '',
 			tags: ['NPC'],
@@ -25,262 +34,91 @@ class NewCharacter extends Component {
 			bio: '',
 			characterTitle: 'ex: The Agent',
 			pronouns: '',
-			effort: 2,
+			effort: [{ type: '', amount: 0 }],
 			username: 'temp'
-		},
-		loading: false,
-		formArray: []
-	};
-
-	componentDidMount = () => {
-		let test = [];
-		for (const el in this.state.formValue) {
-			// console.log(el)
-			typeof this.state.formValue[el] !== 'object'
-				? test.push(el)
-				: console.log(el);
 		}
-		test.sort((a, b) => {
-			// sort the catagories alphabetically
-			if (a < b) {
-				return -1;
-			}
-			if (a > b) {
-				return 1;
-			}
-			return 0;
-		});
-		this.setState({ formArray: test });
+	});
+	const { errors } = formState;
+
+	const handleExit = () => {
+		props.closeModal();
 	};
 
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.state !== prevState) {
-			localStorage.setItem('newCharacterState', JSON.stringify(this.state));
-		}
-	};
-
-	handleSubmit = async () => {
-		// 1) make a new action
-		this.setState({ loading: true });
-		socket.emit('request', {
-			route: 'character',
-			action: 'create',
-			data: this.state.formValue
-		});
-		this.props.closeModal();
-		this.setState({ loading: false });
-	};
-
-	handleInputConfirm = () => {
-		const nextTags = this.state.inputValue
-			? [...this.state.formValue.tags, this.state.inputValue]
-			: this.state.formValue.tags;
-		this.handleInput(nextTags, 'tags');
-		this.setState({
-			add: false,
-			addControl: false,
-			inputValue: ''
-		});
-	};
-
-	handleControlInputConfirm = () => {
-		const nextTags = this.state.inputValue
-			? [...this.state.formValue.control, this.state.inputValue]
-			: this.state.formValue.control;
-		this.handleInput(nextTags, 'control');
-		this.setState({
-			add: false,
-			addControl: false,
-			inputValue: ''
-		});
-	};
-
-	handleInput = (value, id) => {
-		if (id === '_id') {
-			console.log('id!!!!');
-		} else {
-			let formValue = { ...this.state.formValue };
-			formValue[id] = value;
-			this.setState({ formValue });
-		}
-	};
-
-	handleTagRemove = (tag, type) => {
-		const nextTags = this.state.formValue.tags.filter((item) => item !== tag);
-		this.handleInput(nextTags, type);
-	};
-
-	handleControlTagRemove = (tag, type) => {
-		const nextTags = this.state.formValue.control.filter(
-			(item) => item !== tag
-		);
-		this.handleInput(nextTags, type);
-	};
-
-	renderTagAdd = () => {
-		if (this.state.add)
-			return (
-				<Input
-					size="xs"
-					style={{ width: 70, display: 'inline-block' }}
-					value={this.state.inputValue}
-					onChange={(inputValue) => this.setState({ inputValue })}
-					onBlur={this.handleInputConfirm}
-					onPressEnter={this.handleInputConfirm}
-				/>
-			);
-		else
-			return (
-				<IconButton
-					className="tag-add-btn"
-					onClick={() => this.setState({ add: true })}
-					icon={<Icon icon="plus" />}
-					appearance="ghost"
-					size="xs"
-				/>
-			);
-	};
-
-	renderControlTagAdd = () => {
-		if (this.state.addControl)
-			return (
-				<Input
-					size="xs"
-					style={{ width: 70, display: 'inline-block' }}
-					value={this.state.inputValue}
-					onChange={(inputValue) => this.setState({ inputValue })}
-					onBlur={this.handleControlInputConfirm}
-					onPressEnter={this.handleControlInputConfirm}
-				/>
-			);
-		else
-			return (
-				<IconButton
-					className="tag-add-btn"
-					onClick={() => this.setState({ addControl: true })}
-					icon={<Icon icon="plus" />}
-					appearance="ghost"
-					size="xs"
-				/>
-			);
-	};
-
-	renderSwitch = (el) => {
-		let formValue = this.state.formValue;
-		switch (typeof formValue[el]) {
-			case 'string':
-				return (
-					<div>
-						<h5>{el}</h5>
-						<Input
-							id={el}
-							type="text"
-							value={formValue[el]}
-							name={el}
-							label={el}
-							placeholder={el}
-							onChange={(value) => this.handleInput(value, el)}
-						/>
-					</div>
-				);
-			case 'number':
-				return (
-					<div>
-						<h5>{el}</h5>
-						<InputNumber
-							id={el}
-							value={formValue[el]}
-							name={el}
-							label={el}
-							placeholder={el}
-							onChange={(value) => this.handleInput(value, el)}
-						/>
-					</div>
-				);
-			default:
-				return <b>{formValue[el]}</b>;
-		}
-	};
-
-	render() {
-		return (
-			<Drawer
-				overflow
-				show={this.props.show}
-				onHide={() => this.props.closeModal()}
-			>
-				<Drawer.Header>
-					<Drawer.Title>
-						New Character "{this.state.formValue.characterName}"
-					</Drawer.Title>
-					<b>Tags</b>
-					<TagGroup>
-						{this.state.formValue &&
-							this.state.formValue.tags &&
-							this.state.formValue.tags.map((item, index) => (
-								<Tag
-									index={index}
-									closable
-									onClose={() => this.handleTagRemove(item, 'tags')}
-								>
-									{item}
-								</Tag>
-							))}
-						{this.renderTagAdd()}
-					</TagGroup>
-
-					<b>Control</b>
-					<br />
-					<TagGroup>
-						{this.state.formValue &&
-							this.state.formValue.control &&
-							this.state.formValue.control.map((item, index) => (
-								<Tag
-									index={index}
-									closable
-									onClose={() => this.handleControlTagRemove(item, 'control')}
-								>
-									{item}
-								</Tag>
-							))}
-						{this.renderControlTagAdd()}
-					</TagGroup>
-				</Drawer.Header>
-				<Drawer.Body>
-					{this.state.formArray.map((el, index) => this.renderSwitch(el))}
-				</Drawer.Body>
-				<Drawer.Footer>
-					<Button
-						loading={this.state.loading}
-						disabled={this.state.formValue.status === null}
-						onClick={() => this.handleSubmit()}
-						appearance="primary"
-					>
-						Submit
-					</Button>
-					<Button onClick={() => this.props.closeDrawer()} appearance="subtle">
-						Cancel
-					</Button>
-				</Drawer.Footer>
-			</Drawer>
-		);
+	function onSubmit(data) {
+		//socket.emit('request', {
+		//	route: 'character',
+		//	action: 'create',
+		//	data
+		//});
+		console.log(data);
+		props.closeModal();
 	}
-}
 
-//const textStyle = {
-//	backgroundColor: '#1a1d24',
-//	border: '1.5px solid #3c3f43',
-//	borderRadius: '5px',
-//	width: '100%',
-//	padding: '5px',
-//	overflow: 'auto',
-//	scrollbarWidth: 'none'
-//};
+	const handleError = (errors) => {
+		console.log('ERROR', errors);
+	};
 
-const mapStateToProps = (state) => ({
-	characters: state.characters.list
-});
+	return (
+		<Modal
+			overflow
+			full
+			size="lg"
+			show={props.show}
+			onHide={() => {
+				handleExit();
+			}}
+		>
+			<Modal.Header>
+				<Modal.Title>New Character</Modal.Title>
+			</Modal.Header>
+			<form onSubmit={handleSubmit(onSubmit, handleError)}>
+				<Panel>
+					<FormControl>
+						<FormLabel>Name </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('characterName')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Bio </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('bio')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Character Title </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('characterTitle')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>E-Mail </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('email')}
+						></Input>
+					</FormControl>
+				</Panel>
 
-const mapDispatchToProps = (dispatch) => ({});
+				<Modal.Footer>
+					<Button type="submit" color="red" className="btn btn-primary mr-1">
+						Create new Character
+					</Button>
+				</Modal.Footer>
+			</form>
+		</Modal>
+	);
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewCharacter);
+export default NewCharacter;

@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Content, InputNumber, InputPicker, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, DatePicker, Loader, FlexboxGrid } from 'rsuite';
+import {
+	ButtonGroup,
+	Content,
+	InputNumber,
+	InputPicker,
+	Panel,
+	Button,
+	Icon,
+	Modal,
+	Form,
+	FormGroup,
+	FormControl,
+	ControlLabel,
+	DatePicker,
+	Loader,
+	FlexboxGrid
+} from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getMyCharacter } from '../../redux/entities/characters';
 import NavigationBar from '../Navigation/NavigationBar';
+import NewCharacter_old from './NewCharacter_old';
 import NewCharacter from './NewCharacter';
 import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
@@ -92,7 +109,7 @@ class ControlTerminal extends Component {
 			return <Loader inverse center content="doot..." />;
 		}
 		return (
-			<Content >
+			<Content>
 				<NavigationBar />
 
 				<Panel style={{ backgroundColor: '#272b34' }}>
@@ -136,75 +153,87 @@ class ControlTerminal extends Component {
 						>
 							<Panel style={{ height: '11vh' }}>
 								<h5>Hidden Asssets</h5>{' '}
-								{this.props.assets.filter((el) => el.status.hidden === true).length}{' '}
-								{this.props.assets.filter((el) => el.status.hidden === true).length > 0 && <Button
-								color="violet"
-								onClick={() =>socket.emit('request', { route: 'action', action: 'unhide' })	}
-							>
-								Unhide all Assets
-							</Button>}
+								{
+									this.props.assets.filter((el) => el.status.hidden === true)
+										.length
+								}{' '}
+								{this.props.assets.filter((el) => el.status.hidden === true)
+									.length > 0 && (
+									<Button
+										color="violet"
+										onClick={() =>
+											socket.emit('request', {
+												route: 'action',
+												action: 'unhide'
+											})
+										}
+									>
+										Unhide all Assets
+									</Button>
+								)}
 							</Panel>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 					<div style={{ marginTop: '10px' }}>
+						<Button
+							appearance="ghost"
+							onClick={() => this.setState({ assModal: true })}
+						>
+							Edit or Delete Resources
+						</Button>
+						<Button
+							appearance="ghost"
+							onClick={() => this.setState({ mapModal: true })}
+						>
+							Lock Map Tile
+						</Button>
 
+						<Button
+							appearance="ghost"
+							onClick={() => this.setState({ injuryModal: true })}
+						>
+							Heal Injuries
+						</Button>
+						{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
 
-
-							<Button
-								appearance="ghost"
-								onClick={() => this.setState({ assModal: true })}
-							>
-								Edit or Delete Resources
-							</Button>
-							<Button
-								appearance="ghost"
-								onClick={() => this.setState({ mapModal: true })}
-							>
-								Lock Map Tile
-							</Button>
-
-							<Button
-								appearance="ghost"
-								onClick={() => this.setState({ injuryModal: true })}
-							>
-								Heal Injuries
-							</Button>
-							{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
-
-
-
-
-							{/* {<Button color='violet' onClick={() => this.props.history.push('/bitsy')}>Secret</Button>} */}
-
+						{/* {<Button color='violet' onClick={() => this.props.history.push('/bitsy')}>Secret</Button>} */}
 					</div>
 				</Panel>
 
-				<Panel header={'Round Editing'} bordered style={{ border: '5px solid red' }}>
+				<Panel
+					header={'Round Editing'}
+					bordered
+					style={{ border: '5px solid red' }}
+				>
 					<ButtonGroup>
 						<Button
-								appearance="ghost"
-								color="red"
-								onClick={() => this.setState({ warningModal: true })}
-							>
-								Close Actions
-							</Button>
-							<Button
-								appearance="ghost"
-								color="green"
-								onClick={() => this.setState({ warning2Modal: true })}
-							>
-								Publish Resolutions
+							appearance="ghost"
+							color="red"
+							onClick={() => this.setState({ warningModal: true })}
+						>
+							Close Actions
 						</Button>
 						<Button
-								appearance="ghost"
-								onClick={() => this.setState({ gsModal: true })}
-							>
-								Edit Game State
-							</Button>
+							appearance="ghost"
+							color="green"
+							onClick={() => this.setState({ warning2Modal: true })}
+						>
+							Publish Resolutions
+						</Button>
+						<Button
+							appearance="ghost"
+							onClick={() => this.setState({ gsModal: true })}
+						>
+							Edit Game State
+						</Button>
 					</ButtonGroup>
 				</Panel>
 
-				<Panel header={'Character'} bordered style={{ border: '5px solid gold' }}>
+				<Panel
+					header={'Character'}
+					bordered
+					style={{ border: '5px solid gold' }}
+				>
 					<ButtonGroup>
 						<Button
 							color="orange"
@@ -212,6 +241,13 @@ class ControlTerminal extends Component {
 							onClick={() => this.setState({ newCharacter: true })}
 						>
 							New Character
+						</Button>
+						<Button
+							color="orange"
+							appearance="ghost"
+							onClick={() => this.setState({ newCharacter_old: true })}
+						>
+							New Character Old
 						</Button>
 						<Button
 							appearance="ghost"
@@ -224,7 +260,7 @@ class ControlTerminal extends Component {
 							onClick={() => this.props.history.push('/registration')}
 						>
 							Registration
-						</Button>						
+						</Button>
 					</ButtonGroup>
 				</Panel>
 
@@ -352,6 +388,11 @@ class ControlTerminal extends Component {
 					closeModal={() => this.setState({ newCharacter: false })}
 				/>
 
+				<NewCharacter_old
+					show={this.state.newCharacter_old}
+					closeModal={() => this.setState({ newCharacter_old: false })}
+				/>
+
 				<LockMap
 					open={true}
 					show={this.state.mapModal}
@@ -369,7 +410,6 @@ class ControlTerminal extends Component {
 					show={this.state.injuryModal}
 					closeModal={() => setInjuryModal(false)}
 				/>
-
 			</Content>
 		);
 	}
@@ -397,10 +437,7 @@ class ControlTerminal extends Component {
 		socket.emit('request', { route: 'gamestate', action: 'nextRound' });
 		this.setState({ warning2Modal: false });
 	};
-
 }
-
-
 
 const pickerData = [
 	{
@@ -423,10 +460,9 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	gamestate: state.gamestate,
 	characters: state.characters.list,
-	actions: state.actions.list,
+	actions: state.actions.list
 });
 
-const mapDispatchToProps = (dispatch) => ({
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlTerminal);
