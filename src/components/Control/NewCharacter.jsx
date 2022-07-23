@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, Button, Panel, TagGroup, Tag } from 'rsuite';
+import { Modal, Button, Panel, ButtonGroup } from 'rsuite';
 import {
 	HStack,
 	VStack,
@@ -9,8 +9,7 @@ import {
 	Box,
 	FormLabel,
 	Input,
-	Text,
-	Stack
+	Text
 } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
@@ -353,9 +352,14 @@ const NewCharacter = (props) => {
 					</Flex>
 				</Panel>
 				<Modal.Footer>
-					<Button type="submit" color="red" className="btn btn-primary mr-1">
-						Create new Character
-					</Button>
+					<ButtonGroup>
+						<Button type="submit" color="red" className="btn btn-primary mr-1">
+							Create new Character
+						</Button>
+						<Button onClick={() => reset()} className="btn btn-secondary mr-1">
+							Reset Form
+						</Button>
+					</ButtonGroup>
 				</Modal.Footer>
 			</form>
 		</Modal>
