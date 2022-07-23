@@ -1,6 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
+import {
+	ButtonGroup,
+	Button,
+	Content,
+	Container,
+	Sidebar,
+	Input,
+	Panel,
+	List,
+	PanelGroup,
+	FlexboxGrid,
+	Avatar,
+	Col,
+	Tag,
+	Row,
+	Loader,
+	TagGroup,
+	Alert,
+	InputGroup,
+	Icon
+} from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -10,7 +30,10 @@ import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
-import { getMyCharacter, getMyUnlockedCharacters } from './../../redux/entities/characters';
+import {
+	getMyCharacter,
+	getMyUnlockedCharacters
+} from './../../redux/entities/characters';
 
 const OtherCharacters = (props) => {
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
@@ -38,11 +61,23 @@ const OtherCharacters = (props) => {
 					</Tag>
 				);
 			case 'God':
-				return <Tag index={index} color="green">{item}</Tag>;
+				return (
+					<Tag index={index} color="green">
+						{item}
+					</Tag>
+				);
 			case 'NPC':
-				return <Tag index={index} color="blue">{item}</Tag>;
+				return (
+					<Tag index={index} color="blue">
+						{item}
+					</Tag>
+				);
 			case 'PC':
-				return <Tag index={index} color="cyan">{item}</Tag>;
+				return (
+					<Tag index={index} color="cyan">
+						{item}
+					</Tag>
+				);
 			default:
 				return <Tag index={index}>{item}</Tag>;
 		}
@@ -143,7 +178,7 @@ const OtherCharacters = (props) => {
 			<React.Fragment>
 				<NavigationBar />
 				<Container style={{ height: 'calc(100vh - 50px)' }}>
-					<Sidebar >
+					<Sidebar>
 						<PanelGroup>
 							<div
 								style={{
@@ -166,7 +201,7 @@ const OtherCharacters = (props) => {
 									)}
 								</InputGroup>
 							</div>
-							<div							
+							<div
 								style={{
 									height: 'calc(100vh - 80px)',
 									borderRadius: '0px',
@@ -424,10 +459,7 @@ const OtherCharacters = (props) => {
 														.filter((el) => el.ownerCharacter === selected._id)
 														.map((asset, index) => (
 															<Col index={index} key={index} md={6} sm={12}>
-																<Panel
-																	onClick={() => setAsset(asset)}
-																	bordered
-																>
+																<Panel onClick={() => setAsset(asset)} bordered>
 																	<h5>{asset.name}</h5>
 																	<b>{asset.type}</b>
 																	{asset.status.hidden && (
@@ -453,7 +485,7 @@ const OtherCharacters = (props) => {
 										</Panel>
 									</FlexboxGrid.Item>
 								)}
-								
+
 								<FlexboxGrid.Item colspan={24}>
 									<Panel
 										style={{
@@ -542,10 +574,9 @@ const OtherCharacters = (props) => {
 													src={
 														selected.tags.some((el) => el === 'Control')
 															? `/images/GW_Control_Icon.png`
-															: `/images/${selected.characterName}.jpg`
+															: `${selected.profilePicture}`
 													}
 													alt="Img could not be displayed"
-													width="90%"
 													style={{ maxHeight: '50vh' }}
 												/>
 											</FlexboxGrid.Item>

@@ -102,11 +102,23 @@ class CharacterProfile extends Component {
 					</Tag>
 				);
 			case 'God':
-				return <Tag index={index} color="green">{item}</Tag>;
+				return (
+					<Tag index={index} color="green">
+						{item}
+					</Tag>
+				);
 			case 'NPC':
-				return <Tag index={index} color="blue">{item}</Tag>;
+				return (
+					<Tag index={index} color="blue">
+						{item}
+					</Tag>
+				);
 			case 'PC':
-				return <Tag index={index} color="cyan">{item}</Tag>;
+				return (
+					<Tag index={index} color="cyan">
+						{item}
+					</Tag>
+				);
 			default:
 				return <Tag index={index}>{item}</Tag>;
 		}
@@ -151,9 +163,8 @@ class CharacterProfile extends Component {
 								<p>
 									<img
 										className="portrait"
-										src={`/images/${playerCharacter.characterName}.jpg`}
+										src={`${playerCharacter.profilePicture}`}
 										alt="Unable to load img"
-										width="95%"
 										style={{ maxHeight: '50vh' }}
 									/>
 								</p>

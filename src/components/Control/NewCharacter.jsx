@@ -78,11 +78,11 @@ const NewCharacter = (props) => {
 	};
 
 	function onSubmit(data) {
-		//socket.emit('request', {
-		//	route: 'character',
-		//	action: 'create',
-		//	data: {data, imageURL}
-		//});
+		socket.emit('request', {
+			route: 'character',
+			action: 'create',
+			data: { data, imageURL }
+		});
 		console.log(data, imageURL);
 		props.closeModal();
 	}
