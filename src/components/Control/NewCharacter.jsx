@@ -320,7 +320,7 @@ const NewCharacter = (props) => {
 											<FormControl>
 												<Input size="md" {...register(`tags.${i}`)}></Input>
 											</FormControl>{' '}
-											<Button onClick={() => removeTag()}>-</Button>
+											<Button onClick={() => removeTag(i)}>-</Button>
 										</HStack>
 									</div>
 								))}
@@ -335,7 +335,7 @@ const NewCharacter = (props) => {
 											<FormControl>
 												<Input size="md" {...register(`control.${i}`)}></Input>
 											</FormControl>
-											<Button onClick={() => removeControl()}>-</Button>
+											<Button onClick={() => removeControl(i)}>-</Button>
 										</HStack>
 									</div>
 								))}
