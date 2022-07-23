@@ -25,6 +25,7 @@ import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
 import ManageContacts from './ManageContacts';
 import HealInjury from './HealInjury';
+import { Link } from 'react-router-dom';
 
 class ControlTerminal extends Component {
 	state = {
@@ -225,6 +226,11 @@ class ControlTerminal extends Component {
 						>
 							Edit Game State
 						</Button>
+						<Link to="gameConfig">
+							<Button appearance="ghost" color="red" href="gameconfig">
+								Edit Game Config
+							</Button>
+						</Link>
 					</ButtonGroup>
 				</Panel>
 

@@ -34,7 +34,6 @@ import { signOut, usersRecieved } from "./redux/entities/auth";
 import Quests from "./components/Control/Quests";
 import Map from "./components/Map/Map";
 import { loadGameConfig } from './redux/entities/gameConfig';
-import FileUploadTest from './components/FileUploadTest/FileUploadTest';
 
 // React App Component
 initUpdates();
@@ -153,11 +152,7 @@ const App = (props) => {
 						path="/gameConfig2"
 						render={(props) => <GameConfig2 {...props} />}
 					/>
-					<Route
-						exact
-						path="/uploadtest"
-						render={(props) => <FileUploadTest {...props} />}
-					/>
+
 					<Route
 						exact
 						path="/control"
