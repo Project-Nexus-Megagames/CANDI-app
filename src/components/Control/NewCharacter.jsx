@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, ButtonGroup, Button, Panel } from 'rsuite';
+import { Modal, ButtonGroup, Button, Panel, Form, TagGroup, Tag } from 'rsuite';
 import {
 	HStack,
 	VStack,
@@ -12,7 +12,7 @@ import {
 	Text,
 	Stack
 } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import _ from 'lodash';
 
@@ -33,12 +33,27 @@ const NewCharacter = (props) => {
 			bio: '',
 			characterTitle: 'ex: The Agent',
 			pronouns: '',
-			effort: [{ type: '', amount: 0 }],
+			effort: effortTypes,
 			username: 'temp'
 		}
 	});
 	const { errors } = formState;
 	const watchCharName = watch('characterName', 'New Character');
+
+	const { fields: effortFields } = useFieldArray({
+		name: 'effort',
+		control
+	});
+
+	const { fields: tagFields, append: appendTag } = useFieldArray({
+		name: 'tags',
+		control
+	});
+
+	const { fields: controlFields, append: appendControl } = useFieldArray({
+		name: 'control',
+		control
+	});
 
 	useEffect(() => {
 		const subscription = watch();
@@ -115,12 +130,30 @@ const NewCharacter = (props) => {
 						></Input>
 					</FormControl>
 					<FormControl>
+						<FormLabel>E-Mail </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('email')}
+						></Input>
+					</FormControl>
+					<FormControl>
 						<FormLabel>Time Zone </FormLabel>
 						<Input
 							type="text"
 							size="md"
 							variant="outline"
 							{...register('timeZone')}
+						></Input>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Character Title </FormLabel>
+						<Input
+							type="text"
+							size="md"
+							variant="outline"
+							{...register('characterTitle')}
 						></Input>
 					</FormControl>
 					<FormControl>
@@ -141,30 +174,39 @@ const NewCharacter = (props) => {
 							{...register('wiki')}
 						></Input>
 					</FormControl>
-					<FormControl>
-						<FormLabel>Character Title </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('characterTitle')}
-						></Input>
-					</FormControl>
-					<FormControl>
-						<FormLabel>E-Mail </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('email')}
-						></Input>
-					</FormControl>
+					{effortFields.map((item, i) => (
+						<div key={i}>
+							<FormControl>
+								<FormLabel>Effort {effortTypes?.[i]?.type}</FormLabel>
+								<Input
+									key={item.id}
+									type="number"
+									size="md"
+									variant="outline"
+									defaultValue={effortTypes?.[i]?.effortAmount}
+									{...register(`effort.${i}.effortAmount`)}
+								></Input>
+							</FormControl>
+						</div>
+					))}
+					<FormLabel>Tags</FormLabel>
 
-					{/*defaultValues: {
-			tags: ['NPC'],
-			control: ["Add Controller's Name"],
-			effort: [{ type: '', amount: 0 }],
-		}*/}
+					{tagFields.map((item, i) => (
+						<div key={i}>
+							<FormControl>
+								<Input size="md" {...register(`tags.${i}`)}></Input>
+							</FormControl>
+						</div>
+					))}
+					<Button onClick={() => appendTag('')}>+</Button>
+					{controlFields.map((item, i) => (
+						<div key={i}>
+							<FormControl>
+								<Input size="md" {...register(`control.${i}`)}></Input>
+							</FormControl>
+						</div>
+					))}
+					<Button onClick={() => appendControl('')}>+</Button>
 				</Panel>
 
 				<Modal.Footer>
