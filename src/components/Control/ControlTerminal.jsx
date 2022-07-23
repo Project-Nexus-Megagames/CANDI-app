@@ -20,7 +20,6 @@ import { connect } from 'react-redux';
 import socket from '../../socket';
 import { getMyCharacter } from '../../redux/entities/characters';
 import NavigationBar from '../Navigation/NavigationBar';
-import NewCharacter_old from './NewCharacter_old';
 import NewCharacter from './NewCharacter';
 import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
@@ -243,13 +242,6 @@ class ControlTerminal extends Component {
 							New Character
 						</Button>
 						<Button
-							color="orange"
-							appearance="ghost"
-							onClick={() => this.setState({ newCharacter_old: true })}
-						>
-							New Character Old
-						</Button>
-						<Button
 							appearance="ghost"
 							onClick={() => this.setState({ charLockModal: true })}
 						>
@@ -386,11 +378,6 @@ class ControlTerminal extends Component {
 				<NewCharacter
 					show={this.state.newCharacter}
 					closeModal={() => this.setState({ newCharacter: false })}
-				/>
-
-				<NewCharacter_old
-					show={this.state.newCharacter_old}
-					closeModal={() => this.setState({ newCharacter_old: false })}
 				/>
 
 				<LockMap

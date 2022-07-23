@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, ButtonGroup, Button, Panel, TagGroup, Tag } from 'rsuite';
+import { Modal, Button, Panel, TagGroup, Tag } from 'rsuite';
 import {
 	HStack,
 	VStack,
@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
-import _ from 'lodash';
 import cloudinaryUpload from '../../services/uploads';
 
 const NewCharacter = (props) => {
@@ -39,6 +38,74 @@ const NewCharacter = (props) => {
 			username: 'temp'
 		}
 	});
+
+	const validation = {
+		characterName: {
+			required: 'Character Name is required',
+			pattern: {
+				value: /^[a-zA-Z0-9_.-\s]+$/,
+				message: "That's not a valid name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		email: {
+			required: 'E-Mail is required',
+			pattern: { value: /^\S+@\S+$/i, message: 'That is not a valid email' }
+		},
+		playerName: {
+			required: 'Player Name is required',
+			pattern: {
+				value: /^[a-zA-Z0-9_.-\s]+$/,
+				message: "That's not a valid name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		username: {
+			pattern: {
+				value: /^[a-zA-Z0-9_.-\s]+$/,
+				message: "That's not a valid name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		bio: {
+			pattern: {
+				value: /^[a-zA-Z0-9_.-\s]+$/,
+				message: 'Good try...'
+			},
+			maxLength: {
+				value: 3000,
+				message: "That's way too long, try again"
+			}
+		},
+		wiki: {
+			pattern: {
+				value: /^[a-zA-Z0-9_.-\s]+$/,
+				message: "That's not a valid wiki name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		amount: {
+			required: 'Effort Amount is required',
+			min: { value: 0, message: 'Must be larger than 0' }
+		}
+	};
+
 	const { errors } = formState;
 	const watchCharName = watch('characterName', 'New Character');
 
@@ -47,12 +114,20 @@ const NewCharacter = (props) => {
 		control
 	});
 
-	const { fields: tagFields, append: appendTag } = useFieldArray({
+	const {
+		fields: tagFields,
+		append: appendTag,
+		remove: removeTag
+	} = useFieldArray({
 		name: 'tags',
 		control
 	});
 
-	const { fields: controlFields, append: appendControl } = useFieldArray({
+	const {
+		fields: controlFields,
+		append: appendControl,
+		remove: removeControl
+	} = useFieldArray({
 		name: 'control',
 		control
 	});
@@ -107,13 +182,16 @@ const NewCharacter = (props) => {
 			<form onSubmit={handleSubmit(onSubmit, handleError)}>
 				<Panel>
 					<FormControl>
-						<FormLabel>Name </FormLabel>
+						<FormLabel>Character Name </FormLabel>
 						<Input
 							type="text"
 							size="md"
 							variant="outline"
-							{...register('characterName')}
+							{...register('characterName', validation.characterName)}
 						></Input>
+						<Text fontSize="sm" color="red.500">
+							{errors.characterName && errors.characterName.message}
+						</Text>
 					</FormControl>
 					<FormControl>
 						<FormLabel>Pronouns </FormLabel>
@@ -130,8 +208,12 @@ const NewCharacter = (props) => {
 							type="text"
 							size="md"
 							variant="outline"
-							{...register('playerName')}
+							{...register('playerName', validation.playerName)}
 						></Input>
+
+						<Text fontSize="sm" color="red.500">
+							{errors.playerName && errors.playerName.message}
+						</Text>
 					</FormControl>
 					<FormControl>
 						<FormLabel>User Name </FormLabel>
@@ -139,8 +221,12 @@ const NewCharacter = (props) => {
 							type="text"
 							size="md"
 							variant="outline"
-							{...register('username')}
+							{...register('username', validation.username)}
 						></Input>
+
+						<Text fontSize="sm" color="red.500">
+							{errors.username && errors.username.message}
+						</Text>
 					</FormControl>
 					<FormControl>
 						<FormLabel>E-Mail </FormLabel>
@@ -148,8 +234,12 @@ const NewCharacter = (props) => {
 							type="text"
 							size="md"
 							variant="outline"
-							{...register('email')}
+							{...register('email', validation.email)}
 						></Input>
+
+						<Text fontSize="sm" color="red.500">
+							{errors.email && errors.email.message}
+						</Text>
 					</FormControl>
 					<FormControl>
 						<FormLabel>Time Zone </FormLabel>
@@ -175,8 +265,11 @@ const NewCharacter = (props) => {
 							type="text"
 							size="md"
 							variant="outline"
-							{...register('bio')}
+							{...register('bio', validation.bio)}
 						></Input>
+						<Text fontSize="sm" color="red.500">
+							{errors.bio && errors.bio.message}
+						</Text>
 					</FormControl>
 					<FormControl>
 						<FormLabel>Wiki </FormLabel>
@@ -184,8 +277,11 @@ const NewCharacter = (props) => {
 							type="text"
 							size="md"
 							variant="outline"
-							{...register('wiki')}
+							{...register('wiki', validation.wiki)}
 						></Input>
+						<Text fontSize="sm" color="red.500">
+							{errors.wiki && errors.wiki.message}
+						</Text>
 					</FormControl>
 					{effortFields.map((item, i) => (
 						<div key={i}>
@@ -197,8 +293,12 @@ const NewCharacter = (props) => {
 									size="md"
 									variant="outline"
 									defaultValue={effortTypes?.[i]?.effortAmount}
-									{...register(`effort.${i}.effortAmount`)}
+									{...register(`effort.${i}.amount`, validation.effortAmount)}
 								></Input>
+								<Text fontSize="sm" color="red.500">
+									{errors.effortTypes?.[i]?.amount &&
+										errors.effortTypes[i].amount.message}
+								</Text>
 							</FormControl>
 						</div>
 					))}
@@ -208,15 +308,18 @@ const NewCharacter = (props) => {
 						<div key={i}>
 							<FormControl>
 								<Input size="md" {...register(`tags.${i}`)}></Input>
-							</FormControl>
+							</FormControl>{' '}
+							<Button onClick={() => removeTag()}>-</Button>
 						</div>
 					))}
 					<Button onClick={() => appendTag('')}>+</Button>
+
 					{controlFields.map((item, i) => (
 						<div key={i}>
 							<FormControl>
 								<Input size="md" {...register(`control.${i}`)}></Input>
 							</FormControl>
+							<Button onClick={() => removeControl()}>-</Button>
 						</div>
 					))}
 					<Button onClick={() => appendControl('')}>+</Button>
@@ -226,13 +329,9 @@ const NewCharacter = (props) => {
 							<label style={{ margin: 10 }}>Cloudinary:</label>
 							<Input type="file" onChange={(e) => handleFileUpload(e)} />
 						</div>
-						<div>
-							<p>test</p>
-							{renderImage()}
-						</div>
+						<div> {renderImage()}</div>
 					</div>
 				</Panel>
-
 				<Modal.Footer>
 					<Button type="submit" color="red" className="btn btn-primary mr-1">
 						Create new Character
