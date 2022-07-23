@@ -181,156 +181,176 @@ const NewCharacter = (props) => {
 			</Modal.Header>
 			<form onSubmit={handleSubmit(onSubmit, handleError)}>
 				<Panel>
-					<FormControl>
-						<FormLabel>Character Name </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('characterName', validation.characterName)}
-						></Input>
-						<Text fontSize="sm" color="red.500">
-							{errors.characterName && errors.characterName.message}
-						</Text>
-					</FormControl>
-					<FormControl>
-						<FormLabel>Pronouns </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('pronouns')}
-						></Input>
-					</FormControl>
-					<FormControl>
-						<FormLabel>Player Name </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('playerName', validation.playerName)}
-						></Input>
+					<Flex w="100%">
+						<VStack spacing="24px" w="100%">
+							<HStack w="100%">
+								<FormControl>
+									<FormLabel>Character Name </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('characterName', validation.characterName)}
+									></Input>
+									<Text fontSize="sm" color="red.500">
+										{errors.characterName && errors.characterName.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Pronouns </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('pronouns')}
+									></Input>
+								</FormControl>
+							</HStack>
+							<HStack w="100%">
+								<FormControl>
+									<FormLabel>Player Name </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('playerName', validation.playerName)}
+									></Input>
 
-						<Text fontSize="sm" color="red.500">
-							{errors.playerName && errors.playerName.message}
-						</Text>
-					</FormControl>
-					<FormControl>
-						<FormLabel>User Name </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('username', validation.username)}
-						></Input>
+									<Text fontSize="sm" color="red.500">
+										{errors.playerName && errors.playerName.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>User Name </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('username', validation.username)}
+									></Input>
 
-						<Text fontSize="sm" color="red.500">
-							{errors.username && errors.username.message}
-						</Text>
-					</FormControl>
-					<FormControl>
-						<FormLabel>E-Mail </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('email', validation.email)}
-						></Input>
+									<Text fontSize="sm" color="red.500">
+										{errors.username && errors.username.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>E-Mail </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('email', validation.email)}
+									></Input>
 
-						<Text fontSize="sm" color="red.500">
-							{errors.email && errors.email.message}
-						</Text>
-					</FormControl>
-					<FormControl>
-						<FormLabel>Time Zone </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('timeZone')}
-						></Input>
-					</FormControl>
-					<FormControl>
-						<FormLabel>Character Title </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('characterTitle')}
-						></Input>
-					</FormControl>
-					<FormControl>
-						<FormLabel>Bio </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('bio', validation.bio)}
-						></Input>
-						<Text fontSize="sm" color="red.500">
-							{errors.bio && errors.bio.message}
-						</Text>
-					</FormControl>
-					<FormControl>
-						<FormLabel>Wiki </FormLabel>
-						<Input
-							type="text"
-							size="md"
-							variant="outline"
-							{...register('wiki', validation.wiki)}
-						></Input>
-						<Text fontSize="sm" color="red.500">
-							{errors.wiki && errors.wiki.message}
-						</Text>
-					</FormControl>
-					{effortFields.map((item, i) => (
-						<div key={i}>
+									<Text fontSize="sm" color="red.500">
+										{errors.email && errors.email.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Time Zone </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('timeZone')}
+									></Input>
+								</FormControl>
+							</HStack>
+							<HStack w="100%">
+								<FormControl>
+									<FormLabel>Character Title </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('characterTitle')}
+									></Input>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Wiki </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('wiki', validation.wiki)}
+									></Input>
+									<Text fontSize="sm" color="red.500">
+										{errors.wiki && errors.wiki.message}
+									</Text>
+								</FormControl>
+							</HStack>
 							<FormControl>
-								<FormLabel>Effort {effortTypes?.[i]?.type}</FormLabel>
+								<FormLabel>Bio </FormLabel>
 								<Input
-									key={item.id}
-									type="number"
+									type="text"
 									size="md"
 									variant="outline"
-									defaultValue={effortTypes?.[i]?.effortAmount}
-									{...register(`effort.${i}.amount`, validation.effortAmount)}
+									{...register('bio', validation.bio)}
 								></Input>
 								<Text fontSize="sm" color="red.500">
-									{errors.effortTypes?.[i]?.amount &&
-										errors.effortTypes[i].amount.message}
+									{errors.bio && errors.bio.message}
 								</Text>
 							</FormControl>
-						</div>
-					))}
-					<FormLabel>Tags</FormLabel>
+							<HStack w="100%">
+								{effortFields.map((item, i) => (
+									<div key={i}>
+										<FormControl>
+											<FormLabel>Effort {effortTypes?.[i]?.type}</FormLabel>
+											<Input
+												key={item.id}
+												type="number"
+												size="md"
+												variant="outline"
+												defaultValue={effortTypes?.[i]?.effortAmount}
+												{...register(`effort.${i}.amount`, validation.amount)}
+											></Input>
+											<Text fontSize="sm" color="red.500">
+												{errors.effort?.[i]?.amount &&
+													errors.effort[i].amount.message}
+											</Text>
+										</FormControl>
+									</div>
+								))}
+							</HStack>
 
-					{tagFields.map((item, i) => (
-						<div key={i}>
-							<FormControl>
-								<Input size="md" {...register(`tags.${i}`)}></Input>
-							</FormControl>{' '}
-							<Button onClick={() => removeTag()}>-</Button>
-						</div>
-					))}
-					<Button onClick={() => appendTag('')}>+</Button>
+							<HStack w="100%">
+								<FormLabel>Tags</FormLabel>
+								{tagFields.map((item, i) => (
+									<div key={i}>
+										<HStack>
+											<FormControl>
+												<Input size="md" {...register(`tags.${i}`)}></Input>
+											</FormControl>{' '}
+											<Button onClick={() => removeTag()}>-</Button>
+										</HStack>
+									</div>
+								))}
+								<Button onClick={() => appendTag('')}>+</Button>
+							</HStack>
 
-					{controlFields.map((item, i) => (
-						<div key={i}>
-							<FormControl>
-								<Input size="md" {...register(`control.${i}`)}></Input>
-							</FormControl>
-							<Button onClick={() => removeControl()}>-</Button>
-						</div>
-					))}
-					<Button onClick={() => appendControl('')}>+</Button>
-
-					<div>
-						<div style={{ margin: 10 }}>
-							<label style={{ margin: 10 }}>Cloudinary:</label>
-							<Input type="file" onChange={(e) => handleFileUpload(e)} />
-						</div>
-						<div> {renderImage()}</div>
-					</div>
+							<HStack w="100%">
+								<FormLabel>Control</FormLabel>
+								{controlFields.map((item, i) => (
+									<div key={i}>
+										<HStack>
+											<FormControl>
+												<Input size="md" {...register(`control.${i}`)}></Input>
+											</FormControl>
+											<Button onClick={() => removeControl()}>-</Button>
+										</HStack>
+									</div>
+								))}
+								<Button onClick={() => appendControl('')}>+</Button>
+							</HStack>
+							<Box w="100%">
+								<div style={{ margin: 10 }}>
+									<label style={{ margin: 10 }}>Character Image:</label>
+									<Input type="file" onChange={(e) => handleFileUpload(e)} />
+								</div>
+								<div> {renderImage()}</div>
+							</Box>
+						</VStack>
+					</Flex>
 				</Panel>
 				<Modal.Footer>
 					<Button type="submit" color="red" className="btn btn-primary mr-1">
