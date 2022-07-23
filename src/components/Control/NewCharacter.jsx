@@ -42,7 +42,7 @@ const NewCharacter = (props) => {
 		characterName: {
 			required: 'Character Name is required',
 			pattern: {
-				value: /^[a-zA-Z0-9_.-\s]+$/,
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
 				message: "That's not a valid name where I come from..."
 			},
 
@@ -58,7 +58,7 @@ const NewCharacter = (props) => {
 		playerName: {
 			required: 'Player Name is required',
 			pattern: {
-				value: /^[a-zA-Z0-9_.-\s]+$/,
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
 				message: "That's not a valid name where I come from..."
 			},
 
@@ -69,7 +69,7 @@ const NewCharacter = (props) => {
 		},
 		username: {
 			pattern: {
-				value: /^[a-zA-Z0-9_.-\s]+$/,
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
 				message: "That's not a valid name where I come from..."
 			},
 
@@ -80,7 +80,7 @@ const NewCharacter = (props) => {
 		},
 		bio: {
 			pattern: {
-				value: /^[a-zA-Z0-9_.-\s]+$/,
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"’`\s()]+$/,
 				message: 'Good try...'
 			},
 			maxLength: {
@@ -133,7 +133,7 @@ const NewCharacter = (props) => {
 
 	useEffect(() => {
 		const subscription = watch();
-		return () => subscription.unsubscribe();
+		return () => subscription.unsubscribe;
 	}, [watch]);
 
 	const handleFileUpload = async (e) => {

@@ -1,299 +1,328 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'; // Redux store provider
+import { Modal, Button, Panel, ButtonGroup } from 'rsuite';
 import {
-	Tag,
-	Icon,
-	IconButton,
-	Drawer,
-	Button,
-	InputNumber,
+	HStack,
+	VStack,
+	Flex,
+	FormControl,
+	Box,
+	FormLabel,
 	Input,
-	TagGroup
-} from 'rsuite';
-import { connect } from 'react-redux';
+	Text
+} from '@chakra-ui/react';
+import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
+import cloudinaryUpload from '../../services/uploads';
 
-const disabled = ['_id', '__v', 'model'];
-class ModifyCharacter extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			formValue: { ...this.props.selected },
-			formArray: [],
-			add: false,
-			inputValue: ''
-		};
-		this.handleInput = this.handleInput.bind(this);
-	}
+const ModifyCharacter = (props) => {
+	const [imageURL, setImageURL] = useState('');
 
-	componentDidMount = () => {
-		let test = [];
-		for (const el in this.props.selected) {
-			// console.log(el)
-			typeof this.props.selected[el] !== 'object'
-				? test.push(el)
-				: console.log(el);
+	const { register, control, handleSubmit, reset, formState, watch } = useForm({
+		defaultValues: props.selected
+	});
+
+	const validation = {
+		characterName: {
+			required: 'Character Name is required',
+			pattern: {
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
+				message: "That's not a valid name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		email: {
+			required: 'E-Mail is required',
+			pattern: { value: /^\S+@\S+$/i, message: 'That is not a valid email' }
+		},
+		playerName: {
+			required: 'Player Name is required',
+			pattern: {
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
+				message: "That's not a valid name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		username: {
+			pattern: {
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
+				message: "That's not a valid name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		bio: {
+			pattern: {
+				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"’`\s()]+$/,
+				message: 'Good try...'
+			},
+			maxLength: {
+				value: 3000,
+				message: "That's way too long, try again"
+			}
+		},
+		wiki: {
+			pattern: {
+				value: /^[a-zA-Z0-9_.-\s]+$/,
+				message: "That's not a valid wiki name where I come from..."
+			},
+
+			maxLength: {
+				value: 300,
+				message: "That's way too long, try again"
+			}
+		},
+		amount: {
+			required: 'Effort Amount is required',
+			min: { value: 0, message: 'Must be larger than 0' }
 		}
-		test.sort((a, b) => {
-			// sort the catagories alphabetically
-			if (a < b) {
-				return -1;
-			}
-			if (a > b) {
-				return 1;
-			}
-			return 0;
-		});
-		this.setState({ formValue: this.props.selected, formArray: test });
 	};
 
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.selected !== prevProps.selected) {
-			this.setState({ formValue: this.props.selected });
-		}
+	const { errors } = formState;
+	const watchCharName = watch('characterName', 'New Character');
+
+	const {
+		fields: tagFields,
+		append: appendTag,
+		remove: removeTag
+	} = useFieldArray({
+		name: 'tags',
+		control
+	});
+
+	const {
+		fields: controlFields,
+		append: appendControl,
+		remove: removeControl
+	} = useFieldArray({
+		name: 'control',
+		control
+	});
+
+	useEffect(() => {
+		const subscription = watch();
+		return () => subscription.unsubscribe;
+	}, [watch]);
+
+	const handleFileUpload = async (e) => {
+		const uploadData = new FormData();
+		uploadData.append('file', e.target.files[0], 'file');
+		const img = await cloudinaryUpload(uploadData);
+		setImageURL(img.secure_url);
 	};
 
-	handleSubmit = async () => {
-		// 1) make a new action
-		this.setState({ loading: true });
+	const renderImage = () => {
+		if (!imageURL) return <img src={props.selected.profilePicture}></img>;
+		return <img src={imageURL}></img>;
+	};
+
+	const handleExit = () => {
+		props.closeModal();
+		setImageURL('');
+	};
+
+	function onSubmit(data) {
 		socket.emit('request', {
 			route: 'character',
 			action: 'modify',
-			data: this.state.formValue
+			data: { data, imageURL }
 		});
-		this.props.closeDrawer();
-		this.setState({ loading: false });
-	};
-
-	handleControlInputConfirm = () => {
-		const nextTags = this.state.inputValue
-			? [...this.state.formValue.control, this.state.inputValue]
-			: this.state.formValue.control;
-		this.handleInput(nextTags, 'control');
-		this.setState({
-			add: false,
-			addControl: false,
-			inputValue: ''
-		});
-	};
-
-	handleInputConfirm = () => {
-		const nextTags = this.state.inputValue
-			? [...this.state.formValue.tags, this.state.inputValue]
-			: this.state.formValue.tags;
-		this.handleInput(nextTags, 'tags');
-		this.setState({
-			add: false,
-			inputValue: ''
-		});
-	};
-
-	handleInput = (value, id) => {
-		if (id === '_id') {
-			console.log('id!!!!');
-		} else {
-			let formValue = { ...this.state.formValue };
-			formValue[id] = value;
-			this.setState({ formValue });
-		}
-	};
-
-	handleTagRemove = (tag, type) => {
-		const nextTags = this.state.formValue.tags.filter((item) => item !== tag);
-		this.handleInput(nextTags, type);
-	};
-
-	handleControlTagRemove = (tag, type) => {
-		const nextTags = this.state.formValue.control.filter(
-			(item) => item !== tag
-		);
-		this.handleInput(nextTags, type);
-	};
-
-	renderTagAdd = () => {
-		if (this.state.add)
-			return (
-				<Input
-					size="xs"
-					style={{ width: 70, display: 'inline-block' }}
-					value={this.state.inputValue}
-					onChange={(inputValue) => this.setState({ inputValue })}
-					onBlur={this.handleInputConfirm}
-					onPressEnter={this.handleInputConfirm}
-				/>
-			);
-		else
-			return (
-				<IconButton
-					className="tag-add-btn"
-					onClick={() => this.setState({ add: true })}
-					icon={<Icon icon="plus" />}
-					appearance="ghost"
-					size="xs"
-				/>
-			);
-	};
-
-	renderControlTagAdd = () => {
-		if (this.state.addControl)
-			return (
-				<Input
-					size="xs"
-					style={{ width: 70, display: 'inline-block' }}
-					value={this.state.inputValue}
-					onChange={(inputValue) => this.setState({ inputValue })}
-					onBlur={this.handleControlInputConfirm}
-					onPressEnter={this.handleControlInputConfirm}
-				/>
-			);
-		else
-			return (
-				<IconButton
-					className="tag-add-btn"
-					onClick={() => this.setState({ addControl: true })}
-					icon={<Icon icon="plus" />}
-					appearance="ghost"
-					size="xs"
-				/>
-			);
-	};
-
-	renderSwitch = (el) => {
-		let formValue = this.state.formValue;
-		switch (typeof formValue[el]) {
-			case 'string':
-				return (
-					<div>
-						<h5>{el}</h5>
-						<Input
-							id={el}
-							disabled={disabled.some((dis) => dis === el)}
-							type="text"
-							value={formValue[el]}
-							name={el}
-							label={el}
-							placeholder={el}
-							onChange={(value) => this.handleInput(value, el)}
-						/>
-					</div>
-				);
-			case 'number':
-				return (
-					<div>
-						<h5>{el}</h5>
-						<InputNumber
-							id={el}
-							disabled={disabled.some((dis) => dis === el)}
-							value={formValue[el]}
-							name={el}
-							label={el}
-							placeholder={el}
-							onChange={(value) => this.handleInput(value, el)}
-						/>
-					</div>
-				);
-			default:
-				return <b>{formValue[el]}</b>;
-		}
-	};
-
-	render() {
-		return (
-			<Drawer
-				overflow
-				size="sm"
-				show={this.props.show}
-				onHide={() => this.props.closeDrawer()}
-			>
-				<Drawer.Header>
-					<Drawer.Title>
-						Modify Character "{this.state.formValue.characterName}"
-					</Drawer.Title>
-					<b>Tags</b>
-					<TagGroup>
-						{this.state.formValue &&
-							this.state.formValue.tags &&
-							this.state.formValue.tags.map((item, index) => (
-								<Tag
-									index={index}
-									closable
-									onClose={() => this.handleTagRemove(item, 'tags')}
-								>
-									{item}
-								</Tag>
-							))}
-						{this.renderTagAdd()}
-					</TagGroup>
-
-					<b>Control</b>
-					<br />
-					<TagGroup>
-						{this.state.formValue &&
-							this.state.formValue.control &&
-							this.state.formValue.control.map((item, index) => (
-								<Tag
-									index={index}
-									closable
-									onClose={() => this.handleControlTagRemove(item, 'control')}
-								>
-									{item}
-								</Tag>
-							))}
-						{this.renderControlTagAdd()}
-					</TagGroup>
-				</Drawer.Header>
-				<Drawer.Body>
-					{this.state.formArray.map((el, index) => this.renderSwitch(el))}
-				</Drawer.Body>
-				<Drawer.Footer>
-					<Button
-						disabled={this.state.formValue.status === null}
-						onClick={() => this.handleSubmit()}
-						appearance="primary"
-					>
-						Submit
-					</Button>
-					<Button
-						onClick={() => {
-							this.props.closeDrawer();
-							// localStorage.removeItem('modifyCharacterState');
-						}}
-						appearance="subtle"
-					>
-						Cancel
-					</Button>
-				</Drawer.Footer>
-			</Drawer>
-		);
+		console.log(data, imageURL);
+		props.closeModal();
 	}
-}
 
-// const pickerData = [
-// 	{
-// 		label: 'Poor',
-// 		value: 'Poor'
-// 	},
-// 	{
-// 		label: 'Laborer',
-// 		value: 'Laborer'
-// 	},
-// 	{
-// 		label: 'Comfortable',
-// 		value: 'Comfortable'
-// 	},
-// 	{
-// 		label: 'Affluent',
-// 		value: 'Affluent'
-// 	},
-// 	{
-// 		label: 'Luxury',
-// 		value: 'Luxury'
-// 	}
-// ]
+	const handleError = (errors) => {
+		console.log('ERROR', errors);
+	};
 
-const mapStateToProps = (state) => ({
-	characters: state.characters.list
-});
+	return (
+		<Modal
+			overflow
+			full
+			size="lg"
+			show={props.show}
+			onHide={() => {
+				handleExit();
+			}}
+		>
+			<Modal.Header>
+				<Modal.Title>Modify Character "{watchCharName}"</Modal.Title>
+			</Modal.Header>
+			<form onSubmit={handleSubmit(onSubmit, handleError)}>
+				<Panel>
+					<Flex w="100%">
+						<VStack spacing="24px" w="100%">
+							<HStack w="100%">
+								<FormControl>
+									<FormLabel>Character Name </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('characterName', validation.characterName)}
+									></Input>
+									<Text fontSize="sm" color="red.500">
+										{errors.characterName && errors.characterName.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Pronouns </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('pronouns')}
+									></Input>
+								</FormControl>
+							</HStack>
+							<HStack w="100%">
+								<FormControl>
+									<FormLabel>Player Name </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('playerName', validation.playerName)}
+									></Input>
 
-const mapDispatchToProps = (dispatch) => ({});
+									<Text fontSize="sm" color="red.500">
+										{errors.playerName && errors.playerName.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>User Name </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('username', validation.username)}
+									></Input>
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModifyCharacter);
+									<Text fontSize="sm" color="red.500">
+										{errors.username && errors.username.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>E-Mail </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('email', validation.email)}
+									></Input>
+
+									<Text fontSize="sm" color="red.500">
+										{errors.email && errors.email.message}
+									</Text>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Time Zone </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('timeZone')}
+									></Input>
+								</FormControl>
+							</HStack>
+							<HStack w="100%">
+								<FormControl>
+									<FormLabel>Character Title </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('characterTitle')}
+									></Input>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Wiki </FormLabel>
+									<Input
+										type="text"
+										size="md"
+										variant="outline"
+										{...register('wiki', validation.wiki)}
+									></Input>
+									<Text fontSize="sm" color="red.500">
+										{errors.wiki && errors.wiki.message}
+									</Text>
+								</FormControl>
+							</HStack>
+							<FormControl>
+								<FormLabel>Bio </FormLabel>
+								<Input
+									type="text"
+									size="md"
+									variant="outline"
+									{...register('bio', validation.bio)}
+								></Input>
+								<Text fontSize="sm" color="red.500">
+									{errors.bio && errors.bio.message}
+								</Text>
+							</FormControl>
+							<HStack w="100%">
+								<FormLabel>Tags</FormLabel>
+								{tagFields.map((item, i) => (
+									<div key={i}>
+										<HStack>
+											<FormControl>
+												<Input size="md" {...register(`tags.${i}`)}></Input>
+											</FormControl>{' '}
+											<Button onClick={() => removeTag(i)}>-</Button>
+										</HStack>
+									</div>
+								))}
+								<Button onClick={() => appendTag('')}>+</Button>
+							</HStack>
+
+							<HStack w="100%">
+								<FormLabel>Control</FormLabel>
+								{controlFields.map((item, i) => (
+									<div key={i}>
+										<HStack>
+											<FormControl>
+												<Input size="md" {...register(`control.${i}`)}></Input>
+											</FormControl>
+											<Button onClick={() => removeControl(i)}>-</Button>
+										</HStack>
+									</div>
+								))}
+								<Button onClick={() => appendControl('')}>+</Button>
+							</HStack>
+							<Box w="100%">
+								<div style={{ margin: 10 }}>
+									<label style={{ margin: 10 }}>Character Image:</label>
+									<Input type="file" onChange={(e) => handleFileUpload(e)} />
+								</div>
+								<div> {renderImage()}</div>
+							</Box>
+						</VStack>
+					</Flex>
+				</Panel>
+				<Modal.Footer>
+					<ButtonGroup>
+						<Button type="submit" color="red" className="btn btn-primary mr-1">
+							Modify Character
+						</Button>
+						<Button onClick={() => reset()} className="btn btn-secondary mr-1">
+							Reset Form
+						</Button>
+					</ButtonGroup>
+				</Modal.Footer>
+			</form>
+		</Modal>
+	);
+};
+
+export default ModifyCharacter;

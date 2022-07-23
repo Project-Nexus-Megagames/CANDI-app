@@ -571,11 +571,7 @@ const OtherCharacters = (props) => {
 												onClick={() => openAnvil(selected)}
 											>
 												<img
-													src={
-														selected.tags.some((el) => el === 'Control')
-															? `/images/GW_Control_Icon.png`
-															: `${selected.profilePicture}`
-													}
+													src={`${selected.profilePicture}`}
 													alt="Img could not be displayed"
 													style={{ maxHeight: '50vh' }}
 												/>
@@ -588,7 +584,10 @@ const OtherCharacters = (props) => {
 							<ModifyCharacter
 								show={edit}
 								selected={selected}
-								closeDrawer={() => setEdit(false)}
+								closeModal={() => {
+									setEdit(false);
+									setSelected();
+								}}
 							/>
 							<AddAsset
 								show={add}
