@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, ButtonGroup, Button, Panel, Form, TagGroup, Tag } from 'rsuite';
+import { Modal, ButtonGroup, Button, Panel, TagGroup, Tag } from 'rsuite';
 import {
 	HStack,
 	VStack,
@@ -15,11 +15,13 @@ import {
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import _ from 'lodash';
+import cloudinaryUpload from '../../services/uploads';
 
 const NewCharacter = (props) => {
 	const gameConfig = useSelector((state) => state.gameConfig);
 
 	const effortTypes = gameConfig.effortTypes;
+	const [imageURL, setImageURL] = useState('');
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm({
 		defaultValues: {
@@ -60,6 +62,17 @@ const NewCharacter = (props) => {
 		return () => subscription.unsubscribe();
 	}, [watch]);
 
+	const handleFileUpload = async (e) => {
+		const uploadData = new FormData();
+		uploadData.append('file', e.target.files[0], 'file');
+		const img = await cloudinaryUpload(uploadData);
+		setImageURL(img.secure_url);
+	};
+
+	const renderImage = () => {
+		return <img src={imageURL}></img>;
+	};
+
 	const handleExit = () => {
 		props.closeModal();
 	};
@@ -68,9 +81,9 @@ const NewCharacter = (props) => {
 		//socket.emit('request', {
 		//	route: 'character',
 		//	action: 'create',
-		//	data
+		//	data: {data, imageURL}
 		//});
-		console.log(data);
+		console.log(data, imageURL);
 		props.closeModal();
 	}
 
@@ -207,6 +220,17 @@ const NewCharacter = (props) => {
 						</div>
 					))}
 					<Button onClick={() => appendControl('')}>+</Button>
+
+					<div>
+						<div style={{ margin: 10 }}>
+							<label style={{ margin: 10 }}>Cloudinary:</label>
+							<Input type="file" onChange={(e) => handleFileUpload(e)} />
+						</div>
+						<div>
+							<p>test</p>
+							{renderImage()}
+						</div>
+					</div>
 				</Panel>
 
 				<Modal.Footer>
