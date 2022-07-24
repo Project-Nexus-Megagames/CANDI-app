@@ -16,6 +16,8 @@ import socket from '../../socket';
 import cloudinaryUpload from '../../services/uploads';
 
 const ModifyCharacter = (props) => {
+	const gameConfig = useSelector((state) => state.gameConfig);
+	const effortTypes = gameConfig.effortTypes;
 	const [imageURL, setImageURL] = useState('');
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm({
@@ -98,6 +100,11 @@ const ModifyCharacter = (props) => {
 		remove: removeTag
 	} = useFieldArray({
 		name: 'tags',
+		control
+	});
+
+	const { fields: effortFields } = useFieldArray({
+		name: 'effort',
 		control
 	});
 
@@ -271,6 +278,27 @@ const ModifyCharacter = (props) => {
 									{errors.bio && errors.bio.message}
 								</Text>
 							</FormControl>
+							<HStack w="100%">
+								{effortFields.map((item, i) => (
+									<div key={i}>
+										<FormControl>
+											<FormLabel>Effort {effortTypes?.[i]?.type}</FormLabel>
+											<Input
+												key={item.id}
+												type="number"
+												size="md"
+												variant="outline"
+												defaultValue={effortTypes?.[i]?.effortAmount}
+												{...register(`effort.${i}.amount`, validation.amount)}
+											></Input>
+											<Text fontSize="sm" color="red.500">
+												{errors.effort?.[i]?.amount &&
+													errors.effort[i].amount.message}
+											</Text>
+										</FormControl>
+									</div>
+								))}
+							</HStack>
 							<HStack w="100%">
 								<FormLabel>Tags</FormLabel>
 								{tagFields.map((item, i) => (
