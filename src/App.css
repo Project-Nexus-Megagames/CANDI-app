@@ -88,6 +88,16 @@
 	text-align: "center";
 };
 
+.slimText {
+  font-size: 0.966em;
+  color: #97969B;
+  font-weight: lighter;
+  padding-bottom: 5;
+  padding-left: 2;
+  white-space: nowrap;
+}
+
+
 .textStyle {
   background-color: #1a1d24;
 	border: 1.5px solid #3c3f43;

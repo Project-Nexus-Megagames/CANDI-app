@@ -1,26 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	ButtonGroup,
-	Button,
-	Content,
-	Container,
-	Sidebar,
-	Input,
-	Panel,
-	List,
-	PanelGroup,
-	FlexboxGrid,
-	Avatar,
-	Col,
-	Tag,
-	Row,
-	Loader,
-	TagGroup,
-	Alert,
-	InputGroup,
-	Icon
-} from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -34,25 +14,22 @@ import {
 	getMyCharacter,
 	getMyUnlockedCharacters
 } from './../../redux/entities/characters';
+import CharacterListItem from './CharacterListItem';
 
 const OtherCharacters = (props) => {
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
-	const [filteredCharacters, setFilteredCharacters] = useState(
-		props.characters
-	);
+	const [filteredCharacters, setFilteredCharacters] = useState(props.characters);
 	const [edit, setEdit] = useState(false);
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 
-	const listStyle = (item) => {
-		if (item === selected) {
-			return { cursor: 'pointer', backgroundColor: '#212429' };
-		} else return { cursor: 'pointer' };
-	};
+	const [renderTags, setTags] = React.useState(['NPC', 'PC', 'Control']);
+
 
 	const tagStyle = (item, index) => {
+		console.log(item)
 		switch (item) {
 			case 'Control':
 				return (
@@ -211,203 +188,20 @@ const OtherCharacters = (props) => {
 								}}
 							>
 								<List hover size="sm">
-									{filteredCharacters
-										.filter((el) => el.tags.some((el) => el === 'PC'))
-										.map((character) => (
-											<List.Item
-												key={character._id}
-												index={character._id}
-												onClick={() => setSelected(character)}
-												style={listStyle(character)}
-											>
-												<FlexboxGrid>
-													<FlexboxGrid.Item colspan={5} style={styleCenter}>
-														<Avatar
-															src={
-																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
-																	: `/images/${character.characterName}.jpg`
-															}
-															alt="?"
-															circle
-														/>
-													</FlexboxGrid.Item>
-													<FlexboxGrid.Item
-														colspan={19}
-														style={{
-															...styleCenter,
-															flexDirection: 'column',
-															alignItems: 'flex-start',
-															overflow: 'hidden'
-														}}
-													>
-														<b style={titleStyle}>
-															{character.characterName}
-															<Tag color="cyan" style={{ marginLeft: '15px' }}>
-																PC
-															</Tag>
-														</b>
-														<b style={slimText}>{character.email}</b>
-													</FlexboxGrid.Item>
-												</FlexboxGrid>
-											</List.Item>
-										))}
-
-									{filteredCharacters
-										.filter((el) => el.tags.some((el) => el === 'NPC'))
-										.map((character) => (
-											<List.Item
-												key={character._id}
-												index={character._id}
-												onClick={() => setSelected(character)}
-												style={listStyle(character)}
-											>
-												<FlexboxGrid>
-													<FlexboxGrid.Item colspan={5} style={styleCenter}>
-														<Avatar
-															src={
-																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
-																	: `/images/${character.characterName}.jpg`
-															}
-															alt="?"
-															circle
-														/>
-													</FlexboxGrid.Item>
-													<FlexboxGrid.Item
-														colspan={19}
-														style={{
-															...styleCenter,
-															flexDirection: 'column',
-															alignItems: 'flex-start',
-															overflow: 'hidden'
-														}}
-													>
-														<b style={titleStyle}>
-															{character.characterName}
-															<Tag color="blue" style={{ marginLeft: '15px' }}>
-																NPC
-															</Tag>
-														</b>
-														<b style={slimText}>{character.email}</b>
-													</FlexboxGrid.Item>
-												</FlexboxGrid>
-											</List.Item>
-										))}
-
-									{filteredCharacters
-										.filter((el) => el.tags.some((el) => el === 'Control'))
-										.map((character, index) => (
-											<List.Item
-												key={index}
-												index={index}
-												onClick={() => setSelected(character)}
-												style={listStyle(character)}
-											>
-												<FlexboxGrid>
-													<FlexboxGrid.Item colspan={5} style={styleCenter}>
-														<Avatar
-															src={
-																character.tags.some((el) => el === 'Control')
-																	? `/images/GW_Control_Icon.png`
-																	: `/images/${character.characterName}.jpg`
-															}
-															alt="?"
-															circle
-														/>
-													</FlexboxGrid.Item>
-													<FlexboxGrid.Item
-														colspan={19}
-														style={{
-															...styleCenter,
-															flexDirection: 'column',
-															alignItems: 'flex-start',
-															overflow: 'hidden'
-														}}
-													>
-														<b style={titleStyle}>
-															{character.characterName}
-															{character.tags.some(
-																(el) => el === 'Control'
-															) && (
-																<Tag
-																	color="orange"
-																	style={{ marginLeft: '15px', color: 'black' }}
-																>
-																	Control
-																</Tag>
-															)}
-														</b>
-														<b style={slimText}>{character.email}</b>
-													</FlexboxGrid.Item>
-												</FlexboxGrid>
-											</List.Item>
-										))}
-
-									{props.myCharacter.tags.some((el) => el === 'Control') && (
-										<div>
-											<h5>Control Only</h5>
+								{renderTags
+										.map((tag) => (
+											<div>
+											<p>{tag}</p>
 											{filteredCharacters
-												.filter(
-													(el) =>
-														!el.tags.some(
-															(el2) =>
-																el2 === 'Control' ||
-																el2 === 'NPC' ||
-																el2 === 'PC' ||
-																el2 === 'God'
-														)
-												)
-												.map((character, index) => (
-													<List.Item
-														key={index}
-														index={index}
-														onClick={() => setSelected(character)}
-														style={listStyle(character)}
-													>
-														<FlexboxGrid>
-															<FlexboxGrid.Item colspan={5} style={styleCenter}>
-																<Avatar
-																	src={
-																		character.tags.some(
-																			(el) => el === 'Control'
-																		)
-																			? `/images/GW_Control_Icon.png`
-																			: `/images/${character.characterName}.jpg`
-																	}
-																	alt="?"
-																	circle
-																/>
-															</FlexboxGrid.Item>
-															<FlexboxGrid.Item
-																colspan={19}
-																style={{
-																	...styleCenter,
-																	flexDirection: 'column',
-																	alignItems: 'flex-start',
-																	overflow: 'hidden'
-																}}
-															>
-																<b style={titleStyle}>
-																	{character.characterName}
-																	{character.tags.some(
-																		(el) => el === 'Control'
-																	) && (
-																		<Tag
-																			color="orange"
-																			style={{ marginLeft: '15px' }}
-																		>
-																			Control
-																		</Tag>
-																	)}
-																</b>
-																<b style={slimText}>{character.email}</b>
-															</FlexboxGrid.Item>
-														</FlexboxGrid>
-													</List.Item>
-												))}
-										</div>
-									)}
+											 	.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
+ 						 							.map((character) => (
+ 						 								<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id}/>
+ 						 					))}
+											</div>
+										))}
+
+
+
 								</List>
 							</div>
 						</PanelGroup>
@@ -605,28 +399,6 @@ const OtherCharacters = (props) => {
 				<NewCharacter show={showNew} closeModal={() => setShowNew(false)} />
 			</React.Fragment>
 		);
-};
-
-const styleCenter = {
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-	height: '60px'
-};
-
-const titleStyle = {
-	whiteSpace: 'nowrap',
-	fontWeight: 500,
-	paddingLeft: 2
-};
-
-const slimText = {
-	fontSize: '0.966em',
-	color: '#97969B',
-	fontWeight: 'lighter',
-	paddingBottom: 5,
-	paddingLeft: 2,
-	whiteSpace: 'nowrap'
 };
 
 const mapStateToProps = (state) => ({

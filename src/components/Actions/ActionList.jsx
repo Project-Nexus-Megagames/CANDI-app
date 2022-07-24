@@ -80,15 +80,12 @@ class ActionList extends Component {
 						</h5>
 						
 							<List hover size="sm">
-								{this.props.actionTypes.map((actionType, index) => {
-									return (
-										<div index={index}>
-											{this.props.actions.filter((action) => action.round === round && action.type === actionType).length > 0 && <h5>{actionType}</h5>}
 
+										<div index={index}>
 											<List hover size="sm">
 								{/* <h5 >Control List</h5> */}
 								{this.props.actions
-									.filter((action) => action.round === round && action.type === actionType)
+									.filter((action) => action.round === round)
 									.sort((a, b) => {
 										// sort the catagories alphabetically
 										if (a.creator.characterTitle < b.creator.characterTitle) {
@@ -155,8 +152,7 @@ class ActionList extends Component {
 											
 										
 										</div>
-									)							
-								})}
+										
 								</List>
 					</div>
 				))}
