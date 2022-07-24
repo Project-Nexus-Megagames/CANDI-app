@@ -8,6 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import "./App.css";
 import Actions from "./components/Actions/Actions";
+import News from "./components/News/News";
 import Control from "./components/Control/control";
 import HomePage from "./components/Navigation/HomePage";
 import CharacterProfile from "./components/MyCharacters/CharacterProfile";
@@ -34,13 +35,14 @@ import { signOut, usersRecieved } from "./redux/entities/auth";
 import Quests from "./components/Control/Quests";
 import Map from "./components/Map/Map";
 import { loadGameConfig } from './redux/entities/gameConfig';
+import { loadArticles } from "./redux/entities/articles";
 
 // React App Component
 initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig } = props;
+  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig } = props;
 
   useEffect(() => {
     const theme = "dark";
@@ -69,6 +71,7 @@ const App = (props) => {
     console.log("App Loaded");
     loadChar();
     loadAssets();
+    loadArticles();
     loadLocations();
     loadGamestate();
 		loadGameConfig();
@@ -126,6 +129,11 @@ const App = (props) => {
 						exact
 						path="/character"
 						render={(props) => <CharacterProfile {...props} />}
+					/>
+          <Route
+						
+						path="/news"
+						render={(props) => <News {...props} />}
 					/>
 					<Route
 						exact
@@ -197,6 +205,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadChar: () => dispatch(loadCharacters()),
   loadAssets: () => dispatch(loadAssets()),
+  loadArticles: () => dispatch(loadArticles()),
   loadLocations: () => dispatch(loadLocations()),
   loadGamestate: () => dispatch(loadGamestate()),
 	loadGameConfig: () => dispatch(loadGameConfig()),

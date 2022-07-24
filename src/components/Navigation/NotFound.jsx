@@ -35,6 +35,9 @@ const NotFound = () => {
 					<Button appearance={'ghost'} onClick={() => start()}>
 						Click Me
 					</Button>
+					<Button color="white" appearance='text' size="lg" onClick={() => history.push('/')}>
+							I'm scared take me back!
+						</Button>
 				</Header>
 			)}
 			{startBool && (

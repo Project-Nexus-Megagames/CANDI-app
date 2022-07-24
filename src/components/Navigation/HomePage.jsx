@@ -191,7 +191,7 @@ const HomePage = (props) => {
 			</FlexboxGrid>
 
 			<Row>
-				<Col lg={12} md={24}>
+				{/* <Col lg={12} md={24}>
 					<div
 						style={{
 							border: '5px solid #d4af37',
@@ -219,6 +219,15 @@ const HomePage = (props) => {
 							Version: {props.version}
 						</p>
 					</div>
+				</Col> */}
+
+				<Col lg={12} md={12}>
+					<ImgPanel
+						img={banner}
+						to="news"
+						title="~ news ~"
+						body="Do the thing"
+					/>
 				</Col>
 
 				<Col lg={12} md={12}>

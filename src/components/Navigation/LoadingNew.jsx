@@ -14,7 +14,6 @@ import { loadGamestate } from '../../redux/entities/gamestate';
 import { loadGameConfig } from '../../redux/entities/gameConfig';
 import { loadLocations } from '../../redux/entities/locations';
 import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
-import { loadAssets } from '../../redux/entities/assets';
 
 const { Line } = Progress;
 
@@ -132,13 +131,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	loadAction: (data) => dispatch(loadplayerActions(data)),
-	loadAllActions: (data) => dispatch(loadAllActions(data)),
-	loadChar: () => dispatch(loadCharacters()),
-	loadAssets: () => dispatch(loadAssets()),
-	loadLocations: () => dispatch(loadLocations()),
-	loadGamestate: () => dispatch(loadGamestate()),
-	loadGameConfig: () => dispatch(loadGameConfig()),
 	setCharacter: (payload) => dispatch(setCharacter(payload)),
 	finishLoading: () => dispatch(finishLoading()),
 	logOut: () => dispatch(signOut()),

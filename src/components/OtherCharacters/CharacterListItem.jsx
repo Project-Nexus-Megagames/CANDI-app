@@ -5,14 +5,13 @@ const CharacterListItem = (props) => {
   const { character, setSelected, selected } = props;
 
   const listStyle = (item) => {
-		if (item === selected) {
+		if (selected && item._id === selected._id) {
 			return { cursor: 'pointer', backgroundColor: '#212429' };
 		} else return { cursor: 'pointer' };
 	};
 
 
 	const tagStyle = (item, index) => {
-		console.log(item)
 		switch (item) {
 			case 'Control':
 				return (
@@ -44,18 +43,14 @@ const CharacterListItem = (props) => {
 	};
 
   return (
-    <List.Item
+    <div
     onClick={() => setSelected(character)}
     style={listStyle(character)}
   >
-    <FlexboxGrid>
+    <FlexboxGrid align="middle" >
       <FlexboxGrid.Item colspan={5}>
         <Avatar
-          src={
-            character.tags.some((el) => el === 'Control')
-              ? `/images/GW_Control_Icon.png`
-              : `/images/${character.characterName}.jpg`
-          }
+          src={character.profilePicture}
           alt="?"
           circle
         />
@@ -71,15 +66,16 @@ const CharacterListItem = (props) => {
       >
         <b style={titleStyle}>
           {character.characterName}
-						{character.tags &&
-							character.tags.map((item, index) =>
-								tagStyle(item, index)
-							)}
         </b>
-        <b style={slimText}>{character.email}</b>
+        <b style={slimText}>{character.email} {"  "}
+        {character.tags &&
+					character.tags.map((item, index) =>
+						tagStyle(item, index)
+					)}
+        </b>
       </FlexboxGrid.Item>
     </FlexboxGrid>
-  </List.Item>
+  </div>
   )
 }
 
@@ -92,7 +88,8 @@ const styleCenter = {
 
 const titleStyle = {
 	whiteSpace: 'nowrap',
-	fontWeight: 500,
+	fontWeight: 100,
+  fontSize: 16,
 	paddingLeft: 2
 };
 

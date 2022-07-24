@@ -15,6 +15,7 @@ import {
 	getMyUnlockedCharacters
 } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
+import { getFadedColor } from '../../scripts/frontend';
 
 const OtherCharacters = (props) => {
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
@@ -25,7 +26,7 @@ const OtherCharacters = (props) => {
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 
-	const [renderTags, setTags] = React.useState(['NPC', 'PC', 'Control']);
+	const [renderTags, setTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags 
 
 
 	const tagStyle = (item, index) => {
@@ -58,6 +59,12 @@ const OtherCharacters = (props) => {
 			default:
 				return <Tag index={index}>{item}</Tag>;
 		}
+	};
+
+	const listStyle = (item) => {
+		if (selected && item._id === selected._id) {
+			return { cursor: 'pointer', backgroundColor: '#212429' };
+		} else return { cursor: 'pointer' };
 	};
 
 	const copyToClipboard = (character) => {
@@ -187,22 +194,22 @@ const OtherCharacters = (props) => {
 									borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 								}}
 							>
-								<List hover size="sm">
+								<div >
 								{renderTags
 										.map((tag) => (
-											<div>
-											<p>{tag}</p>
+											<List hover>
+											<p style={{ backgroundColor: getFadedColor(tag), color: getFadedColor(`${tag}-text`) }}>{tag}</p>
 											{filteredCharacters
 											 	.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
  						 							.map((character) => (
- 						 								<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id}/>
- 						 					))}
-											</div>
+														<List.Item style={listStyle(character)}>
+															<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id}/>
+														</List.Item>
+ 						 							))}
+											</List>
 										))}
+								</div>
 
-
-
-								</List>
 							</div>
 						</PanelGroup>
 					</Sidebar>
