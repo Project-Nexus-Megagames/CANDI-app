@@ -100,6 +100,11 @@ export const filteredActions = createSelector(
   )
 );
 
+export const getOtherAgendaActions = createSelector(
+  state => state.actions.list,
+	state => state.characters.list.find(el => el.username === state.auth.user.username),
+  (actions, myCharacter) => actions.filter(el => el.type === 'Agenda' && el.creator._id !== myCharacter._id )
+);
 //  export const draftActions = createSelector(
 //   state => state.actions.list,
 //   (actions) => actions.filter(el => el.status.draft === true)

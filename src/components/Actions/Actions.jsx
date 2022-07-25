@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Container, Sidebar, Input, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
+import {
+	Container,
+	Sidebar,
+	Input,
+	PanelGroup,
+	Button,
+	Loader,
+	Icon,
+	InputGroup,
+	Tooltip,
+	Whisper
+} from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import {
 	filteredActions,
 	getCurrentExplores,
 	getMyActions,
+	getOtherAgendaActions,
 	setFilter
 } from '../../redux/entities/playerActions';
 import { useSelector } from 'react-redux';
-import { DocPass } from '@rsuite/icons';
 
 import NavigationBar from '../Navigation/NavigationBar';
 
@@ -17,8 +28,6 @@ import ActionList from './ActionList';
 import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
-
-import _ from 'lodash';
 
 const Actions = (props) => {
 	const [selected, setSelected] = useState(null);
@@ -37,13 +46,6 @@ const Actions = (props) => {
 		setSelected(fuuuck);
 	};
 
-	const getIcon = (type) => {
-		switch(type){
-			default: 
-				return(<Icon icon="plus" />)
-		}
-	};
-
 	if (!props.login) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
@@ -52,26 +54,20 @@ const Actions = (props) => {
 		return <MobileActions />;
 	}
 
-	const myEfforts = myCharacter.effort;
 	const actionTypes = [];
+	const actionsToDisplay = [];
+
+	props.myActions?.forEach((el) => actionsToDisplay.push(el));
+	props.agendaActions?.forEach((el) => actionsToDisplay.push(el));
 
 	for (const actionType of gameConfig.actionTypes)
-	actionTypes.push(actionType.type);
-
-	const showExplore = actionTypes.some((el) => el === 'Explore') === true;
-	const showFeed = actionTypes.some((el) => el === 'Feed') === true;
-	const showAgenda = actionTypes.some((el) => el === 'Agenda') === true;
-
-	//const exploreEffort = _.find(myEfforts, { type: 'Explore' })?.amount;
-	const normalEffort = _.find(myEfforts, { type: 'Normal' })?.amount;
-	// const feedEffort = _.find(myEfforts, { type: 'Feed' })?.amount;
-	//const agendaEffort = _.find(myEfforts, { type: 'Agenda' })?.amount;
+		actionTypes.push(actionType.type);
 
 	return (
 		<React.Fragment>
 			<NavigationBar />
 			<Container style={{ height: 'calc(100vh - 50px)' }}>
-				<Sidebar >
+				<Sidebar>
 					<PanelGroup>
 						<div
 							style={{
@@ -94,9 +90,7 @@ const Actions = (props) => {
 									trigger="hover"
 									speaker={
 										<Tooltip>
-											<b>
-												{`Create New Action`}
-											</b>
+											<b>{`Create New Action`}</b>
 										</Tooltip>
 									}
 								>
@@ -108,7 +102,6 @@ const Actions = (props) => {
 										<Icon icon="plus" />
 									</Button>
 								</Whisper>
-
 							</InputGroup>
 						</div>
 						<div
@@ -120,8 +113,15 @@ const Actions = (props) => {
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 							}}
 						>
-							<ActionList actions={props.control ? props.filteredActions : props.myActions} actionTypes={actionTypes} selected={selected} handleSelect={handleSelect} />
-						</div>{' '}
+							<ActionList
+								actions={
+									props.control ? props.filteredActions : actionsToDisplay
+								}
+								actionTypes={actionTypes}
+								selected={selected}
+								handleSelect={handleSelect}
+							/>
+						</div>
 						ActionList
 					</PanelGroup>
 				</Sidebar>
@@ -156,6 +156,7 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	gamestate: state.gamestate,
 	myActions: getMyActions(state),
+	agendaActions: getOtherAgendaActions(state),
 	filteredActions: filteredActions(state)
 });
 
