@@ -219,3 +219,10 @@ button {
 	cursor: pointer;
 	margin: 10px;
 }
+
+.blob {
+  padding: 0px;
+  text-align: left;
+  background-color: #15181e;
+  white-space: pre-line;
+}

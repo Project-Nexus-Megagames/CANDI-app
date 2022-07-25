@@ -1,18 +1,21 @@
 import React, { Component } from "react"; // React import
 import { connect } from 'react-redux'; // Redux store provider
-import { Container } from "rsuite";
+import { Button, CheckPicker, Container, FlexboxGrid, Header, Input, InputGroup, Popover, SelectPicker, TagPicker, Tooltip, Whisper } from "rsuite";
 import { Panel, PanelGroup, IconButton, ButtonGroup, ButtonToolbar, Icon, Content, Sidebar, Modal } from "rsuite";
 import { articleHidden } from "../../redux/entities/articles";
 import socket from "../../socket";
+import Article from "./Article";
 import SubNews from "./SubNews";
 import ViewArticle from "./ViewArticle";
 const NewsFeed = (props) => {
 	const [article, setArticle] = React.useState(props.articles[0]);
-	const [filtered, setFiltered] = React.useState(props.articles);
+	const [filter, setFilter] = React.useState('');
 	const [agencyFilter, setAgencyFilter] = React.useState([]);
+  const [show, setShow] = React.useState(false);
 	const [view, setView] = React.useState(false);
 	const [editor, setEditor] = React.useState(false);
 	const [edit, setEdit] = React.useState(false);
+	const [tags, setTags] = React.useState(['Military', 'Aircraft', 'Facilities', 'Upgrades', 'Sites', 'Satellites' ]);
 
 	/*
 	Scott's TODO list:
@@ -57,35 +60,53 @@ const NewsFeed = (props) => {
 
     return (
       <Container>
-        <Content>
+        <Header>
+			  <FlexboxGrid justify="center" align="middle">
+          <FlexboxGrid.Item colspan={4}>
+            <InputGroup >
+								<Input style={{ width: '80%' }} onChange={(value)=> setFilter(value)} placeholder="Search"></Input>
+                <Button
+                  style={{ color: 'black', borderRadius: '0px' }}
+                  color="green"
+                  onClick={() => setShow('new')}
+                >
+                  <Icon icon="plus" />
+                </Button>
+
+                <Whisper delay={100} placement="top" speaker={(<Popover>Filter</Popover>)} trigger="hover">
+						    	<IconButton color='violet' onClick={() => setShow(show === 'filter' ? false : 'filter')}  icon={<Icon icon='filter' />} ></IconButton>
+					    	</Whisper> 
+					    	{show === 'filter' && 
+                  <TagPicker 
+                    style={{ borderRadius: '0px', }}
+                    menuStyle={{ }}
+                    defaultExpandAll
+                    data={tags}
+                    defaultValue={tags}
+                    placeholder="Set Filters"
+                    valueKey='value'
+                    onChange={(tags) => setTags(tags)}
+                  />}							
+							</InputGroup>            
+          </FlexboxGrid.Item>
+			
+
+
+
+
+				</FlexboxGrid>
+			</Header>
+
+        <Content >
+        
           {props.articles.length === 0 ? <h5>No articles published</h5> : null }
-          {props.articles.length > 0 ? <PanelGroup>
+          {props.articles.length > 0 ? <div>
           {props.articles.map(article => (
-              <Panel
-                key={article._id}
-                header={
-                  <span>
-                    {/* <TeamAvatar size={"sm"} code={article.agency} /> */}
-                    <h5 style={{marginLeft:'10px', display: 'inline', verticalAlign:'super'}}>{article.headline}</h5>
-                    <ButtonToolbar style={{float: 'right'}}>
-                      <ButtonGroup>
-                        {true ? <IconButton icon={<Icon icon="edit" />} onClick={() => handleEdit(article)} /> : null}
-                        {/* <IconButton icon={<Icon icon="eye-slash" />} onClick={() => props.hideArticle(article)} /> */}
-                        <IconButton icon={<Icon icon="trash" />} onClick={() => handleHide(article)} color="red"/>
-                      </ButtonGroup>
-                      <IconButton icon={<Icon icon="file-text" />} onClick={() => handleOpen(article)} color="green">Open Article</IconButton>
-                    </ButtonToolbar>
-                  </span>}
-                bordered
-              >
-                <p>{article.articleBody}</p>
-              </Panel>
+            <Article article={article} />
           ))}
-        </PanelGroup> : null}
+        </div> : null}
         </Content>
-        <Sidebar>
-          <IconButton block icon={<Icon icon='file-text' />} onClick={() => handleThis()}>{buttonTxt}</IconButton>
-        </Sidebar>
+
          <Modal overflow edit={edit} size='lg' show={editor} onHide={() => setEditor(false)}>
           {article && <SubNews edit={edit} article={article} onClose={() => setEditor(false)} />}
         </Modal>
