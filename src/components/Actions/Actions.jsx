@@ -1,25 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import {
-	Container,
-	Sidebar,
-	Input,
-	PanelGroup,
-	Button,
-	Loader,
-	Icon,
-	InputGroup,
-	Tooltip,
-	Whisper
-} from 'rsuite';
+import { Container, Sidebar, Input, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import {
-	filteredActions,
-	getCurrentExplores,
-	getMyActions,
-	getOtherAgendaActions,
-	setFilter
-} from '../../redux/entities/playerActions';
+import { filteredActions, getCurrentExplores, getMyActions, getOtherAgendaActions, setFilter } from '../../redux/entities/playerActions';
 import { useSelector } from 'react-redux';
 
 import NavigationBar from '../Navigation/NavigationBar';
@@ -60,8 +43,7 @@ const Actions = (props) => {
 	props.myActions?.forEach((el) => actionsToDisplay.push(el));
 	props.agendaActions?.forEach((el) => actionsToDisplay.push(el));
 
-	for (const actionType of gameConfig.actionTypes)
-		actionTypes.push(actionType.type);
+	for (const actionType of gameConfig.actionTypes) actionTypes.push(actionType.type);
 
 	return (
 		<React.Fragment>
@@ -77,13 +59,7 @@ const Actions = (props) => {
 							}}
 						>
 							<InputGroup>
-								<Input
-									size="lg"
-									style={{ height: '42px' }}
-									onChange={(value) => props.setFilter(value)}
-									value={props.filter}
-									placeholder="Search"
-								></Input>
+								<Input size="lg" style={{ height: '42px' }} onChange={(value) => props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
 
 								<Whisper
 									placement="top"
@@ -94,11 +70,7 @@ const Actions = (props) => {
 										</Tooltip>
 									}
 								>
-									<Button
-										style={{ color: 'black', borderRadius: '0px' }}
-										color="green"
-										onClick={() => setShowNew(true)}
-									>
+									<Button style={{ color: 'black', borderRadius: '0px' }} color="green" onClick={() => setShowNew(true)}>
 										<Icon icon="plus" />
 									</Button>
 								</Whisper>
@@ -113,35 +85,16 @@ const Actions = (props) => {
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 							}}
 						>
-							<ActionList
-								actions={
-									props.control ? props.filteredActions : actionsToDisplay
-								}
-								actionTypes={actionTypes}
-								selected={selected}
-								handleSelect={handleSelect}
-							/>
+							<ActionList actions={props.control ? props.filteredActions : actionsToDisplay} actionTypes={actionTypes} selected={selected} handleSelect={handleSelect} />
 						</div>
 						ActionList
 					</PanelGroup>
 				</Sidebar>
 
 				{!selected && <h4 style={{ width: '100%' }}>No Action Selected</h4>}
-				{selected && (
-					<SelectedAction
-						user={props.user}
-						handleSelect={handleSelect}
-						selected={selected}
-					/>
-				)}
+				{selected && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected} />}
 
-				<NewAction
-					show={showNew}
-					closeNew={() => setShowNew(false)}
-					gamestate={props.gamestate}
-					myCharacter={myCharacter}
-					gameConfig={gameConfig}
-				/>
+				<NewAction show={showNew} closeNew={() => setShowNew(false)} gamestate={props.gamestate} myCharacter={myCharacter} gameConfig={gameConfig} />
 			</Container>
 		</React.Fragment>
 	);

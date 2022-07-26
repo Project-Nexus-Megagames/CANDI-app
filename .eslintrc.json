@@ -29,6 +29,7 @@
 			"react/jsx-key": "warn",
 			"no-case-declarations": "off",
 			"no-mixed-spaces-and-tabs": "warn",
-			"react/no-children-prop": "warn"
+			"react/no-children-prop": "warn",
+			"max-len": "off"
 		}
 }
