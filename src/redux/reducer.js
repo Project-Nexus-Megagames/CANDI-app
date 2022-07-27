@@ -7,6 +7,8 @@ import playerActions from "./entities/playerActions";
 import gamestate from "./entities/gamestate";
 import locations from "./entities/locations";
 import gameConfig from "./entities/gameConfig";
+import log from "./entities/log";
+
 
 // Main Store reducer
 export default combineReducers({
@@ -18,5 +20,6 @@ export default combineReducers({
   characters,
   gamestate,
   locations,
-	gameConfig
+	gameConfig,
+	log
 });

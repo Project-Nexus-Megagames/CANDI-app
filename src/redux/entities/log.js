@@ -18,7 +18,8 @@ const slice = createSlice({
     },
     logReceived: (log, action) => {
 			console.log(`${action.type} Dispatched...`);
-			//gameConfig.name = action.payload.name;
+			console.log('PAYLOAD', action.payload)
+			log.list = action.payload;
 			log.loading = false;
       log.lastFetch = Date.now();
       log.loaded = true;
