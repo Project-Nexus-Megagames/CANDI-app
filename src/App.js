@@ -36,13 +36,14 @@ import Quests from "./components/Control/Quests";
 import Map from "./components/Map/Map";
 import { loadGameConfig } from './redux/entities/gameConfig';
 import { loadArticles } from "./redux/entities/articles";
+import { loadLog } from "./redux/entities/log";
 
 // React App Component
 initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig } = props;
+  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog } = props;
 
   useEffect(() => {
     const theme = "dark";
@@ -75,6 +76,7 @@ const App = (props) => {
     loadLocations();
     loadGamestate();
 		loadGameConfig();
+		loadLog();
     socket.onAny((event, ...args) => {
       console.log(event);
       if (event === "clients") {
@@ -131,7 +133,7 @@ const App = (props) => {
 						render={(props) => <CharacterProfile {...props} />}
 					/>
           <Route
-						
+
 						path="/news"
 						render={(props) => <News {...props} />}
 					/>
@@ -209,6 +211,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadLocations: () => dispatch(loadLocations()),
   loadGamestate: () => dispatch(loadGamestate()),
 	loadGameConfig: () => dispatch(loadGameConfig()),
+	loadLog: () => dispatch(loadLog()),
   usersRecieved: (data) => dispatch(usersRecieved(data)),
   logOut: () => dispatch(signOut()),
 });
