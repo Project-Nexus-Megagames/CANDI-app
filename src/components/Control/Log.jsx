@@ -5,6 +5,8 @@ import { getGameStateLog } from '../../redux/entities/log';
 import socket from '../../socket';
 import _ from 'lodash';
 
+import NavigationBar from '../Navigation/NavigationBar';
+
 const Log = (props) => {
 	const [selectedCat, setSelectedCat] = useState('');
 	const gameStateMessages = useSelector(getGameStateLog);
@@ -51,24 +53,12 @@ const Log = (props) => {
 	const data = ['cat1', 'cat2'].map((item) => ({ label: item, value: item }));
 
 	return (
-		<Modal
-			overflow
-			full
-			size="lg"
-			show={props.show}
-			onHide={() => {
-				handleExit();
-			}}
-		>
-			<Modal.Header>
-				<Modal.Title>Logs</Modal.Title>
-			</Modal.Header>
-			{/*<Panel>
-				<SelectPicker block placeholder="Select a Category" onChange={(event) => handleCatChange(event)} data={data} />
-			</Panel>*/}
-			<Panel>{renderLogMessages()}</Panel>
-			<Modal.Footer></Modal.Footer>
-		</Modal>
+		<div>
+			<NavigationBar />
+			<Panel header="Log Messages" collapsible bordered>
+				{renderLogMessages()}
+			</Panel>
+		</div>
 	);
 };
 

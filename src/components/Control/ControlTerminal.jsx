@@ -180,7 +180,8 @@ class ControlTerminal extends Component {
 
 				<Panel header={'Configuration and Logging'} bordered style={{ border: '5px solid purple' }}>
 					<ButtonGroup>
-						<Button appearance="ghost" onClick={() => setLogModal(true)}>
+						{/*<Button appearance="ghost" onClick={() => setLogModal(true)}>*/}
+						<Button appearance="ghost" onClick={() => this.props.history.push('/log')}>
 							View Log
 						</Button>
 						<Link to="gameConfig">
@@ -271,8 +272,6 @@ class ControlTerminal extends Component {
 				<ManageContacts open={true} show={this.state.charLockModal} closeModal={() => setCharLockModal(false)} />
 
 				<HealInjury open={true} show={this.state.injuryModal} closeModal={() => setInjuryModal(false)} />
-
-				<Log show={this.state.logModal} closeModal={() => setLogModal(false)} />
 			</Content>
 		);
 	}
