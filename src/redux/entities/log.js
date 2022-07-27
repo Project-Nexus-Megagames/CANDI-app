@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"; // Import from reactjs toolkit
+import { createSlice, createSelector } from "@reduxjs/toolkit"; // Import from reactjs toolkit
 import { gameServer } from "../../config";
 import { apiCallBegan } from "../api"; // Import Redux API call
 
@@ -42,6 +42,12 @@ export default slice.reducer; // Reducer Export
 
 // Action Creators (Commands)
 const url = `${gameServer}api/log`;
+
+export const getGameStateLog = createSelector(
+  (state) => state.log.list,
+  (log) =>
+    log.filter((el) => el.submodel === "GameState"));
+
 
 // gameConfig Loader into state
 export const loadLog = payload => (dispatch) => {
