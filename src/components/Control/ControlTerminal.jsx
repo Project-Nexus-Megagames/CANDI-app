@@ -180,7 +180,7 @@ class ControlTerminal extends Component {
 
 				<Panel header={'Configuration and Logging'} bordered style={{ border: '5px solid purple' }}>
 					<ButtonGroup>
-						<Button color="violet" appearance="ghost" onClick={() => setLogModal(true)}>
+						<Button appearance="ghost" onClick={() => setLogModal(true)}>
 							View Log
 						</Button>
 						<Link to="gameConfig">
