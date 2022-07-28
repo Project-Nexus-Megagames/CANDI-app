@@ -46,12 +46,12 @@ const url = `${gameServer}api/log`;
 export const getGameStateLog = createSelector(
   (state) => state.log.list,
   (log) =>
-    log.filter((el) => el.submodel === "GameState"));
+    log.filter((el) => el.submodel === "NextRoundLog"));
 
 export const getControlLog = createSelector(
 	(state) => state.log.list,
 	(log) =>
-		log.filter((el) => el.submodel === "Control"));
+		log.filter((el) => el.submodel === "ControlLog"));
 
 
 // gameConfig Loader into state

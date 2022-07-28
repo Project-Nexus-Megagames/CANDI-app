@@ -286,7 +286,8 @@ class ControlTerminal extends Component {
 	};
 
 	closeDraft = async () => {
-		socket.emit('request', { route: 'gamestate', action: 'closeRound' });
+		const data = this.props.user.username;
+		socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
 		this.setState({ warningModal: false });
 	};
 
