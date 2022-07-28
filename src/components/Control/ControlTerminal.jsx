@@ -184,11 +184,9 @@ class ControlTerminal extends Component {
 						<Button appearance="ghost" onClick={() => this.props.history.push('/log')}>
 							View Log
 						</Button>
-						<Link to="gameConfig">
-							<Button appearance="ghost" color="red" href="gameconfig">
-								Edit Game Config
-							</Button>
-						</Link>
+						<Button appearance="ghost" color="red" onClick={() => this.props.history.push('/gameConfig')}>
+							Edit Game Config
+						</Button>
 					</ButtonGroup>
 				</Panel>
 
@@ -296,7 +294,8 @@ class ControlTerminal extends Component {
 	};
 
 	publishActions = async () => {
-		socket.emit('request', { route: 'gamestate', action: 'nextRound' });
+		const data = this.props.user.username;
+		socket.emit('request', { route: 'gamestate', action: 'nextRound', data });
 		this.setState({ warning2Modal: false });
 	};
 }

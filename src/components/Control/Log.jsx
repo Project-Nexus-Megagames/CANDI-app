@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, SelectPicker, Button, Panel } from 'rsuite';
+import { Button, Panel, FlexboxGrid, InputPicker } from 'rsuite';
 import { getGameStateLog } from '../../redux/entities/log';
-import socket from '../../socket';
-import _ from 'lodash';
 
 import NavigationBar from '../Navigation/NavigationBar';
 
-const Log = (props) => {
+const Log = () => {
 	const [selectedCat, setSelectedCat] = useState('');
-	const gameStateMessages = useSelector(getGameStateLog);
-	console.log(gameStateMessages);
+	const gameStateLog = useSelector(getGameStateLog);
+	const nextRoundMessages = [...gameStateLog].reverse();
 
-	const handleExit = () => {
-		props.closeModal();
-	};
+	// const controlLog = useSelector(getControlLog);
+	// const controlMessages = [...controlLog].reverse();
+
+	const logCategories = ['Next Round Log', 'Control Log'].map((item) => ({ label: item, value: item }));
+
 	const handleCatChange = (event) => {
 		if (event) {
 			setSelectedCat(event);
@@ -22,42 +22,46 @@ const Log = (props) => {
 	};
 
 	const renderCat = () => {
-		//	if (!selectedCat) return <div>Please Select a category!</div>;
-
-		return <div>{renderLogMessages()}</div>;
+		if (!selectedCat) return <div>Please Select a category!</div>;
+		if (selectedCat === 'Next Round Log') return <div>{renderNextRoundMessages(nextRoundMessages)}</div>;
+		//return <div>{renderLogMessages(controlMessages)}</div>;
+		return <div>Boop</div>;
 	};
 
-	const renderEachMessage = (gameState) => {
-		return gameState.logMessages.map((message, index) => {
-			return <li>{message}</li>;
+	const renderEachMessage = (messages) => {
+		return messages.logMessages.map((message, index) => {
+			return (
+				<li key={index} style={{ fontWeight: 'normal' }}>
+					{message}
+				</li>
+			);
 		});
 	};
 
-	const renderLogMessages = () => {
+	const renderNextRoundMessages = (nextRoundLog) => {
 		//if (!cat) return <div>Please Select a category!</div>;
 		return (
 			<div>
-				boop
-				{gameStateMessages.map((gameState, index) => {
+				{nextRoundLog.map((nextRound, index) => {
+					const created = new Date(nextRound.createdAt).toDateString();
+					const headerString = 'New Round ' + nextRound.round + ' Initiated by ' + nextRound.control + ' on ' + created;
 					return (
-						<div>
-							<li>{gameState.createdAt}</li>
-							{renderEachMessage(gameState)}
-						</div>
+						<Panel key={index} header={headerString} style={{ fontWeight: 'bold' }} collapsible bordered>
+							{renderEachMessage(nextRound)}
+						</Panel>
 					);
 				})}
 			</div>
 		);
 	};
 
-	const data = ['cat1', 'cat2'].map((item) => ({ label: item, value: item }));
-
 	return (
 		<div>
 			<NavigationBar />
-			<Panel header="Log Messages" collapsible bordered>
-				{renderLogMessages()}
+			<Panel>
+				<InputPicker block placeholder="Pick a Category" onChange={(event) => handleCatChange(event)} data={logCategories} />
 			</Panel>
+			<Panel>{renderCat()}</Panel>
 		</div>
 	);
 };
