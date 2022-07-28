@@ -48,6 +48,11 @@ export const getGameStateLog = createSelector(
   (log) =>
     log.filter((el) => el.submodel === "GameState"));
 
+export const getControlLog = createSelector(
+	(state) => state.log.list,
+	(log) =>
+		log.filter((el) => el.submodel === "Control"));
+
 
 // gameConfig Loader into state
 export const loadLog = payload => (dispatch) => {

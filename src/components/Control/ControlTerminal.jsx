@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import { ButtonGroup, Content, InputNumber, InputPicker, Panel, Button, Icon, Modal, Form, FormGroup, FormControl, ControlLabel, DatePicker, Loader, FlexboxGrid } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
-import { getMyCharacter } from '../../redux/entities/characters';
 import NavigationBar from '../Navigation/NavigationBar';
 import NewCharacter from './NewCharacter';
 import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
 import ManageContacts from './ManageContacts';
 import HealInjury from './HealInjury';
-import Log from './Log';
-import { Link } from 'react-router-dom';
 
 class ControlTerminal extends Component {
 	state = {

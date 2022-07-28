@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Button, Panel, FlexboxGrid, InputPicker } from 'rsuite';
-import { getGameStateLog } from '../../redux/entities/log';
+import { Panel, FlexboxGrid, InputPicker } from 'rsuite';
+import { getGameStateLog, getControlLog } from '../../redux/entities/log';
 
 import NavigationBar from '../Navigation/NavigationBar';
 
 const Log = () => {
 	const [selectedCat, setSelectedCat] = useState('');
+
 	const gameStateLog = useSelector(getGameStateLog);
 	const nextRoundMessages = [...gameStateLog].reverse();
 
-	// const controlLog = useSelector(getControlLog);
-	// const controlMessages = [...controlLog].reverse();
+	const controlLog = useSelector(getControlLog);
+	const controlMessages = [...controlLog].reverse();
 
 	const logCategories = ['Next Round Log', 'Control Log'].map((item) => ({ label: item, value: item }));
 
@@ -22,10 +23,14 @@ const Log = () => {
 	};
 
 	const renderCat = () => {
-		if (!selectedCat) return <div>Please Select a category!</div>;
-		if (selectedCat === 'Next Round Log') return <div>{renderNextRoundMessages(nextRoundMessages)}</div>;
-		//return <div>{renderLogMessages(controlMessages)}</div>;
-		return <div>Boop</div>;
+		switch (selectedCat) {
+			case 'Next Round Log':
+				return <div>{renderNextRoundMessages(nextRoundMessages)}</div>;
+			case 'Control Log': //return <div>{renderLogMessages(controlMessages)}</div>;
+				return <div>Boop</div>;
+			default:
+				return <div>Please Select a category!</div>;
+		}
 	};
 
 	const renderEachMessage = (messages) => {
