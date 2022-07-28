@@ -18,7 +18,6 @@ const slice = createSlice({
     },
     logReceived: (log, action) => {
 			console.log(`${action.type} Dispatched...`);
-			console.log('PAYLOAD', action.payload)
 			log.list = action.payload;
 			log.loading = false;
       log.lastFetch = Date.now();

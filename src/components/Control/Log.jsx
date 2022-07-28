@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Panel, FlexboxGrid, InputPicker } from 'rsuite';
+import { Panel, FlexboxGrid, InputPicker, Timeline, Icon } from 'rsuite';
+
 import { getGameStateLog, getControlLog } from '../../redux/entities/log';
 
 import NavigationBar from '../Navigation/NavigationBar';
+import LogEntry from './LogEntry';
 
 const Log = () => {
 	const [selectedCat, setSelectedCat] = useState('');
@@ -26,8 +28,8 @@ const Log = () => {
 		switch (selectedCat) {
 			case 'Next Round Log':
 				return <div>{renderNextRoundMessages(nextRoundMessages)}</div>;
-			case 'Control Log': //return <div>{renderLogMessages(controlMessages)}</div>;
-				return <div>Boop</div>;
+			case 'Control Log':
+				return <div>{renderControlMessages(controlMessages)}</div>;
 			default:
 				return <div>Please Select a category!</div>;
 		}
@@ -40,6 +42,12 @@ const Log = () => {
 					{message}
 				</li>
 			);
+		});
+	};
+
+	const renderControlMessages = (controlMessages) => {
+		return controlMessages.map((message, index) => {
+			return <LogEntry log={message}></LogEntry>;
 		});
 	};
 
