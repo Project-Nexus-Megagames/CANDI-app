@@ -12,6 +12,8 @@ const ControlLogEntry = (props) => {
 		switch (entry.controlAction) {
 			case 'GameState':
 				return `${control} changed the gameState.`;
+			case 'ActionOverride':
+				return `${control} overrid an action.`;
 			default:
 				return 'If you see this, something was logged without a category.';
 		}
@@ -20,7 +22,7 @@ const ControlLogEntry = (props) => {
 	return (
 		<Timeline.Item time={getDateTimeString(log.createdAt)}>
 			<p>
-				{getEnglish(log)} {log.message}{' '}
+				{getEnglish(log)} {log.message}
 			</p>
 		</Timeline.Item>
 	);
