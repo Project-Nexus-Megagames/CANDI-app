@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Panel, FlexboxGrid, InputPicker, Timeline, Icon } from 'rsuite';
-
+import { Panel, InputPicker, Timeline } from 'rsuite';
 import { getGameStateLog, getControlLog } from '../../redux/entities/log';
+import { getDateTimeString } from '../../scripts/dateTime';
 
 import NavigationBar from '../Navigation/NavigationBar';
-import LogEntry from './LogEntry';
+import ControlLogEntry from './ControlLogEntry';
 
 const Log = () => {
 	const [selectedCat, setSelectedCat] = useState('');
@@ -35,7 +35,7 @@ const Log = () => {
 		}
 	};
 
-	const renderEachMessage = (messages) => {
+	const renderEachNextRoundMessage = (messages) => {
 		return messages.logMessages.map((message, index) => {
 			return (
 				<li key={index} style={{ fontWeight: 'normal' }}>
@@ -45,26 +45,30 @@ const Log = () => {
 		});
 	};
 
-	const renderControlMessages = (controlMessages) => {
-		return controlMessages.map((message, index) => {
-			return <LogEntry log={message}></LogEntry>;
-		});
-	};
-
 	const renderNextRoundMessages = (nextRoundLog) => {
 		//if (!cat) return <div>Please Select a category!</div>;
 		return (
 			<div>
 				{nextRoundLog.map((nextRound, index) => {
-					const created = new Date(nextRound.createdAt).toDateString();
+					const created = getDateTimeString(nextRound.createdAt);
 					const headerString = 'New Round ' + nextRound.round + ' Initiated by ' + nextRound.control + ' on ' + created;
 					return (
 						<Panel key={index} header={headerString} style={{ fontWeight: 'bold' }} collapsible bordered>
-							{renderEachMessage(nextRound)}
+							{renderEachNextRoundMessage(nextRound)}
 						</Panel>
 					);
 				})}
 			</div>
+		);
+	};
+
+	const renderControlMessages = (controlMessages) => {
+		return (
+			<Timeline className="custom-timeline">
+				{controlMessages.map((message, index) => {
+					return <ControlLogEntry log={message} key={index}></ControlLogEntry>;
+				})}
+			</Timeline>
 		);
 	};
 
