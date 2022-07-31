@@ -106,7 +106,7 @@ export const getOtherAgendaActions = createSelector(
   (actions, myCharacter) => actions.filter(el => el.type === 'Agenda' && el.creator._id !== myCharacter._id )
 );
 
-export const getOwnAgendaActions = createSelector(
+export const getMyAgendaActions = createSelector(
   state => state.actions.list,
 	state => state.characters.list.find(el => el.username === state.auth.user.username),
   (actions, myCharacter) => actions.filter(el => el.type === 'Agenda' && el.creator._id == myCharacter._id )
