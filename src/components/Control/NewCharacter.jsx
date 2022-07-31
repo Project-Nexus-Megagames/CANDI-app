@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import { Modal, Button, Panel, ButtonGroup } from 'rsuite';
-import {
-	HStack,
-	VStack,
-	Flex,
-	FormControl,
-	Box,
-	FormLabel,
-	Input,
-	Text
-} from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import cloudinaryUpload from '../../services/uploads';
 
 const NewCharacter = (props) => {
 	const gameConfig = useSelector((state) => state.gameConfig);
+	const loggedInUser = useSelector((state) => state.auth.user);
 
 	const effortTypes = gameConfig.effortTypes;
 	const [imageURL, setImageURL] = useState('');
@@ -155,9 +147,8 @@ const NewCharacter = (props) => {
 		socket.emit('request', {
 			route: 'character',
 			action: 'create',
-			data: { data, imageURL }
+			data: { data, imageURL, loggedInUser }
 		});
-		console.log(data, imageURL);
 		props.closeModal();
 	}
 
@@ -185,35 +176,20 @@ const NewCharacter = (props) => {
 							<HStack w="100%">
 								<FormControl>
 									<FormLabel>Character Name </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('characterName', validation.characterName)}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('characterName', validation.characterName)}></Input>
 									<Text fontSize="sm" color="red.500">
 										{errors.characterName && errors.characterName.message}
 									</Text>
 								</FormControl>
 								<FormControl>
 									<FormLabel>Pronouns </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('pronouns')}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('pronouns')}></Input>
 								</FormControl>
 							</HStack>
 							<HStack w="100%">
 								<FormControl>
 									<FormLabel>Player Name </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('playerName', validation.playerName)}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('playerName', validation.playerName)}></Input>
 
 									<Text fontSize="sm" color="red.500">
 										{errors.playerName && errors.playerName.message}
@@ -221,12 +197,7 @@ const NewCharacter = (props) => {
 								</FormControl>
 								<FormControl>
 									<FormLabel>User Name </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('username', validation.username)}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('username', validation.username)}></Input>
 
 									<Text fontSize="sm" color="red.500">
 										{errors.username && errors.username.message}
@@ -234,12 +205,7 @@ const NewCharacter = (props) => {
 								</FormControl>
 								<FormControl>
 									<FormLabel>E-Mail </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('email', validation.email)}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('email', validation.email)}></Input>
 
 									<Text fontSize="sm" color="red.500">
 										{errors.email && errors.email.message}
@@ -247,32 +213,17 @@ const NewCharacter = (props) => {
 								</FormControl>
 								<FormControl>
 									<FormLabel>Time Zone </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('timeZone')}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('timeZone')}></Input>
 								</FormControl>
 							</HStack>
 							<HStack w="100%">
 								<FormControl>
 									<FormLabel>Character Title </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('characterTitle')}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('characterTitle')}></Input>
 								</FormControl>
 								<FormControl>
 									<FormLabel>Wiki </FormLabel>
-									<Input
-										type="text"
-										size="md"
-										variant="outline"
-										{...register('wiki', validation.wiki)}
-									></Input>
+									<Input type="text" size="md" variant="outline" {...register('wiki', validation.wiki)}></Input>
 									<Text fontSize="sm" color="red.500">
 										{errors.wiki && errors.wiki.message}
 									</Text>
@@ -280,12 +231,7 @@ const NewCharacter = (props) => {
 							</HStack>
 							<FormControl>
 								<FormLabel>Bio </FormLabel>
-								<Input
-									type="text"
-									size="md"
-									variant="outline"
-									{...register('bio', validation.bio)}
-								></Input>
+								<Input type="text" size="md" variant="outline" {...register('bio', validation.bio)}></Input>
 								<Text fontSize="sm" color="red.500">
 									{errors.bio && errors.bio.message}
 								</Text>
@@ -295,17 +241,9 @@ const NewCharacter = (props) => {
 									<div key={i}>
 										<FormControl>
 											<FormLabel>Effort {effortTypes?.[i]?.type}</FormLabel>
-											<Input
-												key={item.id}
-												type="number"
-												size="md"
-												variant="outline"
-												defaultValue={effortTypes?.[i]?.effortAmount}
-												{...register(`effort.${i}.amount`, validation.amount)}
-											></Input>
+											<Input key={item.id} type="number" size="md" variant="outline" defaultValue={effortTypes?.[i]?.effortAmount} {...register(`effort.${i}.amount`, validation.amount)}></Input>
 											<Text fontSize="sm" color="red.500">
-												{errors.effort?.[i]?.amount &&
-													errors.effort[i].amount.message}
+												{errors.effort?.[i]?.amount && errors.effort[i].amount.message}
 											</Text>
 										</FormControl>
 									</div>

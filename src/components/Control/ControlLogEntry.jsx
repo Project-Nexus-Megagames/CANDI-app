@@ -14,6 +14,8 @@ const ControlLogEntry = (props) => {
 				return `${control} changed the gameState.`;
 			case 'ActionOverride':
 				return `${control} overrid an action.`;
+			case 'CharacterCreated':
+				return `${control} created a new character.`;
 			default:
 				return 'If you see this, something was logged without a category.';
 		}
