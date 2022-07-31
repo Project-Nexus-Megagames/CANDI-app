@@ -1,6 +1,7 @@
 import { Icon } from "rsuite";
 
 function getFadedColor(color, fade = 1) {
+	// console.log(color)
 	switch (color) {
 		case 'Agenda':
 			return `#22a12a`;
@@ -21,6 +22,9 @@ function getFadedColor(color, fade = 1) {
 
 		case 'Control-text':
 			return `coal`	
+
+		case 'gold':
+			return `rgb(212, 175, 55, ${fade})`
 
 
 		default:
