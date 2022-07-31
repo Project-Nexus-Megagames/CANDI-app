@@ -1,14 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-	Icon,
-	Loader,
-	Dropdown,
-	IconButton,
-	FlexboxGrid,
-	Col,
-	Row
-} from 'rsuite';
+import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
@@ -191,37 +183,8 @@ const HomePage = (props) => {
 			</FlexboxGrid>
 
 			<Row>
-				{/* <Col lg={12} md={24}>
-					<div
-						style={{
-							border: '5px solid #d4af37',
-							borderRadius: '10px',
-							margin: '10px',
-							height: '45vh',
-							overflow: 'hidden'
-						}}
-					>
-						<img
-							src={banner}
-							className={'image'}
-							style={{ maxWidth: '100%', height: '100%' }}
-							alt="Failed to load img"
-						/>
-						<p
-							style={{
-								position: 'absolute',
-								bottom: '10px',
-								left: '15px',
-								color: 'white',
-								fontSize: '0.966em'
-							}}
-						>
-							Version: {props.version}
-						</p>
-					</div>
-				</Col> */}
 
-				<Col lg={12} md={12}>
+				<Col lg={12} md={24}>
 					<ImgPanel
 						img={banner}
 						to="news"
@@ -230,7 +193,7 @@ const HomePage = (props) => {
 					/>
 				</Col>
 
-				<Col lg={12} md={12}>
+				<Col lg={6} md={12}>
 					<ImgPanel
 						img={actions}
 						to="actions"
@@ -242,13 +205,22 @@ const HomePage = (props) => {
 				<Col lg={6} md={12}>
 					<ImgPanel
 						img={myCharacter}
+						to="agendas"
+						title="~ Agendas ~"
+						body="AAAAAA"
+					/>
+				</Col>
+
+				<Col lg={6} md={24}>
+					<ImgPanel
+						img={props.myCharacter.profilePicture}
 						to="character"
 						title="~ My Character ~"
 						body="My Assets and Traits"
 					/>
 				</Col>
 
-				<Col lg={6} md={24}>
+				<Col lg={6} md={12}>
 					<ImgPanel
 						img={Map}
 						to="Map"
@@ -314,7 +286,7 @@ const HomePage = (props) => {
 					)}
 				</Col>
 
-				<Col lg={6} md={12}>
+				<Col lg={6} md={24}>
 					<ImgPanel
 						img={other}
 						to="others"

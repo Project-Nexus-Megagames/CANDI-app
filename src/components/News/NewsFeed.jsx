@@ -1,6 +1,6 @@
 import React, { Component } from "react"; // React import
 import { connect } from 'react-redux'; // Redux store provider
-import { Button, CheckPicker, Container, FlexboxGrid, Header, Input, InputGroup, Popover, SelectPicker, TagPicker, Tooltip, Whisper } from "rsuite";
+import { Button, CheckPicker, Col, Container, FlexboxGrid, Grid, Header, Input, InputGroup, Popover, Row, SelectPicker, TagPicker, Tooltip, Whisper } from "rsuite";
 import { Panel, PanelGroup, IconButton, ButtonGroup, ButtonToolbar, Icon, Content, Sidebar, Modal } from "rsuite";
 import { articleHidden } from "../../redux/entities/articles";
 import socket from "../../socket";
@@ -68,7 +68,7 @@ const NewsFeed = (props) => {
                 <Button
                   style={{ color: 'black', borderRadius: '0px' }}
                   color="green"
-                  onClick={() => setShow('new')}
+                  onClick={() => handleThis()}
                 >
                   <Icon icon="plus" />
                 </Button>
@@ -89,21 +89,26 @@ const NewsFeed = (props) => {
                   />}							
 							</InputGroup>            
           </FlexboxGrid.Item>
-			
-
-
-
-
 				</FlexboxGrid>
 			</Header>
 
         <Content >
         
           {props.articles.length === 0 ? <h5>No articles published</h5> : null }
+
+            <FlexboxGrid justify="center" >
+              <FlexboxGrid.Item colspan={20}>
+                {props.articles.map(article => (
+                  <div>
+                    <Article article={article}/>
+                  </div>
+                ))}       
+              </FlexboxGrid.Item>
+     
+            </FlexboxGrid>
+
           {props.articles.length > 0 ? <div>
-          {props.articles.map(article => (
-            <Article article={article} />
-          ))}
+
         </div> : null}
         </Content>
 

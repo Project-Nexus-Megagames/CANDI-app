@@ -75,7 +75,7 @@ class ActionList extends Component {
 			<Container>
 				{this.state.rounds.map((round, index) => (
 					<div index={index}>
-						<h5 style={{ backgroundColor: '#d4af37', color: 'black' }}>
+						<h5 style={{ backgroundColor: getFadedColor('gold', (1 - ((this.props.gamestate.round - round) * 0.1))), color: 'black' }}>
 							Round {round}
 						</h5>
 						

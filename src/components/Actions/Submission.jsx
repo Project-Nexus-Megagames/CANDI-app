@@ -237,7 +237,7 @@ const Submission = (props) => {
 			<div>
 				<Divider vertical />
 				<div
-					style={{ border: `4px solid ${getFadedColor(submission.type)}`, borderRadius: '5px', padding: '15px' }}
+					style={{ border: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}
 				>
 					<FlexboxGrid align="middle" style={{}} justify="center">
 						<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
@@ -321,17 +321,17 @@ const Submission = (props) => {
 							whiteSpace: 'pre-line'
 						}}
 					>
-						<p className='slim-text'>Description</p>
+						<p style={slimText}>Description</p>
 						<ReactMarkdown
 							children={submission.description}
 							remarkPlugins={[remarkGfm]}
 						></ReactMarkdown>
-						<p className='slim-text'>Intent</p>
+						<p style={slimText}>Intent</p>
 						<ReactMarkdown
 							children={submission.intent}
 							remarkPlugins={[remarkGfm]}
 						></ReactMarkdown>
-						<p class ='slim-text'>
+						<p style={slimText}>
 							Effort ({submission.effort.effortType})
 						</p>
 						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{submission.effort.amount}</p>
@@ -547,6 +547,13 @@ const Submission = (props) => {
 			</div>
 		);
 }
+
+const slimText = {
+	fontSize: '0.966em',
+	fontWeight: '300',
+	whiteSpace: ' pre-line;',
+	textAlign: 'center'
+};
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
