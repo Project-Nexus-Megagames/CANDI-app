@@ -10,15 +10,14 @@ import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
-import {
-	getMyCharacter,
-	getMyUnlockedCharacters
-} from './../../redux/entities/characters';
+import { getMyCharacter, getMyUnlockedCharacters } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
 import { getFadedColor } from '../../scripts/frontend';
 
 const OtherCharacters = (props) => {
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
+	const loggedInUser = useSelector((state) => state.auth.user);
+
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
 	const [filteredCharacters, setFilteredCharacters] = useState(props.characters);
@@ -26,11 +25,10 @@ const OtherCharacters = (props) => {
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 
-	const [renderTags, setTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags 
-
+	const [renderTags, setTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags
 
 	const tagStyle = (item, index) => {
-		console.log(item)
+		console.log(item);
 		switch (item) {
 			case 'Control':
 				return (
@@ -83,9 +81,7 @@ const OtherCharacters = (props) => {
 			}
 
 			for (const controller of array) {
-				const character = props.characters.find(
-					(el) => el.characterName === controller
-				);
+				const character = props.characters.find((el) => el.characterName === controller);
 				if (character) {
 					board = board.concat(`; ${character.email}`);
 				} else console.log(`${controller} could not be added to clipboard`);
@@ -131,21 +127,9 @@ const OtherCharacters = (props) => {
 	const filterThis = (fil) => {
 		let filtered = [];
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
-			filtered = props.characters.filter(
-				(char) =>
-					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
-					char.email.toLowerCase().includes(fil.toLowerCase()) ||
-					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
-					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
-			);
+			filtered = props.characters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
 		} else {
-			filtered = myUnlockedCharacters.filter(
-				(char) =>
-					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
-					char.email.toLowerCase().includes(fil.toLowerCase()) ||
-					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
-					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
-			);
+			filtered = myUnlockedCharacters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
 		}
 		setFilteredCharacters(filtered);
 	};
@@ -173,11 +157,7 @@ const OtherCharacters = (props) => {
 								}}
 							>
 								<InputGroup>
-									<Input
-										style={{ height: '39px' }}
-										onChange={(value) => filterThis(value)}
-										placeholder="Search by Name or Email"
-									></Input>
+									<Input style={{ height: '39px' }} onChange={(value) => filterThis(value)} placeholder="Search by Name or Email"></Input>
 									{props.myCharacter.tags.some((el) => el === 'Control') && (
 										<Button color="green" onClick={() => setShowNew(true)}>
 											<Icon icon="plus" />
@@ -194,22 +174,20 @@ const OtherCharacters = (props) => {
 									borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 								}}
 							>
-								<div >
-								{renderTags
-										.map((tag) => (
-											<List hover>
+								<div>
+									{renderTags.map((tag) => (
+										<List hover>
 											<p style={{ backgroundColor: getFadedColor(tag), color: getFadedColor(`${tag}-text`) }}>{tag}</p>
 											{filteredCharacters
-											 	.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
- 						 							.map((character) => (
-														<List.Item style={listStyle(character)}>
-															<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id}/>
-														</List.Item>
- 						 							))}
-											</List>
-										))}
+												.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
+												.map((character) => (
+													<List.Item style={listStyle(character)}>
+														<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
+													</List.Item>
+												))}
+										</List>
+									))}
 								</div>
-
 							</div>
 						</PanelGroup>
 					</Sidebar>
@@ -230,16 +208,10 @@ const OtherCharacters = (props) => {
 											<h4>Control Panel</h4>
 											<h5>Effort Left: TODO DISPLAY EFFORT HERE </h5>
 											<ButtonGroup style={{ marginTop: '5px' }}>
-												<Button
-													appearance={'ghost'}
-													onClick={() => setEdit(true)}
-												>
+												<Button appearance={'ghost'} onClick={() => setEdit(true)}>
 													Modify
 												</Button>
-												<Button
-													appearance={'ghost'}
-													onClick={() => setAdd(true)}
-												>
+												<Button appearance={'ghost'} onClick={() => setAdd(true)}>
 													+ Resources
 												</Button>
 											</ButtonGroup>
@@ -253,9 +225,7 @@ const OtherCharacters = (props) => {
 											>
 												<h5>Resources</h5>
 												<Row style={{ display: 'flex', overflow: 'auto' }}>
-													{props.assets.filter(
-														(el) => el.ownerCharacter === selected._id
-													).length === 0 && <h5>No assets assigned</h5>}
+													{props.assets.filter((el) => el.ownerCharacter === selected._id).length === 0 && <h5>No assets assigned</h5>}
 													{props.assets
 														.filter((el) => el.ownerCharacter === selected._id)
 														.map((asset, index) => (
@@ -263,21 +233,11 @@ const OtherCharacters = (props) => {
 																<Panel onClick={() => setAsset(asset)} bordered>
 																	<h5>{asset.name}</h5>
 																	<b>{asset.type}</b>
-																	{asset.status.hidden && (
-																		<Tag color="blue">Hidden</Tag>
-																	)}
-																	{asset.status.lendable && (
-																		<Tag color="blue">lendable</Tag>
-																	)}
-																	{asset.status.lent && (
-																		<Tag color="blue">lent</Tag>
-																	)}
-																	{asset.status.used && (
-																		<Tag color="blue">used</Tag>
-																	)}
-																	{asset.status.multiUse && (
-																		<Tag color="blue">multiUse</Tag>
-																	)}
+																	{asset.status.hidden && <Tag color="blue">Hidden</Tag>}
+																	{asset.status.lendable && <Tag color="blue">lendable</Tag>}
+																	{asset.status.lent && <Tag color="blue">lent</Tag>}
+																	{asset.status.used && <Tag color="blue">used</Tag>}
+																	{asset.status.multiUse && <Tag color="blue">multiUse</Tag>}
 																</Panel>
 															</Col>
 														))}
@@ -297,37 +257,22 @@ const OtherCharacters = (props) => {
 										}}
 									>
 										<FlexboxGrid>
-											<FlexboxGrid.Item
-												colspan={14}
-												style={{ textAlign: 'center' }}
-											>
-												<FlexboxGrid
-													align="middle"
-													style={{ textAlign: 'center' }}
-												>
+											<FlexboxGrid.Item colspan={14} style={{ textAlign: 'center' }}>
+												<FlexboxGrid align="middle" style={{ textAlign: 'center' }}>
 													<FlexboxGrid.Item colspan={12}>
 														<h2>{selected.characterName}</h2>
-														{selected.characterTitle !== 'None' && (
-															<h5>{selected.characterTitle}</h5>
-														)}
+														{selected.characterTitle !== 'None' && <h5>{selected.characterTitle}</h5>}
 													</FlexboxGrid.Item>
 
 													<FlexboxGrid.Item colspan={12}>
 														<TagGroup>
 															Tags:
-															{selected.tags &&
-																selected.tags.map((item, index) =>
-																	tagStyle(item, index)
-																)}
+															{selected.tags && selected.tags.map((item, index) => tagStyle(item, index))}
 														</TagGroup>
 													</FlexboxGrid.Item>
 												</FlexboxGrid>
 
-												<Button
-													appearance="ghost"
-													block
-													onClick={() => copyToClipboard(selected)}
-												>
+												<Button appearance="ghost" block onClick={() => copyToClipboard(selected)}>
 													{selected.email}
 												</Button>
 												<FlexboxGrid style={{ paddingTop: '5px' }}>
@@ -337,12 +282,7 @@ const OtherCharacters = (props) => {
 																Controllers:
 																{selected.control &&
 																	selected.control.map((item, index) => (
-																		<Tag
-																			style={{ color: 'black' }}
-																			color="orange"
-																			key={index}
-																			index={index}
-																		>
+																		<Tag style={{ color: 'black' }} color="orange" key={index} index={index}>
 																			{item}
 																		</Tag>
 																	))}
@@ -366,16 +306,8 @@ const OtherCharacters = (props) => {
 											<FlexboxGrid.Item colspan={1} />
 
 											{/*Profile Pic*/}
-											<FlexboxGrid.Item
-												colspan={9}
-												style={{ cursor: 'pointer' }}
-												onClick={() => openAnvil(selected)}
-											>
-												<img
-													src={`${selected.profilePicture}`}
-													alt="Img could not be displayed"
-													style={{ maxHeight: '50vh' }}
-												/>
+											<FlexboxGrid.Item colspan={9} style={{ cursor: 'pointer' }} onClick={() => openAnvil(selected)}>
+												<img src={`${selected.profilePicture}`} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />
 											</FlexboxGrid.Item>
 										</FlexboxGrid>
 									</Panel>
@@ -390,16 +322,8 @@ const OtherCharacters = (props) => {
 									setSelected();
 								}}
 							/>
-							<AddAsset
-								show={add}
-								character={selected}
-								closeModal={() => setAdd(false)}
-							/>
-							<DynamicForm
-								show={asset !== false}
-								selected={asset}
-								closeDrawer={() => setAsset(false)}
-							/>
+							<AddAsset show={add} character={selected} loggedInUser={loggedInUser} closeModal={() => setAdd(false)} />
+							<DynamicForm show={asset !== false} selected={asset} closeDrawer={() => setAsset(false)} />
 						</Content>
 					)}
 				</Container>

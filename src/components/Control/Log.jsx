@@ -38,7 +38,7 @@ const Log = () => {
 	const renderEachNextRoundMessage = (messages) => {
 		return messages.logMessages.map((message, index) => {
 			return (
-				<li key={index} style={{ fontWeight: 'normal' }}>
+				<li key={index} style={{ fontWeight: 'normal' }} align="left">
 					{message}
 				</li>
 			);
