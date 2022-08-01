@@ -14,6 +14,8 @@ const ControlLogEntry = (props) => {
 				return `${control} changed the gameState.`;
 			case 'ActionOverride':
 				return `${control} overrid an action.`;
+			case 'ActionEffect':
+				return `${control} added an effect to the action ${entry.affectedAction}.`;
 			case 'Character':
 				return `${control} worked with characters.`;
 			case 'Asset':
