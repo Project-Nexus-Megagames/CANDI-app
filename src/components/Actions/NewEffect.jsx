@@ -5,6 +5,7 @@ import socket from '../../socket';
 import _ from 'lodash';
 
 import { getGods, getNonPlayerCharacters } from '../../redux/entities/characters';
+import gamestate from '../../redux/entities/gamestate';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -12,12 +13,14 @@ const NewEffects = (props) => {
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
+	const [aspects, setAspects] = useState({});
 	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
 	const locations = useSelector((state) => state.locations.list);
 	const characters = useSelector((state) => state.characters.list);
 	const loggedInUser = useSelector((state) => state.auth.user);
+	const gameState = useSelector((state) => state.gamestate);
 	const sortedCharacters = _.sortBy(charactersToDisplay, 'characterName');
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
 	const gods = useSelector(getGods);
@@ -63,6 +66,15 @@ const NewEffects = (props) => {
 					ownerCharacter: props.selected.creator._id
 				});
 				break;
+			case 'aspect':
+				setAspects({
+					gcHappiness: gameState.gcHappiness,
+					gcSecurity: gameState.gcSecurity,
+					gcDiplomacy: gameState.gcDiplomacy,
+					gcPolitics: gameState.gcPolitics,
+					gcHealth: gameState.gcHealth
+				});
+				break;
 			case 'addInjury':
 				setSelected({
 					name: '',
@@ -92,7 +104,7 @@ const NewEffects = (props) => {
 			default:
 				break;
 		}
-	}, [type, assets, props.selected.creator._id, characters, locations, props.selected.creator.knownContacts]);
+	}, [type, assets, props.selected.creator._id, characters, locations, props.selected.creator.knownContacts, gameState]);
 
 	const handleExit = () => {
 		setType('');
@@ -148,6 +160,31 @@ const NewEffects = (props) => {
 		setArcane(!arcane);
 	};
 
+	const handleAspect = (type, change) => {
+		let temp = { ...aspects };
+		temp[type] = change;
+		setAspects(temp);
+		setSelected(temp);
+	};
+
+	const renderAspects = () => {
+		return (
+			<div>
+				<Divider>Please enter the new value for the aspect(s) you would like to change</Divider>
+				<label>Happiness: </label>
+				<InputNumber value={aspects.gcHappiness} onChange={(value) => handleAspect('gcHappiness', value)} />
+				<label>Health: </label>
+				<InputNumber value={aspects.gcHealth} onChange={(value) => handleAspect('gcHealth', value)} />
+				<label>Security: </label>
+				<InputNumber value={aspects.gcSecurity} onChange={(value) => handleAspect('gcSecurity', value)} />
+				<label>Diplomacy: </label>
+				<InputNumber value={aspects.gcDiplomacy} onChange={(value) => handleAspect('gcDiplomacy', value)} />
+				<label>Politics: </label>
+				<InputNumber value={aspects.gcPolitics} onChange={(value) => handleAspect('gcPolitics', value)} />
+			</div>
+		);
+	};
+
 	const renderInjuries = () => {
 		const char = characters.find((el) => el._id === props.selected.creator._id);
 		if (char.injuries.length === 0) return <div>{char.characterName} currently does not have any injuries</div>;
@@ -188,6 +225,7 @@ const NewEffects = (props) => {
 				arcane,
 				loggedInUser
 			};
+			console.log('DATA', data);
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
 			Alert.error(`Error: ${err.body} ${err.message}`, 5000);
@@ -263,6 +301,9 @@ const NewEffects = (props) => {
 						<Button appearance={type !== 'healInjuries' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
 							Heal Injuries
 						</Button>
+						<Button appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}>
+							Edit an Aspect
+						</Button>
 						<Button appearance={type !== 'new' ? 'ghost' : 'primary'} color={'green'} onClick={type !== 'new' ? () => handleType('new') : undefined}>
 							New Resource
 						</Button>
@@ -288,6 +329,7 @@ const NewEffects = (props) => {
 							<CheckPicker placeholder="Select Location(s) to unlock..." onSelect={(event) => handleLocSelect(event)} data={sortedLocations} valueKey="_id" labelKey="name" />
 						</div>
 					)}
+					{type === 'aspect' && <div>{renderAspects()}</div>}
 					{type === 'character' && (
 						<div>
 							<CheckPicker placeholder="Select character(s) to unlock..." onSelect={(event) => handleCharSelect(event)} data={sortedCharacters} valueKey="_id" labelKey="characterName" />

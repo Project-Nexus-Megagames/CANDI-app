@@ -36,6 +36,12 @@ const slice = createSlice({
 			gamestate.happiness = action.payload.happiness;
 			gamestate.discovered = action.payload.discovered;
 
+			gamestate.gcHappiness = action.payload.gcHappiness;
+			gamestate.gcDiplomacy = action.payload.gcDiplomacy;
+			gamestate.gcHealth = action.payload.gcHealth;
+			gamestate.gcPolitics = action.payload.gcPolitics;
+			gamestate.gcSecurity = action.payload.gcSecurity;
+
       gamestate.loading = false;
       gamestate.lastFetch = Date.now();
       gamestate.loaded = true;
@@ -70,7 +76,7 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/gamestate`;
 
 // gamestate Loader into state
-export const loadGamestate = payload => (dispatch, getState) => {
+export const loadGamestate = payload => (dispatch) => {
   return dispatch(
     apiCallBegan({
       url,
