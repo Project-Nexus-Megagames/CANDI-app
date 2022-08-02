@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -10,10 +10,9 @@ import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
-import { getMyCharacter, getMyUnlockedCharacters, getPublicCharacters } from './../../redux/entities/characters';
+import { getMyCharacter, getPublicCharacters } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
 import { getFadedColor } from '../../scripts/frontend';
-import { setAutoFreeze } from 'immer';
 
 const OtherCharacters = (props) => {
 	const publicCharacters = useSelector(getPublicCharacters);
@@ -26,7 +25,7 @@ const OtherCharacters = (props) => {
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 
-	const [renderTags, setTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags
+	const [renderTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags
 
 	useEffect(() => {
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
@@ -183,12 +182,12 @@ const OtherCharacters = (props) => {
 							>
 								<div>
 									{renderTags.map((tag) => (
-										<List hover>
+										<List key="tag" hover>
 											<p style={{ backgroundColor: getFadedColor(tag), color: getFadedColor(`${tag}-text`) }}>{tag}</p>
 											{filteredCharacters
 												.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
 												.map((character) => (
-													<List.Item style={listStyle(character)}>
+													<List.Item key={character._id} style={listStyle(character)}>
 														<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
 													</List.Item>
 												))}

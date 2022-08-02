@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Content, Container, Input, Grid, List, PanelGroup, FlexboxGrid, Avatar, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, Divider, Drawer, Panel } from 'rsuite';
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
-import { characterUpdated,	getMyCharacter } from '../../redux/entities/characters';
+import { characterUpdated, getMyCharacter, getPublicCharacters } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
 import NewCharacter from '../Control/NewCharacter';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
@@ -11,12 +12,17 @@ import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 const OtherCharacters = (props) => {
 	const [selected, setSelected] = React.useState(null);
 	const [showDrawer, setShowDrawer] = React.useState(true);
-	const [filteredCharacters, setFilteredCharacters] = React.useState(
-		props.characters
-	);
+	const [filteredCharacters, setFilteredCharacters] = React.useState(props.characters);
 	const [edit, setEdit] = React.useState(false);
 	const [add, setAdd] = React.useState(false);
 	const [showNew, setShowNew] = React.useState(false);
+	const publicCharacters = useSelector(getPublicCharacters);
+
+	useEffect(() => {
+		if (props.myCharacter.tags.indexOf('Control') !== -1) {
+			setFilteredCharacters(props.characters);
+		} else setFilteredCharacters(publicCharacters);
+	});
 
 	const listStyle = (item) => {
 		if (item === selected) {
@@ -40,9 +46,7 @@ const OtherCharacters = (props) => {
 			}
 
 			for (const controller of array) {
-				const character = props.characters.find(
-					(el) => el.characterName === controller
-				);
+				const character = props.characters.find((el) => el.characterName === controller);
 				if (character) {
 					board = board.concat(`; ${character.email}`);
 				} else console.log(`${controller} could not be added to clipboard`);
@@ -91,12 +95,7 @@ const OtherCharacters = (props) => {
 	}, [props.characters, selected]);
 
 	const filterThis = (fil) => {
-		const filtered = props.characters.filter(
-			(char) =>
-				char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
-				char.email.toLowerCase().includes(fil.toLowerCase()) ||
-				char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
-		);
+		const filtered = props.characters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
 		setFilteredCharacters(filtered);
 	};
 
@@ -126,13 +125,7 @@ const OtherCharacters = (props) => {
 		return (
 			<React.Fragment>
 				<NavigationBar />
-				<Drawer					
-					show={showDrawer}
-					placement={'left'}
-					backdrop={false}
-					style={{ width: '200px', marginTop: '51px' }}
-					onClose={() => setShowDrawer(!showDrawer)}
-				>
+				<Drawer show={showDrawer} placement={'left'} backdrop={false} style={{ width: '200px', marginTop: '51px' }} onClose={() => setShowDrawer(!showDrawer)}>
 					<PanelGroup>
 						<button
 							onClick={() => setShowDrawer(!showDrawer)}
@@ -150,11 +143,7 @@ const OtherCharacters = (props) => {
 							}}
 						>
 							<InputGroup>
-								<Input
-									size="xs"
-									onChange={(value) => filterThis(value)}
-									placeholder="Search by Name or Email"
-								></Input>
+								<Input size="xs" onChange={(value) => filterThis(value)} placeholder="Search by Name or Email"></Input>
 								{props.myCharacter.tags.some((el) => el === 'Control') && (
 									<Button color="green" onClick={() => setShowNew(true)}>
 										<Icon icon="plus" />
@@ -162,7 +151,7 @@ const OtherCharacters = (props) => {
 								)}
 							</InputGroup>
 						</div>
-						<div						
+						<div
 							style={{
 								height: 'calc(100vh - 80px)',
 								borderRadius: '0px',
@@ -175,23 +164,10 @@ const OtherCharacters = (props) => {
 								{filteredCharacters
 									.filter((el) => el.tags.some((el) => el === 'God'))
 									.map((character, index) => (
-										<List.Item
-											key={index}
-											index={index}
-											onClick={() => handleSelect(character)}
-											style={listStyle(character)}
-										>
+										<List.Item key={index} index={index} onClick={() => handleSelect(character)} style={listStyle(character)}>
 											<FlexboxGrid>
 												<FlexboxGrid.Item colspan={5} style={styleCenter}>
-													<Avatar
-														src={
-															character.tags.some((el) => el === 'Control')
-																? `/images/GW_Control_Icon.png`
-																: `/images/${character.characterName}.jpg`
-														}
-														alt="?"
-														circle
-													/>
+													<Avatar src={character.tags.some((el) => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt="?" circle />
 												</FlexboxGrid.Item>
 												<FlexboxGrid.Item
 													colspan={19}
@@ -217,23 +193,10 @@ const OtherCharacters = (props) => {
 								{filteredCharacters
 									.filter((el) => el.tags.some((el) => el === 'PC'))
 									.map((character, index) => (
-										<List.Item
-											key={index}
-											index={index}
-											onClick={() => handleSelect(character)}
-											style={listStyle(character)}
-										>
+										<List.Item key={index} index={index} onClick={() => handleSelect(character)} style={listStyle(character)}>
 											<FlexboxGrid>
 												<FlexboxGrid.Item colspan={5} style={styleCenter}>
-													<Avatar
-														src={
-															character.tags.some((el) => el === 'Control')
-																? `/images/GW_Control_Icon.png`
-																: `/images/${character.characterName}.jpg`
-														}
-														alt="?"
-														circle
-													/>
+													<Avatar src={character.tags.some((el) => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt="?" circle />
 												</FlexboxGrid.Item>
 												<FlexboxGrid.Item
 													colspan={19}
@@ -259,23 +222,10 @@ const OtherCharacters = (props) => {
 								{filteredCharacters
 									.filter((el) => el.tags.some((el) => el === 'NPC'))
 									.map((character, index) => (
-										<List.Item
-											key={index}
-											index={index}
-											onClick={() => handleSelect(character)}
-											style={listStyle(character)}
-										>
+										<List.Item key={index} index={index} onClick={() => handleSelect(character)} style={listStyle(character)}>
 											<FlexboxGrid>
 												<FlexboxGrid.Item colspan={5} style={styleCenter}>
-													<Avatar
-														src={
-															character.tags.some((el) => el === 'Control')
-																? `/images/GW_Control_Icon.png`
-																: `/images/${character.characterName}.jpg`
-														}
-														alt="?"
-														circle
-													/>
+													<Avatar src={character.tags.some((el) => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt="?" circle />
 												</FlexboxGrid.Item>
 												<FlexboxGrid.Item
 													colspan={19}
@@ -301,23 +251,10 @@ const OtherCharacters = (props) => {
 								{filteredCharacters
 									.filter((el) => el.tags.some((el) => el === 'Control'))
 									.map((character, index) => (
-										<List.Item
-											key={index}
-											index={index}
-											onClick={() => handleSelect(character)}
-											style={listStyle(character)}
-										>
+										<List.Item key={index} index={index} onClick={() => handleSelect(character)} style={listStyle(character)}>
 											<FlexboxGrid>
 												<FlexboxGrid.Item colspan={5} style={styleCenter}>
-													<Avatar
-														src={
-															character.tags.some((el) => el === 'Control')
-																? `/images/GW_Control_Icon.png`
-																: `/images/${character.characterName}.jpg`
-														}
-														alt="?"
-														circle
-													/>
+													<Avatar src={character.tags.some((el) => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt="?" circle />
 												</FlexboxGrid.Item>
 												<FlexboxGrid.Item
 													colspan={19}
@@ -331,10 +268,7 @@ const OtherCharacters = (props) => {
 													<b style={titleStyle}>
 														{character.characterName}
 														{character.tags.some((el) => el === 'Control') && (
-															<Tag
-																color="orange"
-																style={{ marginLeft: '15px' }}
-															>
+															<Tag color="orange" style={{ marginLeft: '15px' }}>
 																Control
 															</Tag>
 														)}
@@ -349,34 +283,12 @@ const OtherCharacters = (props) => {
 									<div>
 										<h5>Control Only</h5>
 										{filteredCharacters
-											.filter(
-												(el) =>
-													!el.tags.some(
-														(el2) =>
-															el2 === 'Control' ||
-															el2 === 'NPC' ||
-															el2 === 'PC' ||
-															el2 === 'God'
-													)
-											)
+											.filter((el) => !el.tags.some((el2) => el2 === 'Control' || el2 === 'NPC' || el2 === 'PC' || el2 === 'God'))
 											.map((character, index) => (
-												<List.Item
-													key={index}
-													index={index}
-													onClick={() => handleSelect(character)}
-													style={listStyle(character)}
-												>
+												<List.Item key={index} index={index} onClick={() => handleSelect(character)} style={listStyle(character)}>
 													<FlexboxGrid>
 														<FlexboxGrid.Item colspan={5} style={styleCenter}>
-															<Avatar
-																src={
-																	character.tags.some((el) => el === 'Control')
-																		? `/images/GW_Control_Icon.png`
-																		: `/images/${character.characterName}.jpg`
-																}
-																alt="?"
-																circle
-															/>
+															<Avatar src={character.tags.some((el) => el === 'Control') ? `/images/GW_Control_Icon.png` : `/images/${character.characterName}.jpg`} alt="?" circle />
 														</FlexboxGrid.Item>
 														<FlexboxGrid.Item
 															colspan={19}
@@ -389,13 +301,8 @@ const OtherCharacters = (props) => {
 														>
 															<b style={titleStyle}>
 																{character.characterName}
-																{character.tags.some(
-																	(el) => el === 'Control'
-																) && (
-																	<Tag
-																		color="orange"
-																		style={{ marginLeft: '15px' }}
-																	>
+																{character.tags.some((el) => el === 'Control') && (
+																	<Tag color="orange" style={{ marginLeft: '15px' }}>
 																		Control
 																	</Tag>
 																)}
@@ -430,40 +337,23 @@ const OtherCharacters = (props) => {
 									<Col xs={24} sm={24} md={8} className="gridbox">
 										<div>
 											<p>
-												<img
-													className="portrait"
-													src={`/images/${selected.characterName}.jpg`}
-													alt="Unable to load img"
-													width="95%"
-													style={{ maxHeight: '40vh', cursor: 'pointer' }}
-													onClick={() => openAnvil(selected)}
-												/>
+												<img className="portrait" src={`/images/${selected.characterName}.jpg`} alt="Unable to load img" width="95%" style={{ maxHeight: '40vh', cursor: 'pointer' }} onClick={() => openAnvil(selected)} />
 											</p>
-											<Button
-												appearance="ghost"
-												block
-												onClick={() => copyToClipboard(selected)}
-											>
+											<Button appearance="ghost" block onClick={() => copyToClipboard(selected)}>
 												{selected.email}
 											</Button>
 											<p>
 												<h5>{selected.characterName}</h5>
 												<TagGroup>
 													Tags:
-													{selected.tags &&
-														selected.tags.map((item) => tagStyle(item))}
+													{selected.tags && selected.tags.map((item) => tagStyle(item))}
 												</TagGroup>
 												<Divider />
 												<TagGroup>
 													Controllers:
 													{selected.control &&
 														selected.control.map((item, index) => (
-															<Tag
-																style={{ color: 'black' }}
-																color="orange"
-																key={index}
-																index={index}
-															>
+															<Tag style={{ color: 'black' }} color="orange" key={index} index={index}>
 																{item}
 															</Tag>
 														))}
@@ -486,64 +376,26 @@ const OtherCharacters = (props) => {
 								{selected.tags.some((el) => el === 'God') && (
 									<Row>
 										<Col xs={8} sm={8} md={8} className="gridbox">
-											<Panel
-												bordered
-												style={{ backgroundColor: '#272b34' }}
-												header="Preferred"
-											>
-												{
-													props.godBonds.filter(
-														(el) =>
-															el.with._id === selected._id &&
-															el.level === 'Preferred'
-													).length
-												}
+											<Panel bordered style={{ backgroundColor: '#272b34' }} header="Preferred">
+												{props.godBonds.filter((el) => el.with._id === selected._id && el.level === 'Preferred').length}
 											</Panel>
 										</Col>
 										<Col xs={8} sm={8} md={8} className="gridbox">
-											<Panel
-												bordered
-												style={{ backgroundColor: '#272b34' }}
-												header="Favoured"
-											>
-												{
-													props.godBonds.filter(
-														(el) =>
-															el.with._id === selected._id &&
-															el.level === 'Favoured'
-													).length
-												}
+											<Panel bordered style={{ backgroundColor: '#272b34' }} header="Favoured">
+												{props.godBonds.filter((el) => el.with._id === selected._id && el.level === 'Favoured').length}
 											</Panel>
 										</Col>
 										<Col xs={8} sm={8} md={8} className="gridbox">
-											<Panel
-												bordered
-												style={{ backgroundColor: '#272b34' }}
-												header="Blessed"
-											>
-												{
-													props.godBonds.filter(
-														(el) =>
-															el.with._id === selected._id &&
-															el.level === 'Blessed'
-													).length
-												}
+											<Panel bordered style={{ backgroundColor: '#272b34' }} header="Blessed">
+												{props.godBonds.filter((el) => el.with._id === selected._id && el.level === 'Blessed').length}
 											</Panel>
 										</Col>
 									</Row>
 								)}
 							</Grid>
 
-							<ModifyCharacter
-								show={edit}
-								selected={selected}
-								closeDrawer={() => setEdit(false)}
-							/>
-							<AddAsset
-								show={add}
-								character={selected}
-								closeModal={() => setAdd(false)}
-							/>
+							<ModifyCharacter show={edit} selected={selected} closeDrawer={() => setEdit(false)} />
+							<AddAsset show={add} character={selected} closeModal={() => setAdd(false)} />
 						</Content>
 					)}
 				</Container>
