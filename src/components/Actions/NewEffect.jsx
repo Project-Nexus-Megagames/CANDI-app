@@ -172,15 +172,15 @@ const NewEffects = (props) => {
 			<div>
 				<Divider>Please enter the new value for the aspect(s) you would like to change</Divider>
 				<label>Happiness: </label>
-				<InputNumber value={aspects.gcHappiness} onChange={(value) => handleAspect('gcHappiness', value)} />
+				<InputNumber value={aspects.gcHappiness} max={10} min={-10} onChange={(value) => handleAspect('gcHappiness', value)} />
 				<label>Health: </label>
-				<InputNumber value={aspects.gcHealth} onChange={(value) => handleAspect('gcHealth', value)} />
+				<InputNumber value={aspects.gcHealth} max={10} min={-10} onChange={(value) => handleAspect('gcHealth', value)} />
 				<label>Security: </label>
-				<InputNumber value={aspects.gcSecurity} onChange={(value) => handleAspect('gcSecurity', value)} />
+				<InputNumber value={aspects.gcSecurity} max={10} min={-10} onChange={(value) => handleAspect('gcSecurity', value)} />
 				<label>Diplomacy: </label>
-				<InputNumber value={aspects.gcDiplomacy} onChange={(value) => handleAspect('gcDiplomacy', value)} />
+				<InputNumber value={aspects.gcDiplomacy} max={10} min={-10} onChange={(value) => handleAspect('gcDiplomacy', value)} />
 				<label>Politics: </label>
-				<InputNumber value={aspects.gcPolitics} onChange={(value) => handleAspect('gcPolitics', value)} />
+				<InputNumber value={aspects.gcPolitics} max={10} min={-10} onChange={(value) => handleAspect('gcPolitics', value)} />
 			</div>
 		);
 	};
@@ -226,8 +226,6 @@ const NewEffects = (props) => {
 				loggedInUser,
 				aspects
 			};
-
-			console.log(aspects);
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
 			Alert.error(`Error: ${err.body} ${err.message}`, 5000);
