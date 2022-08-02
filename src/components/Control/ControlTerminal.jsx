@@ -8,6 +8,7 @@ import ModifyResource from './ModifyResource';
 import LockMap from './LockMap';
 import ManageContacts from './ManageContacts';
 import HealInjury from './HealInjury';
+import Aspects from './Aspects';
 
 class ControlTerminal extends Component {
 	state = {
@@ -79,7 +80,7 @@ class ControlTerminal extends Component {
 	render() {
 		const setMapModal = (params) => this.setState({ mapModal: params });
 		const setInjuryModal = (params) => this.setState({ injuryModal: params });
-		const setLogModal = (params) => this.setState({ logModal: params });
+		const setAspectModal = (params) => this.setState({ aspectModal: params });
 		const setCharLockModal = (params) => this.setState({ charLockModal: params });
 		if (!this.props.login) {
 			this.props.history.push('/');
@@ -187,6 +188,15 @@ class ControlTerminal extends Component {
 					</ButtonGroup>
 				</Panel>
 
+				<Panel header={'Aspects and their Standing'} bordered style={{ border: '5px solid green' }}>
+					<ButtonGroup>
+						{/*<Button appearance="ghost" onClick={() => setLogModal(true)}>*/}
+						<Button appearance="ghost" onClick={() => this.setState({ aspectModal: true })}>
+							View Standings
+						</Button>
+					</ButtonGroup>
+				</Panel>
+
 				{/* TODO pull these out into individual components */}
 				<Modal size="sm" show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })}>
 					<Form
@@ -267,6 +277,8 @@ class ControlTerminal extends Component {
 				<ManageContacts open={true} show={this.state.charLockModal} closeModal={() => setCharLockModal(false)} />
 
 				<HealInjury open={true} show={this.state.injuryModal} closeModal={() => setInjuryModal(false)} />
+
+				<Aspects open={true} show={this.state.aspectModal} closeModal={() => setAspectModal(false)} />
 			</Content>
 		);
 	}
