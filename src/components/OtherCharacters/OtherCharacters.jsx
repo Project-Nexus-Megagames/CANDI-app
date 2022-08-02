@@ -10,22 +10,29 @@ import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
-import { getMyCharacter, getMyUnlockedCharacters } from './../../redux/entities/characters';
+import { getMyCharacter, getMyUnlockedCharacters, getPublicCharacters } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
 import { getFadedColor } from '../../scripts/frontend';
+import { setAutoFreeze } from 'immer';
 
 const OtherCharacters = (props) => {
-	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
+	const publicCharacters = useSelector(getPublicCharacters);
 	const loggedInUser = useSelector((state) => state.auth.user);
 
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
-	const [filteredCharacters, setFilteredCharacters] = useState(props.characters);
+	const [filteredCharacters, setFilteredCharacters] = useState([]);
 	const [edit, setEdit] = useState(false);
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 
 	const [renderTags, setTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags
+
+	useEffect(() => {
+		if (props.myCharacter.tags.indexOf('Control') !== -1) {
+			setFilteredCharacters(props.characters);
+		} else setFilteredCharacters(publicCharacters);
+	});
 
 	const tagStyle = (item, index) => {
 		console.log(item);
@@ -129,7 +136,7 @@ const OtherCharacters = (props) => {
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
 			filtered = props.characters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
 		} else {
-			filtered = myUnlockedCharacters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
+			filtered = publicCharacters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
 		}
 		setFilteredCharacters(filtered);
 	};

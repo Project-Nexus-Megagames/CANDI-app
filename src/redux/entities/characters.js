@@ -93,6 +93,12 @@ export const getGods = createSelector(
     characters.filter((char) => char.tags.some((el) => el === "God"))
 );
 
+export const getPublicCharacters = createSelector(
+  (state) => state.characters.list,
+  (characters) =>
+    characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
 export const getCharacterById = (charId) =>
   createSelector(
     (state) => state.characters,
@@ -106,7 +112,7 @@ export const getMyUnlockedCharacters  = createSelector(
     if (!character) return [];
     return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id))
   }
-		
+
 );
 
 // characters Loader into state
