@@ -5,7 +5,6 @@ import socket from '../../socket';
 import _ from 'lodash';
 
 import { getGods, getNonPlayerCharacters } from '../../redux/entities/characters';
-import gamestate from '../../redux/entities/gamestate';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
