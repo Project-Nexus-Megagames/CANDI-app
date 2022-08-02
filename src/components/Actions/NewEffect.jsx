@@ -223,9 +223,11 @@ const NewEffects = (props) => {
 				document: selected,
 				owner: props.selected.creator._id,
 				arcane,
-				loggedInUser
+				loggedInUser,
+				aspects
 			};
-			console.log('DATA', data);
+
+			console.log(aspects);
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
 			Alert.error(`Error: ${err.body} ${err.message}`, 5000);
