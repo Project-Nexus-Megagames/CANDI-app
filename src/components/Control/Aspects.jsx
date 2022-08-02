@@ -18,7 +18,7 @@ const Aspects = (props) => {
 			{
 				label: 'Standing',
 				data: [gameState.gcHappiness, gameState.gcHealth, gameState.gcSecurity, gameState.gcPolitics, gameState.gcDiplomacy],
-				backgroundColor: ['#ffbb11', '#ecf0f1', '#50AF95', '#f3ba2f', '#2a71d0']
+				backgroundColor: ['purple', '#ecf0f1', '#50AF95', '#f3ba2f', '#2a71d0']
 			}
 		]
 	};
