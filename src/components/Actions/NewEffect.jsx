@@ -12,14 +12,12 @@ const NewEffects = (props) => {
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
-	const [aspects, setAspects] = useState({});
 	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
 	const locations = useSelector((state) => state.locations.list);
 	const characters = useSelector((state) => state.characters.list);
 	const loggedInUser = useSelector((state) => state.auth.user);
-	const gameState = useSelector((state) => state.gamestate);
 	const sortedCharacters = _.sortBy(charactersToDisplay, 'characterName');
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
 	const gods = useSelector(getGods);
@@ -66,12 +64,12 @@ const NewEffects = (props) => {
 				});
 				break;
 			case 'aspect':
-				setAspects({
-					gcHappiness: gameState.gcHappiness,
-					gcSecurity: gameState.gcSecurity,
-					gcDiplomacy: gameState.gcDiplomacy,
-					gcPolitics: gameState.gcPolitics,
-					gcHealth: gameState.gcHealth
+				setSelected({
+					gcHappiness: 0,
+					gcSecurity: 0,
+					gcDiplomacy: 0,
+					gcPolitics: 0,
+					gcHealth: 0
 				});
 				break;
 			case 'addInjury':
@@ -103,7 +101,7 @@ const NewEffects = (props) => {
 			default:
 				break;
 		}
-	}, [type, assets, props.selected.creator._id, characters, locations, props.selected.creator.knownContacts, gameState]);
+	}, [type, assets, props.selected.creator._id, characters, locations, props.selected.creator.knownContacts]);
 
 	const handleExit = () => {
 		setType('');
@@ -159,27 +157,20 @@ const NewEffects = (props) => {
 		setArcane(!arcane);
 	};
 
-	const handleAspect = (type, change) => {
-		let temp = { ...aspects };
-		temp[type] = change;
-		setAspects(temp);
-		setSelected(temp);
-	};
-
 	const renderAspects = () => {
 		return (
 			<div>
-				<Divider>Please enter the new value for the aspect(s) you would like to change</Divider>
+				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one or more aspects</Divider>
 				<label>Happiness: </label>
-				<InputNumber value={aspects.gcHappiness} max={10} min={-10} onChange={(value) => handleAspect('gcHappiness', value)} />
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHappiness', value)} />
 				<label>Health: </label>
-				<InputNumber value={aspects.gcHealth} max={10} min={-10} onChange={(value) => handleAspect('gcHealth', value)} />
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHealth', value)} />
 				<label>Security: </label>
-				<InputNumber value={aspects.gcSecurity} max={10} min={-10} onChange={(value) => handleAspect('gcSecurity', value)} />
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcSecurity', value)} />
 				<label>Diplomacy: </label>
-				<InputNumber value={aspects.gcDiplomacy} max={10} min={-10} onChange={(value) => handleAspect('gcDiplomacy', value)} />
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcDiplomacy', value)} />
 				<label>Politics: </label>
-				<InputNumber value={aspects.gcPolitics} max={10} min={-10} onChange={(value) => handleAspect('gcPolitics', value)} />
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcPolitics', value)} />
 			</div>
 		);
 	};
@@ -222,8 +213,7 @@ const NewEffects = (props) => {
 				document: selected,
 				owner: props.selected.creator._id,
 				arcane,
-				loggedInUser,
-				aspects
+				loggedInUser
 			};
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
