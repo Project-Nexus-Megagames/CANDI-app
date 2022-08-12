@@ -2,7 +2,7 @@
   "name": "candi_app",
   "version": "3.0",
   "description": "The CANDI App for whatever PbEM game is running",
-  "author": "Scott McMann & John T. Cleveland",
+  "author": "Scott McMann, John T. Cleveland and Franziska Schulz",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^1.8.6",
