@@ -18,6 +18,7 @@ import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 import { Link } from 'react-router-dom';
 import UserList from './UserList';
+import Carousel from '../common/Carousel';
 import LoadingNew from './LoadingNew';
 
 const HomePage = (props) => {
@@ -72,19 +73,14 @@ const HomePage = (props) => {
 		let distance = countDownDate - now;
 
 		let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		let hours = Math.floor(
-			(distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-		);
+		let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
 		setClock({ hours, minutes, days });
 	};
 
 	const openNexus = () => {
-		const win = window.open(
-			'https://www.patreon.com/wcmprojectnexus',
-			'_blank'
-		);
+		const win = window.open('https://www.patreon.com/wcmprojectnexus', '_blank');
 		win.focus();
 	};
 
@@ -119,39 +115,14 @@ const HomePage = (props) => {
 				<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 					<Dropdown
 						renderTitle={() => {
-							return (
-								<IconButton
-									appearance="subtle"
-									icon={<Icon icon="bars" size="4x" />}
-									size="md"
-									circle
-								/>
-							);
+							return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x" />} size="md" circle />;
 						}}
 					>
 						<Dropdown.Item>Version: {props.version}</Dropdown.Item>
-						<Dropdown.Item
-							onSelect={() =>
-								window.open(
-									'https://github.com/Project-Nexus-Megagames/CANDI-issues/issues'
-								)
-							}
-						>
-							Report Issues
-						</Dropdown.Item>
-						<Dropdown.Item
-							onSelect={() =>
-								window.open('https://www.patreon.com/wcmprojectnexus')
-							}
-						>
-							Support Nexus
-						</Dropdown.Item>
-						<Dropdown.Item onSelect={() => handleLogOut()}>
-							Log Out
-						</Dropdown.Item>
-						<Dropdown.Item onSelect={() => props.toggleDuck()}>
-							Spook
-						</Dropdown.Item>
+						<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
+						<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
+						<Dropdown.Item onSelect={() => handleLogOut()}>Log Out</Dropdown.Item>
+						<Dropdown.Item onSelect={() => props.toggleDuck()}>Spook</Dropdown.Item>
 					</Dropdown>
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={22}>
@@ -167,77 +138,37 @@ const HomePage = (props) => {
 								Time Left: {clock.hours} Hours, {clock.minutes} Minutes
 							</p>
 						)}
-						{clock.hours <= 0 && clock.minutes > 0 && clock.days <= 0 && (
-							<p>Time Left: {clock.minutes} Minutes</p>
-						)}
-						{clock.days + clock.hours + clock.minutes <= 0 && (
-							<p>Game Status: {props.gamestate.status}</p>
-						)}
+						{clock.hours <= 0 && clock.minutes > 0 && clock.days <= 0 && <p>Time Left: {clock.minutes} Minutes</p>}
+						{clock.days + clock.hours + clock.minutes <= 0 && <p>Game Status: {props.gamestate.status}</p>}
 					</div>
 				</FlexboxGrid.Item>
-				<FlexboxGrid.Item colspan={1}>
-					{props.myCharacter.tags.some((el) => el === 'Control') && (
-						<UserList />
-					)}
-				</FlexboxGrid.Item>
+				<FlexboxGrid.Item colspan={1}>{props.myCharacter.tags.some((el) => el === 'Control') && <UserList />}</FlexboxGrid.Item>
 			</FlexboxGrid>
 
 			<Row>
-
 				<Col lg={12} md={24}>
-					<ImgPanel
-						img={banner}
-						to="news"
-						title="~ news ~"
-						body="Do the thing"
-					/>
+					<Carousel height="45vh"></Carousel>
+					{/*<ImgPanel img={banner} to="news" title="~ news ~" body="Do the thing" />*/}
 				</Col>
 
 				<Col lg={6} md={12}>
-					<ImgPanel
-						img={actions}
-						to="actions"
-						title="~ Actions ~"
-						body="Do the thing"
-					/>
+					<ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the thing" />
 				</Col>
 
 				<Col lg={6} md={12}>
-					<ImgPanel
-						img={myCharacter}
-						to="agendas"
-						title="~ Agendas ~"
-						body="AAAAAA"
-					/>
+					<ImgPanel img={myCharacter} to="agendas" title="~ Agendas ~" body="AAAAAA" />
 				</Col>
 
 				<Col lg={6} md={24}>
-					<ImgPanel
-						img={props.myCharacter.profilePicture}
-						to="character"
-						title="~ My Character ~"
-						body="My Assets and Traits"
-					/>
+					<ImgPanel img={props.myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
 				</Col>
 
 				<Col lg={6} md={12}>
-					<ImgPanel
-						img={Map}
-						to="Map"
-						title="~ Map ~"
-						body="Here be Dragons..."
-					/>
+					<ImgPanel img={Map} to="Map" title="~ Map ~" body="Here be Dragons..." />
 				</Col>
 
 				<Col lg={6} md={12}>
-					{props.myCharacter.tags.some((el) => el === 'Control') && (
-						<ImgPanel
-							img={control2}
-							to="control"
-							title={'~ Control Terminal ~'}
-							body='"Now he gets it!"'
-						/>
-					)}
+					{props.myCharacter.tags.some((el) => el === 'Control') && <ImgPanel img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />}
 					{!props.myCharacter.tags.some((el) => el === 'Control') && (
 						<div
 							onClick={() => openNexus()}
@@ -252,12 +183,7 @@ const HomePage = (props) => {
 							}}
 						>
 							<div className="container">
-								<img
-									src={nexus}
-									className={props.disabled ? 'image disabled' : 'image'}
-									height="auto"
-									alt="Failed to load img"
-								/>
+								<img src={nexus} className={props.disabled ? 'image disabled' : 'image'} height="auto" alt="Failed to load img" />
 							</div>
 							<h6
 								style={{
@@ -287,12 +213,7 @@ const HomePage = (props) => {
 				</Col>
 
 				<Col lg={6} md={24}>
-					<ImgPanel
-						img={other}
-						to="others"
-						title={'~ Other Characters ~'}
-						body="Character Details"
-					/>
+					<ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
 				</Col>
 			</Row>
 		</React.Fragment>
