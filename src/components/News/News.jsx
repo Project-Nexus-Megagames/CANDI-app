@@ -1,8 +1,6 @@
-import React, { Component } from 'react'; // React import
-import { connect } from 'react-redux'; // Redux store provider
-import { Nav, Container, Header, Content, Icon, Loader } from 'rsuite';
-import { Route, Switch, NavLink, Redirect } from 'react-router-dom';
+import React from 'react'; // React import
 import NewsFeed from '../Common/NewsFeed';
+
 import NavigationBar from '../Navigation/NavigationBar';
 
 const News = () => {
@@ -12,6 +10,11 @@ const News = () => {
 		{ id: '3', avatarUrl: '', name: 'Jane Doe', title: 'This is a test', date: 'August 7, 2022' }
 	];
 
-	return <NewsFeed data={data} />;
+	return (
+		<React.Fragment>
+			<NavigationBar />
+			<NewsFeed data={data} />
+		</React.Fragment>
+	);
 };
 export default News;

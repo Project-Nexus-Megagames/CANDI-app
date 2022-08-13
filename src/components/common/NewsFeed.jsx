@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center } from '@chakra-ui/react';
 
 const NewsFeed = (props) => {
