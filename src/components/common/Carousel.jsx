@@ -4,6 +4,9 @@ import { Box, IconButton, Stack, Heading, Text, Container, useBreakpointValue } 
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 // And react-slick as our Carousel Lib
 import Slider from 'react-slick';
+import { Link } from 'react-router-dom';
+import '../../slick.css';
+import '../../slick-theme.css';
 
 // Settings for the slider
 const settings = {
@@ -60,8 +63,8 @@ const Carousel = (props) => {
 			}}
 		>
 			{/* CSS files for react-slick */}
-			<link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-			<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
+			{/*<link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+			<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />*/}
 			{/* Left Icon */}
 			<IconButton aria-label="left-arrow" variant="ghost" position="absolute" left={side} top={top} transform={'translate(0%, -50%)'} zIndex={2} onClick={() => slider?.slickPrev()}>
 				<BiLeftArrowAlt size="40px" />
@@ -86,6 +89,33 @@ const Carousel = (props) => {
 					</Box>
 				))}
 			</Slider>
+			<div>
+				<Link to={props.to}>
+					<h6
+						style={{
+							position: 'absolute',
+							bottom: '15px',
+							left: '0px',
+							color: 'white',
+							background: '#663300'
+						}}
+					>
+						~News~
+					</h6>
+					<p
+						style={{
+							position: 'absolute',
+							bottom: '0px',
+							left: '0px',
+							color: 'white',
+							background: '#663300',
+							fontSize: '0.966em'
+						}}
+					>
+						Go here for juicy news
+					</p>
+				</Link>
+			</div>
 		</Box>
 	);
 };

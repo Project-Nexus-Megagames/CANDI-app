@@ -8,7 +8,6 @@ import ImgPanel from './ImgPanel';
 import control2 from '../Images/test.jpg';
 import other from '../Images/other.jpg';
 import nexus from '../Images/test.jpg';
-import banner from '../Images/banner1.jpg';
 import actions from '../Images/actions.jpg';
 import myCharacter from '../Images/test.jpg';
 import Map from '../Images/map.jpg';
@@ -18,7 +17,7 @@ import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 import { Link } from 'react-router-dom';
 import UserList from './UserList';
-import Carousel from '../common/Carousel';
+import Carousel from '../Common/Carousel';
 import LoadingNew from './LoadingNew';
 
 const HomePage = (props) => {
@@ -147,8 +146,7 @@ const HomePage = (props) => {
 
 			<Row>
 				<Col lg={12} md={24}>
-					<Carousel height="45vh"></Carousel>
-					{/*<ImgPanel img={banner} to="news" title="~ news ~" body="Do the thing" />*/}
+					<Carousel height="45vh" to="news"></Carousel>
 				</Col>
 
 				<Col lg={6} md={12}>
