@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import { Modal } from 'rsuite';
 import { Bar } from 'react-chartjs-2';
+// don't delete this even though it shows up as unused!
+import { Chart as ChartJS } from 'chart.js/auto';
 
 const Aspects = (props) => {
 	const gameState = useSelector((state) => state.gamestate);
