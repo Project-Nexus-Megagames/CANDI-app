@@ -4,8 +4,13 @@ import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center } from '
 const NewsFeed = (props) => {
 	const data = props.data;
 
+	const translateComment = (number) => {
+		if (number === 1) return 'comment';
+		return 'comments';
+	};
+
 	return (
-		<Center>
+		<Center maxW="960px" mx="auto">
 			<Box bg="bg-surface" py="4">
 				<Stack divider={<StackDivider />} spacing="4">
 					{data.map((item) => (
@@ -39,6 +44,9 @@ const NewsFeed = (props) => {
 									Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot
 									cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups
 									dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow.
+								</Text>
+								<Text align="right">
+									{item.numberOfComments} {translateComment(item.numberOfComments)}
 								</Text>
 							</VStack>
 						</Stack>
