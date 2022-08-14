@@ -1,7 +1,7 @@
 import React from 'react'; // React import
 import NewsFeed from '../Common/NewsFeed';
-
 import NavigationBar from '../Navigation/NavigationBar';
+import { Heading } from '@chakra-ui/react';
 
 const body =
 	'Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carro\
@@ -18,6 +18,7 @@ const News = () => {
 	return (
 		<React.Fragment>
 			<NavigationBar />
+			<Heading>News</Heading>
 			<NewsFeed data={data} />
 		</React.Fragment>
 	);

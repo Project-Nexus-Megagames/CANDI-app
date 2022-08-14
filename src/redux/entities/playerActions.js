@@ -100,15 +100,16 @@ export const filteredActions = createSelector(
   )
 );
 
-export const getAgendaActions = createSelector(
-  state => state.actions.list,
-  (actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
-);
+//export const getAgendaActions = createSelector(
+//  state => state.actions.list
+	//(actions) => actions.filter(el => el.type === 'Agenda')
+  //(actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
+//);
 
-export const getArticleActions = createSelector(
-  state => state.actions.list,
-  (actions) => actions.filter(el => el.type === 'Article' && el.tags.some(tag => tag.toLowerCase() === 'published'))
-);
+//export const getArticleActions = createSelector(
+//  state => state.actions.list,
+//  (actions) => actions.filter(el => el.type === 'Article' && el.tags.some(tag => tag.toLowerCase() === 'published'))
+//);
 
 //  export const draftActions = createSelector(
 //   state => state.actions.list,

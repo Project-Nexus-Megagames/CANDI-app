@@ -1,23 +1,18 @@
 import React from 'react'; // React import
 import NewsFeed from '../Common/NewsFeed';
-
 import NavigationBar from '../Navigation/NavigationBar';
-
-const body =
-	'Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carro\
-t cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chup\
-s dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow.';
+import { useSelector } from 'react-redux';
+import { Heading } from '@chakra-ui/react';
 
 const Agendas = () => {
-	const data = [
-		{ id: '1', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'August 8, 2022', numberOfComments: 0 },
-		{ id: '2', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'Augst 8, 2022', numberOfComments: 1 },
-		{ id: '3', avatarUrl: '', name: 'Jane Doe', title: 'This is a test', body: body, date: 'August 7, 2022', numberOfComments: 2 }
-	];
+	const actions = useSelector((state) => state.actions.list);
+	const agendas = actions.filter((el) => el.type === 'Agenda');
+	const data = agendas.map((el) => ({ author: el.creator.characterName, title: el.name, body: el.submission?.description, date: el.createdAt, comments: el.comments, authorId: el.creator._id }));
 
 	return (
 		<React.Fragment>
 			<NavigationBar />
+			<Heading>Agendas</Heading>
 			<NewsFeed data={data} />
 		</React.Fragment>
 	);

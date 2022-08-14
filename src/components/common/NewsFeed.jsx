@@ -1,5 +1,8 @@
 import React from 'react';
 import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
+import { getCharacterById } from '../../redux/entities/characters';
+import { getDateString } from '../../scripts/dateTime';
 
 const NewsFeed = (props) => {
 	const data = props.data;
@@ -7,6 +10,11 @@ const NewsFeed = (props) => {
 	const translateComment = (number) => {
 		if (number === 1) return 'comment';
 		return 'comments';
+	};
+
+	const getAvatarUrl = (charId) => {
+		const char = useSelector(getCharacterById(charId));
+		return char?.profilePicture;
 	};
 
 	return (
@@ -17,14 +25,14 @@ const NewsFeed = (props) => {
 						<Stack key={item.id} fontSize="sm" px="4" spacing="4" margin="5px">
 							<Stack direction="row" justify="space-between" spacing="4">
 								<HStack spacing="3">
-									<Avatar src={item.avatarUrl} boxSize="10" />
+									<Avatar src={getAvatarUrl(item.authorId)} boxSize="10" />
 									<Box>
 										<Text fontWeight="medium" color="emphasized">
-											{item.name}
+											{item.author}
 										</Text>
 									</Box>
 								</HStack>
-								<Text color="muted">{item.date}</Text>
+								<Text color="muted">{getDateString(item.date)}</Text>
 							</Stack>
 							<VStack align="left">
 								<Text fontSize="2xl" align="left">
@@ -44,7 +52,7 @@ const NewsFeed = (props) => {
 									{item.body}
 								</Text>
 								<Text align="right">
-									{item.numberOfComments} {translateComment(item.numberOfComments)}
+									{item.comments?.length} {translateComment(item.comments?.length)}
 								</Text>
 							</VStack>
 						</Stack>
