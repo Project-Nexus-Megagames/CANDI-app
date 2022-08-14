@@ -8,7 +8,7 @@ const body =
 t cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chup\
 s dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow.';
 
-const News = () => {
+const Agendas = () => {
 	const data = [
 		{ id: '1', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'August 8, 2022', numberOfComments: 0 },
 		{ id: '2', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'Augst 8, 2022', numberOfComments: 1 },
@@ -22,4 +22,4 @@ const News = () => {
 		</React.Fragment>
 	);
 };
-export default News;
+export default Agendas;
