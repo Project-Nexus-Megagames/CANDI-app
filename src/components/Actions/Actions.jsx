@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Container, Sidebar, Input, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { filteredActions, getCurrentExplores, getMyActions, getOtherAgendaActions, setFilter } from '../../redux/entities/playerActions';
+import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import { useSelector } from 'react-redux';
 
 import NavigationBar from '../Navigation/NavigationBar';
@@ -41,7 +41,6 @@ const Actions = (props) => {
 	const actionsToDisplay = [];
 
 	props.myActions?.forEach((el) => actionsToDisplay.push(el));
-	props.agendaActions?.forEach((el) => actionsToDisplay.push(el));
 
 	for (const actionType of gameConfig.actionTypes) actionTypes.push(actionType.type);
 
@@ -109,7 +108,6 @@ const mapStateToProps = (state) => ({
 	login: state.auth.login,
 	gamestate: state.gamestate,
 	myActions: getMyActions(state),
-	agendaActions: getOtherAgendaActions(state),
 	filteredActions: filteredActions(state)
 });
 

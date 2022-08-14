@@ -100,22 +100,16 @@ export const filteredActions = createSelector(
   )
 );
 
-export const getOtherAgendaActions = createSelector(
-  state => state.actions.list,
-	state => state.characters.list.find(el => el.username === state.auth.user.username),
-  (actions, myCharacter) => actions.filter(el => el.type === 'Agenda' && el.creator._id !== myCharacter._id )
-);
+//export const getAgendaActions = createSelector(
+//  state => state.actions.list
+	//(actions) => actions.filter(el => el.type === 'Agenda')
+  //(actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
+//);
 
-export const getMyAgendaActions = createSelector(
-  state => state.actions.list,
-	state => state.characters.list.find(el => el.username === state.auth.user.username),
-  (actions, myCharacter) => actions.filter(el => el.type === 'Agenda' && el.creator._id == myCharacter._id )
-);
-
-export const getAgendaActions = createSelector(
-  state => state.actions.list,
-  (actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
-);
+//export const getArticleActions = createSelector(
+//  state => state.actions.list,
+//  (actions) => actions.filter(el => el.type === 'Article' && el.tags.some(tag => tag.toLowerCase() === 'published'))
+//);
 
 //  export const draftActions = createSelector(
 //   state => state.actions.list,
@@ -123,7 +117,7 @@ export const getAgendaActions = createSelector(
 // );
 
 // playerActions Loader into state
-export const loadplayerActions = payload => (dispatch, getState) => {
+export const loadplayerActions = payload => (dispatch) => {
   let url = baseURL;
 
   if (!payload.roles.some(el => el === 'Control' )) { // does no longer work
@@ -144,7 +138,7 @@ export const loadplayerActions = payload => (dispatch, getState) => {
 };
 
 // get all actions Loader into state for "emergencies"
-export const loadAllActions = payload => (dispatch, getState) => {
+export const loadAllActions = payload => (dispatch) => {
   let url = baseURL;
   return dispatch(
     apiCallBegan({

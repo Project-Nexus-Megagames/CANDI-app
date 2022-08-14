@@ -1,35 +1,26 @@
-import React, { Component } from 'react'; // React import
-import { connect } from 'react-redux'; // Redux store provider
-import { Nav, Container, Header, Content, Icon, Loader } from 'rsuite';
-import { Route, Switch, NavLink, Redirect } from 'react-router-dom';
-import NewsFeed from './NewsFeed';
+import React from 'react'; // React import
+import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
+import { Heading } from '@chakra-ui/react';
 
+const body =
+	'Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carro\
+t cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chup\
+s dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow.';
 
-const News = (props) => {
-	const [tab, setTab] = React.useState('feed');
-	const url = props.match.path;
+const News = () => {
+	const data = [
+		{ id: '1', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'August 8, 2022', numberOfComments: 0 },
+		{ id: '2', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'Augst 8, 2022', numberOfComments: 1 },
+		{ id: '3', avatarUrl: '', name: 'Jane Doe', title: 'This is a test', body: body, date: 'August 7, 2022', numberOfComments: 2 }
+	];
 
-	if (!props.login) {
-		props.history.push('/');
-		return <Loader inverse center content="doot..." />;
-	}
-	else return (
-		<Content>
-      <NavigationBar />
-      <NewsFeed 
-				agency='All' 
-				articles={ props.articles } 
-			/>
-		</Content>
+	return (
+		<React.Fragment>
+			<NavigationBar />
+			<Heading>News</Heading>
+			<NewsFeed data={data} />
+		</React.Fragment>
 	);
-	
-}
-
-const mapStateToProps = state => ({
-    login: state.auth.login,
-    articles: state.articles.list,
-});
-  
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(News);
+};
+export default News;
