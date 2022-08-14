@@ -87,16 +87,16 @@ export const getCurrentExplores = createSelector(
   state => state.actions.list,
   (round, user, actions) => actions.find(
     // eslint-disable-next-line eqeqeq
-    action => (( action.creator._id == user._id && action.round === round && action.type === 'explore') ))
+    action => (( action.creator?._id == user?._id && action.round === round && action.type === 'explore') ))
 );
 
 export const filteredActions = createSelector(
   state => state.actions.filter,
   state => state.actions.list.filter(el => el.submission),
   (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.creator.characterTitle.toLowerCase().includes(filter.toLowerCase()) ||
-   action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  ||
-   action.submission.intent.toLowerCase().includes(filter.toLowerCase()) ||
-   action.tags.some(el => el.toLowerCase().includes(filter.toLowerCase()))
+  action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  ||
+  action.submission.intent.toLowerCase().includes(filter.toLowerCase()) ||
+  action.tags.some(el => el.toLowerCase().includes(filter.toLowerCase()))
   )
 );
 
