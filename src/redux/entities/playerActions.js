@@ -100,11 +100,18 @@ export const filteredActions = createSelector(
   )
 );
 
-//export const getAgendaActions = createSelector(
-//  state => state.actions.list
-	//(actions) => actions.filter(el => el.type === 'Agenda')
+export const getAgendaActions = createSelector(
+  state => state.actions.list,
+	(actions) => actions.filter(el => el.type === 'Agenda'),
   //(actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
-//);
+);
+
+export const getArticles = createSelector(
+	state => state.actions.list,
+	(actions) => actions.filter(action => action.type === 'Article' && action.attachments?.length > 0)
+	//(actions) => actions.filter(action => action.type === 'Article' && action.attachments?.length > 0 && el.tags.some(tag => tag.toLowerCase() === 'published'))
+
+)
 
 //export const getArticleActions = createSelector(
 //  state => state.actions.list,

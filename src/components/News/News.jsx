@@ -1,19 +1,28 @@
 import React from 'react'; // React import
+import { useSelector } from 'react-redux';
 import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { Heading } from '@chakra-ui/react';
-
-const body =
-	'Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carro\
-t cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chup\
-s dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow. Candy donut tart pudding macaroon. Soufflé carrot cake choc late cake biscuit jelly beans chupa chups dragée. Cupcake toffee gummies lemon drops halvah. Cookie fruitcake jelly beans gingerbread soufflé marshmallow.';
+import { getArticles } from '../../redux/entities/playerActions';
 
 const News = () => {
-	const data = [
-		{ id: '1', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'August 8, 2022', numberOfComments: 0 },
-		{ id: '2', avatarUrl: '', name: 'John Doe', title: 'This is a test', body: body, date: 'Augst 8, 2022', numberOfComments: 1 },
-		{ id: '3', avatarUrl: '', name: 'Jane Doe', title: 'This is a test', body: body, date: 'August 7, 2022', numberOfComments: 2 }
-	];
+	const articleActions = useSelector(getArticles);
+	const articles = [];
+	articleActions.forEach((action) => {
+		action.attachments.forEach((attachment) => {
+			let enrichtedAttachment = { ...attachment };
+			enrichtedAttachment.creator = action.creator;
+			articles.push(enrichtedAttachment);
+		});
+	});
+
+	articles.sort((a, b) => {
+		let da = new Date(a.updatedAt),
+			db = new Date(b.updatedAt);
+		return db - da;
+	});
+
+	const data = articles.map((el) => ({ author: el.creator?.characterName, title: el.title, body: el.body, date: el.updatedAt, comments: el.comments, authorId: el.creator?._id, articleId: el._id }));
 
 	return (
 		<React.Fragment>
