@@ -64,26 +64,27 @@ const ViewArticle = (props) => {
 									{article?.body}
 								</Text>
 							</VStack>
+
+							{typeof comment === 'string' && <Input value={comment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setComment(value)} />}
+							<List hover>
+								{article?.comments.map((comment, index) => (
+									<List.Item key={index}>
+										<FlexboxGrid align="middle">
+											<FlexboxGrid.Item colspan={1}>{/* <TeamAvatar size={'sm'} code={'none'} />  */}</FlexboxGrid.Item>
+											<FlexboxGrid.Item colspan={23}>
+												<b>{comment.commentor}</b>
+												<p>{comment.body}</p>
+											</FlexboxGrid.Item>
+										</FlexboxGrid>
+									</List.Item>
+								))}
+							</List>
 						</Stack>
 					</Center>
 				</DrawerBody>
-
-				{typeof comment === 'string' && <Input value={comment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setComment(value)} />}
 			</DrawerContent>
 		</Drawer>
-		//			<List hover>
-		//				{article.comments.map((comment, index) => (
-		//					<List.Item key={index}>
-		//						<FlexboxGrid align="middle">
-		//							<FlexboxGrid.Item colspan={1}>{/* <TeamAvatar size={'sm'} code={'none'} />  */}</FlexboxGrid.Item>
-		//							<FlexboxGrid.Item colspan={23}>
-		//								<b>{comment.user}</b>
-		//								<p>{comment.comment}</p>
-		//							</FlexboxGrid.Item>
-		//						</FlexboxGrid>
-		//					</List.Item>
-		//				))}
-		//			</List>
+
 		//		</Modal.Body>
 		//		<Modal.Footer>
 		//			<ButtonToolbar style={{ float: 'right' }}>
