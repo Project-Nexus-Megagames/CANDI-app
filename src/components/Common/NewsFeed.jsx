@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center } from '@chakra-ui/react';
+import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image } from '@chakra-ui/react';
 import { Modal } from 'rsuite';
 import { useSelector } from 'react-redux';
 import { getCharacterById } from '../../redux/entities/characters';
@@ -31,49 +31,58 @@ const NewsFeed = (props) => {
 				<Stack divider={<StackDivider />} spacing="4">
 					{data.map((item) => (
 						<Stack key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
-							<Stack direction="row" justify="space-between" spacing="4">
-								<HStack spacing="3">
-									<Avatar src={getAvatarUrl(item.authorId)} boxSize="10" />
+							<HStack>
+								{item.imageURL && <Image src={item.imageURL} width="200px" />}
+								<Image src="https://images.unsplash.com/photo-1616225372747-5b3894991eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" width="100px" />
+								<VStack align="left">
+									<Text
+										fontSize="2xl"
+										align="left"
+										onClick={() => {
+											setSelected(item), setArticleModal(true);
+										}}
+									>
+										{item.title}
+									</Text>
 									<Box>
-										<Text fontWeight="medium" color="emphasized">
-											{item.author}
-										</Text>
+										<Stack direction="row" justify="space-between" spacing="4">
+											<HStack>
+												<Avatar src={getAvatarUrl(item.authorId)} boxSize="10" />
+												<Text fontWeight="medium" color="emphasized" align="left" fontSize="xs">
+													by {item.author}
+												</Text>
+											</HStack>
+											<HStack>
+												<Text color="muted">{getDateString(item.date)}</Text>
+											</HStack>
+										</Stack>
 									</Box>
-								</HStack>
-								<Text color="muted">{getDateString(item.date)}</Text>
-							</Stack>
-							<VStack align="left">
-								<Text
-									fontSize="2xl"
-									align="left"
-									onClick={() => {
-										setSelected(item.articleId), setArticleModal(true);
-									}}
-								>
-									{item.title}
-								</Text>
-								<Text
-									color="muted"
-									noOfLines={2}
-									align="left"
-									sx={{
-										'-webkit-box-orient': 'vertical',
-										'-webkit-line-clamp': '2',
-										overflow: 'hidden',
-										display: '-webkit-box'
-									}}
-								>
-									{item.body}
-								</Text>
-								<Text align="right">
-									{item.comments?.length} {translateComment(item.comments?.length)}
-								</Text>
-							</VStack>
+									<Text
+										onClick={() => {
+											setSelected(item), setArticleModal(true);
+										}}
+										color="muted"
+										noOfLines={2}
+										align="left"
+										sx={{
+											'-webkit-box-orient': 'vertical',
+											'-webkit-line-clamp': '2',
+											overflow: 'hidden',
+											display: '-webkit-box'
+										}}
+									>
+										{item.body}
+									</Text>
+									<Text align="right">
+										{item.comments?.length} {translateComment(item.comments?.length)}
+									</Text>
+								</VStack>
+							</HStack>
 						</Stack>
 					))}
 				</Stack>
 			</Box>
-			<ViewArticle open={true} show={articleModal} selected={selected} closeModal={() => setArticleModal(false)} />
+			<ViewArticle isOpen={articleModal} show={articleModal} selected={selected} closeDrawer={() => setArticleModal(false)} />
 		</Center>
 	);
 };

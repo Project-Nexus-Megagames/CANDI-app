@@ -1,20 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, ButtonToolbar, Icon, Alert, Button, Modal, Divider, Input, List, FlexboxGrid } from 'rsuite';
-import { Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, StackDivider, Text, VStack } from '@chakra-ui/react';
-import { getCharacterById } from '../../redux/entities/characters';
-import { getDateString } from '../../scripts/dateTime';
 import socket from '../../socket';
 
 const ViewArticle = (props) => {
 	const [comment, setComment] = React.useState(false);
 	//let article = props.articles.find((el) => el._id === props.id);
-	const article = props.selected;
-
-	const getAvatarUrl = (charId) => {
-		const char = useSelector(getCharacterById(charId));
-		return char?.profilePicture;
-	};
+	console.log(props);
 
 	//const calculate = (reactions, type) => {
 	//	let temp = reactions.filter((el) => el.emoji === 'thumbs-up');
@@ -29,48 +20,35 @@ const ViewArticle = (props) => {
 	//};
 
 	return (
-		<Drawer
-			isOpen={props.isOpen}
-			placement="top"
-			size="full"
+		<Modal
+			overflow
+			full
+			size="lg"
 			show={props.show}
-			closeOnEsc="true"
-			onClose={() => {
-				props.closeDrawer();
+			onHide={() => {
+				props.closeModal();
 			}}
 		>
-			<DrawerOverlay />
-			<DrawerContent bgColor="#0f131a">
-				<DrawerCloseButton />
-				<DrawerHeader align="center">
-					<Text>{article?.title}</Text>
-				</DrawerHeader>
-				<DrawerBody>
-					<Center maxW="960px" mx="auto">
-						<Stack fontSize="sm" px="4" spacing="4" margin="5px">
-							<Stack direction="row" justify="space-between" spacing="4">
-								<HStack spacing="3">
-									<Avatar src={getAvatarUrl(article?.authorId)} boxSize="10" />
-									<Box>
-										<Text fontWeight="medium" color="emphasized">
-											{article?.author}
-										</Text>
-									</Box>
-								</HStack>
-								<Text color="muted">{getDateString(article?.date)}</Text>
-							</Stack>
-							<VStack>
-								<Text color="muted" align="left" style={{ whiteSpace: 'pre-wrap' }}>
-									{article?.body}
-								</Text>
-							</VStack>
-						</Stack>
-					</Center>
-				</DrawerBody>
+			<div>Boop</div>{' '}
+		</Modal>
 
-				{typeof comment === 'string' && <Input value={comment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setComment(value)} />}
-			</DrawerContent>
-		</Drawer>
+		// TODO include display of image
+		//	<React.Fragment>
+		//		<Modal.Header>
+		//			<Modal.Title>
+		//				{/* <TeamAvatar size={"sm"} code={article.agency} /> */}
+		//				<span style={{ marginLeft: '10px', display: 'inline', verticalAlign: 'super' }}>{article.title}</span>
+		//			</Modal.Title>
+		//		</Modal.Header>
+		//		<Modal.Body>
+		//			<p>
+		//				<b>Author: {article.author}
+		//			</p>
+		//			<Divider />
+		//			<p>{article.body}</p>
+
+		//			{typeof comment === 'string' && <Input value={comment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setComment(value)} />}
+
 		//			<List hover>
 		//				{article.comments.map((comment, index) => (
 		//					<List.Item key={index}>
