@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IconButton, ButtonToolbar, Icon, Alert, Button, Modal, Divider, Input, List, FlexboxGrid } from 'rsuite';
-import { Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, StackDivider, Text, VStack } from '@chakra-ui/react';
+import { IconButton, ButtonToolbar, Icon, Alert, Modal, Divider, Input, List, FlexboxGrid } from 'rsuite';
+import { Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, StackDivider, Text, VStack } from '@chakra-ui/react';
 import { getCharacterById } from '../../redux/entities/characters';
 import { getDateString } from '../../scripts/dateTime';
+import { useForm } from 'react-hook-form';
 import socket from '../../socket';
 
 const ViewArticle = (props) => {
-	const [comment, setComment] = React.useState(false);
+	const [comment, setComment] = useState('');
 	//let article = props.articles.find((el) => el._id === props.id);
 	const article = props.selected;
+	const { register, control, handleSubmit, reset, formState } = useForm({
+		defaultValues: {}
+	});
 
 	const getAvatarUrl = (charId) => {
 		const char = useSelector(getCharacterById(charId));
@@ -22,11 +26,15 @@ const ViewArticle = (props) => {
 	//	return temp;
 	////};
 
-	//const handleComment = () => {
-	//	//socket.emit('request', { route: 'article', action: 'comment', data: { id: article._id, user: props.user, comment } });
-	//	console.log(comment);
-	//	setComment(false);
-	//};
+	const handleComment = () => {
+		//socket.emit('request', { route: 'article', action: 'comment', data: { id: article._id, user: props.user, comment } });
+		console.log(comment);
+		setComment('');
+	};
+
+	const deleteComment = () => {};
+
+	const editComment = () => {};
 
 	return (
 		<Drawer
@@ -65,11 +73,24 @@ const ViewArticle = (props) => {
 								</Text>
 							</VStack>
 
-							{typeof comment === 'string' && <Input value={comment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setComment(value)} />}
+							<Input value={comment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setComment(value)} />
+							<Button bg="black" onClick={console.log('boop')}>
+								Send Comment
+							</Button>
 							<List hover>
+								{/*// TODO add character.id to comment*/}
 								{article?.comments.map((comment, index) => (
 									<List.Item key={index}>
 										<FlexboxGrid align="middle">
+											<FlexboxGrid.Item colspan={4}>
+												{/*//{this.props.myCharacter.characterName === this.props.comment.commentor && */}
+												<ButtonToolbar>
+													<ButtonGroup>
+														<IconButton size="xs" onClick={() => this.setState({ commentEdit: true })} color="blue" icon={<Icon icon="pencil" />} />
+														<IconButton size="xs" onClick={() => this.setState({ deleteWarning: true })} color="red" icon={<Icon icon="trash2" />} />
+													</ButtonGroup>
+												</ButtonToolbar>
+											</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={1}>{/* <TeamAvatar size={'sm'} code={'none'} />  */}</FlexboxGrid.Item>
 											<FlexboxGrid.Item colspan={23}>
 												<b>{comment.commentor}</b>
