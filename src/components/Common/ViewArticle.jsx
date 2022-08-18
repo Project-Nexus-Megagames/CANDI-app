@@ -11,9 +11,7 @@ const ViewArticle = (props) => {
 	const [comment, setComment] = useState('');
 	//let article = props.articles.find((el) => el._id === props.id);
 	const article = props.selected;
-	const { register, control, handleSubmit, reset, formState } = useForm({
-		defaultValues: {}
-	});
+	console.log(props);
 
 	const getAvatarUrl = (charId) => {
 		const char = useSelector(getCharacterById(charId));
@@ -74,7 +72,7 @@ const ViewArticle = (props) => {
 							</VStack>
 
 							<Input value={comment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setComment(value)} />
-							<Button bg="black" onClick={console.log('boop')}>
+							<Button bg="black" onClick={() => handleComment()}>
 								Send Comment
 							</Button>
 							<List hover>
