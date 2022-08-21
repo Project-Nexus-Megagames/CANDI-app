@@ -9,7 +9,7 @@ import banner from '../Images/banner1.jpg'
 const { StringType } = Schema.Types;
 
 const Login = (props) => {
-  let { tokenLogin, loadAction, user } = props;
+  let { tokenLogin, loadAllActions, user } = props;
 	const [login, setLogin] = React.useState({ user: '', password: ''});
 	const [remember, setRemember] = React.useState(true);
   const history = useHistory();
@@ -25,10 +25,10 @@ const Login = (props) => {
 
   useEffect(() => {
     if (props.login) {
-      loadAction(user);
+      loadAllActions(user);
       history.push("/home");
     }
-  }, [props.login, user, loadAction, history]);
+  }, [props.login, user, loadAllActions, history]);
 	
 
   const handleKeyPress = e => {
@@ -125,6 +125,7 @@ const mapDispatchToProps = (dispatch) => ({
   handleLogin: (data) => dispatch(loginUser(data)),
   tokenLogin: (data) => dispatch(authReceived(data)),
 	loadAction: (data) => dispatch(loadplayerActions(data)),
+	loadAllActions: (data) => dispatch(loadAllActions(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

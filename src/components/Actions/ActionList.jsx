@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {List, FlexboxGrid, Container, Tag } from 'rsuite';
+import {List, FlexboxGrid, Container, Tag, Avatar } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { getMyActions, filteredActions } from '../../redux/entities/playerActions';
 
@@ -38,7 +38,7 @@ class ActionList extends Component {
 			}			
 		}
 		else {
-			for (const action of this.props.myActions) {
+			for (const action of this.props.filteredActions) {
 				if (!rounds.some(el => el === action.round)) rounds.push(action.round);
 			}			
 		}
@@ -89,11 +89,20 @@ class ActionList extends Component {
 
 					{!this.props.myCharacter.tags.some(el => el === 'Control') && 
 					<List hover size="sm" >
-					{this.props.myActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions </h5>}
-						{this.props.myActions.filter(action => action.round === round).map((action, index) => (
+					{this.props.filteredActions.length === 0 && <h5 style={{ textAlign: 'center', marginTop: '40vh' }} >No Actions </h5>}
+						{this.props.filteredActions.filter(action => action.round === round).map((action, index) => (
 							<List.Item key={index} index={index} size={'sm'} onClick={()=>this.props.handleSelect(action)} style={this.listStyle(action, (index % 2))}>
 								<FlexboxGrid>
-									<FlexboxGrid.Item colspan={24} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
+									<FlexboxGrid.Item colspan={4}>
+												<Avatar
+											circle
+											size="md"
+											src={`/images/${action.creator.characterName}.jpg`}
+											alt="?"
+											style={{ maxHeight: '50vh' }}
+										/>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={20} style={{...styleCenter, flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden'}}>
 										<div style={titleStyle}>{action.name}</div>
 										{<Tag style={{ color: 'black', textTransform: 'capitalize' }} color={ action.type === 'explore' ? 'orange' : 'green'}>{action.type}</Tag>}
 									</FlexboxGrid.Item>
@@ -138,7 +147,8 @@ const mapStateToProps = (state) => ({
 	control: state.auth.control,
 
 	myActions: getMyActions(state),
-	filteredActions: filteredActions(state)
+	filteredActions: filteredActions(state),
+	actions: state.actions.list
 
 });
 
