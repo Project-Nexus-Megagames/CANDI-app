@@ -35,7 +35,6 @@ const NewsFeed = (props) => {
 						<Stack key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
 							<HStack>
 								{item.imageURL && <Image src={item.imageURL} width="200px" />}
-								<Image src="https://images.unsplash.com/photo-1616225372747-5b3894991eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" width="100px" />
 								<VStack align="left">
 									<Text
 										fontSize="2xl"
