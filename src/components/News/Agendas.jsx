@@ -4,8 +4,16 @@ import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
 import { Heading } from '@chakra-ui/react';
 import { getAgendaActions } from '../../redux/entities/playerActions';
+import { Loader } from 'rsuite';
 
-const Agendas = () => {
+const Agendas = (props) => {
+	const login = useSelector((state) => state.auth.login);
+
+	if (!login) {
+		props.history.push('/');
+		return <Loader inverse center content="doot..." />;
+	}
+
 	const agendas = useSelector(getAgendaActions);
 
 	agendas.sort((a, b) => {

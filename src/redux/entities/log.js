@@ -26,6 +26,10 @@ const slice = createSlice({
     logRequestFailed: (log, action) => {
       console.log(`${action.type} Dispatched`)
       log.loading = false;
+    },
+		logAdded: (log, action) => {
+      console.log(`${action.type} Dispatched`);
+      log.list.push(action.payload);
     }
   }
 });
@@ -35,6 +39,7 @@ export const {
   logReceived,
   logRequested,
   logRequestFailed,
+  logAdded
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export

@@ -2,12 +2,13 @@ import { assetAdded, assetDeleted, assetUpdated } from './entities/assets';
 import { characterAdded, characterDeleted, characterUpdated } from './entities/characters';
 import { gamestateReceived } from './entities/gamestate';
 import { playerActionUpdated, actionAdded, actionDeleted } from './entities/playerActions';
+import { logAdded } from './entities/log';
 import socket from '../socket'
 import store from './store';
 import { locationUpdated } from './entities/locations';
 
 const initUpdates = () => {
-    socket.on('updateClients', (data) => { 
+    socket.on('updateClients', (data) => {
         console.log('updateClients');
         for (const el of data) {
             switch(el.model) {
@@ -26,6 +27,9 @@ const initUpdates = () => {
                 case 'Location':
                     store.dispatch(locationUpdated(el));
                     break;
+                case 'Log':
+                    store.dispatch(logAdded(el));
+                    break;
                 default:
                     console.log(`Unable to update Redux for ${el.model}: ${el._id}`);
                     break;
@@ -33,7 +37,7 @@ const initUpdates = () => {
         }
     });
 
-    socket.on('createClients', (data) => { 
+    socket.on('createClients', (data) => {
         console.log('createClients');
         for (const el of data) {
             switch(el.model) {
@@ -56,7 +60,7 @@ const initUpdates = () => {
         }
     });
 
-    socket.on('deleteClients', (data) => { 
+    socket.on('deleteClients', (data) => {
         console.log('deleteClients');
         for (const el of data) {
             switch(el.model) {
@@ -79,12 +83,12 @@ const initUpdates = () => {
         }
     });
 
-    socket.on('clearLocalStorage', (data) => { 
+    socket.on('clearLocalStorage', (data) => {
         console.log('clearLocalStorage');
         localStorage.removeItem(data);
     });
 
-    socket.on('errorUnload', (data) => { 
+    socket.on('errorUnload', (data) => {
         console.log('errorUnload');
     });
 }
