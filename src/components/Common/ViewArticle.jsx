@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IconButton, Icon, Input, List } from 'rsuite';
-import { useDisclosure, AlertDialog, AlertDialogOverlay, Divider, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { IconButton, Icon, List } from 'rsuite';
+import { useDisclosure, Textarea, AlertDialog, AlertDialogOverlay, Divider, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { getCharacterById } from '../../redux/entities/characters';
 import { getDateString } from '../../scripts/dateTime';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -39,7 +39,6 @@ const ViewArticle = (props) => {
 	const handleComment = () => {
 		const comment = { body: newComment, commentor: myChar.characterName, commentorProfilePicture: myChar.profilePicture };
 		socket.emit('request', { route: 'action', action: 'comment', data: { id: props.selected.articleId, comment } });
-		console.log(newComment);
 		setNewComment('');
 	};
 
@@ -74,13 +73,14 @@ const ViewArticle = (props) => {
 								</HStack>
 								<Text color="muted">{getDateString(article?.date)}</Text>
 							</Stack>
+							<Divider />
 							<VStack>
 								<Text color="muted" align="left" style={{ whiteSpace: 'pre-wrap' }}>
 									{article?.body}
 								</Text>
 							</VStack>
 							<Divider orientation="horizontal" />
-							<Input value={newComment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setNewComment(value)} />
+							<Textarea value={newComment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(e) => setNewComment(e.target.value)} />
 							<Button bg="black" onClick={() => handleComment()}>
 								Send Comment
 							</Button>
