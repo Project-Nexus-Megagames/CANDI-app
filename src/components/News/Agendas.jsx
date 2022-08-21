@@ -22,7 +22,7 @@ const Agendas = (props) => {
 		return db - da;
 	});
 
-	const data = agendas.map((el) => ({ author: el.creator.characterName, title: el.name, body: el.submission?.description, date: el.updatedAt, comments: el.comments, authorId: el.creator._id, articleId: el._id, type: 'agenda' }));
+	const data = agendas.map((el) => ({ author: el.creator.characterName, authorProfilePicture: el.creator.profilePicture, title: el.name, body: el.submission?.description, date: el.updatedAt, comments: el.comments, authorId: el.creator._id, articleId: el._id, type: 'agenda' }));
 
 	return (
 		<React.Fragment>
