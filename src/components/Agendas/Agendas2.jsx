@@ -1,5 +1,5 @@
 import React from 'react'; // React import
-import NewsFeed from '../Common/NewsFeed';
+import AgendaFeed from '../Agendas/AgendaFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
 import { Heading } from '@chakra-ui/react';
@@ -20,7 +20,7 @@ const Agendas = () => {
 		<React.Fragment>
 			<NavigationBar />
 			<Heading>Agendas</Heading>
-			<NewsFeed data={data} />
+			<AgendaFeed />
 		</React.Fragment>
 	);
 };

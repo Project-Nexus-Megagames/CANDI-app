@@ -1,23 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-	Avatar,
-	Modal,
-	Button,
-	ButtonToolbar,
-	ButtonGroup,
-	FlexboxGrid,
-	IconButton,
-	Icon,
-	Toggle,
-	Panel,
-	Divider
-} from 'rsuite';
+import { Avatar, Modal, Button, ButtonToolbar, ButtonGroup, FlexboxGrid, IconButton, Icon, Toggle, Panel, Divider } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import {
-	getMyCharacter,
-	characterUpdated
-} from '../../redux/entities/characters';
+import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 class Comment extends Component {
@@ -30,7 +15,7 @@ class Comment extends Component {
 			private: true
 		};
 	}
-
+	//TODO get avatarURL for commentor avatar
 	componentDidMount = () => {
 		// localStorage.removeItem('newActionState');
 		// const stateReplace = JSON.parse(localStorage.getItem('EditCommentGW'));
@@ -116,59 +101,28 @@ class Comment extends Component {
 	render() {
 		return (
 			<div>
-				{(this.props.myCharacter.tags.some((el) => el === 'Control') ||
-					this.props.comment.status === 'Public') && (
+				{(this.props.myCharacter.tags.some((el) => el === 'Control') || this.props.comment.status === 'Public') && (
 					<div>
 						<Divider vertical />
 						<div style={{ border: '3px solid #00a0bd', borderRadius: '5px' }}>
-							<FlexboxGrid
-								style={
-									this.props.comment.status === 'Private'
-										? privateComm
-										: this.props.comment.type === 'Info'
-										? infoComm
-										: publicComm
-								}
-								align="middle"
-								justify="start"
-							>
+							<FlexboxGrid style={this.props.comment.status === 'Private' ? privateComm : this.props.comment.type === 'Info' ? infoComm : publicComm} align="middle" justify="start">
 								<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-									<Avatar
-										circle
-										size="md"
-										src={`/images/${this.props.comment.commentor}.jpg`}
-										alt="?"
-										style={{ maxHeight: '50vh' }}
-									/>
+									<Avatar circle size="md" src={`/images/${this.props.comment.commentor}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={15}>
 									<h5>
-										{this.props.comment.commentor}'s {this.props.comment.status}{' '}
-										Comment
+										{this.props.comment.commentor}'s {this.props.comment.status} Comment
 									</h5>
-									<p style={slimText}>
-										{this.getTime(this.props.comment.createdAt)}
-									</p>
+									<p style={slimText}>{this.getTime(this.props.comment.createdAt)}</p>
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={4}>
-									{this.props.myCharacter.characterName ===
-										this.props.comment.commentor && (
+									{this.props.myCharacter.characterName === this.props.comment.commentor && (
 										<ButtonToolbar>
 											<ButtonGroup>
-												<IconButton
-													size="xs"
-													onClick={() => this.setState({ commentEdit: true })}
-													color="blue"
-													icon={<Icon icon="pencil" />}
-												/>
-												<IconButton
-													size="xs"
-													onClick={() => this.setState({ deleteWarning: true })}
-													color="red"
-													icon={<Icon icon="trash2" />}
-												/>
+												<IconButton size="xs" onClick={() => this.setState({ commentEdit: true })} color="blue" icon={<Icon icon="pencil" />} />
+												<IconButton size="xs" onClick={() => this.setState({ deleteWarning: true })} color="red" icon={<Icon icon="trash2" />} />
 											</ButtonGroup>
 										</ButtonToolbar>
 									)}
@@ -187,47 +141,24 @@ class Comment extends Component {
 								<p>{this.props.comment.body}</p>
 							</Panel>
 
-							<Modal
-								backdrop="static"
-								size="sm"
-								show={this.state.deleteWarning}
-								onHide={() => this.setState({ deleteWarning: false })}
-							>
+							<Modal backdrop="static" size="sm" show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 								<Modal.Body>
-									<Icon
-										icon="remind"
-										style={{ color: '#ffb300', fontSize: 24 }}
-									/>
+									<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
 									{'  '}
 									Warning! Are you sure you want delete your Comment?
-									<Icon
-										icon="remind"
-										style={{ color: '#ffb300', fontSize: 24 }}
-									/>
+									<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
 								</Modal.Body>
 								<Modal.Footer>
-									<Button
-										onClick={() => this.handleDelete()}
-										appearance="primary"
-									>
+									<Button onClick={() => this.handleDelete()} appearance="primary">
 										I am Sure!
 									</Button>
-									<Button
-										onClick={() => this.setState({ deleteWarning: false })}
-										appearance="subtle"
-									>
+									<Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
 										Nevermind
 									</Button>
 								</Modal.Footer>
 							</Modal>
 
-							<Modal
-								overflow
-								style={{ width: '90%' }}
-								size="md"
-								show={this.state.commentEdit}
-								onHide={() => this.setState({ commentEdit: false })}
-							>
+							<Modal overflow style={{ width: '90%' }} size="md" show={this.state.commentEdit} onHide={() => this.setState({ commentEdit: false })}>
 								<Modal.Header>
 									<Modal.Title>Edit this comment</Modal.Title>
 								</Modal.Header>
@@ -236,52 +167,15 @@ class Comment extends Component {
 									<form>
 										Body
 										<br />
-										{this.props.myCharacter.tags.some(
-											(el) => el === 'Control'
-										) && (
-											<Toggle
-												defaultChecked={this.state.private}
-												onChange={() =>
-													this.setState({ private: !this.state.private })
-												}
-												checkedChildren="Hidden"
-												unCheckedChildren="Revealed"
-											/>
-										)}
-										<textarea
-											rows="6"
-											defaultValue={this.props.comment.body}
-											value={this.state.body}
-											style={textStyle}
-											onChange={(event) =>
-												this.setState({ body: event.target.value })
-											}
-										></textarea>
+										{this.props.myCharacter.tags.some((el) => el === 'Control') && <Toggle defaultChecked={this.state.private} onChange={() => this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />}
+										<textarea rows="6" defaultValue={this.props.comment.body} value={this.state.body} style={textStyle} onChange={(event) => this.setState({ body: event.target.value })}></textarea>
 									</form>
 								</Modal.Body>
 								<Modal.Footer>
-									<Button
-										onClick={() =>
-											this.props.comment
-												? this.handleEditSubmit()
-												: this.handleSubmit()
-										}
-										disabled={this.isDisabled()}
-										appearance="primary"
-									>
-										{this.state.body.length < 11 ? (
-											<b>
-												Description text needs {11 - this.state.body.length}{' '}
-												more characters
-											</b>
-										) : (
-											<b>Submit</b>
-										)}
+									<Button onClick={() => (this.props.comment ? this.handleEditSubmit() : this.handleSubmit())} disabled={this.isDisabled()} appearance="primary">
+										{this.state.body.length < 11 ? <b>Description text needs {11 - this.state.body.length} more characters</b> : <b>Submit</b>}
 									</Button>
-									<Button
-										onClick={() => this.setState({ commentEdit: false })}
-										appearance="subtle"
-									>
+									<Button onClick={() => this.setState({ commentEdit: false })} appearance="subtle">
 										Cancel
 									</Button>
 								</Modal.Footer>

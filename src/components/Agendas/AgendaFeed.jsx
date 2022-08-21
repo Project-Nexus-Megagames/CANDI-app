@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image } from '@chakra-ui/react';
 import { useSelector, connect } from 'react-redux';
 import { getCharacterById } from '../../redux/entities/characters';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
+import { getAgendaActions } from '../../redux/entities/playerActions';
 
-const NewsFeed = (props) => {
+const AgendaFeed = () => {
+	const agendas = useSelector(getAgendaActions);
+
+	agendas.sort((a, b) => {
+		let da = new Date(a.updatedAt),
+			db = new Date(b.updatedAt);
+		return db - da;
+	});
+
 	const [articleModal, setArticleModal] = useState(false);
 	const [selected, setSelected] = useState();
-
-	const data = props.data;
-
-	useEffect(() => {
-		if (selected) {
-			const newSelected = data.find((el) => el.articleId === selected.articleId);
-			setSelected(newSelected);
-		}
-	}, [data]);
 
 	const translateComment = (number) => {
 		if (number === 1) return 'comment';
@@ -35,11 +35,9 @@ const NewsFeed = (props) => {
 		<Center maxW="960px" mx="auto">
 			<Box bg="bg-surface" py="4">
 				<Stack divider={<StackDivider />} spacing="4">
-					{data.map((item) => (
-						<Stack key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
+					{agendas.map((item) => (
+						<Stack key={item._id} fontSize="sm" px="4" spacing="4" margin="5px">
 							<HStack>
-								{item.imageURL && <Image src={item.imageURL} width="200px" />}
-								<Image src="https://images.unsplash.com/photo-1616225372747-5b3894991eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" width="100px" />
 								<VStack align="left">
 									<Text
 										fontSize="2xl"
@@ -48,18 +46,18 @@ const NewsFeed = (props) => {
 											setSelected(item), setArticleModal(true);
 										}}
 									>
-										{item.title}
+										{item.name}
 									</Text>
 									<Box>
 										<Stack direction="row" justify="space-between" spacing="4">
 											<HStack>
-												<Avatar src={getAvatarUrl(item.authorId)} boxSize="10" />
+												<Avatar src={getAvatarUrl(item.creator_id)} boxSize="10" />
 												<Text fontWeight="medium" color="emphasized" align="left" fontSize="xs">
-													by {item.author}
+													by {item.creator.characterName}
 												</Text>
 											</HStack>
 											<HStack>
-												<Text color="muted">{getDateString(item.date)}</Text>
+												<Text color="muted">{getDateString(item.updatedAt)}</Text>
 											</HStack>
 										</Stack>
 									</Box>
@@ -71,7 +69,7 @@ const NewsFeed = (props) => {
 										noOfLines={2}
 										align="left"
 									>
-										{item.body}
+										{item.submission?.description}
 									</Text>
 									<Text align="right">
 										{item.comments?.length} {translateComment(item.comments?.length)}
@@ -87,4 +85,4 @@ const NewsFeed = (props) => {
 	);
 };
 
-export default NewsFeed;
+export default AgendaFeed;
