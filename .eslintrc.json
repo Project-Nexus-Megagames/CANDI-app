@@ -15,17 +15,10 @@
     },
 		"rules": {
 			"no-console": "off",
-			"react/no-unknown-property": "warn",
-			"react/no-unused-prop-types": "warn",
-			"react/prop-types": "off",
 			"no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
 			"no-constant-condition": "off",
-			"react/react-in-jsx-scope": "warn",
-			"react/no-unescaped-entities": "off",
-			"react/jsx-key": "warn",
 			"no-case-declarations": "off",
 			"no-mixed-spaces-and-tabs": "warn",
-			"react/no-children-prop": "warn",
 			"max-len": "off"
 		}
 }
