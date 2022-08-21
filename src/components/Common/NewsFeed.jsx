@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-import { getCharacterById } from '../../redux/entities/characters';
+import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image, Divider } from '@chakra-ui/react';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
 
@@ -23,23 +21,19 @@ const NewsFeed = (props) => {
 		return 'comments';
 	};
 
-	const getAvatarUrl = (charId) => {
-		const char = useSelector(getCharacterById(charId));
-		return char?.profilePicture;
-	};
-
 	// TODO add search function on top
 	// TODO add display of image if image is attached
+	if (data.length === 0) return <p>Nothing to see here, move along!</p>;
 
 	return (
 		<Center maxW="960px" mx="auto">
 			<Box bg="bg-surface" py="4">
+				<Divider />
 				<Stack divider={<StackDivider />} spacing="4">
 					{data.map((item) => (
 						<Stack key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
 							<HStack>
 								{item.imageURL && <Image src={item.imageURL} width="200px" />}
-								<Image src="https://images.unsplash.com/photo-1616225372747-5b3894991eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" width="100px" />
 								<VStack align="left">
 									<Text
 										fontSize="2xl"
@@ -53,7 +47,7 @@ const NewsFeed = (props) => {
 									<Box>
 										<Stack direction="row" justify="space-between" spacing="4">
 											<HStack>
-												<Avatar src={getAvatarUrl(item.authorId)} boxSize="10" />
+												<Avatar src={item.authorProfilePicture} boxSize="10" />
 												<Text fontWeight="medium" color="emphasized" align="left" fontSize="xs">
 													by {item.author}
 												</Text>

@@ -1,48 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IconButton, Icon, Input, Alert, List, FlexboxGrid } from 'rsuite';
-import { useDisclosure, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack, setScript } from '@chakra-ui/react';
+import { IconButton, Icon, List } from 'rsuite';
+import { useDisclosure, Textarea, AlertDialog, AlertDialogOverlay, Divider, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { getCharacterById } from '../../redux/entities/characters';
 import { getDateString } from '../../scripts/dateTime';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { getAgendaActions } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 
 const ViewArticle = (props) => {
 	const [newComment, setNewComment] = useState('');
 	const [commentId, setCommentId] = useState('');
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const cancelRef = React.useRef();
 	const myChar = useSelector(getMyCharacter);
-	const agendaActions = useSelector(getAgendaActions);
 
 	let article = props.selected;
-
-	const getAgenda = (articleId) => {
-		article = agendaActions.find((el) => el._id === articleId);
-		console.log(article);
-		return article;
-	};
 
 	const getAvatarUrl = (charId) => {
 		const char = useSelector(getCharacterById(charId));
 		return char?.profilePicture;
 	};
 
-	useEffect(() => {
-		socket.on('actionCommentDeleted', (payload) => {
-			article = getAgenda(payload);
-		});
-	}, []);
-
-	//const calculate = (reactions, type) => {
-	//	let temp = reactions.filter((el) => el.emoji === 'thumbs-up');
-	//	temp = temp.length;
-	//	return temp;
-	////};
-
 	const deleteComment = (commentId) => {
-		console.log(commentId);
 		const data = {
 			id: props.selected.articleId,
 			comment: commentId
@@ -57,8 +37,8 @@ const ViewArticle = (props) => {
 	};
 
 	const handleComment = () => {
-		//socket.emit('request', { route: 'article', action: 'comment', data: { id: article._id, user: props.user, comment } });
-		console.log(newComment);
+		const comment = { body: newComment, commentor: myChar.characterName, commentorProfilePicture: myChar.profilePicture };
+		socket.emit('request', { route: 'action', action: 'comment', data: { id: props.selected.articleId, comment } });
 		setNewComment('');
 	};
 
@@ -93,19 +73,18 @@ const ViewArticle = (props) => {
 								</HStack>
 								<Text color="muted">{getDateString(article?.date)}</Text>
 							</Stack>
+							<Divider />
 							<VStack>
 								<Text color="muted" align="left" style={{ whiteSpace: 'pre-wrap' }}>
 									{article?.body}
 								</Text>
 							</VStack>
-
-							<Input value={newComment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(value) => setNewComment(value)} />
+							<Divider orientation="horizontal" />
+							<Textarea value={newComment} componentClass="textarea" placeholder="Leave a Comment!" rows={3} onChange={(e) => setNewComment(e.target.value)} />
 							<Button bg="black" onClick={() => handleComment()}>
 								Send Comment
 							</Button>
 							<List hover>
-								{/*// TODO add character.id to comment*/}
-
 								{article?.comments.map((comment, index) => (
 									<List.Item key={index}>
 										<Stack align="left">
@@ -113,6 +92,7 @@ const ViewArticle = (props) => {
 											<VStack align="left">
 												<Stack direction="row" justify="space-between" spacing="4">
 													<HStack>
+														<Avatar src={comment.commentorProfilePicture} boxSize="10" />
 														<b>{comment.commentor}</b>
 													</HStack>
 													<HStack>
@@ -159,20 +139,6 @@ const ViewArticle = (props) => {
 				</AlertDialog>
 			</DrawerContent>
 		</Drawer>
-
-		//		</Modal.Body>
-		//		<Modal.Footer>
-		//			<ButtonToolbar style={{ float: 'right' }}>
-		//				{/*<IconButton icon={<Icon icon="thumbs-up" />} onClick={() => socket.emit('request', { route: 'article', action: 'react', data: { id: article._id, user: props.user, emoji: 'thumbs-up' } })}>
-		//					{calculate(article.reactions, 'thumbs-up')}
-		//				</IconButton>*/}
-		//				<Button color="red" onClick={() => props.onClose()} appearance="subtle">
-		//					Close
-		//				</Button>
-		//			</ButtonToolbar>
-		//		</Modal.Footer>
-		//	</React.Fragment>
-		//);
 	);
 };
 
