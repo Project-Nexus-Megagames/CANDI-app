@@ -6,7 +6,6 @@ import ViewArticle from './ViewArticle';
 const NewsFeed = (props) => {
 	const [articleModal, setArticleModal] = useState(false);
 	const [selected, setSelected] = useState();
-	const [searchQuery, setSearchQuery] = useState('');
 
 	const data = props.data;
 

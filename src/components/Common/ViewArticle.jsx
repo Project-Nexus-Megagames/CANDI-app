@@ -22,14 +22,6 @@ const ViewArticle = (props) => {
 		return char?.profilePicture;
 	};
 
-	const dummyArticle = {
-		location: '',
-		headline: '',
-		body: '',
-		tags: [],
-		imageSrc: ''
-	};
-
 	const deleteComment = (commentId) => {
 		const data = {
 			id: props.selected.articleId,
