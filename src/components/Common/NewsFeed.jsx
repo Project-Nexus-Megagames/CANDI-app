@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image } from '@chakra-ui/react';
-import { useSelector, connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getCharacterById } from '../../redux/entities/characters';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
