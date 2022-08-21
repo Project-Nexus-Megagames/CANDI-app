@@ -3,7 +3,7 @@ import { Button, FormControl, FormLabel, FormErrorMessage, Input, Stack, HStack,
 import { useForm } from 'react-hook-form';
 
 
-export const AttachmentForm = ({ attachment, edit, onEdit, onDelete }) => {
+export const ArticleForm = ({ attachment, edit, onEdit, onDelete }) => {
   const { register, handleSubmit, formState: { errors, isValid } } = useForm(
     {
       mode: 'onChange',
