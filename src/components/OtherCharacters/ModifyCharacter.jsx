@@ -4,7 +4,7 @@ import { Modal, Button, Panel, ButtonGroup } from 'rsuite';
 import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
-import cloudinaryUpload from '../../services/uploads';
+import { cloudinaryUploadMedium } from '../../services/uploads';
 
 const ModifyCharacter = (props) => {
 	const gameConfig = useSelector((state) => state.gameConfig);
@@ -118,7 +118,7 @@ const ModifyCharacter = (props) => {
 	const handleFileUpload = async (e) => {
 		const uploadData = new FormData();
 		uploadData.append('file', e.target.files[0], 'file');
-		const img = await cloudinaryUpload(uploadData);
+		const img = await cloudinaryUploadMedium(uploadData);
 		setImageURL(img.secure_url);
 	};
 

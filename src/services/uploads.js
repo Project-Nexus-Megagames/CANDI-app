@@ -8,4 +8,22 @@ const cloudinaryUpload = (fileToUpload) => {
     .catch(err => console.log(err))
 }
 
-export default cloudinaryUpload
+const cloudinaryUploadSmall = (fileToUpload) => {
+	return axios.post(API_URL + '/api/imageUpload/small', fileToUpload)
+	.then(res => res.data)
+	.catch(err => console.log(err))
+}
+
+const cloudinaryUploadMedium = (fileToUpload) => {
+	return axios.post(API_URL + '/api/imageUpload/medium', fileToUpload)
+	.then(res => res.data)
+	.catch(err => console.log(err))
+}
+
+const cloudinaryUploadLarge = (fileToUpload) => {
+	return axios.post(API_URL + '/api/imageUpload/large', fileToUpload)
+	.then(res => res.data)
+	.catch(err => console.log(err))
+}
+
+export {cloudinaryUpload, cloudinaryUploadSmall, cloudinaryUploadMedium, cloudinaryUploadLarge}

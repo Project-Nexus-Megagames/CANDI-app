@@ -1,4 +1,4 @@
-import React from 'react'; // React import
+import React, { useState, useEffect } from 'react'; // React import
 import { useSelector } from 'react-redux';
 import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -11,15 +11,7 @@ import { Loader } from 'rsuite';
 const News = (props) => {
 	const articles = useSelector((state) => state.articles.list);
 	const login = useSelector((state) => state.auth.login);
-	const dummyArticle = {
-		location: '',
-		headline: '',
-		body: '',
-		tags: [],
-		imageSrc: ''
-	};
-
-	const sortedArticles = [...articles];
+	const [data, setData] = useState([]);
 
 	if (!login) {
 		props.history.push('/');
@@ -30,13 +22,16 @@ const News = (props) => {
 	// TODO: add the edit button
 	// TODO: add the publish button in edit and create form  (New Article: Submit and Submit & Publish)
 
-	sortedArticles.sort((a, b) => {
-		let da = new Date(a.createdAt),
-			db = new Date(b.createdAt);
-		return db - da;
-	});
-
-	const data = sortedArticles.map((el) => ({ authorProfilePicture: el.creator.profilePicture, imageURL: el.image, author: el.creator?.characterName, title: el.title, body: el.body, date: el.createdAt, comments: el.comments, articleId: el._id, type: 'newsArticle' }));
+	useEffect(() => {
+		const sortedArticles = [...articles];
+		sortedArticles.sort((a, b) => {
+			let da = new Date(a.createdAt),
+				db = new Date(b.createdAt);
+			return db - da;
+		});
+		const tempData = sortedArticles.map((el) => ({ authorProfilePicture: el.creator.profilePicture, imageURL: el.image, author: el.creator?.characterName, title: el.title, body: el.body, date: el.createdAt, comments: el.comments, articleId: el._id, type: 'newsArticle' }));
+		setData(tempData);
+	}, [articles]);
 
 	return (
 		<React.Fragment>

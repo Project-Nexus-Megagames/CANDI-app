@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { Icon, Tag } from 'rsuite';
 import ErrorTag from '../Common/FormError';
-import cloudinaryUpload from '../../services/uploads';
 import FileUpload from '../Common/FileUpload';
 import { useSelector } from 'react-redux';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -90,7 +89,7 @@ export const ArticleForm = ({ onSubmit, onCancel }) => {
 					/>
 				</FormControl>
 				<Box w="100%">
-					<FileUpload name="image" acceptedFileTypes="image/*" isRequired={true} placeholder="Article Image" control={control}>
+					<FileUpload name="image" acceptedFileTypes="image/*" isRequired={false} placeholder="Article Image" control={control} size="large">
 						Image
 					</FileUpload>
 					<div>{renderImage()}</div>

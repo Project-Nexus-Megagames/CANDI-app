@@ -2,9 +2,9 @@ import React, { useRef, useState } from 'react';
 import { Input, FormControl, FormLabel, InputGroup, InputLeftElement, FormErrorMessage, useToast } from '@chakra-ui/react';
 import { useController } from 'react-hook-form';
 import { Icon } from 'rsuite';
-import cloudinaryUpload from '../../services/uploads';
+import { cloudinaryUploadLarge, cloudinaryUpload, cloudinaryUploadSmall, cloudinaryUploadMedium } from '../../services/uploads';
 
-export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, isRequired = false }) => {
+export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, size, isRequired = false }) => {
 	const [imgName, setImgName] = useState();
 	const inputRef = useRef();
 	const toast = useToast();
@@ -17,6 +17,8 @@ export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, chil
 		rules: { required: isRequired }
 	});
 
+	console.log('SIZE', size);
+
 	const handleFileUpload = async (e) => {
 		toast({
 			description: 'Hello?',
@@ -26,21 +28,74 @@ export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, chil
 		const uploadData = new FormData();
 		uploadData.append('file', e.target.files[0], 'file');
 		// TODO: needs a switch to determine which cloudinaryUpload to call. And then feed small / medium / large into props of component
-		try {
-			const img = await cloudinaryUpload(uploadData);
-			onChange(img.secure_url);
-			setImgName(e.target.files[0].name);
-			toast({
-				description: 'Upload complete!',
-				status: 'success',
-				duration: 9000
-			});
-		} catch (err) {
-			toast({
-				description: `${err.message}`,
-				status: 'error',
-				duration: 9000
-			});
+		if (size === 'large') {
+			try {
+				const img = await cloudinaryUploadLarge(uploadData);
+				onChange(img.secure_url);
+				setImgName(e.target.files[0].name);
+				toast({
+					description: 'Upload complete!',
+					status: 'success',
+					duration: 9000
+				});
+			} catch (err) {
+				toast({
+					description: `${err.message}`,
+					status: 'error',
+					duration: 9000
+				});
+			}
+		} else if (size === 'medium') {
+			try {
+				const img = await cloudinaryUploadMedium(uploadData);
+				onChange(img.secure_url);
+				setImgName(e.target.files[0].name);
+				toast({
+					description: 'Upload complete!',
+					status: 'success',
+					duration: 9000
+				});
+			} catch (err) {
+				toast({
+					description: `${err.message}`,
+					status: 'error',
+					duration: 9000
+				});
+			}
+		} else if (size === 'small') {
+			try {
+				const img = await cloudinaryUploadSmall(uploadData);
+				onChange(img.secure_url);
+				setImgName(e.target.files[0].name);
+				toast({
+					description: 'Upload complete!',
+					status: 'success',
+					duration: 9000
+				});
+			} catch (err) {
+				toast({
+					description: `${err.message}`,
+					status: 'error',
+					duration: 9000
+				});
+			}
+		} else {
+			try {
+				const img = await cloudinaryUpload(uploadData);
+				onChange(img.secure_url);
+				setImgName(e.target.files[0].name);
+				toast({
+					description: 'Upload complete!',
+					status: 'success',
+					duration: 9000
+				});
+			} catch (err) {
+				toast({
+					description: `${err.message}`,
+					status: 'error',
+					duration: 9000
+				});
+			}
 		}
 	};
 
