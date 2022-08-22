@@ -73,11 +73,12 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/articles`;
 
 // article Loader into state
-export const loadArticles = () => (dispatch, getState) => {
+export const loadArticles = (payload) => (dispatch, getState) => {
   return dispatch(
     apiCallBegan({
       url,
       method: 'get',
+			data: payload,
       onStart:articlesRequested.type,
       onSuccess:articlesReceived.type,
       onError:articlesRequestFailed.type

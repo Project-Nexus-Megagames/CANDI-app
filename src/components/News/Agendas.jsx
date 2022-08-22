@@ -12,9 +12,9 @@ const Agendas = (props) => {
 	const [filter, setFilter] = useState('');
 	const agendas = useSelector(getAgendaActions);
 	agendas.sort((a, b) => {
-		let da = new Date(a.updatedAt),
-			db = new Date(b.updatedAt);
-		return db - da;
+		let da = new Date(a.createdAt),
+			db = new Date(b.createdAt);
+		return da - db;
 	});
 
 	const [filteredData, setFilteredData] = useState([]);

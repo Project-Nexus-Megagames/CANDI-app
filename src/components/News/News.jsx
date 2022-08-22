@@ -8,7 +8,7 @@ import { NewArticle } from './NewArticle';
 import { Container, FlexboxGrid, Header, Input, InputGroup } from 'rsuite';
 
 const News = () => {
-	const articleActions = useSelector(getArticles);
+	const articles = useSelector((state) => state.articles.list);
 	const dummyArticle = {
 		location: '',
 		headline: '',
@@ -17,20 +17,18 @@ const News = () => {
 		imageSrc: ''
 	};
 
-	const articles = [];
-	articleActions.forEach((action) => {
-		action.attachments.forEach((attachment) => {
-			let enrichtedAttachment = { ...attachment };
-			enrichtedAttachment.creator = action.creator;
-			articles.push(enrichtedAttachment);
-		});
-	});
+	// TODO: get data from redux
+	// TODO: get "my articles" from redux
+	// TODO: add the edit button
+	// TODO: add the publish button in edit and create form  (New Article: Submit and Submit & Publish)
 
 	articles.sort((a, b) => {
-		let da = new Date(a.updatedAt),
-			db = new Date(b.updatedAt);
+		let da = new Date(a.createdAt),
+			db = new Date(b.createdAt);
 		return db - da;
 	});
+
+	console.log(articles);
 
 	const data = articles.map((el) => ({ author: el.creator?.characterName, title: el.title, body: el.body, date: el.updatedAt, comments: el.comments, authorId: el.creator?._id, articleId: el._id }));
 
