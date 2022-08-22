@@ -75,7 +75,7 @@ const App = (props) => {
     console.log("App Loaded");
     loadChar();
     loadAssets();
-    // loadArticles();
+    loadArticles();
     loadLocations();
     loadGamestate();
 		loadGameConfig();
@@ -204,7 +204,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadChar: () => dispatch(loadCharacters()),
   loadAssets: () => dispatch(loadAssets()),
-  //loadArticles: () => dispatch(loadArticles()),
+  loadArticles: () => dispatch(loadArticles()),
   loadLocations: () => dispatch(loadLocations()),
   loadGamestate: () => dispatch(loadGamestate()),
 	loadGameConfig: () => dispatch(loadGameConfig()),
