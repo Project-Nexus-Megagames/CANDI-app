@@ -4,8 +4,8 @@ import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { Heading } from '@chakra-ui/react';
 import { getArticles } from '../../redux/entities/playerActions';
-import { Button, CheckPicker, Col, Container, FlexboxGrid, Grid, Header, Input, InputGroup, Popover, Row, SelectPicker, TagPicker, Tooltip, Whisper } from 'rsuite';
-import { Panel, PanelGroup, IconButton, ButtonGroup, ButtonToolbar, Icon, Content, Sidebar, Modal } from 'rsuite';
+import { NewArticle } from './NewArticle';
+import { Container, FlexboxGrid, Header, Input, InputGroup } from 'rsuite';
 
 const News = () => {
 	const articleActions = useSelector(getArticles);
@@ -44,9 +44,7 @@ const News = () => {
 						<FlexboxGrid.Item colspan={4}>
 							<InputGroup>
 								<Input style={{ width: '80%' }} placeholder="Search"></Input>
-								<Button style={{ color: 'black', borderRadius: '0px' }} color="green">
-									<Icon icon="plus" />
-								</Button>
+								<NewArticle drawer={true} />
 							</InputGroup>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>

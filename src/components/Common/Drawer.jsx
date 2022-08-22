@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Drawer, DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure, } from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure, DrawerHeader, } from "@chakra-ui/react";
 
-export const CandiDrawer = ({ open, onClose, onOpen, children }) => {
+export const CandiDrawer = ({ open, title, onClose, onOpen, children }) => {
   const { isOpen, onOpen: OpenDrawer, onClose: CloseDrawer } = useDisclosure();
 
   const handleClose = () => { 
@@ -28,8 +28,9 @@ export const CandiDrawer = ({ open, onClose, onOpen, children }) => {
 			onClose={handleClose}
 		>
 			<DrawerOverlay />
-			<DrawerContent size="sm" top="0px" right="0px" bgColor="#0f131a">
-				<DrawerCloseButton />
+			<DrawerContent bgColor="#0f131a">
+				<DrawerCloseButton size="sm" top="0px" right="0px" />
+        { title && <DrawerHeader>{title}</DrawerHeader> }
 				<DrawerBody>
           {children}
 				</DrawerBody>
