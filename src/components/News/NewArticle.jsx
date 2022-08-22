@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CandiDrawer } from '../Common/Drawer';
 import { ArticleForm } from './ArticleForm';
 import { Button, Icon } from 'rsuite';
+import { CandiModal } from '../Common/Modal';
 
 const ArticleDrawer = (props) => (
   <CandiDrawer {...props}>
@@ -10,9 +11,9 @@ const ArticleDrawer = (props) => (
 )
 
 const ArticleModal = (props) => (
-  <ArticleModal {...props} >
+  <CandiModal {...props} >
     <ArticleForm onCancel={() => props.onClose()} />
-  </ArticleModal>
+  </CandiModal>
 )
 
 export const NewArticle = ({ drawer }) => {
@@ -33,7 +34,7 @@ export const NewArticle = ({ drawer }) => {
 				<Icon icon="plus" />
 			</Button>
       { drawer ? <ArticleDrawer title="Submit Article" open={isOpen} onClose={handleClose} />
-        : <ArticleModal title="New Article" open={isOpen} onClose={handleClose} />
+        : <ArticleModal title="Submit Article" open={isOpen} onClose={handleClose} />
       }
     </>
   )

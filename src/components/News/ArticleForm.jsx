@@ -13,7 +13,6 @@ import socket from '../../socket';
 export const ArticleForm = ({ onSubmit, onCancel }) => {
   const myCharacter = useSelector(getMyCharacter)
 
-
   const { register, control, getValues, handleSubmit: formSubmit, formState: { errors, isValid, dirtyFields } } = useForm(
     {
       mode: 'onChange',

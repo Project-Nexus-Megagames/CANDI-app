@@ -1,7 +1,7 @@
-import React, { useEffect, useContext } from "react";
-import { Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, useDisclosure } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, useDisclosure, ModalHeader } from "@chakra-ui/react";
 
-export const CandiModal = ({ open, onClose, onOpen, children }) => {
+export const CandiModal = ({ open, title, onClose, onOpen, children }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
 
   const handleClose = () => { 
@@ -20,11 +20,12 @@ export const CandiModal = ({ open, onClose, onOpen, children }) => {
   }, [open]);
 
   return (
-    <Modal size="2xl" onClose={handleClose} isOpen={isOpen} isCentered>
+    <Modal size="2xl" isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bgColor="#0f131a">
         <ModalCloseButton size="sm" top="0px" right="0px" />
-        <ModalBody p={0}>
+        { title && <ModalHeader>{title}</ModalHeader> }
+        <ModalBody>
           {children}
         </ModalBody>
       </ModalContent>
