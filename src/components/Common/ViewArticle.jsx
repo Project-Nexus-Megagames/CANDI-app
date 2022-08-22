@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton, Icon, List } from 'rsuite';
 import { useDisclosure, Textarea, AlertDialog, AlertDialogOverlay, Image, Divider, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack } from '@chakra-ui/react';
-import { getCharacterById } from '../../redux/entities/characters';
 import { getDateString } from '../../scripts/dateTime';
 import { getMyCharacter } from '../../redux/entities/characters';
 import socket from '../../socket';

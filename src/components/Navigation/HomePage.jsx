@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
@@ -23,6 +23,12 @@ import LoadingNew from './LoadingNew';
 const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0 });
+	const newsArticles = useSelector((state) => state.articles.list);
+	const sortedArticles = [...newsArticles].sort((a, b) => {
+		let da = new Date(a.createdAt),
+			db = new Date(b.createdAt);
+		return db - da;
+	});
 
 	useEffect(() => {
 		if (
@@ -146,7 +152,7 @@ const HomePage = (props) => {
 
 			<Row>
 				<Col lg={12} md={24}>
-					<Carousel height="45vh" to="news"></Carousel>
+					<Carousel height="45vh" to="news" data={sortedArticles.slice(0, 3)}></Carousel>
 				</Col>
 
 				<Col lg={6} md={12}>
