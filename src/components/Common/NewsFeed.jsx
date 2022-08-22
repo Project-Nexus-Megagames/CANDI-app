@@ -33,7 +33,7 @@ const NewsFeed = (props) => {
 					{data.map((item) => (
 						<Stack key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
 							<HStack>
-								{item.imageURL && <Image src={item.imageURL} width="200px" />}
+								{item.imageURL && <Image src={item.imageURL} width="100px" />}
 								<VStack align="left">
 									<Text
 										fontSize="2xl"

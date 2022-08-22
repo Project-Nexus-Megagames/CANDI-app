@@ -17,20 +17,19 @@ const News = () => {
 		imageSrc: ''
 	};
 
-	// TODO: get data from redux
+	const sortedArticles = [...articles];
+
 	// TODO: get "my articles" from redux
 	// TODO: add the edit button
 	// TODO: add the publish button in edit and create form  (New Article: Submit and Submit & Publish)
 
-	articles.sort((a, b) => {
+	sortedArticles.sort((a, b) => {
 		let da = new Date(a.createdAt),
 			db = new Date(b.createdAt);
 		return db - da;
 	});
 
-	console.log(articles);
-
-	const data = articles.map((el) => ({ author: el.creator?.characterName, title: el.title, body: el.body, date: el.updatedAt, comments: el.comments, authorId: el.creator?._id, articleId: el._id }));
+	const data = sortedArticles.map((el) => ({ authorProfilePicture: el.creator.profilePicture, imageURL: el.image, author: el.creator?.characterName, title: el.title, body: el.body, date: el.createdAt, comments: el.comments, articleId: el._id, type: 'newsArticle' }));
 
 	return (
 		<React.Fragment>

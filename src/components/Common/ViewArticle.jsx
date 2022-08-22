@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton, Icon, List } from 'rsuite';
-import { useDisclosure, Textarea, AlertDialog, AlertDialogOverlay, Divider, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { useDisclosure, Textarea, AlertDialog, AlertDialogOverlay, Image, Divider, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { getCharacterById } from '../../redux/entities/characters';
 import { getDateString } from '../../scripts/dateTime';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -17,28 +17,36 @@ const ViewArticle = (props) => {
 
 	let article = props.selected;
 
-	const getAvatarUrl = (charId) => {
-		const char = useSelector(getCharacterById(charId));
-		return char?.profilePicture;
-	};
-
 	const deleteComment = (commentId) => {
 		const data = {
 			id: props.selected.articleId,
 			comment: commentId
 		};
-		socket.emit('request', {
-			route: 'action',
-			action: 'deleteSubObject',
-			data
-		});
+		if (article.type === 'newsArticle') {
+			socket.emit('request', {
+				route: 'article',
+				action: 'deleteComment',
+				data
+			});
+		} else {
+			socket.emit('request', {
+				route: 'action',
+				action: 'deleteSubObject',
+				data
+			});
+		}
 		setCommentId('');
 		onClose;
 	};
 
 	const handleComment = () => {
 		const comment = { body: newComment, commentor: myChar.characterName, commentorProfilePicture: myChar.profilePicture };
-		socket.emit('request', { route: 'action', action: 'comment', data: { id: props.selected.articleId, comment } });
+		const data = { id: props.selected.articleId, comment };
+		if (article.type === 'newsArticle') {
+			socket.emit('request', { route: 'article', action: 'comment', data });
+		} else {
+			socket.emit('request', { route: 'action', action: 'comment', data });
+		}
 		setNewComment('');
 	};
 
@@ -63,11 +71,11 @@ const ViewArticle = (props) => {
 					<Center maxW="960px" mx="auto">
 						<Stack fontSize="sm" px="4" spacing="4" margin="5px">
 							<Stack direction="row" justify="space-between" spacing="4">
-								<HStack spacing="3">
-									<Avatar src={getAvatarUrl(article?.authorId)} boxSize="10" />
+								<HStack spacing="4">
+									<Avatar src={article?.authorProfilePicture} boxSize="10" />
 									<Box>
 										<Text fontWeight="medium" color="emphasized">
-											{article?.author}
+											by {article?.author}
 										</Text>
 									</Box>
 								</HStack>
@@ -75,6 +83,7 @@ const ViewArticle = (props) => {
 							</Stack>
 							<Divider />
 							<VStack>
+								{article?.imageURL && <Image src={article?.imageURL} maxW="960px" />}
 								<Text color="muted" align="left" style={{ whiteSpace: 'pre-wrap' }}>
 									{article?.body}
 								</Text>
