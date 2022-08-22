@@ -6,9 +6,11 @@ import { Heading } from '@chakra-ui/react';
 import { getArticles } from '../../redux/entities/playerActions';
 import { NewArticle } from './NewArticle';
 import { Container, FlexboxGrid, Header, Input, InputGroup } from 'rsuite';
+import { Loader } from 'rsuite';
 
-const News = () => {
+const News = (props) => {
 	const articles = useSelector((state) => state.articles.list);
+	const login = useSelector((state) => state.auth.login);
 	const dummyArticle = {
 		location: '',
 		headline: '',
@@ -18,6 +20,11 @@ const News = () => {
 	};
 
 	const sortedArticles = [...articles];
+
+	if (!login) {
+		props.history.push('/');
+		return <Loader inverse center content="doot..." />;
+	}
 
 	// TODO: get "my articles" from redux
 	// TODO: add the edit button

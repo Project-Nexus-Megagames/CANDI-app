@@ -15,7 +15,7 @@ import Map from '../Images/map.jpg';
 import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import UserList from './UserList';
 import Carousel from '../Common/Carousel';
 import LoadingNew from './LoadingNew';
