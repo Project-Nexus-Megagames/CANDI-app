@@ -61,7 +61,7 @@ const Carousel = ({ data, height, to, disabled }) => {
 							{/* This is the block you need to change, to customize the caption */}
 							<Container size="container.lg" height={height} position="relative">
 								<Stack spacing={6} w={'full'} maxW={'lg'} position="absolute" top="50%" transform="translate(0, -50%)">
-									<Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }} color="#0f131a">
+									<Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }} color="GrayText">
 										{card.title}
 									</Heading>
 									<Text fontSize={{ base: 'md', lg: 'lg' }} color="GrayText" noOfLines={2}>
@@ -71,7 +71,7 @@ const Carousel = ({ data, height, to, disabled }) => {
 							</Container>
 						</Box>
 					))}
-				</Slider>{' '}
+				</Slider>
 			</Link>
 			<div>
 				<Link to={to}>

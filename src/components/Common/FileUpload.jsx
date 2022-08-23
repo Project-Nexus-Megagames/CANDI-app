@@ -27,7 +27,6 @@ export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, chil
 		});
 		const uploadData = new FormData();
 		uploadData.append('file', e.target.files[0], 'file');
-		// TODO: needs a switch to determine which cloudinaryUpload to call. And then feed small / medium / large into props of component
 		if (size === 'large') {
 			try {
 				const img = await cloudinaryUploadLarge(uploadData);

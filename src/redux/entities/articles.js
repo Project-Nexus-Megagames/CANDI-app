@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"; // Import from reactjs toolkit
+import { createSlice, createSelector } from "@reduxjs/toolkit"; // Import from reactjs toolkit
 import { apiCallBegan } from "../api"; // Import Redux API call
 import { Alert } from "rsuite";
 import { gameServer } from "../../config";
@@ -68,6 +68,14 @@ export const {
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export
+
+// Selector
+export const getMyArticles = createSelector(
+  state => state.articles.list,
+  state => state.characters.list.find(el => el.username === state.auth.user.username),
+  (articles, myCharacter) => articles.filter(
+    article => (( article.creator._id === myCharacter._id ) ))
+);
 
 // Action Creators (Commands)
 const url = `${gameServer}api/articles`;

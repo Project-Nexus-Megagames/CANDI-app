@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image, Divider } from '@chakra-ui/react';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
+import { getMyCharacter } from '../../redux/entities/characters';
 
 const NewsFeed = (props) => {
 	const [articleModal, setArticleModal] = useState(false);
 	const [selected, setSelected] = useState();
+	const myCharacter = useSelector(getMyCharacter);
 
 	const data = props.data;
 
@@ -21,8 +24,6 @@ const NewsFeed = (props) => {
 		return 'comments';
 	};
 
-	// TODO add search function on top
-	// TODO add display of image if image is attached
 	if (data.length === 0) return <p>Nothing to see here, move along!</p>;
 
 	return (
