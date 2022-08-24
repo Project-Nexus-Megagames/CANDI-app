@@ -20,8 +20,10 @@ const News = (props) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [filteredData, setFilteredData] = useState([]);
 	const [showMyArticles, setShowMyArticles] = useState(false);
-
+	const myChar = useSelector(getMyCharacter);
 	const [filterButtonText, setFilterButtonText] = useState('Show My Articles');
+
+	const myArticleEffort = myChar.effort.find((el) => el.type === 'Article').amount;
 
 	if (!login) {
 		props.history.push('/');
@@ -104,7 +106,7 @@ const News = (props) => {
 						<FlexboxGrid.Item colspan={4}>
 							<InputGroup>
 								<Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />
-								<NewArticle drawer={true} />
+								{myArticleEffort > 0 && <NewArticle drawer={true} />}
 							</InputGroup>
 						</FlexboxGrid.Item>
 						<Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
