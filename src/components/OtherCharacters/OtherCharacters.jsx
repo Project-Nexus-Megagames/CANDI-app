@@ -133,9 +133,21 @@ const OtherCharacters = (props) => {
 	const filterThis = (fil) => {
 		let filtered = [];
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
-			filtered = props.characters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
+			filtered = props.characters.filter(
+				(char) =>
+					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
+					char.email.toLowerCase().includes(fil.toLowerCase()) ||
+					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
+					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
+			);
 		} else {
-			filtered = publicCharacters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.characterTitle.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
+			filtered = publicCharacters.filter(
+				(char) =>
+					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
+					char.email.toLowerCase().includes(fil.toLowerCase()) ||
+					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
+					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
+			);
 		}
 		setFilteredCharacters(filtered);
 	};
@@ -182,7 +194,7 @@ const OtherCharacters = (props) => {
 							>
 								<div>
 									{renderTags.map((tag) => (
-										<List key="tag" hover>
+										<List key={tag} hover>
 											<p style={{ backgroundColor: getFadedColor(tag), color: getFadedColor(`${tag}-text`) }}>{tag}</p>
 											{filteredCharacters
 												.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
