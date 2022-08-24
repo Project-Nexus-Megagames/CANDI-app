@@ -25,7 +25,6 @@ const NewAction = (props) => {
 	const [max, setMax] = React.useState(0);
 
 	useEffect(() => {
-		console.log(gameConfig.actionTypes);
 		if (actionType && actionType.type) {
 			setEffort({ effortType: actionType.type, amount: 0 });
 			// TODO needs to be fixed so that actual max is the maximum that is accepted by the effortType
@@ -35,7 +34,6 @@ const NewAction = (props) => {
 
 	const editState = (incoming, type) => {
 		let thing;
-		let temp;
 		switch (type) {
 			case 'effort':
 				thing = { ...effort };
@@ -185,7 +183,13 @@ const NewAction = (props) => {
 										<ButtonGroup justified>
 											{actionType &&
 												actionType.effortTypes.map((e) => (
-													<Button key={e} onClick={() => editState(e, 'effort')} color={getFadedColor(`${e}-rs`)} disabled={getThisEffort(myCharacter.effort, e) < 1} appearance={effort.effortType == e ? 'default' : 'ghost'}>
+													<Button
+														key={e}
+														onClick={() => editState(e, 'effort')}
+														color={getFadedColor(`${e}-rs`)}
+														disabled={getThisEffort(myCharacter.effort, e) < 1}
+														appearance={effort.effortType == e ? 'default' : 'ghost'}
+													>
 														{e} - ({getThisEffort(myCharacter.effort, e)})
 													</Button>
 												))}

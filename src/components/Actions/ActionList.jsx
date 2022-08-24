@@ -61,7 +61,7 @@ class ActionList extends Component {
 		switch (item.toLowerCase()) {
 			case 'news':
 				return (
-					<Tag style={{ color: 'black' }} color="orange">
+					<Tag style={{ color: 'black' }} color="orange" key={item}>
 						{item}
 					</Tag>
 				);
@@ -74,86 +74,66 @@ class ActionList extends Component {
 		return (
 			<Container>
 				{this.state.rounds.map((round, index) => (
-					<div index={index}>
-						<h5 style={{ backgroundColor: getFadedColor('gold', (1 - ((this.props.gamestate.round - round) * 0.1))), color: 'black' }}>
-							Round {round}
-						</h5>
-						
-							<List hover size="sm">
+					<div index={index} key={index}>
+						<h5 style={{ backgroundColor: getFadedColor('gold', 1 - (this.props.gamestate.round - round) * 0.1), color: 'black' }}>Round {round}</h5>
 
-										<div index={index}>
-											<List hover size="sm">
-								{/* <h5 >Control List</h5> */}
-								{this.props.actions
-									.filter((action) => action.round === round)
-									.sort((a, b) => {
-										// sort the catagories alphabetically
-										if (a.creator.characterTitle < b.creator.characterTitle) {
-											return -1;
-										}
-										if (a.creator.characterTitle > b.creator.characterTitle) {
-											return 1;
-										}
-										return 0;
-									})
-									.map(
-										(
-											action,
-											index // .filter(el => el.round === round)
-										) => (
-											<List.Item
-												key={index}
-												index={index}
-												size={'sm'}
-												onClick={() => this.props.handleSelect(action)}
-												style={this.listStyle(action, index % 2)}
-											>
-												<FlexboxGrid>
-													<FlexboxGrid.Item
-														colspan={24}
-														style={{
-															...styleCenter,
-															flexDirection: 'column',
-															alignItems: 'flex-start',
-															overflow: 'hidden'
-														}}
-													>
-														<div style={titleStyle}>{action.name}</div>
-														<b style={slimText}>
-															{
-																<Tag
-																	style={{
-																		color: 'black',
-																		textTransform: 'capitalize',
-																		backgroundColor: getFadedColor(action.type)
-
-																	}}
-																>
-																	{action.type}
-																</Tag>
-															}
-															{action.results.length > 0 &&
-																action.results[0].ready && (
-																	<Tag color="green">R Ready</Tag>
-																)}
-															{action.effects.length > 0 && (
-																<Tag color="violet">
-																	{action.effects.length} Effects
-																</Tag>
-															)}
-															{action.tags.map((tag) => this.tagStyle(tag))}
-														</b>
-													</FlexboxGrid.Item>
-												</FlexboxGrid>
-											</List.Item>
-										)
-									)}
-											</List>
-											
-										
-										</div>
-										
+						<List hover size="sm">
+							<div index={index} key={index}>
+								<List hover size="sm">
+									{/* <h5 >Control List</h5> */}
+									{this.props.actions
+										.filter((action) => action.round === round)
+										.sort((a, b) => {
+											// sort the catagories alphabetically
+											if (a.creator.characterTitle < b.creator.characterTitle) {
+												return -1;
+											}
+											if (a.creator.characterTitle > b.creator.characterTitle) {
+												return 1;
+											}
+											return 0;
+										})
+										.map(
+											(
+												action,
+												index // .filter(el => el.round === round)
+											) => (
+												<List.Item key={index} index={index} size={'sm'} onClick={() => this.props.handleSelect(action)} style={this.listStyle(action, index % 2)}>
+													<FlexboxGrid>
+														<FlexboxGrid.Item
+															colspan={24}
+															style={{
+																...styleCenter,
+																flexDirection: 'column',
+																alignItems: 'flex-start',
+																overflow: 'hidden'
+															}}
+														>
+															<div style={titleStyle}>{action.name}</div>
+															<b style={slimText}>
+																{
+																	<Tag
+																		style={{
+																			color: 'black',
+																			textTransform: 'capitalize',
+																			backgroundColor: getFadedColor(action.type)
+																		}}
+																	>
+																		{action.type}
+																	</Tag>
+																}
+																{action.results.length > 0 && action.results[0].ready && <Tag color="green">R Ready</Tag>}
+																{action.effects.length > 0 && <Tag color="violet">{action.effects.length} Effects</Tag>}
+																{action.tags.map((tag) => this.tagStyle(tag))}
+															</b>
+														</FlexboxGrid.Item>
+													</FlexboxGrid>
+												</List.Item>
+											)
+										)}
 								</List>
+							</div>
+						</List>
 					</div>
 				))}
 			</Container>
@@ -186,7 +166,7 @@ const slimText = {
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
-	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({});

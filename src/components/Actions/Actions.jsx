@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Container, Sidebar, Input, PanelGroup, Button, Loader, Icon, InputGroup, Tooltip, Whisper } from 'rsuite';
-import { getMyCharacter } from '../../redux/entities/characters';
 import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import { useSelector } from 'react-redux';
 
@@ -16,7 +15,6 @@ const Actions = (props) => {
 	const [selected, setSelected] = useState(null);
 	const [showNew, setShowNew] = useState(false);
 	const gameConfig = useSelector((state) => state.gameConfig);
-	const myCharacter = useSelector(getMyCharacter);
 
 	useEffect(() => {
 		if (selected) {

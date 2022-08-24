@@ -21,7 +21,7 @@ function getFadedColor(color, fade = 1) {
 			return 'white'
 
 		case 'Control-text':
-			return `coal`	
+			return `coal`
 
 		case 'gold':
 			return `rgb(212, 175, 55, ${fade})`
@@ -29,13 +29,15 @@ function getFadedColor(color, fade = 1) {
 
 		default:
 			return `rgba( 0, 160, 189, ${fade} )`;
-			
+
 	}
 }
 
 function getIcon (type) {
 	switch(type){
-			default: 
+			case 'Normal':  return(<Icon icon="plus" />)
+			case 'Agenda':  return(<Icon icon="plus" />)
+			default:
 				return(<Icon icon="plus" />)
 	}
 }
