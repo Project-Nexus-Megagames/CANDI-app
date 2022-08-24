@@ -27,6 +27,11 @@ const OtherCharacters = (props) => {
 
 	const [renderTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags
 
+	if (!props.login) {
+		props.history.push('/');
+		return <Loader inverse center content="doot..." />;
+	}
+
 	useEffect(() => {
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
 			setFilteredCharacters(props.characters);
@@ -151,11 +156,6 @@ const OtherCharacters = (props) => {
 		}
 		setFilteredCharacters(filtered);
 	};
-
-	if (!props.login) {
-		props.history.push('/');
-		return <Loader inverse center content="doot..." />;
-	}
 
 	if (window.innerWidth < 768) {
 		return <MobileOtherCharacters />;
