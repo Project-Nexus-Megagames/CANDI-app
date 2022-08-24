@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image, Divider } from '@chakra-ui/react';
-import { IconButton, Icon } from 'rsuite';
+import { IconButton, Icon, ButtonGroup } from 'rsuite';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -19,6 +19,10 @@ const NewsFeed = (props) => {
 			setSelected(newSelected);
 		}
 	}, [data]);
+
+	const showEditAndDelete = (item) => {
+		return (item.author === myChar.characterName && item.type === 'newsArticle') || myChar.tags.some((tag) => tag.toLowerCase() === 'control');
+	};
 
 	const translateComment = (number) => {
 		if (number === 1) return 'comment';
@@ -47,30 +51,30 @@ const NewsFeed = (props) => {
 												}}
 											>
 												{item.title}
-											</Text>{' '}
+											</Text>
 										</HStack>
 										<HStack>
-											{item.author === myChar.characterName && item.type === 'newsArticle' && (
-												<IconButton
-													size="xs"
-													onClick={() => {
-														console.log(item.articleId);
-													}}
-													color="blue"
-													icon={<Icon icon="edit" />}
-													align="right"
-												/>
-											)}
-											{item.author === myChar.characterName && item.type === 'newsArticle' && (
-												<IconButton
-													size="xs"
-													onClick={() => {
-														console.log(item.articleId);
-													}}
-													color="red"
-													icon={<Icon icon="trash2" />}
-													align="right"
-												/>
+											{showEditAndDelete(item) && (
+												<ButtonGroup>
+													<IconButton
+														size="xs"
+														onClick={() => {
+															console.log(item.articleId);
+														}}
+														color="blue"
+														icon={<Icon icon="edit" />}
+														align="right"
+													/>
+													<IconButton
+														size="xs"
+														onClick={() => {
+															console.log(item.articleId);
+														}}
+														color="red"
+														icon={<Icon icon="trash2" />}
+														align="right"
+													/>
+												</ButtonGroup>
 											)}
 										</HStack>
 									</Stack>
