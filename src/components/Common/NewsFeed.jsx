@@ -21,7 +21,7 @@ const NewsFeed = (props) => {
 	}, [data]);
 
 	const showEditAndDelete = (item) => {
-		return (item.author === myChar.characterName && item.type === 'newsArticle') || myChar.tags.some((tag) => tag.toLowerCase() === 'control');
+		return (item.author === myChar.characterName || myChar.tags.some((tag) => tag.toLowerCase() === 'control')) && item.type === 'newsArticle';
 	};
 
 	const translateComment = (number) => {
