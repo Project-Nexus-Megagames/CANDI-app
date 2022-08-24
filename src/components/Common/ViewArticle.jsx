@@ -1,7 +1,33 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton, Icon, List } from 'rsuite';
-import { useDisclosure, Textarea, AlertDialog, AlertDialogOverlay, Image, Divider, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Drawer, DrawerBody, Button, ButtonGroup, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Center, Box, Avatar, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import {
+	useDisclosure,
+	Textarea,
+	AlertDialog,
+	AlertDialogOverlay,
+	Image,
+	Divider,
+	AlertDialogContent,
+	AlertDialogBody,
+	AlertDialogHeader,
+	AlertDialogFooter,
+	Drawer,
+	DrawerBody,
+	Button,
+	ButtonGroup,
+	DrawerHeader,
+	DrawerOverlay,
+	DrawerContent,
+	DrawerCloseButton,
+	Center,
+	Box,
+	Avatar,
+	HStack,
+	Stack,
+	Text,
+	VStack
+} from '@chakra-ui/react';
 import { getDateString } from '../../scripts/dateTime';
 import { getMyCharacter } from '../../redux/entities/characters';
 import socket from '../../socket';
@@ -131,7 +157,7 @@ const ViewArticle = (props) => {
 					<AlertDialogOverlay>
 						<AlertDialogContent bgColor="#0f131a">
 							<AlertDialogHeader fontSize="lg" fontWeight="bold">
-								Delete Customer
+								Delete Comment
 							</AlertDialogHeader>
 							<AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
 							<AlertDialogFooter>

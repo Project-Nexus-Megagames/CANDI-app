@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Avatar, Box, HStack, Stack, StackDivider, Text, VStack, Center, Image, Divider } from '@chakra-ui/react';
+import { IconButton, Icon } from 'rsuite';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -8,7 +9,7 @@ import { getMyCharacter } from '../../redux/entities/characters';
 const NewsFeed = (props) => {
 	const [articleModal, setArticleModal] = useState(false);
 	const [selected, setSelected] = useState();
-	const myCharacter = useSelector(getMyCharacter);
+	const myChar = useSelector(getMyCharacter);
 
 	const data = props.data;
 
@@ -35,16 +36,44 @@ const NewsFeed = (props) => {
 						<Stack key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
 							<HStack>
 								{item.imageURL && <Image src={item.imageURL} width="100px" />}
-								<VStack align="left">
-									<Text
-										fontSize="2xl"
-										align="left"
-										onClick={() => {
-											setSelected(item), setArticleModal(true);
-										}}
-									>
-										{item.title}
-									</Text>
+								<VStack align="left" width="960px">
+									<Stack direction="row" justify="space-between" spacing="4">
+										<HStack>
+											<Text
+												fontSize="2xl"
+												align="left"
+												onClick={() => {
+													setSelected(item), setArticleModal(true);
+												}}
+											>
+												{item.title}
+											</Text>{' '}
+										</HStack>
+										<HStack>
+											{item.author === myChar.characterName && item.type === 'newsArticle' && (
+												<IconButton
+													size="xs"
+													onClick={() => {
+														console.log(item.articleId);
+													}}
+													color="blue"
+													icon={<Icon icon="edit" />}
+													align="right"
+												/>
+											)}
+											{item.author === myChar.characterName && item.type === 'newsArticle' && (
+												<IconButton
+													size="xs"
+													onClick={() => {
+														console.log(item.articleId);
+													}}
+													color="red"
+													icon={<Icon icon="trash2" />}
+													align="right"
+												/>
+											)}
+										</HStack>
+									</Stack>
 									<Box>
 										<Stack direction="row" justify="space-between" spacing="4">
 											<HStack>

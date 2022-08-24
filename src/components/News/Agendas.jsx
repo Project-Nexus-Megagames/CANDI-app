@@ -25,7 +25,17 @@ const Agendas = (props) => {
 	}
 
 	useEffect(() => {
-		const data = agendas.map((el) => ({ author: el.creator.characterName, authorProfilePicture: el.creator.profilePicture, title: el.name, body: el.submission?.description, date: el.updatedAt, comments: el.comments, authorId: el.creator._id, articleId: el._id, type: 'agenda' }));
+		const data = agendas.map((el) => ({
+			author: el.creator.characterName,
+			authorProfilePicture: el.creator.profilePicture,
+			title: el.name,
+			body: el.submission?.description,
+			date: el.updatedAt,
+			comments: el.comments,
+			authorId: el.creator._id,
+			articleId: el._id,
+			type: 'agenda'
+		}));
 		if (filter) {
 			let filtered = [];
 			filtered = data.filter((article) => article.title.toLowerCase().includes(filter) || article.body?.toLowerCase().includes(filter));
