@@ -46,7 +46,7 @@ const slice = createSlice({
       const index = assets.list.findIndex(
         (el) => el._id === action.payload._id
       );
-      assets.list[index] = action.payload;
+      index > -1 ? assets.list[index] = action.payload : assets.list.push(action.payload);
       assets.loading = false;
     },
     assetLent: (assets, action) => {

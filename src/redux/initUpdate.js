@@ -3,7 +3,7 @@ import { characterAdded, characterDeleted, characterUpdated } from './entities/c
 import { gamestateReceived } from './entities/gamestate';
 import { playerActionUpdated, actionAdded, actionDeleted } from './entities/playerActions';
 import { logAdded } from './entities/log';
-import { articleAdded } from './entities/articles';
+import { articleAdded, articleUpdated } from './entities/articles';
 import socket from '../socket'
 import store from './store';
 import { locationUpdated } from './entities/locations';
@@ -31,9 +31,9 @@ const initUpdates = () => {
                 case 'Log':
                     store.dispatch(logAdded(el));
                     break;
-								case 'Article':
-										store.dispatch(articleAdded(el));
-										break;
+                case 'Article':
+                    store.dispatch(articleUpdated(el));
+                    break;
                 default:
                     console.log(`Unable to update Redux for ${el.model}: ${el._id}`);
                     break;
