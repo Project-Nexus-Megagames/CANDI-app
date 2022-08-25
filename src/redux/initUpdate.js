@@ -3,7 +3,7 @@ import { characterAdded, characterDeleted, characterUpdated } from './entities/c
 import { gamestateReceived } from './entities/gamestate';
 import { playerActionUpdated, actionAdded, actionDeleted } from './entities/playerActions';
 import { logAdded } from './entities/log';
-import { articleAdded } from './entities/articles';
+import { articleAdded, articleDeleted } from './entities/articles';
 import socket from '../socket'
 import store from './store';
 import { locationUpdated } from './entities/locations';
@@ -80,6 +80,9 @@ const initUpdates = () => {
                 case 'asset':
                     store.dispatch(assetDeleted(el));
                     break;
+								case 'Article':
+									store.dispatch(articleDeleted(el));
+									break;
                 default:
                     console.log(`Unable to add Redux for ${el.model}: ${el.id}`);
                     break;

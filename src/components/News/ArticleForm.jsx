@@ -9,8 +9,14 @@ import { useSelector } from 'react-redux';
 import { getMyCharacter } from '../../redux/entities/characters';
 import socket from '../../socket';
 
-export const ArticleForm = ({ onSubmit, onCancel }) => {
+export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 	const myCharacter = useSelector(getMyCharacter);
+	let defaultValues = {
+		creator: myCharacter._id,
+		title: '',
+		body: '',
+		image: ''
+	};
 
 	const {
 		register,
@@ -21,12 +27,15 @@ export const ArticleForm = ({ onSubmit, onCancel }) => {
 	} = useForm({
 		mode: 'onChange',
 		reValidateMode: 'onChange',
-		defaultValues: {
-			creator: myCharacter._id,
-			title: '',
-			body: '',
-			image: ''
-		},
+		defaultValues: !article
+			? defaultValues
+			: {
+					creator: article.authorId,
+					title: article.title,
+					body: article.body,
+					image: article.imageURL
+			  },
+
 		criteriaMode: 'firstError',
 		shouldFocusError: true,
 		shouldUnregister: false,
@@ -37,7 +46,8 @@ export const ArticleForm = ({ onSubmit, onCancel }) => {
 		e.preventDefault();
 
 		if (onSubmit instanceof Function) onSubmit(data);
-		socket.emit('request', { route: 'article', action: 'post', data });
+		if (article) socket.emit('request', { route: 'article', action: 'edit', data: { article: data, id: article.articleId } });
+		else socket.emit('request', { route: 'article', action: 'post', data });
 		console.log(data);
 	};
 

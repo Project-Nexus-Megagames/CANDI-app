@@ -23,12 +23,12 @@ const News = (props) => {
 	const myChar = useSelector(getMyCharacter);
 	const [filterButtonText, setFilterButtonText] = useState('Show My Articles');
 
-	const myArticleEffort = myChar.effort.find((el) => el.type === 'Article').amount;
-
 	if (!login) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
 	}
+
+	const myArticleEffort = myChar.effort.find((el) => el.type === 'Article').amount;
 
 	// TODO: add the edit button in NewsFeed (but only for News Articles!)
 	// TODO: add the publish button in edit and create form  (New Article: Submit and Submit & Publish)
@@ -45,6 +45,7 @@ const News = (props) => {
 			authorProfilePicture: el.creator.profilePicture,
 			imageURL: el.image,
 			author: el.creator?.characterName,
+			authorId: el.creator?._id,
 			title: el.title,
 			body: el.body,
 			date: el.createdAt,
