@@ -45,7 +45,7 @@ const slice = createSlice({
 		articleUpdated: (articles, action) => {
       console.log(`${action.type} Dispatched...`);
       const index = articles.list.findIndex(el => el._id === action.payload._id);
-			articles.list[index] = action.payload;
+      index > -1 ? articles.list[index] = action.payload : articles.list.push(action.payload);
       articles.lastFetch = Date.now();
     },
 		articleDeleted: (articles, action) => {

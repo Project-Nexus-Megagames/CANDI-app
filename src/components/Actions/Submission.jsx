@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Avatar, Panel,	FlexboxGrid, CheckPicker,	ButtonGroup, Button, Modal,	Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -12,6 +12,7 @@ import { getFadedColor, getThisEffort } from '../../scripts/frontend';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 
 const Submission = (props) => {
+	const { gameConfig } = useSelector((state) => state);
 	const [show, setShow] = React.useState(false);
 	const [effort, setEffort] = React.useState({ effortType: 'Normal', amount: 0 });
 	const [resources, setResources] = React.useState([]);
@@ -23,6 +24,7 @@ const Submission = (props) => {
 	const [max, setMax] = React.useState(0);
 	const [infoAsset, setInfoAsset] = React.useState(false);
 
+	const actionType = gameConfig.actionTypes.find(el => el.type.toLowerCase() === props.action.type.toLowerCase())
 
 	useEffect(() => {
 		if (props.submission) {
@@ -32,7 +34,10 @@ const Submission = (props) => {
 			setIntent(props.submission.intent)
 			setName(props.action.name)
 			setTags(props.submission.tags)
-			setMax(getThisEffort(props.myCharacter.effort, props.submission.effort.effortType))
+
+
+			let charEffort = getThisEffort(props.myCharacter.effort, props.submission.effort.effortType);
+			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
 		}
 	}, [props.submission]);
 
@@ -106,7 +111,10 @@ const Submission = (props) => {
 				else {
 					thing.effortType = (incoming);
 					thing.amount = 0;
-					setMax(getThisEffort(props.myCharacter.effort, incoming))
+					const actionType = gameConfig.actionTypes.find(el => el.type.toLowerCase() === props.action.type.toLowerCase())
+
+					let charEffort = getThisEffort(props.myCharacter.effort, props.submission.effort.effortType);
+					setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
 				} 
 				setEffort(thing);
 				break;
@@ -126,10 +134,22 @@ const Submission = (props) => {
 		else return false;
 	}
 
-	function formattedUsedAssets() {
+	// formattedUsedAssets = (submissionAssets) => {
+	// 	let temp = [];
+	// 	let assets = this.props.getMyAssets;
+	// 	assets = assets.filter((el) => el.uses <= 0 || el.status.used);
+	// 	assets = assets.filter(el => !submissionAssets.some(sub => sub === el._id) )
+	// 	for (const asset of assets) {
+	// 		temp.push(asset._id);
+	// 	}
+	// 	return temp;
+	// };
+
+	function formattedUsedAssets(submissionAssets) {
 		let temp = [];
 		let assets = props.getMyAssets
 		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
+		assets = assets.filter(el => !submissionAssets.some(sub => sub === el._id) )
 		for (const asset of assets) {
 			temp.push(asset._id);
 		}
@@ -433,7 +453,7 @@ const Submission = (props) => {
 											colspan={6}
 										>
 											<h5 style={{ textAlign: 'center' }}>
-												Effort {effort.amount} / {getThisEffort(props.myCharacter.effort, submission.effort.effortType) + submission.effort.amount}
+												Effort {effort.amount} / {max}
 												{effort === 0 && (
 													<Tag style={{ color: 'black' }} color={'orange'}>
 														Need Effort
@@ -444,7 +464,7 @@ const Submission = (props) => {
 											<Slider
 												graduated
 												min={0}
-												max={getThisEffort(props.myCharacter.effort, submission.effort.effortType) + submission.effort.amount}
+												max={max}
 												defaultValue={submission.effort.amount}
 												progress
 												value={effort.amount}
@@ -475,9 +495,12 @@ const Submission = (props) => {
 										<CheckPicker
 											labelKey="name"
 											valueKey="_id"
-											data={resources}
+
+											data={props.getMyAssets.filter((el) => actionType.assetType.some(ty => ty === el.type.toLowerCase()))}
+
 											style={{ width: '100%' }}
-											disabledItemValues={formattedUsedAssets()}
+											defaultValue={props.submission.assets}
+											disabledItemValues={formattedUsedAssets(props.submission.assets)}
 											onChange={(event) => setResources(event)}
 										/>
 										</FlexboxGrid.Item>

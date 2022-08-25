@@ -28,7 +28,8 @@ const NewAction = (props) => {
 		if (actionType && actionType.type) {
 			setEffort({ effortType: actionType.type, amount: 0 });
 			// TODO needs to be fixed so that actual max is the maximum that is accepted by the effortType
-			setMax(getThisEffort(myCharacter.effort, actionType.type));
+			let charEffort = getThisEffort(myCharacter.effort, actionType.type);
+			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
 		}
 	}, [actionType]);
 
@@ -93,6 +94,7 @@ const NewAction = (props) => {
 		let temp = [];
 		let assets = myAssets;
 		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
+
 		for (const asset of assets) {
 			temp.push(asset._id);
 		}
@@ -216,8 +218,8 @@ const NewAction = (props) => {
 									colspan={10}
 								>
 									{' '}
-									Resources
-									<CheckPicker labelKey="name" valueKey="_id" data={myAssets} style={{ width: '100%' }} disabledItemValues={formattedUsedAssets()} onChange={(event) => setResource(event)} />
+									Resources - {actionType.assetType.map((type, index) => <Tag index={index}>{type}</Tag>)}
+									<CheckPicker labelKey="name" valueKey="_id" data={myAssets.filter((el) => actionType.assetType.some(ty => ty === el.type.toLowerCase()))} style={{ width: '100%' }} disabledItemValues={formattedUsedAssets()} onChange={(event) => setResource(event)} />
 								</FlexboxGrid.Item>
 							</FlexboxGrid>
 						</form>
