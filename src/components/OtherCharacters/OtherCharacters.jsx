@@ -39,7 +39,6 @@ const OtherCharacters = (props) => {
 	});
 
 	const tagStyle = (item, index) => {
-		console.log(item);
 		switch (item) {
 			case 'Control':
 				return (

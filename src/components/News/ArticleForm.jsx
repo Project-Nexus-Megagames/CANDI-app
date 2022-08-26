@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Button, FormControl, FormLabel, FormErrorMessage, Input, Stack, HStack, Textarea, Flex, Box } from '@chakra-ui/react';
+import React from 'react';
+import { Button, FormControl, FormLabel, Input, Stack, HStack, Textarea, Box } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
-import { Icon, Tag } from 'rsuite';
 import ErrorTag from '../Common/FormError';
 import FileUpload from '../Common/FileUpload';
 import { useSelector } from 'react-redux';
@@ -48,7 +47,6 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 		if (onSubmit instanceof Function) onSubmit(data);
 		if (article) socket.emit('request', { route: 'article', action: 'edit', data: { article: data, id: article.articleId } });
 		else socket.emit('request', { route: 'article', action: 'post', data });
-		console.log(data);
 	};
 
 	const handleCancel = () => {
