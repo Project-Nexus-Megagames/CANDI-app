@@ -30,8 +30,17 @@ const NewAction = (props) => {
 			// TODO needs to be fixed so that actual max is the maximum that is accepted by the effortType
 			let charEffort = getThisEffort(myCharacter.effort, actionType.type);
 			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
+			console.log('TRIGGERED', charEffort, actionType.maxEffort);
 		}
 	}, [actionType]);
+
+	useEffect(() => {
+		if (effort) {
+			let charEffort = getThisEffort(myCharacter.effort, actionType.type);
+			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
+			console.log('TRIGGERED', charEffort, actionType.maxEffort);
+		}
+	}, [effort]);
 
 	const editState = (incoming, type) => {
 		let thing;
@@ -218,8 +227,18 @@ const NewAction = (props) => {
 									colspan={10}
 								>
 									{' '}
-									Resources - {actionType.assetType.map((type, index) => <Tag index={index}>{type}</Tag>)}
-									<CheckPicker labelKey="name" valueKey="_id" data={myAssets.filter((el) => actionType.assetType.some(ty => ty === el.type.toLowerCase()))} style={{ width: '100%' }} disabledItemValues={formattedUsedAssets()} onChange={(event) => setResource(event)} />
+									Resources -{' '}
+									{actionType.assetType.map((type, index) => (
+										<Tag index={index}>{type}</Tag>
+									))}
+									<CheckPicker
+										labelKey="name"
+										valueKey="_id"
+										data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
+										style={{ width: '100%' }}
+										disabledItemValues={formattedUsedAssets()}
+										onChange={(event) => setResource(event)}
+									/>
 								</FlexboxGrid.Item>
 							</FlexboxGrid>
 						</form>
