@@ -30,7 +30,6 @@ const News = (props) => {
 
 	const myArticleEffort = myChar.effort.find((el) => el.type === 'Article').amount;
 
-	// TODO: add the edit button in NewsFeed (but only for News Articles!)
 	// TODO: add the publish button in edit and create form  (New Article: Submit and Submit & Publish)
 
 	const sortedArticles = [...articles];
