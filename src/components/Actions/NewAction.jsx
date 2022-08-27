@@ -24,22 +24,20 @@ const NewAction = (props) => {
 	const [name, setName] = React.useState('');
 	const [max, setMax] = React.useState(0);
 
+	const setMaxEffort = () => {
+		let charEffort = getThisEffort(myCharacter.effort, actionType.type);
+		setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
+	};
+
 	useEffect(() => {
 		if (actionType && actionType.type) {
 			setEffort({ effortType: actionType.type, amount: 0 });
-			// TODO needs to be fixed so that actual max is the maximum that is accepted by the effortType
-			let charEffort = getThisEffort(myCharacter.effort, actionType.type);
-			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
-			console.log('TRIGGERED', charEffort, actionType.maxEffort);
+			setMaxEffort();
 		}
 	}, [actionType]);
 
 	useEffect(() => {
-		if (effort) {
-			let charEffort = getThisEffort(myCharacter.effort, actionType.type);
-			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
-			console.log('TRIGGERED', charEffort, actionType.maxEffort);
-		}
+		if (effort) setMaxEffort();
 	}, [effort]);
 
 	const editState = (incoming, type) => {
