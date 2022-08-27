@@ -17,7 +17,6 @@ import { getFadedColor } from '../../scripts/frontend';
 const OtherCharacters = (props) => {
 	const publicCharacters = useSelector(getPublicCharacters);
 	const loggedInUser = useSelector((state) => state.auth.user);
-
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
 	const [filteredCharacters, setFilteredCharacters] = useState([]);
@@ -25,7 +24,7 @@ const OtherCharacters = (props) => {
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 
-	const [renderTags] = React.useState(['NPC', 'PC', 'Control']); // todo: update with Faction tags
+	const [renderTags] = React.useState(['NPC', 'PC', 'Control', 'Private']); // TODO: update with Faction tags
 
 	if (!props.login) {
 		props.history.push('/');
@@ -35,7 +34,15 @@ const OtherCharacters = (props) => {
 	useEffect(() => {
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
 			setFilteredCharacters(props.characters);
-		} else setFilteredCharacters(publicCharacters);
+		} else {
+			let displayedCharacters = publicCharacters;
+			if (props.myCharacter.knownContacts.length > 0) {
+				for (const contact of props.myCharacter.knownContacts) {
+					if (contact.tags.some((tag) => tag.toLowerCase() !== 'public')) displayedCharacters.push(contact);
+				}
+			}
+			setFilteredCharacters(displayedCharacters);
+		}
 	});
 
 	const tagStyle = (item, index) => {
@@ -61,6 +68,12 @@ const OtherCharacters = (props) => {
 			case 'PC':
 				return (
 					<Tag index={index} color="cyan">
+						{item}
+					</Tag>
+				);
+			case 'Private':
+				return (
+					<Tag index={index} color="red">
 						{item}
 					</Tag>
 				);

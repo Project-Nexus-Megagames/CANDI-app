@@ -21,7 +21,15 @@ const OtherCharacters = (props) => {
 	useEffect(() => {
 		if (props.myCharacter.tags.indexOf('Control') !== -1) {
 			setFilteredCharacters(props.characters);
-		} else setFilteredCharacters(publicCharacters);
+		} else {
+			let displayedCharacters = publicCharacters;
+			if (props.myCharacter.knownContacts.length > 0) {
+				for (const contact of props.myCharacter.knownContacts) {
+					if (contact.tags.some((tag) => tag.toLowerCase() !== 'public')) displayedCharacters.push(contact);
+				}
+			}
+			setFilteredCharacters(displayedCharacters);
+		}
 	});
 
 	const listStyle = (item) => {
@@ -95,7 +103,10 @@ const OtherCharacters = (props) => {
 	}, [props.characters, selected]);
 
 	const filterThis = (fil) => {
-		const filtered = props.characters.filter((char) => char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase())));
+		const filtered = props.characters.filter(
+			(char) =>
+				char.characterName.toLowerCase().includes(fil.toLowerCase()) || char.email.toLowerCase().includes(fil.toLowerCase()) || char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
+		);
 		setFilteredCharacters(filtered);
 	};
 
@@ -113,6 +124,8 @@ const OtherCharacters = (props) => {
 				return <Tag color="blue">{item}</Tag>;
 			case 'PC':
 				return <Tag color="cyan">{item}</Tag>;
+			case 'Private':
+				return <Tag color="red">{item}</Tag>;
 			default:
 				return <Tag>{item}</Tag>;
 		}
@@ -337,7 +350,14 @@ const OtherCharacters = (props) => {
 									<Col xs={24} sm={24} md={8} className="gridbox">
 										<div>
 											<p>
-												<img className="portrait" src={`/images/${selected.characterName}.jpg`} alt="Unable to load img" width="95%" style={{ maxHeight: '40vh', cursor: 'pointer' }} onClick={() => openAnvil(selected)} />
+												<img
+													className="portrait"
+													src={`/images/${selected.characterName}.jpg`}
+													alt="Unable to load img"
+													width="95%"
+													style={{ maxHeight: '40vh', cursor: 'pointer' }}
+													onClick={() => openAnvil(selected)}
+												/>
 											</p>
 											<Button appearance="ghost" block onClick={() => copyToClipboard(selected)}>
 												{selected.email}

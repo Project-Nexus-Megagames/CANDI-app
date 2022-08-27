@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
-import {
-	CheckPicker,
-	Modal,
-	Button,
-	SelectPicker,
-	ButtonGroup,
-	Panel,
-	Divider,
-	Placeholder
-} from 'rsuite';
+import { CheckPicker, Modal, Button, SelectPicker, ButtonGroup, Panel, Divider, Placeholder } from 'rsuite';
 import { useSelector } from 'react-redux';
-import {
-	getPlayerCharacters,
-	getMyCharacter,
-	getMyUnlockedCharacters
-} from '../../redux/entities/characters';
+import { getPlayerCharacters, getMyCharacter, getMyUnlockedCharacters } from '../../redux/entities/characters';
 import socket from '../../socket';
 import _ from 'lodash';
 
@@ -66,10 +53,7 @@ const Contacts = (props) => {
 			for (const el of myUnlockedCharacters) {
 				if (el._id !== selected._id) unlockedCharactersToShare.push(el);
 			}
-			unlockedCharactersToShare = _.sortBy(
-				unlockedCharactersToShare,
-				'characterName'
-			);
+			unlockedCharactersToShare = _.sortBy(unlockedCharactersToShare, 'characterName');
 
 			return (
 				<Panel>
@@ -89,24 +73,13 @@ const Contacts = (props) => {
 				</Panel>
 			);
 		} else {
-			return (
-				<Placeholder.Paragraph rows={5}>
-					Awaiting Selection
-				</Placeholder.Paragraph>
-			);
+			return <Placeholder.Paragraph rows={5}>Awaiting Selection</Placeholder.Paragraph>;
 		}
 	};
 
 	return (
 		<Modal size="sm" show={props.show} onHide={() => handleExit()}>
-			<SelectPicker
-				block
-				placeholder="Select Character to Share with"
-				onChange={(event) => handleChange(event)}
-				data={charactersToShareWith}
-				valueKey="_id"
-				labelKey="characterName"
-			></SelectPicker>
+			<SelectPicker block placeholder="Select Character to Share with" onChange={(event) => handleChange(event)} data={charactersToShareWith} valueKey="_id" labelKey="characterName"></SelectPicker>
 			{renderCharacters()}
 			<Modal.Footer>
 				{selected && (

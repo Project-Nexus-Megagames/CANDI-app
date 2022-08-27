@@ -16,8 +16,12 @@ function getFadedColor(color, fade = 1) {
 		case 'Control':
 			return `#ff9800`
 
+			case 'Private':
+				return `red`
+
 		case 'NPC-text':
 		case 'PC-text':
+		case 'Private-text':
 			return 'white'
 
 		case 'Control-text':

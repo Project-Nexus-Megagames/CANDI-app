@@ -36,6 +36,12 @@ const CharacterListItem = (props) => {
 						{item}
 					</Tag>
 				);
+			case 'Private':
+				return (
+					<Tag index={index} color="red">
+						{item}
+					</Tag>
+				);
 			default:
 				return (
 					<Tag index={index} key={index}>
