@@ -49,6 +49,11 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 		else socket.emit('request', { route: 'article', action: 'post', data });
 	};
 
+	const handlePublish = (data, e) => {
+		e.preventDefault();
+		socket.emit('request', { route: 'article', action: 'publish', data });
+	};
+
 	const handleCancel = () => {
 		if (onCancel instanceof Function) onCancel();
 	};
@@ -104,7 +109,8 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 				</Box>
 				<DevTool control={control} placement="bottom-right" />
 				<HStack justifyContent="end">
-					<Button type="submit" colorScheme="green" disabled={!isValid}>{`Submit`}</Button>
+					<Button type="submit" colorScheme="green" disabled={!isValid}>{`Save as Draft`}</Button>
+					<Button colorScheme="blue" onClick={() => handlePublish()}>{`Publish`}</Button>
 					<Button colorScheme="red" onClick={() => handleCancel()}>{`Cancel`}</Button>
 				</HStack>
 			</Stack>

@@ -4,8 +4,8 @@ import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
 import { Heading } from '@chakra-ui/react';
 import { getAgendaActions } from '../../redux/entities/playerActions';
-import { Stack, Input } from '@chakra-ui/react';
-import { Loader } from 'rsuite';
+import { Stack } from '@chakra-ui/react';
+import { Loader, Header, Container, Input } from 'rsuite';
 
 const Agendas = (props) => {
 	const login = useSelector((state) => state.auth.login);
@@ -50,11 +50,15 @@ const Agendas = (props) => {
 	return (
 		<React.Fragment>
 			<NavigationBar />
-			<Stack align="center" spacing="4">
-				<Heading>Agendas</Heading>
-				<Input style={{ width: '30%' }} placeholder="Search" onChange={(e) => handleSearch(e.target.value)}></Input>
-			</Stack>
-			<NewsFeed data={filteredData} />
+			<Header>
+				<Stack align="center" spacing="4">
+					<Heading>Agendas</Heading>
+					<Input style={{ width: '30%' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
+				</Stack>
+			</Header>
+			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
+				<NewsFeed data={filteredData} />
+			</Container>
 		</React.Fragment>
 	);
 };

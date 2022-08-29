@@ -46,7 +46,7 @@ const NewsFeed = (props) => {
 	}, [data]);
 
 	const showEditAndDelete = (item) => {
-		return (item.author === myChar.characterName || myChar.tags.some((tag) => tag.toLowerCase() === 'control')) && item.type === 'newsArticle';
+		return ((item.author === myChar.characterName && item.tags?.some((tag) => tag === 'Draft')) || myChar.tags.some((tag) => tag.toLowerCase() === 'control')) && item.type === 'newsArticle';
 	};
 
 	const translateComment = (number) => {

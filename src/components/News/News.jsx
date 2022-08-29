@@ -99,22 +99,23 @@ const News = (props) => {
 		<React.Fragment>
 			<NavigationBar />
 			<Header>
-					<FlexboxGrid justify="center" align="middle">
-						<FlexboxGrid.Item colspan={4}>
-							<InputGroup>
-								<Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />
-								{myArticleEffort > 0 && <NewArticle drawer={true} />}
-							</InputGroup>
-						</FlexboxGrid.Item>
-						<Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
-							{filterButtonText}
-						</Button>
-					</FlexboxGrid>
-				</Header>
+				<Heading>News</Heading>
+				<FlexboxGrid justify="center" align="middle">
+					<FlexboxGrid.Item colspan={4}>
+						<InputGroup>
+							<Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />
+							{myArticleEffort > 0 && <NewArticle drawer={true} />}
+						</InputGroup>
+					</FlexboxGrid.Item>
+					<Divider />
+					<Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
+						{filterButtonText}
+					</Button>
+				</FlexboxGrid>
+			</Header>
 			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
 				<NewsFeed data={filteredData} />
 			</Container>
-			
 		</React.Fragment>
 	);
 };
