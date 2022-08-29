@@ -7,10 +7,11 @@ import { NewArticle } from './NewArticle';
 import { Container, FlexboxGrid, Header, Input, InputGroup, Button, Divider } from 'rsuite';
 import { Loader } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { getMyArticles } from './../../redux/entities/articles';
+import { getMyArticles, getPublishedArticles } from './../../redux/entities/articles';
 
 const News = (props) => {
-	const articles = useSelector((state) => state.articles.list);
+	const articles = useSelector(getPublishedArticles);
+	const allArticles = useSelector((state) => state.articles.list);
 	const myArticles = useSelector(getMyArticles).sort((a, b) => {
 		let da = new Date(a.createdAt),
 			db = new Date(b.createdAt);
@@ -30,14 +31,21 @@ const News = (props) => {
 
 	const myArticleEffort = myChar.effort.find((el) => el.type === 'Article').amount;
 
-	// TODO: add the publish button in edit and create form  (New Article: Submit and Submit & Publish)
-
-	const sortedArticles = [...articles];
-	sortedArticles.sort((a, b) => {
-		let da = new Date(a.createdAt),
-			db = new Date(b.createdAt);
-		return db - da;
-	});
+	const getSortedArticles = () => {
+		if (myChar.tags.some((tag) => tag.toLowerCase() === 'control')) {
+			const sortedAllArticles = [...allArticles];
+			return sortedAllArticles.sort((a, b) => {
+				let da = new Date(a.createdAt),
+					db = new Date(b.createdAt);
+				return db - da;
+			});
+		}
+		return articles.sort((a, b) => {
+			let da = new Date(a.publishDate),
+				db = new Date(b.publishDate);
+			return db - da;
+		});
+	};
 
 	const mapArticlesToData = (articles) => {
 		return articles.map((el) => ({
@@ -47,7 +55,7 @@ const News = (props) => {
 			authorId: el.creator?._id,
 			title: el.title,
 			body: el.body,
-			date: el.createdAt,
+			date: el.publishDate ? el.publishDate : el.createdAt,
 			comments: el.comments,
 			articleId: el._id,
 			tags: el.tags,
@@ -64,13 +72,13 @@ const News = (props) => {
 				);
 				setFilteredData(filtered);
 			} else {
-				filtered = mapArticlesToData(sortedArticles).filter(
+				filtered = mapArticlesToData(getSortedArticles()).filter(
 					(article) => article.title.toLowerCase().includes(searchQuery) || article.body?.toLowerCase().includes(searchQuery) || article.author.toLowerCase().includes(searchQuery)
 				);
 				setFilteredData(filtered);
 			}
 		} else if (showMyArticles) setFilteredData(mapArticlesToData(myArticles));
-		else setFilteredData(mapArticlesToData(sortedArticles));
+		else setFilteredData(mapArticlesToData(getSortedArticles()));
 	}, [articles, searchQuery]);
 
 	useEffect(() => {
@@ -78,7 +86,7 @@ const News = (props) => {
 		if (showMyArticles) {
 			setFilteredData(mapArticlesToData(myArticles));
 		} else {
-			setFilteredData(mapArticlesToData(sortedArticles));
+			setFilteredData(mapArticlesToData(getSortedArticles()));
 		}
 	}, [articles, showMyArticles]);
 

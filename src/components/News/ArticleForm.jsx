@@ -10,6 +10,8 @@ import socket from '../../socket';
 
 export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 	const myCharacter = useSelector(getMyCharacter);
+	const myArticleEffort = myCharacter.effort.find((el) => el.type === 'Article').amount;
+
 	let defaultValues = {
 		creator: myCharacter._id,
 		title: '',
@@ -59,6 +61,11 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 
 		if (article) socket.emit('request', { route: 'article', action: 'publish', data: { article: data, id: article.articleId } });
 		else socket.emit('request', { route: 'article', action: 'publish', data });
+	};
+
+	const isDraft = () => {
+		if (article) return article.tags?.some((tag) => tag === 'Draft');
+		return true;
 	};
 
 	const handleCancel = () => {
@@ -120,7 +127,7 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 					{/*<Button type="submit" colorScheme="green" disabled={!isValid} >{`Save as Draft`}</Button>*/}
 
 					<Button type="submit" colorScheme="green" disabled={!isValid} onClick={formSubmit(handleSubmit)}>{`Save as Draft`}</Button>
-					<Button colorScheme="blue" disabled={!isValid} onClick={formSubmit(handlePublish)}>
+					<Button colorScheme="blue" disabled={!isValid || !(myArticleEffort > 0) || !isDraft()} onClick={formSubmit(handlePublish)}>
 						{`Publish`}
 					</Button>
 					<Button colorScheme="red" onClick={() => handleCancel()}>{`Cancel`}</Button>

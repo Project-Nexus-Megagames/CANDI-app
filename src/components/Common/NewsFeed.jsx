@@ -51,6 +51,10 @@ const NewsFeed = (props) => {
 		return ((item.author === myChar.characterName && item.tags?.some((tag) => tag === 'Draft')) || myChar.tags.some((tag) => tag.toLowerCase() === 'control')) && item.type === 'newsArticle';
 	};
 
+	const isDraft = (item) => {
+		return item.tags?.some((tag) => tag === 'Draft');
+	};
+
 	const translateComment = (number) => {
 		if (number === 1) return 'comment';
 		return 'comments';
@@ -74,6 +78,11 @@ const NewsFeed = (props) => {
 								<VStack align="left" width="960px">
 									<Stack direction="row" justify="space-between" spacing="4">
 										<HStack>
+											{isDraft(item) && (
+												<Text fontSize="2xl" color="red">
+													DRAFT ARTICLE
+												</Text>
+											)}
 											<Text
 												fontSize="2xl"
 												align="left"
@@ -127,9 +136,6 @@ const NewsFeed = (props) => {
 									<Text align="right">
 										{item.comments?.length} {translateComment(item.comments?.length)}
 									</Text>
-									{item.tags?.map((item) => (
-										<Text>{item} Hi</Text>
-									))}
 								</VStack>
 							</HStack>
 						</Stack>

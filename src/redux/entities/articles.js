@@ -77,6 +77,14 @@ export const getMyArticles = createSelector(
     article => (( article.creator._id === myCharacter._id ) ))
 );
 
+export const getPublishedArticles = createSelector(
+  state => state.articles.list,
+  state => state.characters.list.find(el => el.username === state.auth.user.username),
+  (articles) => articles.filter(
+    article => ( article.tags.some(tag => tag === 'Published')))
+);
+
+
 // Action Creators (Commands)
 const url = `${gameServer}api/articles`;
 
