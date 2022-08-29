@@ -50,8 +50,10 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 
 		if (onSubmit instanceof Function) onSubmit(data);
 
-		if (article) socket.emit('request', { route: 'article', action: 'edit', data: { article: data, id: article.articleId } });
-		else socket.emit('request', { route: 'article', action: 'draft', data });
+		if (article) {
+			if (article.tags.some((tag) => tag === 'Published')) socket.emit('request', { route: 'article', action: 'resetToDraft', data: { article: data, id: article.articleId } });
+			else socket.emit('request', { route: 'article', action: 'edit', data: { article: data, id: article.articleId } });
+		} else socket.emit('request', { route: 'article', action: 'draft', data });
 	};
 
 	const handlePublish = (data, e) => {
