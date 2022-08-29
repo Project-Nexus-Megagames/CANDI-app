@@ -4,18 +4,18 @@ import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, P
 import AddAsset from './AddAsset';
 import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
-import { characterUpdated } from '../../redux/entities/characters';
 import { connect } from 'react-redux';
 import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
-import { getMyCharacter, getPublicCharacters } from './../../redux/entities/characters';
+import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
 import { getFadedColor } from '../../scripts/frontend';
 
 const OtherCharacters = (props) => {
 	const publicCharacters = useSelector(getPublicCharacters);
+	const privateCharacters = useSelector(getPrivateCharacters);
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const [selected, setSelected] = useState(null);
 	const [asset, setAsset] = useState(false);
@@ -24,26 +24,32 @@ const OtherCharacters = (props) => {
 	const [add, setAdd] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 
-	const [renderTags] = React.useState(['NPC', 'PC', 'Control', 'Private']); // TODO: update with Faction tags
-
 	if (!props.login) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
 	}
 
+
+	let characters = [ ...publicCharacters, ...props.myCharacter.knownContacts ]
+	const [renderTags] = React.useState(['Frog', 'Pig', 'Spider', 'Drow', 'Myconid', 'Raccoon', 'Control']); // TODO: update with Faction tags
+
+
 	useEffect(() => {
-		if (props.myCharacter.tags.indexOf('Control') !== -1) {
-			setFilteredCharacters(props.characters);
-		} else {
-			let displayedCharacters = publicCharacters;
-			if (props.myCharacter.knownContacts.length > 0) {
-				for (const contact of props.myCharacter.knownContacts) {
-					if (contact.tags.some((tag) => tag.toLowerCase() !== 'public')) displayedCharacters.push(contact);
-				}
-			}
-			setFilteredCharacters(displayedCharacters);
-		}
-	});
+		filterThis('')
+	}, []);
+	// useEffect(() => {
+	// 	if (props.myCharacter.tags.indexOf('Control') !== -1) {
+	// 		setFilteredCharacters(props.characters);
+	// 	} else {
+	// 		let displayedCharacters = publicCharacters;
+	// 		if (props.myCharacter.knownContacts.length > 0) {
+	// 			for (const contact of props.myCharacter.knownContacts) {
+	// 				if (contact.tags.some((tag) => tag.toLowerCase() !== 'public')) displayedCharacters.push(contact);
+	// 			}
+	// 		}
+	// 		setFilteredCharacters(displayedCharacters);
+	// 	}
+	// });
 
 	const tagStyle = (item, index) => {
 		switch (item) {
@@ -85,7 +91,7 @@ const OtherCharacters = (props) => {
 	const listStyle = (item) => {
 		if (selected && item._id === selected._id) {
 			return { cursor: 'pointer', backgroundColor: '#212429' };
-		} else return { cursor: 'pointer' };
+		} else return { cursor: 'pointer', height: '100%', };
 	};
 
 	const copyToClipboard = (character) => {
@@ -148,24 +154,17 @@ const OtherCharacters = (props) => {
 	}, [props.characters, selected]);
 
 	const filterThis = (fil) => {
-		let filtered = [];
-		if (props.myCharacter.tags.indexOf('Control') !== -1) {
-			filtered = props.characters.filter(
+		console.log(fil)
+
+			const filtered = characters.filter(
 				(char) =>
 					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
 					char.email.toLowerCase().includes(fil.toLowerCase()) ||
 					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
 					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
 			);
-		} else {
-			filtered = publicCharacters.filter(
-				(char) =>
-					char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
-					char.email.toLowerCase().includes(fil.toLowerCase()) ||
-					char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
-					char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
-			);
-		}
+		
+		console.log(filteredCharacters)
 		setFilteredCharacters(filtered);
 	};
 
@@ -205,11 +204,10 @@ const OtherCharacters = (props) => {
 								}}
 							>
 								<div>
-									{renderTags.map((tag) => (
-										<List key={tag} hover>
-											<p style={{ backgroundColor: getFadedColor(tag), color: getFadedColor(`${tag}-text`) }}>{tag}</p>
-											{filteredCharacters
-												.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
+									{renderTags.map((tag, index) => (
+										<List key={index} hover >
+											{filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0 && <p style={{ backgroundColor: getFadedColor(tag), color: getFadedColor(`${tag}-text`) }}>{tag}</p>}
+											{filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
 												.map((character) => (
 													<List.Item key={character._id} style={listStyle(character)}>
 														<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
@@ -217,6 +215,17 @@ const OtherCharacters = (props) => {
 												))}
 										</List>
 									))}
+									{props.myCharacter.tags.indexOf('Control') !== -1 && 
+										<List  hover >
+											<p style={{ backgroundColor: getFadedColor('Unknown'), color: getFadedColor(`${'Unknown'}-text`) }}>{'( Hidden )'}</p>
+											{privateCharacters
+												// .filter()
+												.map((character) => (
+													<List.Item key={character._id} style={listStyle(character)}>
+														<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
+													</List.Item>
+												))}
+										</List>}
 								</div>
 							</div>
 						</PanelGroup>

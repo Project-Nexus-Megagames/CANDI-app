@@ -99,6 +99,12 @@ export const getPublicCharacters = createSelector(
     characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "public"))
 );
 
+export const getPrivateCharacters = createSelector(
+  (state) => state.characters.list,
+  (characters) =>
+    characters.filter((char) => !char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
 export const getCharacterById = (charId) =>
   createSelector(
     (state) => state.characters,
