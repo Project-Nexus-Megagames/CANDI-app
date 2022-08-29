@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { connect, useSelector } from 'react-redux';
-import { Avatar, Panel,	FlexboxGrid, CheckPicker,	ButtonGroup, Button, Modal,	Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress } from 'rsuite';
+import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
@@ -24,23 +24,21 @@ const Submission = (props) => {
 	const [max, setMax] = React.useState(0);
 	const [infoAsset, setInfoAsset] = React.useState(false);
 
-	const actionType = gameConfig.actionTypes.find(el => el.type.toLowerCase() === props.action.type.toLowerCase())
+	const actionType = gameConfig.actionTypes.find((el) => el.type.toLowerCase() === props.action.type.toLowerCase());
 
 	useEffect(() => {
 		if (props.submission) {
-			setEffort(props.submission.effort)
-			setResources(props.submission.assets)
-			setDescription(props.submission.description)
-			setIntent(props.submission.intent)
-			setName(props.action.name)
-			setTags(props.submission.tags)
-
+			setEffort(props.submission.effort);
+			setResources(props.submission.assets);
+			setDescription(props.submission.description);
+			setIntent(props.submission.intent);
+			setName(props.action.name);
+			setTags(props.submission.tags);
 
 			let charEffort = getThisEffort(props.myCharacter.effort, props.submission.effort.effortType);
 			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
 		}
 	}, [props.submission]);
-
 
 	const getTime = (date) => {
 		let day = new Date(date).toDateString();
@@ -53,11 +51,9 @@ const Submission = (props) => {
 	};
 
 	const handleInputConfirm = () => {
-		const nextTags = inputValue
-			? [...props.action.tags, inputValue]
-			: props.action.tags;
+		const nextTags = inputValue ? [...props.action.tags, inputValue] : props.action.tags;
 		setShow(false);
-		setInputValue('')
+		setInputValue('');
 
 		const data = {
 			id: props.action._id,
@@ -87,16 +83,7 @@ const Submission = (props) => {
 					onPressEnter={handleInputConfirm}
 				/>
 			);
-		else
-			return (
-				<IconButton
-					className="tag-add-btn"
-					onClick={() => setShow('add')}
-					icon={<Icon icon="plus" />}
-					appearance="ghost"
-					size="xs"
-				/>
-			);
+		else return <IconButton className="tag-add-btn" onClick={() => setShow('add')} icon={<Icon icon="plus" />} appearance="ghost" size="xs" />;
 	};
 
 	const editState = (incoming, type) => {
@@ -105,34 +92,28 @@ const Submission = (props) => {
 		switch (type) {
 			case 'effort':
 				thing = { ...effort };
-				if (typeof(incoming) === 'number') { 
-					thing.amount = parseInt(incoming) 
-				}
-				else {
-					thing.effortType = (incoming);
+				if (typeof incoming === 'number') {
+					thing.amount = parseInt(incoming);
+				} else {
+					thing.effortType = incoming;
 					thing.amount = 0;
-					const actionType = gameConfig.actionTypes.find(el => el.type.toLowerCase() === props.action.type.toLowerCase())
+					const actionType = gameConfig.actionTypes.find((el) => el.type.toLowerCase() === props.action.type.toLowerCase());
 
 					let charEffort = getThisEffort(props.myCharacter.effort, props.submission.effort.effortType);
 					setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
-				} 
+				}
 				setEffort(thing);
 				break;
 			default:
-				console.log('UwU Scott made an oopsie doodle!')
+				console.log('UwU Scott made an oopsie doodle!');
 		}
-	}
+	};
 
 	const isDisabled = () => {
-		if (
-			description.length < 10 ||
-			intent.length < 10 ||
-			name.length < 10
-		)
-			return true;
+		if (description.length < 10 || intent.length < 10 || name.length < 10) return true;
 		if (effort.amount === 0 || effort <= 0) return true;
 		else return false;
-	}
+	};
 
 	// formattedUsedAssets = (submissionAssets) => {
 	// 	let temp = [];
@@ -147,9 +128,9 @@ const Submission = (props) => {
 
 	function formattedUsedAssets(submissionAssets) {
 		let temp = [];
-		let assets = props.getMyAssets
+		let assets = props.getMyAssets;
 		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
-		assets = assets.filter(el => !submissionAssets.some(sub => sub === el._id) )
+		assets = assets.filter((el) => !submissionAssets.some((sub) => sub === el._id));
 		for (const asset of assets) {
 			temp.push(asset._id);
 		}
@@ -160,6 +141,11 @@ const Submission = (props) => {
 		const found = props.assets.find((el) => el._id === asset._id);
 		setInfoAsset(found);
 		setShow('info');
+	};
+
+	const handlePublish = async () => {
+		const id = props.action._id;
+		socket.emit('request', { route: 'action', action: 'publish', id });
 	};
 
 	const handleSubmit = async () => {
@@ -173,7 +159,7 @@ const Submission = (props) => {
 				effort,
 				assets: resources,
 				description,
-				intent,
+				intent
 			}
 		};
 		socket.emit('request', { route: 'action', action: 'update', data });
@@ -201,25 +187,12 @@ const Submission = (props) => {
 						shaded
 						bordered
 					>
-						<b className='normalText'>{asset.type}</b>
+						<b className="normalText">{asset.type}</b>
 						<ButtonGroup>
-							<IconButton
-								size="xs"
-								appearance={'link'}
-								onClick={() => openInfo(asset)}
-								color="blue"
-								icon={<Icon icon="info" />}
-							/>
-							{props.myCharacter.tags.some((el) => el === 'Control') && (
-								<IconButton
-									size="sm"
-									onClick={() => controlRemove(asset._id)}
-									color="red"
-									icon={<Icon icon="exit" />}
-								></IconButton>
-							)}
+							<IconButton size="xs" appearance={'link'} onClick={() => openInfo(asset)} color="blue" icon={<Icon icon="info" />} />
+							{props.myCharacter.tags.some((el) => el === 'Control') && <IconButton size="sm" onClick={() => controlRemove(asset._id)} color="red" icon={<Icon icon="exit" />}></IconButton>}
 						</ButtonGroup>
-						<p className='slim-text'>{asset.name}</p>
+						<p className="slim-text">{asset.name}</p>
 						{asset.status.used && <Tag>Used</Tag>}
 					</Panel>
 				);
@@ -251,325 +224,237 @@ const Submission = (props) => {
 		setShow(false);
 	};
 
-		/*TODO Add info about existing injury(ies)*/
-		const submission = props.submission;
-		return (
-			<div>
-				<Divider vertical />
-				<div
-					style={{ border: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}
-				>
-					<FlexboxGrid align="middle" style={{}} justify="center">
-						<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-							<Avatar
-								circle
-								size="md"
-								src={`/images/${props.creator.characterName}.jpg`}
-								alt="?"
-								style={{ maxHeight: '50vh' }}
-							/>
-						</FlexboxGrid.Item>
+	/*TODO Add info about existing injury(ies)*/
+	const submission = props.submission;
+	return (
+		<div>
+			<Divider vertical />
+			<div style={{ border: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
+				<FlexboxGrid align="middle" style={{}} justify="center">
+					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
+						<Avatar circle size="md" src={`/images/${props.creator.characterName}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
+					</FlexboxGrid.Item>
 
-						<FlexboxGrid.Item colspan={15}>
-							<h5>{props.action.name}</h5>
-							{props.action.creator.characterTitle}/
-							{props.action.creator.characterName}
-							<p className='slim-text'>
-								{getTime(props.submission.createdAt)}
-							</p>
-							{props.myCharacter.tags.some((el) => el === 'Control') &&
-								props.action.tags.length === 0 && <b>No Tags</b>}
-							{props.myCharacter.tags.some((el) => el === 'Control') &&
-								props.action.tags.map((item, index) => (
-									<Tag
-										index={index}
-										closable
-										onClose={() => handleTagRemove(item, 'tags')}
-									>
-										{item}
-									</Tag>
-								))}
-							{props.myCharacter.tags.some((el) => el === 'Control') &&
-								renderTagAdd()}
-						</FlexboxGrid.Item>
+					<FlexboxGrid.Item colspan={15}>
+						<h5>{props.action.name}</h5>
+						{props.action.creator.characterTitle}/{props.action.creator.characterName}
+						<p className="slim-text">{getTime(props.submission.createdAt)}</p>
+						{props.myCharacter.tags.some((el) => el === 'Control') && props.action.tags.length === 0 && <b>No Tags</b>}
+						{props.myCharacter.tags.some((el) => el === 'Control') &&
+							props.action.tags.map((item, index) => (
+								<Tag index={index} closable onClose={() => handleTagRemove(item, 'tags')}>
+									{item}
+								</Tag>
+							))}
+						{props.myCharacter.tags.some((el) => el === 'Control') && renderTagAdd()}
+					</FlexboxGrid.Item>
 
-						<FlexboxGrid.Item colspan={4}>
-							{(props.myCharacter._id === props.action.creator._id ||
-								props.myCharacter.tags.some((el) => el === 'Control')) && (
-								<ButtonToolbar>
-									<ButtonGroup>
-										<IconButton
-											disabled={
-												(props.gamestate.status !== 'Active' ||
-													props.gamestate.round >
-														props.action.round) &&
-												!props.myCharacter.tags.some(
-													(el) => el === 'Control'
-												)
-											}
+					<FlexboxGrid.Item colspan={4}>
+						{(props.myCharacter._id === props.action.creator._id || props.myCharacter.tags.some((el) => el === 'Control')) && (
+							<ButtonToolbar>
+								<ButtonGroup>
+									{(props.action.tags.some((tag) => tag !== 'Published') || !props.action.tags.length > 0) && props.action.type === 'Agenda' && (
+										<Button
+											disabled={(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round) && !props.myCharacter.tags.some((el) => el === 'Control')}
 											size="md"
-											onClick={() => setShow('edit')}
-											color="blue"
+											onClick={() => handlePublish()}
+											color="green"
 											icon={<Icon icon="pencil" />}
-										/>
-										<IconButton
-											disabled={
-												(props.gamestate.status !== 'Active' ||
-													props.gamestate.round >
-														props.action.round) &&
-												!props.myCharacter.tags.some(
-													(el) => el === 'Control'
-												)
-											}
-											size="md"
-											onClick={() => setShow('delete')}
-											color="red"
-											icon={<Icon icon="trash2" />}
-										/>
-									</ButtonGroup>
-								</ButtonToolbar>
-							)}
-						</FlexboxGrid.Item>
+										>
+											Publish Agenda
+										</Button>
+									)}
+									<IconButton
+										disabled={(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round) && !props.myCharacter.tags.some((el) => el === 'Control')}
+										size="md"
+										onClick={() => setShow('edit')}
+										color="blue"
+										icon={<Icon icon="pencil" />}
+									/>
+									<IconButton
+										disabled={(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round) && !props.myCharacter.tags.some((el) => el === 'Control')}
+										size="md"
+										onClick={() => setShow('delete')}
+										color="red"
+										icon={<Icon icon="trash2" />}
+									/>
+								</ButtonGroup>
+							</ButtonToolbar>
+						)}
+					</FlexboxGrid.Item>
+				</FlexboxGrid>
+
+				<Panel
+					shaded
+					style={{
+						padding: '0px',
+						textAlign: 'left',
+						backgroundColor: '#15181e',
+						whiteSpace: 'pre-line'
+					}}
+				>
+					<p style={slimText}>Description</p>
+					<ReactMarkdown children={submission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+					<p style={slimText}>Intent</p>
+					<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+					<p style={slimText}>Effort ({submission.effort.effortType})</p>
+					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
+					<Progress.Line percent={submission.effort.amount * 33 + 1} showInfo={false}>
+						{' '}
+					</Progress.Line>
+					<Divider>Resources</Divider>
+					<FlexboxGrid>
+						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[0])}</FlexboxGrid.Item>
+
+						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[1])}</FlexboxGrid.Item>
+
+						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[2])}</FlexboxGrid.Item>
 					</FlexboxGrid>
+				</Panel>
 
-					<Panel
-						shaded
-						style={{
-							padding: '0px',
-							textAlign: 'left',
-							backgroundColor: '#15181e',
-							whiteSpace: 'pre-line'
-						}}
-					>
-						<p style={slimText}>Description</p>
-						<ReactMarkdown
-							children={submission.description}
-							remarkPlugins={[remarkGfm]}
-						></ReactMarkdown>
-						<p style={slimText}>Intent</p>
-						<ReactMarkdown
-							children={submission.intent}
-							remarkPlugins={[remarkGfm]}
-						></ReactMarkdown>
-						<p style={slimText}>
-							Effort ({submission.effort.effortType})
-						</p>
-						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }} >{submission.effort.amount}</p>
-						<Progress.Line percent={submission.effort.amount * 33 + 1} showInfo={false}>  </Progress.Line>
-						<Divider>Resources</Divider>
-						<FlexboxGrid>
-							<FlexboxGrid.Item colspan={8}>
-								{renderAsset(submission.assets[0])}
-							</FlexboxGrid.Item>
-
-							<FlexboxGrid.Item colspan={8}>
-								{renderAsset(submission.assets[1])}
-							</FlexboxGrid.Item>
-
-							<FlexboxGrid.Item colspan={8}>
-								{renderAsset(submission.assets[2])}
-							</FlexboxGrid.Item>
-						</FlexboxGrid>
-					</Panel>
-
-					<Modal
-						overflow
-						style={{ width: '90%' }}
-						size="md"
-						show={show === 'edit'}
-						onHide={() => setShow(false)}
-					>
-						<Modal.Header>
-							<Modal.Title>
-								Edit {props.action.type} action {name}
-							</Modal.Title>
-						</Modal.Header>
-						<Modal.Body style={{ border: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
-							{props.actionLoading && (
-								<Loader backdrop content="loading..." vertical />
+				<Modal overflow style={{ width: '90%' }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
+					<Modal.Header>
+						<Modal.Title>
+							Edit {props.action.type} action {name}
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body style={{ border: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
+						{props.actionLoading && <Loader backdrop content="loading..." vertical />}
+						<form>
+							Name:
+							{10 - name.length > 0 && (
+								<Tag style={{ color: 'black' }} color={'orange'}>
+									{10 - name.length} more characters...
+								</Tag>
 							)}
-							<form>
-								Name:
-								{10 - name.length > 0 && (
+							{10 - name.length <= 0 && (
+								<Tag color={'green'}>
+									<Icon icon="check" />
+								</Tag>
+							)}
+							<textarea rows="1" value={name} className="textStyle" onChange={(event) => setName(event.target.value)}></textarea>
+							Description:
+							{10 - description.length > 0 && (
+								<Tag style={{ color: 'black' }} color={'orange'}>
+									{10 - description.length} more characters...
+								</Tag>
+							)}
+							{10 - description.length <= 0 && (
+								<Tag color={'green'}>
+									<Icon icon="check" />
+								</Tag>
+							)}
+							<textarea rows="6" value={description} className="textStyle" onChange={(event) => setDescription(event.target.value)} />
+							<br />
+							<FlexboxGrid>
+								Intent:
+								{10 - intent.length > 0 && (
 									<Tag style={{ color: 'black' }} color={'orange'}>
-										{10 - name.length} more characters...
+										{10 - intent.length} more characters...
 									</Tag>
 								)}
-								{10 - name.length <= 0 && (
+								{10 - intent.length <= 0 && (
 									<Tag color={'green'}>
 										<Icon icon="check" />
 									</Tag>
 								)}
-								<textarea
-									rows="1"
-									value={name}
-									className='textStyle'
-									onChange={(event) => setName(event.target.value)}
-								></textarea>
-								Description:
-								{10 - description.length > 0 && (
-									<Tag style={{ color: 'black' }} color={'orange'}>
-										{10 - description.length} more characters...
-									</Tag>
-								)}
-								{10 - description.length <= 0 && (
-									<Tag color={'green'}>
-										<Icon icon="check" />
-									</Tag>
-								)}
-								<textarea
-									rows="6"
-									value={description}
-									className='textStyle'
-									onChange={(event) => setDescription(event.target.value)}/>
-								<br/>
+								<textarea rows="6" value={intent} className="textStyle" onChange={(event) => setIntent(event.target.value)} />
+							</FlexboxGrid>
+							{true && (
 								<FlexboxGrid>
-									Intent:
-									{10 - intent.length > 0 && (
-										<Tag style={{ color: 'black' }} color={'orange'}>
-											{10 - intent.length} more characters...
-										</Tag>
-									)}
-									{10 - intent.length <= 0 && (
-										<Tag color={'green'}>
-											<Icon icon="check" />
-										</Tag>
-									)}
-									<textarea
-										rows="6"
-										value={intent}
-										className='textStyle'
-										onChange={(event) => setIntent(event.target.value)}/>
-								</FlexboxGrid>
-								{true && (
-									<FlexboxGrid>
-										<FlexboxGrid.Item
-											style={{
-												paddingTop: '25px',
-												paddingLeft: '10px',
-												textAlign: 'left'
-											}}
-											align="middle"
-											colspan={6}
-										>
-											<h5 style={{ textAlign: 'center' }}>
-												Effort {effort.amount} / {max}
-												{effort === 0 && (
-													<Tag style={{ color: 'black' }} color={'orange'}>
-														Need Effort
-													</Tag>
-												)}
-											</h5>
+									<FlexboxGrid.Item
+										style={{
+											paddingTop: '25px',
+											paddingLeft: '10px',
+											textAlign: 'left'
+										}}
+										align="middle"
+										colspan={6}
+									>
+										<h5 style={{ textAlign: 'center' }}>
+											Effort {effort.amount} / {max}
+											{effort === 0 && (
+												<Tag style={{ color: 'black' }} color={'orange'}>
+													Need Effort
+												</Tag>
+											)}
+										</h5>
 
-											<Slider
-												graduated
-												min={0}
-												max={max}
-												defaultValue={submission.effort.amount}
-												progress
-												value={effort.amount}
-												onChange={(event)=> editState(parseInt(event), 'effort')}
-											></Slider>
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item
-											style={{
-												paddingTop: '25px',
-												paddingLeft: '10px',
-												textAlign: 'left'
-											}}
-											colspan={2}
-										>
-											{/* <InputNumber value={effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
-										</FlexboxGrid.Item>
-										<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
-										<FlexboxGrid.Item
-											style={{
-												paddingTop: '5px',
-												paddingLeft: '10px',
-												textAlign: 'left'
-											}}
-											colspan={10}
-										>
-											{' '}
-											Resources
+										<Slider graduated min={0} max={max} defaultValue={submission.effort.amount} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item
+										style={{
+											paddingTop: '25px',
+											paddingLeft: '10px',
+											textAlign: 'left'
+										}}
+										colspan={2}
+									>
+										{/* <InputNumber value={effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
+									</FlexboxGrid.Item>
+									<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
+									<FlexboxGrid.Item
+										style={{
+											paddingTop: '5px',
+											paddingLeft: '10px',
+											textAlign: 'left'
+										}}
+										colspan={10}
+									>
+										{' '}
+										Resources
 										<CheckPicker
 											labelKey="name"
 											valueKey="_id"
-
-											data={props.getMyAssets.filter((el) => actionType.assetType.some(ty => ty === el.type.toLowerCase()))}
-
+											data={props.getMyAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
 											style={{ width: '100%' }}
 											defaultValue={props.submission.assets}
 											disabledItemValues={formattedUsedAssets(props.submission.assets)}
 											onChange={(event) => setResources(event)}
 										/>
-										</FlexboxGrid.Item>
-									</FlexboxGrid>
-								)}
-							</form>
-						</Modal.Body>
-						<Modal.Footer>
-							<Button
-								loading={props.actionLoading}
-								onClick={() => handleSubmit()}
-								disabled={
-									effort.amount <= 0 ||
-									description.length < 10 ||
-									intent.length < 10 ||
-									name.length < 10
-								}
-								color={
-									description.length > 10 &&
-									intent.length > 10
-										? 'green'
-										: 'red'
-								}
-								appearance="primary"
-							>
-								<b>Submit</b>
-							</Button>
-							<Button
-								onClick={() => setShow(false)}
-								appearance="subtle"
-							>
-								Cancel
-							</Button>
-						</Modal.Footer>
-					</Modal>
+									</FlexboxGrid.Item>
+								</FlexboxGrid>
+							)}
+						</form>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button
+							loading={props.actionLoading}
+							onClick={() => handleSubmit()}
+							disabled={effort.amount <= 0 || description.length < 10 || intent.length < 10 || name.length < 10}
+							color={description.length > 10 && intent.length > 10 ? 'green' : 'red'}
+							appearance="primary"
+						>
+							<b>Submit</b>
+						</Button>
+						<Button onClick={() => setShow(false)} appearance="subtle">
+							Cancel
+						</Button>
+					</Modal.Footer>
+				</Modal>
 
-					<AssetInfo
-						asset={infoAsset}
-						showInfo={show === 'info'}
-						closeInfo={() => setShow(false)}
-					/>
+				<AssetInfo asset={infoAsset} showInfo={show === 'info'} closeInfo={() => setShow(false)} />
 
-					<Modal
-						size="sm"
-						show={show === 'delete'}
-						onHide={() => setShow(false)}
-					>
-						<Modal.Body>
-							<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
-							{'  '}
-							Warning! Are you sure you want delete your action?
-							<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
-						</Modal.Body>
-						<Modal.Footer>
-							<Button onClick={() => deleteAction()} appearance="primary">
-								I am Sure!
-							</Button>
-							<Button
-								onClick={() => setShow(false)}
-								appearance="subtle"
-							>
-								Nevermind!
-							</Button>
-						</Modal.Footer>
-					</Modal>
-				</div>
+				<Modal size="sm" show={show === 'delete'} onHide={() => setShow(false)}>
+					<Modal.Body>
+						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
+						{'  '}
+						Warning! Are you sure you want delete your action?
+						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
+					</Modal.Body>
+					<Modal.Footer>
+						<Button onClick={() => deleteAction()} appearance="primary">
+							I am Sure!
+						</Button>
+						<Button onClick={() => setShow(false)} appearance="subtle">
+							Nevermind!
+						</Button>
+					</Modal.Footer>
+				</Modal>
 			</div>
-		);
-}
+		</div>
+	);
+};
 
 const slimText = {
 	fontSize: '0.966em',
@@ -593,6 +478,5 @@ const mapDispatchToProps = (dispatch) => ({
 	deleteAction: (data) => dispatch(actionDeleted(data)),
 	actionDispatched: (data) => dispatch(playerActionsRequested(data))
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Submission);
