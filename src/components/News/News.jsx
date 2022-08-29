@@ -68,12 +68,18 @@ const News = (props) => {
 		if (searchQuery) {
 			if (showMyArticles) {
 				filtered = mapArticlesToData(myArticles).filter(
-					(article) => article.title.toLowerCase().includes(searchQuery) || article.body?.toLowerCase().includes(searchQuery) || article.author.toLowerCase().includes(searchQuery)
+					(article) =>
+						article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+						article.body?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+						article.author.toLowerCase().includes(searchQuery.toLowerCase())
 				);
 				setFilteredData(filtered);
 			} else {
 				filtered = mapArticlesToData(getSortedArticles()).filter(
-					(article) => article.title.toLowerCase().includes(searchQuery) || article.body?.toLowerCase().includes(searchQuery) || article.author.toLowerCase().includes(searchQuery)
+					(article) =>
+						article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+						article.body?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+						article.author.toLowerCase().includes(searchQuery.toLowerCase())
 				);
 				setFilteredData(filtered);
 			}

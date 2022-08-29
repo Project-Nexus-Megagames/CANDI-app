@@ -56,7 +56,10 @@ const Agendas = (props) => {
 		if (filter) {
 			let filtered = [];
 			const agendas = mapArticlesToData(getSortedAgendas());
-			filtered = agendas.filter((article) => article.title?.toLowerCase().includes(filter.toLowerCase()) || article.body?.toLowerCase().includes(filter.toLowerCase()));
+			filtered = agendas.filter(
+				(article) =>
+					article.title?.toLowerCase().includes(filter.toLowerCase()) || article.body?.toLowerCase().includes(filter.toLowerCase()) || article.author?.toLowerCase().includes(filter.toLowerCase())
+			);
 			setFilteredData(filtered);
 		} else setFilteredData(mapArticlesToData(getSortedAgendas()));
 	}, [agendas, filter, publishedAgendas]);
