@@ -38,6 +38,8 @@ const NewsFeed = (props) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete, cancelRef } = useDisclosure();
 
+	console.log(data);
+
 	useEffect(() => {
 		if (selected) {
 			const newSelected = data.find((el) => el.articleId === selected.articleId);
@@ -125,6 +127,9 @@ const NewsFeed = (props) => {
 									<Text align="right">
 										{item.comments?.length} {translateComment(item.comments?.length)}
 									</Text>
+									{item.tags?.map((item) => (
+										<Text>{item} Hi</Text>
+									))}
 								</VStack>
 							</HStack>
 						</Stack>

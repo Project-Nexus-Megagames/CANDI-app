@@ -6,13 +6,13 @@ import { CandiModal } from '../Common/Modal';
 
 const ArticleDrawer = (props) => (
 	<CandiDrawer {...props}>
-		<ArticleForm onCancel={() => props.onClose()} onSubmit={() => props.onClose()} />
+		<ArticleForm onCancel={() => props.onClose()} onSubmit={() => props.onClose()} onPublish={() => props.onClose()} />
 	</CandiDrawer>
 );
 
 const ArticleModal = (props) => (
 	<CandiModal {...props}>
-		<ArticleForm onCancel={() => props.onClose()} onSubmit={() => props.onClose()} />
+		<ArticleForm onCancel={() => props.onClose()} onSubmit={() => props.onClose()} onPublish={() => props.onClose()} />
 	</CandiModal>
 );
 

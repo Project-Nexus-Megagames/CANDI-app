@@ -50,6 +50,7 @@ const News = (props) => {
 			date: el.createdAt,
 			comments: el.comments,
 			articleId: el._id,
+			tags: el.tags,
 			type: 'newsArticle'
 		}));
 	};

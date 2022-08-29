@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Button, Container, Sidebar, Input, List, PanelGroup, Tag, Loader, InputGroup, Icon } from 'rsuite';
+import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
+import AddAsset from './AddAsset';
+import ModifyCharacter from './ModifyCharacter';
 import NavigationBar from '../Navigation/NavigationBar';
 import { connect } from 'react-redux';
 import NewCharacter from '../Control/NewCharacter';
+import MobileOtherCharacters from './MobileOtherCharacters';
+import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
 import { getFadedColor } from '../../scripts/frontend';
+import { useDisclosure } from '@chakra-ui/react';
+import { CandiDrawer } from '../Common/Drawer';
 import ViewCharacter from '../Common/ViewCharacter';
 
 const OtherCharacters = (props) => {

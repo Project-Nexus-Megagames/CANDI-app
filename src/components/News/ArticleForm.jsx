@@ -14,7 +14,8 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 		creator: myCharacter._id,
 		title: '',
 		body: '',
-		image: ''
+		image: '',
+		tags: ''
 	};
 
 	const {
@@ -32,7 +33,8 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 					creator: article.authorId,
 					title: article.title,
 					body: article.body,
-					image: article.imageURL
+					image: article.imageURL,
+					tags: article.tags
 			  },
 
 		criteriaMode: 'firstError',
@@ -45,13 +47,18 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 		e.preventDefault();
 
 		if (onSubmit instanceof Function) onSubmit(data);
+
 		if (article) socket.emit('request', { route: 'article', action: 'edit', data: { article: data, id: article.articleId } });
-		else socket.emit('request', { route: 'article', action: 'post', data });
+		else socket.emit('request', { route: 'article', action: 'draft', data });
 	};
 
 	const handlePublish = (data, e) => {
 		e.preventDefault();
-		socket.emit('request', { route: 'article', action: 'publish', data });
+
+		if (onSubmit instanceof Function) onSubmit(data);
+
+		if (article) socket.emit('request', { route: 'article', action: 'publish', data: { article: data, id: article.articleId } });
+		else socket.emit('request', { route: 'article', action: 'publish', data });
 	};
 
 	const handleCancel = () => {
@@ -63,7 +70,8 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 	};
 
 	return (
-		<form onSubmit={formSubmit(handleSubmit)}>
+		//<form onSubmit={formSubmit(handleSubmit)}>
+		<form>
 			<Stack>
 				<FormControl isRequired isInvalid={errors.title}>
 					<HStack>
@@ -109,8 +117,12 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 				</Box>
 				<DevTool control={control} placement="bottom-right" />
 				<HStack justifyContent="end">
-					<Button type="submit" colorScheme="green" disabled={!isValid}>{`Save as Draft`}</Button>
-					<Button colorScheme="blue" onClick={() => handlePublish()}>{`Publish`}</Button>
+					{/*<Button type="submit" colorScheme="green" disabled={!isValid} >{`Save as Draft`}</Button>*/}
+
+					<Button type="submit" colorScheme="green" disabled={!isValid} onClick={formSubmit(handleSubmit)}>{`Save as Draft`}</Button>
+					<Button colorScheme="blue" disabled={!isValid} onClick={formSubmit(handlePublish)}>
+						{`Publish`}
+					</Button>
 					<Button colorScheme="red" onClick={() => handleCancel()}>{`Cancel`}</Button>
 				</HStack>
 			</Stack>
