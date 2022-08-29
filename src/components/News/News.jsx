@@ -98,10 +98,7 @@ const News = (props) => {
 	return (
 		<React.Fragment>
 			<NavigationBar />
-			<Heading>News</Heading>
-			<Divider />
-			<Container>
-				<Header>
+			<Header>
 					<FlexboxGrid justify="center" align="middle">
 						<FlexboxGrid.Item colspan={4}>
 							<InputGroup>
@@ -114,8 +111,10 @@ const News = (props) => {
 						</Button>
 					</FlexboxGrid>
 				</Header>
+			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
+				<NewsFeed data={filteredData} />
 			</Container>
-			<NewsFeed data={filteredData} />
+			
 		</React.Fragment>
 	);
 };
