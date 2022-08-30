@@ -242,7 +242,7 @@ const Submission = (props) => {
 						{props.myCharacter.tags.some((el) => el === 'Control') && props.action.tags.length === 0 && <b>No Tags</b>}
 						{props.myCharacter.tags.some((el) => el === 'Control') &&
 							props.action.tags.map((item, index) => (
-								<Tag index={index} closable onClose={() => handleTagRemove(item, 'tags')}>
+								<Tag index={index} key={index} closable onClose={() => handleTagRemove(item, 'tags')}>
 									{item}
 								</Tag>
 							))}
@@ -302,9 +302,7 @@ const Submission = (props) => {
 					<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 					<p style={slimText}>Effort ({submission.effort.effortType})</p>
 					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
-					<Progress.Line percent={submission.effort.amount * 33 + 1} showInfo={false}>
-						{' '}
-					</Progress.Line>
+					<Progress.Line percent={submission.effort.amount * 33 + 1} showInfo={false}></Progress.Line>
 					<Divider>Resources</Divider>
 					<FlexboxGrid>
 						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[0])}</FlexboxGrid.Item>
