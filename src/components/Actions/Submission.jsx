@@ -265,7 +265,10 @@ const Submission = (props) => {
 										</Button>
 									)}
 									<IconButton
-										disabled={(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round) && !props.myCharacter.tags.some((el) => el === 'Control')}
+										disabled={
+											(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round || props.action.tags.some((tag) => tag === 'Published')) &&
+											!props.myCharacter.tags.some((el) => el === 'Control')
+										}
 										size="md"
 										onClick={() => setShow('edit')}
 										color="blue"
