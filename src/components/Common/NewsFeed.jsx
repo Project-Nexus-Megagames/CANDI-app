@@ -81,7 +81,7 @@ const NewsFeed = (props) => {
 										<HStack>
 											{isDraft(item) && (
 												<Text fontSize="2xl" color="red">
-													DRAFT ARTICLE
+													DRAFT
 												</Text>
 											)}
 											<Text
