@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
+import { Content, Container, Sidebar, Input, Panel, ButtonGroup, Button, FlexboxGrid, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from 'rsuite';
 
 import {
 	useDisclosure,
 	Drawer,
 	DrawerBody,
-	Button,
-	ButtonGroup,
 	DrawerHeader,
 	DrawerOverlay,
 	DrawerContent,
