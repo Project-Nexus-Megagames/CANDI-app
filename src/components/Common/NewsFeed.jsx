@@ -52,7 +52,8 @@ const NewsFeed = (props) => {
 	};
 
 	const isDraft = (item) => {
-		return item.tags?.some((tag) => tag === 'Draft');
+		if (item.type === 'newsArticle') return item.tags?.some((tag) => tag === 'Draft');
+		else return item.tags?.some((tag) => tag !== 'Published') || item.tags.length === 0;
 	};
 
 	const translateComment = (number) => {
@@ -90,7 +91,7 @@ const NewsFeed = (props) => {
 													setSelected(item), setArticleModal(true);
 												}}
 											>
-												{item.title}
+												{item.title} {item.tags}
 											</Text>
 										</HStack>
 										<HStack>

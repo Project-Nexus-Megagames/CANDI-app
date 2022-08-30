@@ -48,6 +48,7 @@ const Agendas = (props) => {
 			comments: el.comments,
 			authorId: el.creator._id,
 			articleId: el._id,
+			tags: el.tags,
 			type: 'agenda'
 		}));
 	};
