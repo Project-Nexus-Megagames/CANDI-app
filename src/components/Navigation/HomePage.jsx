@@ -5,7 +5,7 @@ import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
-import control2 from '../Images/test.jpg';
+import control2 from '../Images/control.png';
 import other from '../Images/other.jpg';
 import nexus from '../Images/test.jpg';
 import actions from '../Images/actions.jpg';
