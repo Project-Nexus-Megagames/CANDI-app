@@ -163,15 +163,11 @@ const HomePage = (props) => {
 					<ImgPanel img={myCharacter} to="agendas" title="~ Agendas ~" body="AAAAAA" />
 				</Col>
 
-				<Col lg={6} md={24}>
+				<Col lg={8} md={24}>
 					<ImgPanel img={props.myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
 				</Col>
 
-				<Col lg={6} md={12}>
-					<ImgPanel img={Map} to="Map" title="~ Map ~" body="Here be Dragons..." />
-				</Col>
-
-				<Col lg={6} md={12}>
+				<Col lg={8} md={12}>
 					{props.myCharacter.tags.some((el) => el === 'Control') && <ImgPanel img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />}
 					{!props.myCharacter.tags.some((el) => el === 'Control') && (
 						<div
@@ -216,7 +212,7 @@ const HomePage = (props) => {
 					)}
 				</Col>
 
-				<Col lg={6} md={24}>
+				<Col lg={8} md={24}>
 					<ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
 				</Col>
 			</Row>
