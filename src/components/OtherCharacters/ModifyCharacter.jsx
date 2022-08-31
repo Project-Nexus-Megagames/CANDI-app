@@ -13,8 +13,24 @@ const ModifyCharacter = (props) => {
 	const effortTypes = gameConfig.effortTypes;
 	const [imageURL, setImageURL] = useState('');
 
+	let defaultValues = {
+		characterName: 'Example Charactername',
+		pronouns: '',
+		playerName: '',
+		username: '',
+		email: 'example@example.com',
+		timeZone: '',
+		characterTitle: '',
+		wiki: '',
+		bio: '',
+		effort: [],
+		tags: [],
+		control: []
+	};
+	const { characterName, playerName, pronouns, username, email, timeZone, characterTitle, wiki, bio, effort, tags, _id } = props.selected;
 	const { register, control, handleSubmit, reset, formState, watch } = useForm({
-		defaultValues: props.selected
+		defaultValues: !props.selected ? defaultValues : { _id, characterName, pronouns, playerName, username, email, timeZone, characterTitle, wiki, bio, effort, tags, control: props.selected.control },
+		shouldUnregister: true
 	});
 
 	const validation = {
@@ -138,7 +154,7 @@ const ModifyCharacter = (props) => {
 			action: 'modify',
 			data: { data, imageURL, loggedInUser }
 		});
-		console.log(data, imageURL);
+		console.log('SENDING DATA', data, imageURL);
 		props.closeModal();
 	}
 
