@@ -1,29 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	Alert,
-	Modal,
-	SelectPicker,
-	CheckPicker,
-	Divider,
-	Button,
-	ButtonGroup,
-	Panel,
-	InputPicker,
-	Placeholder,
-	InputNumber,
-	Checkbox,
-	CheckboxGroup,
-	Toggle,
-	Input
-} from 'rsuite';
+import { Alert, Modal, SelectPicker, CheckPicker, Divider, Button, ButtonGroup, Panel, InputPicker, Placeholder, InputNumber, Checkbox, CheckboxGroup, Toggle, Input } from 'rsuite';
 import socket from '../../socket';
 import _ from 'lodash';
 
-import {
-	getGods,
-	getNonPlayerCharacters
-} from '../../redux/entities/characters';
+import { getGods, getNonPlayerCharacters } from '../../redux/entities/characters';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -36,6 +17,7 @@ const NewEffects = (props) => {
 	const assets = useSelector((state) => state.assets.list);
 	const locations = useSelector((state) => state.locations.list);
 	const characters = useSelector((state) => state.characters.list);
+	const loggedInUser = useSelector((state) => state.auth.user);
 	const sortedCharacters = _.sortBy(charactersToDisplay, 'characterName');
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
 	const gods = useSelector(getGods);
@@ -48,11 +30,7 @@ const NewEffects = (props) => {
 			case 'bond':
 				let bonds = [];
 
-				for (const bond of assets.filter(
-					(el) =>
-						(el.type === 'GodBond' || el.type === 'MortalBond') &&
-						el.ownerCharacter === props.selected.creator._id
-				)) {
+				for (const bond of assets.filter((el) => (el.type === 'GodBond' || el.type === 'MortalBond') && el.ownerCharacter === props.selected.creator._id)) {
 					const bondData = {
 						name: `${bond.name} - ${bond.with.characterName} - ${bond.level}`,
 						level: bond.level,
@@ -65,12 +43,7 @@ const NewEffects = (props) => {
 				break;
 			case 'asset':
 				let newAsset = [];
-				for (const bond of assets.filter(
-					(el) =>
-						el.type !== 'GodBond' &&
-						el.type !== 'MortalBond' &&
-						el.ownerCharacter === props.selected.creator._id
-				)) {
+				for (const bond of assets.filter((el) => el.type !== 'GodBond' && el.type !== 'MortalBond' && el.ownerCharacter === props.selected.creator._id)) {
 					console.log(bond.with);
 					const bondData = {
 						name: `${bond.type} '${bond.name}' - (${bond.dice})`,
@@ -90,6 +63,15 @@ const NewEffects = (props) => {
 					ownerCharacter: props.selected.creator._id
 				});
 				break;
+			case 'aspect':
+				setSelected({
+					gcHappiness: 0,
+					gcSecurity: 0,
+					gcDiplomacy: 0,
+					gcPolitics: 0,
+					gcHealth: 0
+				});
+				break;
 			case 'addInjury':
 				setSelected({
 					name: '',
@@ -100,8 +82,7 @@ const NewEffects = (props) => {
 				break;
 			case 'character':
 				let charSelect = [];
-				let playerContacts = characters.find(char => char._id === props.selected.creator._id);
-				playerContacts ? playerContacts = playerContacts.knownContacts : [];
+				let playerContacts = props.selected.creator.knownContacts;
 				characters.forEach((char) => {
 					if (playerContacts.findIndex((id) => id === char._id) !== -1) return;
 					else if (char._id === props.selected.creator._id) return;
@@ -112,12 +93,7 @@ const NewEffects = (props) => {
 			case 'map':
 				let locSelect = [];
 				locations.forEach((el) => {
-					if (
-						el.unlockedBy.findIndex(
-							(id) => id._id === props.selected.creator._id
-						) !== -1
-					)
-						return;
+					if (el.unlockedBy.findIndex((id) => id._id === props.selected.creator._id) !== -1) return;
 					locSelect.push(el);
 				});
 				setLocationsToDisplay(locSelect);
@@ -125,14 +101,7 @@ const NewEffects = (props) => {
 			default:
 				break;
 		}
-	}, [
-		type,
-		assets,
-		props.selected.creator._id,
-		characters,
-		locations,
-		props.selected.creator.knownContacts
-	]);
+	}, [type, assets, props.selected.creator._id, characters, locations, props.selected.creator.knownContacts]);
 
 	const handleExit = () => {
 		setType('');
@@ -188,12 +157,27 @@ const NewEffects = (props) => {
 		setArcane(!arcane);
 	};
 
+	const renderAspects = () => {
+		return (
+			<div>
+				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one or more aspects</Divider>
+				<label>Happiness: </label>
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHappiness', value)} />
+				<label>Health: </label>
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHealth', value)} />
+				<label>Security: </label>
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcSecurity', value)} />
+				<label>Diplomacy: </label>
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcDiplomacy', value)} />
+				<label>Politics: </label>
+				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcPolitics', value)} />
+			</div>
+		);
+	};
+
 	const renderInjuries = () => {
 		const char = characters.find((el) => el._id === props.selected.creator._id);
-		if (char.injuries.length === 0)
-			return (
-				<div>{char.characterName} currently does not have any injuries</div>
-			);
+		if (char.injuries.length === 0) return <div>{char.characterName} currently does not have any injuries</div>;
 		return (
 			<div>
 				<CheckboxGroup
@@ -228,7 +212,8 @@ const NewEffects = (props) => {
 				action: props.action._id,
 				document: selected,
 				owner: props.selected.creator._id,
-				arcane
+				arcane,
+				loggedInUser
 			};
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
@@ -242,73 +227,42 @@ const NewEffects = (props) => {
 			return (
 				<Panel>
 					Name: {selected.name}
-					<textarea
-						value={selected.name}
-						className="textStyle"
-						onChange={(event) => handleEdit('name', event.target.value)}
-					></textarea>
+					<textarea value={selected.name} className="textStyle" onChange={(event) => handleEdit('name', event.target.value)}></textarea>
 					Description:
-					<textarea
-						rows="4"
-						value={selected.description}
-						className="textStyle"
-						onChange={(event) => handleEdit('description', event.target.value)}
-					></textarea>
+					<textarea rows="4" value={selected.description} className="textStyle" onChange={(event) => handleEdit('description', event.target.value)}></textarea>
 					Dice
-					<textarea
-						value={selected.dice}
-						className="textStyle"
-						onChange={(event) => handleEdit('dice', event.target.value)}
-					></textarea>
+					<textarea value={selected.dice} className="textStyle" onChange={(event) => handleEdit('dice', event.target.value)}></textarea>
 					Uses
-					<InputNumber
-						value={selected.uses}
-						onChange={(value) => handleEdit('uses', value)}
-					/>
+					<InputNumber value={selected.uses} onChange={(value) => handleEdit('uses', value)} />
+					{selected.type === 'GodBond' && (
+						<div>
+							Bond Level
+							<InputPicker labelKey="label" valueKey="value" data={godPickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={(event) => handleEdit('level', event)} />
+						</div>
+					)}
 					{selected.type === 'Asset' && (
 						<div>
 							<Divider />
 							Arcane
-							<Toggle
-								onChange={handleArcane}
-								checked={arcane}
-								checkedChildren="Arcane"
-								unCheckedChildren="Not Arcane"
-							></Toggle>
+							<Toggle onChange={handleArcane} checked={arcane} checkedChildren="Arcane" unCheckedChildren="Not Arcane"></Toggle>
 						</div>
 					)}
 					{selected.type === 'Trait' && (
 						<div>
 							<Divider />
-							<Toggle
-								onChange={handleArcane}
-								checked={arcane}
-								checkedChildren=" Arcane"
-								unCheckedChildren=" Not Arcane"
-							></Toggle>
+							<Toggle onChange={handleArcane} checked={arcane} checkedChildren=" Arcane" unCheckedChildren=" Not Arcane"></Toggle>
 						</div>
 					)}
 					{selected.type === 'MortalBond' && (
 						<div>
 							Bond Level
-							<InputPicker
-								labelKey="label"
-								valueKey="value"
-								data={mortalPickerData}
-								defaultValue={selected.level}
-								style={{ width: '100%' }}
-								onChange={(event) => handleEdit('level', event)}
-							/>
+							<InputPicker labelKey="label" valueKey="value" data={mortalPickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={(event) => handleEdit('level', event)} />
 						</div>
 					)}
 				</Panel>
 			);
 		} else {
-			return (
-				<Placeholder.Paragraph rows={5}>
-					Awaiting Selection
-				</Placeholder.Paragraph>
-			);
+			return <Placeholder.Paragraph rows={5}>Awaiting Selection</Placeholder.Paragraph>;
 		}
 	};
 
@@ -318,61 +272,28 @@ const NewEffects = (props) => {
 			{
 				<Modal.Body>
 					<ButtonGroup>
-						<Button
-							appearance={type !== 'bond' ? 'ghost' : 'primary'}
-							color={'cyan'}
-							onClick={type !== 'bond' ? () => handleType('bond') : undefined}
-						>
+						<Button appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'cyan'} onClick={type !== 'bond' ? () => handleType('bond') : undefined}>
 							Edit Bond
 						</Button>
-						<Button
-							appearance={type !== 'asset' ? 'ghost' : 'primary'}
-							color={'blue'}
-							onClick={type !== 'asset' ? () => handleType('asset') : undefined}
-						>
+						<Button appearance={type !== 'asset' ? 'ghost' : 'primary'} color={'blue'} onClick={type !== 'asset' ? () => handleType('asset') : undefined}>
 							Edit Resource
 						</Button>
-						<Button
-							appearance={type !== 'map' ? 'ghost' : 'primary'}
-							color={'orange'}
-							onClick={type !== 'map' ? () => handleType('map') : undefined}
-						>
+						<Button appearance={type !== 'map' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
 							Unlock Map Tile
 						</Button>
-						<Button
-							appearance={type !== 'character' ? 'ghost' : 'primary'}
-							color={'orange'}
-							onClick={
-								type !== 'character' ? () => handleType('character') : undefined
-							}
-						>
+						<Button appearance={type !== 'character' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'character' ? () => handleType('character') : undefined}>
 							Unlock Character
 						</Button>
-						<Button
-							appearance={type !== 'addInjury' ? 'ghost' : 'primary'}
-							color={'red'}
-							onClick={
-								type !== 'addInjury' ? () => handleType('addInjury') : undefined
-							}
-						>
+						<Button appearance={type !== 'addInjury' ? 'ghost' : 'primary'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
 							Add an injury
 						</Button>
-						<Button
-							appearance={type !== 'healInjuries' ? 'ghost' : 'primary'}
-							color={'orange'}
-							onClick={
-								type !== 'healInjuries'
-									? () => handleType('healInjuries')
-									: undefined
-							}
-						>
+						<Button appearance={type !== 'healInjuries' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
 							Heal Injuries
 						</Button>
-						<Button
-							appearance={type !== 'new' ? 'ghost' : 'primary'}
-							color={'green'}
-							onClick={type !== 'new' ? () => handleType('new') : undefined}
-						>
+						<Button appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}>
+							Edit an Aspect
+						</Button>
+						<Button appearance={type !== 'new' ? 'ghost' : 'primary'} color={'green'} onClick={type !== 'new' ? () => handleType('new') : undefined}>
 							New Resource
 						</Button>
 					</ButtonGroup>
@@ -380,71 +301,27 @@ const NewEffects = (props) => {
 					{type === 'new' && selected && (
 						<div>
 							Type
-							<InputPicker
-								labelKey="label"
-								valueKey="value"
-								data={pickerData}
-								defaultValue={selected.level}
-								style={{ width: '100%' }}
-								onChange={(event) => handleEdit('type', event)}
-							/>
-							{selected.type === 'GodBond' && (
-								<SelectPicker
-									block
-									placeholder={`${selected.type} with...`}
-									onChange={(event) => handleEdit('with', event)}
-									data={gods}
-									valueKey="_id"
-									labelKey="characterName"
-								/>
-							)}
-							{selected.type === 'MortalBond' && (
-								<SelectPicker
-									block
-									placeholder={`${selected.type} with...`}
-									onChange={(event) => handleEdit('with', event)}
-									data={mortals}
-									valueKey="_id"
-									labelKey="characterName"
-								/>
-							)}
+							<InputPicker labelKey="label" valueKey="value" data={pickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={(event) => handleEdit('type', event)} />
+							{selected.type === 'GodBond' && <SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={gods} valueKey="_id" labelKey="characterName" />}
+							{selected.type === 'MortalBond' && <SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={mortals} valueKey="_id" labelKey="characterName" />}
 							{renderAss()}
 						</div>
 					)}
 					{(type === 'bond' || type === 'asset') && (
 						<div>
-							<SelectPicker
-								block
-								placeholder={`Edit ${type}`}
-								onChange={(event) => handleSelect(event)}
-								data={array}
-								valueKey="_id"
-								labelKey="name"
-								groupBy="type"
-							></SelectPicker>
+							<SelectPicker block placeholder={`Edit ${type}`} onChange={(event) => handleSelect(event)} data={array} valueKey="_id" labelKey="name" groupBy="type"></SelectPicker>
 							{renderAss()}
 						</div>
 					)}
 					{type === 'map' && (
 						<div>
-							<CheckPicker
-								placeholder="Select Location(s) to unlock..."
-								onSelect={(event) => handleLocSelect(event)}
-								data={sortedLocations}
-								valueKey="_id"
-								labelKey="name"
-							/>
+							<CheckPicker placeholder="Select Location(s) to unlock..." onSelect={(event) => handleLocSelect(event)} data={sortedLocations} valueKey="_id" labelKey="name" />
 						</div>
 					)}
+					{type === 'aspect' && <div>{renderAspects()}</div>}
 					{type === 'character' && (
 						<div>
-							<CheckPicker
-								placeholder="Select character(s) to unlock..."
-								onSelect={(event) => handleCharSelect(event)}
-								data={sortedCharacters}
-								valueKey="_id"
-								labelKey="characterName"
-							/>
+							<CheckPicker placeholder="Select character(s) to unlock..." onSelect={(event) => handleCharSelect(event)} data={sortedCharacters} valueKey="_id" labelKey="characterName" />
 						</div>
 					)}
 					{type === 'healInjuries' && (
@@ -457,36 +334,20 @@ const NewEffects = (props) => {
 						<div>
 							<Divider>Add Injury</Divider>
 							<div>Title:</div>
-							<Input
-								onChange={(value) => handleAddInjury('name', value)}
-								style={{ marginBottom: ' 10px' }}
-							></Input>
+							<Input onChange={(value) => handleAddInjury('name', value)} style={{ marginBottom: ' 10px' }}></Input>
 							{!selected.permanent && (
 								<div>
 									Duration:
-									<InputNumber
-										min={0}
-										onChange={(value) => handleAddInjury('duration', value)}
-										style={{ marginBottom: ' 10px' }}
-									/>
+									<InputNumber min={0} onChange={(value) => handleAddInjury('duration', value)} style={{ marginBottom: ' 10px' }} />
 								</div>
 							)}
-							<Toggle
-								onChange={(checked) => handleAddInjury('permanent', checked)}
-								checked={selected.permanent}
-								checkedChildren="Permanent Injury"
-								unCheckedChildren="Not Permanent"
-							></Toggle>
+							<Toggle onChange={(checked) => handleAddInjury('permanent', checked)} checked={selected.permanent} checkedChildren="Permanent Injury" unCheckedChildren="Not Permanent"></Toggle>
 						</div>
 					)}
 				</Modal.Body>
 			}
 			<Modal.Footer>
-				<Button
-					disabled={type === ''}
-					onClick={handleSubmit}
-					appearance="primary"
-				>
+				<Button disabled={type === ''} onClick={handleSubmit} appearance="primary">
 					Confirm
 				</Button>
 				<Button onClick={handleExit} appearance="subtle">
@@ -496,6 +357,33 @@ const NewEffects = (props) => {
 		</Modal>
 	);
 };
+
+const godPickerData = [
+	{
+		label: 'Condemned',
+		value: 'Condemned'
+	},
+	{
+		label: 'Disfavoured',
+		value: 'Disfavoured'
+	},
+	{
+		label: 'Neutral',
+		value: 'Neutral'
+	},
+	{
+		label: 'Preferred',
+		value: 'Preferred'
+	},
+	{
+		label: 'Favoured',
+		value: 'Favoured'
+	},
+	{
+		label: 'Blessed',
+		value: 'Blessed'
+	}
+];
 
 const mortalPickerData = [
 	{

@@ -1,67 +1,95 @@
-import React, { useEffect } from "react"; // React imports
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import {  Button, Container, Form,  FormControl, Modal,  Schema,  Checkbox,  FormGroup,   FlexboxGrid, ControlLabel,} from "rsuite";
-import { loadAllActions, loadplayerActions } from '../../redux/entities/playerActions';
-import { authReceived, loginUser } from "../../redux/entities/auth";
-import banner from '../Images/banner1.jpg'
+import React, { useEffect } from 'react'; // React imports
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import {
+	Button,
+	Container,
+	Form,
+	FormControl,
+	Modal,
+	Schema,
+	Checkbox,
+	FormGroup,
+	FlexboxGrid,
+	ControlLabel
+} from 'rsuite';
+import { loadAllActions } from '../../redux/entities/playerActions';
+import { authReceived, loginUser } from '../../redux/entities/auth';
+import banner from '../Images/banner1.jpg';
 
 const { StringType } = Schema.Types;
 
 const Login = (props) => {
-  let { tokenLogin, loadAllActions, user } = props;
-	const [login, setLogin] = React.useState({ user: '', password: ''});
+	let { tokenLogin, loadAction, user } = props;
+	const [login, setLogin] = React.useState({ user: '', password: '' });
 	const [remember, setRemember] = React.useState(true);
-  const history = useHistory();
+	const history = useHistory();
 
-  useEffect(() => {
-    let token = localStorage.getItem("candi-token");
-    console.log("token " + token);
-    if (token !== null && props.login === false) {
-      console.log("Attempting to login!");
+	useEffect(() => {
+		let token = localStorage.getItem('candi-token');
+		console.log('token ' + token);
+		if (token !== null && props.login === false) {
+			console.log('Attempting to login!');
 			tokenLogin({ token });
-    }
-  }, [props.login]);
+		}
+	}, [props.login]);
 
-  useEffect(() => {
-    if (props.login) {
-      loadAllActions(user);
-      history.push("/home");
-    }
-  }, [props.login, user, loadAllActions, history]);
-	
+	useEffect(() => {
+		if (props.login) {
+			loadAction(user);
+			history.push('/home');
+		}
+	}, [props.login, user, loadAction, history]);
 
-  const handleKeyPress = e => {
+	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') props.handleLogin(login);
-	}
+	};
 
-  const onSubmit = async () => {
-		remember ? localStorage.setItem('candi-token', login.user)
+	const onSubmit = async () => {
+		remember
+			? localStorage.setItem('candi-token', login.user)
 			: localStorage.removeItem('candi-token');
 		props.handleLogin(login);
-	}
+	};
 
-	let buttonText = props.loading ? 'Loading' :  'Login'
+	let buttonText = props.loading ? 'Loading' : 'Login';
 
-  return (
-		<Container style={{ height: '100vh' }} >
-			 <img src={banner} className={props.disabled ? 'image disabled' : 'image'} height='100vh' alt='Failed to load img' />     
+	return (
+		<Container style={{ height: '100vh' }}>
+			<img
+				src={banner}
+				className={props.disabled ? 'image disabled' : 'image'}
+				height="100vh"
+				alt="Failed to load img"
+			/>
 			<Modal size="xs" backdrop="static" show={true}>
 				<Modal.Header style={{ textAlign: 'center' }}>
-					<img src={`/images/favicon.ico`} height='100px' alt='Could not load our logo... oops!' />
+					<img
+						src={`/images/favicon.ico`}
+						height="100px"
+						alt="Could not load our logo... oops!"
+					/>
 					<Modal.Title>Login with your Nexus account</Modal.Title>
-					<p>Don't have a Nexus account? 
-						<Button appearance="link" onClick={() => {const win = window.open('https://nexus-central-portal.herokuapp.com/get-started', '_blank');	win.focus();} }>
-								Sign up
-							</Button>
+					<p>
+						Don't have a Nexus account?
+						<Button
+							appearance="link"
+							onClick={() => {
+								const win = window.open(
+									'https://nexus-central-portal.herokuapp.com/get-started',
+									'_blank'
+								);
+								win.focus();
+							}}
+						>
+							Sign up
+						</Button>
 					</p>
 				</Modal.Header>
 				<Modal.Body>
 					<Form model={model} onChange={(form) => setLogin(form)}>
-					<FormGroup>
-							<ControlLabel>
-								Email / Username
-								</ControlLabel>
+						<FormGroup>
+							<ControlLabel>Email / Username</ControlLabel>
 							<FormControl
 								errorMessage={props.error}
 								errorPlacement="topEnd"
@@ -81,15 +109,25 @@ const Login = (props) => {
 								onKeyPress={handleKeyPress}
 							/>
 						</FormGroup>
-						
-						<FlexboxGrid justify="space-between">
-							<Checkbox onChange={(e) => setRemember(e)} checked={remember} >Remember me </Checkbox>
-							<Button appearance="link" size="md"  onClick={() => {const win = window.open('https://nexus-central-portal.herokuapp.com/reset', '_blank');	win.focus();} }>
-								Forgot password? 
-							</Button>    
-						</FlexboxGrid>
-	
 
+						<FlexboxGrid justify="space-between">
+							<Checkbox onChange={(e) => setRemember(e)} checked={remember}>
+								Remember me{' '}
+							</Checkbox>
+							<Button
+								appearance="link"
+								size="md"
+								onClick={() => {
+									const win = window.open(
+										'https://nexus-central-portal.herokuapp.com/reset',
+										'_blank'
+									);
+									win.focus();
+								}}
+							>
+								Forgot password?
+							</Button>
+						</FlexboxGrid>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
@@ -104,28 +142,26 @@ const Login = (props) => {
 				</Modal.Footer>
 			</Modal>
 		</Container>
-
-  );
+	);
 };
 
 const model = Schema.Model({
-  email: StringType().isRequired("This field is required."),
+	email: StringType().isRequired('This field is required.')
 });
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
-  login: state.auth.login,
-  error: state.auth.error,
-  user: state.auth.user,
-  loading: state.auth.loading,
-  gamestateLast: state.gamestate.lastFetch,
+	auth: state.auth,
+	login: state.auth.login,
+	error: state.auth.error,
+	user: state.auth.user,
+	loading: state.auth.loading,
+	gamestateLast: state.gamestate.lastFetch
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  handleLogin: (data) => dispatch(loginUser(data)),
-  tokenLogin: (data) => dispatch(authReceived(data)),
-	loadAction: (data) => dispatch(loadplayerActions(data)),
-	loadAllActions: (data) => dispatch(loadAllActions(data)),
+	handleLogin: (data) => dispatch(loginUser(data)),
+	tokenLogin: (data) => dispatch(authReceived(data)),
+	loadAction: (data) => dispatch(loadAllActions(data)) // dispatch(loadplayerActions(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

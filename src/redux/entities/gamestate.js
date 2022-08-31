@@ -6,7 +6,7 @@ import { apiCallBegan } from "../api"; // Import Redux API call
 const slice = createSlice({
   name: "gamestate",
 	initialState: {
-    version: '1.7 - Public Actions',
+    version: '1.0 Yo-Ho Matey',
     loading: false,
     loaded: false,
     lastFetch: null,
@@ -35,6 +35,12 @@ const slice = createSlice({
       gamestate.hunger = action.payload.hunger;
 			gamestate.happiness = action.payload.happiness;
 			gamestate.discovered = action.payload.discovered;
+
+			gamestate.gcHappiness = action.payload.gcHappiness;
+			gamestate.gcDiplomacy = action.payload.gcDiplomacy;
+			gamestate.gcHealth = action.payload.gcHealth;
+			gamestate.gcPolitics = action.payload.gcPolitics;
+			gamestate.gcSecurity = action.payload.gcSecurity;
 
       gamestate.loading = false;
       gamestate.lastFetch = Date.now();
@@ -70,7 +76,7 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/gamestate`;
 
 // gamestate Loader into state
-export const loadGamestate = payload => (dispatch, getState) => {
+export const loadGamestate = payload => (dispatch) => {
   return dispatch(
     apiCallBegan({
       url,

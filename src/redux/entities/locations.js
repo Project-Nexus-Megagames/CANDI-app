@@ -87,7 +87,7 @@ export const getLocationById = (locationId) =>
   );
 
 // locations Loader into state
-export const loadLocations = (payload) => (dispatch, getState) => {
+export const loadLocations = (payload) => (dispatch) => {
   return dispatch(
     apiCallBegan({
       url,

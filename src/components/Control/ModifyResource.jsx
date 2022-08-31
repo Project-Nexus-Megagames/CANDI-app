@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-	InputPicker,
-	Modal,
-	Button,
-	SelectPicker,
-	ButtonGroup,
-	Panel,
-	InputNumber,
-	Divider,
-	Toggle,
-	Placeholder
-} from 'rsuite';
+import { InputPicker, Modal, Button, SelectPicker, ButtonGroup, Panel, InputNumber, Divider, Toggle, Placeholder } from 'rsuite';
 import { useSelector } from 'react-redux';
 import socket from '../../socket';
 
@@ -19,7 +8,7 @@ const ModifyResource = (props) => {
 	const [description, setDescription] = useState('');
 	const [uses, setUses] = useState(0);
 	const [level, setLevel] = useState('');
-	const [loading, setLoading] = useState(false);
+	const [loading] = useState(false);
 	const [lendable, setLendable] = useState(false);
 	const [hidden, setHidden] = useState(false);
 	const [owner, setOwner] = useState('');
@@ -31,6 +20,7 @@ const ModifyResource = (props) => {
 	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
+	const loggedInUser = useSelector((state) => state.auth.user);
 
 	useEffect(() => {
 		if (props.bond) {
@@ -79,7 +69,8 @@ const ModifyResource = (props) => {
 			lendable,
 			hidden,
 			tags,
-			type
+			type,
+			loggedInUser
 		};
 		console.log(data);
 		socket.emit('request', { route: 'asset', action: 'modify', data });
@@ -113,139 +104,51 @@ const ModifyResource = (props) => {
 			return (
 				<Panel>
 					Name: {name}
-					<textarea
-						value={name}
-						className="textStyle"
-						onChange={(event) => setName(event.target.value)}
-					></textarea>
+					<textarea value={name} className="textStyle" onChange={(event) => setName(event.target.value)}></textarea>
 					<Divider />
 					Description:
-					<textarea
-						rows="4"
-						value={description}
-						className="textStyle"
-						onChange={(event) => setDescription(event.target.value)}
-					></textarea>
+					<textarea rows="4" value={description} className="textStyle" onChange={(event) => setDescription(event.target.value)}></textarea>
 					Dice
-					<textarea
-						value={dice}
-						className="textStyle"
-						onChange={(event) => setDice(event.target.value)}
-					></textarea>
-					Uses:{' '}
-					<InputNumber
-						value={uses}
-						onChange={(event) => setUses(event)}
-					></InputNumber>
+					<textarea value={dice} className="textStyle" onChange={(event) => setDice(event.target.value)}></textarea>
+					Uses: <InputNumber value={uses} onChange={(event) => setUses(event)}></InputNumber>
 					Owner
-					<textarea
-						value={owner}
-						className="textStyle"
-						onChange={(event) => setOwner(event.target.value)}
-					></textarea>
+					<textarea value={owner} className="textStyle" onChange={(event) => setOwner(event.target.value)}></textarea>
 					{type === 'GodBond' && (
 						<div>
 							Bond Level
-							<InputPicker
-								labelKey="label"
-								valueKey="value"
-								data={godPickerData}
-								defaultValue={level}
-								style={{ width: '100%' }}
-								onChange={(event) => setLevel(event)}
-							/>
+							<InputPicker labelKey="label" valueKey="value" data={godPickerData} defaultValue={level} style={{ width: '100%' }} onChange={(event) => setLevel(event)} />
 						</div>
 					)}
 					{type === 'MortalBond' && (
 						<div>
 							Bond Level
-							<InputPicker
-								labelKey="label"
-								valueKey="value"
-								data={mortalPickerData}
-								defaultValue={level}
-								style={{ width: '100%' }}
-								onChange={(event) => setLevel(event)}
-							/>
+							<InputPicker labelKey="label" valueKey="value" data={mortalPickerData} defaultValue={level} style={{ width: '100%' }} onChange={(event) => setLevel(event)} />
 						</div>
 					)}
 					<Divider>Statuses</Divider>
-					<Toggle
-						checked={used}
-						onChange={() => setUsed(!used)}
-						checkedChildren="Used"
-						unCheckedChildren="Un-used"
-					/>
-					<Toggle
-						checked={hidden}
-						onChange={() => setHidden(!hidden)}
-						checkedChildren="hidden"
-						unCheckedChildren="Un-hidden"
-					/>
-					<Toggle
-						checked={lendable}
-						onChange={() => setLendable(!lendable)}
-						checkedChildren="lendable"
-						unCheckedChildren="Un-lendable"
-					/>
-					{type === 'Asset' && (
-						<Toggle
-							onChange={handleArcane}
-							checked={arcane}
-							checkedChildren="Arcane"
-							unCheckedChildren="Not Arcane"
-						></Toggle>
-					)}
-					{type === 'Trait' && (
-						<Toggle
-							onChange={handleArcane}
-							checked={arcane}
-							checkedChildren="Arcane"
-							unCheckedChildren="Not Arcane"
-						></Toggle>
-					)}
+					<Toggle checked={used} onChange={() => setUsed(!used)} checkedChildren="Used" unCheckedChildren="Un-used" />
+					<Toggle checked={hidden} onChange={() => setHidden(!hidden)} checkedChildren="hidden" unCheckedChildren="Un-hidden" />
+					<Toggle checked={lendable} onChange={() => setLendable(!lendable)} checkedChildren="lendable" unCheckedChildren="Un-lendable" />
+					{type === 'Asset' && <Toggle onChange={handleArcane} checked={arcane} checkedChildren="Arcane" unCheckedChildren="Not Arcane"></Toggle>}
+					{type === 'Trait' && <Toggle onChange={handleArcane} checked={arcane} checkedChildren="Arcane" unCheckedChildren="Not Arcane"></Toggle>}
 				</Panel>
 			);
 		} else {
-			return (
-				<Placeholder.Paragraph rows={5}>
-					Awaiting Selection
-				</Placeholder.Paragraph>
-			);
+			return <Placeholder.Paragraph rows={5}>Awaiting Selection</Placeholder.Paragraph>;
 		}
 	};
 
 	return (
-		<Modal
-			loading={loading}
-			size="sm"
-			show={props.show}
-			onHide={() => props.closeModal()}
-		>
-			<SelectPicker
-				block
-				placeholder="Edit or Delete Asset/Trait"
-				onChange={(event) => handleChange(event)}
-				data={assets.filter((el) => el.model !== 'Wealth')}
-				valueKey="_id"
-				labelKey="name"
-			></SelectPicker>
+		<Modal loading={loading} size="sm" show={props.show} onHide={() => props.closeModal()}>
+			<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => handleChange(event)} data={assets.filter((el) => el.model !== 'Wealth')} valueKey="_id" labelKey="name"></SelectPicker>
 			{renderAss()}
 			<Modal.Footer>
 				{selected && (
 					<ButtonGroup>
-						<Button
-							loading={loading}
-							onClick={() => assetModify()}
-							color="blue"
-						>
+						<Button loading={loading} onClick={() => assetModify()} color="blue">
 							Edit
 						</Button>
-						<Button
-							loading={loading}
-							onClick={() => handleDelete()}
-							color="red"
-						>
+						<Button loading={loading} onClick={() => handleDelete()} color="red">
 							Delete
 						</Button>
 					</ButtonGroup>

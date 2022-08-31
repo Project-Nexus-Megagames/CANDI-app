@@ -40,7 +40,7 @@
 }
 
 .img {
-  object-fit: contain;
+  object-fit: fill;
 }
 
 .portrait {
@@ -52,17 +52,12 @@
 }
 
 .container {
-  position: relative;
   width: 100%;
 }
 
 .image {
   opacity: 1;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  height: auto;
   transition: .5s ease;
   backface-visibility: hidden;
   object-fit: fill;
@@ -84,21 +79,32 @@
 .slim-text {
 	font-size: '0.966em';
 	font-weight: '300';
-	white-space: 'nowrap';
+	white-space: 'pre-line';
 	text-align: "center";
 };
 
-.toggle-menu {
-  height: 50px;
-  border-top-right-radius: 10rem;
-  border-bottom-right-radius: 9rem;
-  width: 15px;
-  position: absolute;
-  outline: none;
-  z-index: 1;
-  background-color: #d4af37;
-  border-color: rgba(64, 194, 133, 0.693);
-  border-left: 0;
+.slimText {
+  font-size: 0.966em;
+  color: #97969B;
+  font-weight: lighter;
+  padding-bottom: 5;
+  padding-left: 2;
+  white-space: nowrap;
+}
+
+
+.textStyle {
+  background-color: #1a1d24;
+	border: 1.5px solid #3c3f43;
+	border-radius: 5px;
+	width: 100%;
+	padding: 5px;
+	overflow: auto;
+}
+
+.normalText {
+	font-size: .966em;
+	text-align: center
 }
 
 .p-left {
@@ -111,7 +117,6 @@
   flex-direction: column;
   border-right: 3px solid;
   border-radius: 0;
-  border-color: #d4af37;
   background-color: #22162b;
   transition: 0.8s ease;
   left: -100%;
@@ -135,8 +140,8 @@
 
 .container {
   display: flex;
-   flex-direction: column;
-   align-items: center;
+  flex-direction: column;
+  align-items: center;
  }
    
  .row {
@@ -169,12 +174,13 @@
 
  .toggle-menu {
   height: 60px;
-  border-top-left-radius: 8rem;
-  border-bottom-left-radius: 8rem;
+  border-top-right-radius: 8rem;
+  border-bottom-right-radius: 8rem;
   width: 18px;
   position: absolute;
   z-index: 1;
-  border-color: #cccccc;
+  background-color: #d4af37;
+  border-color: #d4af37;
   border-width: medium;
 }
 
@@ -201,6 +207,17 @@
   font-size: 12px;
 }
 
-.rs-list {
-  scrollbar-width: thin;
+button {
+	color: whitesmoke;
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 10px;
+}
+
+.blob {
+  padding: 0px;
+  text-align: left;
+  background-color: #15181e;
+  white-space: pre-line;
 }

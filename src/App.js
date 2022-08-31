@@ -1,17 +1,24 @@
-import React, { useEffect, version } from "react"; // React imports
+import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
 import { Alert } from "rsuite";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { ChakraProvider } from '@chakra-ui/react';
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
 import "./App.css";
 import Actions from "./components/Actions/Actions";
+import News from "./components/News/News";
+import Agendas from "./components/News/Agendas";
 import Control from "./components/Control/control";
 import HomePage from "./components/Navigation/HomePage";
 import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
+import GameConfig from "./components/GameConfig/GameConfigStep1";
+import GameConfig2 from "./components/GameConfig/GameConfigStep2";
+import Log from "./components/Control/Log";
+
 
 import Login from "./components/Navigation/Login";
 import initUpdates from "./redux/initUpdate";
@@ -30,13 +37,16 @@ import Down from "./components/Navigation/Down";
 import { signOut, usersRecieved } from "./redux/entities/auth";
 import Quests from "./components/Control/Quests";
 import Map from "./components/Map/Map";
+import { loadGameConfig } from './redux/entities/gameConfig';
+import { loadArticles } from "./redux/entities/articles";
+import { loadLog } from "./redux/entities/log";
 
 // React App Component
 initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const { loadChar, loadAssets, loadGamestate, login, user, loadLocations, myCharacter, version, } = props;
+  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog } = props;
 
   useEffect(() => {
     const theme = "dark";
@@ -65,9 +75,11 @@ const App = (props) => {
     console.log("App Loaded");
     loadChar();
     loadAssets();
+    loadArticles();
     loadLocations();
     loadGamestate();
-
+		loadGameConfig();
+		loadLog();
     socket.onAny((event, ...args) => {
       console.log(event);
       if (event === "clients") {
@@ -93,7 +105,7 @@ const App = (props) => {
         }
       }
     });
-  }, [loadChar, loadAssets, loadGamestate, loadLocations]);
+  }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 
   const quack = () => {
     const audio = new Audio("/skullsound2.mp3");
@@ -114,52 +126,64 @@ const App = (props) => {
           : {}
       }
     >
-      <Switch>
-        <Route exact path="/login" render={(props) => <Login {...props} />} />
-        <Route exact path="/home" render={(props) => <HomePage {...props} />} />
-        <Route
-          exact
-          path="/character"
-          render={(props) => <CharacterProfile {...props} />}
-        />
-        <Route
-          exact
-          path="/controllers"
-          render={(props) => <Control {...props} />}
-        />
-        <Route
-          exact
-          path="/others"
-          render={(props) => <OtherCharacters {...props} />}
-        />
-        <Route
-          exact
-          path="/actions"
-          render={(props) => <Actions {...props} />}
-        />
-        <Route
-          exact
-          path="/control"
-          render={(props) => <ControlTerminal {...props} />}
-        />
-        <Route exact path="/yoho" render={(props) => <Quests {...props} />} />
-        <Route exact path="/map" render={(props) => <Map {...props} />} />
-        <Route exact path="/404" render={(props) => <NotFound {...props} />} />
-        <Route
-          exact
-          path="/no-character"
-          render={(props) => <NoCharacter {...props} />}
-        />
-        <Route
-          exact
-          path="/registration"
-          render={(props) => <Registration {...props} />}
-        />
-        <Route exact path="/down" render={(props) => <Down {...props} />} />
-        <Route exact path="/bitsy" render={(props) => <Bitsy {...props} />} />
-        <Redirect from="/" exact to="login" />
-        <Redirect to="/404" />
-      </Switch>
+			<ChakraProvider>
+				<Switch>
+					<Route exact path="/login" render={(props) => <Login {...props} />} />
+					<Route exact path="/home" render={(props) => <HomePage {...props} />} />
+					<Route
+						exact
+						path="/character"
+						render={(props) => <CharacterProfile {...props} />}
+					/>
+          <Route path="/news"	render={(props) => <News {...props} />}/>
+					<Route path="/agendas" render={(props) => <Agendas {...props} />}/>
+					<Route
+						exact
+						path="/controllers"
+						render={(props) => <Control {...props} />}
+					/>
+					<Route
+						exact
+						path="/others"
+						render={(props) => <OtherCharacters {...props} />}
+					/>
+					<Route
+						exact
+						path="/actions"
+						render={(props) => <Actions {...props} />}
+					/>
+					<Route
+						exact
+						path="/gameConfig"
+						render={(props) => <GameConfig {...props} />}
+					/>
+					<Route exact path="/gameConfig2" render={(props) => <GameConfig2 {...props} />}
+					/>
+					<Route
+						exact	path="/control"	render={(props) => <ControlTerminal {...props} />}
+					/>
+					<Route
+						exact	path="/log"	render={(props) => <Log {...props} />}
+					/>
+					<Route exact path="/quests" render={(props) => <Quests {...props} />} />
+					<Route exact path="/map" render={(props) => <Map {...props} />} />
+					<Route exact path="/404" render={(props) => <NotFound {...props} />} />
+					<Route
+						exact
+						path="/no-character"
+						render={(props) => <NoCharacter {...props} />}
+					/>
+					<Route
+						exact
+						path="/registration"
+						render={(props) => <Registration {...props} />}
+					/>
+					<Route exact path="/down" render={(props) => <Down {...props} />} />
+					<Route exact path="/bitsy" render={(props) => <Bitsy {...props} />} />
+					<Redirect from="/" exact to="login" />
+					<Redirect to="/404" />
+				</Switch>
+			</ChakraProvider>
     </div>
   );
 };
@@ -170,6 +194,7 @@ const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   error: state.auth.error,
   login: state.auth.login,
+	gameConfig: state.gameConfig,
   version: state.gamestate.version,
   characters: state.characters.list,
   myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
@@ -177,10 +202,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadChar: (data) => dispatch(loadCharacters()),
-  loadAssets: (data) => dispatch(loadAssets()),
-  loadLocations: (data) => dispatch(loadLocations()),
-  loadGamestate: (data) => dispatch(loadGamestate()),
+  loadChar: () => dispatch(loadCharacters()),
+  loadAssets: () => dispatch(loadAssets()),
+  loadArticles: () => dispatch(loadArticles()),
+  loadLocations: () => dispatch(loadLocations()),
+  loadGamestate: () => dispatch(loadGamestate()),
+	loadGameConfig: () => dispatch(loadGameConfig()),
+	loadLog: () => dispatch(loadLog()),
   usersRecieved: (data) => dispatch(usersRecieved(data)),
   logOut: () => dispatch(signOut()),
 });

@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Loader, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Tag, Modal, Drawer, SelectPicker, Placeholder, Grid, Col, Row, List, TagGroup } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
-import {
-	assetLent,
-	assetUpdated,
-	getMyAssets
-} from '../../redux/entities/assets';
+import { assetLent, assetUpdated, getMyAssets } from '../../redux/entities/assets';
 import socket from '../../socket';
 // import { playerActionsRequested } from "../../redux/entities/playerActions";
 import NavigationBar from '../Navigation/NavigationBar';
 import AssetInfo from '../Actions/AssetInfo';
 import Contacts from '../MyCharacters/Contacts';
-import { Link } from 'react-router-dom';
 
 class CharacterProfile extends Component {
 	state = {
@@ -71,22 +66,34 @@ class CharacterProfile extends Component {
 		this.setState({ memory, show: true });
 	};
 
-	tagStyle = (item) => {
+	tagStyle = (item, index) => {
 		switch (item) {
 			case 'Control':
 				return (
-					<Tag style={{ color: 'black' }} color="orange">
+					<Tag index={index} style={{ color: 'black' }} color="orange">
 						{item}
 					</Tag>
 				);
 			case 'God':
-				return <Tag color="green">{item}</Tag>;
+				return (
+					<Tag index={index} color="green">
+						{item}
+					</Tag>
+				);
 			case 'NPC':
-				return <Tag color="blue">{item}</Tag>;
+				return (
+					<Tag index={index} color="blue">
+						{item}
+					</Tag>
+				);
 			case 'PC':
-				return <Tag color="cyan">{item}</Tag>;
+				return (
+					<Tag index={index} color="cyan">
+						{item}
+					</Tag>
+				);
 			default:
-				return <Tag>{item}</Tag>;
+				return <Tag index={index}>{item}</Tag>;
 		}
 	};
 
@@ -103,10 +110,12 @@ class CharacterProfile extends Component {
 	};
 
 	handleSharingContacts = () => {
+		console.log('boop');
 		this.setState({ showContacts: true });
 	};
 
 	openInfo = (asset) => {
+		console.log(asset);
 		const found = this.props.assets.find((el) => el._id === asset._id);
 		this.setState({ infoAsset: found, infoModal: true });
 	};
@@ -125,30 +134,22 @@ class CharacterProfile extends Component {
 						<Col xs={24} sm={24} md={8} className="gridbox">
 							<div>
 								<p>
-									<img
-										className="portrait"
-										src={`/images/${playerCharacter.characterName}.jpg`}
-										alt="Unable to load img"
-										width="95%"
-										style={{ maxHeight: '50vh' }}
-									/>
-									<h5>{playerCharacter.characterName}</h5>
+									<img className="portrait" src={`${playerCharacter.profilePicture}`} alt="Unable to load img" style={{ maxHeight: '50vh' }} />
 								</p>
 								<TagGroup>
 									Tags
-									{playerCharacter.tags &&
-										playerCharacter.tags.map((item, index) =>
-											this.tagStyle(item)
-										)}
+									{playerCharacter.tags && playerCharacter.tags.map((item, index) => this.tagStyle(item, index))}
 								</TagGroup>
 								<TagGroup>
 									Control
-									{playerCharacter.control &&
-										playerCharacter.control.map((item, index) => (
-											<Tag index={index}>{item}</Tag>
-										))}
+									{playerCharacter.control && playerCharacter.control.map((item, index) => <Tag index={index}>{item}</Tag>)}
 								</TagGroup>
-
+								<p>
+									<b>
+										Wiki Link
+										<IconButton onClick={() => this.openAnvil(playerCharacter)} icon={<Icon icon="link" />} appearance="primary" />
+									</b>
+								</p>
 
 								<p>
 									<b>Bio:</b> {playerCharacter.bio}
@@ -157,35 +158,21 @@ class CharacterProfile extends Component {
 						</Col>
 						<Col xs={24} sm={24} md={8} className="gridbox">
 							<Panel header="Standing Orders" style={{ width: '95%' }}>
-								<Form
-									fluid
-									formValue={this.state.formValue}
-									onChange={(value) => this.setState({ formValue: value })}
-								>
+								<Form fluid formValue={this.state.formValue} onChange={(value) => this.setState({ formValue: value })}>
 									<FormGroup>
 										<ControlLabel></ControlLabel>
-										<FormControl
-											name="textarea"
-											componentClass="textarea"
-											placeholder="Orders for if you miss a turn..."
-										/>
+										<FormControl name="textarea" componentClass="textarea" placeholder="Orders for if you miss a turn..." />
 									</FormGroup>
 									<FormGroup>
 										<ButtonToolbar>
-											<Button
-												appearance="primary"
-												onClick={() => this.handleStanding()}
-											>
+											<Button appearance="primary" onClick={() => this.handleStanding()}>
 												Submit
 											</Button>
 										</ButtonToolbar>
 									</FormGroup>
 								</Form>
 							</Panel>
-							<Link to={'yoho'}>
-										<b style={{ color: '#0f131a' }} >Arrg</b>
-							</Link>
-							<Panel header="My Contacts" style={{ width: '95%' }}>
+							{/*<Panel header="My Contacts" style={{ width: '95%' }}>
 								<ButtonToolbar>
 									<Button
 										appearance="primary"
@@ -194,8 +181,8 @@ class CharacterProfile extends Component {
 										Share My Contacts with Another Character
 									</Button>
 								</ButtonToolbar>
-							</Panel>
-							<Panel header="My Injuries" style={{ width: '95%' }}>
+							</Panel>*/}
+							{/*<Panel header="My Injuries" style={{ width: '95%' }}>
 								<p>
 									<b>Current injuries:</b> {playerCharacter.injuries.length}
 								</p>
@@ -210,13 +197,12 @@ class CharacterProfile extends Component {
 										}
 										return (
 											<List.Item value={injury._id} key={index}>
-												<b>{injury.name}</b> received from action "
-												{injury.actionTitle}". ({autoheal}).
+												<b>{injury.name}</b> received from action "{injury.actionTitle}". ({autoheal}).
 											</List.Item>
 										);
 									})}
 								</List>
-							</Panel>
+							</Panel>*/}
 						</Col>
 						<Col>
 							<div>
@@ -243,28 +229,15 @@ class CharacterProfile extends Component {
 					</Row>
 				</Grid>
 
-				<Modal
-					backdrop="static"
-					size="sm"
-					show={this.state.unlend}
-					onHide={() => this.setState({ unlend: false, unleanding: null })}
-				>
+				<Modal backdrop="static" size="sm" show={this.state.unlend} onHide={() => this.setState({ unlend: false, unleanding: null })}>
 					{this.state.unleanding && (
 						<React.Fragment>
 							<Modal.Body>{this.renderUnLendation()}</Modal.Body>
 							<Modal.Footer>
-								<Button
-									onClick={() => this.handleTakeback()}
-									appearance="primary"
-								>
+								<Button onClick={() => this.handleTakeback()} appearance="primary">
 									Take it Back!
 								</Button>
-								<Button
-									onClick={() =>
-										this.setState({ unlend: false, unleanding: null })
-									}
-									appearance="subtle"
-								>
+								<Button onClick={() => this.setState({ unlend: false, unleanding: null })} appearance="subtle">
 									Cancel
 								</Button>
 							</Modal.Footer>
@@ -274,27 +247,12 @@ class CharacterProfile extends Component {
 
 				<Drawer show={this.state.lendShow} onHide={() => this.closeLend()}>
 					<Drawer.Body>
-						<SelectPicker
-							placeholder="Select a Lending Target"
-							onChange={(event) => this.setState({ target: event })}
-							block
-							valueKey="_id"
-							labelKey="characterName"
-							disabledItemValues={[playerCharacter._id]}
-							data={playerCharacter.knownContacts}
-						/>
+						<SelectPicker placeholder="Select a Lending Target" onChange={(event) => this.setState({ target: event })} block valueKey="_id" labelKey="characterName" disabledItemValues={[playerCharacter._id]} data={this.props.characters} />
 						{this.renderLendation()}
 					</Drawer.Body>
 				</Drawer>
-				<AssetInfo
-					asset={this.state.infoAsset}
-					showInfo={this.state.infoModal}
-					closeInfo={() => this.setState({ infoModal: false })}
-				/>
-				<Contacts
-					show={this.state.showContacts}
-					closeModal={() => this.setState({ showContacts: false })}
-				/>
+				<AssetInfo asset={this.state.infoAsset} showInfo={this.state.infoModal} closeInfo={() => this.setState({ infoModal: false })} />
+				<Contacts show={this.state.showContacts} closeModal={() => this.setState({ showContacts: false })} />
 			</Content>
 		);
 	}
@@ -303,25 +261,15 @@ class CharacterProfile extends Component {
 		return (
 			<div>
 				<h5 style={{ backgroundColor: color }}>{type}s</h5>
-				{this.props.myAssets.filter(
-					(el) => el.status.hidden !== true && el.uses > 0 && el.type === type
-				).length === 0 && <List.Item>No {type}s</List.Item>}
+				{this.props.myAssets.filter((el) => el.status.hidden !== true && el.uses > 0 && el.type === type).length === 0 && <List.Item key={type}>No {type}s</List.Item>}
 				{this.props.myAssets
-					.filter(
-						(el) => el.status.hidden !== true && el.uses > 0 && el.type === type
-					)
+					.filter((el) => el.status.hidden !== true && el.uses > 0 && el.type === type)
 					.map((asset, index) => (
-						<List.Item style={{ textAlign: 'center' }}>
+						<List.Item style={{ textAlign: 'center' }} key={index}>
 							{asset.status.lendable && (
 								<div>
 									<b>{asset.name}</b>
-									<IconButton
-										size="xs"
-										appearance={'link'}
-										onClick={() => this.openInfo(asset)}
-										color="blue"
-										icon={<Icon icon="info" />}
-									/>
+									<IconButton size="xs" appearance={'link'} onClick={() => this.openInfo(asset)} color="blue" icon={<Icon icon="info" />} />
 									<p
 										style={{
 											overflow: 'hidden',
@@ -333,34 +281,16 @@ class CharacterProfile extends Component {
 									</p>
 
 									{asset.status.lent && this.rednerHolder(asset)}
-									{!asset.status.lent && !asset.status.used && (
-										<Tag color="green">Ready</Tag>
-									)}
+									{!asset.status.lent && !asset.status.used && <Tag color="green">Ready</Tag>}
 									{asset.status.used && <Tag color="red">Used</Tag>}
-									{asset.currentHolder &&
-										asset.currentHolder ===
-											this.props.myCharacter.characterName && (
-											<Tag color="blue">
-												Borrowed from: {asset.currentHolder}
-											</Tag>
-										)}
+									{asset.currentHolder && asset.currentHolder === this.props.myCharacter.characterName && <Tag color="blue">Borrowed from: {asset.currentHolder}</Tag>}
 									{!asset.status.lent && (
-										<Button
-											onClick={() => this.openLend(asset)}
-											appearance="ghost"
-											size="sm"
-											disabled={asset.status.used}
-										>
+										<Button onClick={() => this.openLend(asset)} appearance="ghost" size="sm" disabled={asset.status.used}>
 											Lend
 										</Button>
 									)}
 									{asset.status.lent && (
-										<Button
-											onClick={() => this.openUnlend(asset)}
-											appearance="ghost"
-											size="sm"
-											disabled={asset.status.used}
-										>
+										<Button onClick={() => this.openUnlend(asset)} appearance="ghost" size="sm" disabled={asset.status.used}>
 											Un-Lend
 										</Button>
 									)}
@@ -369,13 +299,7 @@ class CharacterProfile extends Component {
 							{!asset.status.lendable && (
 								<div>
 									<b>{asset.name}</b>
-									<IconButton
-										size="xs"
-										appearance={'link'}
-										onClick={() => this.openInfo(asset)}
-										color="blue"
-										icon={<Icon icon="info" />}
-									/>
+									<IconButton size="xs" appearance={'link'} onClick={() => this.openInfo(asset)} color="blue" icon={<Icon icon="info" />} />
 									<p
 										style={{
 											overflow: 'hidden',
@@ -388,9 +312,7 @@ class CharacterProfile extends Component {
 									{asset.level && <b>Level: {asset.level}</b>}
 								</div>
 							)}
-							{asset.tags.filter((el) => el === 'arcane').length > 0 && (
-								<Tag color="violet">Arcane</Tag>
-							)}
+							{asset.tags.filter((el) => el === 'arcane').length > 0 && <Tag color="violet">Arcane</Tag>}
 							{asset.uses !== 999 && <p>Uses: {asset.uses}</p>}
 							{asset.uses === 999 && <p>Uses: Unlimited</p>}
 						</List.Item>
@@ -400,44 +322,23 @@ class CharacterProfile extends Component {
 	};
 
 	rednerHolder = (asset) => {
-		let holder = this.props.characters.find(
-			(el) => el._id === asset.currentHolder
-		);
+		let holder = this.props.characters.find((el) => el._id === asset.currentHolder);
 		if (!holder) holder = this.props.myCharacter;
 		return <Tag color="violet">Lent to: {holder.characterName}</Tag>;
 	};
 
 	renderLendation = () => {
 		if (this.state.target === null || this.state.target === undefined) {
-			return (
-				<Placeholder.Paragraph rows={15}>
-					Awaiting Selection
-				</Placeholder.Paragraph>
-			);
+			return <Placeholder.Paragraph rows={15}>Awaiting Selection</Placeholder.Paragraph>;
 		} else {
-			const target = this.props.characters.find(
-				(el) => el._id === this.state.target
-			);
+			const target = this.props.characters.find((el) => el._id === this.state.target);
 			return (
 				<div>
-					<Divider
-						style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}
-					>
-						{target.characterName}
-					</Divider>
+					<Divider style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{target.characterName}</Divider>
 					<p>{target.bio}</p>
 					<Divider></Divider>
-					<p style={{ fontWeight: 'bolder', fontSize: 20 }}>
-						Are you sure you want to lend your '{this.state.lending.name}' to
-						this person?{' '}
-					</p>
-					<Button
-						onClick={() => this.handleSubmit()}
-						disabled={
-							this.state.target === null || this.state.target === undefined
-						}
-						appearance="primary"
-					>
+					<p style={{ fontWeight: 'bolder', fontSize: 20 }}>Are you sure you want to lend your '{this.state.lending.name}' to this person? </p>
+					<Button onClick={() => this.handleSubmit()} disabled={this.state.target === null || this.state.target === undefined} appearance="primary">
 						Lend
 					</Button>
 				</div>
@@ -446,20 +347,13 @@ class CharacterProfile extends Component {
 	};
 
 	renderUnLendation = () => {
-		let holder = this.props.characters.find(
-			(el) => el._id === this.state.unleanding.currentHolder
-		);
+		let holder = this.props.characters.find((el) => el._id === this.state.unleanding.currentHolder);
 		if (this.state.unleanding === null) {
-			return (
-				<Placeholder.Paragraph rows={15}>
-					Awaiting Selection
-				</Placeholder.Paragraph>
-			);
+			return <Placeholder.Paragraph rows={15}>Awaiting Selection</Placeholder.Paragraph>;
 		} else {
 			return (
 				<p>
-					Are you sure you want to take back your {this.state.unleanding.name}{' '}
-					from {holder.characterName}?
+					Are you sure you want to take back your {this.state.unleanding.name} from {holder.characterName}?
 				</p>
 			);
 		}

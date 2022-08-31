@@ -1,38 +1,38 @@
 import React, { Component } from 'react';
-import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button,  Toggle, InputNumber, InputPicker } from 'rsuite';
+import { ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, Modal, Button, Toggle, InputNumber, InputPicker } from 'rsuite';
 import socket from '../../socket';
 
 class AddAsset extends Component {
-	state = { 
+	state = {
 		formValue: {
 			name: '',
 			description: '',
 			uses: 0,
 			level: '',
 			dice: 'd6',
-			type: this.props.god ? 'GodBond' : ''	
+			type: this.props.god ? 'GodBond' : ''
 		},
 		hidden: true,
 		id: '',
 		loading: false
-	}
-		
+	};
+
 	componentDidMount = () => {
 		const char = this.props.character;
 		this.setState({ id: char._id });
 
 		if (this.props.god) {
-			console.log('geee wizz')
-			let formValue = {...this.state.formValue}
+			console.log('geee wizz');
+			let formValue = { ...this.state.formValue };
 			formValue.type = 'Wealth';
-			this.setState({formValue});
-			console.log(this.state.formValue)
+			this.setState({ formValue });
+			console.log(this.state.formValue);
 		}
 
 		// const stateReplace = JSON.parse(localStorage.getItem('addAssetStateGW'));
-		// if (stateReplace) this.setState(stateReplace); 
-	}
-	
+		// if (stateReplace) this.setState(stateReplace);
+	};
+
 	componentDidUpdate(prevProps, prevState) {
 		// if (this.state !== prevState) {
 		// 	localStorage.setItem('addAssetStateGW', JSON.stringify(this.state));
@@ -45,12 +45,13 @@ class AddAsset extends Component {
 
 	handleSubmit = async () => {
 		this.setState({ loading: true });
+
 		// 1) make a new asset
 		const data = {
 			asset: {
 				name: this.state.formValue.name,
 				with: this.props.god ? this.props.god._id : '',
-				description: this.state.formValue.description,	
+				description: this.state.formValue.description,
 				type: this.state.formValue.type,
 				uses: this.state.formValue.uses,
 				dice: this.state.formValue.dice,
@@ -58,58 +59,65 @@ class AddAsset extends Component {
 				owner: this.props.character.characterName,
 				ownerCharacter: this.props.character._id,
 				status: {
-					hidden: this.state.hidden							
+					hidden: this.state.hidden
 				}
 			},
-			id: this.props.character._id, 
-	 }
-	 socket.emit('request', { route: 'asset', action: 'create', data });	
-	 this.setState({ loading: false, formValue: { name: '', description: '', type: '' }, hidden: true });
-	 this.props.closeModal();
-	 }
+			id: this.props.character._id,
+			loggedInUser: this.props.loggedInUser
+		};
+		socket.emit('request', { route: 'asset', action: 'create', data });
+		this.setState({ loading: false, formValue: { name: '', description: '', type: '' }, hidden: true });
+		this.props.closeModal();
+	};
 
-	render() { 
-		return ( 
-			<Modal
-			overflow
-			size='md'  
-			show={this.props.show} 
-			onHide={() => this.props.closeModal()}>
+	render() {
+		return (
+			<Modal overflow size="md" show={this.props.show} onHide={() => this.props.closeModal()}>
 				<Modal.Header>
 					<Modal.Title>Create new Asset/Trait</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form layout="center" formValue={this.state.formValue}  onChange={formValue => {this.setState({ formValue }); }}>
+					<Form
+						layout="center"
+						formValue={this.state.formValue}
+						onChange={(formValue) => {
+							this.setState({ formValue });
+						}}
+					>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={12}>
 								<FormGroup>
 									<ControlLabel>Asset Name </ControlLabel>
-									<FormControl name="name" componentClass="textarea"/>
-							</FormGroup>
-							<FormGroup>
+									<FormControl name="name" componentClass="textarea" />
+								</FormGroup>
+								<FormGroup>
 									<ControlLabel>Dice</ControlLabel>
-									<FormControl name="dice" componentClass="textarea"/>
+									<FormControl name="dice" componentClass="textarea" />
 								</FormGroup>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={6}>
 								<FormGroup>
 									<ControlLabel>Hidden/Revealed</ControlLabel>
-									<FormControl accepter={this.myToggle}/>
+									<FormControl accepter={this.myToggle} />
 								</FormGroup>
 
-								{this.state.formValue.type === 'GodBond' && this.props.god && <FormGroup>
-									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
-									<FormControl name="level" data={godPickerData} accepter={InputPicker} />
-								</FormGroup>}
-								{this.state.formValue.type === 'MortalBond' && this.props.god && <FormGroup>
-									<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
-									<FormControl name="level" data={mortalPickerData} accepter={InputPicker} />
-								</FormGroup>}
+								{this.state.formValue.type === 'GodBond' && this.props.god && (
+									<FormGroup>
+										<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
+										<FormControl name="level" data={godPickerData} accepter={InputPicker} />
+									</FormGroup>
+								)}
+								{this.state.formValue.type === 'MortalBond' && this.props.god && (
+									<FormGroup>
+										<ControlLabel>Bond Level with {this.props.god.characterName}</ControlLabel>
+										<FormControl name="level" data={mortalPickerData} accepter={InputPicker} />
+									</FormGroup>
+								)}
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
 						<FormGroup>
-								<ControlLabel>Asset Description</ControlLabel>
-								<FormControl style={{width: '100%'}} name="description" rows={5} componentClass="textarea" />
+							<ControlLabel>Asset Description</ControlLabel>
+							<FormControl style={{ width: '100%' }} name="description" rows={5} componentClass="textarea" />
 						</FormGroup>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={12}>
@@ -120,48 +128,42 @@ class AddAsset extends Component {
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={12}>
 								<FormGroup>
-										<ControlLabel>Trait/Asset </ControlLabel>
-										<FormControl name='type'  accepter={InputPicker} data={this.props.god ? pickerData : pickerDataNoGod}/>
+									<ControlLabel>Trait/Asset </ControlLabel>
+									<FormControl name="type" accepter={InputPicker} data={this.props.god ? pickerData : pickerDataNoGod} />
 								</FormGroup>
 							</FlexboxGrid.Item>
 						</FlexboxGrid>
-
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-          <Button onClick={() => this.handleSubmit()} appearance="primary">
-            Submit
-          </Button>
-          <Button onClick={() => this.props.closeModal()} appearance="subtle">
-            Cancel
-          </Button>
-        </Modal.Footer>
+					<Button onClick={() => this.handleSubmit()} appearance="primary">
+						Submit
+					</Button>
+					<Button onClick={() => this.props.closeModal()} appearance="subtle">
+						Cancel
+					</Button>
+				</Modal.Footer>
 			</Modal>
-		 );
+		);
 	}
 
 	myToggle = () => {
-		return (
-			<Toggle checked={this.state.hidden} onChange={()=> this.setState({ hidden: !this.state.hidden })} checkedChildren="Hidden" unCheckedChildren="Revealed">
-				
-			</Toggle>			
-		)
-	}
-	
+		return <Toggle checked={this.state.hidden} onChange={() => this.setState({ hidden: !this.state.hidden })} checkedChildren="Hidden" unCheckedChildren="Revealed"></Toggle>;
+	};
 }
 
 const godPickerData = [
 	{
 		label: 'Condemned',
-		value: 'Condemned',
+		value: 'Condemned'
 	},
 	{
 		label: 'Disfavoured',
-		value: 'Disfavoured',
+		value: 'Disfavoured'
 	},
 	{
 		label: 'Neutral',
-		value: 'Neutral',
+		value: 'Neutral'
 	},
 	{
 		label: 'Preferred',
@@ -171,24 +173,24 @@ const godPickerData = [
 		label: 'Favoured',
 		value: 'Favoured'
 	},
-  {
+	{
 		label: 'Blessed',
 		value: 'Blessed'
-	},
-]
+	}
+];
 
 const mortalPickerData = [
 	{
 		label: 'Loathing',
-		value: 'Loathing',
+		value: 'Loathing'
 	},
 	{
 		label: 'Unfriendly',
-		value: 'Unfriendly',
+		value: 'Unfriendly'
 	},
 	{
 		label: 'Neutral',
-		value: 'Neutral',
+		value: 'Neutral'
 	},
 	{
 		label: 'Warm',
@@ -198,11 +200,11 @@ const mortalPickerData = [
 		label: 'Friendly',
 		value: 'Friendly'
 	},
-  {
+	{
 		label: 'Bonded',
 		value: 'Bonded'
-	},
-]
+	}
+];
 
 const pickerData = [
 	{
@@ -233,8 +235,8 @@ const pickerData = [
 		label: 'Power',
 		value: 'Power'
 	}
-]
- 
+];
+
 const pickerDataNoGod = [
 	{
 		label: 'Asset',
@@ -248,5 +250,5 @@ const pickerDataNoGod = [
 		label: 'Power',
 		value: 'Power'
 	}
-]
+];
 export default AddAsset;

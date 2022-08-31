@@ -39,6 +39,7 @@ const LockMap = (props) => {
 				action: 'lockLocation',
 				data
 			});
+			// eslint-disable-next-line no-empty
 		} catch (err) {}
 		handleExit();
 	};
@@ -53,7 +54,7 @@ const LockMap = (props) => {
 		setLocsToRemove(locIds);
 	};
 
-	const renderUnlockedLocations = (charId) => {
+	const renderUnlockedLocations = () => {
 		if (unlockedLocations.length === 0)
 			return <div>This characters hasn't unlocked any locations yet!</div>;
 		return (

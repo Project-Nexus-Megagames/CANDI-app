@@ -1,39 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Progress,	Loader,	Panel,	Icon,	IconStack,	Row,	Col, Button } from 'rsuite';
+import { Progress, Loader, Panel, Icon, IconStack, Row, Col, Button } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 
-import { finishLoading,	setControl,	signOut,	setCharacter } from '../../redux/entities/auth';
+import {
+	finishLoading,
+	setControl,
+	signOut,
+	setCharacter
+} from '../../redux/entities/auth';
 import { loadCharacters } from '../../redux/entities/characters';
 import { loadGamestate } from '../../redux/entities/gamestate';
+import { loadGameConfig } from '../../redux/entities/gameConfig';
 import { loadLocations } from '../../redux/entities/locations';
-import {	loadplayerActions,	loadAllActions } from '../../redux/entities/playerActions';
-import { loadAssets } from '../../redux/entities/assets';
+import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
 
-const { Line, Circle } = Progress;
+const { Line } = Progress;
 
 const LoadingNew = (props) => {
-
-	const [message, setMessage] = React.useState(loadingMsg[Math.floor(Math.random() * loadingMsg.length)]);
-	const [show, setShow] = React.useState(false);
-	const [sections, setSections] = React.useState(Object.keys(props.entities).sort());
-
-	useEffect(() => {
-		setInterval(() => {
-			setMessage(loadingMsg[Math.floor(Math.random() * loadingMsg.length)])
-    }, 5000);
-
-		setTimeout(() => {
-			setShow(true)
-    }, 7000);
-  }, []);
-
-	useEffect(() => {
-		if (props.actionsFailed > 0) {
-			props.loadAllActions()
-		}
-  }, [props.actionsFailed]);
-
+	const [message] = useState('Scott quip goes here...');
+	const [sections] = useState(Object.keys(props.entities).sort());
 
 	let done = Object.keys(props.entities)
 		.sort()
@@ -41,12 +27,15 @@ const LoadingNew = (props) => {
 	const history = useHistory();
 
 	const boredClick = () => {
-		const random = (Math.floor(Math.random() * bored.length ));
+		const random = Math.floor(Math.random() * bored.length);
 		const win = window.open(bored[random], '_blank');
 		win.focus();
-	}
+	};
 
-	if (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100) {
+	if (
+		sections.length > 0 &&
+		Math.floor((done.length / sections.length) * 100) >= 100
+	) {
 		const character = props.entities.characters.list.find(
 			(el) => el.username === props.auth.user.username
 		);
@@ -82,6 +71,7 @@ const LoadingNew = (props) => {
 					>
 						Log Out
 					</Button>
+					{/* <img height={500} src='https://live.staticflickr.com/4782/40236389964_fe77df66a3_b.jpg' alt='failed to find team assigned'/> */}
 				</div>
 			);
 		}
@@ -96,7 +86,7 @@ const LoadingNew = (props) => {
 				onClick={() => boredClick()}
 			/>
 			{/* src={spook[rand]} */}
-			{<h5>{message}</h5>}
+			{<h5>{loadingMsg[rand1]}</h5>}
 			<Line
 				percent={Math.floor((done.length / sections.length) * 100)}
 				status="active"
@@ -105,7 +95,7 @@ const LoadingNew = (props) => {
 			<Row>
 				{sections.map((section, index) => (
 					<Col key={index} md={4} sm={8}>
-						<Panel boardered key={index} index={index}>
+						<Panel bordered key={index} index={index}>
 							<IconStack>
 								{props.entities[section].lastFetch ? (
 									<Icon icon="check" stack="1x" style={{ color: 'green' }} />
@@ -118,8 +108,12 @@ const LoadingNew = (props) => {
 					</Col>
 				))}
 			</Row>
-			
-			{show && <Button onClick={() => { props.logOut();	history.push('/login');	}}>If you can see this, you are likely stuck. Log Out?</Button>}
+			<Loader
+				center
+				content={`${message} - ${Math.floor(
+					(done.length / sections.length) * 100
+				)}%`}
+			/>
 		</div>
 	);
 };
@@ -137,12 +131,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	loadAction: (data) => dispatch(loadplayerActions(data)),
-	loadAllActions: (data) => dispatch(loadAllActions(data)),
-	loadChar: () => dispatch(loadCharacters()),
-	loadAssets: () => dispatch(loadAssets()),
-	loadLocations: () => dispatch(loadLocations()),
-	loadGamestate: () => dispatch(loadGamestate()),
 	setCharacter: (payload) => dispatch(setCharacter(payload)),
 	finishLoading: () => dispatch(finishLoading()),
 	logOut: () => dispatch(signOut()),
@@ -154,25 +142,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(LoadingNew);
 const gamePhotos = ['https://acegif.com/wp-content/gifs/pirate-flag-1.gif'];
 
 const loadingMsg = [
-	'Thank you all for taking time to make this game happen.',
+	// 'Thank you all for taking time to make this game happen.',
 	"pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ 'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI",
 	"Help I'm a man stuck inside a loading screen let me out!",
-	"C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!",
-	"Why is pirating so addictive? They say once ye lose yer first hand, ye get hooked!",
-	"How do pirates know that they are pirates? They think, therefore they ARRRR!!!!!",
-	"What has 8 legs, 8 arms, and 8 eyes? 8 pirates.",
-	"What do ye call a pirate with two eyes and two legs? A rookie.",
-	"Easter Egg: Try clicking on 'Spook' next to the log out button...",
-	"Beware the REAL STICKY deception. Stay the course."
+	"C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!"
 ];
 const rand = Math.floor(Math.random() * gamePhotos.length);
-
-const pirate = [
-	"https://www.youtube.com/watch?v=b9oI_8YG6Vs&ab_channel=Sw4y",
-	"https://www.youtube.com/watch?v=XaWU1CmrJNc&ab_channel=VeggieTalesOfficial",
-	"https://www.youtube.com/watch?v=gQy0PJEkQhA&ab_channel=EurovisionSongContest",
-	"https://www.youtube.com/watch?v=iPAr7kL-mmg&ab_channel=Glittersharks"
-]
+const rand1 = Math.floor(Math.random() * loadingMsg.length);
 
 const bored = [
 	'https://www.youtube.com/watch?v=QSS3GTmKWVA', // Freddie Mercury gets Trapped in a Slide and Calls out for Mamma (ASMR)
@@ -223,7 +199,7 @@ const bored = [
 	'https://www.youtube.com/watch?v=d1rtJ3DbwIw', // Just a Jug of Chocolate Milk being Cut in Half
 	'https://www.youtube.com/watch?v=EwAajOtfNT8', // two dudes in a hot tub
 	'https://www.youtube.com/watch?v=XKqqqO83yp0', // Guy blow dries his tongue then eats a cracker...
-	'https://www.youtube.com/watch?v=GfCqnHgXwBo',  // How to troll a parade
+	'https://www.youtube.com/watch?v=GfCqnHgXwBo', // How to troll a parade
 	'https://www.youtube.com/watch?v=TLV30GuX-ug', // this is the ideal doggy type
 	'https://www.youtube.com/watch?v=nqhLn76kCv0', // Epic Skeletor He Man Money Super Market Commercial
 	'https://pointerpointer.com/',
@@ -239,4 +215,4 @@ const bored = [
 	'https://www.youtube.com/watch?v=D6aVzIWT7oM&t=14s&ab_channel=AllyourbasicGerrard', // Global Club Soccer Rankings
 	'https://www.youtube.com/watch?v=x0WQOGVLLGw&ab_channel=weyrdmusicman', // Xenophobia
 	'https://www.youtube.com/watch?v=9klzZsVw-cQ&ab_channel=KotteAnimation'
-] // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
+]; // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up

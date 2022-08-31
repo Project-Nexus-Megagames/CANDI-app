@@ -86,27 +86,49 @@ export const getCurrentExplores = createSelector(
   state => state.auth.character,
   state => state.actions.list,
   (round, user, actions) => actions.find(
-    action => (( action.creator._id == user._id && action.round === round && action.type === 'explore') ))
+    // eslint-disable-next-line eqeqeq
+    action => (( action.creator?._id == user?._id && action.round === round && action.type === 'explore') ))
 );
 
 export const filteredActions = createSelector(
   state => state.actions.filter,
-  state => state.actions.list,
-  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.creator.characterTitle.toLowerCase().includes(filter.toLowerCase()) || 
-   action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  || 
-   action.submission.intent.toLowerCase().includes(filter.toLowerCase()) || 
-   action.tags.some(el => el.toLowerCase().includes(filter.toLowerCase()))
+  state => state.actions.list.filter(el => el.submission),
+  (filter, actions) => actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) || action.creator.characterTitle.toLowerCase().includes(filter.toLowerCase()) ||
+  action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  ||
+  action.submission.intent.toLowerCase().includes(filter.toLowerCase()) ||
+  action.tags.some(el => el.toLowerCase().includes(filter.toLowerCase()))
   )
 );
 
+export const getAgendaActions = createSelector(
+  state => state.actions.list,
+	(actions) => actions.filter(el => el.type === 'Agenda'),
+  //(actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
+);
+
+export const getPublishedAgendas = createSelector(
+  state => state.actions.list,
+  (actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
+);
+
+//export const getArticleActions = createSelector(
+//  state => state.actions.list,
+//  (actions) => actions.filter(el => el.type === 'Article' && el.tags.some(tag => tag.toLowerCase() === 'published'))
+//);
+
+//  export const draftActions = createSelector(
+//   state => state.actions.list,
+//   (actions) => actions.filter(el => el.status.draft === true)
+// );
+
 // playerActions Loader into state
-export const loadplayerActions = payload => (dispatch, getState) => {
+export const loadplayerActions = payload => (dispatch) => {
   let url = baseURL;
 
   if (!payload.roles.some(el => el === 'Control' )) { // does no longer work
     url = `${baseURL}/${payload.username}`
-  }  
-    
+  }
+
 
   return dispatch(
     apiCallBegan({
@@ -121,7 +143,7 @@ export const loadplayerActions = payload => (dispatch, getState) => {
 };
 
 // get all actions Loader into state for "emergencies"
-export const loadAllActions = payload => (dispatch, getState) => {
+export const loadAllActions = payload => (dispatch) => {
   let url = baseURL;
   return dispatch(
     apiCallBegan({

@@ -75,14 +75,6 @@ export const getMyCharacter = createSelector(
     characters.find((char) => char.username === user.username)
 );
 
-export const getBadCharacters = createSelector(
-  (state) => state.characters.list,
-  (characters) =>
-    characters.filter(
-      (char) => char.controlEmail === "" || char.pronouns === ""
-    )
-);
-
 export const getPlayerCharacters = createSelector(
   (state) => state.characters.list,
   (characters) =>
@@ -101,6 +93,18 @@ export const getGods = createSelector(
     characters.filter((char) => char.tags.some((el) => el === "God"))
 );
 
+export const getPublicCharacters = createSelector(
+  (state) => state.characters.list,
+  (characters) =>
+    characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
+export const getPrivateCharacters = createSelector(
+  (state) => state.characters.list,
+  (characters) =>
+    characters.filter((char) => !char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
 export const getCharacterById = (charId) =>
   createSelector(
     (state) => state.characters,
@@ -110,13 +114,15 @@ export const getCharacterById = (charId) =>
 export const getMyUnlockedCharacters  = createSelector(
 	(state) => state.characters.list,
 	(state) => state.auth.character,
-	(characters, character) =>
-		characters.filter((char) => character.knownContacts.some((el) => el._id === char._id)
-)
+	(characters, character) => {
+    if (!character) return [];
+    return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id))
+  }
+
 );
 
 // characters Loader into state
-export const loadCharacters = (payload) => (dispatch, getState) => {
+export const loadCharacters = (payload) => (dispatch) => {
   return dispatch(
     apiCallBegan({
       url,

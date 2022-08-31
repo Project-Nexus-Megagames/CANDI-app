@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	Modal,
-	SelectPicker,
-	ButtonGroup,
-	Button,
-	CheckboxGroup,
-	Checkbox,
-	Panel
-} from 'rsuite';
+import { Modal,	SelectPicker,	ButtonGroup, Button, CheckboxGroup, Checkbox, Panel } from 'rsuite';
 import socket from '../../socket';
-import {
-	getCharacterById,
-	getPlayerCharacters
-} from '../../redux/entities/characters';
+import { getCharacterById,	getPlayerCharacters } from '../../redux/entities/characters';
 import _ from 'lodash';
 
 const ManageContacts = (props) => {
@@ -26,11 +15,7 @@ const ManageContacts = (props) => {
 
 	useEffect(() => {
 		if (char) {
-			let array = []
-			for (const c of char.knownContacts) {
-				array.push(c._id)
-			}
-			setContacts(array);
+			setContacts(char.knownContacts);
 		}
 	}, [char]);
 
@@ -43,12 +28,10 @@ const ManageContacts = (props) => {
 	const handleSubmit = () => {
 		const data = { charId: char._id, contacts };
 		try {
-			socket.emit('request', {
-				route: 'character',
-				action: 'manageContacts',
-				data
-			});
-		} catch (err) {}
+			socket.emit('request', { route: 'character',	action: 'manageContacts',	data });
+		} catch (err) {
+			console.log(err);
+		}
 		handleExit();
 	};
 
@@ -94,7 +77,7 @@ const ManageContacts = (props) => {
 	return (
 		<Modal
 			overflow
-			
+			full
 			size="lg"
 			show={props.show}
 			onHide={() => {
@@ -103,6 +86,8 @@ const ManageContacts = (props) => {
 		>
 			<Modal.Header>
 				<Modal.Title>Manage a PC's Contacts</Modal.Title>
+			</Modal.Header>
+			<Panel>
 				<SelectPicker
 					block
 					placeholder="Choose PC"
@@ -111,11 +96,8 @@ const ManageContacts = (props) => {
 					valueKey="_id"
 					labelKey="characterName"
 				/>
-			</Modal.Header>
-			<Modal.Body>
-				<Panel>{renderCharacter()}</Panel>
-			</Modal.Body>
-			
+			</Panel>
+			<Panel>{renderCharacter()}</Panel>
 			<Modal.Footer>
 				<ButtonGroup>
 					<Button onClick={() => handleSubmit()} color="red">
