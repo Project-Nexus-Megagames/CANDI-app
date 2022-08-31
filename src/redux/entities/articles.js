@@ -74,7 +74,7 @@ export const getMyArticles = createSelector(
   state => state.articles.list,
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (articles, myCharacter) => articles.filter(
-    article => (( article.creator._id === myCharacter._id ) ))
+    article => (( article.creator?._id === myCharacter?._id ) ))
 );
 
 export const getPublishedArticles = createSelector(
