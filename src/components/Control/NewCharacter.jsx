@@ -19,7 +19,7 @@ const NewCharacter = (props) => {
 			email: 'temp@temp',
 			wiki: '',
 			tags: ['PC', 'Public'],
-			control: ["Add_Controller_Name"],
+			control: ['Add_Controller_Name'],
 			playerName: '',
 			timeZone: '',
 			bio: '',
@@ -27,7 +27,8 @@ const NewCharacter = (props) => {
 			pronouns: '',
 			effort: effortTypes,
 			username: 'temp'
-		}
+		},
+		shouldUnregister: true
 	});
 
 	const validation = {
