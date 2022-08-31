@@ -25,7 +25,7 @@ const NewCharacter = (props) => {
 			bio: '',
 			characterTitle: 'ex: The Flower Child',
 			pronouns: '',
-			effort: effortTypes,
+			//effort: [effortTypes],
 			username: 'temp'
 		},
 		shouldUnregister: true
@@ -101,10 +101,10 @@ const NewCharacter = (props) => {
 	const { errors } = formState;
 	const watchCharName = watch('characterName', 'New Character');
 
-	const { fields: effortFields } = useFieldArray({
-		name: 'effort',
-		control
-	});
+	//const { fields: effortFields } = useFieldArray({
+	//	name: 'effort',
+	//	control
+	//});
 
 	const {
 		fields: tagFields,
@@ -237,7 +237,7 @@ const NewCharacter = (props) => {
 									{errors.bio && errors.bio.message}
 								</Text>
 							</FormControl>
-							<HStack w="100%">
+							{/*<HStack w="100%">
 								{effortFields.map((item, i) => (
 									<div key={i}>
 										<FormControl>
@@ -249,7 +249,7 @@ const NewCharacter = (props) => {
 										</FormControl>
 									</div>
 								))}
-							</HStack>
+							</HStack>*/}
 
 							<HStack w="100%">
 								<FormLabel>Tags</FormLabel>
