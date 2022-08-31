@@ -244,7 +244,12 @@ const OtherCharacters = (props) => {
 										<h4>Control Panel</h4>
 										<h5>Effort Left: TODO DISPLAY EFFORT HERE </h5>
 										<ButtonGroup style={{ marginTop: '5px' }}>
-											<Button appearance={'ghost'} onClick={() => setEdit(true)}>
+											<Button
+												appearance={'ghost'}
+												onClick={() => {
+													setEdit(true);
+												}}
+											>
 												Modify
 											</Button>
 											<Button appearance={'ghost'} onClick={() => setAdd(true)}>
@@ -356,7 +361,6 @@ const OtherCharacters = (props) => {
 							selected={selected}
 							closeModal={() => {
 								setEdit(false);
-								setSelected('');
 							}}
 						/>
 						<AddAsset show={add} character={selected} loggedInUser={loggedInUser} closeModal={() => setAdd(false)} />
