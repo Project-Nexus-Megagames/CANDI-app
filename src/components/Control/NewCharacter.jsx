@@ -15,15 +15,15 @@ const NewCharacter = (props) => {
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm({
 		defaultValues: {
-			characterName: 'New Character',
-			email: '',
+			characterName: 'Character_Name_Here',
+			email: 'temp@temp',
 			wiki: '',
-			tags: ['NPC'],
-			control: ["Add Controller's Name"],
+			tags: ['PC', 'Public'],
+			control: ["Add_Controller_Name"],
 			playerName: '',
 			timeZone: '',
 			bio: '',
-			characterTitle: 'ex: The Agent',
+			characterTitle: 'ex: The Flower Child',
 			pronouns: '',
 			effort: effortTypes,
 			username: 'temp'

@@ -183,7 +183,7 @@ const HomePage = (props) => {
 							}}
 						>
 							<div className="container">
-								<img src={nexus} className={props.disabled ? 'image disabled' : 'image'} height="auto" alt="Failed to load img" />
+								<img src={control2} className={props.disabled ? 'image disabled' : 'image'} height="auto" alt="Failed to load img" />
 							</div>
 							<h6
 								style={{

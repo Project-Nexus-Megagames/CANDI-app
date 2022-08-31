@@ -36,10 +36,6 @@ const Actions = (props) => {
 	}
 
 	const actionTypes = [];
-	const actionsToDisplay = [];
-
-	props.myActions?.forEach((el) => actionsToDisplay.push(el));
-
 	for (const actionType of gameConfig.actionTypes) actionTypes.push(actionType.type);
 
 	return (
@@ -82,7 +78,7 @@ const Actions = (props) => {
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 							}}
 						>
-							<ActionList actions={props.control ? props.filteredActions : actionsToDisplay} actionTypes={actionTypes} selected={selected} handleSelect={handleSelect} />
+							<ActionList actions={props.control ? props.filteredActions : props.myActions} actionTypes={actionTypes} selected={selected} handleSelect={handleSelect} />
 						</div>
 						ActionList
 					</PanelGroup>
