@@ -261,7 +261,7 @@ const Submission = (props) => {
 											color="green"
 											icon={<Icon icon="pencil" />}
 										>
-											Publish Agenda
+											Publish
 										</Button>
 									)}
 									<IconButton
