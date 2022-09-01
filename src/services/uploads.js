@@ -1,6 +1,7 @@
 import axios from 'axios'
 const API_URL = "http://localhost:5000"
-import { gameServer } from "../../config";
+import { gameServer } from "../config";
+
 
 const cloudinaryUpload = (fileToUpload) => {
     return axios.post(API_URL + `${gameServer}api/imageUpload`, fileToUpload)
