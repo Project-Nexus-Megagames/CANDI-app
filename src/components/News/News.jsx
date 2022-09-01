@@ -29,7 +29,7 @@ const News = (props) => {
 		return <Loader inverse center content="doot..." />;
 	}
 
-	const myArticleEffort = myChar.effort.find((el) => el.type === 'Article').amount;
+	const myArticleEffort = myChar.effort?.find((el) => el.type === 'Article')?.amount;
 
 	const getSortedArticles = () => {
 		if (myChar.tags.some((tag) => tag.toLowerCase() === 'control')) {
