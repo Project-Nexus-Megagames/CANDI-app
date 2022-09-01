@@ -4,7 +4,8 @@ import { Alert, Modal, SelectPicker, CheckPicker, Divider, Button, ButtonGroup, 
 import socket from '../../socket';
 import _ from 'lodash';
 
-import { getGods, getNonPlayerCharacters } from '../../redux/entities/characters';
+import { getGods, getNonPlayerCharacters, getUnlockedCharacters } from '../../redux/entities/characters';
+import { getCharacterById } from './../../redux/entities/characters';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -22,6 +23,10 @@ const NewEffects = (props) => {
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
 	const gods = useSelector(getGods);
 	const mortals = useSelector(getNonPlayerCharacters);
+	const creatorChar = useSelector(getCharacterById(props.selected.creator._id));
+	let playerContacts = useSelector(getUnlockedCharacters(creatorChar));
+
+	console.log('LOOK', playerContacts);
 
 	// TODO REFACTOR CONTACT UNLOCK
 
@@ -82,7 +87,6 @@ const NewEffects = (props) => {
 				break;
 			case 'character':
 				let charSelect = [];
-				let playerContacts = props.selected.creator.knownContacts;
 				characters.forEach((char) => {
 					if (playerContacts.findIndex((id) => id === char._id) !== -1) return;
 					else if (char._id === props.selected.creator._id) return;
@@ -302,8 +306,12 @@ const NewEffects = (props) => {
 						<div>
 							Type
 							<InputPicker labelKey="label" valueKey="value" data={pickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={(event) => handleEdit('type', event)} />
-							{selected.type === 'GodBond' && <SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={gods} valueKey="_id" labelKey="characterName" />}
-							{selected.type === 'MortalBond' && <SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={mortals} valueKey="_id" labelKey="characterName" />}
+							{selected.type === 'GodBond' && (
+								<SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={gods} valueKey="_id" labelKey="characterName" />
+							)}
+							{selected.type === 'MortalBond' && (
+								<SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={mortals} valueKey="_id" labelKey="characterName" />
+							)}
 							{renderAss()}
 						</div>
 					)}

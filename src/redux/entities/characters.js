@@ -118,7 +118,14 @@ export const getMyUnlockedCharacters  = createSelector(
     if (!character) return [];
     return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id))
   }
+);
 
+export const getUnlockedCharacters  = (character) => createSelector(
+	(state) => state.characters,
+	(characters) => {
+    if (!character) return [];
+    return characters.list.filter((char) => character.knownContacts.some((el) => el._id === char._id))
+  }
 );
 
 // characters Loader into state
