@@ -202,7 +202,7 @@ const OtherCharacters = (props) => {
 											))}
 									</List>
 								))}
-								{props.control && (
+								{props.myCharacter.tags.some((el) => el === 'Control') && (
 									<List hover>
 										<p style={{ backgroundColor: getFadedColor('Unknown'), color: getFadedColor(`${'Unknown'}-text`) }}>{'( Hidden )'}</p>
 										{privateCharacters
@@ -231,7 +231,7 @@ const OtherCharacters = (props) => {
 					<Content>
 						<FlexboxGrid>
 							{/*Control Panel*/}
-							{props.control && (
+							{props.myCharacter.tags.some((el) => el === 'Control') && (
 								<FlexboxGrid.Item colspan={24}>
 									<Panel
 										style={{
