@@ -39,9 +39,7 @@ const slice = createSlice({
     },
     actionDeleted: (playerActions, action) => {
       console.log(`${action.type} Dispatched`)
-			console.log('LOOK HERE FIRST', action.payload)
       const index = playerActions.list.findIndex(el => el._id === action.payload.id);
-			console.log('LOOK HERE', index)
       playerActions.list.splice(index, 1);
     },
     setFilter: (playerActions, action) => {
