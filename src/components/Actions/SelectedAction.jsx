@@ -97,6 +97,7 @@ const SelectedAction = (props) => {
 		}
 	};
 
+
 	return (
 		<Content style={{ overflow: 'auto', height: '100%' }}>
 			<FlexboxGrid>
@@ -147,13 +148,13 @@ const SelectedAction = (props) => {
 				selected={props.selected}
 			/>
 
-			<NewResult
+			{props.selected.submission && <NewResult
 				show={result}
 				closeNew={() => closeIt()}
 				gamestate={props.gamestate}
 				submission={props.selected.submission}
 				selected={props.selected}
-			/>
+			/>}
 
 			<NewComment
 				show={comment}
@@ -162,12 +163,12 @@ const SelectedAction = (props) => {
 				selected={props.selected}
 			/>
 
-			<NewEffects
+			{props.selected && props.selected.creator && <NewEffects
 				show={effect}
 				action={props.selected}
 				selected={props.selected}
 				hide={() => closeIt()}
-			/>
+			/>}
 		</Content>
 	);
 };

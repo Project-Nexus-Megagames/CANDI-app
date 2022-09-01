@@ -85,7 +85,7 @@ const Actions = (props) => {
 				</Sidebar>
 
 				{!selected && <h4 style={{ width: '100%' }}>No Action Selected</h4>}
-				{selected && <SelectedAction user={props.user} handleSelect={handleSelect} selected={selected} />}
+				{selected && <SelectedAction handleSelect={handleSelect} selected={selected} />}
 
 				<NewAction show={showNew} closeNew={() => setShowNew(false)} gamestate={props.gamestate} />
 			</Container>

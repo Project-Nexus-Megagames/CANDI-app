@@ -133,4 +133,14 @@ function getThisEffort(efforts, type) {
 	return(found ? found.amount : -999)
 }
 
-export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor };
+const getTime = (date) => {
+	let day = new Date(date).toDateString();
+	let time = new Date(date).toLocaleTimeString();
+	return (
+		<b>
+			{day} - {time}
+		</b>
+	);
+};
+
+export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime };

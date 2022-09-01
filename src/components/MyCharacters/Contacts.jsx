@@ -12,7 +12,6 @@ const Contacts = (props) => {
 	const [charsToShare, setCharsToShare] = useState([]);
 	const playerCharacters = useSelector(getPlayerCharacters);
 	const myUnlockedCharacters = useSelector(getMyUnlockedCharacters);
-	console.log(myUnlockedCharacters);
 	const charactersToShareWith = _.sortBy(
 		myUnlockedCharacters.filter((el) => el.tags.some((tag) => tag === 'PC')),
 		'characterName'
@@ -47,7 +46,6 @@ const Contacts = (props) => {
 	};
 
 	const renderCharacters = () => {
-		console.log(selected);
 		if (selected) {
 			let unlockedCharactersToShare = [];
 			for (const el of myUnlockedCharacters) {
