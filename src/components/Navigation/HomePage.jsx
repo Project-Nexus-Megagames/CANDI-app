@@ -19,11 +19,12 @@ import { toggleDuck } from '../../redux/entities/gamestate';
 import UserList from './UserList';
 import Carousel from '../Common/Carousel';
 import LoadingNew from './LoadingNew';
+import { getPublishedArticles } from '../../redux/entities/articles';
 
 const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0 });
-	const newsArticles = useSelector((state) => state.articles.list);
+	const newsArticles = useSelector(getPublishedArticles);
 	const sortedArticles = [...newsArticles].sort((a, b) => {
 		let da = new Date(a.createdAt),
 			db = new Date(b.createdAt);
