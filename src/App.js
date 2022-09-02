@@ -9,7 +9,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import "./App.css";
 import Actions from "./components/Actions/Actions";
 import News from "./components/News/News";
-import Agendas from "./components/News/Agendas";
+import Agendas from "./components/Agendas/Agendas";
 import Control from "./components/Control/control";
 import HomePage from "./components/Navigation/HomePage";
 import CharacterProfile from "./components/MyCharacters/CharacterProfile";

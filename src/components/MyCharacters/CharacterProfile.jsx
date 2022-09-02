@@ -265,7 +265,7 @@ class CharacterProfile extends Component {
 				{this.props.myAssets
 					.filter((el) => el.status.hidden !== true && el.uses > 0 && el.type === type)
 					.map((asset, index) => (
-						<List.Item style={{ textAlign: 'center' }} key={index}>
+						<List.Item style={{ textAlign: 'center' }} index={index} key={index}>
 							{asset.status.lendable && (
 								<div>
 									<b>{asset.name}</b>

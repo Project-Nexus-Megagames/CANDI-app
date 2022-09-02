@@ -238,19 +238,6 @@ const NewEffects = (props) => {
 					<textarea value={selected.dice} className="textStyle" onChange={(event) => handleEdit('dice', event.target.value)}></textarea>
 					Uses
 					<InputNumber value={selected.uses} onChange={(value) => handleEdit('uses', value)} />
-					{selected.type === 'GodBond' && (
-						<div>
-							Bond Level
-							<InputPicker labelKey="label" valueKey="value" data={godPickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={(event) => handleEdit('level', event)} />
-						</div>
-					)}
-					{selected.type === 'Asset' && (
-						<div>
-							<Divider />
-							Arcane
-							<Toggle onChange={handleArcane} checked={arcane} checkedChildren="Arcane" unCheckedChildren="Not Arcane"></Toggle>
-						</div>
-					)}
 					{selected.type === 'Trait' && (
 						<div>
 							<Divider />
@@ -276,24 +263,24 @@ const NewEffects = (props) => {
 			{
 				<Modal.Body>
 					<ButtonGroup>
-						<Button appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'cyan'} onClick={type !== 'bond' ? () => handleType('bond') : undefined}>
+						{/* <Button  appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'cyan'} onClick={type !== 'bond' ? () => handleType('bond') : undefined}>
 							Edit Bond
-						</Button>
+						</Button> */}
 						<Button appearance={type !== 'asset' ? 'ghost' : 'primary'} color={'blue'} onClick={type !== 'asset' ? () => handleType('asset') : undefined}>
 							Edit Resource
 						</Button>
-						<Button appearance={type !== 'map' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
+						{/* <Button appearance={type !== 'map' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
 							Unlock Map Tile
-						</Button>
-						<Button appearance={type !== 'character' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'character' ? () => handleType('character') : undefined}>
+						</Button> */}
+						<Button disabled appearance={type !== 'character' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'character' ? () => handleType('character') : undefined}>
 							Unlock Character
 						</Button>
-						<Button appearance={type !== 'addInjury' ? 'ghost' : 'primary'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
+						{/* <Button appearance={type !== 'addInjury' ? 'ghost' : 'primary'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
 							Add an injury
-						</Button>
-						<Button appearance={type !== 'healInjuries' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
+						</Button> */}
+						{/* <Button appearance={type !== 'healInjuries' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
 							Heal Injuries
-						</Button>
+						</Button> */}
 						<Button appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}>
 							Edit an Aspect
 						</Button>
@@ -366,33 +353,6 @@ const NewEffects = (props) => {
 	);
 };
 
-const godPickerData = [
-	{
-		label: 'Condemned',
-		value: 'Condemned'
-	},
-	{
-		label: 'Disfavoured',
-		value: 'Disfavoured'
-	},
-	{
-		label: 'Neutral',
-		value: 'Neutral'
-	},
-	{
-		label: 'Preferred',
-		value: 'Preferred'
-	},
-	{
-		label: 'Favoured',
-		value: 'Favoured'
-	},
-	{
-		label: 'Blessed',
-		value: 'Blessed'
-	}
-];
-
 const mortalPickerData = [
 	{
 		label: 'Loathing',
@@ -429,14 +389,14 @@ const pickerData = [
 		label: 'Trait',
 		value: 'Trait'
 	},
-	{
-		label: 'Power',
-		value: 'Power'
-	},
-	{
-		label: 'Bond',
-		value: 'bond'
-	}
+	// {
+	// 	label: 'Power',
+	// 	value: 'Power'
+	// },
+	// {
+	// 	label: 'Bond',
+	// 	value: 'bond'
+	// }
 ];
 
 export default NewEffects;

@@ -232,12 +232,12 @@ const Submission = (props) => {
 			<div style={{ border: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
 				<FlexboxGrid align="middle" style={{}} justify="center">
 					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-						<Avatar circle size="md" src={`/images/${props.creator.characterName}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
+						<Avatar circle size="md" src={props.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={15}>
 						<h5>{props.action.name}</h5>
-						{props.action.creator.characterTitle}/{props.action.creator.characterName}
+						{props.action.creator.playerName} - {props.action.creator.characterName}
 						<p className="slim-text">{getTime(props.submission.createdAt)}</p>
 						{props.myCharacter.tags.some((el) => el === 'Control') && props.action.tags.length === 0 && <b>No Tags</b>}
 						{props.myCharacter.tags.some((el) => el === 'Control') &&
@@ -261,7 +261,7 @@ const Submission = (props) => {
 											color="green"
 											icon={<Icon icon="pencil" />}
 										>
-											Publish Agenda
+											Publish
 										</Button>
 									)}
 									<IconButton
