@@ -17,7 +17,12 @@ const slice = createSlice({
     hunger: 0,
     happiness: 0,
     discovered: false,
-    duck: false
+    duck: false,
+		gcHappiness: 0,
+		gcDiplomacy: 0,
+		gcHealth: 0,
+		gcPolitics: 0,
+		gcSecurity: 0
   },
   // Reducers - Events
   reducers: {

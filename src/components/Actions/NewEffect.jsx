@@ -26,8 +26,6 @@ const NewEffects = (props) => {
 	const creatorChar = useSelector(getCharacterById(props.selected.creator._id));
 	let playerContacts = useSelector(getUnlockedCharacters(creatorChar));
 
-	console.log('LOOK', playerContacts);
-
 	useEffect(() => {
 		switch (type) {
 			case 'bond':
