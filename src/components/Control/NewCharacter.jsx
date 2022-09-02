@@ -141,6 +141,7 @@ const NewCharacter = (props) => {
 	};
 
 	const handleExit = () => {
+		setImageURL('');
 		props.closeModal();
 	};
 
@@ -150,6 +151,7 @@ const NewCharacter = (props) => {
 			action: 'create',
 			data: { data, imageURL, loggedInUser }
 		});
+		setImageURL('');
 		props.closeModal();
 	}
 
