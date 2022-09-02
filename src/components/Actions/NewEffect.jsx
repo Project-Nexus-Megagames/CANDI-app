@@ -28,8 +28,6 @@ const NewEffects = (props) => {
 
 	console.log('LOOK', playerContacts);
 
-	// TODO REFACTOR CONTACT UNLOCK
-
 	useEffect(() => {
 		switch (type) {
 			case 'bond':
@@ -272,7 +270,7 @@ const NewEffects = (props) => {
 						{/* <Button appearance={type !== 'map' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
 							Unlock Map Tile
 						</Button> */}
-						<Button disabled appearance={type !== 'character' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'character' ? () => handleType('character') : undefined}>
+						<Button appearance={type !== 'character' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'character' ? () => handleType('character') : undefined}>
 							Unlock Character
 						</Button>
 						{/* <Button appearance={type !== 'addInjury' ? 'ghost' : 'primary'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
@@ -388,7 +386,7 @@ const pickerData = [
 	{
 		label: 'Trait',
 		value: 'Trait'
-	},
+	}
 	// {
 	// 	label: 'Power',
 	// 	value: 'Power'
