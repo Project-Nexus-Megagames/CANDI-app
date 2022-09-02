@@ -21,6 +21,7 @@ const ModifyCharacter = (props) => {
 	);
 
 	useEffect(() => {
+		setImageURL('');
 		reset(props.selected);
 	}, [props.selected]);
 
@@ -135,8 +136,8 @@ const ModifyCharacter = (props) => {
 	};
 
 	const handleExit = () => {
-		props.closeModal();
 		setImageURL('');
+		props.closeModal();
 	};
 
 	function onSubmit(data, e) {
