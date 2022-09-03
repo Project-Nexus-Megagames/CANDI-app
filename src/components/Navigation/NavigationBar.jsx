@@ -52,15 +52,6 @@ const Navigation = props => {
 		</FlexboxGrid>
 		</div>
 	);
-	/**
-	 * 				<Navbar style={{ height: '6vh' }} >
-			<Navbar.Body>
-				<Nav onSelect={this.props.onSelect} activeKey={this.props.active}>
-				<Nav.Item eventKey="home" to="/home" componentClass={NavLink} icon={<Icon icon="arrow-circle-left" />}>Back</Nav.Item>
-			</Nav>		
-			</Navbar.Body>			
-		</Navbar>
-	 */
 }
 
 const mapStateToProps = (state) => ({

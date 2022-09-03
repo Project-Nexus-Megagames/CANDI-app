@@ -8,6 +8,7 @@ const ImgPanel = (props) => {
 				style={{
 					border: '5px solid #d4af37',
 					borderRadius: '10px',
+					position: 'relative',
 					margin: '10px',
 					height: '45vh',
 					overflow: 'hidden'
@@ -27,7 +28,7 @@ const ImgPanel = (props) => {
 						bottom: '25px',
 						left: '15px',
 						color: 'white',
-						background: '#663300'
+						background: '#800080'
 					}}
 				>{`${props.disabled ? '[DISABLED] ' : ''}${props.title}`}</h6>
 				<p
@@ -36,7 +37,7 @@ const ImgPanel = (props) => {
 						bottom: '10px',
 						left: '15px',
 						color: 'white',
-						background: '#663300',
+						background: '#800080',
 						fontSize: '0.966em'
 					}}
 				>

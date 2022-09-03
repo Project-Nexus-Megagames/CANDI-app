@@ -7,9 +7,9 @@ import ImgPanel from './ImgPanel';
 // import aang from '../Images/aang.jpg'
 import control2 from '../Images/control.png';
 import other from '../Images/other.jpg';
-import nexus from '../Images/test.jpg';
+import news from '../Images/News.jpg';
 import actions from '../Images/actions.jpg';
-import myCharacter from '../Images/test.jpg';
+import agendas from '../Images/agendas.webp';
 import Map from '../Images/map.jpg';
 
 import { signOut } from '../../redux/entities/auth';
@@ -110,6 +110,7 @@ const HomePage = (props) => {
 				justify="start"
 				style={{
 					height: '50px',
+					fontSize: '0.966em',
 					backgroundColor: '#746D75',
 					color: '',
 					borderBottom: '3px solid',
@@ -121,16 +122,16 @@ const HomePage = (props) => {
 				<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 					<Dropdown
 						renderTitle={() => {
-							return <IconButton appearance="subtle" icon={<Icon icon="bars" size="4x" />} size="md" circle />;
+							return <IconButton  icon={<Icon icon="bars" size="4x" />} size="md" circle />;
 						}}
 					>
 						<Dropdown.Item>Version: {props.version}</Dropdown.Item>
 						<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
-						<Dropdown.Item onSelect={() => window.open('https://www.patreon.com/wcmprojectnexus')}>Support Nexus</Dropdown.Item>
 						<Dropdown.Item onSelect={() => handleLogOut()}>Log Out</Dropdown.Item>
 						<Dropdown.Item onSelect={() => props.toggleDuck()}>Spook</Dropdown.Item>
 					</Dropdown>
 				</FlexboxGrid.Item>
+
 				<FlexboxGrid.Item colspan={22}>
 					<div>
 						<p>Round: {props.gamestate.round} </p>
@@ -148,69 +149,30 @@ const HomePage = (props) => {
 						{clock.days + clock.hours + clock.minutes <= 0 && <p>Game Status: {props.gamestate.status}</p>}
 					</div>
 				</FlexboxGrid.Item>
+
 				<FlexboxGrid.Item colspan={1}>{props.myCharacter.tags.some((el) => el === 'Control') && <UserList />}</FlexboxGrid.Item>
 			</FlexboxGrid>
 
 			<Row>
 				<Col lg={12} md={24}>
-					<Carousel height="45vh" to="news" data={sortedArticles.slice(0, 3)}></Carousel>
+					<ImgPanel img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+					{/* <Carousel height="45vh" to="news" data={sortedArticles.slice(0, 3)}></Carousel> */}
 				</Col>
 
 				<Col lg={6} md={12}>
-					<ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the thing" />
+					<ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
 				</Col>
 
 				<Col lg={6} md={12}>
-					<ImgPanel img={myCharacter} to="agendas" title="~ Agendas ~" body="AAAAAA" />
+					<ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="The Mootening awaits" />
 				</Col>
 
 				<Col lg={8} md={24}>
 					<ImgPanel img={props.myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
 				</Col>
 
-				<Col lg={8} md={12}>
-					{props.myCharacter.tags.some((el) => el === 'Control') && <ImgPanel img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />}
-					{!props.myCharacter.tags.some((el) => el === 'Control') && (
-						<div
-							onClick={() => openNexus()}
-							style={{
-								border: '5px solid #d4af37',
-								width: '90%',
-								borderRadius: '10px',
-								position: 'relative',
-								margin: '10px',
-								height: '44vh',
-								overflow: 'hidden'
-							}}
-						>
-							<div className="container">
-								<img src={control2} className={props.disabled ? 'image disabled' : 'image'} height="auto" alt="Failed to load img" />
-							</div>
-							<h6
-								style={{
-									position: 'absolute',
-									bottom: '25px',
-									left: '15px',
-									color: 'white',
-									background: '#800080'
-								}}
-							>
-								~ Project Nexus ~
-							</h6>
-							<p
-								style={{
-									position: 'absolute',
-									bottom: '10px',
-									left: '15px',
-									color: 'white',
-									background: '#800080',
-									fontSize: '0.966em'
-								}}
-							>
-								Support the Programmers
-							</p>
-						</div>
-					)}
+				<Col onClick={() => openNexus()} lg={8} md={24}>
+					<ImgPanel img={control2} to="" title="~ Project Nexus ~" body="Support the Programmers" />
 				</Col>
 
 				<Col lg={8} md={24}>
