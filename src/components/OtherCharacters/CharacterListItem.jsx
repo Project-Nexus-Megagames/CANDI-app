@@ -73,7 +73,7 @@ const CharacterListItem = (props) => {
 					<b style={slimText}>
 						{character.email} {'  '}						
 					</b>
-					<TagGroup style={{ display: 'flex', marginLeft: '0px', marginTop: '-1px' }}>{character.tags && character.tags.map((item, index) => tagStyle(item, index))}</TagGroup>
+					<TagGroup style={{ display: 'flex', marginLeft: '0px', marginTop: '-1px' }}>{character.tags && character.tags.filter(el => el.toLowerCase() !== 'public').map((item, index) => tagStyle(item, index))}</TagGroup>
 					
 				</FlexboxGrid.Item>
 			</FlexboxGrid>
