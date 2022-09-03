@@ -2,23 +2,9 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 import remarkGfm from 'remark-gfm';
-import {
-	Avatar,
-	Modal,
-	Button,
-	ButtonToolbar,
-	ButtonGroup,
-	FlexboxGrid,
-	IconButton,
-	Icon,
-	Toggle,
-	Panel
-} from 'rsuite';
+import { Avatar, Modal, Button, ButtonToolbar, ButtonGroup, FlexboxGrid, IconButton, Icon, Toggle, Panel } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import {
-	getMyCharacter,
-	characterUpdated
-} from '../../redux/entities/characters';
+import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 class Effect extends Component {
@@ -34,11 +20,7 @@ class Effect extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.actions !== prevProps.actions) {
-			if (
-				this.props.actions.some(
-					(el) => el.description === this.state.description
-				)
-			) {
+			if (this.props.actions.some((el) => el.description === this.state.description)) {
 				// checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();
 				this.setState({
@@ -56,7 +38,7 @@ class Effect extends Component {
 			effect: {
 				description: this.state.description,
 				status: this.state.private ? 'Private' : 'Public',
-				effector: this.props.myCharacter.characterName
+				effector: this.props.myCharacter._id
 			},
 			round: this.props.gamestate.round
 		};
@@ -109,46 +91,26 @@ class Effect extends Component {
 	render() {
 		return (
 			<div>
-				{(this.props.myCharacter.tags.some((el) => el === 'Control') ||
-					this.props.effect.status === 'Public') && (
+				{(this.props.myCharacter.tags.some((el) => el === 'Control') || this.props.effect.status === 'Public') && (
 					<div>
 						<div style={{ border: '3px solid #531ba8', borderRadius: '5px' }}>
 							<FlexboxGrid style={infoComm} align="middle" justify="start">
 								<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-									<Avatar
-										circle
-										size="md"
-										src={`/images/GW_Control_Icon.png`}
-										alt="?"
-										style={{ maxHeight: '50vh' }}
-									/>
+									<Avatar circle size="md" src={this.props.effect.effector.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={15}>
 									<h5>Action {this.props.effect.status} Effect</h5>
-									<p style={slimText}>
-										{this.getTime(this.props.effect.createdAt)}
-									</p>
+									{this.props.effect.effector.characterName}
+									<p style={slimText}>{this.getTime(this.props.effect.createdAt)}</p>
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={4}>
-									{this.props.myCharacter.tags.some(
-										(el) => el === 'Control'
-									) && (
+									{this.props.myCharacter.tags.some((el) => el === 'Control') && (
 										<ButtonToolbar>
 											<ButtonGroup>
-												<IconButton
-													size="xs"
-													onClick={() => this.setState({ effectEdit: true })}
-													color="blue"
-													icon={<Icon icon="pencil" />}
-												/>
-												<IconButton
-													size="xs"
-													onClick={() => this.setState({ deleteWarning: true })}
-													color="red"
-													icon={<Icon icon="trash2" />}
-												/>
+												<IconButton size="xs" onClick={() => this.setState({ effectEdit: true })} color="blue" icon={<Icon icon="pencil" />} />
+												<IconButton size="xs" onClick={() => this.setState({ deleteWarning: true })} color="red" icon={<Icon icon="trash2" />} />
 											</ButtonGroup>
 										</ButtonToolbar>
 									)}
@@ -164,53 +126,27 @@ class Effect extends Component {
 									whiteSpace: 'pre-line'
 								}}
 							>
-								<ReactMarkdown
-									children={this.props.effect.description}
-									remarkPlugins={[remarkGfm]}
-								></ReactMarkdown>
+								<ReactMarkdown children={this.props.effect.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 							</Panel>
 
-							<Modal
-								backdrop="static"
-								size="sm"
-								show={this.state.deleteWarning}
-								onHide={() => this.setState({ deleteWarning: false })}
-							>
+							<Modal backdrop="static" size="sm" show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 								<Modal.Body>
-									<Icon
-										icon="remind"
-										style={{ color: '#ffb300', fontSize: 24 }}
-									/>
+									<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
 									{'  '}
 									Warning! Are you sure you want delete your Effect?
-									<Icon
-										icon="remind"
-										style={{ color: '#ffb300', fontSize: 24 }}
-									/>
+									<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
 								</Modal.Body>
 								<Modal.Footer>
-									<Button
-										onClick={() => this.handleDelete()}
-										appearance="primary"
-									>
+									<Button onClick={() => this.handleDelete()} appearance="primary">
 										I am Sure!
 									</Button>
-									<Button
-										onClick={() => this.setState({ deleteWarning: false })}
-										appearance="subtle"
-									>
+									<Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
 										Nevermind
 									</Button>
 								</Modal.Footer>
 							</Modal>
 
-							<Modal
-								overflow
-								style={{ width: '90%' }}
-								size="md"
-								show={this.state.effectEdit}
-								onHide={() => this.setState({ effectEdit: false })}
-							>
+							<Modal overflow style={{ width: '90%' }} size="md" show={this.state.effectEdit} onHide={() => this.setState({ effectEdit: false })}>
 								<Modal.Header>
 									<Modal.Title>Edit this effect</Modal.Title>
 								</Modal.Header>
@@ -219,52 +155,23 @@ class Effect extends Component {
 									<form>
 										Body
 										<br />
-										{this.props.myCharacter.tags.some(
-											(el) => el === 'Control'
-										) && (
-											<Toggle
-												defaultChecked={this.state.private}
-												onChange={() =>
-													this.setState({ private: !this.state.private })
-												}
-												checkedChildren="Hidden"
-												unCheckedChildren="Revealed"
-											/>
+										{this.props.myCharacter.tags.some((el) => el === 'Control') && (
+											<Toggle defaultChecked={this.state.private} onChange={() => this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />
 										)}
 										<textarea
 											rows="6"
 											defaultValue={this.props.effect.description}
 											value={this.state.description}
 											style={textStyle}
-											onChange={(event) =>
-												this.setState({ description: event.target.value })
-											}
+											onChange={(event) => this.setState({ description: event.target.value })}
 										></textarea>
 									</form>
 								</Modal.Body>
 								<Modal.Footer>
-									<Button
-										onClick={() =>
-											this.props.effect
-												? this.handleEditSubmit()
-												: this.handleSubmit()
-										}
-										disabled={this.isDisabled()}
-										appearance="primary"
-									>
-										{this.state.description.length < 11 ? (
-											<b>
-												Description text needs{' '}
-												{11 - this.state.description.length} more characters
-											</b>
-										) : (
-											<b>Submit</b>
-										)}
+									<Button onClick={() => (this.props.effect ? this.handleEditSubmit() : this.handleSubmit())} disabled={this.isDisabled()} appearance="primary">
+										{this.state.description.length < 11 ? <b>Description text needs {11 - this.state.description.length} more characters</b> : <b>Submit</b>}
 									</Button>
-									<Button
-										onClick={() => this.setState({ effectEdit: false })}
-										appearance="subtle"
-									>
+									<Button onClick={() => this.setState({ effectEdit: false })} appearance="subtle">
 										Cancel
 									</Button>
 								</Modal.Footer>

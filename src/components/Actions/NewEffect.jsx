@@ -5,7 +5,7 @@ import socket from '../../socket';
 import _ from 'lodash';
 
 import { getGods, getNonPlayerCharacters, getUnlockedCharacters } from '../../redux/entities/characters';
-import { getCharacterById } from './../../redux/entities/characters';
+import { getCharacterById, getMyCharacter } from './../../redux/entities/characters';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -14,6 +14,7 @@ const NewEffects = (props) => {
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
 	const [arcane, setArcane] = useState(false);
+	const myChar = useSelector(getMyCharacter);
 
 	const assets = useSelector((state) => state.assets.list);
 	const locations = useSelector((state) => state.locations.list);
@@ -212,6 +213,7 @@ const NewEffects = (props) => {
 				action: props.action._id,
 				document: selected,
 				owner: props.selected.creator._id,
+				effector: myChar._id,
 				arcane,
 				loggedInUser
 			};
