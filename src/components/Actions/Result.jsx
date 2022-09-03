@@ -2,24 +2,9 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 import remarkGfm from 'remark-gfm';
-import {
-	Panel,
-	FlexboxGrid,
-	ButtonGroup,
-	Button,
-	Modal,
-	Toggle,
-	IconButton,
-	Icon,
-	Avatar,
-	ButtonToolbar,
-	Loader
-} from 'rsuite';
+import { Panel, FlexboxGrid, ButtonGroup, Button, Modal, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import {
-	characterUpdated,
-	getMyCharacter
-} from '../../redux/entities/characters';
+import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 
@@ -29,9 +14,7 @@ class Result extends Component {
 		resEdit: false, // used to open edit action popup
 		deleteWarning: false, // used to open delete action popup
 		id: this.props.result._id,
-		description: this.props.result.description
-			? this.props.result.description
-			: '',
+		description: this.props.result.description ? this.props.result.description : '',
 		dice: this.props.result.dice ? this.props.result.dice : '',
 		private: true,
 		infoModal: false,
@@ -133,27 +116,15 @@ class Result extends Component {
 	render() {
 		return (
 			<div style={{ border: '3px solid #00a0bd', borderRadius: '5px' }}>
-				<FlexboxGrid
-					style={{ backgroundColor: '#0d73d4' }}
-					align="middle"
-					justify="start"
-				>
+				<FlexboxGrid style={{ backgroundColor: '#0d73d4' }} align="middle" justify="start">
 					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-						<Avatar
-							circle
-							size="md"
-							src={`/images/GW_Control_Icon.png`}
-							alt="Img could not be displayed"
-							style={{ maxHeight: '50vh' }}
-						/>
+						<Avatar circle size="md" src={this.props.result.resolver.profilePicture} alt="Img could not be displayed" style={{ maxHeight: '50vh' }} />
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={15}>
 						<h5>Result ({this.props.result.status})</h5>
-						{this.props.result.resolver}
-						<p style={{ ...slimText, textAlign: 'center' }}>
-							{this.getTime(this.props.result.createdAt)}
-						</p>
+						{this.props.result.resolver.characterName}
+						<p style={{ ...slimText, textAlign: 'center' }}>{this.getTime(this.props.result.createdAt)}</p>
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={4}>
@@ -164,34 +135,17 @@ class Result extends Component {
 										size="xs"
 										onClick={() => this.handleReady()}
 										color={this.props.result.ready ? 'green' : 'orange'}
-										icon={
-											this.props.result.ready ? (
-												<Icon icon="check" />
-											) : (
-												<Icon icon="close" />
-											)
-										}
+										icon={this.props.result.ready ? <Icon icon="check" /> : <Icon icon="close" />}
 									/>
-									<IconButton
-										size="xs"
-										onClick={() => this.setState({ resEdit: true })}
-										color="blue"
-										icon={<Icon icon="pencil" />}
-									/>
-									<IconButton
-										size="xs"
-										onClick={() => this.setState({ deleteWarning: true })}
-										color="red"
-										icon={<Icon icon="trash2" />}
-									/>
+									<IconButton size="xs" onClick={() => this.setState({ resEdit: true })} color="blue" icon={<Icon icon="pencil" />} />
+									<IconButton size="xs" onClick={() => this.setState({ deleteWarning: true })} color="red" icon={<Icon icon="trash2" />} />
 								</ButtonGroup>
 							</ButtonToolbar>
 						)}
 					</FlexboxGrid.Item>
 				</FlexboxGrid>
 
-				{(this.props.myCharacter.tags.some((el) => el === 'Control') ||
-					this.props.result.status === 'Public') && (
+				{(this.props.myCharacter.tags.some((el) => el === 'Control') || this.props.result.status === 'Public') && (
 					<Panel
 						shaded
 						style={{
@@ -201,10 +155,7 @@ class Result extends Component {
 							whiteSpace: 'pre-line'
 						}}
 					>
-						<ReactMarkdown
-							children={this.props.result.description}
-							remarkPlugins={[remarkGfm]}
-						></ReactMarkdown>
+						<ReactMarkdown children={this.props.result.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 						{/* <p style={slimText}>
 							{this.props.result.description}
 						</p> */}
@@ -214,38 +165,18 @@ class Result extends Component {
 					</Panel>
 				)}
 
-				<Modal
-					overflow
-					style={{ width: '90%' }}
-					size="md"
-					show={this.state.resEdit}
-					onHide={() => this.setState({ resEdit: false })}
-				>
+				<Modal overflow style={{ width: '90%' }} size="md" show={this.state.resEdit} onHide={() => this.setState({ resEdit: false })}>
 					<Modal.Header>
 						<Modal.Title>Submit a new Result</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						{this.props.actionLoading && (
-							<Loader backdrop content="loading..." vertical />
-						)}
+						{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 						<form>
-							<Toggle
-								defaultChecked={this.state.private}
-								onChange={() => this.setState({ private: !this.state.private })}
-								checkedChildren="Hidden"
-								unCheckedChildren="Revealed"
-							/>
+							<Toggle defaultChecked={this.state.private} onChange={() => this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />
 							<FlexboxGrid>
 								{' '}
 								Description
-								<textarea
-									rows="6"
-									value={this.state.description}
-									style={textStyle}
-									onChange={(event) =>
-										this.setState({ description: event.target.value })
-									}
-								></textarea>
+								<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
 							</FlexboxGrid>
 							<br></br>
 
@@ -260,9 +191,7 @@ class Result extends Component {
 									colspan={4}
 								>
 									<h5>Dice Pool</h5>
-									{this.props.selected.submission.assets.map((asset, index) =>
-										this.renderDice(asset)
-									)}
+									{this.props.selected.submission.assets.map((asset, index) => this.renderDice(asset))}
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item
 									style={{
@@ -273,53 +202,29 @@ class Result extends Component {
 									colspan={20}
 								>
 									Dice Roll Result
-									<textarea
-										rows="2"
-										value={this.state.dice}
-										style={textStyle}
-										onChange={(event) =>
-											this.setState({ dice: event.target.value })
-										}
-									></textarea>
+									<textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 							</FlexboxGrid>
 						</form>
 					</Modal.Body>
 					<Modal.Footer>
-						<Button
-							onClick={() => this.handleEditSubmit()}
-							disabled={this.isDisabled()}
-							appearance="primary"
-						>
+						<Button onClick={() => this.handleEditSubmit()} disabled={this.isDisabled()} appearance="primary">
 							{this.state.description.length < 11 ? (
-								<b>
-									Description text needs {11 - this.state.description.length}{' '}
-									more characters
-								</b>
+								<b>Description text needs {11 - this.state.description.length} more characters</b>
 							) : this.state.dice.length < 1 ? (
-								<b>
-									Dice text need {1 - this.state.dice.length} more characters
-								</b>
+								<b>Dice text need {1 - this.state.dice.length} more characters</b>
 							) : (
 								<b>Submit</b>
 							)}
 						</Button>
-						<Button
-							onClick={() => this.setState({ resEdit: false })}
-							appearance="subtle"
-						>
+						<Button onClick={() => this.setState({ resEdit: false })} appearance="subtle">
 							Cancel
 						</Button>
 					</Modal.Footer>
 				</Modal>
 
-				<Modal
-					backdrop="static"
-					size="sm"
-					show={this.state.deleteWarning}
-					onHide={() => this.setState({ deleteWarning: false })}
-				>
+				<Modal backdrop="static" size="sm" show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
 						{'  '}
@@ -330,10 +235,7 @@ class Result extends Component {
 						<Button onClick={() => this.handleDelete()} appearance="primary">
 							I am Sure!
 						</Button>
-						<Button
-							onClick={() => this.setState({ deleteWarning: false })}
-							appearance="subtle"
-						>
+						<Button onClick={() => this.setState({ deleteWarning: false })} appearance="subtle">
 							Nevermind
 						</Button>
 					</Modal.Footer>
@@ -343,8 +245,7 @@ class Result extends Component {
 	}
 
 	isDisabled() {
-		if (this.state.description.length < 10 || this.state.dice.length < 1)
-			return true;
+		if (this.state.description.length < 10 || this.state.dice.length < 1) return true;
 		else return false;
 	}
 
@@ -353,13 +254,7 @@ class Result extends Component {
 	};
 
 	myToggle = () => {
-		return (
-			<Toggle
-				onChange={() => this.setState({ hidden: !this.state.hidden })}
-				checkedChildren="Hidden"
-				unCheckedChildren="Revealed"
-			></Toggle>
-		);
+		return <Toggle onChange={() => this.setState({ hidden: !this.state.hidden })} checkedChildren="Hidden" unCheckedChildren="Revealed"></Toggle>;
 	};
 
 	formattedUsedAssets = () => {

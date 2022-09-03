@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, FlexboxGrid, Loader } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import {
-	getMyCharacter,
-	characterUpdated
-} from '../../redux/entities/characters';
+import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 class NewResult extends Component {
@@ -30,11 +27,7 @@ class NewResult extends Component {
 		// 	console.log(localStorage);
 		// };
 		if (this.props.actions !== prevProps.actions) {
-			if (
-				this.props.actions.some(
-					(el) => el.description === this.state.description
-				)
-			) {
+			if (this.props.actions.some((el) => el.description === this.state.description)) {
 				// checking to see if the new action got added into the action list, so we can move on with our lives
 				this.props.closeNew();
 				this.setState({
@@ -51,7 +44,7 @@ class NewResult extends Component {
 			result: {
 				description: this.state.description,
 				dice: this.state.dice,
-				resolver: this.props.myCharacter.characterName
+				resolver: this.props.myCharacter._id
 			},
 			id: this.props.selected._id,
 			creator: this.props.myCharacter._id,
@@ -71,32 +64,17 @@ class NewResult extends Component {
 
 	render() {
 		return (
-			<Modal
-				overflow
-				style={{ width: '90%' }}
-				size="md"
-				show={this.props.show}
-				onHide={() => this.props.closeNew()}
-			>
+			<Modal overflow style={{ width: '90%' }} size="md" show={this.props.show} onHide={() => this.props.closeNew()}>
 				<Modal.Header>
 					<Modal.Title>Submit a new Result</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					{this.props.actionLoading && (
-						<Loader backdrop content="loading..." vertical />
-					)}
+					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
 						<FlexboxGrid>
 							{' '}
 							Description
-							<textarea
-								rows="6"
-								value={this.state.description}
-								style={textStyle}
-								onChange={(event) =>
-									this.setState({ description: event.target.value })
-								}
-							></textarea>
+							<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
 						</FlexboxGrid>
 						<br></br>
 
@@ -111,10 +89,7 @@ class NewResult extends Component {
 								colspan={4}
 							>
 								<h5>Dice Pool</h5>
-								{this.props.selected &&
-									this.props.selected.submission.assets.map((asset, index) =>
-										this.renderDice(asset)
-									)}
+								{this.props.selected && this.props.selected.submission.assets.map((asset, index) => this.renderDice(asset))}
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item
 								style={{
@@ -125,30 +100,16 @@ class NewResult extends Component {
 								colspan={20}
 							>
 								Dice Roll Result
-								<textarea
-									rows="2"
-									value={this.state.dice}
-									style={textStyle}
-									onChange={(event) =>
-										this.setState({ dice: event.target.value })
-									}
-								></textarea>
+								<textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 						</FlexboxGrid>
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button
-						onClick={() => this.handleSubmit()}
-						disabled={this.isDisabled()}
-						appearance="primary"
-					>
+					<Button onClick={() => this.handleSubmit()} disabled={this.isDisabled()} appearance="primary">
 						{this.state.description.length < 11 ? (
-							<b>
-								Description text needs {11 - this.state.description.length} more
-								characters
-							</b>
+							<b>Description text needs {11 - this.state.description.length} more characters</b>
 						) : this.state.dice.length < 1 ? (
 							<b>Dice text need {1 - this.state.dice.length} more characters</b>
 						) : (
@@ -164,8 +125,7 @@ class NewResult extends Component {
 	}
 
 	isDisabled() {
-		if (this.state.description.length < 10 || this.state.dice.length < 1)
-			return true;
+		if (this.state.description.length < 10 || this.state.dice.length < 1) return true;
 		else return false;
 	}
 
