@@ -27,11 +27,11 @@ const ModifyCharacter = (props) => {
 
 	const validation = {
 		characterName: {
-			required: 'Character Name is required',
-			pattern: {
-				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
-				message: "That's not a valid name where I come from..."
-			},
+			//required: 'Character Name is required',
+			//pattern: {
+			//	value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
+			//	message: "That's not a valid name where I come from..."
+			//},
 
 			maxLength: {
 				value: 300,
@@ -43,11 +43,11 @@ const ModifyCharacter = (props) => {
 			pattern: { value: /^\S+@\S+$/i, message: 'That is not a valid email' }
 		},
 		playerName: {
-			required: 'Player Name is required',
-			pattern: {
-				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
-				message: "That's not a valid name where I come from..."
-			},
+			//required: 'Player Name is required',
+			//pattern: {
+			//	value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
+			//	message: "That's not a valid name where I come from..."
+			//},
 
 			maxLength: {
 				value: 300,
@@ -55,10 +55,10 @@ const ModifyCharacter = (props) => {
 			}
 		},
 		username: {
-			pattern: {
-				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
-				message: "That's not a valid name where I come from..."
-			},
+			//pattern: {
+			//	value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
+			//	message: "That's not a valid name where I come from..."
+			//},
 
 			maxLength: {
 				value: 300,
@@ -66,20 +66,20 @@ const ModifyCharacter = (props) => {
 			}
 		},
 		bio: {
-			pattern: {
-				value: /^[a-zA-Z0-9,!\-?_.-=+*%'"’`\s()]+$/,
-				message: 'Good try...'
-			},
+			//pattern: {
+			//	value: /^[a-zA-Z0-9,!\-?_.-=+*%'"’`\s()]+$/,
+			//	message: 'Good try...'
+			//},
 			maxLength: {
 				value: 3000,
 				message: "That's way too long, try again"
 			}
 		},
 		wiki: {
-			pattern: {
-				value: /^[a-zA-Z0-9_.-\s]+$/,
-				message: "That's not a valid wiki name where I come from..."
-			},
+			//pattern: {
+			//	value: /^[a-zA-Z0-9_.-\s]+$/,
+			//	message: "That's not a valid wiki name where I come from..."
+			//},
 
 			maxLength: {
 				value: 300,
