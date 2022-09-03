@@ -65,7 +65,7 @@ const ViewArticle = (props) => {
 	};
 
 	const handleComment = () => {
-		const comment = { body: newComment, commentor: myChar.characterName, commentorProfilePicture: myChar.profilePicture };
+		const comment = { body: newComment, commentor: myChar._id };
 		const data = { id: props.selected.articleId, comment };
 		if (article.type === 'newsArticle') {
 			socket.emit('request', { route: 'article', action: 'comment', data });
@@ -126,12 +126,12 @@ const ViewArticle = (props) => {
 											<VStack align="left">
 												<Stack direction="row" justify="space-between" spacing="4">
 													<HStack>
-														<Avatar src={comment.commentorProfilePicture} boxSize="10" />
-														<b>{comment.commentor}</b>
+														<Avatar src={comment.commentor.profilePicture} boxSize="10" />
+														<b>{comment.commentor.characterName}</b>
 													</HStack>
 													<HStack>
 														<ButtonGroup>
-															{comment.commentor === myChar.characterName && (
+															{comment.commentor._id === myChar._id && (
 																<IconButton
 																	size="xs"
 																	onClick={() => {

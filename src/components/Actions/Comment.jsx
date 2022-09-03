@@ -107,18 +107,18 @@ class Comment extends Component {
 						<div style={{ border: '3px solid #00a0bd', borderRadius: '5px' }}>
 							<FlexboxGrid style={this.props.comment.status === 'Private' ? privateComm : this.props.comment.type === 'Info' ? infoComm : publicComm} align="middle" justify="start">
 								<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
-									<Avatar circle size="md" src={`/images/${this.props.comment.commentor}.jpg`} alt="?" style={{ maxHeight: '50vh' }} />
+									<Avatar circle size="md" src={this.props.comment.commentor.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={15}>
 									<h5>
-										{this.props.comment.commentor}'s {this.props.comment.status} Comment
+										{this.props.comment.commentor.characterName}'s {this.props.comment.status} Comment
 									</h5>
 									<p style={slimText}>{this.getTime(this.props.comment.createdAt)}</p>
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={4}>
-									{this.props.myCharacter.characterName === this.props.comment.commentor && (
+									{this.props.myCharacter._id === this.props.comment.commentor._id && (
 										<ButtonToolbar>
 											<ButtonGroup>
 												<IconButton size="xs" onClick={() => this.setState({ commentEdit: true })} color="blue" icon={<Icon icon="pencil" />} />
@@ -167,7 +167,9 @@ class Comment extends Component {
 									<form>
 										Body
 										<br />
-										{this.props.myCharacter.tags.some((el) => el === 'Control') && <Toggle defaultChecked={this.state.private} onChange={() => this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />}
+										{this.props.myCharacter.tags.some((el) => el === 'Control') && (
+											<Toggle defaultChecked={this.state.private} onChange={() => this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />
+										)}
 										<textarea rows="6" defaultValue={this.props.comment.body} value={this.state.body} style={textStyle} onChange={(event) => this.setState({ body: event.target.value })}></textarea>
 									</form>
 								</Modal.Body>

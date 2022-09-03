@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Loader, Toggle } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import {
-	getMyCharacter,
-	characterUpdated
-} from '../../redux/entities/characters';
+import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 class NewComment extends Component {
@@ -46,7 +43,7 @@ class NewComment extends Component {
 			comment: {
 				body: this.state.description,
 				status: this.state.private ? 'Private' : 'Public',
-				commentor: this.props.myCharacter.characterName
+				commentor: this.props.myCharacter._id
 			},
 			round: this.props.gamestate.round
 		};
@@ -56,57 +53,25 @@ class NewComment extends Component {
 
 	render() {
 		return (
-			<Modal
-				overflow
-				style={{ width: '90%' }}
-				size="md"
-				show={this.props.show}
-				onHide={() => this.props.closeNew()}
-			>
+			<Modal overflow style={{ width: '90%' }} size="md" show={this.props.show} onHide={() => this.props.closeNew()}>
 				<Modal.Header>
 					<Modal.Title>Submit a new Comment</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					{this.props.actionLoading && (
-						<Loader backdrop content="loading..." vertical />
-					)}
+					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 
 					<form>
 						Comment Text
 						<br></br>
 						{this.props.myCharacter.tags.some((el) => el === 'Control') && (
-							<Toggle
-								defaultChecked={this.state.private}
-								onChange={() => this.setState({ private: !this.state.private })}
-								checkedChildren="Hidden"
-								unCheckedChildren="Revealed"
-							/>
+							<Toggle defaultChecked={this.state.private} onChange={() => this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />
 						)}
-						<textarea
-							rows="6"
-							value={this.state.description}
-							style={textStyle}
-							onChange={(event) =>
-								this.setState({ description: event.target.value })
-							}
-						></textarea>
+						<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button
-						onClick={() =>
-							this.props.comment ? this.handleEditSubmit() : this.handleSubmit()
-						}
-						disabled={this.isDisabled()}
-						appearance="primary"
-					>
-						{this.state.description.length < 11 ? (
-							<b>
-								Text needs {11 - this.state.description.length} more characters
-							</b>
-						) : (
-							<b>Submit</b>
-						)}
+					<Button onClick={() => (this.props.comment ? this.handleEditSubmit() : this.handleSubmit())} disabled={this.isDisabled()} appearance="primary">
+						{this.state.description.length < 11 ? <b>Text needs {11 - this.state.description.length} more characters</b> : <b>Submit</b>}
 					</Button>
 					<Button onClick={() => this.props.closeNew()} appearance="subtle">
 						Cancel
