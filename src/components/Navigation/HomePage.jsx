@@ -171,8 +171,9 @@ const HomePage = (props) => {
 					<ImgPanel img={props.myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
 				</Col>
 
-				<Col onClick={() => openNexus()} lg={8} md={24}>
-					<ImgPanel img={control2} to="" title="~ Project Nexus ~" body="Support the Programmers" />
+				<Col lg={8} md={24}>
+					{props.control && <ImgPanel  img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />}
+					{!props.control && <ImgPanel onClick={() => openNexus()} img={control2} to="" title="~ Project Nexus ~" body="Support the Programmers" />}
 				</Col>
 
 				<Col lg={8} md={24}>
@@ -185,6 +186,7 @@ const HomePage = (props) => {
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
+	control: state.auth.control,
 	login: state.auth.login,
 	loading: state.auth.loading,
 	gamestate: state.gamestate,

@@ -62,11 +62,178 @@ const Agendas = (props) => {
 			<NavigationBar />
 			<Header>
 				<Stack align="center" spacing="4">
-					<Heading>Agendas</Heading>
 					<Input style={{ width: '30%' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
 				</Stack>
 			</Header>
-			<Container style={{ height: '100%', overflow: 'auto' }}>
+			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
+				{filteredData.map((agenda, index) => (
+					<div index={index}>
+						<Divider vertical />
+							<div onClick={() => setSelected(agenda)} style={{ cursor: 'pointer', border: `4px solid ${getFadedColor(agenda.type)}`, borderRadius: '5px', padding: '15px' }}>
+											<FlexboxGrid align="middle" style={{}} justify="center">
+												<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
+													<Avatar circle size="md" src={agenda.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
+												</FlexboxGrid.Item>
+							
+												<FlexboxGrid.Item colspan={15}>
+													<h5>{agenda.name}</h5>
+													{agenda.creator.playerName} - {agenda.creator.characterName}
+													<p className="slim-text">{getTime(agenda.submission.createdAt)}</p>
+												</FlexboxGrid.Item>
+							
+												<FlexboxGrid.Item colspan={4}>
+													{(myChar._id === agenda.creator._id || myChar.tags.some((el) => el === 'Control')) && (
+														<ButtonToolbar>
+															<ButtonGroup>
+																{(agenda.tags.some((tag) => tag !== 'Published') || !agenda.tags.length > 0) && agenda.type === 'Agenda' && (
+																	<Button
+																		disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
+																		size="md"
+																		onClick={() => handlePublish()}
+																		color="green"
+																		icon={<Icon icon="pencil" />}
+																	>
+																		Publish
+																	</Button>
+																)}
+																<IconButton
+																	disabled={
+																		(gamestate.status !== 'Active' || gamestate.round > agenda.round || agenda.tags.some((tag) => tag === 'Published')) &&
+																		!myChar.tags.some((el) => el === 'Control')
+																	}
+																	size="md"
+																	onClick={() => console.log('edit')}
+																	color="blue"
+																	icon={<Icon icon="pencil" />}
+																/>
+																<IconButton
+																	disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
+																	size="md"
+																	onClick={() => console.log('delete')}
+																	color="red"
+																	icon={<Icon icon="trash2" />}
+																/>
+															</ButtonGroup>
+														</ButtonToolbar>
+													)}
+												</FlexboxGrid.Item>
+											</FlexboxGrid>
+							</div>							
+						</div>
+				))}
+
+{filteredData.map((agenda, index) => (
+					<div index={index}>
+						<Divider vertical />
+							<div onClick={() => setSelected(agenda)} style={{ cursor: 'pointer', border: `4px solid ${getFadedColor(agenda.type)}`, borderRadius: '5px', padding: '15px' }}>
+											<FlexboxGrid align="middle" style={{}} justify="center">
+												<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
+													<Avatar circle size="md" src={agenda.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
+												</FlexboxGrid.Item>
+							
+												<FlexboxGrid.Item colspan={15}>
+													<h5>{agenda.name}</h5>
+													{agenda.creator.playerName} - {agenda.creator.characterName}
+													<p className="slim-text">{getTime(agenda.submission.createdAt)}</p>
+												</FlexboxGrid.Item>
+							
+												<FlexboxGrid.Item colspan={4}>
+													{(myChar._id === agenda.creator._id || myChar.tags.some((el) => el === 'Control')) && (
+														<ButtonToolbar>
+															<ButtonGroup>
+																{(agenda.tags.some((tag) => tag !== 'Published') || !agenda.tags.length > 0) && agenda.type === 'Agenda' && (
+																	<Button
+																		disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
+																		size="md"
+																		onClick={() => handlePublish()}
+																		color="green"
+																		icon={<Icon icon="pencil" />}
+																	>
+																		Publish
+																	</Button>
+																)}
+																<IconButton
+																	disabled={
+																		(gamestate.status !== 'Active' || gamestate.round > agenda.round || agenda.tags.some((tag) => tag === 'Published')) &&
+																		!myChar.tags.some((el) => el === 'Control')
+																	}
+																	size="md"
+																	onClick={() => console.log('edit')}
+																	color="blue"
+																	icon={<Icon icon="pencil" />}
+																/>
+																<IconButton
+																	disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
+																	size="md"
+																	onClick={() => console.log('delete')}
+																	color="red"
+																	icon={<Icon icon="trash2" />}
+																/>
+															</ButtonGroup>
+														</ButtonToolbar>
+													)}
+												</FlexboxGrid.Item>
+											</FlexboxGrid>
+							</div>							
+						</div>
+				))}
+
+{filteredData.map((agenda, index) => (
+					<div index={index}>
+						<Divider vertical />
+							<div onClick={() => setSelected(agenda)} style={{ cursor: 'pointer', border: `4px solid ${getFadedColor(agenda.type)}`, borderRadius: '5px', padding: '15px' }}>
+											<FlexboxGrid align="middle" style={{}} justify="center">
+												<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
+													<Avatar circle size="md" src={agenda.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
+												</FlexboxGrid.Item>
+							
+												<FlexboxGrid.Item colspan={15}>
+													<h5>{agenda.name}</h5>
+													{agenda.creator.playerName} - {agenda.creator.characterName}
+													<p className="slim-text">{getTime(agenda.submission.createdAt)}</p>
+												</FlexboxGrid.Item>
+							
+												<FlexboxGrid.Item colspan={4}>
+													{(myChar._id === agenda.creator._id || myChar.tags.some((el) => el === 'Control')) && (
+														<ButtonToolbar>
+															<ButtonGroup>
+																{(agenda.tags.some((tag) => tag !== 'Published') || !agenda.tags.length > 0) && agenda.type === 'Agenda' && (
+																	<Button
+																		disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
+																		size="md"
+																		onClick={() => handlePublish()}
+																		color="green"
+																		icon={<Icon icon="pencil" />}
+																	>
+																		Publish
+																	</Button>
+																)}
+																<IconButton
+																	disabled={
+																		(gamestate.status !== 'Active' || gamestate.round > agenda.round || agenda.tags.some((tag) => tag === 'Published')) &&
+																		!myChar.tags.some((el) => el === 'Control')
+																	}
+																	size="md"
+																	onClick={() => console.log('edit')}
+																	color="blue"
+																	icon={<Icon icon="pencil" />}
+																/>
+																<IconButton
+																	disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
+																	size="md"
+																	onClick={() => console.log('delete')}
+																	color="red"
+																	icon={<Icon icon="trash2" />}
+																/>
+															</ButtonGroup>
+														</ButtonToolbar>
+													)}
+												</FlexboxGrid.Item>
+											</FlexboxGrid>
+							</div>							
+						</div>
+				))}
+
 				{filteredData.map((agenda, index) => (
 					<div index={index}>
 						<Divider vertical />

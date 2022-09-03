@@ -38,8 +38,6 @@ const NewsFeed = (props) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete, cancelRef } = useDisclosure();
 
-	console.log(data);
-
 	useEffect(() => {
 		if (selected) {
 			const newSelected = data.find((el) => el.articleId === selected.articleId);
@@ -73,9 +71,9 @@ const NewsFeed = (props) => {
 				<Divider />
 				<Stack divider={<StackDivider />} spacing="4">
 					{data.map((item) => (
-						<Stack key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
-							<HStack>
-								{item.imageURL && <Image src={item.imageURL} width="100px" />}
+						<Stack onClick={() => { setSelected(item), setArticleModal(true);	}} style={{ backgroundColor: '#15181e', cursor: 'pointer' }} key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
+							{item.imageURL && <Image src={item.imageURL} width="100%" height={'20vh'} fit='cover' />}
+							<HStack>								
 								<VStack align="left" width="960px">
 									<Stack direction="row" justify="space-between" spacing="4">
 										<HStack>
@@ -87,11 +85,9 @@ const NewsFeed = (props) => {
 											<Text
 												fontSize="2xl"
 												align="left"
-												onClick={() => {
-													setSelected(item), setArticleModal(true);
-												}}
+												
 											>
-												{item.title} {item.tags}
+												{item.title}
 											</Text>
 										</HStack>
 										<HStack>

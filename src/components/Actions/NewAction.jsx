@@ -59,13 +59,6 @@ const NewAction = (props) => {
 		}
 	};
 
-	// componentDidMount = () => {
-	// 	// // localStorage.removeItem('newActionState');
-	// 	// const stateReplace = JSON.parse(localStorage.getItem('newActionStateGW'));
-	// 	// // console.dir(stateReplace);
-	// 	// if (stateReplace) setState(stateReplace);
-	// };
-
 	const handleSubmit = async () => {
 		// 1) make a new action
 		const data = {

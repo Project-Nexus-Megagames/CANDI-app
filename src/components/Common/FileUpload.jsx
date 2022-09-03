@@ -21,7 +21,7 @@ export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, chil
 
 	const handleFileUpload = async (e) => {
 		toast({
-			description: 'Hello?',
+			description: 'Uploading...',
 			status: 'info',
 			duration: 9000
 		});
