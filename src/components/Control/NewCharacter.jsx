@@ -19,11 +19,11 @@ const NewCharacter = (props) => {
 			email: 'temp@temp',
 			wiki: '',
 			tags: ['PC', 'Public'],
-			control: ['Add_Controller_Name'],
+			control: [''],
 			playerName: '',
 			timeZone: '',
 			bio: '',
-			characterTitle: 'ex: The Flower Child',
+			characterTitle: '',
 			pronouns: '',
 			//effort: [effortTypes],
 			username: 'temp'
@@ -34,11 +34,6 @@ const NewCharacter = (props) => {
 	const validation = {
 		characterName: {
 			required: 'Character Name is required',
-			//pattern: {
-			//	value: /^[a-zA-Z0-9,!\-?_.-=+*%'"\s]+$/,
-			//	message: "That's not a valid name where I come from..."
-			//},
-
 			maxLength: {
 				value: 300,
 				message: "That's way too long, try again"
@@ -294,7 +289,7 @@ const NewCharacter = (props) => {
 				</Panel>
 				<Modal.Footer>
 					<ButtonGroup>
-						<Button type="submit" color="red" className="btn btn-primary mr-1">
+						<Button type="submit" color="green" className="btn btn-primary mr-1">
 							Create new Character
 						</Button>
 						<Button onClick={() => reset()} className="btn btn-secondary mr-1">

@@ -200,6 +200,12 @@
   font-size: 18px;
 }
 
+.center-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .dicovered-text {
   position: absolute;
   top: 35%;

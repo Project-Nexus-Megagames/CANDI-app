@@ -9,11 +9,6 @@ import {
 	signOut,
 	setCharacter
 } from '../../redux/entities/auth';
-import { loadCharacters } from '../../redux/entities/characters';
-import { loadGamestate } from '../../redux/entities/gamestate';
-import { loadGameConfig } from '../../redux/entities/gameConfig';
-import { loadLocations } from '../../redux/entities/locations';
-import { loadplayerActions, loadAllActions } from '../../redux/entities/playerActions';
 
 const { Line } = Progress;
 
@@ -78,9 +73,10 @@ const LoadingNew = (props) => {
 	}
 
 	return (
-		<div>
+		<div style={{ textAlign: 'center' }}>
 			<img
-				style={{ maxHeight: '400px', height: '30vh' }}
+				style={{ maxHeight: '400px', height: '40vh' }}
+				className='center-img'
 				src={gamePhotos[rand]}
 				alt={'Loading...'}
 				onClick={() => boredClick()}
@@ -108,12 +104,7 @@ const LoadingNew = (props) => {
 					</Col>
 				))}
 			</Row>
-			<Loader
-				center
-				content={`${message} - ${Math.floor(
-					(done.length / sections.length) * 100
-				)}%`}
-			/>
+
 		</div>
 	);
 };
@@ -139,7 +130,10 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoadingNew);
 
-const gamePhotos = ['https://acegif.com/wp-content/gifs/pirate-flag-1.gif'];
+const gamePhotos = [
+	'https://i.pinimg.com/originals/94/b9/35/94b9355bfb0e96619599dff04a565d19.gif',
+'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus',
+];
 
 const loadingMsg = [
 	// 'Thank you all for taking time to make this game happen.',

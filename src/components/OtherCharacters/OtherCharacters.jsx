@@ -11,7 +11,7 @@ import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
-import { getFadedColor } from '../../scripts/frontend';
+import { getFadedColor, getTextColor } from '../../scripts/frontend';
 import ViewCharacter from '../Common/ViewCharacter';
 import ResourceNugget from '../Common/ResourceNugget';
 
@@ -33,7 +33,7 @@ const OtherCharacters = (props) => {
 	}
 
 	let characters = [...publicCharacters, ...props.myCharacter.knownContacts];
-	const [renderTags] = React.useState(['Frog', 'Pig', 'Spider', 'Drow', 'Myconid', 'Raccoon', 'Control']); // TODO: update with Faction tags
+	const [renderTags] = React.useState(['Frog', 'Pig', 'Spider', 'Drow', 'Myconid', 'Raccoon', 'Drow', 'Dwarves', 'Whitewall', 'The Overlord', 'Control']); // TODO: update with Faction tags
 
 	useEffect(() => {
 		filterThis('');
@@ -191,17 +191,18 @@ const OtherCharacters = (props) => {
 								{renderTags.map((tag, index) => (
 									<List key={index} hover>
 										{filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0 && (
-											<p style={{ backgroundColor: getFadedColor(tag), color: getFadedColor(`${tag}-text`) }}>{tag}</p>
+											<p style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`) }}>{tag}</p>
 										)}
 										{filteredCharacters
 											.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
-											.map((character) => (
-												<List.Item key={character._id} style={listStyle(character)}>
+											.map((character, index0) => (
+												<List.Item key={`${character._id}-${index}-${index0}`} style={listStyle(character)}>
 													<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
 												</List.Item>
 											))}
 									</List>
 								))}
+								
 								{props.myCharacter.tags.some((el) => el === 'Control') && (
 									<List hover>
 										<p style={{ backgroundColor: getFadedColor('Unknown'), color: getFadedColor(`${'Unknown'}-text`) }}>{'( Hidden )'}</p>

@@ -22,6 +22,7 @@ function getFadedColor(color, fade = 1) {
 
 		case 'Frog':
 			return `#fbbc04`
+		case 'Dwarves':
 		case 'Spider':
 			return `#206694`
 		case 'Myconid':
@@ -30,6 +31,10 @@ function getFadedColor(color, fade = 1) {
 			return `#1f8b4c`
 		case 'Raccoon':
 			return `#e91e63`
+
+		case 'The Overlord':
+			return `#6d6d6d`
+			
 			
 		case 'Unknown-text':
 		case 'Myconid-text':
@@ -90,6 +95,7 @@ function getTextColor(color, fade = 1) {
 		case 'Myconid-text':
 		case 'Drow-text':
 		case 'Spider-text':
+		case 'Dwarves-text':
 		case 'PC-text':
 		return 'white'
 
