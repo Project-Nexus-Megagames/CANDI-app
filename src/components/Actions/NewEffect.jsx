@@ -256,7 +256,7 @@ const NewEffects = (props) => {
 	};
 
 	return (
-		<Modal style={{ zIndex: 9999 }} size="lg" placement="right" show={props.show} onHide={handleExit}>
+		<Modal size="lg" placement="right" show={props.show} onHide={handleExit}>
 			<Modal.Header></Modal.Header>
 			{
 				<Modal.Body>

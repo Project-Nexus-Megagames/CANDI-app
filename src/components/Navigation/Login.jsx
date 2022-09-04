@@ -11,11 +11,12 @@ import {
 	Checkbox,
 	FormGroup,
 	FlexboxGrid,
-	ControlLabel
+	ControlLabel,
+	Panel
 } from 'rsuite';
 import { loadAllActions } from '../../redux/entities/playerActions';
 import { authReceived, loginUser } from '../../redux/entities/auth';
-import banner from '../Images/banner1.jpg';
+import banner from '../Images/Banner.png';
 
 const { StringType } = Schema.Types;
 
@@ -55,14 +56,86 @@ const Login = (props) => {
 	let buttonText = props.loading ? 'Loading' : 'Login';
 
 	return (
-		<Container style={{ height: '100vh' }}>
+		<Container style={{ display: 'flex', alignItems: 'center', }}>
+
+			<Panel bordered style={{ display: 'flex', alignItems: 'center', }}>
 			<img
 				src={banner}
-				className={props.disabled ? 'image disabled' : 'image'}
-				height="100vh"
+				width={800}
 				alt="Failed to load img"
 			/>
-			<Modal size="xs" backdrop="static" show={true}>
+			<h5>Login with your Nexus account</h5>
+					<p>
+						Don't have a Nexus account?
+						<Button
+							appearance="link"
+							onClick={() => {
+								const win = window.open(
+									'https://nexus-central-portal.herokuapp.com/get-started',
+									'_blank'
+								);
+								win.focus();
+							}}
+						>
+							Sign up
+						</Button>
+					</p>
+					<Form model={model} onChange={(form) => setLogin(form)}>
+						<FormGroup>
+							<ControlLabel>Email / Username</ControlLabel>
+							<FormControl
+								errorMessage={props.error}
+								errorPlacement="topEnd"
+								name="user"
+								accepter={model.accepter}
+								onKeyPress={handleKeyPress}
+							/>
+						</FormGroup>
+
+						<FormGroup>
+							<ControlLabel>Password</ControlLabel>
+							<FormControl
+								errorMessage={props.error}
+								errorPlacement="topEnd"
+								name="password"
+								type="password"
+								onKeyPress={handleKeyPress}
+							/>
+						</FormGroup>
+
+						<FlexboxGrid justify="space-between">
+							<Checkbox onChange={(e) => setRemember(e)} checked={remember}>
+								Remember me{' '}
+							</Checkbox>
+							<Button
+								appearance="link"
+								size="md"
+								onClick={() => {
+									const win = window.open(
+										'https://nexus-central-portal.herokuapp.com/reset',
+										'_blank'
+									);
+									win.focus();
+								}}
+							>
+								Forgot password?
+							</Button>
+						</FlexboxGrid>
+					</Form>
+					<Button
+						disabled={!login || !login.user || !login.password}
+						loading={props.loading}
+						onClick={() => onSubmit()}
+						appearance="primary"
+					>
+						{buttonText}
+					</Button>				
+			</Panel>
+
+
+
+
+			{/* <Modal size="xs" backdrop="static" show={true}>
 				<Modal.Header style={{ textAlign: 'center' }}>
 					<img
 						src={`/images/favicon.ico`}
@@ -140,7 +213,7 @@ const Login = (props) => {
 						{buttonText}
 					</Button>
 				</Modal.Footer>
-			</Modal>
+			</Modal> */}
 		</Container>
 	);
 };
