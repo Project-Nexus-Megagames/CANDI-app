@@ -70,9 +70,10 @@ const ModifyResource = (props) => {
 			hidden,
 			tags,
 			type,
+			status: selected.status,
 			loggedInUser
 		};
-		console.log(data);
+		// console.log(data);
 		socket.emit('request', { route: 'asset', action: 'modify', data });
 		props.closeModal();
 		setSelected('');
@@ -140,7 +141,14 @@ const ModifyResource = (props) => {
 
 	return (
 		<Modal loading={loading} size="sm" show={props.show} onHide={() => props.closeModal()}>
-			<SelectPicker block placeholder="Edit or Delete Asset/Trait" onChange={(event) => handleChange(event)} data={assets.filter((el) => el.model !== 'Wealth')} valueKey="_id" labelKey="name"></SelectPicker>
+			<SelectPicker
+				block
+				placeholder="Edit or Delete Asset/Trait"
+				onChange={(event) => handleChange(event)}
+				data={assets.filter((el) => el.model !== 'Wealth')}
+				valueKey="_id"
+				labelKey="name"
+			></SelectPicker>
 			{renderAss()}
 			<Modal.Footer>
 				{selected && (

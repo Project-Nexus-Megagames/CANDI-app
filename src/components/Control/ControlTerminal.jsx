@@ -82,6 +82,7 @@ class ControlTerminal extends Component {
 		const setInjuryModal = (params) => this.setState({ injuryModal: params });
 		const setAspectModal = (params) => this.setState({ aspectModal: params });
 		const setCharLockModal = (params) => this.setState({ charLockModal: params });
+
 		if (!this.props.login) {
 			this.props.history.push('/');
 			return <Loader inverse center content="doot..." />;
@@ -109,12 +110,12 @@ class ControlTerminal extends Component {
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{ border: '3px solid #d066ff' }} colspan={6}>
 							<Panel style={{ height: '11vh' }}>
-								<h5>Zero Efforts</h5> {this.props.characters.filter((el) => el.effort <= 0).length}{' '}
+								<h5>Zero Efforts</h5> {this.props.characters.filter((el) => el.effort <= 0).length}
 							</Panel>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{ border: '3px solid #d066ff' }} colspan={6}>
 							<Panel style={{ height: '11vh' }}>
-								<h5>Hidden Asssets</h5> {this.props.assets.filter((el) => el.status.hidden === true).length}{' '}
+								<h5>Hidden Asssets</h5> {this.props.assets.filter((el) => el.status.hidden === true).length}
 								{this.props.assets.filter((el) => el.status.hidden === true).length > 0 && (
 									<Button
 										color="violet"
