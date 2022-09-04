@@ -121,7 +121,7 @@ class ControlTerminal extends Component {
 										color="violet"
 										onClick={() =>
 											socket.emit('request', {
-												route: 'action',
+												route: 'asset',
 												action: 'unhide'
 											})
 										}
