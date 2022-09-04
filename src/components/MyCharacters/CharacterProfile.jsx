@@ -1,6 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Loader, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Tag, Modal, Drawer, SelectPicker, Placeholder, Grid, Col, Row, List, TagGroup } from 'rsuite';
+import {
+	Loader,
+	Panel,
+	IconButton,
+	Icon,
+	Form,
+	FormGroup,
+	Button,
+	ButtonToolbar,
+	FormControl,
+	ControlLabel,
+	Divider,
+	Content,
+	Tag,
+	Modal,
+	Drawer,
+	SelectPicker,
+	Placeholder,
+	Grid,
+	Col,
+	Row,
+	List,
+	TagGroup
+} from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { assetLent, assetUpdated, getMyAssets } from '../../redux/entities/assets';
 import socket from '../../socket';
@@ -247,7 +270,15 @@ class CharacterProfile extends Component {
 
 				<Drawer show={this.state.lendShow} onHide={() => this.closeLend()}>
 					<Drawer.Body>
-						<SelectPicker placeholder="Select a Lending Target" onChange={(event) => this.setState({ target: event })} block valueKey="_id" labelKey="characterName" disabledItemValues={[playerCharacter._id]} data={this.props.characters} />
+						<SelectPicker
+							placeholder="Select a Lending Target"
+							onChange={(event) => this.setState({ target: event })}
+							block
+							valueKey="_id"
+							labelKey="characterName"
+							disabledItemValues={[playerCharacter._id]}
+							data={this.props.characters}
+						/>
 						{this.renderLendation()}
 					</Drawer.Body>
 				</Drawer>
@@ -396,7 +427,8 @@ class CharacterProfile extends Component {
 			standingOrders: this.state.formValue.textarea,
 			_id: char._id
 		};
-		socket.emit('request', { route: 'character', action: 'modify', data });
+
+		socket.emit('request', { route: 'character', action: 'modify', data: { data, loggedInUser: char } });
 	};
 }
 
