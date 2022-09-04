@@ -221,9 +221,17 @@ button {
 	margin: 10px;
 }
 
+.rs-list {
+  scrollbar-width: thin;
+}
+
+.rs-modal {
+  z-index: 9999;
+}
+
 .blob {
   padding: 0px;
   text-align: left;
   background-color: #15181e;
-  white-space: pre-line;
+  white-space: pre-line
 }

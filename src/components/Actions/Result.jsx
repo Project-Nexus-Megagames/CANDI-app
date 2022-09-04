@@ -165,65 +165,6 @@ class Result extends Component {
 					</Panel>
 				)}
 
-				<Modal overflow style={{ width: '90%' }} size="md" show={this.state.resEdit} onHide={() => this.setState({ resEdit: false })}>
-					<Modal.Header>
-						<Modal.Title>Submit a new Result</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
-						<form>
-							<Toggle defaultChecked={this.state.private} onChange={() => this.setState({ private: !this.state.private })} checkedChildren="Hidden" unCheckedChildren="Revealed" />
-							<FlexboxGrid>
-								{' '}
-								Description
-								<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
-							</FlexboxGrid>
-							<br></br>
-
-							<FlexboxGrid>
-								<FlexboxGrid.Item
-									style={{
-										paddingTop: '25px',
-										paddingLeft: '10px',
-										textAlign: 'left'
-									}}
-									align="middle"
-									colspan={4}
-								>
-									<h5>Dice Pool</h5>
-									{this.props.selected.submission.assets.map((asset, index) => this.renderDice(asset))}
-								</FlexboxGrid.Item>
-								<FlexboxGrid.Item
-									style={{
-										paddingTop: '25px',
-										paddingLeft: '10px',
-										textAlign: 'left'
-									}}
-									colspan={20}
-								>
-									Dice Roll Result
-									<textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
-								</FlexboxGrid.Item>
-								<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
-							</FlexboxGrid>
-						</form>
-					</Modal.Body>
-					<Modal.Footer>
-						<Button onClick={() => this.handleEditSubmit()} disabled={this.isDisabled()} appearance="primary">
-							{this.state.description.length < 11 ? (
-								<b>Description text needs {11 - this.state.description.length} more characters</b>
-							) : this.state.dice.length < 1 ? (
-								<b>Dice text need {1 - this.state.dice.length} more characters</b>
-							) : (
-								<b>Submit</b>
-							)}
-						</Button>
-						<Button onClick={() => this.setState({ resEdit: false })} appearance="subtle">
-							Cancel
-						</Button>
-					</Modal.Footer>
-				</Modal>
-
 				<Modal backdrop="static" size="sm" show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
@@ -284,7 +225,7 @@ const mapDispatchToProps = (dispatch) => ({
 const slimText = {
 	fontSize: '0.966em',
 	fontWeight: '300',
-	whiteSpace: ' pre-line;',
+	whiteSpace: ' pre-line',
 	textAlign: 'left'
 };
 

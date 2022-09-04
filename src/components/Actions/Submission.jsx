@@ -224,7 +224,10 @@ const Submission = (props) => {
 	return (
 		<div>
 			<Divider vertical />
-			<div style={{ border: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
+			<div style={{ 								border:
+									(props.action.tags.some((tag) => tag !== 'Published') || !props.action.tags.length > 0) && props.action.type === 'Agenda'
+										? `4px dotted ${getFadedColor(props.action.type)}`
+										: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
 				<FlexboxGrid align="middle" style={{}} justify="center">
 					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
 						<Avatar circle size="md" src={props.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
@@ -308,7 +311,7 @@ const Submission = (props) => {
 					</FlexboxGrid>
 				</Panel>
 
-				<Modal overflow style={{ width: '90%' }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
+				<Modal overflow style={{ width: '90%', zIndex: 9999 }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
 					<Modal.Header>
 						<Modal.Title>
 							Edit {props.action.type} action {name}
@@ -431,7 +434,7 @@ const Submission = (props) => {
 
 				<AssetInfo asset={infoAsset} showInfo={show === 'info'} closeInfo={() => setShow(false)} />
 
-				<Modal size="sm" show={show === 'delete'} onHide={() => setShow(false)}>
+				<Modal style={{ zIndex: 9999 }} size="sm" show={show === 'delete'} onHide={() => setShow(false)}>
 					<Modal.Body>
 						<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
 						{'  '}
@@ -455,7 +458,7 @@ const Submission = (props) => {
 const slimText = {
 	fontSize: '0.966em',
 	fontWeight: '300',
-	whiteSpace: ' pre-line;',
+	whiteSpace: ' pre-line',
 	textAlign: 'center'
 };
 

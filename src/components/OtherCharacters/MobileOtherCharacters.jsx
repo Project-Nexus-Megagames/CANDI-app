@@ -169,7 +169,7 @@ const OtherCharacters = (props) => {
 								height: 'calc(100vh - 80px)',
 								borderRadius: '0px',
 								overflow: 'auto',
-								scrollbarWidth: 'none',
+								 
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 							}}
 						>

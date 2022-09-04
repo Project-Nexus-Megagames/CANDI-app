@@ -151,7 +151,7 @@ const textStyle = {
 	width: '100%',
 	padding: '5px',
 	overflow: 'auto', 
-	scrollbarWidth: 'none',
+	 
 }
 
 const mapStateToProps = (state) => ({

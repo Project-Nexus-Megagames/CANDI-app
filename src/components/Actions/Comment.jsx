@@ -141,7 +141,7 @@ class Comment extends Component {
 								<p>{this.props.comment.body}</p>
 							</Panel>
 
-							<Modal backdrop="static" size="sm" show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
+							<Modal style={{ zIndex: 9999 }} backdrop="static" size="sm" show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 								<Modal.Body>
 									<Icon icon="remind" style={{ color: '#ffb300', fontSize: 24 }} />
 									{'  '}
@@ -158,7 +158,7 @@ class Comment extends Component {
 								</Modal.Footer>
 							</Modal>
 
-							<Modal overflow style={{ width: '90%' }} size="md" show={this.state.commentEdit} onHide={() => this.setState({ commentEdit: false })}>
+							<Modal overflow style={{ width: '90%', zIndex: 9999 }} size="md" show={this.state.commentEdit} onHide={() => this.setState({ commentEdit: false })}>
 								<Modal.Header>
 									<Modal.Title>Edit this comment</Modal.Title>
 								</Modal.Header>

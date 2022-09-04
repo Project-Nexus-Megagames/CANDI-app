@@ -238,7 +238,7 @@ class CharacterProfile extends Component {
 									size="lg"
 									style={{
 										height: 'calc(100vh - 50px)',
-										scrollbarWidth: 'none',
+										 
 										borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
 										overflow: 'scroll'
 									}}

@@ -72,7 +72,7 @@ const Actions = (props) => {
 						<div
 							style={{
 								height: 'calc(100vh - 80px)',
-								scrollbarWidth: 'none',
+								 
 								overflow: 'auto',
 								borderRadius: '0px',
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'

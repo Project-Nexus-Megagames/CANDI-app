@@ -38,6 +38,13 @@ const Agendas = (props) => {
 	}
 
 	useEffect(() => {
+		if (selected) {
+			const newSelected = agendas.find((el) => el._id === selected._id);
+			setSelected(newSelected);
+		}
+	}, [agendas, selected]);
+
+	useEffect(() => {
 		if (filter) {
 			let filtered = [];
 			let agendasToFilter = [];
@@ -112,20 +119,6 @@ const Agendas = (props) => {
 														Publish
 													</Button>
 												)}
-												<IconButton
-													disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round || agenda.tags.some((tag) => tag === 'Published')) && !myChar.tags.some((el) => el === 'Control')}
-													size="md"
-													onClick={() => console.log('edit')}
-													color="blue"
-													icon={<Icon icon="pencil" />}
-												/>
-												<IconButton
-													disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
-													size="md"
-													onClick={() => console.log('delete')}
-													color="red"
-													icon={<Icon icon="trash2" />}
-												/>
 											</ButtonGroup>
 										</ButtonToolbar>
 									)}
