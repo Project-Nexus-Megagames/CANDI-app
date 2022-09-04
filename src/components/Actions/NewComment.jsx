@@ -53,7 +53,7 @@ class NewComment extends Component {
 
 	render() {
 		return (
-			<Modal overflow style={{ width: '90%' }} size="md" show={this.props.show} onHide={() => this.props.closeNew()}>
+			<Modal overflow style={{ width: '90%', zIndex: 9999 }} size="md" show={this.props.show} onHide={() => this.props.closeNew()}>
 				<Modal.Header>
 					<Modal.Title>Submit a new Comment</Modal.Title>
 				</Modal.Header>

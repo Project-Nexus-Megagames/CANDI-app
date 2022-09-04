@@ -23,11 +23,12 @@ import Comment from './Comment';
 import Result from './Result';
 import NewEffects from './NewEffect';
 import Effect from './Effect';
+import Support from './Support';
 
 const SelectedAction = (props) => {
 	const [selectedArray, setSelectedArray] = useState([]);
 	const [add, setAdd] = useState(false);
-	const [submission, setSubmission] = useState(false);
+	const [support, setSupport] = useState(false);
 	const [result, setResult] = useState(false);
 	const [comment, setComment] = useState(false);
 	const [effect, setEffect] = useState(false);
@@ -42,13 +43,14 @@ const SelectedAction = (props) => {
 			];
 			// temp.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) //new Date(a.createdAt) -  new Date(b.createdAt // disabled until the updatedAt bug is worked out
 			setSelectedArray(temp);
+			setAdd(false);
 		}
 	}, [props.selected]);
 
 	const closeIt = () => {
 		setAdd(false);
 		setResult(false);
-		setSubmission(false);
+		setSupport(false);
 		setComment(false);
 		setEffect(false);
 	};
@@ -121,7 +123,7 @@ const SelectedAction = (props) => {
 								justified
 								style={{ width: '100%', transition: '.5s' }}
 							>
-								{/* <Button onClick={() => setSubmission(true)}  color='green' >Player Submission</Button> */}
+								{props.selected && props.selected.type === 'Agenda' && <Button disabled={props.myCharacter.effort.find(el => el.type === 'Agenda').amount <= 0} onClick={() => setSupport(true)}  color='green' >Support</Button>}
 								<Button onClick={() => setComment(true)} color="cyan">
 									Comment
 								</Button>
@@ -141,12 +143,6 @@ const SelectedAction = (props) => {
 				</FlexboxGrid.Item>
 				<FlexboxGrid.Item colspan={1} />
 			</FlexboxGrid>
-			<NewAction
-				show={submission}
-				closeNew={() => closeIt()}
-				gamestate={props.gamestate}
-				selected={props.selected}
-			/>
 
 			{props.selected.submission && <NewResult
 				show={result}
@@ -162,6 +158,8 @@ const SelectedAction = (props) => {
 				gamestate={props.gamestate}
 				selected={props.selected}
 			/>
+
+			<Support show={support} closeNew={() => closeIt()} gamestate={props.gamestate} selected={props.selected}/>
 
 			{props.selected && props.selected.creator && <NewEffects
 				show={effect}
