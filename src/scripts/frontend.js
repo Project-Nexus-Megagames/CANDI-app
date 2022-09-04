@@ -34,23 +34,10 @@ function getFadedColor(color, fade = 1) {
 
 		case 'The Overlord':
 			return `#6d6d6d`
-			
-			
-		case 'Unknown-text':
-		case 'Myconid-text':
-		case 'Drow-text':
-		case 'Spider-text':
-		case 'Raccoon-text':
-		case 'PC-text':
-			return 'white'
 
-		case 'Control-text':
-		case 'Private-text':
-		case 'Swamp-text':
-		case 'Frog-text':
-		case 'Pig-text':
-			return `black`
-
+		case 'Whitewall':
+			return `#e0fffd`
+			
 		case 'gold':
 			return `rgb(212, 175, 55, ${fade})`
 
@@ -95,6 +82,7 @@ function getTextColor(color, fade = 1) {
 		case 'Myconid-text':
 		case 'Drow-text':
 		case 'Spider-text':
+		case 'The Overlord-text':
 		case 'Dwarves-text':
 		case 'PC-text':
 		return 'white'
@@ -105,6 +93,7 @@ function getTextColor(color, fade = 1) {
 		case 'Raccoon-text':
 		case 'Frog-text':
 		case 'Pig-text':
+		case 'Whitewall-text':
 			return `black`
 
 		case 'gold':

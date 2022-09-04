@@ -33,7 +33,7 @@ const OtherCharacters = (props) => {
 	}
 
 	let characters = [...publicCharacters, ...props.myCharacter.knownContacts];
-	const [renderTags] = React.useState(['Frog', 'Pig', 'Spider', 'Drow', 'Myconid', 'Raccoon', 'Drow', 'Dwarves', 'Whitewall', 'The Overlord', 'Control']); // TODO: update with Faction tags
+	const [renderTags] = React.useState(['Frog', 'Pig', 'Spider', 'Myconid', 'Raccoon', 'Drow', 'Dwarves', 'Whitewall', 'The Overlord', 'Control']); // TODO: update with Faction tags
 
 	useEffect(() => {
 		filterThis('');

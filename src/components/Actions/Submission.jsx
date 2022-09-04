@@ -35,10 +35,15 @@ const Submission = (props) => {
 			setName(props.action.name);
 			setTags(props.submission.tags);
 
-			let charEffort = getThisEffort(props.myCharacter.effort, props.submission.effort.effortType);
-			setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
+			setMaxEffort()
 		}
 	}, [props.submission]);
+
+	const setMaxEffort = () => {
+		let charEffort = getThisEffort(props.myCharacter.effort, actionType.type) + props.submission.effort.amount;
+		setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
+	};
+
 
 	const getTime = (date) => {
 		let day = new Date(date).toDateString();
