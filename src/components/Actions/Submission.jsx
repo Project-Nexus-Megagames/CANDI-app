@@ -120,17 +120,6 @@ const Submission = (props) => {
 		else return false;
 	};
 
-	// formattedUsedAssets = (submissionAssets) => {
-	// 	let temp = [];
-	// 	let assets = this.props.getMyAssets;
-	// 	assets = assets.filter((el) => el.uses <= 0 || el.status.used);
-	// 	assets = assets.filter(el => !submissionAssets.some(sub => sub === el._id) )
-	// 	for (const asset of assets) {
-	// 		temp.push(asset._id);
-	// 	}
-	// 	return temp;
-	// };
-
 	function formattedUsedAssets(submissionAssets) {
 		let temp = [];
 		let assets = props.getMyAssets;
@@ -168,6 +157,7 @@ const Submission = (props) => {
 			}
 		};
 		socket.emit('request', { route: 'action', action: 'update', data });
+		setShow(false)
 	};
 
 	const controlRemove = (asset) => {
