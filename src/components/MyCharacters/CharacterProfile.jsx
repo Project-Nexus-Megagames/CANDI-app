@@ -57,6 +57,7 @@ class CharacterProfile extends Component {
 				textarea: char.standingOrders
 			};
 			const characters = { ...this.props.characters };
+
 			this.setState({ formValue, characters });
 		}
 	};
@@ -145,6 +146,9 @@ class CharacterProfile extends Component {
 
 	render() {
 		const playerCharacter = this.props.myCharacter;
+		const pcCharacters = this.props.characters.filter((el) => el.tags.some((tag) => tag === 'PC'));
+		console.log(pcCharacters);
+		console.log(this.props.characters);
 		if (!this.props.login) {
 			this.props.history.push('/');
 			return <Loader inverse center content="doot..." />;
@@ -238,7 +242,7 @@ class CharacterProfile extends Component {
 									size="lg"
 									style={{
 										height: 'calc(100vh - 50px)',
-										 
+
 										borderLeft: '1px solid rgba(255, 255, 255, 0.12)',
 										overflow: 'scroll'
 									}}
@@ -277,7 +281,7 @@ class CharacterProfile extends Component {
 							valueKey="_id"
 							labelKey="characterName"
 							disabledItemValues={[playerCharacter._id]}
-							data={this.props.characters}
+							data={pcCharacters}
 						/>
 						{this.renderLendation()}
 					</Drawer.Body>
