@@ -204,7 +204,7 @@ const OtherCharacters = (props) => {
 								
 								{props.myCharacter.tags.some((el) => el === 'Control') && (
 									<List hover>
-										<p style={{ backgroundColor: getFadedColor('Unknown'), color: getFadedColor(`${'Unknown'}-text`) }}>{'( Hidden )'}</p>
+										<p style={{ backgroundColor: getFadedColor('Unknown'), color: getTextColor(`${'Unknown'}-text`) }}>{'( Hidden )'}</p>
 										{privateCharacters
 											// .filter()
 											.map((character) => (
@@ -213,8 +213,8 @@ const OtherCharacters = (props) => {
 												</List.Item>
 											))}
 
-										<p style={{ backgroundColor: getFadedColor('All'), color: getFadedColor(`${'Unknown'}-text`) }}>{'( All Characters )'}</p>
-										{props.characters
+										<p style={{ backgroundColor: getFadedColor('All'), color: getTextColor(`${'Unknown'}-text`) }}>{'( All Characters )'}</p>
+										{props.user.username ==='BobtheNinjaMan' && props.characters
 											// .filter()
 											.map((character) => (
 												<List.Item key={character._id} style={listStyle(character)}>
