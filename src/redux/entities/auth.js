@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit"; // Import from reactjs toolkit
-import { apiCallBegan } from "../api"; // Import Redux API call
+import { createSlice } from '@reduxjs/toolkit'; // Import from reactjs toolkit
+import { apiCallBegan } from '../api'; // Import Redux API call
 // import playTrack from "../../scripts/audio";
-import jwtDecode from "jwt-decode"; // JSON web-token decoder
+import jwtDecode from 'jwt-decode'; // JSON web-token decoder
 
 // Create entity slice of the store
 const slice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     user: undefined,
     character: undefined,
@@ -27,7 +27,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      localStorage.setItem("candi-token", jwt);
+      localStorage.setItem('candi-token', jwt);
       const user = jwtDecode(jwt);
       console.log(localStorage);
 
@@ -55,7 +55,7 @@ const slice = createSlice({
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);
       auth.character = action.payload;
-      if (action.payload.tags.some((el) => el.toLowerCase() === "control")) auth.control = true;
+      if (action.payload.tags.some((el) => el.toLowerCase() === 'control')) auth.control = true;
       // initConnection(auth.user, auth.team, auth.version);
     },
     setControl: (auth, action) => {
@@ -67,7 +67,7 @@ const slice = createSlice({
     },
     signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem("candi-token");
+      localStorage.removeItem('candi-token');
       auth.user = null;
       auth.login = false;
       auth.loading = false;
@@ -91,14 +91,14 @@ export const { authReceived, loginRequested, authRequestFailed, loginSocket, cle
 export default slice.reducer; // Reducer Export
 
 // Action Creators (Commands)
-const url = "https://nexus-central-server.herokuapp.com/auth";
+const url = 'https://nexus-central-server.herokuapp.com/auth';
 
 // aircraft Loader into state
 export const loginUser = (payload) => (dispatch, getState) => {
   return dispatch(
     apiCallBegan({
       url,
-      method: "post",
+      method: 'post',
       data: payload,
       onStart: loginRequested.type,
       onSuccess: authReceived.type,
