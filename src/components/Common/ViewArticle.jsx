@@ -90,21 +90,20 @@ const ViewArticle = (props) => {
 			<DrawerContent bgColor="#0f131a">
 				<DrawerCloseButton />
 				<DrawerHeader align="center">
-					<Text>{article?.title}</Text>
 				</DrawerHeader>
 				<DrawerBody>
 					<Center maxW="960px" mx="auto">
 						<Stack fontSize="sm" px="4" spacing="4" margin="5px">
+						<Text fontSize='6xl'>{article?.title}</Text>
 							<Stack direction="row" justify="space-between" spacing="4">
 								<HStack spacing="4">
 									<Avatar src={article?.authorProfilePicture} boxSize="10" />
 									<Box>
 										<Text fontWeight="medium" color="emphasized">
-											by {article?.author}
+											by {article?.author} - {getDateString(article?.date)}
 										</Text>
 									</Box>
 								</HStack>
-								<Text color="muted">{getDateString(article?.date)}</Text>
 							</Stack>
 							<Divider />
 							<VStack>
