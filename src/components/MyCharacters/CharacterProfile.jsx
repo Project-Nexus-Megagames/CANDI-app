@@ -147,8 +147,6 @@ class CharacterProfile extends Component {
 	render() {
 		const playerCharacter = this.props.myCharacter;
 		const pcCharacters = this.props.characters.filter((el) => el.tags.some((tag) => tag === 'PC'));
-		console.log(pcCharacters);
-		console.log(this.props.characters);
 		if (!this.props.login) {
 			this.props.history.push('/');
 			return <Loader inverse center content="doot..." />;
