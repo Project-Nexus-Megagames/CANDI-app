@@ -122,9 +122,9 @@ const News = (props) => {
 						</InputGroup>
 					</FlexboxGrid.Item>
 					<Divider />
-					{/* <Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
+					{myArticles && myArticles.length > 0 && <Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
 						{filterButtonText}
-					</Button> */}
+					</Button>}
 				</FlexboxGrid>
 			</Header>
 			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
