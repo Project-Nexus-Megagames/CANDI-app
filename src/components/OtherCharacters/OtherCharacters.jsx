@@ -137,7 +137,6 @@ const OtherCharacters = (props) => {
 		if (props.characters && selected) {
 			const updated = props.characters.find((el) => el._id === selected._id);
 			setSelected(updated);
-			filterThis('');
 		}
 	}, [props.characters, selected]);
 

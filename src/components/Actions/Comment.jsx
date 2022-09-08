@@ -12,7 +12,7 @@ class Comment extends Component {
 			commentEdit: false, // used to open edit action popup
 			body: this.props.comment.body,
 			deleteWarning: false, // used to open delete action popup
-			private: true
+			private: false
 		};
 	}
 	//TODO get avatarURL for commentor avatar
@@ -47,7 +47,7 @@ class Comment extends Component {
 			id: this.props.selected._id,
 			comment: {
 				body: this.state.body,
-				status: this.state.private ? 'Private' : 'Public',
+				status: (this.state.private && this.props.myCharacter.tags.some((el) => el === 'Control'))  ? 'Private' : 'Public',
 				commentor: this.props.myCharacter.characterName
 			},
 			round: this.props.gamestate.round
@@ -86,7 +86,7 @@ class Comment extends Component {
 			id: this.props.selected._id,
 			comment: {
 				body: this.state.body,
-				status: this.state.private ? 'Private' : 'Public',
+				status: (this.state.private && this.props.myCharacter.tags.some((el) => el === 'Control')) ? 'Private' : 'Public',
 				_id: this.props.comment._id
 			}
 		};
@@ -118,7 +118,7 @@ class Comment extends Component {
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={4}>
-									{this.props.myCharacter._id === this.props.comment.commentor._id && (
+									{(this.props.myCharacter._id === this.props.comment.commentor._id || this.props.myCharacter.tags.some((el) => el === 'Control')) && (
 										<ButtonToolbar>
 											<ButtonGroup>
 												<IconButton size="xs" onClick={() => this.setState({ commentEdit: true })} color="blue" icon={<Icon icon="pencil" />} />
