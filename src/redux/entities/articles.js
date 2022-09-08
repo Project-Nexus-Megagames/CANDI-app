@@ -10,6 +10,7 @@ const slice = createSlice({
     list: [],
     hidden: [],
     loading: false,
+    new: [],
     lastFetch: null,
     newarticles: 0
   },
@@ -45,13 +46,28 @@ const slice = createSlice({
 		articleUpdated: (articles, action) => {
       console.log(`${action.type} Dispatched...`);
       const index = articles.list.findIndex(el => el._id === action.payload._id);
-      index > -1 ? articles.list[index] = action.payload : articles.list.push(action.payload);
+
+      if(index > -1) {
+        if (action.payload.tags.some(el => el.toLowerCase() === 'published') && articles.list[index].tags.some(el => el.toLowerCase() === 'draft')) {
+          articles.new.push(action.payload);
+        }
+        articles.list[index] = action.payload;
+      }
+      else {
+        articles.list.push(action.payload);
+        if (action.payload.tags.some(el => el.toLowerCase() === 'published')) articles.new.push(action.payload);
+      }
       articles.lastFetch = Date.now();
     },
 		articleDeleted: (articles, action) => {
       console.log(`${action.type} Dispatched`)
       const index = articles.list.findIndex(el => el._id === action.payload._id);
       articles.list.splice(index, 1);
+    },
+    clearNewArticle: (articles, action) => {
+      console.log(`${action.type} Dispatched`)
+      const index = articles.new.findIndex(el => el._id === action.payload._id);
+      articles.new.splice(index, 1);
     },
   }
 });
@@ -62,6 +78,7 @@ export const {
   articleHidden,
 	articleUpdated,
 	articleDeleted,
+  clearNewArticle,
   articlesReceived,
   articlesRequested,
   articlesRequestFailed

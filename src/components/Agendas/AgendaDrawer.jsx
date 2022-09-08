@@ -19,6 +19,7 @@ const AgendaDrawer = (props) => {
 
 	return (
 		<Drawer
+		style={{ zIndex: 2 }}
 			isOpen={props.isOpen}
 			placement="top"
 			size="full"
@@ -35,7 +36,7 @@ const AgendaDrawer = (props) => {
 					<Text>{selected?.name}</Text>
 				</DrawerHeader>
 				<DrawerBody align="center">
-          {selected && <SelectedAction handleSelect={props.closeDrawer} selected={selected} />}
+          {selected && <SelectedAction special={true} handleSelect={props.closeDrawer} selected={selected} />}
 				</DrawerBody>
 			</DrawerContent>
 		</Drawer>

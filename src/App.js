@@ -2,7 +2,7 @@ import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
 import { Alert } from "rsuite";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, useToast } from '@chakra-ui/react';
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
@@ -40,6 +40,7 @@ import Map from "./components/Map/Map";
 import { loadGameConfig } from './redux/entities/gameConfig';
 import { loadArticles } from "./redux/entities/articles";
 import { loadLog } from "./redux/entities/log";
+import { ArticleAlert } from "./components/Common/ArticleAlert";
 
 // React App Component
 initUpdates();
@@ -48,6 +49,7 @@ const App = (props) => {
   // console.log(localStorage)
   const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog } = props;
 
+	const toast = useToast();
   useEffect(() => {
     const theme = "dark";
     console.log(`Setting Theme: ${theme}`);
@@ -96,6 +98,16 @@ const App = (props) => {
             break;
           case "success":
             Alert.success(data.message, 6000);
+            break;
+          case 'article':
+            toast({          
+              position: 'top-right',
+              isClosable: true,
+              duration: 9000,
+              render: () => (
+                <ArticleAlert data={data.data} />
+              ),
+            });
             break;
           case "logout":
             window.location.reload(false);

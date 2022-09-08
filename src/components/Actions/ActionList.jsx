@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { List, FlexboxGrid, Container, Tag } from 'rsuite';
+import { List, FlexboxGrid, Container, Tag, Avatar } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { getFadedColor } from '../../scripts/frontend';
 
@@ -99,14 +99,16 @@ class ActionList extends Component {
 												index // .filter(el => el.round === round)
 											) => (
 												<List.Item key={index} index={index} size={'sm'} onClick={() => this.props.handleSelect(action)} style={this.listStyle(action, index % 2)}>
-													<FlexboxGrid>
-														<FlexboxGrid.Item
-															colspan={24}
+													<FlexboxGrid align='middle' justify="space-around">
+														<FlexboxGrid.Item >
+															<Avatar circle src={action.creator.profilePicture} />
+														</FlexboxGrid.Item>
+														<FlexboxGrid.Item colspan={18}
 															style={{
 																...styleCenter,
 																flexDirection: 'column',
 																alignItems: 'flex-start',
-																overflow: 'hidden'
+																overflow: 'ellipsis'
 															}}
 														>
 															<div style={titleStyle}>{action.name}</div>

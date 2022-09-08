@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	Avatar,
 	Box,
@@ -20,27 +20,30 @@ import {
 	Button,
 	AlertDialogOverlay
 } from '@chakra-ui/react';
-import { IconButton, Icon, ButtonGroup } from 'rsuite';
+import { IconButton, Icon, ButtonGroup, Tag } from 'rsuite';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { CandiDrawer } from './Drawer';
 import { ArticleForm } from '../News/ArticleForm';
 import socket from '../../socket';
+import { clearNewArticle } from '../../redux/entities/articles';
 
 const NewsFeed = (props) => {
+	const dispatch = useDispatch();
 	const [articleModal, setArticleModal] = useState(false);
 	const [selected, setSelected] = useState();
 	const [article, setArticle] = useState('');
 	const [articleId, setArticleId] = useState('');
 	const myChar = useSelector(getMyCharacter);
+	const newArticles  = useSelector((state) => state.articles.new);
 	const data = props.data;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete, cancelRef } = useDisclosure();
 
 	useEffect(() => {
 		if (selected) {
-			const newSelected = data.find((el) => el.articleId === selected.articleId);
+			const newSelected = data.find((el) => el._id === selected._id);
 			setSelected(newSelected);
 		}
 	}, [data]);
@@ -63,6 +66,12 @@ const NewsFeed = (props) => {
 		socket.emit('request', { route: 'article', action: 'delete', data: { id: articleId } });
 	};
 
+	const handleClick = (article) => {
+		setSelected(article); 
+		setArticleModal(true);
+		if (newArticles.some(el => el.title == article.title)) dispatch(clearNewArticle(article)); 
+	}
+
 	if (data.length === 0) return <p>Nothing to see here, move along!</p>;
 
 	return (
@@ -71,7 +80,8 @@ const NewsFeed = (props) => {
 				<Divider />
 				<Stack divider={<StackDivider />} spacing="4">
 					{data.map((item) => (
-						<Stack onClick={() => { setSelected(item), setArticleModal(true);	}} style={{ backgroundColor: '#15181e', cursor: 'pointer' }} key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
+						<Stack onClick={() =>handleClick(item)} style={{ backgroundColor: '#15181e', cursor: 'pointer' }} key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
+							
 							{item.imageURL && <Image src={item.imageURL} width="100%" height={'20vh'} fit='cover' />}
 							<HStack>								
 								<VStack align="left" width="960px">
@@ -82,6 +92,7 @@ const NewsFeed = (props) => {
 													DRAFT
 												</Text>
 											)}
+											{newArticles.some(el => el.title == item.title) && <Tag size='lg' color='red' style={{ right: '30px' }}>New</Tag>}
 											<Text
 												fontSize="2xl"
 												align="left"

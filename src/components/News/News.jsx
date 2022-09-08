@@ -8,6 +8,7 @@ import { Container, FlexboxGrid, Header, Input, InputGroup, Button, Divider } fr
 import { Loader } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { getMyArticles, getPublishedArticles } from './../../redux/entities/articles';
+import socket from '../../socket';
 
 const News = (props) => {
 	const articles = useSelector(getPublishedArticles);

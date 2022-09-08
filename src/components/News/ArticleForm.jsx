@@ -63,6 +63,7 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 
 		if (article) socket.emit('request', { route: 'article', action: 'publish', data: { article: data, id: article.articleId } });
 		else socket.emit('request', { route: 'article', action: 'publish', data });
+		handleCancel()
 	};
 
 	const isDraft = () => {

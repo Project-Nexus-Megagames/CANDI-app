@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row } from 'rsuite';
+import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row, Badge } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
@@ -25,6 +25,7 @@ const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0 });
 	const newsArticles = useSelector(getPublishedArticles);
+	const newArticles  = useSelector((state) => state.articles.new);
 	const sortedArticles = [...newsArticles].sort((a, b) => {
 		let da = new Date(a.createdAt),
 			db = new Date(b.createdAt);
@@ -155,7 +156,7 @@ const HomePage = (props) => {
 
 			<Row>
 				<Col lg={12} md={24}>
-					<ImgPanel img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+					<ImgPanel new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
 					{/* <Carousel height="45vh" to="news" data={sortedArticles.slice(0, 3)}></Carousel> */}
 				</Col>
 
@@ -194,7 +195,6 @@ const mapStateToProps = (state) => ({
 	loading: state.auth.loading,
 	gamestate: state.gamestate,
 	gamestateLoaded: state.gamestate.loaded,
-	//gameConfigLoaded: state.gameConfig.loaded,
 	actionsLoaded: state.actions.loaded,
 	charactersLoaded: state.characters.loaded,
 	assetsLoaded: state.assets.loaded,

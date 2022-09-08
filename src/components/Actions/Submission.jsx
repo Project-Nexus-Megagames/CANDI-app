@@ -248,7 +248,7 @@ const Submission = (props) => {
 					</FlexboxGrid.Item>
 
 					<FlexboxGrid.Item colspan={4}>
-						{(props.myCharacter._id === props.action.creator._id || props.myCharacter.tags.some((el) => el === 'Control')) && (
+						{(props.myCharacter._id === props.action.creator._id || props.myCharacter.tags.some((el) => el === 'Control')) && !props.special && (
 							<ButtonToolbar>
 								<ButtonGroup>
 									{(props.action.tags.some((tag) => tag !== 'Published') || !props.action.tags.length > 0) && props.action.type === 'Agenda' && (
@@ -300,7 +300,7 @@ const Submission = (props) => {
 					<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 					<p style={slimText}>Effort ({submission.effort.effortType})</p>
 					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
-					<Progress.Line percent={submission.effort.amount * 33 + 1} showInfo={false}></Progress.Line>
+					<Progress.Line percent={submission.effort.amount * 50} showInfo={false}></Progress.Line>
 					<Divider>Resources</Divider>
 					<FlexboxGrid>
 						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[0])}</FlexboxGrid.Item>
@@ -311,7 +311,7 @@ const Submission = (props) => {
 					</FlexboxGrid>
 				</Panel>
 
-				<Modal overflow style={{ width: '90%', zIndex: 9999 }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
+				<Modal overflow style={{ width: '90%', }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
 					<Modal.Header>
 						<Modal.Title>
 							Edit {props.action.type} action {name}

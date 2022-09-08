@@ -61,6 +61,7 @@ const SelectedAction = (props) => {
 				return (
 					<div>
 						<Submission
+							special={props.special}
 							handleSelect={props.handleSelect}
 							index={index}
 							submission={el}
