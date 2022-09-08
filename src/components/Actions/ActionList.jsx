@@ -85,10 +85,10 @@ class ActionList extends Component {
 										.filter((action) => action.round === round)
 										.sort((a, b) => {
 											// sort the catagories alphabetically
-											if (a.creator.characterTitle < b.creator.characterTitle) {
+											if (a.creator.characterName < b.creator.characterName) {
 												return -1;
 											}
-											if (a.creator.characterTitle > b.creator.characterTitle) {
+											if (a.creator.characterName > b.creator.characterName) {
 												return 1;
 											}
 											return 0;
