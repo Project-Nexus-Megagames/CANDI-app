@@ -103,8 +103,7 @@ const SelectedAction = (props) => {
 
 	return (
 		<Content style={{ overflow: 'auto', height: '100%' }}>
-			<FlexboxGrid>
-				<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+			<FlexboxGrid align='middle' justify="space-around">
 				<FlexboxGrid.Item colspan={16}>
 					{!props.selected && <h4>No Action Selected</h4>}
 					{selectedArray.map((el, index) => renderSwitch(el, index))}
@@ -142,7 +141,6 @@ const SelectedAction = (props) => {
 						)}
 					</div>
 				</FlexboxGrid.Item>
-				<FlexboxGrid.Item colspan={1} />
 			</FlexboxGrid>
 
 			{props.selected.submission && <NewResult
