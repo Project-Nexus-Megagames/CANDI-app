@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'; // React import
 import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import { getAgendaActions, getPublishedAgendas } from '../../redux/entities/playerActions';
 import { Stack } from '@chakra-ui/react';
 import { Loader, Header, Container, Input, FlexboxGrid, ButtonToolbar, ButtonGroup, Avatar, Button, IconButton, Icon, Divider } from 'rsuite';
@@ -29,6 +29,7 @@ const Agendas = (props) => {
 	});
 
 	const [filter, setFilter] = useState('');
+	const [round, setRound] = useState(gamestate.round);
 	const [selected, setSelected] = useState(null);
 	const [filteredData, setFilteredData] = useState([]);
 
@@ -72,13 +73,22 @@ const Agendas = (props) => {
 	return (
 		<React.Fragment>
 			<NavigationBar />
-			<Header>
-				<Stack align="center" spacing="4">
-					<Input style={{ width: '30%' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
+			<Header >
+				<Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
+
+				<tbody>
+					{[...Array(gamestate.round)].map((x, i) =>
+						<Button style={{margin: '4px' }} onClick={() => setRound(i+1)} color='blue' appearance={i+1 === round ? "primary" :"ghost"} circle >{i+1}</Button>
+					)}
+				</tbody>
+				
+					<Input style={{ width: '20%' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
 				</Stack>
 			</Header>
-			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
-				{filteredData.map((agenda, index) => (
+			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto', display: 'flex', alignItems: 'center', }}>
+				<h5>Round {round}</h5>
+				{filteredData.filter(el => el.round === round).length === 0 && <b>Nothing here yet...</b>}
+				{filteredData.filter(el => el.round === round).map((agenda, index) => (
 					<div index={index} key={index}>
 						<Divider vertical />
 						<div
@@ -90,7 +100,8 @@ const Agendas = (props) => {
 										? `4px dotted ${getFadedColor(agenda.type)}`
 										: `4px solid ${getFadedColor(agenda.type)}`,
 								borderRadius: '5px',
-								padding: '15px'
+								padding: '15px',
+								width: '800px'
 							}}
 						>
 							<FlexboxGrid align="middle" style={{}} justify="center">
@@ -105,23 +116,7 @@ const Agendas = (props) => {
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={4}>
-									{(myChar._id === agenda.creator._id || myChar.tags.some((el) => el === 'Control')) && (
-										<ButtonToolbar>
-											<ButtonGroup>
-												{(agenda.tags.some((tag) => tag.toLowerCase() !== 'published') || !agenda.tags.length > 0) && agenda.type === 'Agenda' && (
-													<Button
-														disabled={(gamestate.status !== 'Active' || gamestate.round > agenda.round) && !myChar.tags.some((el) => el === 'Control')}
-														size="md"
-														onClick={() => handlePublish()}
-														color="green"
-														icon={<Icon icon="pencil" />}
-													>
-														Publish
-													</Button>
-												)}
-											</ButtonGroup>
-										</ButtonToolbar>
-									)}
+									<b>Comments {agenda.comments.length}</b>
 								</FlexboxGrid.Item>
 							</FlexboxGrid>
 						</div>

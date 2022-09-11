@@ -10,7 +10,6 @@ import {
 	VStack,
 	Center,
 	Image,
-	Divider,
 	useDisclosure,
 	AlertDialogContent,
 	AlertDialogBody,
@@ -20,7 +19,7 @@ import {
 	Button,
 	AlertDialogOverlay
 } from '@chakra-ui/react';
-import { IconButton, Icon, ButtonGroup, Tag } from 'rsuite';
+import { IconButton, Icon, ButtonGroup, Tag, Divider } from 'rsuite';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -77,9 +76,10 @@ const NewsFeed = (props) => {
 	return (
 		<Center maxW="960px" mx="auto">
 			<Box bg="bg-surface" py="4">
-				<Divider />
+			<Divider>Round: {props.round}</Divider>
 				<Stack divider={<StackDivider />} spacing="4">
-					{data.map((item) => (
+					{data.filter(el => el.round === props.round).length === 0 && <b>Nothing here yet...</b>}
+					{data.filter(el => el.round === props.round).map((item) => (
 						<Stack onClick={() =>handleClick(item)} style={{ backgroundColor: '#15181e', cursor: 'pointer' }} key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
 							
 							{item.imageURL && <Image src={item.imageURL} width="100%" height={'20vh'} fit='cover' />}

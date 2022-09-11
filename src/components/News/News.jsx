@@ -13,6 +13,7 @@ import socket from '../../socket';
 const News = (props) => {
 	const articles = useSelector(getPublishedArticles);
 	const allArticles = useSelector((state) => state.articles.list);
+	const gamestate = useSelector((state) => state.gamestate);
 	const myArticles = useSelector(getMyArticles).sort((a, b) => {
 		let da = new Date(a.createdAt),
 			db = new Date(b.createdAt);
@@ -24,6 +25,7 @@ const News = (props) => {
 	const [showMyArticles, setShowMyArticles] = useState(false);
 	const myChar = useSelector(getMyCharacter);
 	const [filterButtonText, setFilterButtonText] = useState('Show My Articles');
+	const [round, setRound] = useState(gamestate.round);
 
 	if (!login) {
 		props.history.push('/');
@@ -55,6 +57,7 @@ const News = (props) => {
 			author: el.creator?.characterName,
 			authorId: el.creator?._id,
 			title: el.title,
+			round: el.round,
 			body: el.body,
 			date: el.publishDate ? el.publishDate : el.createdAt,
 			comments: el.comments,
@@ -116,6 +119,11 @@ const News = (props) => {
 			<NavigationBar />
 			<Header>
 				<FlexboxGrid justify="center" align="middle">
+				<tbody>
+					{[...Array(gamestate.round)].map((x, i) =>
+						<Button style={{margin: '4px' }} onClick={() => setRound(i+1)} color='blue' appearance={i+1 === round ? "primary" :"ghost"} circle >{i+1}</Button>
+					)}
+				</tbody>
 					<FlexboxGrid.Item colspan={4}>
 						<InputGroup>
 							<Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />
@@ -129,7 +137,7 @@ const News = (props) => {
 				</FlexboxGrid>
 			</Header>
 			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
-				<NewsFeed data={filteredData} />
+				<NewsFeed round={round} data={filteredData} />
 			</Container>
 		</React.Fragment>
 	);
