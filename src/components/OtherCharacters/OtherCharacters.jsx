@@ -363,7 +363,7 @@ const OtherCharacters = (props) => {
 							}}
 						/>
 						<AddAsset show={add} character={selected} loggedInUser={loggedInUser} closeModal={() => setAdd(false)} />
-						<DynamicForm show={asset !== false} selected={asset} closeDrawer={() => setAsset(false)} />
+						<DynamicForm show={asset !== false} selected={asset} loggedInUser={loggedInUser} closeDrawer={() => setAsset(false)} />
 					</Content>
 				)}
 			</Container>

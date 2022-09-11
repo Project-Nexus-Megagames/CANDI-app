@@ -24,6 +24,8 @@ const Submission = (props) => {
 	const [max, setMax] = React.useState(0);
 	const [infoAsset, setInfoAsset] = React.useState(false);
 
+
+	const loggedInUser = useSelector((state) => state.auth.user);
 	const actionType = gameConfig.actionTypes.find((el) => el.type.toLowerCase() === props.action.type.toLowerCase());
 
 	useEffect(() => {
@@ -163,6 +165,7 @@ const Submission = (props) => {
 	const controlRemove = (asset) => {
 		const data = {
 			asset,
+			loggedInUser,
 			id: props.action._id
 		};
 		socket.emit('request', { route: 'action', action: 'controlReject', data });

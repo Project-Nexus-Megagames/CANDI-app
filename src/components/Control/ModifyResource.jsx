@@ -130,8 +130,6 @@ const ModifyResource = (props) => {
 					<Toggle checked={used} onChange={() => setUsed(!used)} checkedChildren="Used" unCheckedChildren="Un-used" />
 					<Toggle checked={hidden} onChange={() => setHidden(!hidden)} checkedChildren="hidden" unCheckedChildren="Un-hidden" />
 					<Toggle checked={lendable} onChange={() => setLendable(!lendable)} checkedChildren="lendable" unCheckedChildren="Un-lendable" />
-					{type === 'Asset' && <Toggle onChange={handleArcane} checked={arcane} checkedChildren="Arcane" unCheckedChildren="Not Arcane"></Toggle>}
-					{type === 'Trait' && <Toggle onChange={handleArcane} checked={arcane} checkedChildren="Arcane" unCheckedChildren="Not Arcane"></Toggle>}
 				</Panel>
 			);
 		} else {

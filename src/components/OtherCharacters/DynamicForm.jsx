@@ -3,7 +3,7 @@ import { Drawer, Button, InputNumber, Input, Toggle } from 'rsuite';
 import { connect } from 'react-redux';
 import socket from '../../socket';
 
-const diabled = ['_id', '__v', 'model', 'type'];
+const diabled = ['_id', '__v', 'model',];
 class DynamicForm extends Component {
 	constructor(props) {
 		super(props);
@@ -62,7 +62,7 @@ class DynamicForm extends Component {
 		socket.emit('request', {
 			route: 'asset',
 			action: 'modify',
-			data: this.state.formValue
+			data: { ...this.state.formValue, loggedInUser: this.props.loggedInUser }
 		});
 		this.props.closeDrawer();
 		this.setState({ loading: false });
@@ -171,29 +171,6 @@ class DynamicForm extends Component {
 		else return <div></div>;
 	}
 }
-
-// const pickerData = [
-// 	{
-// 		label: 'Poor',
-// 		value: 'Poor'
-// 	},
-// 	{
-// 		label: 'Laborer',
-// 		value: 'Laborer'
-// 	},
-// 	{
-// 		label: 'Comfortable',
-// 		value: 'Comfortable'
-// 	},
-// 	{
-// 		label: 'Affluent',
-// 		value: 'Affluent'
-// 	},
-// 	{
-// 		label: 'Luxury',
-// 		value: 'Luxury'
-// 	}
-// ]
 
 const mapStateToProps = (state) => ({
 	characters: state.characters.list
