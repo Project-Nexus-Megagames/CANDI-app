@@ -386,11 +386,11 @@ const pickerData = [
 	{
 		label: 'Trait',
 		value: 'Trait'
-	}
-	// {
-	// 	label: 'Power',
-	// 	value: 'Power'
-	// },
+	},
+	{
+		label: 'Title',
+		value: 'Title'
+	},
 	// {
 	// 	label: 'Bond',
 	// 	value: 'bond'
