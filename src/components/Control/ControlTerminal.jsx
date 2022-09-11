@@ -9,6 +9,7 @@ import LockMap from './LockMap';
 import ManageContacts from './ManageContacts';
 import HealInjury from './HealInjury';
 import Aspects from './Aspects';
+import ActionTable from './ActionTable';
 
 class ControlTerminal extends Component {
 	state = {
@@ -31,6 +32,10 @@ class ControlTerminal extends Component {
 		drafts: 0,
 		awaiting: 0,
 		ready: 0,
+
+		zAgendas: 0,
+		zNormals: 0,
+
 		assets: [],
 		selected: null,
 		name: '',
@@ -58,11 +63,17 @@ class ControlTerminal extends Component {
 			else if (action.results[0].ready) ready++;
 			else awaiting++;
 		}
+
+		let zAgendas = this.props.characters.filter((el) => el.effort.some(eff => eff.amount <=0 && eff.type === "Agenda"))
+		let zNormals = this.props.characters.filter((el) => el.effort.some(eff => eff.amount <=0 && eff.type === "Normal"))
+
 		this.setState({
 			formValue,
 			drafts,
 			awaiting,
 			ready,
+			zAgendas,
+			zNormals,
 			characters: { ...this.props.characters }
 		});
 	};
@@ -94,55 +105,80 @@ class ControlTerminal extends Component {
 				<Panel style={{ backgroundColor: '#272b34' }}>
 					<FlexboxGrid>
 						<FlexboxGrid.Item style={{ border: '3px solid #ff66c4' }} colspan={4}>
-							<Panel style={{ height: '11vh' }}>
+							<div style={{ height: '11vh' }}>
 								<h5>Draft Actions</h5> {this.state.drafts}{' '}
-							</Panel>
+							</div>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{ border: '3px solid #ff66c4' }} colspan={4}>
-							<Panel style={{ height: '11vh' }}>
+							<div style={{ height: '11vh' }}>
 								<h5>Draft Resolution</h5> {this.state.awaiting}{' '}
-							</Panel>
+							</div>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{ border: '3px solid #ff66c4' }} colspan={4}>
-							<Panel style={{ height: '11vh' }}>
+							<div style={{ height: '11vh' }}>
 								<h5>Resolutions Ready</h5> {this.state.ready}{' '}
-							</Panel>
+							</div>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{ border: '3px solid #d066ff' }} colspan={6}>
-							<Panel style={{ height: '11vh' }}>
-								<h5>Zero Efforts</h5> {this.props.characters.filter((el) => el.effort <= 0).length}
-							</Panel>
+							<div style={{ height: '11vh', overflow: 'scroll'  }}>
+								<h5>Characters w/ Zero Effort</h5> {this.state.zNormals.length} - {this.state.zAgendas.length}
+								{this.state.zNormals.length > 0 && (
+									<div>
+										<p>0 Normal Effort</p>
+									{this.state.zNormals.map(el => 
+										<p key={el._id}>{el.characterName}</p>
+										)}
+									</div>
+
+								)}								
+								{this.state.zAgendas.length > 0 && (
+									<div>
+										<p>0 Agenda Effort</p>
+									{this.state.zAgendas.map(el => 
+										<p key={el._id}>{el.characterName}</p>
+										)}
+									</div>
+
+								)}
+							</div>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{ border: '3px solid #d066ff' }} colspan={6}>
-							<Panel style={{ height: '11vh' }}>
+							<div style={{ height: '11vh', overflow: 'scroll' }}>
 								<h5>Hidden Asssets</h5> {this.props.assets.filter((el) => el.status.hidden === true).length}
 								{this.props.assets.filter((el) => el.status.hidden === true).length > 0 && (
-									<Button
-										color="violet"
-										onClick={() =>
-											socket.emit('request', {
-												route: 'asset',
-												action: 'unhide'
-											})
-										}
-									>
-										Unhide all Assets
-									</Button>
+									<div>
+										<Button
+											color="violet"
+											onClick={() =>
+												socket.emit('request', {
+													route: 'asset',
+													action: 'unhide'
+												})
+											}
+										>
+											Unhide all Assets
+										</Button>
+									{this.props.assets.filter((el) => el.status.hidden === true).map(el => 
+										<p key={el._id}>{el.name}</p>
+										)}
+									</div>
+
 								)}
-							</Panel>
+							</div>
 						</FlexboxGrid.Item>
 					</FlexboxGrid>
 					<div style={{ marginTop: '10px' }}>
 						<Button appearance="ghost" onClick={() => this.setState({ assModal: true })}>
 							Edit or Delete Resources
 						</Button>
-						<Button appearance="ghost" onClick={() => this.setState({ mapModal: true })}>
-							Lock Map Tile
-						</Button>
 
-						<Button appearance="ghost" onClick={() => this.setState({ injuryModal: true })}>
+						{/* <Button disabled appearance="ghost" onClick={() => this.setState({ mapModal: true })}>
+							Lock Map Tile
+						</Button> */}
+
+						{/* <Button appearance="ghost" onClick={() => this.setState({ injuryModal: true })}>
 							Heal Injuries
-						</Button>
+						</Button> */}
 						{/* <Button appearance="ghost" onClick={() => this.setState({ editTerritory: true })}>Edit Territory</Button> */}
 
 						{/* {<Button color='violet' onClick={() => this.props.history.push('/bitsy')}>Secret</Button>} */}
@@ -189,7 +225,7 @@ class ControlTerminal extends Component {
 					</ButtonGroup>
 				</Panel>
 
-				<Panel header={'Aspects and their Standing'} bordered style={{ border: '5px solid green' }}>
+				<Panel header={'Aspects and their Standing'}  style={{ border: '5px solid green' }}>
 					<ButtonGroup>
 						{/*<Button appearance="ghost" onClick={() => setLogModal(true)}>*/}
 						<Button appearance="ghost" onClick={() => this.setState({ aspectModal: true })}>
@@ -197,6 +233,9 @@ class ControlTerminal extends Component {
 						</Button>
 					</ButtonGroup>
 				</Panel>
+
+				
+				{/* <ActionTable /> */}
 
 				{/* TODO pull these out into individual components */}
 				<Modal size="sm" show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })}>
