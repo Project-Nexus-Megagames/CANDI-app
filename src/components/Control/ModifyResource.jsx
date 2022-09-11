@@ -17,7 +17,6 @@ const ModifyResource = (props) => {
 	const [selected, setSelected] = useState('');
 	const [used, setUsed] = useState(false);
 	const [type, setType] = useState('');
-	const [arcane, setArcane] = useState(false);
 
 	const assets = useSelector((state) => state.assets.list);
 	const loggedInUser = useSelector((state) => state.auth.user);
@@ -36,9 +35,6 @@ const ModifyResource = (props) => {
 		setUses(selected.uses);
 		setOwner(selected.owner);
 		setTags(selected.tags);
-		if (selected.tags) {
-			setArcane(selected.tags.some((el) => el === 'arcane'));
-		}
 		if (selected.status) {
 			setUsed(selected.status.used);
 			setLendable(selected.status.lendable);
@@ -46,15 +42,6 @@ const ModifyResource = (props) => {
 			setDice(selected.dice);
 		}
 	}, [selected]);
-
-	useEffect(() => {
-		let tempTags = tags;
-		if (arcane) {
-			setTags([...tempTags, 'arcane']);
-		} else {
-			setTags(tags.filter((el) => el !== 'arcane'));
-		}
-	}, [arcane]);
 
 	const assetModify = async () => {
 		const data = {
@@ -64,13 +51,14 @@ const ModifyResource = (props) => {
 			dice,
 			uses,
 			owner,
-			used,
 			level,
-			lendable,
-			hidden,
 			tags,
 			type,
-			status: selected.status,
+			status: {
+				used,
+				hidden,
+				lendable
+			},
 			loggedInUser
 		};
 		// console.log(data);
@@ -84,10 +72,6 @@ const ModifyResource = (props) => {
 			setSelected(assets.find((el) => el._id === event));
 			console.log(selected.status);
 		}
-	};
-
-	const handleArcane = () => {
-		setArcane(!arcane);
 	};
 
 	const handleDelete = async () => {
