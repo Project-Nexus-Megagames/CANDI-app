@@ -110,6 +110,7 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 					<Textarea
 						isRequired
 						id="body"
+						resize={'vertical'}
 						placeholder="Body"
 						noOfLines={40}
 						{...register('body', {
