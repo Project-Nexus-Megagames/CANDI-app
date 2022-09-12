@@ -235,3 +235,7 @@ button {
   background-color: #15181e;
   white-space: pre-line
 }
+
+ul li {
+  margin-left: 1.5em;
+}

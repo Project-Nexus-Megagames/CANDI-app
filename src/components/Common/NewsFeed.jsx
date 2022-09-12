@@ -27,6 +27,8 @@ import { CandiDrawer } from './Drawer';
 import { ArticleForm } from '../News/ArticleForm';
 import socket from '../../socket';
 import { clearNewArticle } from '../../redux/entities/articles';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const NewsFeed = (props) => {
 	const dispatch = useDispatch();
@@ -131,16 +133,9 @@ const NewsFeed = (props) => {
 											</HStack>
 										</Stack>
 									</Box>
-									<Text
-										onClick={() => {
-											setSelected(item), setArticleModal(true);
-										}}
-										color="muted"
-										noOfLines={2}
-										align="left"
-									>
-										{item.body}
-									</Text>
+									<div style={{ height: '50px', textAlign: 'left', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis' }}>
+										<ReactMarkdown children={item?.body} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+									</div>
 									<Text align="right">
 										{item.comments?.length} {translateComment(item.comments?.length)}
 									</Text>

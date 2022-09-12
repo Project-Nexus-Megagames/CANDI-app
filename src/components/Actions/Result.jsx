@@ -95,7 +95,7 @@ class Result extends Component {
 			action: 'updateSubObject',
 			data
 		});
-		// this.setState({ resEdit: false });
+		this.setState({ resEdit: false });
 	};
 
 	handleReady = async () => {
@@ -164,6 +164,64 @@ class Result extends Component {
 						</p> */}
 					</Panel>
 				)}
+
+			<Modal overflow style={{ width: '90%', zIndex: 9999 }} size="md" show={this.state.resEdit} onHide={this.closeResult}>
+				<Modal.Header>
+					<Modal.Title>Edit</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
+					<form>
+						<FlexboxGrid>
+							{' '}
+							Description
+							<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
+						</FlexboxGrid>
+						<br></br>
+
+						<FlexboxGrid>
+							<FlexboxGrid.Item
+								style={{
+									paddingTop: '25px',
+									paddingLeft: '10px',
+									textAlign: 'left'
+								}}
+								align="middle"
+								colspan={4}
+							>
+								<h5>Dice Pool</h5>
+								{this.props.selected && this.props.selected.submission.assets.map((asset, index) => this.renderDice(asset))}
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item
+								style={{
+									paddingTop: '25px',
+									paddingLeft: '10px',
+									textAlign: 'left'
+								}}
+								colspan={20}
+							>
+								Dice Roll Result
+								<textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
+							</FlexboxGrid.Item>
+							<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
+						</FlexboxGrid>
+					</form>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button onClick={() => this.handleEditSubmit()} disabled={this.isDisabled()} appearance="primary">
+						{this.state.description.length < 11 ? (
+							<b>Description text needs {11 - this.state.description.length} more characters</b>
+						) : this.state.dice.length < 1 ? (
+							<b>Dice text need {1 - this.state.dice.length} more characters</b>
+						) : (
+							<b>Submit</b>
+						)}
+					</Button>
+					<Button onClick={this.closeResult} appearance="subtle">
+						Cancel
+					</Button>
+				</Modal.Footer>
+			</Modal>
 
 				<Modal backdrop="static" size="sm" show={this.state.deleteWarning} onHide={() => this.setState({ deleteWarning: false })}>
 					<Modal.Body>
