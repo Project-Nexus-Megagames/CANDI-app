@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { connect, useSelector } from 'react-redux';
-import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress } from 'rsuite';
+import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress, Tooltip, Whisper } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
@@ -267,7 +267,7 @@ const Submission = (props) => {
 									)}
 									<IconButton
 										disabled={
-											(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round || props.action.tags.some((tag) => tag === 'Published')) &&
+											(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round) &&
 											!props.myCharacter.tags.some((el) => el === 'Control')
 										}
 										size="md"
@@ -299,11 +299,22 @@ const Submission = (props) => {
 				>
 					<p style={slimText}>Description</p>
 					<ReactMarkdown children={submission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
-					<p style={slimText}>Intent</p>
-					<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
-					<p style={slimText}>Effort ({submission.effort.effortType})</p>
-					<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
-					<Progress.Line percent={submission.effort.amount * 50} showInfo={false}></Progress.Line>
+
+					{!props.special && <div>
+						<Whisper placement="top"	trigger="hover"	speaker={<Tooltip><b>{`Out of Character Description of what you the player want to happen as a result of the action.`}</b></Tooltip>}>
+							<p style={slimText}>Intent</p>
+						</Whisper>
+						
+						<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>						
+					</div>}
+
+					{submission.effort.effortType !== 'Agenda' && <div>
+						<p style={slimText}>Effort ({submission.effort.effortType})</p>
+						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
+						<Progress.Line percent={submission.effort.amount * 50} showInfo={false}></Progress.Line>
+					</div>}
+
+
 					<Divider>Resources</Divider>
 					<FlexboxGrid>
 						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[0])}</FlexboxGrid.Item>

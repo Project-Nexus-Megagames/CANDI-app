@@ -153,6 +153,13 @@ function GameConfig2() {
 														>
 															Trait
 														</Checkbox>
+															
+														<Checkbox
+															value="title"
+															{...register(`actionTypes.${i}.assetType`)}
+														>
+															Title
+														</Checkbox>
 													</Stack>
 												</CheckboxGroup>
 											</FormControl>

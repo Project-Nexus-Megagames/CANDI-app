@@ -54,15 +54,7 @@ const Actions = (props) => {
 							<InputGroup>
 								<Input size="lg" style={{ height: '42px' }} onChange={(value) => props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
 
-								<Whisper
-									placement="top"
-									trigger="hover"
-									speaker={
-										<Tooltip>
-											<b>{`Create New Action`}</b>
-										</Tooltip>
-									}
-								>
+								<Whisper placement="top"	trigger="hover"	speaker={<Tooltip><b>{`Create New Action`}</b></Tooltip>}>
 									<Button style={{ color: 'black', borderRadius: '0px' }} color="green" onClick={() => setShowNew(true)}>
 										<Icon icon="plus" />
 									</Button>

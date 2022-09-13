@@ -247,7 +247,7 @@ class CharacterProfile extends Component {
 								>
 									{this.renderList('Asset', 'indigo')}
 									{this.renderList('Trait', 'teal')}
-									{this.renderList('Power', 'purple')}
+									{this.renderList('Title', 'purple')}
 								</List>
 							</div>
 						</Col>

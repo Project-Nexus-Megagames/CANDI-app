@@ -19,7 +19,7 @@ function AssetInfo({ asset, showInfo, closeInfo }) {
 
 	return (
 		<Modal
-			style={{ width: '90%' }}
+			
 			show={showInfo}
 			onHide={() => handleClose()}
 			onEnter={() => handleShow()}

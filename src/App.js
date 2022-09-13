@@ -109,7 +109,7 @@ const App = (props) => {
               ),
             });
             break;
-          case "logout":
+          case "refresh":
             window.location.reload(false);
             break;
           default:
