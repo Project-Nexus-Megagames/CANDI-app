@@ -102,7 +102,7 @@ const NewEffects = (props) => {
 			default:
 				break;
 		}
-	}, [type, assets, props.selected.creator._id, characters, locations, props.selected.creator.knownContacts]);
+	}, [type]);
 
 	const handleExit = () => {
 		setType('');

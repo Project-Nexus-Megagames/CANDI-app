@@ -21,21 +21,6 @@ class NewResult extends Component {
 	// 	if (stateReplace) this.setState(stateReplace);
 	// }
 
-	componentDidUpdate = (prevProps, prevState) => {
-		// if (this.state !== prevState) {
-		// 	localStorage.setItem('newResultStateGW', JSON.stringify(this.state));
-		// 	console.log(localStorage);
-		// };
-		if (this.props.actions !== prevProps.actions) {
-			if (this.props.actions.some((el) => el.description === this.state.description)) {
-				// checking to see if the new action got added into the action list, so we can move on with our lives
-				this.props.closeNew();
-				this.setState({
-					description: ''
-				});
-			}
-		}
-	};
 
 	handleSubmit = async () => {
 		this.props.actionDispatched();
@@ -52,6 +37,11 @@ class NewResult extends Component {
 		};
 		socket.emit('request', { route: 'action', action: 'result', data });
 		this.props.closeNew();
+
+		this.setState({
+			description: '',
+			dice: ''
+		});
 	};
 
 	renderDice = (asset) => {
