@@ -76,7 +76,7 @@ let baseURL = `${gameServer}api/actions`;
 export const getMyActions = createSelector(
   state => state.actions.filter,
   state => state.actions.list,
-  state => state.characters.list.find(el => el.username === state.auth.user.username),
+  state => state.characters.list.find(el => el.username === state.auth.character.username),
   (filter, actions, myCharacter) => actions.filter(
     action => (( action.creator._id === myCharacter._id ) ))
 );

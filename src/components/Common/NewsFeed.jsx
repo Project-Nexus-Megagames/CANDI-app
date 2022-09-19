@@ -37,7 +37,8 @@ const NewsFeed = (props) => {
 	const [article, setArticle] = useState('');
 	const [articleId, setArticleId] = useState('');
 	const myChar = useSelector(getMyCharacter);
-	const newArticles  = useSelector((state) => state.articles.new);
+	const control = myChar.tags.some((el) => el.toLowerCase() === 'control');
+	const newArticles = useSelector((state) => state.articles.new);
 	const data = props.data;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete, cancelRef } = useDisclosure();
@@ -68,81 +69,82 @@ const NewsFeed = (props) => {
 	};
 
 	const handleClick = (article) => {
-		setSelected(article); 
+		setSelected(article);
 		setArticleModal(true);
-		if (newArticles.some(el => el.title == article.title)) dispatch(clearNewArticle(article)); 
-	}
+		if (newArticles.some((el) => el.title == article.title)) dispatch(clearNewArticle(article));
+	};
 
 	if (data.length === 0) return <p>Nothing to see here, move along!</p>;
 
 	return (
 		<Center maxW="960px" mx="auto">
 			<Box bg="bg-surface" py="4">
-			<Divider>Round: {props.round}</Divider>
+				<Divider>Round: {props.round}</Divider>
 				<Stack divider={<StackDivider />} spacing="4">
-					{data.filter(el => el.round === props.round).length === 0 && <b>Nothing here yet...</b>}
-					{data.filter(el => el.round === props.round).map((item) => (
-						<Stack onClick={() =>handleClick(item)} style={{ backgroundColor: '#15181e', cursor: 'pointer' }} key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
-							
-							{item.imageURL && <Image src={item.imageURL} width="100%" height={'20vh'} fit='cover' />}
-							<HStack>								
-								<VStack align="left" width="960px">
-									<Stack direction="row" justify="space-between" spacing="4">
-										<HStack>
-											{isDraft(item) && (
-												<Text fontSize="2xl" color="red">
-													DRAFT
-												</Text>
-											)}
-											{newArticles.some(el => el.title == item.title) && <Tag size='lg' color='red' style={{ right: '30px' }}>New</Tag>}
-											<Text
-												fontSize="2xl"
-												align="left"
-												
-											>
-												{item.title}
-											</Text>
-										</HStack>
-										<HStack>
-											{showEditAndDelete(item) && (
-												<ButtonGroup>
-													<IconButton size="xs" onClick={() => onOpen(setArticle(item))} color="blue" icon={<Icon icon="edit" />} align="right" />
-													<IconButton
-														size="xs"
-														onClick={() => {
-															onOpenDelete(setArticleId(item.articleId));
-														}}
-														color="red"
-														icon={<Icon icon="trash2" />}
-														align="right"
-													/>
-												</ButtonGroup>
-											)}
-										</HStack>
-									</Stack>
-									<Box>
+					{data.filter((el) => el.round === props.round).length === 0 && <b>Nothing here yet...</b>}
+					{data
+						.filter((el) => el.round === props.round)
+						.map((item) => (
+							<Stack onClick={() => handleClick(item)} style={{ backgroundColor: '#15181e', cursor: 'pointer' }} key={item.articleId} fontSize="sm" px="4" spacing="4" margin="5px">
+								{item.imageURL && <Image src={item.imageURL} width="100%" height={'20vh'} fit="cover" />}
+								<HStack>
+									<VStack align="left" width="960px">
 										<Stack direction="row" justify="space-between" spacing="4">
 											<HStack>
-												<Avatar src={item.authorProfilePicture} boxSize="10" />
-												<Text fontWeight="medium" color="emphasized" align="left" fontSize="xs">
-													by {item.author}
+												{isDraft(item) && (
+													<Text fontSize="2xl" color="red">
+														DRAFT
+													</Text>
+												)}
+												{newArticles.some((el) => el.title == item.title) && (
+													<Tag size="lg" color="red" style={{ right: '30px' }}>
+														New
+													</Tag>
+												)}
+												<Text fontSize="2xl" align="left">
+													{item.title}
 												</Text>
 											</HStack>
 											<HStack>
-												<Text color="muted">{getDateString(item.date)}</Text>
+												{showEditAndDelete(item) && (
+													<ButtonGroup>
+														<IconButton size="xs" onClick={() => onOpen(setArticle(item))} color="blue" icon={<Icon icon="edit" />} align="right" />
+														<IconButton
+															size="xs"
+															onClick={() => {
+																onOpenDelete(setArticleId(item.articleId));
+															}}
+															color="red"
+															icon={<Icon icon="trash2" />}
+															align="right"
+														/>
+													</ButtonGroup>
+												)}
 											</HStack>
 										</Stack>
-									</Box>
-									<div style={{ height: '50px', textAlign: 'left', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis' }}>
-										<ReactMarkdown children={item?.body} remarkPlugins={[remarkGfm]}></ReactMarkdown>
-									</div>
-									<Text align="right">
-										{item.comments?.length} {translateComment(item.comments?.length)}
-									</Text>
-								</VStack>
-							</HStack>
-						</Stack>
-					))}
+										<Box>
+											<Stack direction="row" justify="space-between" spacing="4">
+												<HStack>
+													<Avatar src={item.authorProfilePicture} boxSize="10" />
+													<Text fontWeight="medium" color="emphasized" align="left" fontSize="xs">
+														by {item.author}
+													</Text>
+												</HStack>
+												<HStack>
+													<Text color="muted">{getDateString(item.date)}</Text>
+												</HStack>
+											</Stack>
+										</Box>
+										<div style={{ height: '50px', textAlign: 'left', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis' }}>
+											<ReactMarkdown children={item?.body} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+										</div>
+										<Text align="right">
+											{item.comments?.length} {translateComment(item.comments?.length)}
+										</Text>
+									</VStack>
+								</HStack>
+							</Stack>
+						))}
 				</Stack>
 			</Box>
 			<ViewArticle isOpen={articleModal} show={articleModal} selected={selected} closeDrawer={() => setArticleModal(false)} />

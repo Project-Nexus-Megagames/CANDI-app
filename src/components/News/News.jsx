@@ -89,7 +89,7 @@ const News = (props) => {
 			}
 		} else if (showMyArticles) setFilteredData(mapArticlesToData(myArticles));
 		else setFilteredData(mapArticlesToData(getSortedArticles()));
-	}, [articles, searchQuery]);
+	}, [articles, searchQuery, myChar]);
 
 	useEffect(() => {
 		setSearchQuery('');
@@ -98,7 +98,7 @@ const News = (props) => {
 		} else {
 			setFilteredData(mapArticlesToData(getSortedArticles()));
 		}
-	}, [articles, showMyArticles]);
+	}, [articles, showMyArticles, myChar]);
 
 	const handleSearch = (e) => {
 		setSearchQuery(e);
@@ -119,11 +119,13 @@ const News = (props) => {
 			<NavigationBar />
 			<Header>
 				<FlexboxGrid justify="center" align="middle">
-				<tbody>
-					{[...Array(gamestate.round)].map((x, i) =>
-						<Button style={{margin: '4px' }} onClick={() => setRound(i+1)} color='blue' appearance={i+1 === round ? "primary" :"ghost"} circle >{i+1}</Button>
-					)}
-				</tbody>
+					<tbody>
+						{[...Array(gamestate.round)].map((x, i) => (
+							<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle>
+								{i + 1}
+							</Button>
+						))}
+					</tbody>
 					<FlexboxGrid.Item colspan={4}>
 						<InputGroup>
 							<Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />
@@ -131,9 +133,11 @@ const News = (props) => {
 						</InputGroup>
 					</FlexboxGrid.Item>
 					<Divider />
-					{myArticles && myArticles.length > 0 && <Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
-						{filterButtonText}
-					</Button>}
+					{myArticles && myArticles.length > 0 && (
+						<Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
+							{filterButtonText}
+						</Button>
+					)}
 				</FlexboxGrid>
 			</Header>
 			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>

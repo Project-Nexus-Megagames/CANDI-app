@@ -54,7 +54,15 @@ const Actions = (props) => {
 							<InputGroup>
 								<Input size="lg" style={{ height: '42px' }} onChange={(value) => props.setFilter(value)} value={props.filter} placeholder="Search"></Input>
 
-								<Whisper placement="top"	trigger="hover"	speaker={<Tooltip><b>{`Create New Action`}</b></Tooltip>}>
+								<Whisper
+									placement="top"
+									trigger="hover"
+									speaker={
+										<Tooltip>
+											<b>{`Create New Action`}</b>
+										</Tooltip>
+									}
+								>
 									<Button style={{ color: 'black', borderRadius: '0px' }} color="green" onClick={() => setShowNew(true)}>
 										<Icon icon="plus" />
 									</Button>
@@ -64,7 +72,7 @@ const Actions = (props) => {
 						<div
 							style={{
 								height: 'calc(100vh - 80px)',
-								 
+
 								overflow: 'auto',
 								borderRadius: '0px',
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'
@@ -89,7 +97,7 @@ const mapStateToProps = (state) => ({
 	actions: state.actions.list,
 	explore: state.auth.user ? getCurrentExplores(state) : 'undefined',
 	user: state.auth.user,
-	control: state.auth.control,
+	control: state.auth.character ? state.auth.character.tags.some((el) => el.toLowerCase() === 'control') : state.auth.control,
 	filter: state.actions.filter,
 	login: state.auth.login,
 	gamestate: state.gamestate,

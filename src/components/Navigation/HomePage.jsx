@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row, Badge } from 'rsuite';
-import { getMyCharacter } from '../../redux/entities/characters';
+import { Icon, Loader, Dropdown, IconButton, FlexboxGrid, Col, Row, Badge, Toggle, SelectPicker } from 'rsuite';
+import { Select } from '@chakra-ui/react';
+import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
@@ -12,7 +13,6 @@ import actions from '../Images/actions.jpg';
 import agendas from '../Images/agendas.webp';
 import Map from '../Images/map.jpg';
 
-import { signOut } from '../../redux/entities/auth';
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 //import { Link } from 'react-router-dom';
@@ -20,17 +20,21 @@ import UserList from './UserList';
 import Carousel from '../Common/Carousel';
 import LoadingNew from './LoadingNew';
 import { getPublishedArticles } from '../../redux/entities/articles';
+import { signOut, setCharacter } from '../../redux/entities/auth';
 
 const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0 });
+	const [selectedChar, setSelectedChar] = React.useState('');
 	const newsArticles = useSelector(getPublishedArticles);
-	const newArticles  = useSelector((state) => state.articles.new);
+	const newArticles = useSelector((state) => state.articles.new);
+	const pcCharacters = useSelector(getPlayerCharacters);
 	const sortedArticles = [...newsArticles].sort((a, b) => {
 		let da = new Date(a.createdAt),
 			db = new Date(b.createdAt);
 		return db - da;
 	});
+	const tempCharacter = useSelector(getCharacterById(selectedChar));
 
 	useEffect(() => {
 		if (
@@ -68,6 +72,10 @@ const HomePage = (props) => {
 		}
 	}, [props]);
 
+	useEffect(() => {
+		props.setCharacter(tempCharacter);
+	}, [tempCharacter]);
+
 	const handleLogOut = () => {
 		props.logOut();
 		socket.emit('logout');
@@ -89,6 +97,12 @@ const HomePage = (props) => {
 	const openNexus = () => {
 		const win = window.open('https://www.patreon.com/wcmprojectnexus', '_blank');
 		win.focus();
+	};
+
+	const handleCharChange = (charId) => {
+		if (charId) {
+			setSelectedChar(charId);
+		} else setSelectedChar(props.myCharacter._id);
 	};
 
 	if (!props.login && !props.loading) {
@@ -123,7 +137,7 @@ const HomePage = (props) => {
 				<FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
 					<Dropdown
 						renderTitle={() => {
-							return <IconButton  icon={<Icon icon="bars" size="4x" />} size="md" circle />;
+							return <IconButton icon={<Icon icon="bars" size="4x" />} size="md" circle />;
 						}}
 					>
 						<Dropdown.Item>Version: {props.version}</Dropdown.Item>
@@ -133,7 +147,7 @@ const HomePage = (props) => {
 					</Dropdown>
 				</FlexboxGrid.Item>
 
-				<FlexboxGrid.Item colspan={22}>
+				<FlexboxGrid.Item colspan={19}>
 					<div>
 						<p>Round: {props.gamestate.round} </p>
 						{clock.days > 0 && (
@@ -150,8 +164,15 @@ const HomePage = (props) => {
 						{clock.days + clock.hours + clock.minutes <= 0 && <p>Game Status: {props.gamestate.status}</p>}
 					</div>
 				</FlexboxGrid.Item>
-
-				<FlexboxGrid.Item colspan={1}>{props.myCharacter.tags.some((el) => el === 'Control') && <UserList />}</FlexboxGrid.Item>
+				<FlexboxGrid.Item colspan={3}>
+					{props.currentCharacter.tags.some((el) => el.toLowerCase() === 'control') && (
+						<p>
+							VIEW AS:
+							<SelectPicker data={pcCharacters} valueKey="_id" labelKey="characterName" onChange={(event) => handleCharChange(event)}></SelectPicker>
+						</p>
+					)}
+				</FlexboxGrid.Item>
+				<FlexboxGrid.Item colspan={1}>{props.currentCharacter.tags.some((el) => el === 'Control') && <UserList />}</FlexboxGrid.Item>
 			</FlexboxGrid>
 
 			<Row>
@@ -169,16 +190,20 @@ const HomePage = (props) => {
 				</Col>
 
 				<Col lg={8} md={24}>
-					<ImgPanel img={props.myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
+					<ImgPanel img={props.currentCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
 				</Col>
 
-				{props.control && <Col lg={8} md={24}>
-					{<ImgPanel  img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />}
-				</Col>}
+				{props.control && (
+					<Col lg={8} md={24}>
+						{<ImgPanel img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />}
+					</Col>
+				)}
 
-				{!props.control && <Col onClick={() => openNexus()} lg={8} md={24}>
-					{<ImgPanel img={control2} to="" title="~ Project Nexus ~" body="Support the Programmers" />}
-				</Col>}
+				{!props.control && (
+					<Col onClick={() => openNexus()} lg={8} md={24}>
+						{<ImgPanel img={control2} to="" title="~ Project Nexus ~" body="Support the Programmers" />}
+					</Col>
+				)}
 
 				<Col lg={8} md={24}>
 					<ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
@@ -190,7 +215,7 @@ const HomePage = (props) => {
 
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
-	control: state.auth.control,
+	control: state.auth.character ? state.auth.character.tags.some((el) => el.toLowerCase() === 'control') : state.auth.control,
 	login: state.auth.login,
 	loading: state.auth.loading,
 	gamestate: state.gamestate,
@@ -201,12 +226,14 @@ const mapStateToProps = (state) => ({
 	locationsLoaded: state.locations.loaded,
 	version: state.gamestate.version,
 	duck: state.gamestate.duck,
-	myCharacter: state.auth.user ? getMyCharacter(state) : undefined
+	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+	currentCharacter: state.auth.character
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	logOut: () => dispatch(signOut()),
-	toggleDuck: (data) => dispatch(toggleDuck(data))
+	toggleDuck: (data) => dispatch(toggleDuck(data)),
+	setCharacter: (payload) => dispatch(setCharacter(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

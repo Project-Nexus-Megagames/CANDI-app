@@ -70,7 +70,7 @@ const url = `${gameServer}api/characters`;
 // Selector
 export const getMyCharacter = createSelector(
   (state) => state.characters.list,
-  (state) => state.auth.user,
+  (state) => state.auth.character ? state.auth.character : state.auth.user,
   (characters, user) =>
     characters.find((char) => char.username === user.username)
 );

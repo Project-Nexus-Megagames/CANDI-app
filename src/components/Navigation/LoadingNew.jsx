@@ -3,12 +3,7 @@ import { connect } from 'react-redux';
 import { Progress, Loader, Panel, Icon, IconStack, Row, Col, Button } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 
-import {
-	finishLoading,
-	setControl,
-	signOut,
-	setCharacter
-} from '../../redux/entities/auth';
+import { finishLoading, setControl, signOut, setCharacter } from '../../redux/entities/auth';
 
 const { Line } = Progress;
 
@@ -27,13 +22,8 @@ const LoadingNew = (props) => {
 		win.focus();
 	};
 
-	if (
-		sections.length > 0 &&
-		Math.floor((done.length / sections.length) * 100) >= 100
-	) {
-		const character = props.entities.characters.list.find(
-			(el) => el.username === props.auth.user.username
-		);
+	if (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100) {
+		const character = props.entities.characters.list.find((el) => el.username === props.auth.user.username);
 
 		if (props.auth.user.roles.some((el) => el === 'Control')) {
 			character ? props.setCharacter(character) : console.log(character);
@@ -53,10 +43,7 @@ const LoadingNew = (props) => {
 						width: '100%'
 					}}
 				>
-					<img
-						src="http://cdn.lowgif.com/full/02b057d73bf288f7-.gif"
-						alt={'No Character...'}
-					/>
+					<img src="http://cdn.lowgif.com/full/02b057d73bf288f7-.gif" alt={'No Character...'} />
 					<h5>Could not find a character for you... </h5>
 					<Button
 						onClick={() => {
@@ -74,37 +61,21 @@ const LoadingNew = (props) => {
 
 	return (
 		<div style={{ textAlign: 'center' }}>
-			<img
-				style={{ maxHeight: '400px', height: '40vh' }}
-				className='center-img'
-				src={gamePhotos[rand]}
-				alt={'Loading...'}
-				onClick={() => boredClick()}
-			/>
+			<img style={{ maxHeight: '400px', height: '40vh' }} className="center-img" src={gamePhotos[rand]} alt={'Loading...'} onClick={() => boredClick()} />
 			{/* src={spook[rand]} */}
 			{<h5>{loadingMsg[rand1]}</h5>}
-			<Line
-				percent={Math.floor((done.length / sections.length) * 100)}
-				status="active"
-			/>
+			<Line percent={Math.floor((done.length / sections.length) * 100)} status="active" />
 			<hr />
 			<Row>
 				{sections.map((section, index) => (
 					<Col key={index} md={4} sm={8}>
 						<Panel bordered key={index} index={index}>
-							<IconStack>
-								{props.entities[section].lastFetch ? (
-									<Icon icon="check" stack="1x" style={{ color: 'green' }} />
-								) : (
-									<Icon icon="spinner" stack="1x" pulse />
-								)}
-							</IconStack>
+							<IconStack>{props.entities[section].lastFetch ? <Icon icon="check" stack="1x" style={{ color: 'green' }} /> : <Icon icon="spinner" stack="1x" pulse />}</IconStack>
 							{section}
 						</Panel>
 					</Col>
 				))}
 			</Row>
-
 		</div>
 	);
 };
@@ -114,7 +85,6 @@ const mapStateToProps = (state) => ({
 	charactersFailed: state.characters.failedAttempts,
 	assetsFailed: state.assets.failedAttempts,
 	locationsFailed: state.locations.failedAttempts,
-
 	appState: state,
 	auth: state.auth,
 	entities: state,
@@ -132,8 +102,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(LoadingNew);
 
 const gamePhotos = [
 	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif'
-// 	'https://i.pinimg.com/originals/94/b9/35/94b9355bfb0e96619599dff04a565d19.gif',
-// 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus',
+	// 	'https://i.pinimg.com/originals/94/b9/35/94b9355bfb0e96619599dff04a565d19.gif',
+	// 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus',
 ];
 
 const loadingMsg = [
