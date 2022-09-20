@@ -10,7 +10,6 @@ import "./App.css";
 import Actions from "./components/Actions/Actions";
 import News from "./components/News/News";
 import Agendas from "./components/Agendas/Agendas";
-import Control from "./components/Control/control";
 import HomePage from "./components/Navigation/HomePage";
 import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
@@ -149,11 +148,6 @@ const App = (props) => {
 					/>
           <Route path="/news"	render={(props) => <News {...props} />}/>
 					<Route path="/agendas" render={(props) => <Agendas {...props} />}/>
-					<Route
-						exact
-						path="/controllers"
-						render={(props) => <Control {...props} />}
-					/>
 					<Route
 						exact
 						path="/others"

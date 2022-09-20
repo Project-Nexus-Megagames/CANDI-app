@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Table, Button, TagPicker } from 'rsuite';
+import { Table, Button, TagPicker, ButtonGroup, Panel, IconButton } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
 const data = [];
 
@@ -9,27 +9,28 @@ const CompactHeaderCell = props => <HeaderCell {...props} style={{ padding: 4 }}
 
 const defaultColumns = [
   {
+    key: 'creator',
+    label: 'Character',
+    width: 100
+  },
+  {
     key: 'name',
-    label: 'Name',
-    fixed: true,
+    label: 'Action Name',
+    width: 330
+  },
+  {
+    key: 'submission',
+    label: 'Assets',
     width: 330
   },
   {
     key: 'controllers',
     label: 'Controllers',
-    width: 123
-  },
-
-  {
-    key: 'gender',
-    label: 'Gender',
     width: 200
   },
-  {
-    key: 'city',
-    label: 'City',
-    flexGrow: 1
-  },
+
+
+
   {
     key: 'edit',
     label: 'edit',
@@ -37,9 +38,20 @@ const defaultColumns = [
   }
 ];
 
+const renderAsset = (assetID, assets) => {
+  if (assetID) {
+    const asset = assets.find((el) => el._id === assetID);
+    if (asset)
+      return (
+          <b className="normalText">({asset.dice}), </b>
+      );
+    else return <b>Could not render for asset {assetID}</b>;
+  } 
+};
+
 const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
   return (
-    <Cell {...props} style={{ padding: '6px' }}>
+    <Cell {...props} >
       <Button
         appearance="link"
         onClick={() => {
@@ -48,6 +60,28 @@ const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
       >
         {rowData.status === 'EDIT' ? 'Save' : 'Edit'}
       </Button>
+    </Cell>
+  );
+};
+
+const CreatorCell = ({ rowData, dataKey, onClick, ...props }) => {
+  return (
+    <Cell {...props} style={{  }}>
+      {rowData[dataKey].characterName}
+    </Cell>
+  );
+};
+
+const AssetCell = ({ rowData, dataKey, onClick, ...props }) => {
+  const assets = useSelector((state) => state.assets.list);
+  console.log(dataKey)
+  return (
+    <Cell {...props} style={{  }}>
+      {rowData[dataKey].assets.map((ass) => (
+        renderAsset(ass, assets)
+      ))}
+      
+      {rowData[dataKey].assets}
     </Cell>
   );
 };
@@ -74,6 +108,7 @@ const EditableCell = ({ rowData, dataKey, onChange, ...props }) => {
 const ActionTable = (props) => {
   const [editing, setEditing] = React.useState(false);
   const [columnKeys, setColumnKeys] = React.useState(defaultColumns.map(column => column.key));
+	
 
 	const actions = useSelector((state) => state.actions.list);
   const [data, setData] = React.useState(actions);
@@ -126,6 +161,20 @@ const ActionTable = (props) => {
                 <Column flexGrow={1}>
                  <HeaderCell>...</HeaderCell>
                  <ActionCell dataKey="id" onClick={handleEditState} />
+               </Column>
+              )
+              case ('Character'): 
+              return (
+                <Column flexGrow={1}>
+                 <HeaderCell>{label}</HeaderCell>
+                 <CreatorCell dataKey={key} onClick={handleEditState} />
+               </Column>
+              )
+              case ('Assets'): 
+              return (
+                <Column flexGrow={1}>
+                 <HeaderCell>{label}</HeaderCell>
+                 <AssetCell dataKey={key} onClick={handleEditState} />
                </Column>
               )
               default:

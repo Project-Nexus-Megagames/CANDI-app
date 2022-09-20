@@ -235,7 +235,7 @@ class ControlTerminal extends Component {
 				</Panel>
 
 				
-				{/* <ActionTable /> */}
+				<ActionTable />
 
 				{/* TODO pull these out into individual components */}
 				<Modal size="sm" show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })}>
