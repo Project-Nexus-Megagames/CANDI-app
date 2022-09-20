@@ -64,8 +64,8 @@ class ControlTerminal extends Component {
 			else awaiting++;
 		}
 
-		let zAgendas = this.props.characters.filter((el) => el.effort.some(eff => eff.amount <=0 && eff.type === "Agenda"))
-		let zNormals = this.props.characters.filter((el) => el.effort.some(eff => eff.amount <=0 && eff.type === "Normal"))
+		let zAgendas = this.props.characters.filter((el) => el.effort.some((eff) => eff.amount <= 0 && eff.type === 'Agenda'));
+		let zNormals = this.props.characters.filter((el) => el.effort.some((eff) => eff.amount <= 0 && eff.type === 'Normal'));
 
 		this.setState({
 			formValue,
@@ -120,25 +120,23 @@ class ControlTerminal extends Component {
 							</div>
 						</FlexboxGrid.Item>
 						<FlexboxGrid.Item style={{ border: '3px solid #d066ff' }} colspan={6}>
-							<div style={{ height: '11vh', overflow: 'scroll'  }}>
+							<div style={{ height: '11vh', overflow: 'scroll' }}>
 								<h5>Characters w/ Zero Effort</h5> {this.state.zNormals.length} - {this.state.zAgendas.length}
 								{this.state.zNormals.length > 0 && (
 									<div>
 										<p>0 Normal Effort</p>
-									{this.state.zNormals.map(el => 
-										<p key={el._id}>{el.characterName}</p>
-										)}
+										{this.state.zNormals.map((el) => (
+											<p key={el._id}>{el.characterName}</p>
+										))}
 									</div>
-
-								)}								
+								)}
 								{this.state.zAgendas.length > 0 && (
 									<div>
 										<p>0 Agenda Effort</p>
-									{this.state.zAgendas.map(el => 
-										<p key={el._id}>{el.characterName}</p>
-										)}
+										{this.state.zAgendas.map((el) => (
+											<p key={el._id}>{el.characterName}</p>
+										))}
 									</div>
-
 								)}
 							</div>
 						</FlexboxGrid.Item>
@@ -158,11 +156,12 @@ class ControlTerminal extends Component {
 										>
 											Unhide all Assets
 										</Button>
-									{this.props.assets.filter((el) => el.status.hidden === true).map(el => 
-										<p key={el._id}>{el.name}</p>
-										)}
+										{this.props.assets
+											.filter((el) => el.status.hidden === true)
+											.map((el) => (
+												<p key={el._id}>{el.name}</p>
+											))}
 									</div>
-
 								)}
 							</div>
 						</FlexboxGrid.Item>
@@ -225,7 +224,7 @@ class ControlTerminal extends Component {
 					</ButtonGroup>
 				</Panel>
 
-				<Panel header={'Aspects and their Standing'}  style={{ border: '5px solid green' }}>
+				<Panel header={'Aspects and their Standing'} style={{ border: '5px solid green' }}>
 					<ButtonGroup>
 						{/*<Button appearance="ghost" onClick={() => setLogModal(true)}>*/}
 						<Button appearance="ghost" onClick={() => this.setState({ aspectModal: true })}>
@@ -234,8 +233,7 @@ class ControlTerminal extends Component {
 					</ButtonGroup>
 				</Panel>
 
-				
-				<ActionTable />
+				{/*<ActionTable />*/}
 
 				{/* TODO pull these out into individual components */}
 				<Modal size="sm" show={this.state.gsModal} onHide={() => this.setState({ gsModal: false })}>
