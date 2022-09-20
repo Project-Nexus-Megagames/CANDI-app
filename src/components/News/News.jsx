@@ -52,9 +52,9 @@ const News = (props) => {
 
 	const mapArticlesToData = (articles) => {
 		return articles.map((el) => ({
-			authorProfilePicture: el.creator.profilePicture,
+			authorProfilePicture: el.anon ? 'undefined' : el.creator.profilePicture,
 			imageURL: el.image,
-			author: el.creator?.characterName,
+			author: el.anon ? 'anonymous' : el.creator?.characterName,
 			authorId: el.creator?._id,
 			title: el.title,
 			round: el.round,
@@ -63,7 +63,8 @@ const News = (props) => {
 			comments: el.comments,
 			articleId: el._id,
 			tags: el.tags,
-			type: 'newsArticle'
+			type: 'newsArticle',
+			anon: el.anon ? el.anon : false
 		}));
 	};
 

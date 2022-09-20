@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, FormControl, FormLabel, Input, Stack, HStack, Textarea, Box } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, Stack, HStack, Textarea, Box, Checkbox } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import ErrorTag from '../Common/FormError';
@@ -63,7 +63,7 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 
 		if (article) socket.emit('request', { route: 'article', action: 'publish', data: { article: data, id: article.articleId } });
 		else socket.emit('request', { route: 'article', action: 'publish', data });
-		handleCancel()
+		handleCancel();
 	};
 
 	const isDraft = () => {
@@ -115,8 +115,8 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 						noOfLines={40}
 						{...register('body', {
 							required: 'Required',
-							minLength: { value: 20, message: 'Body must be must be more then 20 characters' },
-							maxLength: { value: 10000, message: 'Title cannot be over 3000 characters' }
+							minLength: { value: 20, message: 'Body must be must be more than 20 characters' },
+							maxLength: { value: 10000, message: 'Body cannot be over 3000 characters' }
 						})}
 					/>
 				</FormControl>
@@ -128,8 +128,7 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 				</Box>
 				<DevTool control={control} placement="bottom-right" />
 				<HStack justifyContent="end">
-					{/*<Button type="submit" colorScheme="green" disabled={!isValid} >{`Save as Draft`}</Button>*/}
-
+					<Checkbox {...register('anon')}>Anonymous author</Checkbox>
 					<Button type="submit" colorScheme="green" disabled={!isValid} onClick={formSubmit(handleSubmit)}>{`Save as Draft`}</Button>
 					<Button colorScheme="blue" disabled={!isValid || !(myArticleEffort > 0) || !isDraft()} onClick={formSubmit(handlePublish)}>
 						{`Publish`}

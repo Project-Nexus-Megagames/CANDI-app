@@ -125,7 +125,8 @@ const NewsFeed = (props) => {
 										<Box>
 											<Stack direction="row" justify="space-between" spacing="4">
 												<HStack>
-													<Avatar src={item.authorProfilePicture} boxSize="10" />
+													{!item.anon && <Avatar src={item.authorProfilePicture} boxSize="10" />}
+													{item.anon && <Avatar boxSize="10" />}
 													<Text fontWeight="medium" color="emphasized" align="left" fontSize="xs">
 														by {item.author}
 													</Text>
