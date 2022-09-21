@@ -47,12 +47,40 @@ const ActionTable = () => {
 			<Divider />
 			<Heading size="md">Round: {round}</Heading>
 			<Divider />
+			<Grid templateColumns="2fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b">
+						Action Title
+					</Text>
+				</GridItem>
+				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b">
+						Character
+					</Text>
+				</GridItem>
+				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b">
+						Assets
+					</Text>
+				</GridItem>
+				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b">
+						Dice Pool
+					</Text>
+				</GridItem>
+				<GridItem>
+					<Text fontSize="lg" as="b">
+						Assigned Control
+					</Text>
+				</GridItem>
+			</Grid>
+			<Divider />
 			{actions.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
 			{actions
 				.filter((el) => el.round === round)
 				.map((item) => (
 					<div key={item._id}>
-						<Grid templateColumns="repeat(5, 1fr)" gap={4} paddingLeft={8} paddingRight={8} align="left">
+						<Grid templateColumns="2fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 							<GridItem overflow="hidden">
 								<Text>{item.name}</Text>
 							</GridItem>
