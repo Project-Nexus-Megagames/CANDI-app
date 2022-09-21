@@ -93,6 +93,12 @@ export const getGods = createSelector(
     characters.filter((char) => char.tags.some((el) => el === "God"))
 );
 
+export const getControl = createSelector(
+  (state) => state.characters.list,
+  (characters) =>
+    characters.filter((char) => char.tags.some((el) => el === "Control"))
+);
+
 export const getPublicCharacters = createSelector(
   (state) => state.characters.list,
   (characters) =>

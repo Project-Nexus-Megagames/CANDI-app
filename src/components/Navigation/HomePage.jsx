@@ -73,7 +73,7 @@ const HomePage = (props) => {
 	}, [props]);
 
 	useEffect(() => {
-		props.setCharacter(tempCharacter);
+		if (tempCharacter) props.setCharacter(tempCharacter);
 	}, [tempCharacter]);
 
 	const handleLogOut = () => {

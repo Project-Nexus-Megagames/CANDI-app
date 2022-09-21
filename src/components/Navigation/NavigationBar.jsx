@@ -1,22 +1,19 @@
 import React, { useEffect } from 'react';
-import { Icon, IconButton, FlexboxGrid, Toggle, SelectPicker } from 'rsuite';
+import { Icon, IconButton, FlexboxGrid, SelectPicker } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { signOut, setCharacter } from '../../redux/entities/auth';
 import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../redux/entities/characters';
-
-// import socket from '../../socket';
-import CharacterListItem from './../OtherCharacters/CharacterListItem';
 
 const Navigation = (props) => {
 	const [days, setDays] = React.useState(0);
 	const [minutes, setMinutes] = React.useState(0);
 	const [hours, setHours] = React.useState(0);
 	const myChar = useSelector(getMyCharacter);
-	console.log('HERE', myChar);
+
 	const [selectedChar, setSelectedChar] = React.useState(myChar._id);
 	const currentCharacter = useSelector(getCharacterById(selectedChar));
-	console.log('CURRENT', currentCharacter);
+
 	const pcCharacters = useSelector(getPlayerCharacters);
 
 	const history = useHistory();

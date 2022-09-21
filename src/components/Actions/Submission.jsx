@@ -24,7 +24,6 @@ const Submission = (props) => {
 	const [max, setMax] = React.useState(0);
 	const [infoAsset, setInfoAsset] = React.useState(false);
 
-
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const actionType = gameConfig.actionTypes.find((el) => el.type.toLowerCase() === props.action.type.toLowerCase());
 
@@ -37,7 +36,7 @@ const Submission = (props) => {
 			setName(props.action.name);
 			setTags(props.submission.tags);
 
-			setMaxEffort()
+			setMaxEffort();
 		}
 	}, [props.submission]);
 
@@ -45,7 +44,6 @@ const Submission = (props) => {
 		let charEffort = getThisEffort(props.myCharacter.effort, actionType.type) + props.submission.effort.amount;
 		setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
 	};
-
 
 	const getTime = (date) => {
 		let day = new Date(date).toDateString();
@@ -159,7 +157,7 @@ const Submission = (props) => {
 			}
 		};
 		socket.emit('request', { route: 'action', action: 'update', data });
-		setShow(false)
+		setShow(false);
 	};
 
 	const controlRemove = (asset) => {
@@ -222,15 +220,20 @@ const Submission = (props) => {
 		setShow(false);
 	};
 
-	/*TODO Add info about existing injury(ies)*/
 	const submission = props.submission;
 	return (
 		<div>
 			<Divider vertical />
-			<div style={{ 								border:
-									(props.action.tags.some((tag) => tag !== 'Published') || !props.action.tags.length > 0) && props.action.type === 'Agenda'
-										? `4px dotted ${getFadedColor(props.action.type)}`
-										: `4px solid ${getFadedColor(props.action.type)}`, borderRadius: '5px', padding: '15px' }}>
+			<div
+				style={{
+					border:
+						(props.action.tags.some((tag) => tag !== 'Published') || !props.action.tags.length > 0) && props.action.type === 'Agenda'
+							? `4px dotted ${getFadedColor(props.action.type)}`
+							: `4px solid ${getFadedColor(props.action.type)}`,
+					borderRadius: '5px',
+					padding: '15px'
+				}}
+			>
 				<FlexboxGrid align="middle" style={{}} justify="center">
 					<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
 						<Avatar circle size="md" src={props.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
@@ -266,10 +269,7 @@ const Submission = (props) => {
 										</Button>
 									)}
 									<IconButton
-										disabled={
-											(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round) &&
-											!props.myCharacter.tags.some((el) => el === 'Control')
-										}
+										disabled={(props.gamestate.status !== 'Active' || props.gamestate.round > props.action.round) && !props.myCharacter.tags.some((el) => el === 'Control')}
 										size="md"
 										onClick={() => setShow('edit')}
 										color="blue"
@@ -300,20 +300,31 @@ const Submission = (props) => {
 					<p style={slimText}>Description</p>
 					<ReactMarkdown children={submission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 
-					{!props.special && <div>
-						<Whisper placement="top"	trigger="hover"	speaker={<Tooltip><b>{`Out of Character Description of what you the player want to happen as a result of the action.`}</b></Tooltip>}>
-							<p style={slimText}>Intent</p>
-						</Whisper>
-						
-						<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>						
-					</div>}
+					{!props.special && (
+						<div>
+							<Whisper
+								placement="top"
+								trigger="hover"
+								speaker={
+									<Tooltip>
+										<b>{`Out of Character Description of what you the player want to happen as a result of the action.`}</b>
+									</Tooltip>
+								}
+							>
+								<p style={slimText}>Intent</p>
+							</Whisper>
 
-					{submission.effort.effortType !== 'Agenda' && <div>
-						<p style={slimText}>Effort ({submission.effort.effortType})</p>
-						<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
-						<Progress.Line percent={submission.effort.amount * 50} showInfo={false}></Progress.Line>
-					</div>}
+							<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+						</div>
+					)}
 
+					{submission.effort.effortType !== 'Agenda' && (
+						<div>
+							<p style={slimText}>Effort ({submission.effort.effortType})</p>
+							<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
+							<Progress.Line percent={submission.effort.amount * 50} showInfo={false}></Progress.Line>
+						</div>
+					)}
 
 					<Divider>Resources</Divider>
 					<FlexboxGrid>
@@ -325,7 +336,7 @@ const Submission = (props) => {
 					</FlexboxGrid>
 				</Panel>
 
-				<Modal overflow style={{ width: '90%', }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
+				<Modal overflow style={{ width: '90%' }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
 					<Modal.Header>
 						<Modal.Title>
 							Edit {props.action.type} action {name}

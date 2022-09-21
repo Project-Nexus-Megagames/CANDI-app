@@ -69,7 +69,6 @@ const NewAction = (props) => {
 				intent: intent
 			},
 			name: name,
-			controllers: myCharacter.control,
 			type: actionType.type,
 			creator: myCharacter._id,
 			numberOfInjuries: myCharacter.injuries.length

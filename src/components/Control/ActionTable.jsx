@@ -1,196 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Table, Button, TagPicker, ButtonGroup, Panel, IconButton } from 'rsuite';
-const { Column, HeaderCell, Cell } = Table;
-const data = [];
+import { getControl } from '../../redux/entities/characters';
+import { Divider, Box, Text, Grid, GridItem, Heading } from '@chakra-ui/react';
+import { SelectPicker } from 'rsuite';
+import socket from '../../socket';
 
-const CompactCell = props => <Cell {...props} style={{ padding: 4 }} />;
-const CompactHeaderCell = props => <HeaderCell {...props} style={{ padding: 4 }} />;
-
-const defaultColumns = [
-  {
-    key: 'creator',
-    label: 'Character',
-    width: 100
-  },
-  {
-    key: 'name',
-    label: 'Action Name',
-    width: 330
-  },
-  {
-    key: 'submission',
-    label: 'Assets',
-    width: 330
-  },
-  {
-    key: 'controllers',
-    label: 'Controllers',
-    width: 200
-  },
-
-
-
-  {
-    key: 'edit',
-    label: 'edit',
-    flexGrow: 1
-  }
-];
-
-const renderAsset = (assetID, assets) => {
-  if (assetID) {
-    const asset = assets.find((el) => el._id === assetID);
-    if (asset)
-      return (
-          <b className="normalText">({asset.dice}), </b>
-      );
-    else return <b>Could not render for asset {assetID}</b>;
-  } 
-};
-
-const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
-  return (
-    <Cell {...props} >
-      <Button
-        appearance="link"
-        onClick={() => {
-          onClick(rowData._id);
-        }}
-      >
-        {rowData.status === 'EDIT' ? 'Save' : 'Edit'}
-      </Button>
-    </Cell>
-  );
-};
-
-const CreatorCell = ({ rowData, dataKey, onClick, ...props }) => {
-  return (
-    <Cell {...props} style={{  }}>
-      {rowData[dataKey].characterName}
-    </Cell>
-  );
-};
-
-const AssetCell = ({ rowData, dataKey, onClick, ...props }) => {
-  const assets = useSelector((state) => state.assets.list);
-  console.log(dataKey)
-  return (
-    <Cell {...props} style={{  }}>
-      {rowData[dataKey].assets.map((ass) => (
-        renderAsset(ass, assets)
-      ))}
-      
-      {rowData[dataKey].assets}
-    </Cell>
-  );
-};
-
-const EditableCell = ({ rowData, dataKey, onChange, ...props }) => {
-  const editing = props.editingID === rowData._id;
-  return (
-    <Cell {...props} className={editing ? 'table-content-editing' : ''}>
-      {editing ? (
-        <input
-          className="rs-input"
-          defaultValue={rowData[dataKey]}
-          onChange={event => {
-            onChange && onChange(rowData._id, dataKey, event.target.value);
-          }}
-        />
-      ) : (
-        <span className="table-content-edit-span">{rowData[dataKey]}</span>
-      )}
-    </Cell>
-  );
-};
-
-const ActionTable = (props) => {
-  const [editing, setEditing] = React.useState(false);
-  const [columnKeys, setColumnKeys] = React.useState(defaultColumns.map(column => column.key));
-	
-
+const ActionTable = () => {
 	const actions = useSelector((state) => state.actions.list);
-  const [data, setData] = React.useState(actions);
+	const gamestate = useSelector((state) => state.gamestate);
+	const assets = useSelector((state) => state.assets.list);
+	const controlChars = useSelector(getControl);
+	const [round, setRound] = useState(gamestate.round);
 
-  const columns = defaultColumns.filter(column => columnKeys.some(key => key === column.key));
-  const CustomHeaderCell = HeaderCell;
+	const renderDicePool = (submission) => {
+		const diceToRender = [];
+		const effortDice = submission.effort.amount + 'd10';
+		diceToRender.push(effortDice);
+		submission.assets.forEach((ass) => {
+			const asset = assets.find((el) => el._id === ass);
+			diceToRender.push(asset.dice);
+		});
+		return diceToRender.join(', ');
+	};
 
-  const handleChange = (id, key, value) => {
-    let nextData =  [ ...data ];
-    let temp = { ...nextData.find(item => item._id === id) }//[key] = value;
+	const renderAssets = (submission) => {
+		const assetsToRender = [];
+		submission.assets.forEach((ass) => {
+			const asset = assets.find((el) => el._id === ass);
+			assetsToRender.push(asset.name);
+		});
+		return assetsToRender.join(', ');
+	};
 
-    console.log(temp[key], value)
-    temp[key] = value
-    nextData.push(temp);
-    console.log(nextData)
-    setData(nextData);
-  };
+	const handleChange = (actionId, event) => {
+		console.log(actionId, event);
 
-  const handleEditState = _id => {
-    setEditing(_id)
-  };
+		const data = {
+			id: actionId,
+			controller: event
+		};
+		socket.emit('request', { route: 'action', action: 'assignController', data });
+	};
 
-  return (
-    <div>
-
-      Columns：
-      <TagPicker
-        data={defaultColumns}
-        labelKey="label"
-        valueKey="key"
-        value={columnKeys}
-        onChange={setColumnKeys}
-        cleanable={false}
-      />
-      <hr />
-      <div style={{ height: 'auto' }}>
-        <Table
-          height={500}
-          data={actions}
-          bordered
-          cellBordered
-          headerHeight={40}
-          rowHeight={46}
-        >
-          {columns.map(column => {
-            const { key, label, ...rest } = column;
-            switch (label) {
-              case ('edit'): 
-              return (
-                <Column flexGrow={1}>
-                 <HeaderCell>...</HeaderCell>
-                 <ActionCell dataKey="id" onClick={handleEditState} />
-               </Column>
-              )
-              case ('Character'): 
-              return (
-                <Column flexGrow={1}>
-                 <HeaderCell>{label}</HeaderCell>
-                 <CreatorCell dataKey={key} onClick={handleEditState} />
-               </Column>
-              )
-              case ('Assets'): 
-              return (
-                <Column flexGrow={1}>
-                 <HeaderCell>{label}</HeaderCell>
-                 <AssetCell dataKey={key} onClick={handleEditState} />
-               </Column>
-              )
-              default:
-                return (
-                  <Column {...rest} key={key}>
-                    <CustomHeaderCell>{label}</CustomHeaderCell>
-                    <EditableCell onChange={handleChange} dataKey={key} editingID={editing}/>
-                  </Column>
-                );
-            }
-
-          })}
-        </Table>
-      </div>
-    </div>
-  );
+	return (
+		<Box>
+			<Divider />
+			<Heading size="md">Round: {round}</Heading>
+			<Divider />
+			{actions.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
+			{actions
+				.filter((el) => el.round === round)
+				.map((item) => (
+					<div key={item._id}>
+						<Grid templateColumns="repeat(5, 1fr)" gap={4} paddingLeft={8} paddingRight={8} align="left">
+							<GridItem overflow="hidden">
+								<Text>{item.name}</Text>
+							</GridItem>
+							<GridItem overflow="hidden">
+								<Text>{item.creator.characterName}</Text>
+							</GridItem>
+							<GridItem overflow="hidden">
+								<Text>{renderAssets(item.submission)}</Text>
+							</GridItem>
+							<GridItem overflow="hidden">
+								<Text>{renderDicePool(item.submission)}</Text>
+							</GridItem>
+							<GridItem>
+								<SelectPicker defaultValue={item.controller} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleChange(item._id, event)}></SelectPicker>
+							</GridItem>
+						</Grid>
+						<Divider />
+					</div>
+				))}
+		</Box>
+	);
 };
-
 export default ActionTable;
