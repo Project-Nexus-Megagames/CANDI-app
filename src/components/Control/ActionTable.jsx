@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
 import { Divider, Box, Text, Grid, GridItem, Heading } from '@chakra-ui/react';
 import { SelectPicker } from 'rsuite';
+import AgendaDrawer from '../Agendas/AgendaDrawer';
 import socket from '../../socket';
 
 const ActionTable = () => {
@@ -11,6 +12,7 @@ const ActionTable = () => {
 	const assets = useSelector((state) => state.assets.list);
 	const controlChars = useSelector(getControl);
 	const [round, setRound] = useState(gamestate.round);
+	const [selected, setSelected] = useState(null);
 
 	const renderDicePool = (submission) => {
 		const diceToRender = [];
@@ -47,10 +49,15 @@ const ActionTable = () => {
 			<Divider />
 			<Heading size="md">Round: {round}</Heading>
 			<Divider />
-			<Grid templateColumns="2fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+			<Grid templateColumns="2fr 1fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 				<GridItem overflow="hidden">
 					<Text fontSize="lg" as="b">
 						Action Title
+					</Text>
+				</GridItem>
+				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b">
+						Type
 					</Text>
 				</GridItem>
 				<GridItem overflow="hidden">
@@ -79,10 +86,13 @@ const ActionTable = () => {
 			{actions
 				.filter((el) => el.round === round)
 				.map((item) => (
-					<div key={item._id}>
-						<Grid templateColumns="2fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+					<div key={item._id} onClick={() => setSelected(item)}>
+						<Grid templateColumns="2fr 1fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 							<GridItem overflow="hidden">
 								<Text>{item.name}</Text>
+							</GridItem>
+							<GridItem overflow="hidden">
+								<Text>{item.type}</Text>
 							</GridItem>
 							<GridItem overflow="hidden">
 								<Text>{item.creator.characterName}</Text>
@@ -100,6 +110,7 @@ const ActionTable = () => {
 						<Divider />
 					</div>
 				))}
+			<AgendaDrawer isOpen={selected} show={selected} selected={selected} closeDrawer={() => setSelected(false)} />
 		</Box>
 	);
 };
