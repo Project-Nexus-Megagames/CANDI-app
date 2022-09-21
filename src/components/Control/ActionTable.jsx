@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
-import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox } from '@chakra-ui/react';
+import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, Stack, HStack, Button } from '@chakra-ui/react';
 import { SelectPicker } from 'rsuite';
 import AgendaDrawer from '../Agendas/AgendaDrawer';
 import socket from '../../socket';
@@ -50,10 +50,46 @@ const ActionTable = () => {
 		socket.emit('request', { route: 'action', action: 'setNewsWorthy', data });
 	};
 
+	const getActionCount = (controller) => {
+		let count = 0;
+		if (controller === 'unassigned') {
+			actions
+				.filter((el) => el.round === round)
+				.forEach((action) => {
+					if (!action.controller) count++;
+				});
+		} else {
+			actions
+				.filter((el) => el.round === round)
+				.forEach((action) => {
+					if (action.controller === controller) count++;
+				});
+		}
+		return count;
+	};
+
 	return (
 		<Box>
 			<Divider />
 			<Heading size="md">Round: {round}</Heading>
+			<Divider />
+			<Box borderWidth="3px" borderRadius="md" borderColor="teal" padding={8}>
+				<HStack spacing="24px">
+					{controlChars.map((controller) => (
+						<div key={controller._id}>
+							<Text as="b">{controller.characterName}:</Text>
+							<Text>{getActionCount(controller._id)}</Text>
+						</div>
+					))}
+					<div>
+						<Text as="b">Unassigned: </Text>
+						<Text>{getActionCount('unassigned')}</Text>
+					</div>
+					<Button colorScheme="teal">Show My Actions</Button>
+					<Button colorScheme="teal">Show Newsworthy Actions</Button>
+					<Button colorScheme="teal">Show Unassigned Actions</Button>
+				</HStack>
+			</Box>
 			<Divider />
 			<Grid templateColumns="2fr 0.5fr 1fr 2fr 1fr 1fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 				<GridItem overflow="hidden">
