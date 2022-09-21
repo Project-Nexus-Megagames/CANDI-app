@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
-import { Divider, Box, Text, Grid, GridItem, Heading } from '@chakra-ui/react';
+import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox } from '@chakra-ui/react';
 import { SelectPicker } from 'rsuite';
 import AgendaDrawer from '../Agendas/AgendaDrawer';
 import socket from '../../socket';
@@ -34,9 +34,7 @@ const ActionTable = () => {
 		return assetsToRender.join(', ');
 	};
 
-	const handleChange = (actionId, event) => {
-		console.log(actionId, event);
-
+	const handleController = (actionId, event) => {
 		const data = {
 			id: actionId,
 			controller: event
@@ -44,12 +42,20 @@ const ActionTable = () => {
 		socket.emit('request', { route: 'action', action: 'assignController', data });
 	};
 
+	const handleNews = (actionId, event) => {
+		const data = {
+			id: actionId,
+			news: event
+		};
+		socket.emit('request', { route: 'action', action: 'setNewsWorthy', data });
+	};
+
 	return (
 		<Box>
 			<Divider />
 			<Heading size="md">Round: {round}</Heading>
 			<Divider />
-			<Grid templateColumns="2fr 1fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+			<Grid templateColumns="2fr 0.5fr 1fr 2fr 1fr 1fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 				<GridItem overflow="hidden">
 					<Text fontSize="lg" as="b">
 						Action Title
@@ -80,31 +86,39 @@ const ActionTable = () => {
 						Assigned Control
 					</Text>
 				</GridItem>
+				<GridItem>
+					<Text fontSize="lg" as="b">
+						News
+					</Text>
+				</GridItem>
 			</Grid>
 			<Divider />
 			{actions.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
 			{actions
 				.filter((el) => el.round === round)
 				.map((item) => (
-					<div key={item._id} onClick={() => setSelected(item)}>
-						<Grid templateColumns="2fr 1fr 1fr 2fr 1fr 1fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
-							<GridItem overflow="hidden">
+					<div key={item._id}>
+						<Grid templateColumns="2fr 0.5fr 1fr 2fr 1fr 1fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
 								<Text>{item.name}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
 								<Text>{item.type}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
 								<Text>{item.creator.characterName}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
 								<Text>{renderAssets(item.submission)}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
 								<Text>{renderDicePool(item.submission)}</Text>
 							</GridItem>
 							<GridItem>
-								<SelectPicker defaultValue={item.controller} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleChange(item._id, event)}></SelectPicker>
+								<SelectPicker defaultValue={item.controller} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
+							</GridItem>
+							<GridItem>
+								<Checkbox defaultChecked={item.news} onChange={(event) => handleNews(item._id, event.target.checked)}></Checkbox>
 							</GridItem>
 						</Grid>
 						<Divider />
