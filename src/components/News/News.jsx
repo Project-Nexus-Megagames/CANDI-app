@@ -122,7 +122,7 @@ const News = (props) => {
 				<FlexboxGrid justify="center" align="middle">
 					<tbody>
 						{[...Array(gamestate.round)].map((x, i) => (
-							<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle>
+							<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
 								{i + 1}
 							</Button>
 						))}
