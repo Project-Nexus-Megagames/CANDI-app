@@ -36,24 +36,18 @@ const slice = createSlice({
     },
     assetDeleted: (assets, action) => {
       console.log(`${action.type} Dispatched`);
-      const index = assets.list.findIndex(
-        (el) => el._id === action.payload._id
-      );
+      const index = assets.list.findIndex((el) => el._id === action.payload._id);
       assets.list.splice(index, 1);
     },
     assetUpdated: (assets, action) => {
       console.log(`${action.type} Dispatched`);
-      const index = assets.list.findIndex(
-        (el) => el._id === action.payload._id
-      );
-      index > -1 ? assets.list[index] = action.payload : assets.list.push(action.payload);
+      const index = assets.list.findIndex((el) => el._id === action.payload._id);
+      index > -1 ? (assets.list[index] = action.payload) : assets.list.push(action.payload);
       assets.loading = false;
     },
     assetLent: (assets, action) => {
       console.log(`${action.type} Dispatched`);
-      const index = assets.list.findIndex(
-        (el) => el._id === action.payload._id
-      );
+      const index = assets.list.findIndex((el) => el._id === action.payload._id);
       console.log(index);
       let asset = assets.list[index];
       asset.status.lent = true;
@@ -63,15 +57,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const {
-  assetAdded,
-  assetDeleted,
-  assetsReceived,
-  assetsRequested,
-  assetsRequestFailed,
-  assetUpdated,
-  assetLent,
-} = slice.actions;
+export const { assetAdded, assetDeleted, assetsReceived, assetsRequested, assetsRequestFailed, assetUpdated, assetLent } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 
@@ -84,31 +70,14 @@ const url = `${gameServer}api/assets`;
 
 export const getMyUsedAssets = createSelector(
   (state) => state.assets.list,
-  (state) =>
-    state.characters.list.find(
-      (char) => char.username === state.auth.user.username
-    ),
-  (assets, char) =>
-    assets.filter(
-      (asset) =>
-        (asset.owner === char.characterName ||
-          asset.currentHolder === char.characterName) &&
-        asset.status.used &&
-        asset.uses <= 0
-    )
+  (state) => state.characters.list.find((char) => char.username === state.auth.character.username),
+  (assets, char) => assets.filter((asset) => (asset.owner === char.characterName || asset.currentHolder === char.characterName) && asset.status.used && asset.uses <= 0)
 );
 
 export const getMyAssets = createSelector(
   (state) => state.assets.list,
-  (state) =>
-    state.characters.list.find(
-      (char) => char.username === state.auth.user.username
-    ),
-  (assets, char) =>
-    assets.filter(
-      (asset) =>
-        asset.ownerCharacter === char._id || asset.currentHolder === char._id
-    )
+  (state) => state.characters.list.find((char) => char.username === state.auth.character.username),
+  (assets, char) => assets.filter((asset) => asset.ownerCharacter === char._id || asset.currentHolder === char._id)
 );
 
 export const getGodBonds = createSelector(
