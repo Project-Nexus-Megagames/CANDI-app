@@ -33,6 +33,10 @@ const ActionTable = () => {
 					filtered = actions.filter((el) => el.results.length === 0 || (el.results.length > 0 && !el.results[0].ready));
 					setFilteredData(filtered);
 					break;
+				case 'unassigned':
+					filtered = actions.filter((el) => el.controller === '' || !el.controller);
+					setFilteredData(filtered);
+					break;
 				default:
 					filtered = actions.filter((el) => el.controller === filter);
 					setFilteredData(filtered);
