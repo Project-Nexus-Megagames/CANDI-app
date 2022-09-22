@@ -11,7 +11,6 @@ import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
 import actions from '../Images/actions.jpg';
 import agendas from '../Images/agendas.webp';
-import Map from '../Images/map.jpg';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -28,7 +27,7 @@ const HomePage = (props) => {
 	const [selectedChar, setSelectedChar] = React.useState('');
 	const newsArticles = useSelector(getPublishedArticles);
 	const newArticles = useSelector((state) => state.articles.new);
-	const pcCharacters = useSelector(getPlayerCharacters);
+	const allCharacters = useSelector(state => state.characters.list);
 	const sortedArticles = [...newsArticles].sort((a, b) => {
 		let da = new Date(a.createdAt),
 			db = new Date(b.createdAt);
@@ -168,7 +167,7 @@ const HomePage = (props) => {
 					{props.currentCharacter.tags.some((el) => el.toLowerCase() === 'control') && (
 						<p>
 							VIEW AS:
-							<SelectPicker data={pcCharacters} valueKey="_id" labelKey="characterName" onChange={(event) => handleCharChange(event)}></SelectPicker>
+							<SelectPicker data={allCharacters} valueKey="_id" labelKey="characterName" onChange={(event) => handleCharChange(event)}></SelectPicker>
 						</p>
 					)}
 				</FlexboxGrid.Item>
