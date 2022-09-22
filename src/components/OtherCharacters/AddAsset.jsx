@@ -247,8 +247,8 @@ const pickerDataNoGod = [
 		value: 'Trait'
 	},
 	{
-		label: 'Power',
-		value: 'Power'
+		label: 'Title',
+		value: 'Title'
 	}
 ];
 export default AddAsset;
