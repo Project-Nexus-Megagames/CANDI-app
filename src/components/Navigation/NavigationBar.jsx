@@ -14,7 +14,7 @@ const Navigation = (props) => {
 	const [selectedChar, setSelectedChar] = React.useState(myChar._id);
 	const currentCharacter = useSelector(getCharacterById(selectedChar));
 
-	const pcCharacters = useSelector(getPlayerCharacters);
+	const allCharacters = useSelector(state => state.characters.list);
 
 	const history = useHistory();
 
@@ -75,7 +75,7 @@ const Navigation = (props) => {
 					{currentCharacter.tags.some((el) => el.toLowerCase() === 'control') && (
 						<p>
 							VIEW AS:
-							<SelectPicker data={pcCharacters} valueKey="_id" labelKey="characterName" onChange={(event) => handleCharChange(event)}></SelectPicker>
+							<SelectPicker data={allCharacters} valueKey="_id" labelKey="characterName" onChange={(event) => handleCharChange(event)}></SelectPicker>
 						</p>
 					)}
 				</FlexboxGrid.Item>
