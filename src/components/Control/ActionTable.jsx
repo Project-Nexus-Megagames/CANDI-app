@@ -44,6 +44,13 @@ const ActionTable = () => {
 		} else setFilteredData(actions);
 	}, [filter]);
 
+	useEffect(() => {
+		if (selected) {
+			const newSelected = actions.find((el) => el._id === selected._id);
+			setSelected(newSelected);
+		}
+	}, [actions, selected]);
+
 	const renderDicePool = (submission) => {
 		const diceToRender = [];
 		const effortDice = submission.effort.amount + 'd10';
