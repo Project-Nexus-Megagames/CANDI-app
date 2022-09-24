@@ -37,11 +37,11 @@ const ActionTable = () => {
 					setDataToDisplay(filtered);
 					break;
 				case 'unassigned':
-					filtered = actions.filter((el) => el.controller === '' || !el.controller);
+					filtered = actions.filter((el) => el.controller?._id === '' || !el.controller);
 					setDataToDisplay(filtered);
 					break;
 				default:
-					filtered = actions.filter((el) => el.controller === filter);
+					filtered = actions.filter((el) => el.controller?._id === filter);
 					setDataToDisplay(filtered);
 			}
 		} else setDataToDisplay(actions);
