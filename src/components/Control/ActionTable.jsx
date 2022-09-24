@@ -164,7 +164,7 @@ const ActionTable = () => {
 				actions
 					.filter((el) => el.round === round)
 					.forEach((action) => {
-						if (action.controller === controller) count++;
+						if (action.controller?._id === controller) count++;
 					});
 				return count;
 		}
