@@ -6,6 +6,8 @@ import { SelectPicker } from 'rsuite';
 import { CheckRound, WarningRound } from '@rsuite/icons';
 import ActionDrawer from './ActionDrawer';
 import socket from '../../socket';
+import _ from 'lodash';
+//import
 
 const ActionTable = () => {
 	const actions = useSelector((state) => state.actions.list);
@@ -14,8 +16,9 @@ const ActionTable = () => {
 	const controlChars = useSelector(getControl);
 	const [round, setRound] = useState(gamestate.round);
 	const [selected, setSelected] = useState(null);
-	const [filteredData, setFilteredData] = useState([]);
+	const [dataToDisplay, setDataToDisplay] = useState(actions);
 	const [filter, setFilter] = useState('');
+	const [sort, setSort] = useState('');
 
 	useEffect(() => {
 		let filtered = [];
@@ -23,26 +26,35 @@ const ActionTable = () => {
 			switch (filter) {
 				case 'news':
 					filtered = actions.filter((el) => el.news);
-					setFilteredData(filtered);
+					setDataToDisplay(filtered);
 					break;
 				case 'resolved':
 					filtered = actions.filter((el) => el.results.length > 0 && el.results[0].ready);
-					setFilteredData(filtered);
+					setDataToDisplay(filtered);
 					break;
 				case 'unresolved':
 					filtered = actions.filter((el) => el.results.length === 0 || (el.results.length > 0 && !el.results[0].ready));
-					setFilteredData(filtered);
+					setDataToDisplay(filtered);
 					break;
 				case 'unassigned':
 					filtered = actions.filter((el) => el.controller === '' || !el.controller);
-					setFilteredData(filtered);
+					setDataToDisplay(filtered);
 					break;
 				default:
 					filtered = actions.filter((el) => el.controller === filter);
-					setFilteredData(filtered);
+					setDataToDisplay(filtered);
 			}
-		} else setFilteredData(actions);
+		} else setDataToDisplay(actions);
 	}, [filter, actions]);
+
+	useEffect(() => {
+		let sorted = [];
+		console.log('SORT', sort);
+		if (sort) {
+			sorted = _.sortBy(dataToDisplay, sort);
+		} else sorted = _.sortBy(dataToDisplay, 'creator.characterName');
+		setDataToDisplay(sorted);
+	}, [sort, actions]);
 
 	useEffect(() => {
 		if (selected) {
@@ -109,19 +121,12 @@ const ActionTable = () => {
 	};
 
 	const handleFilter = (filter, controllerId) => {
-		switch (filter) {
-			case 'news':
-				setFilter('news');
-				break;
-			case 'resolved':
-				setFilter('resolved');
-				break;
-			case 'unresolved':
-				setFilter('unresolved');
-				break;
-			default:
-				setFilter(controllerId);
-		}
+		if (filter !== 'controller') setFilter(filter);
+		else setFilter(controllerId);
+	};
+
+	const handleSort = (sortCriteria) => {
+		setSort(sortCriteria);
 	};
 
 	const getActionCount = (controller) => {
@@ -189,10 +194,10 @@ const ActionTable = () => {
 						</div>
 					))}
 					<div>
-						<Text as="b" onClick={() => handleFilter('controller', 'unassigned')} cursor="pointer">
+						<Text as="b" onClick={() => handleFilter('unassigned')} cursor="pointer">
 							Unassigned:
 						</Text>
-						<Text onClick={() => handleFilter('controller', 'unassigned')} cursor="pointer">
+						<Text onClick={() => handleFilter('unassigned')} cursor="pointer">
 							{getActionCount('unassigned')}
 						</Text>
 					</div>
@@ -236,17 +241,17 @@ const ActionTable = () => {
 			<Divider />
 			<Grid templateColumns="2fr 0.5fr 1fr 2fr 1fr 1fr 0.5fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b">
+					<Text fontSize="lg" as="b" onClick={() => handleSort('name')} cursor="pointer">
 						Action Title
 					</Text>
 				</GridItem>
 				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b">
+					<Text fontSize="lg" as="b" onClick={() => handleSort('type')} cursor="pointer">
 						Type
 					</Text>
 				</GridItem>
 				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b">
+					<Text fontSize="lg" as="b" onClick={() => handleSort('creator.characterName')} cursor="pointer">
 						Character
 					</Text>
 				</GridItem>
@@ -261,7 +266,7 @@ const ActionTable = () => {
 					</Text>
 				</GridItem>
 				<GridItem>
-					<Text fontSize="lg" as="b">
+					<Text fontSize="lg" as="b" onClick={() => handleSort('controller')} cursor="pointer">
 						Assigned Control
 					</Text>
 				</GridItem>
@@ -277,8 +282,8 @@ const ActionTable = () => {
 				</GridItem>
 			</Grid>
 			<Divider />
-			{filteredData.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
-			{filteredData
+			{dataToDisplay.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
+			{dataToDisplay
 				.filter((el) => el.round === round)
 				.map((item) => (
 					<div key={item._id}>
