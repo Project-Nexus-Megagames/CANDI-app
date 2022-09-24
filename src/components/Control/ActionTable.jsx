@@ -49,9 +49,9 @@ const ActionTable = () => {
 
 	useEffect(() => {
 		let sorted = [];
-		console.log('SORT', sort);
 		if (sort) {
-			sorted = _.sortBy(dataToDisplay, sort);
+			if (sort === 'controller') sorted = _.sortBy(dataToDisplay, 'controller.characterName');
+			else sorted = _.sortBy(dataToDisplay, sort);
 		} else sorted = _.sortBy(dataToDisplay, 'creator.characterName');
 		setDataToDisplay(sorted);
 	}, [sort, actions]);
@@ -304,7 +304,7 @@ const ActionTable = () => {
 								<Text>{renderDicePool(item.submission)}</Text>
 							</GridItem>
 							<GridItem>
-								<SelectPicker value={item.controller} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
+								<SelectPicker value={item.controller?._id} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
 							</GridItem>
 							<GridItem>
 								<Checkbox defaultChecked={item.news} onChange={(event) => handleNews(item._id, event.target.checked)}></Checkbox>
