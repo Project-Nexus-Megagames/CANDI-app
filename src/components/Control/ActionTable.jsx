@@ -42,7 +42,7 @@ const ActionTable = () => {
 					setFilteredData(filtered);
 			}
 		} else setFilteredData(actions);
-	}, [filter]);
+	}, [filter, actions]);
 
 	useEffect(() => {
 		if (selected) {
@@ -299,7 +299,7 @@ const ActionTable = () => {
 								<Text>{renderDicePool(item.submission)}</Text>
 							</GridItem>
 							<GridItem>
-								<SelectPicker defaultValue={item.controller} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
+								<SelectPicker value={item.controller} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
 							</GridItem>
 							<GridItem>
 								<Checkbox defaultChecked={item.news} onChange={(event) => handleNews(item._id, event.target.checked)}></Checkbox>
