@@ -4,7 +4,7 @@ import { getControl } from '../../redux/entities/characters';
 import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, Stack, HStack, Button } from '@chakra-ui/react';
 import { SelectPicker } from 'rsuite';
 import { CheckRound, WarningRound } from '@rsuite/icons';
-import AgendaDrawer from '../Agendas/AgendaDrawer';
+import ActionDrawer from './ActionDrawer';
 import socket from '../../socket';
 
 const ActionTable = () => {
@@ -304,7 +304,7 @@ const ActionTable = () => {
 						<Divider />
 					</div>
 				))}
-			<AgendaDrawer isOpen={selected} show={selected} selected={selected} closeDrawer={() => setSelected(false)} />
+			<ActionDrawer isOpen={selected} show={selected} selected={selected} closeDrawer={() => setSelected(false)} />
 		</Box>
 	);
 };
