@@ -10,7 +10,7 @@ class NewResult extends Component {
 		super(props);
 		this.state = {
 			description: '',
-			dice: ''
+			dice: this.props.selected.diceresult
 		};
 	}
 
@@ -21,16 +21,15 @@ class NewResult extends Component {
 	// 	if (stateReplace) this.setState(stateReplace);
 	// }
 
-
 	handleSubmit = async () => {
 		this.props.actionDispatched();
 		// 1) make a new action
 		const data = {
 			result: {
 				description: this.state.description,
-				dice: this.state.dice,
 				resolver: this.props.myCharacter._id
 			},
+			dice: this.state.dice,
 			id: this.props.selected._id,
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round

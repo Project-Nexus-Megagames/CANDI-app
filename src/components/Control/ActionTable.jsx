@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
-import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, Stack, HStack, Button } from '@chakra-ui/react';
+import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, HStack, Button, Input } from '@chakra-ui/react';
 import { SelectPicker } from 'rsuite';
 import { CheckRound, WarningRound } from '@rsuite/icons';
 import ActionDrawer from './ActionDrawer';
@@ -110,6 +110,14 @@ const ActionTable = () => {
 			controller: event
 		};
 		socket.emit('request', { route: 'action', action: 'assignController', data });
+	};
+
+	const handleDiceResult = (actionId, event) => {
+		const data = {
+			id: actionId,
+			diceresult: event
+		};
+		socket.emit('request', { route: 'action', action: 'diceResult', data });
 	};
 
 	const handleNews = (actionId, event) => {
@@ -239,7 +247,7 @@ const ActionTable = () => {
 				</HStack>
 			</Box>
 			<Divider />
-			<Grid templateColumns="2fr 0.5fr 1fr 2fr 1fr 1fr 0.5fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+			<Grid templateColumns="2fr 0.5fr 1fr 1.5fr 1fr 1fr 1fr 0.5fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 				<GridItem overflow="hidden">
 					<Text fontSize="lg" as="b" onClick={() => handleSort('name')} cursor="pointer">
 						Action Title
@@ -265,6 +273,11 @@ const ActionTable = () => {
 						Dice Pool
 					</Text>
 				</GridItem>
+				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b">
+						Dice Result
+					</Text>
+				</GridItem>
 				<GridItem>
 					<Text fontSize="lg" as="b" onClick={() => handleSort('controller')} cursor="pointer">
 						Assigned Control
@@ -287,7 +300,7 @@ const ActionTable = () => {
 				.filter((el) => el.round === round)
 				.map((item) => (
 					<div key={item._id}>
-						<Grid templateColumns="2fr 0.5fr 1fr 2fr 1fr 1fr 0.5fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+						<Grid templateColumns="2fr 0.5fr 1fr 1.5fr 1fr 1fr 1fr 0.5fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
 							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
 								<Text>{item.name}</Text>
 							</GridItem>
@@ -302,6 +315,9 @@ const ActionTable = () => {
 							</GridItem>
 							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
 								<Text>{renderDicePool(item.submission)}</Text>
+							</GridItem>
+							<GridItem overflow="hidden">
+								<Input defaultValue={item.diceresult} onBlur={(event) => handleDiceResult(item._id, event.target.value)}></Input>
 							</GridItem>
 							<GridItem>
 								<SelectPicker value={item.controller?._id} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
