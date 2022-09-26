@@ -37,9 +37,9 @@ const SelectedAction = (props) => {
 		if (props.selected) {
 			let temp = [
 				props.selected.submission,
-				...props.selected.comments,
 				...props.selected.results,
-				...props.selected.effects
+				...props.selected.effects,
+				...props.selected.comments,
 			];
 			// temp.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) //new Date(a.createdAt) -  new Date(b.createdAt // disabled until the updatedAt bug is worked out
 			setSelectedArray(temp);

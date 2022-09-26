@@ -116,7 +116,6 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 						{...register('body', {
 							required: 'Required',
 							minLength: { value: 20, message: 'Body must be must be more than 20 characters' },
-							maxLength: { value: 10000, message: 'Body cannot be over 3000 characters' }
 						})}
 					/>
 				</FormControl>
