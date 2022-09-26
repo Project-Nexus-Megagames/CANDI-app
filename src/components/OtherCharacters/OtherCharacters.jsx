@@ -9,7 +9,7 @@ import NewCharacter from '../Control/NewCharacter';
 import MobileOtherCharacters from './MobileOtherCharacters';
 import DynamicForm from './DynamicForm';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
-import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated } from './../../redux/entities/characters';
+import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated, getMyUnlockedCharacters } from './../../redux/entities/characters';
 import CharacterListItem from './CharacterListItem';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
 import ViewCharacter from '../Common/ViewCharacter';
@@ -18,6 +18,7 @@ import ResourceNugget from '../Common/ResourceNugget';
 const OtherCharacters = (props) => {
 	const publicCharacters = useSelector(getPublicCharacters);
 	const privateCharacters = useSelector(getPrivateCharacters);
+	const knownContacts = useSelector(getMyUnlockedCharacters);
 	const [selected, setSelected] = useState(null);
 	const [filteredCharacters, setFilteredCharacters] = useState([]);
 	const [edit, setEdit] = useState(false);
@@ -32,12 +33,13 @@ const OtherCharacters = (props) => {
 		return <Loader inverse center content="doot..." />;
 	}
 
-	let characters = [...publicCharacters, ...props.myCharacter.knownContacts];
+	let characters = [...publicCharacters, ...knownContacts];
+	characters = [...new Set(characters)];
 	const [renderTags] = React.useState(['Frog', 'Pig', 'Spider', 'Myconid', 'Raccoon', 'Drow', 'Dwarves', 'Whitewall', 'The Overlord', 'Other', 'Control']); // TODO: update with Faction tags
 
 	useEffect(() => {
 		filterThis('');
-	}, []);
+	}, [publicCharacters, privateCharacters, knownContacts]);
 
 	const copyToClipboard = (character) => {
 		if (character.characterName === 'The Box') {
@@ -200,7 +202,7 @@ const OtherCharacters = (props) => {
 											))}
 									</List>
 								))}
-								
+
 								{props.myCharacter.tags.some((el) => el === 'Control') && (
 									<List hover>
 										<p style={{ backgroundColor: getFadedColor('Unknown'), color: getTextColor(`${'Unknown'}-text`) }}>{'( Hidden )'}</p>
@@ -213,13 +215,14 @@ const OtherCharacters = (props) => {
 											))}
 
 										<p style={{ backgroundColor: getFadedColor('All'), color: getTextColor(`${'Unknown'}-text`) }}>{'( All Characters )'}</p>
-										{props.user.username ==='BobtheNinjaMan' && props.characters
-											// .filter()
-											.map((character) => (
-												<List.Item key={character._id} style={listStyle(character)}>
-													<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
-												</List.Item>
-											))}
+										{props.user.username === 'BobtheNinjaMan' &&
+											props.characters
+												// .filter()
+												.map((character) => (
+													<List.Item key={character._id} style={listStyle(character)}>
+														<CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
+													</List.Item>
+												))}
 									</List>
 								)}
 							</div>
