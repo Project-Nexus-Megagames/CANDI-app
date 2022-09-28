@@ -36,9 +36,9 @@ const NewAction = (props) => {
 		}
 	}, [actionType]);
 
-	useEffect(() => {
-		if (effort) setMaxEffort();
-	}, [effort]);
+	// useEffect(() => {
+	// 	if (effort) setMaxEffort();
+	// }, [effort]);
 
 	const editState = (incoming, type) => {
 		let thing;
