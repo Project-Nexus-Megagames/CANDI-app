@@ -24,6 +24,7 @@ const OtherCharacters = (props) => {
   const [edit, setEdit] = useState(false);
   const [add, setAdd] = useState(false);
   const [asset, setAsset] = useState(false);
+  const [image, setImage] = useState("");
 
   const [showNew, setShowNew] = useState(false);
   const loggedInUser = useSelector((state) => state.auth.user);
@@ -45,6 +46,7 @@ const OtherCharacters = (props) => {
     const audio = new Audio("/candi1.mp3");
     audio.loop = true;
     audio.play();
+    setImage("https://res.cloudinary.com/df8lwfbar/image/upload/v1664447183/goblinCity/kpj2mcukweiq3edjp4ww.jpg");
   };
   const copyToClipboard = (character) => {
     if (character.characterName === "The Box") {
@@ -142,6 +144,7 @@ const OtherCharacters = (props) => {
     if (props.characters && selected) {
       const updated = props.characters.find((el) => el._id === selected._id);
       setSelected(updated);
+      setImage(selected.profilePicture);
     }
   }, [props.characters, selected]);
 
@@ -352,7 +355,7 @@ const OtherCharacters = (props) => {
                     {/*Profile Pic*/}
                     <FlexboxGrid.Item colspan={9}>
                       <img
-                        src={`${selected.profilePicture}`}
+                        src={`${image}`}
                         alt='Img could not be displayed'
                         style={{ maxHeight: "50vh" }}
                         onClick={() => {
