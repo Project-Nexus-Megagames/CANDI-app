@@ -42,6 +42,7 @@ const OtherCharacters = (props) => {
     filterThis("");
   }, [publicCharacters, privateCharacters, knownContacts]);
 
+<<<<<<< HEAD
   const theBox = () => {
     const audio = new Audio("/candi1.mp3");
     audio.loop = true;
@@ -68,6 +69,42 @@ const OtherCharacters = (props) => {
         } else console.log(`${controller} could not be added to clipboard`);
         Alert.error(`${controller} could not be added to clipboard`, 6000);
       }
+=======
+	const copyToClipboard = (character) => {
+		if (character.characterName === 'The Box') {
+			const audio = new Audio('/candi1.mp3');
+			audio.loop = true;
+			audio.play();
+		} else {
+			// Build a transitive closure of all control affected.
+			let board = `${character.email}`;
+
+			// First get the control of the searched character and the current character
+			let pending = [...character.control]
+			let seen = [];
+			for (const controller of props.myCharacter.control) {
+				if (!pending.some((el) => el === controller)) {
+					pending.push(controller);
+				}
+			}
+			while (pending.length != 0)  {
+				const cur = pending.shift()
+				seen.push(cur)
+				const character = props.characters.find((el) => el.characterName === cur)
+				if(character) {
+					// add their controllers to the list to be searched if we haven't already done them
+					for (const controller of character.control) {
+						if ((!seen.some((el) => el === controller)) && (!pending.some((el) => el === controller))) {
+							pending.push(controller);
+						}
+					}
+					board = board.concat(`; ${character.email}`);
+				} else {
+					console.log(`${character} could not be added to clipboard`);
+					Alert.error(`${character} could not be added to clipboard`, 6000);
+				}
+			}
+>>>>>>> 4ac4a9f (Collect controls in a transitive closure)
 
       navigator.clipboard.writeText(board);
       Alert.success("Email Copied!", 6000);
