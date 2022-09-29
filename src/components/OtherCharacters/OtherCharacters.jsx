@@ -42,7 +42,6 @@ const OtherCharacters = (props) => {
     filterThis("");
   }, [publicCharacters, privateCharacters, knownContacts]);
 
-<<<<<<< HEAD
   const theBox = () => {
     const audio = new Audio("/candi1.mp3");
     audio.loop = true;
@@ -53,29 +52,6 @@ const OtherCharacters = (props) => {
     if (character.characterName === "The Box") {
       theBox();
     } else {
-      let board = `${character.email}`;
-      let array = [...character.control];
-
-      for (const controller of props.myCharacter.control) {
-        if (!array.some((el) => el === controller)) {
-          array.push(controller);
-        }
-      }
-
-      for (const controller of array) {
-        const character = props.characters.find((el) => el.characterName === controller);
-        if (character) {
-          board = board.concat(`; ${character.email}`);
-        } else console.log(`${controller} could not be added to clipboard`);
-        Alert.error(`${controller} could not be added to clipboard`, 6000);
-      }
-=======
-	const copyToClipboard = (character) => {
-		if (character.characterName === 'The Box') {
-			const audio = new Audio('/candi1.mp3');
-			audio.loop = true;
-			audio.play();
-		} else {
 			// Build a transitive closure of all control affected.
 			let board = `${character.email}`;
 
@@ -104,7 +80,6 @@ const OtherCharacters = (props) => {
 					Alert.error(`${character} could not be added to clipboard`, 6000);
 				}
 			}
->>>>>>> 4ac4a9f (Collect controls in a transitive closure)
 
       navigator.clipboard.writeText(board);
       Alert.success("Email Copied!", 6000);
