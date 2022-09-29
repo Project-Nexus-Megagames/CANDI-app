@@ -5,16 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Button, ButtonGroup } from 'rsuite';
 import { effortTypesAdded } from '../../redux/entities/gameConfig';
 
-import {
-	HStack,
-	VStack,
-	Flex,
-	FormControl,
-	Box,
-	FormLabel,
-	Input,
-	Text
-} from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
 
 function GameConfig() {
 	const dispatch = useDispatch();
@@ -36,10 +27,6 @@ function GameConfig() {
 	const validation = {
 		type: {
 			required: 'Type is required',
-			pattern: {
-				value: /^[a-zA-Z0-9_.-\s]+$/,
-				message: "That's not a valid type where I come from..."
-			},
 			maxLength: {
 				value: 300,
 				message: "That's way too long, try again"
@@ -76,8 +63,7 @@ function GameConfig() {
 	}
 
 	const onSubmit = (data) => {
-		if (hasDuplicates(data.effortTypes))
-			return alert('Effort Types have to be unique');
+		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
 		dispatch(effortTypesAdded(data));
 		history.push('./GameConfig2');
 	};
@@ -94,21 +80,10 @@ function GameConfig() {
 										<HStack spacing="24px">
 											<FormControl variant="floating">
 												<FormLabel>Type of Effort</FormLabel>
-												<Input
-													key={item.id}
-													type="text"
-													size="md"
-													variant="outline"
-													defaultValue={oldConfig.effortTypes?.[i]?.type}
-													{...register(
-														`effortTypes.${i}.type`,
-														validation.type
-													)}
-												/>
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.effortTypes?.[i]?.type} {...register(`effortTypes.${i}.type`, validation.type)} />
 
 												<Text fontSize="sm" color="red.500">
-													{errors.effortTypes?.[i]?.type &&
-														errors.effortTypes[i].type.message}
+													{errors.effortTypes?.[i]?.type && errors.effortTypes[i].type.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
@@ -118,18 +93,16 @@ function GameConfig() {
 													type="number"
 													size="md"
 													variant="outline"
-													defaultValue={
-														oldConfig.effortTypes?.[i]?.effortAmount
-													}
-													{...register(
-														`effortTypes.${i}.effortAmount`,
-														validation.effortAmount
-													)}
+													defaultValue={oldConfig.effortTypes?.[i]?.effortAmount}
+													{...register(`effortTypes.${i}.effortAmount`, validation.effortAmount)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.effortTypes?.[i]?.effortAmount &&
-														errors.effortTypes[i].effortAmount.message}
+													{errors.effortTypes?.[i]?.effortAmount && errors.effortTypes[i].effortAmount.message}
 												</Text>
+											</FormControl>
+											<FormControl variant="floating">
+												<FormLabel>Effort Tag</FormLabel>
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.effortTypes?.[i]?.tag} {...register(`effortTypes.${i}.tag`)} />
 											</FormControl>
 											<Button size="xs" onClick={() => remove(i)}>
 												-
@@ -154,11 +127,7 @@ function GameConfig() {
 						<Button type="submit" className="btn btn-primary mr-1">
 							Next
 						</Button>
-						<Button
-							onClick={() => reset()}
-							type="button"
-							className="btn btn-secondary mr-1"
-						>
+						<Button onClick={() => reset()} type="button" className="btn btn-secondary mr-1">
 							Reset
 						</Button>
 					</ButtonGroup>
