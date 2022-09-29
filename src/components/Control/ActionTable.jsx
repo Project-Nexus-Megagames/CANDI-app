@@ -67,7 +67,7 @@ const ActionTable = () => {
 		const diceToRender = [];
 		const effortDice = submission.effort.amount + 'd10';
 		diceToRender.push(effortDice);
-		submission.assets.forEach((ass) => {
+		submission.assets.slice(0, 3).forEach((ass) => {
 			const asset = assets.find((el) => el._id === ass);
 			diceToRender.push(asset.dice);
 		});
@@ -76,7 +76,7 @@ const ActionTable = () => {
 
 	const renderAssets = (submission) => {
 		const assetsToRender = [];
-		submission.assets.forEach((ass) => {
+		submission.assets.slice(0, 3).forEach((ass) => {
 			const asset = assets.find((el) => el._id === ass);
 			assetsToRender.push(asset.name);
 		});
