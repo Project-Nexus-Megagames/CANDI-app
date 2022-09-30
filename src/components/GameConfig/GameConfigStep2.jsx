@@ -1,22 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { Button, ButtonGroup } from 'rsuite';
 import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
-import {
-	HStack,
-	VStack,
-	Flex,
-	FormControl,
-	Box,
-	FormLabel,
-	Input,
-	Text,
-	Checkbox,
-	CheckboxGroup,
-	Stack
-} from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack } from '@chakra-ui/react';
 
 function GameConfig2() {
 	const oldConfig = useSelector((state) => state.gameConfig);
@@ -90,11 +78,12 @@ function GameConfig2() {
 	}
 
 	function onSubmit(data) {
-		if (hasDuplicates(data.actionTypes))
-			return alert('Action Types have to be unique');
+		if (hasDuplicates(data.actionTypes)) return alert('Action Types have to be unique');
 		dispatch(actionTypesAdded(data));
+
 		let configToBeSent = { ...oldConfig };
 		configToBeSent.actionTypes = data.actionTypes;
+		console.log('DATA', configToBeSent);
 		try {
 			socket.emit('request', {
 				route: 'gameConfig',
@@ -118,50 +107,29 @@ function GameConfig2() {
 										<HStack spacing="24px">
 											<FormControl variant="floating">
 												<FormLabel>Type of Action</FormLabel>
-												<Input
-													key={item.id}
-													type="text"
-													size="md"
-													variant="outline"
-													defaultValue={oldConfig.actionTypes?.[i]?.type}
-													{...register(
-														`actionTypes.${i}.type`,
-														validation.type
-													)}
-												/>
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.actionTypes?.[i]?.type} {...register(`actionTypes.${i}.type`, validation.type)} />
 												<Text fontSize="sm" color="red.500">
-													{errors.actionTypes?.[i]?.type &&
-														errors.actionTypes[i].type.message}
+													{errors.actionTypes?.[i]?.type && errors.actionTypes[i].type.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
 												<FormLabel>Types of Resources</FormLabel>
-												<CheckboxGroup
-													key={item.id}
-													defaultValue={oldConfig.actionTypes?.[i]?.assetType}
-												>
-													<Stack spacing={[1]} direction={['column']}>
-														<Checkbox
-															value="asset"
-															{...register(`actionTypes.${i}.assetType`)}
-														>
-															Asset
-														</Checkbox>
-														<Checkbox
-															value="trait"
-															{...register(`actionTypes.${i}.assetType`)}
-														>
-															Trait
-														</Checkbox>
-															
-														<Checkbox
-															value="title"
-															{...register(`actionTypes.${i}.assetType`)}
-														>
-															Title
-														</Checkbox>
-													</Stack>
-												</CheckboxGroup>
+												<Controller
+													name={`actionTypes.${i}.assetType`}
+													control={control}
+													render={({ field: { ref, ...rest } }) => {
+														console.log(rest);
+														return (
+															<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.assetType} {...rest}>
+																<Stack spacing={[1]} direction={['column']}>
+																	<Checkbox value="asset">Asset</Checkbox>
+																	<Checkbox value="trait">Trait</Checkbox>
+																	<Checkbox value="title">Title</Checkbox>
+																</Stack>
+															</CheckboxGroup>
+														);
+													}}
+												/>
 											</FormControl>
 											<FormControl variant="floating">
 												<FormLabel>Max Resources</FormLabel>
@@ -171,34 +139,29 @@ function GameConfig2() {
 													size="md"
 													variant="outline"
 													defaultValue={oldConfig.actionTypes?.[i]?.maxAssets}
-													{...register(
-														`actionTypes.${i}.maxAssets`,
-														validation.maxAssets
-													)}
+													{...register(`actionTypes.${i}.maxAssets`, validation.maxAssets)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.actionTypes?.[i]?.maxAssets &&
-														errors.actionTypes[i].maxAssets.message}
+													{errors.actionTypes?.[i]?.maxAssets && errors.actionTypes[i].maxAssets.message}
 												</Text>
 											</FormControl>
 											<FormControl>
 												<FormLabel>Types of Effort</FormLabel>
-												<CheckboxGroup
-													key={item.id}
-													defaultValue={oldConfig.actionTypes?.[i]?.effortTypes}
-												>
-													<Stack spacing={[1]} direction={['column']}>
-														{oldConfig.effortTypes.map((item) => (
-															<Checkbox
-																value={item.type}
-																key={item.id}
-																{...register(`actionTypes.${i}.effortTypes`)}
-															>
-																{item.type}
-															</Checkbox>
-														))}
-													</Stack>
-												</CheckboxGroup>
+												<Controller
+													name={`actionTypes.${i}.effortTypes`}
+													control={control}
+													render={({ field: { ref, ...rest } }) => (
+														<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.effortTypes} {...rest}>
+															<Stack spacing={[1]} direction={['column']}>
+																{oldConfig.effortTypes.map((item) => (
+																	<Checkbox value={item.type} key={item.id}>
+																		{item.type}
+																	</Checkbox>
+																))}
+															</Stack>
+														</CheckboxGroup>
+													)}
+												/>
 											</FormControl>
 											<FormControl variant="floating">
 												<FormLabel>Min Effort</FormLabel>
@@ -208,14 +171,10 @@ function GameConfig2() {
 													size="md"
 													variant="outline"
 													defaultValue={oldConfig.actionTypes?.[i]?.minEffort}
-													{...register(
-														`actionTypes.${i}.minEffort`,
-														validation.minEffort
-													)}
+													{...register(`actionTypes.${i}.minEffort`, validation.minEffort)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.actionTypes?.[i]?.minEffort &&
-														errors.actionTypes[i].minEffort.message}
+													{errors.actionTypes?.[i]?.minEffort && errors.actionTypes[i].minEffort.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
@@ -226,24 +185,14 @@ function GameConfig2() {
 													size="md"
 													variant="outline"
 													defaultValue={oldConfig.actionTypes?.[i]?.maxEffort}
-													{...register(
-														`actionTypes.${i}.maxEffort`,
-														validation.maxEffort
-													)}
+													{...register(`actionTypes.${i}.maxEffort`, validation.maxEffort)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.actionTypes?.[i]?.maxEffort &&
-														errors.actionTypes[i].maxEffort.message}
+													{errors.actionTypes?.[i]?.maxEffort && errors.actionTypes[i].maxEffort.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
-												<Checkbox
-													key={item.id}
-													type="text"
-													size="md"
-													defaultValue={oldConfig.actionTypes?.[i]?.public}
-													{...register(`actionTypes.${i}.public`)}
-												>
+												<Checkbox key={item.id} type="text" size="md" defaultValue={oldConfig.actionTypes?.[i]?.public} {...register(`actionTypes.${i}.public`)}>
 													Public Action
 												</Checkbox>
 											</FormControl>
@@ -276,11 +225,7 @@ function GameConfig2() {
 						<Button type="submit" className="btn btn-primary mr-1">
 							Create Initial Config
 						</Button>
-						<Button
-							onClick={() => reset()}
-							type="button"
-							className="btn btn-secondary mr-1"
-						>
+						<Button onClick={() => reset()} type="button" className="btn btn-secondary mr-1">
 							Reset
 						</Button>
 					</ButtonGroup>
