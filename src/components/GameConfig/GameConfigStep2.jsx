@@ -24,10 +24,6 @@ function GameConfig2() {
 	const validation = {
 		type: {
 			required: 'Type is required',
-			pattern: {
-				value: /^[a-zA-Z0-9_.-\s]+$/,
-				message: "That's not a valid type where I come from..."
-			},
 			maxLength: {
 				value: 300,
 				message: "That's way too long, try again"
@@ -35,15 +31,15 @@ function GameConfig2() {
 		},
 		minEffort: {
 			required: 'Min Effort is required',
-			min: { value: 0, message: 'Must be larger than 0' }
+			min: { value: 0, message: 'Must be 0 or larger' }
 		},
 		maxEffort: {
 			required: 'Max Effort is required',
-			min: { value: 0, message: 'Must be larger than 0' }
+			min: { value: 0, message: 'Must be 0 or larger' }
 		},
 		maxAssets: {
 			required: 'Max Assets is required',
-			min: { value: 0, message: 'Must be larger than 0' }
+			min: { value: 0, message: 'Must be 0 or larger' }
 		}
 	};
 
