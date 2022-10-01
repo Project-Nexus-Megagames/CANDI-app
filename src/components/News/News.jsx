@@ -9,6 +9,7 @@ import { Loader } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { getMyArticles, getPublishedArticles } from './../../redux/entities/articles';
 import socket from '../../socket';
+import { maxBy } from 'lodash';
 
 const News = (props) => {
 	const articles = useSelector(getPublishedArticles);
@@ -26,6 +27,7 @@ const News = (props) => {
 	const myChar = useSelector(getMyCharacter);
 	const [filterButtonText, setFilterButtonText] = useState('Show My Articles');
 	const [round, setRound] = useState(gamestate.round);
+	const [maxRound, setMaxRound] = useState(gamestate.round);
 
 	if (!login) {
 		props.history.push('/');
@@ -69,6 +71,13 @@ const News = (props) => {
 	};
 
 	useEffect(() => {
+		let max = gamestate.round;
+		const temp = allArticles.filter((el) => el.round > gamestate.round);
+		temp.forEach((el) => (el.round > max ? (max = el.round) : null));
+		setMaxRound(max);
+	}, [articles]);
+
+	useEffect(() => {
 		let filtered = [];
 		if (searchQuery) {
 			if (showMyArticles) {
@@ -105,6 +114,29 @@ const News = (props) => {
 		setSearchQuery(e);
 	};
 
+	const getRoundMap = () => {
+		if (myChar.tags.some((el) => el.toLowerCase() === 'control'))
+			return (
+				<tbody>
+					{[...Array(maxRound)].map((x, i) => (
+						<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
+							{i + 1}
+						</Button>
+					))}
+				</tbody>
+			);
+		else
+			return (
+				<tbody>
+					{[...Array(gamestate.round)].map((x, i) => (
+						<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
+							{i + 1}
+						</Button>
+					))}
+				</tbody>
+			);
+	};
+
 	const handleFilter = () => {
 		if (showMyArticles === true) {
 			setShowMyArticles(false);
@@ -120,13 +152,7 @@ const News = (props) => {
 			<NavigationBar />
 			<Header>
 				<FlexboxGrid justify="center" align="middle">
-					<tbody>
-						{[...Array(gamestate.round)].map((x, i) => (
-							<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
-								{i + 1}
-							</Button>
-						))}
-					</tbody>
+					{getRoundMap()}
 					<FlexboxGrid.Item colspan={4}>
 						<InputGroup>
 							<Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />

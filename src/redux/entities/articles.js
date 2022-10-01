@@ -3,6 +3,7 @@ import { apiCallBegan } from "../api"; // Import Redux API call
 import { Alert } from "rsuite";
 import { gameServer } from "../../config";
 
+
 // Create entity slice of the store
 const slice = createSlice({
   name: "articles",
@@ -99,6 +100,13 @@ export const getPublishedArticles = createSelector(
   state => state.characters.list.find(el => el.username === state.auth.user.username),
   (articles) => articles.filter(
     article => ( article.tags.some(tag => tag === 'Published')))
+);
+
+export const getCurrentArticles = createSelector(
+  state => state.articles.list,
+	state => state.gamestate.round,
+  (articles, round) => articles.filter(
+    article => ( article.round <= round))
 );
 
 

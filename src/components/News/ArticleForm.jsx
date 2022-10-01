@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, FormControl, FormLabel, Input, Stack, HStack, Textarea, Box, Checkbox } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, Stack, HStack, Textarea, Box, Checkbox, VStack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import ErrorTag from '../Common/FormError';
@@ -11,6 +11,8 @@ import socket from '../../socket';
 export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 	const myCharacter = useSelector(getMyCharacter);
 	const myArticleEffort = myCharacter.effort.find((el) => el.type === 'Article').amount;
+	const gamestate = useSelector((state) => state.gamestate);
+	console.log(gamestate);
 
 	let defaultValues = {
 		creator: myCharacter._id,
@@ -36,7 +38,8 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 					title: article.title,
 					body: article.body,
 					image: article.imageURL,
-					tags: article.tags
+					tags: article.tags,
+					round: article.round ? article.round : gamestate.round
 			  },
 
 		criteriaMode: 'firstError',
@@ -115,7 +118,7 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 						noOfLines={40}
 						{...register('body', {
 							required: 'Required',
-							minLength: { value: 20, message: 'Body must be must be more than 20 characters' },
+							minLength: { value: 20, message: 'Body must be must be more than 20 characters' }
 						})}
 					/>
 				</FormControl>
@@ -127,7 +130,25 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 				</Box>
 				<DevTool control={control} placement="bottom-right" />
 				<HStack justifyContent="end">
-					<Checkbox {...register('anon')}>Anonymous author</Checkbox>
+					<FormControl isRequired isInvalid={errors.round}>
+						<FormLabel m={0} htmlFor="round">
+							Round
+						</FormLabel>
+						{dirtyFields.title && <ErrorTag error={errors.round} />}
+						<Input
+							type="number"
+							id="round"
+							w="100px"
+							align="right"
+							defaultValue={gamestate.round}
+							{...register('round', {
+								required: 'Required'
+							})}
+						/>
+					</FormControl>
+					<Checkbox {...register('anon')} w="300px">
+						Anonymous author
+					</Checkbox>
 					<Button type="submit" colorScheme="green" disabled={!isValid} onClick={formSubmit(handleSubmit)}>{`Save as Draft`}</Button>
 					<Button colorScheme="blue" disabled={!isValid || !(myArticleEffort > 0) || !isDraft()} onClick={formSubmit(handlePublish)}>
 						{`Publish`}
