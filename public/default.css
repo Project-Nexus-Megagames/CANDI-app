@@ -15257,6 +15257,7 @@ textarea.rs-picker-search-input {
 }
 .rs-modal-open {
   overflow: hidden;
+	z-Index: 10000 !important
 }
 .rs-modal-wrapper {
   position: fixed;
@@ -15266,7 +15267,7 @@ textarea.rs-picker-search-input {
   bottom: 0;
   right: 0;
   left: 0;
-	/*z-Index: 9999 !important*/
+	z-Index: 9999 !important
 }
 .rs-modal {
   display: none;
@@ -15275,7 +15276,7 @@ textarea.rs-picker-search-input {
   margin: 30px auto 0 auto;
   position: relative;
   width: auto;
-	/*z-Index: 9999 !important*/
+	z-Index: 9999 !important
 }
 .rs-modal-lg {
   width: 968px;
@@ -17740,6 +17741,7 @@ textarea.rs-picker-search-input {
   overflow: hidden;
   -webkit-transition: none;
   transition: none;
+	z-Index: 10000 !important
   /* stylelint-disable-next-line */
 }
 .rs-modal-open .rs-picker-menu {
