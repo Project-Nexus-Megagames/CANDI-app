@@ -89,7 +89,7 @@ class NewResult extends Component {
 								colspan={20}
 							>
 								Dice Roll Result
-								<textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
+								<textarea rows="2" value={this.props.selected.diceresult} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 						</FlexboxGrid>
