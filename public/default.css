@@ -15266,6 +15266,7 @@ textarea.rs-picker-search-input {
   bottom: 0;
   right: 0;
   left: 0;
+	z-Index: 9999 !important
 }
 .rs-modal {
   display: none;
@@ -15274,7 +15275,7 @@ textarea.rs-picker-search-input {
   margin: 30px auto 0 auto;
   position: relative;
   width: auto;
-  z-index: 1050;
+	z-Index: 9999 !important
 }
 .rs-modal-lg {
   width: 968px;
