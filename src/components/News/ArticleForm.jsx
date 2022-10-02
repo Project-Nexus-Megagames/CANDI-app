@@ -130,22 +130,24 @@ export const ArticleForm = ({ onSubmit, onCancel, article }) => {
 				</Box>
 				<DevTool control={control} placement="bottom-right" />
 				<HStack justifyContent="end">
-					<FormControl isRequired isInvalid={errors.round}>
-						<FormLabel m={0} htmlFor="round">
-							Round
-						</FormLabel>
-						{dirtyFields.title && <ErrorTag error={errors.round} />}
-						<Input
-							type="number"
-							id="round"
-							w="100px"
-							align="right"
-							defaultValue={gamestate.round}
-							{...register('round', {
-								required: 'Required'
-							})}
-						/>
-					</FormControl>
+					{myCharacter.tags.some((el) => el.toLowerCase() === 'control') && (
+						<FormControl isRequired isInvalid={errors.round}>
+							<FormLabel m={0} htmlFor="round">
+								Round
+							</FormLabel>
+							{dirtyFields.title && <ErrorTag error={errors.round} />}
+							<Input
+								type="number"
+								id="round"
+								w="100px"
+								align="right"
+								defaultValue={gamestate.round}
+								{...register('round', {
+									required: 'Required'
+								})}
+							/>
+						</FormControl>
+					)}
 					<Checkbox {...register('anon')} w="300px">
 						Anonymous author
 					</Checkbox>
