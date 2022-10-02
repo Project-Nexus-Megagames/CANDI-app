@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
 import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, HStack, Button, Input } from '@chakra-ui/react';
 import { SelectPicker } from 'rsuite';
-import { CheckRound, WarningRound } from '@rsuite/icons';
+import { CheckRound, WarningRound, InfoRound } from '@rsuite/icons';
 import ActionDrawer from './ActionDrawer';
 import socket from '../../socket';
 import _ from 'lodash';
@@ -19,6 +19,7 @@ const ActionTable = () => {
 	const [dataToDisplay, setDataToDisplay] = useState(actions);
 	const [filter, setFilter] = useState('');
 	const [sort, setSort] = useState('');
+	const templateColumns = '0.1fr 2fr 0.4fr 1fr 1.5fr 1fr 1fr 1fr 0.5fr 0.5fr';
 
 	useEffect(() => {
 		let filtered = [];
@@ -247,7 +248,10 @@ const ActionTable = () => {
 				</HStack>
 			</Box>
 			<Divider />
-			<Grid templateColumns="2fr 0.5fr 1fr 1.5fr 1fr 1fr 1fr 0.5fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
+			<Grid templateColumns={templateColumns} gap={4} paddingLeft={8} paddingRight={8} align="left">
+				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b" onClick={() => handleSort('name')} cursor="pointer"></Text>
+				</GridItem>
 				<GridItem overflow="hidden">
 					<Text fontSize="lg" as="b" onClick={() => handleSort('name')} cursor="pointer">
 						Action Title
@@ -300,20 +304,23 @@ const ActionTable = () => {
 				.filter((el) => el.round === round)
 				.map((item) => (
 					<div key={item._id}>
-						<Grid templateColumns="2fr 0.5fr 1fr 1.5fr 1fr 1fr 1fr 0.5fr 0.5fr" gap={4} paddingLeft={8} paddingRight={8} align="left">
-							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
+						<Grid templateColumns={templateColumns} gap={4} paddingLeft={8} paddingRight={8} align="left">
+							<GridItem overflow="hidden" onClick={() => setSelected(item)} cursor="pointer">
+								<InfoRound style={{ color: 'cyan', fontSize: '1.5em' }} />
+							</GridItem>
+							<GridItem overflow="hidden">
 								<Text>{item.name}</Text>
 							</GridItem>
-							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
+							<GridItem overflow="hidden">
 								<Text>{item.type}</Text>
 							</GridItem>
-							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
+							<GridItem overflow="hidden">
 								<Text>{item.creator.characterName}</Text>
 							</GridItem>
-							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
+							<GridItem overflow="hidden">
 								<Text>{renderAssets(item.submission)}</Text>
 							</GridItem>
-							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
+							<GridItem overflow="hidden">
 								<Text>{renderDicePool(item.submission)}</Text>
 							</GridItem>
 							<GridItem overflow="hidden">
@@ -325,7 +332,7 @@ const ActionTable = () => {
 							<GridItem>
 								<Checkbox defaultChecked={item.news} onChange={(event) => handleNews(item._id, event.target.checked)}></Checkbox>
 							</GridItem>
-							<GridItem overflow="hidden" onClick={() => setSelected(item)}>
+							<GridItem overflow="hidden">
 								<Text>{renderResReady(item.results)}</Text>
 							</GridItem>
 						</Grid>
