@@ -90,14 +90,14 @@ export default slice.reducer; // Reducer Export
 // Selector
 export const getMyArticles = createSelector(
   state => state.articles.list,
-  state => state.characters.list.find(el => el.username === state.auth.user.username),
+  state => state.characters.list.find(el => el.username === state.auth.character?.username),
   (articles, myCharacter) => articles.filter(
     article => (( article.creator?._id === myCharacter?._id ) ))
 );
 
 export const getPublishedArticles = createSelector(
   state => state.articles.list,
-  state => state.characters.list.find(el => el.username === state.auth.user.username),
+  state => state.characters.list.find(el => el.username === state.auth.character?.username),
   (articles) => articles.filter(
     article => ( article.tags.some(tag => tag === 'Published')))
 );

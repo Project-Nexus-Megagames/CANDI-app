@@ -16358,6 +16358,9 @@ textarea.rs-picker-search-input {
 .rs-panel-body {
   padding: 20px;
 }
+.rs-panel-body li {
+	white-space: normal;
+}
 .rs-panel-body-fill {
   padding: 0 !important;
 }

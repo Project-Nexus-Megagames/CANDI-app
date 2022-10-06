@@ -51,7 +51,7 @@ const NewsFeed = (props) => {
 	}, [data]);
 
 	const showEditAndDelete = (item) => {
-		return ((item.author === myChar.characterName && item.tags?.some((tag) => tag === 'Draft')) || myChar.tags.some((tag) => tag.toLowerCase() === 'control')) && item.type === 'newsArticle';
+		return ((item.authorId === myChar._id && item.tags?.some((tag) => tag === 'Draft')) || myChar.tags.some((tag) => tag.toLowerCase() === 'control')) && item.type === 'newsArticle';
 	};
 
 	const isDraft = (item) => {

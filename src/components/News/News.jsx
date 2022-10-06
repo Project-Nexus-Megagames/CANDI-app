@@ -29,6 +29,8 @@ const News = (props) => {
 	const [round, setRound] = useState(gamestate.round);
 	const [maxRound, setMaxRound] = useState(gamestate.round);
 
+	console.log(myArticles);
+
 	if (!login) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
@@ -108,6 +110,7 @@ const News = (props) => {
 		} else {
 			setFilteredData(mapArticlesToData(getSortedArticles()));
 		}
+		console.log(filteredData);
 	}, [articles, showMyArticles, myChar]);
 
 	const handleSearch = (e) => {
