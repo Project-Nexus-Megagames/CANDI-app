@@ -6,12 +6,11 @@ import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../red
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
-import control2 from '../Images/control.png';
-import other from '../Images/other.jpg';
-import news from '../Images/News.jpg';
-import actions from '../Images/actions.jpg';
+import control2 from '../Images/Control_Panel.png';
+import other from '../Images/Other_Characters.png';
+import news from '../Images/News.png';
+import actions from '../Images/Actions.png';
 import agendas from '../Images/agendas.webp';
-import hello from '../Images/hello.jpg';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -180,13 +179,13 @@ const HomePage = (props) => {
 					{/* <Carousel height="45vh" to="news" data={sortedArticles.slice(0, 3)}></Carousel> */}
 				</Col>
 
-				<Col lg={6} md={12}>
+				<Col lg={12} md={12}>
 					<ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
 				</Col>
 
-				<Col lg={6} md={12}>
+				{/* <Col lg={6} md={12}>
 					<ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="The Mootening awaits" />
-				</Col>
+				</Col> */}
 
 				<Col lg={8} md={24}>
 					<ImgPanel img={props.currentCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
