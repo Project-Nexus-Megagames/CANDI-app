@@ -208,8 +208,8 @@ function GameConfig2() {
 									type: '',
 									minEffort: 0,
 									maxEffort: 0,
-									assetType: [''],
-									effortTypes: [''],
+									assetType: [],
+									effortTypes: [],
 									maxAssets: 0,
 									public: false,
 									icon: ''
