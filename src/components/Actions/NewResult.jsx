@@ -10,7 +10,7 @@ class NewResult extends Component {
 		super(props);
 		this.state = {
 			description: '',
-			dice: this.props.selected.diceresult
+			dice: ''
 		};
 	}
 
@@ -24,12 +24,13 @@ class NewResult extends Component {
 	handleSubmit = async () => {
 		this.props.actionDispatched();
 		// 1) make a new action
+		const diceresult = this.state.dice ? this.state.dice : this.props.selected.diceresult;
 		const data = {
 			result: {
 				description: this.state.description,
 				resolver: this.props.myCharacter._id
 			},
-			dice: this.state.dice,
+			dice: diceresult ? diceresult : '0',
 			id: this.props.selected._id,
 			creator: this.props.myCharacter._id,
 			round: this.props.gamestate.round
@@ -61,7 +62,6 @@ class NewResult extends Component {
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
 						<FlexboxGrid>
-							{' '}
 							Description
 							<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
 						</FlexboxGrid>
@@ -89,7 +89,7 @@ class NewResult extends Component {
 								colspan={20}
 							>
 								Dice Roll Result
-								<textarea rows="2" value={this.props.selected.diceresult} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
+								<textarea rows="2" defaultValue={this.props.selected.diceresult} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 						</FlexboxGrid>
@@ -99,7 +99,7 @@ class NewResult extends Component {
 					<Button onClick={() => this.handleSubmit()} disabled={this.isDisabled()} appearance="primary">
 						{this.state.description.length < 11 ? (
 							<b>Description text needs {11 - this.state.description.length} more characters</b>
-						) : this.state.dice.length < 1 ? (
+						) : this.state.dice.length < 1 && this.props.selected.diceresult?.length < 1 ? (
 							<b>Dice text need {1 - this.state.dice.length} more characters</b>
 						) : (
 							<b>Submit</b>
@@ -114,7 +114,8 @@ class NewResult extends Component {
 	}
 
 	isDisabled() {
-		if (this.state.description.length < 10 || this.state.dice.length < 1) return true;
+		const diceresult = this.state.dice.length < 1 && this.props.selected.diceresult?.length < 1;
+		if (this.state.description.length < 10 || diceresult) return true;
 		else return false;
 	}
 
