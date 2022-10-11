@@ -4,7 +4,7 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { Button, ButtonGroup } from 'rsuite';
 import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack, Divider, Heading } from '@chakra-ui/react';
 
 function GameConfig2() {
 	const oldConfig = useSelector((state) => state.gameConfig);
@@ -18,6 +18,15 @@ function GameConfig2() {
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
 		name: 'actionTypes',
+		control
+	});
+
+	const {
+		fields: subTypeFields,
+		append: appendSubType,
+		remove: removeSubType
+	} = useFieldArray({
+		name: 'subTypes',
 		control
 	});
 
@@ -55,6 +64,7 @@ function GameConfig2() {
 			value.minEffort = type.minEffort;
 			value.maxEffort = type.maxEffort;
 			value.public = type.public;
+			value.subTypes = type.subTypes;
 			resetValues.push(value);
 		});
 		reset({
@@ -79,7 +89,7 @@ function GameConfig2() {
 
 		let configToBeSent = { ...oldConfig };
 		configToBeSent.actionTypes = data.actionTypes;
-		console.log('DATA', configToBeSent);
+		//console.log('DATA', configToBeSent);
 		try {
 			socket.emit('request', {
 				route: 'gameConfig',
@@ -99,6 +109,7 @@ function GameConfig2() {
 						<div key={i} className="list-group list-group-flush">
 							<div className="list-group-item">
 								<div>
+									<Divider />
 									<Box>
 										<HStack spacing="24px">
 											<FormControl variant="floating">
@@ -114,7 +125,6 @@ function GameConfig2() {
 													name={`actionTypes.${i}.assetType`}
 													control={control}
 													render={({ field: { ref, ...rest } }) => {
-														console.log(rest);
 														return (
 															<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.assetType} {...rest}>
 																<Stack spacing={[1]} direction={['column']}>
@@ -196,6 +206,29 @@ function GameConfig2() {
 												-
 											</Button>
 										</HStack>
+										<VStack paddingTop={5} align="left">
+											<Text as="b" align="left">
+												Subtypes
+											</Text>
+											{/*<HStack w="100%">
+												{subTypeFields.map((item, j) => (
+													<div key={j}>
+														<HStack>
+															<FormControl>
+																<Input size="md" {...register(`actionTypes.${i}.subTypes.${j}`)}></Input>
+															</FormControl>{' '}
+															<Button onClick={() => removeSubType(j)}>-</Button>
+														</HStack>
+													</div>
+												))}
+												<Button onClick={() => appendSubType('')}>+</Button>
+											</HStack>*/}
+											<HStack>
+												<FormControl variant="floating">
+													<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.actionTypes?.[i]?.subTypes} {...register(`actionTypes.${i}.subTypes`)} />
+												</FormControl>
+											</HStack>
+										</VStack>
 									</Box>
 								</div>
 							</div>
@@ -210,6 +243,7 @@ function GameConfig2() {
 									maxEffort: 0,
 									assetType: [],
 									effortTypes: [],
+									subTypes: '',
 									maxAssets: 0,
 									public: false,
 									icon: ''
