@@ -64,7 +64,7 @@ function GameConfig2() {
 			value.minEffort = type.minEffort;
 			value.maxEffort = type.maxEffort;
 			value.public = type.public;
-			value.subTypes = type.subTypes;
+			value.subTypes = String(type.subTypes);
 			resetValues.push(value);
 		});
 		reset({
@@ -89,7 +89,7 @@ function GameConfig2() {
 
 		let configToBeSent = { ...oldConfig };
 		configToBeSent.actionTypes = data.actionTypes;
-		//console.log('DATA', configToBeSent);
+		console.log('DATA', configToBeSent);
 		try {
 			socket.emit('request', {
 				route: 'gameConfig',
