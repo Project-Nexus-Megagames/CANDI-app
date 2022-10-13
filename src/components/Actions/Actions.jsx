@@ -10,6 +10,7 @@ import ActionList from './ActionList';
 import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
+import NewActionUr from './NewActionUr';
 
 const Actions = (props) => {
 	const [selected, setSelected] = useState(null);
@@ -87,7 +88,8 @@ const Actions = (props) => {
 				{!selected && <h4 style={{ width: '100%' }}>No Action Selected</h4>}
 				{selected && <SelectedAction handleSelect={handleSelect} selected={selected} />}
 
-				<NewAction show={showNew} closeNew={() => setShowNew(false)} gamestate={props.gamestate} />
+				{/* <NewAction show={showNew} closeNew={() => setShowNew(false)} gamestate={props.gamestate} /> */}
+				<NewActionUr show={showNew} closeNew={() => setShowNew(false)} gamestate={props.gamestate} />
 			</Container>
 		</React.Fragment>
 	);

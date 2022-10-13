@@ -76,15 +76,6 @@ const ViewCharacter = (props) => {
 				let url = character.wiki;
 				const win = window.open(url, '_blank');
 				win.focus();
-			} else if (character.tags.some((el) => el === 'God' || el === 'Gods')) {
-				let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
-				const win = window.open(url, '_blank');
-				win.focus();
-			} else {
-				let url = 'https://godswars.miraheze.org/wiki/';
-				let temp = url.concat(character.characterName.split(' ').join('_'));
-				const win = window.open(temp, '_blank');
-				win.focus();
 			}
 		}
 	};
@@ -120,7 +111,7 @@ const ViewCharacter = (props) => {
 											}}
 										>
 											<h4>Control Panel</h4>
-											<h5>Effort Left: TODO DISPLAY EFFORT HERE </h5>
+											
 											<ButtonGroup style={{ marginTop: '5px' }}>
 												<Button appearance={'ghost'} onClick={() => setEdit(true)}>
 													Modify
