@@ -237,3 +237,13 @@ button {
 ul li {
   margin-left: 1.5em;
 }
+
+textarea {
+  background-color: #1a1d24;
+	border: 1.5px solid #3c3f43;
+	border-radius: 5px;
+	width: 100%;
+	padding: 5px;
+	overflow: auto;
+	scrollbar-width: none;
+}

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { connect, useSelector } from 'react-redux';
-import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress, Tooltip, Whisper } from 'rsuite';
+import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress, Tooltip, Whisper, SelectPicker } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
@@ -13,6 +13,8 @@ import { getFadedColor, getThisEffort } from '../../scripts/frontend';
 
 const Submission = (props) => {
 	const { gameConfig } = useSelector((state) => state);
+	const locations = useSelector((state) => state.locations.list);
+	const myCharacter = useSelector(getMyCharacter);
 	const [show, setShow] = React.useState(false);
 	const [effort, setEffort] = React.useState({ effortType: 'Normal', amount: 0 });
 	const [resources, setResources] = React.useState([]);
@@ -23,12 +25,18 @@ const Submission = (props) => {
 	const [tags, setTags] = React.useState([]);
 	const [max, setMax] = React.useState(0);
 	const [infoAsset, setInfoAsset] = React.useState(false);
+	const [actionSubType, setActionSubType] = React.useState(false);
+	const [actionLocation, setactionLocation] = React.useState(false);
+
+	const [arg0, setArg0] = React.useState('');
+	const [arg1, setArg1] = React.useState('');
+	const [arg2, setArg2] = React.useState('');
 
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const actionType = gameConfig.actionTypes.find((el) => el.type.toLowerCase() === props.action.type.toLowerCase());
 
 	useEffect(() => {
-		if (props.submission) {
+		if (props.submission && show) {
 			setEffort(props.submission.effort);
 			setResources(props.submission.assets);
 			setDescription(props.submission.description);
@@ -36,14 +44,12 @@ const Submission = (props) => {
 			setName(props.action.name);
 			setTags(props.submission.tags);
 
-			setMaxEffort();
+			setactionLocation(props.submission.location);
+			setActionSubType(props.submission.subType);
 		}
-	}, [props.submission]);
+	}, [show]);
 
-	const setMaxEffort = () => {
-		let charEffort = getThisEffort(props.myCharacter.effort, actionType.type) + props.submission.effort.amount;
-		setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
-	};
+
 
 	const getTime = (date) => {
 		let day = new Date(date).toDateString();
@@ -326,14 +332,14 @@ const Submission = (props) => {
 						</div>
 					)}
 
-					<Divider>Resources</Divider>
+					{/* <Divider>Resources</Divider>
 					<FlexboxGrid>
 						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[0])}</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[1])}</FlexboxGrid.Item>
 
 						<FlexboxGrid.Item colspan={8}>{renderAsset(submission.assets[2])}</FlexboxGrid.Item>
-					</FlexboxGrid>
+					</FlexboxGrid> */}
 				</Panel>
 
 				<Modal overflow style={{ width: '90%' }} size="md" show={show === 'edit'} onHide={() => setShow(false)}>
@@ -356,8 +362,8 @@ const Submission = (props) => {
 									<Icon icon="check" />
 								</Tag>
 							)}
-							<textarea rows="1" value={name} className="textStyle" onChange={(event) => setName(event.target.value)}></textarea>
-							Description:
+							<textarea rows="1" value={name} onChange={(event) => setName(event.target.value)}></textarea>
+							{"Description - What are you doing? (1000 character limit) - "}
 							{10 - description.length > 0 && (
 								<Tag style={{ color: 'black' }} color={'orange'}>
 									{10 - description.length} more characters...
@@ -365,13 +371,20 @@ const Submission = (props) => {
 							)}
 							{10 - description.length <= 0 && (
 								<Tag color={'green'}>
-									<Icon icon="check" />
+									<Icon icon="check" /> {" "}
+									{description.length}
 								</Tag>
 							)}
-							<textarea rows="6" value={description} className="textStyle" onChange={(event) => setDescription(event.target.value)} />
-							<br />
+							{description.length > 1000 && (
+								<Tag color={'red'}>
+									<Icon icon="bullhorn"/>
+									- Warning - Too Long!
+								</Tag>
+							)}
+							<textarea rows="6" value={description} onChange={(event) => setDescription(event.target.value)}></textarea>
+							<br></br>
 							<FlexboxGrid>
-								Intent:
+								{"Intent - What is your intended outcome? (1000 character limit) - "}
 								{10 - intent.length > 0 && (
 									<Tag style={{ color: 'black' }} color={'orange'}>
 										{10 - intent.length} more characters...
@@ -379,66 +392,106 @@ const Submission = (props) => {
 								)}
 								{10 - intent.length <= 0 && (
 									<Tag color={'green'}>
-										<Icon icon="check" />
+										<Icon icon="check" /> {" "}
+										{intent.length}
 									</Tag>
 								)}
-								<textarea rows="6" value={intent} className="textStyle" onChange={(event) => setIntent(event.target.value)} />
+								{intent.length > 1000 && (
+								<Tag color={'red'}>
+									<Icon icon="bullhorn"/>
+									- Warning - Too Long!
+								</Tag>
+								)}
+								<textarea rows="6" value={intent} onChange={(event) => setIntent(event.target.value)}></textarea>
 							</FlexboxGrid>
-							{true && (
-								<FlexboxGrid>
-									<FlexboxGrid.Item
-										style={{
-											paddingTop: '25px',
-											paddingLeft: '10px',
-											textAlign: 'left'
-										}}
-										align="middle"
-										colspan={6}
-									>
-										<h5 style={{ textAlign: 'center' }}>
-											Effort {effort.amount} / {max}
-											{effort === 0 && (
-												<Tag style={{ color: 'black' }} color={'orange'}>
-													Need Effort
-												</Tag>
-											)}
-										</h5>
+							<FlexboxGrid>
+								{false && <FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align="middle" colspan={6}>
+									<h5 style={{ textAlign: 'center' }}>
+										Effort {effort.amount} / {max}
+										{effort.amount === 0 && (
+											<Tag style={{ color: 'black' }} size="sm" color={'orange'}>
+												Need Effort
+											</Tag>
+										)}
+									</h5>
+									<ButtonToolbar>
+										<ButtonGroup justified>
+											{actionType &&
+												actionType.effortTypes.map((e) => (
+													<Button
+														key={e}
+														onClick={() => editState(e, 'effort')}
+														color={getFadedColor(`${e}-rs`)}
+														disabled={getThisEffort(myCharacter.effort, e) < 1}
+														appearance={effort.effortType == e ? 'default' : 'ghost'}
+													>
+														{e} - ({getThisEffort(myCharacter.effort, e)})
+													</Button>
+												))}
+										</ButtonGroup>
+									</ButtonToolbar>
+									<br />
+									<Slider graduated min={0} max={max} defaultValue={0} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
+								</FlexboxGrid.Item>}
+								<FlexboxGrid.Item colspan={10}>
+									<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
+									{"1) "} 
+									{arg0.length > 500 && <Tag color={'red'}>
+										<Icon icon="bullhorn"/>
+										- Warning - Too Long!
+									</Tag>}
+									<textarea rows="1" value={arg0} onChange={(event) => setArg0(event.target.value)}></textarea>
 
-										<Slider graduated min={0} max={max} defaultValue={submission.effort.amount} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item
-										style={{
-											paddingTop: '25px',
-											paddingLeft: '10px',
-											textAlign: 'left'
-										}}
-										colspan={2}
-									>
-										{/* <InputNumber value={effort} max={this.props.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
-									</FlexboxGrid.Item>
-									<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
-									<FlexboxGrid.Item
-										style={{
-											paddingTop: '5px',
-											paddingLeft: '10px',
-											textAlign: 'left'
-										}}
-										colspan={10}
-									>
-										{' '}
-										Resources
-										<CheckPicker
-											labelKey="name"
-											valueKey="_id"
-											data={props.getMyAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
-											style={{ width: '100%' }}
-											defaultValue={props.submission.assets}
-											disabledItemValues={formattedUsedAssets(props.submission.assets)}
-											onChange={(event) => setResources(event)}
-										/>
-									</FlexboxGrid.Item>
-								</FlexboxGrid>
-							)}
+									{"2) "}
+									{arg1.length > 500 && <Tag color={'red'}>
+										<Icon icon="bullhorn"/>
+										- Warning - Too Long!
+									</Tag>}
+									<textarea rows="1" value={arg1} onChange={(event) => setArg1(event.target.value)}></textarea>
+
+									{"3) "}
+									{arg2.length > 500 && <Tag color={'red'}>
+										<Icon icon="bullhorn"/>
+										- Warning - Too Long!
+									</Tag>}
+									<textarea rows="1" value={arg2} onChange={(event) => setArg2(event.target.value)}></textarea>
+								</FlexboxGrid.Item>
+
+								<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
+								<FlexboxGrid.Item
+									style={{
+										paddingTop: '5px',
+										paddingLeft: '10px',
+										textAlign: 'left'
+									}}
+									colspan={10}
+								>
+									{actionType  && actionType.subTypes && actionType.subTypes.length >0 && <div>
+                      What Kind of action is this? -{' '}
+                      {actionType.subTypes.map((type, index) => (
+                          <Tag index={index}>{type}</Tag>
+                      ))}
+                      <SelectPicker 
+                          searchable={false}
+                          data={actionType.subTypes.map( item => ({label: item, value: item}) )}
+                          value={actionSubType}
+                          style={{ width: '100%' }}
+                          onChange={setActionSubType}
+                      />                                        
+                  </div>}
+
+									{locations && locations.length >0 && <div>
+                      Where is this Action Happening? -{' '}
+                      <SelectPicker 
+                          data={locations.map( item => ({label: item.name, value: item.name}) )}
+                          value={actionLocation}
+                          style={{ width: '100%' }}
+                          onChange={setactionLocation}
+                      />                                        
+                  </div>}
+
+								</FlexboxGrid.Item>
+							</FlexboxGrid>
 						</form>
 					</Modal.Body>
 					<Modal.Footer>
