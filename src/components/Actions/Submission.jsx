@@ -2,7 +2,28 @@ import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { connect, useSelector } from 'react-redux';
-import { Avatar, Panel, FlexboxGrid, CheckPicker, ButtonGroup, Button, Modal, Divider, Toggle, IconButton, Icon, ButtonToolbar, Loader, Tag, Input, Slider, Progress, Tooltip, Whisper, SelectPicker } from 'rsuite';
+import {
+	Avatar,
+	Panel,
+	FlexboxGrid,
+	CheckPicker,
+	ButtonGroup,
+	Button,
+	Modal,
+	Divider,
+	Toggle,
+	IconButton,
+	Icon,
+	ButtonToolbar,
+	Loader,
+	Tag,
+	Input,
+	Slider,
+	Progress,
+	Tooltip,
+	Whisper,
+	SelectPicker
+} from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
@@ -43,13 +64,10 @@ const Submission = (props) => {
 			setIntent(props.submission.intent);
 			setName(props.action.name);
 			setTags(props.submission.tags);
-
 			setactionLocation(props.submission.location);
 			setActionSubType(props.submission.subType);
 		}
 	}, [show]);
-
-
 
 	const getTime = (date) => {
 		let day = new Date(date).toDateString();
@@ -159,9 +177,11 @@ const Submission = (props) => {
 				effort,
 				assets: resources,
 				description,
-				intent
+				intent,
+				args: [arg0, arg1, arg2]
 			}
 		};
+
 		socket.emit('request', { route: 'action', action: 'update', data });
 		setShow(false);
 	};
@@ -363,7 +383,7 @@ const Submission = (props) => {
 								</Tag>
 							)}
 							<textarea rows="1" value={name} onChange={(event) => setName(event.target.value)}></textarea>
-							{"Description - What are you doing? (1000 character limit) - "}
+							{'Description - What are you doing? (1000 character limit) - '}
 							{10 - description.length > 0 && (
 								<Tag style={{ color: 'black' }} color={'orange'}>
 									{10 - description.length} more characters...
@@ -371,20 +391,18 @@ const Submission = (props) => {
 							)}
 							{10 - description.length <= 0 && (
 								<Tag color={'green'}>
-									<Icon icon="check" /> {" "}
-									{description.length}
+									<Icon icon="check" /> {description.length}
 								</Tag>
 							)}
 							{description.length > 1000 && (
 								<Tag color={'red'}>
-									<Icon icon="bullhorn"/>
-									- Warning - Too Long!
+									<Icon icon="bullhorn" />- Warning - Too Long!
 								</Tag>
 							)}
 							<textarea rows="6" value={description} onChange={(event) => setDescription(event.target.value)}></textarea>
 							<br></br>
 							<FlexboxGrid>
-								{"Intent - What is your intended outcome? (1000 character limit) - "}
+								{'Intent - What is your intended outcome? (1000 character limit) - '}
 								{10 - intent.length > 0 && (
 									<Tag style={{ color: 'black' }} color={'orange'}>
 										{10 - intent.length} more characters...
@@ -392,68 +410,71 @@ const Submission = (props) => {
 								)}
 								{10 - intent.length <= 0 && (
 									<Tag color={'green'}>
-										<Icon icon="check" /> {" "}
-										{intent.length}
+										<Icon icon="check" /> {intent.length}
 									</Tag>
 								)}
 								{intent.length > 1000 && (
-								<Tag color={'red'}>
-									<Icon icon="bullhorn"/>
-									- Warning - Too Long!
-								</Tag>
+									<Tag color={'red'}>
+										<Icon icon="bullhorn" />- Warning - Too Long!
+									</Tag>
 								)}
 								<textarea rows="6" value={intent} onChange={(event) => setIntent(event.target.value)}></textarea>
 							</FlexboxGrid>
 							<FlexboxGrid>
-								{false && <FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align="middle" colspan={6}>
-									<h5 style={{ textAlign: 'center' }}>
-										Effort {effort.amount} / {max}
-										{effort.amount === 0 && (
-											<Tag style={{ color: 'black' }} size="sm" color={'orange'}>
-												Need Effort
-											</Tag>
-										)}
-									</h5>
-									<ButtonToolbar>
-										<ButtonGroup justified>
-											{actionType &&
-												actionType.effortTypes.map((e) => (
-													<Button
-														key={e}
-														onClick={() => editState(e, 'effort')}
-														color={getFadedColor(`${e}-rs`)}
-														disabled={getThisEffort(myCharacter.effort, e) < 1}
-														appearance={effort.effortType == e ? 'default' : 'ghost'}
-													>
-														{e} - ({getThisEffort(myCharacter.effort, e)})
-													</Button>
-												))}
-										</ButtonGroup>
-									</ButtonToolbar>
-									<br />
-									<Slider graduated min={0} max={max} defaultValue={0} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
-								</FlexboxGrid.Item>}
+								{false && (
+									<FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align="middle" colspan={6}>
+										<h5 style={{ textAlign: 'center' }}>
+											Effort {effort.amount} / {max}
+											{effort.amount === 0 && (
+												<Tag style={{ color: 'black' }} size="sm" color={'orange'}>
+													Need Effort
+												</Tag>
+											)}
+										</h5>
+										<ButtonToolbar>
+											<ButtonGroup justified>
+												{actionType &&
+													actionType.effortTypes.map((e) => (
+														<Button
+															key={e}
+															onClick={() => editState(e, 'effort')}
+															color={getFadedColor(`${e}-rs`)}
+															disabled={getThisEffort(myCharacter.effort, e) < 1}
+															appearance={effort.effortType == e ? 'default' : 'ghost'}
+														>
+															{e} - ({getThisEffort(myCharacter.effort, e)})
+														</Button>
+													))}
+											</ButtonGroup>
+										</ButtonToolbar>
+										<br />
+										<Slider graduated min={0} max={max} defaultValue={0} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
+									</FlexboxGrid.Item>
+								)}
 								<FlexboxGrid.Item colspan={10}>
 									<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
-									{"1) "} 
-									{arg0.length > 500 && <Tag color={'red'}>
-										<Icon icon="bullhorn"/>
-										- Warning - Too Long!
-									</Tag>}
+									{'1) '}
+									{arg0.length > 500 && (
+										<Tag color={'red'}>
+											<Icon icon="bullhorn" />- Warning - Too Long!
+										</Tag>
+									)}
 									<textarea rows="1" value={arg0} onChange={(event) => setArg0(event.target.value)}></textarea>
 
-									{"2) "}
-									{arg1.length > 500 && <Tag color={'red'}>
-										<Icon icon="bullhorn"/>
-										- Warning - Too Long!
-									</Tag>}
+									{'2) '}
+									{arg1.length > 500 && (
+										<Tag color={'red'}>
+											<Icon icon="bullhorn" />- Warning - Too Long!
+										</Tag>
+									)}
 									<textarea rows="1" value={arg1} onChange={(event) => setArg1(event.target.value)}></textarea>
 
-									{"3) "}
-									{arg2.length > 500 && <Tag color={'red'}>
-										<Icon icon="bullhorn"/>
-										- Warning - Too Long!
-									</Tag>}
+									{'3) '}
+									{arg2.length > 500 && (
+										<Tag color={'red'}>
+											<Icon icon="bullhorn" />- Warning - Too Long!
+										</Tag>
+									)}
 									<textarea rows="1" value={arg2} onChange={(event) => setArg2(event.target.value)}></textarea>
 								</FlexboxGrid.Item>
 
@@ -466,30 +487,28 @@ const Submission = (props) => {
 									}}
 									colspan={10}
 								>
-									{actionType  && actionType.subTypes && actionType.subTypes.length >0 && <div>
-                      What Kind of action is this? -{' '}
-                      {actionType.subTypes.map((type, index) => (
-                          <Tag index={index}>{type}</Tag>
-                      ))}
-                      <SelectPicker 
-                          searchable={false}
-                          data={actionType.subTypes.map( item => ({label: item, value: item}) )}
-                          value={actionSubType}
-                          style={{ width: '100%' }}
-                          onChange={setActionSubType}
-                      />                                        
-                  </div>}
+									{actionType && actionType.subTypes && actionType.subTypes.length > 0 && (
+										<div>
+											What Kind of action is this? -{' '}
+											{actionType.subTypes.map((type, index) => (
+												<Tag index={index}>{type}</Tag>
+											))}
+											<SelectPicker
+												searchable={false}
+												data={actionType.subTypes.map((item) => ({ label: item, value: item }))}
+												value={actionSubType}
+												style={{ width: '100%' }}
+												onChange={setActionSubType}
+											/>
+										</div>
+									)}
 
-									{locations && locations.length >0 && <div>
-                      Where is this Action Happening? -{' '}
-                      <SelectPicker 
-                          data={locations.map( item => ({label: item.name, value: item.name}) )}
-                          value={actionLocation}
-                          style={{ width: '100%' }}
-                          onChange={setactionLocation}
-                      />                                        
-                  </div>}
-
+									{locations && locations.length > 0 && (
+										<div>
+											Where is this Action Happening? -{' '}
+											<SelectPicker data={locations.map((item) => ({ label: item.name, value: item.name }))} value={actionLocation} style={{ width: '100%' }} onChange={setactionLocation} />
+										</div>
+									)}
 								</FlexboxGrid.Item>
 							</FlexboxGrid>
 						</form>
