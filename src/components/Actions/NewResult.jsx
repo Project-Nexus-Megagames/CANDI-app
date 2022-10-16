@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, FlexboxGrid, Loader } from 'rsuite';
+import { Modal, Button, FlexboxGrid, Loader, SelectPicker, InputNumber, Divider } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
@@ -10,7 +10,8 @@ class NewResult extends Component {
 		super(props);
 		this.state = {
 			description: '',
-			dice: ''
+			dice: '',
+			args: this.props.selected.arguments
 		};
 	}
 
@@ -52,6 +53,12 @@ class NewResult extends Component {
 		}
 	};
 
+	editArguement = (value, index) => {
+		let temp = [ ...this.props.selected.arguments ]; // fuuuuck
+		temp[index].modifier = value;
+		this.setState({ args: temp })
+	}
+
 	render() {
 		return (
 			<Modal overflow style={{ width: '90%', zIndex: 9999 }} size="md" show={this.props.show} onHide={() => this.props.closeNew()}>
@@ -62,24 +69,20 @@ class NewResult extends Component {
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
 						<FlexboxGrid>
+							<FlexboxGrid.Item colspan={24}>
+								{this.state.args.map((arg, index) => (
+									<div style={{ display: 'flex', margin: '5px', alignItems: 'center'}}>
+										<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArguement(value, index)} />
+										<b style={{ marginLeft: '5px' }}>{arg.text}</b>
+										
+									</div>
+								))}
+							</FlexboxGrid.Item>
+
+
 							Description
 							<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
-						</FlexboxGrid>
-						<br></br>
 
-						<FlexboxGrid>
-							<FlexboxGrid.Item
-								style={{
-									paddingTop: '25px',
-									paddingLeft: '10px',
-									textAlign: 'left'
-								}}
-								align="middle"
-								colspan={4}
-							>
-								<h5>Dice Pool</h5>
-								{this.props.selected && this.props.selected.submission.assets.map((asset, index) => this.renderDice(asset))}
-							</FlexboxGrid.Item>
 							<FlexboxGrid.Item
 								style={{
 									paddingTop: '25px',
@@ -89,7 +92,15 @@ class NewResult extends Component {
 								colspan={20}
 							>
 								Dice Roll Result
-								<textarea rows="2" defaultValue={this.props.selected.diceresult} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
+								<SelectPicker
+									searchable={false}
+									cleanable={false}
+									data={[ { label: 'Failure', value: 'Failure'}, { label: 'Weak Success', value: 'Weak Success'}, { label: 'Strong Success', value: 'Strong Success'} ]}
+									value={this.state.dice}
+									style={{ width: '100%' }}
+									onChange={(event) => this.setState({ dice: event })}
+								/>
+								{/* <textarea rows="2" defaultValue={this.props.selected.diceresult} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea> */}
 							</FlexboxGrid.Item>
 							<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 						</FlexboxGrid>

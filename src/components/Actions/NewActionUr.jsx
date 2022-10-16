@@ -77,6 +77,7 @@ const NewActionUr = (props) => {
 			},
 			name: name,
 			type: actionType.type,
+			subType: actionSubType,
 			creator: myCharacter._id,
 			numberOfInjuries: myCharacter.injuries.length
 		};
@@ -92,6 +93,7 @@ const NewActionUr = (props) => {
 
 	function isDisabled(effort) {
 		if (description.length < 10 || intent.length < 10 || name.length < 10) return true;
+		if (!actionLocation || !actionSubType) return true;
 		if (effort.amount === 0 || effort <= 0) return true;
 		else return false;
 	}
@@ -262,6 +264,7 @@ const NewActionUr = (props) => {
                           searchable={false}
                           data={actionType.subTypes.map( item => ({label: item, value: item}) )}
                           value={actionSubType}
+													cleanable={false}
                           style={{ width: '100%' }}
                           onChange={setActionSubType}
                       />                                        
@@ -270,8 +273,9 @@ const NewActionUr = (props) => {
 									{locations && locations.length >0 && <div>
                       Where is this Action Happening? -{' '}
                       <SelectPicker 
-                          data={locations.map( item => ({label: item.name, value: item.name}) )}
+                          data={locations.map( item => ({label: item.name, value: item._id}) )}
                           value={actionLocation}
+													cleanable={false}
                           style={{ width: '100%' }}
                           onChange={setactionLocation}
                       />                                        

@@ -65,7 +65,10 @@ const Submission = (props) => {
 			setName(props.action.name);
 			setTags(props.submission.tags);
 			setactionLocation(props.submission.location);
-			setActionSubType(props.submission.subType);
+			setActionSubType(props.action.subType);
+			(props.action.arguments[0]) ? setArg0(props.action.arguments[0].text) : setArg0('');
+			(props.action.arguments[1]) ? setArg1(props.action.arguments[1].text) : setArg1('');
+			(props.action.arguments[2]) ? setArg2(props.action.arguments[2].text) : setArg2('');
 		}
 	}, [show]);
 
@@ -144,17 +147,6 @@ const Submission = (props) => {
 		else return false;
 	};
 
-	function formattedUsedAssets(submissionAssets) {
-		let temp = [];
-		let assets = props.getMyAssets;
-		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
-		assets = assets.filter((el) => !submissionAssets.some((sub) => sub === el._id));
-		for (const asset of assets) {
-			temp.push(asset._id);
-		}
-		return temp;
-	}
-
 	const openInfo = (asset) => {
 		const found = props.assets.find((el) => el._id === asset._id);
 		setInfoAsset(found);
@@ -172,9 +164,11 @@ const Submission = (props) => {
 		const data = {
 			id: props.action._id,
 			name: name,
-			tags: tags,
+			tags: tags,			
+			subType: actionSubType,
 			submission: {
 				effort,
+				location: actionLocation,
 				assets: resources,
 				description,
 				intent,
@@ -495,6 +489,7 @@ const Submission = (props) => {
 											))}
 											<SelectPicker
 												searchable={false}
+												cleanable={false}
 												data={actionType.subTypes.map((item) => ({ label: item, value: item }))}
 												value={actionSubType}
 												style={{ width: '100%' }}
@@ -506,7 +501,7 @@ const Submission = (props) => {
 									{locations && locations.length > 0 && (
 										<div>
 											Where is this Action Happening? -{' '}
-											<SelectPicker data={locations.map((item) => ({ label: item.name, value: item.name }))} value={actionLocation} style={{ width: '100%' }} onChange={setactionLocation} />
+											<SelectPicker cleanable={false} data={locations.map((item) => ({ label: item.name, value: item._id }))} value={actionLocation} style={{ width: '100%' }} onChange={setactionLocation} />
 										</div>
 									)}
 								</FlexboxGrid.Item>

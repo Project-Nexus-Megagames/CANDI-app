@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 import remarkGfm from 'remark-gfm';
-import { Panel, FlexboxGrid, ButtonGroup, Button, Modal, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader } from 'rsuite';
+import { Panel, FlexboxGrid, ButtonGroup, Button, Modal, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader, SelectPicker } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
@@ -189,8 +189,8 @@ class Result extends Component {
 									align="middle"
 									colspan={4}
 								>
-									<h5>Dice Pool</h5>
-									{this.props.selected && this.props.selected.submission.assets.map((asset, index) => this.renderDice(asset))}
+									{/* <h5>Dice Pool</h5>
+									{this.props.selected && this.props.selected.submission.assets.map((asset, index) => this.renderDice(asset))} */}
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item
 									style={{
@@ -201,7 +201,15 @@ class Result extends Component {
 									colspan={20}
 								>
 									Dice Roll Result
-									<textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea>
+									{/* <textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea> */}
+								<SelectPicker
+									searchable={false}
+									cleanable={false}
+									data={[ { label: 'Failure', value: 'Failure'}, { label: 'Weak Success', value: 'Weak Success'}, { label: 'Strong Success', value: 'Strong Success'} ]}
+									value={this.state.dice}
+									style={{ width: '100%' }}
+									onChange={(event) => this.setState({ dice: event })}
+								/>
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 							</FlexboxGrid>
