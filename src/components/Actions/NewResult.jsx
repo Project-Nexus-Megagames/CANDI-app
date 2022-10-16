@@ -35,7 +35,7 @@ class NewResult extends Component {
 			dice: diceresult ? diceresult : '0',
 			id: this.props.selected._id,
 			creator: this.props.myCharacter._id,
-			round: this.props.gamestate.round
+			args: this.state.args,
 		};
 		socket.emit('request', { route: 'action', action: 'result', data });
 		this.props.closeNew();

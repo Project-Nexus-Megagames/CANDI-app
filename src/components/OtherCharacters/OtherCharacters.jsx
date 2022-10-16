@@ -81,6 +81,10 @@ const OtherCharacters = (props) => {
 				}
 			}
 
+      const gameControl = props.characters.find((el) => el.characterName === 'Game Control');
+      board = board.concat(`; ${gameControl.email}`);
+
+      
       navigator.clipboard.writeText(board);
       Alert.success("Email Copied!", 6000);
     }
@@ -96,14 +100,9 @@ const OtherCharacters = (props) => {
         let url = character.wiki;
         const win = window.open(url, "_blank");
         win.focus();
-      } else if (character.tags.some((el) => el === "God" || el === "Gods")) {
-        let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
-        const win = window.open(url, "_blank");
-        win.focus();
       } else {
-        let url = "https://godswars.miraheze.org/wiki/";
-        let temp = url.concat(character.characterName.split(" ").join("_"));
-        const win = window.open(temp, "_blank");
+        let url = "https://www.worldanvil.com/w/ur2C-the-nexus-city-jkeywo/a/ur-settlement";
+        const win = window.open(url, "_blank");
         win.focus();
       }
     }
@@ -206,7 +205,7 @@ const OtherCharacters = (props) => {
               }}
             >
               <div>
-                {renderTags.map((tag, index) => (
+                {/* {renderTags.map((tag, index) => (
                   <List key={index} hover>
                     {filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0 && <p style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`) }}>{tag}</p>}
                     {filteredCharacters
@@ -217,7 +216,15 @@ const OtherCharacters = (props) => {
                         </List.Item>
                       ))}
                   </List>
-                ))}
+                ))} */}
+                  <List hover>
+                    {filteredCharacters
+                      .map((character, index0) => (
+                        <List.Item key={`${character._id}-${index0}`} style={listStyle(character)}>
+                          <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
+                        </List.Item>
+                      ))}
+                  </List>
 
                 {props.myCharacter.tags.some((el) => el === "Control") && (
                   <List hover>
@@ -260,7 +267,6 @@ const OtherCharacters = (props) => {
                     }}
                   >
                     <h4>Control Panel</h4>
-                    <h5>Effort Left: TODO DISPLAY EFFORT HERE </h5>
                     <ButtonGroup style={{ marginTop: "5px" }}>
                       <Button
                         appearance={"ghost"}
@@ -269,9 +275,6 @@ const OtherCharacters = (props) => {
                         }}
                       >
                         Modify
-                      </Button>
-                      <Button appearance={"ghost"} onClick={() => setAdd(true)}>
-                        + Resources
                       </Button>
                     </ButtonGroup>
 
@@ -282,21 +285,14 @@ const OtherCharacters = (props) => {
                         textAlign: "center",
                       }}
                     >
-                      <h5>Resources</h5>
+                      <h5>Effort</h5>
                       <Row style={{ display: "flex", overflow: "auto" }}>
-                        {props.assets.filter((el) => el.ownerCharacter === selected._id).length === 0 && <h5>No assets assigned</h5>}
-                        {props.assets
-                          .filter((el) => el.ownerCharacter === selected._id)
-                          .map((asset, index) => (
+                        {selected.effort
+                          .map((effort, index) => (
                             <Col index={index} key={index} md={6} sm={12}>
-                              <Panel onClick={() => setAsset(asset)} bordered>
-                                <h5>{asset.name}</h5>
-                                <b>{asset.type}</b>
-                                {asset.status.hidden && <Tag color='blue'>Hidden</Tag>}
-                                {asset.status.lendable && <Tag color='blue'>lendable</Tag>}
-                                {asset.status.lent && <Tag color='blue'>lent</Tag>}
-                                {asset.status.used && <Tag color='blue'>used</Tag>}
-                                {asset.status.multiUse && <Tag color='blue'>multiUse</Tag>}
+                              <Panel bordered>
+                                <h5>{effort.type}</h5>
+                                <b>{effort.amount}</b>
                               </Panel>
                             </Col>
                           ))}
@@ -366,14 +362,15 @@ const OtherCharacters = (props) => {
 
                     {/*Profile Pic*/}
                     <FlexboxGrid.Item colspan={9}>
+                       Click to open World Anvil
                       <img
                         src={`${image}`}
                         alt='Img could not be displayed'
                         style={{ maxHeight: "50vh" }}
                         onClick={() => {
-                          if (selected.characterName === "The Box") theBox();
+                          openAnvil(selected)
                         }}
-                      />
+                      />                      
                     </FlexboxGrid.Item>
                   </FlexboxGrid>
                 </Panel>

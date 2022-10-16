@@ -338,13 +338,20 @@ const Submission = (props) => {
 						</div>
 					)}
 
-					{submission.effort.effortType !== 'Agenda' && (
+					{false && submission.effort.effortType !== 'Agenda' && (
 						<div>
 							<p style={slimText}>Effort ({submission.effort.effortType})</p>
 							<p style={{ textAlign: 'center', fontWeight: 'bolder', fontSize: 20 }}>{submission.effort.amount}</p>
 							<Progress.Line percent={submission.effort.amount * 50} showInfo={false}></Progress.Line>
 						</div>
 					)}
+
+					<p style={slimText}>Arguments</p>
+					{props.action.arguments.map((aaaarrrg, index) => (
+						<div index={index}>
+							<b>{index+1}) {aaaarrrg.text}</b>
+						</div>
+					))}
 
 					{/* <Divider>Resources</Divider>
 					<FlexboxGrid>

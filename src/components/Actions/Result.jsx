@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 import remarkGfm from 'remark-gfm';
-import { Panel, FlexboxGrid, ButtonGroup, Button, Modal, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader, SelectPicker } from 'rsuite';
+import { Panel, FlexboxGrid, ButtonGroup, Button, Modal, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader, SelectPicker, InputNumber } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
@@ -18,6 +18,7 @@ class Result extends Component {
 		dice: this.props.selected.diceresult ? this.props.selected.diceresult : '',
 		private: true,
 		infoModal: false,
+		args: this.props.selected.arguments,
 		infoAsset: {}
 	};
 
@@ -88,7 +89,8 @@ class Result extends Component {
 				description: this.state.description,
 				id: this.props.result._id
 			},
-			dice: this.state.dice
+			dice: this.state.dice,
+			arguments: this.state.args,
 		};
 		socket.emit('request', {
 			route: 'action',
@@ -111,6 +113,13 @@ class Result extends Component {
 			action: 'updateSubObject',
 			data
 		});
+	};
+
+	editArgument = (value, index) => {
+		let temp = [];
+		this.state.args.forEach((val) => temp.push(Object.assign({}, val)));
+		temp[index].modifier = value;
+		this.setState({ args: temp });
 	};
 
 	render() {
@@ -173,6 +182,14 @@ class Result extends Component {
 						{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 						<form>
 							<FlexboxGrid>
+							<FlexboxGrid.Item colspan={24}>
+								{this.state.args.map((arg, index) => (
+									<div style={{ display: 'flex', margin: '5px', alignItems: 'center' }}>
+										<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
+										<b style={{ marginLeft: '5px' }}>{arg.text}</b>
+									</div>
+								))}
+							</FlexboxGrid.Item>
 								{' '}
 								Description
 								<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
