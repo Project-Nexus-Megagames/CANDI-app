@@ -5,6 +5,7 @@ import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
+
 class NewResult extends Component {
 	constructor(props) {
 		super(props);
@@ -53,11 +54,12 @@ class NewResult extends Component {
 		}
 	};
 
-	editArguement = (value, index) => {
-		let temp = [ ...this.props.selected.arguments ]; // fuuuuck
+	editArgument = (value, index) => {
+		let temp = [];
+		this.state.args.forEach((val) => temp.push(Object.assign({}, val)));
 		temp[index].modifier = value;
-		this.setState({ args: temp })
-	}
+		this.setState({ args: temp });
+	};
 
 	render() {
 		return (
@@ -71,18 +73,14 @@ class NewResult extends Component {
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={24}>
 								{this.state.args.map((arg, index) => (
-									<div style={{ display: 'flex', margin: '5px', alignItems: 'center'}}>
-										<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArguement(value, index)} />
+									<div style={{ display: 'flex', margin: '5px', alignItems: 'center' }}>
+										<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
 										<b style={{ marginLeft: '5px' }}>{arg.text}</b>
-										
 									</div>
 								))}
 							</FlexboxGrid.Item>
-
-
 							Description
 							<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
-
 							<FlexboxGrid.Item
 								style={{
 									paddingTop: '25px',
@@ -95,7 +93,11 @@ class NewResult extends Component {
 								<SelectPicker
 									searchable={false}
 									cleanable={false}
-									data={[ { label: 'Failure', value: 'Failure'}, { label: 'Weak Success', value: 'Weak Success'}, { label: 'Strong Success', value: 'Strong Success'} ]}
+									data={[
+										{ label: 'Failure', value: 'Failure' },
+										{ label: 'Weak Success', value: 'Weak Success' },
+										{ label: 'Strong Success', value: 'Strong Success' }
+									]}
 									value={this.state.dice}
 									style={{ width: '100%' }}
 									onChange={(event) => this.setState({ dice: event })}
