@@ -18,7 +18,7 @@ const NewCharacter = (props) => {
 			characterName: 'Character_Name_Here',
 			email: 'temp@temp',
 			wiki: '',
-			tags: ['PC', 'Public'],
+			tags: ['PC',],
 			control: [''],
 			playerName: '',
 			timeZone: '',
