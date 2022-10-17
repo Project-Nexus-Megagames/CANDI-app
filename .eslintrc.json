@@ -23,6 +23,7 @@
 			"no-constant-condition": "off",
 			"react/react-in-jsx-scope": "warn",
 			"react/no-unescaped-entities": "off",
+            "react/jsx-max-props-per-line": 1,
 			"react/jsx-key": "warn",
 			"no-case-declarations": "off",
 			"no-mixed-spaces-and-tabs": "warn",

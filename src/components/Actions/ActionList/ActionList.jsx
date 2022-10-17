@@ -75,14 +75,14 @@ class ActionList extends Component {
         return (
             <Container>
                 {this.state.rounds.map((round, index) => (
-                    <div index={index} key={index}>
+                    <div key={index}>
                         <h5 style={{
                             backgroundColor: getFadedColor('gold', 1 - (this.props.gamestate.round - round) * 0.1),
                             color: 'black'
                         }}>Round {round}</h5>
 
                         <List hover size="sm">
-                            <div index={index} key={index}>
+                            <div key={index}>
                                 <List hover size="sm">
                                     {this.props.actions
                                         .filter((action) => action.round === round)
@@ -130,9 +130,11 @@ class ActionList extends Component {
                                                                     </Tag>
                                                                 }
                                                                 {action.results.length > 0 && action.results[0].ready &&
-                                                                    <Tag color="green">R Ready</Tag>}
+                                                                    <Tag color="green">R Ready</Tag>
+                                                                }
                                                                 {action.effects.length > 0 && <Tag
-                                                                    color="violet">{action.effects.length} Effects</Tag>}
+                                                                    color="violet">{action.effects.length} Effects</Tag>
+                                                                }
                                                                 {action.tags.map((tag) => this.tagStyle(tag))}
                                                             </b>
                                                         </FlexboxGrid.Item>
