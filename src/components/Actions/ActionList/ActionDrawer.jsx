@@ -11,7 +11,9 @@ import {
     DrawerOverlay,
     Flex,
     IconButton,
-    Input, InputGroup, InputLeftElement,
+    Input,
+    InputGroup,
+    InputLeftElement,
     Tooltip,
     useBreakpointValue,
     useDisclosure
@@ -64,7 +66,7 @@ function ActionDrawer(props) {
                         >
                             <IconButton
                                 icon={<AddIcon/>}
-                                onPress={props.onClick}
+                                onClick={props.onClick}
                                 colorScheme={'green'}
                                 style={{
                                     marginLeft: '1rem'

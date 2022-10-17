@@ -117,6 +117,7 @@ function ActionList(props) {
                                             onClick={() => props.handleSelect(action)}
                                             style={{
                                                 marginTop: '0',
+                                                cursor: 'pointer',
                                             }}
                                         >
                                             <Box
