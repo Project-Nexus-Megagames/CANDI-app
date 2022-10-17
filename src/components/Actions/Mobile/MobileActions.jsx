@@ -17,7 +17,7 @@ import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 
 import NavigationBar from '../../Navigation/NavigationBar';
-import ActionList from '../ActionList';
+import ActionList from '../ActionList/ActionList';
 import NewAction from '../NewAction';
 
 import MobileSelectedActions from './MobileSelectedActions';

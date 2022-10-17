@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Avatar, Container, FlexboxGrid, List, Tag} from 'rsuite';
-import {getMyCharacter} from '../../redux/entities/characters';
-import {getFadedColor} from '../../scripts/frontend';
+import {getMyCharacter} from '../../../redux/entities/characters';
+import {getFadedColor} from '../../../scripts/frontend';
 
 class ActionList extends Component {
     state = {rounds: []};
@@ -84,7 +84,6 @@ class ActionList extends Component {
                         <List hover size="sm">
                             <div index={index} key={index}>
                                 <List hover size="sm">
-                                    {/* <h5 >Control List</h5> */}
                                     {this.props.actions
                                         .filter((action) => action.round === round)
                                         .sort((a, b) => {
@@ -100,7 +99,7 @@ class ActionList extends Component {
                                         .map(
                                             (
                                                 action,
-                                                index // .filter(el => el.round === round)
+                                                index
                                             ) => (
                                                 <List.Item key={index} index={index} size={'sm'}
                                                            onClick={() => this.props.handleSelect(action)}

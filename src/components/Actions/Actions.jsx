@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import NavigationBar from '../Navigation/NavigationBar';
 
-import ActionList from './ActionList';
+import ActionList from './ActionList/ActionList';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
 
