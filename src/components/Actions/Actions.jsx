@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import NavigationBar from '../Navigation/NavigationBar';
 
 import ActionList from './ActionList';
-import MobileActions from './Mobile/MobileActions';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
 
@@ -30,9 +29,6 @@ const Actions = (props) => {
 	if (!props.login) {
 		props.history.push('/');
 		return <Loader inverse center content="doot..." />;
-	}
-	if (window.innerWidth < 768) {
-		return <MobileActions />;
 	}
 
 	const actionTypes = [];
