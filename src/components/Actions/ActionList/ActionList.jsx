@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Avatar, Container, FlexboxGrid, List, Tag} from 'rsuite';
-import {getMyCharacter} from '../../../redux/entities/characters';
-import {getFadedColor} from '../../../scripts/frontend';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Avatar, Container, FlexboxGrid, List, Tag } from 'rsuite';
+import { getMyCharacter } from '../../../redux/entities/characters';
+import { getFadedColor } from '../../../scripts/frontend';
 
-class ActionList extends Component {
+function ActionList() {
     state = {rounds: []};
 
-    componentDidMount = async () => {
+    const componentDidMount = async () => {
         try {
             this.createListCatagories();
         } catch (err) {
@@ -15,13 +15,13 @@ class ActionList extends Component {
         }
     };
 
-    componentDidUpdate = (prevProps) => {
+    const componentDidUpdate = (prevProps) => {
         if (this.props.actions !== prevProps.actions) {
             this.createListCatagories();
         }
     };
 
-    listStyle(item, index) {
+    function listStyle(item, index) {
         if (item === this.props.selected)
             return {
                 cursor: 'pointer',
@@ -48,7 +48,7 @@ class ActionList extends Component {
             };
     }
 
-    createListCatagories = () => {
+    const createListCatagories = () => {
         const rounds = [];
         console.log('this.props', this.props);
         for (const action of this.props.actions) {
@@ -58,11 +58,13 @@ class ActionList extends Component {
         this.setState({rounds});
     };
 
-    tagStyle = (item) => {
+    const tagStyle = (item) => {
         switch (item.toLowerCase()) {
             case 'news':
                 return (
-                    <Tag style={{color: 'black'}} color="orange" key={item}>
+                    <Tag style={{color: 'black'}}
+color="orange"
+key={item}>
                         {item}
                     </Tag>
                 );
@@ -71,85 +73,89 @@ class ActionList extends Component {
         }
     };
 
-    render() {
-        return (
-            <Container>
-                {this.state.rounds.map((round, index) => (
-                    <div key={index}>
-                        <h5 style={{
-                            backgroundColor: getFadedColor('gold', 1 - (this.props.gamestate.round - round) * 0.1),
-                            color: 'black'
-                        }}>Round {round}</h5>
+    return (
+        <Container>
+            {this.state.rounds.map((round, index) => (
+                <div key={index}>
+                    <h5 style={{
+                        backgroundColor: getFadedColor('gold', 1 - (this.props.gamestate.round - round) * 0.1),
+                        color: 'black'
+                    }}>Round {round}</h5>
 
-                        <List hover size="sm">
-                            <div key={index}>
-                                <List hover size="sm">
-                                    {this.props.actions
-                                        .filter((action) => action.round === round)
-                                        .sort((a, b) => {
-                                            // sort the catagories alphabetically
-                                            if (a.creator.characterName < b.creator.characterName) {
-                                                return -1;
-                                            }
-                                            if (a.creator.characterName > b.creator.characterName) {
-                                                return 1;
-                                            }
-                                            return 0;
-                                        })
-                                        .map(
-                                            (
-                                                action,
-                                                index
-                                            ) => (
-                                                <List.Item key={index} index={index} size={'sm'}
-                                                           onClick={() => this.props.handleSelect(action)}
-                                                           style={this.listStyle(action, index % 2)}>
-                                                    <FlexboxGrid align='middle' justify="space-around">
-                                                        <FlexboxGrid.Item>
-                                                            <Avatar circle src={action.creator.profilePicture}/>
-                                                        </FlexboxGrid.Item>
-                                                        <FlexboxGrid.Item colspan={18}
-                                                                          style={{
-                                                                              ...styleCenter,
-                                                                              flexDirection: 'column',
-                                                                              alignItems: 'flex-start',
-                                                                              overflow: 'ellipsis'
-                                                                          }}
-                                                        >
-                                                            <div style={titleStyle}>{action.name}</div>
-                                                            <b style={slimText}>
-                                                                {
-                                                                    <Tag
-                                                                        style={{
-                                                                            color: 'black',
-                                                                            textTransform: 'capitalize',
-                                                                            backgroundColor: getFadedColor(action.type)
-                                                                        }}
-                                                                    >
-                                                                        {action.type}
-                                                                    </Tag>
-                                                                }
-                                                                {action.results.length > 0 && action.results[0].ready &&
-                                                                    <Tag color="green">R Ready</Tag>
-                                                                }
-                                                                {action.effects.length > 0 && <Tag
-                                                                    color="violet">{action.effects.length} Effects</Tag>
-                                                                }
-                                                                {action.tags.map((tag) => this.tagStyle(tag))}
-                                                            </b>
-                                                        </FlexboxGrid.Item>
-                                                    </FlexboxGrid>
-                                                </List.Item>
-                                            )
-                                        )}
-                                </List>
-                            </div>
-                        </List>
-                    </div>
-                ))}
-            </Container>
-        );
-    }
+                    <List hover
+size="sm">
+                        <div key={index}>
+                            <List hover
+size="sm">
+                                {this.props.actions
+                                    .filter((action) => action.round === round)
+                                    .sort((a, b) => {
+                                        // sort the catagories alphabetically
+                                        if (a.creator.characterName < b.creator.characterName) {
+                                            return -1;
+                                        }
+                                        if (a.creator.characterName > b.creator.characterName) {
+                                            return 1;
+                                        }
+                                        return 0;
+                                    })
+                                    .map(
+                                        (
+                                            action,
+                                            index
+                                        ) => (
+                                            <List.Item key={index}
+index={index}
+size={'sm'}
+                                                       onClick={() => this.props.handleSelect(action)}
+                                                       style={this.listStyle(action, index % 2)}>
+                                                <FlexboxGrid align='middle'
+justify="space-around">
+                                                    <FlexboxGrid.Item>
+                                                        <Avatar circle
+src={action.creator.profilePicture}/>
+                                                    </FlexboxGrid.Item>
+                                                    <FlexboxGrid.Item colspan={18}
+                                                                      style={{
+                                                                          ...styleCenter,
+                                                                          flexDirection: 'column',
+                                                                          alignItems: 'flex-start',
+                                                                          overflow: 'ellipsis'
+                                                                      }}
+                                                    >
+                                                        <div style={titleStyle}>{action.name}</div>
+                                                        <b style={slimText}>
+                                                            {
+                                                                <Tag
+                                                                    style={{
+                                                                        color: 'black',
+                                                                        textTransform: 'capitalize',
+                                                                        backgroundColor: getFadedColor(action.type)
+                                                                    }}
+                                                                >
+                                                                    {action.type}
+                                                                </Tag>
+                                                            }
+                                                            {action.results.length > 0 && action.results[0].ready &&
+                                                                <Tag color="green">R Ready</Tag>
+                                                            }
+                                                            {action.effects.length > 0 && <Tag
+                                                                color="violet">{action.effects.length} Effects</Tag>
+                                                            }
+                                                            {action.tags.map((tag) => this.tagStyle(tag))}
+                                                        </b>
+                                                    </FlexboxGrid.Item>
+                                                </FlexboxGrid>
+                                            </List.Item>
+                                        )
+                                    )}
+                            </List>
+                        </div>
+                    </List>
+                </div>
+            ))}
+        </Container>
+    );
 }
 
 const styleCenter = {

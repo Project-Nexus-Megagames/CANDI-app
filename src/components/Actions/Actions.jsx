@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {connect, useSelector} from 'react-redux';
-import {Container, Loader} from 'rsuite';
-import {filteredActions, getCurrentExplores, getMyActions, setFilter} from '../../redux/entities/playerActions';
+import React, { useEffect, useState } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { Container, Loader } from 'rsuite';
+import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './NewAction';
 import SelectedAction from './SelectedAction';
-import ActionSidebar from "./ActionList/ActionSidebar";
+import ActionDrawer from "./ActionList/ActionDrawer";
 
 const Actions = (props) => {
     const [selected, setSelected] = useState(null);
@@ -25,7 +25,9 @@ const Actions = (props) => {
 
     if (!props.login) {
         props.history.push('/');
-        return <Loader inverse center content="doot..."/>;
+        return <Loader inverse
+                       center
+                       content="doot..."/>;
     }
 
     const actionTypes = [];
@@ -35,22 +37,25 @@ const Actions = (props) => {
         <React.Fragment>
             <NavigationBar/>
             <Container style={{height: 'calc(100vh - 50px)'}}>
-                <ActionSidebar
+                <ActionDrawer
                     onChange={(value) => props.setFilter(value)}
-					value={props.filter}
+                    value={props.filter}
                     onClick={() => setShowNew(true)}
-					control={props.control}
+                    control={props.control}
                     filteredActions={props.filteredActions}
-					myActions={props.myActions}
+                    myActions={props.myActions}
                     actionTypes={actionTypes}
-					selected={selected}
-					handleSelect={handleSelect}
-				/>
+                    selected={selected}
+                    handleSelect={handleSelect}
+                />
 
                 {!selected && <h4 style={{width: '100%'}}>No Action Selected</h4>}
-                {selected && <SelectedAction handleSelect={handleSelect} selected={selected}/>}
+                {selected && <SelectedAction handleSelect={handleSelect}
+                                             selected={selected}/>}
 
-                <NewAction show={showNew} closeNew={() => setShowNew(false)} gamestate={props.gamestate}/>
+                <NewAction show={showNew}
+                           closeNew={() => setShowNew(false)}
+                           gamestate={props.gamestate}/>
             </Container>
         </React.Fragment>
     );

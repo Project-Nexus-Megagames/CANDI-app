@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 
-function ActionSidebar(props) {
+function ActionDrawer(props) {
     const {isOpen, onClose} = useDisclosure({defaultIsOpen: true});
     const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'})
 
@@ -88,4 +88,4 @@ function ActionSidebar(props) {
     );
 }
 
-export default ActionSidebar;
+export default ActionDrawer;
