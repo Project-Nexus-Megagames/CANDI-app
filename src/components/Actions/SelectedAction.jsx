@@ -158,8 +158,6 @@ const SelectedAction = (props) => {
 				selected={props.selected}
 			/>
 
-			<Support show={support} closeNew={() => closeIt()} gamestate={props.gamestate} selected={props.selected}/>
-
 			{props.selected && props.selected.creator && <NewEffects
 				show={effect}
 				action={props.selected}
