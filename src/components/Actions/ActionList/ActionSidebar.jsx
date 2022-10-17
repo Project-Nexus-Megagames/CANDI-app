@@ -19,7 +19,7 @@ import {
 import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 
 function ActionSidebar(props) {
-    const {isOpen, onOpen, onClose} = useDisclosure({defaultIsOpen: true});
+    const {isOpen, onClose} = useDisclosure({defaultIsOpen: true});
     const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'})
 
     return (
@@ -49,7 +49,10 @@ function ActionSidebar(props) {
                                 <SearchIcon/>
                             </InputLeftElement>
                             <Input
-                                onChange={props.onChange}
+                                onChange={() => {
+                                    onClose();
+                                    props.onChange();
+                                }}
                                 value={props.value}
                                 placeholder="Search"
                                 color='white'
