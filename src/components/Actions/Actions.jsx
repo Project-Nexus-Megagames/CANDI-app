@@ -5,7 +5,7 @@ import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '..
 import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
-import Action from "./ActionList/Action";
+import Action from "./ActionList/Action/Action";
 
 const Actions = (props) => {
     const [selected, setSelected] = useState(null);
