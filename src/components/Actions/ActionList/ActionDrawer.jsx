@@ -51,10 +51,7 @@ function ActionDrawer(props) {
                                 <SearchIcon/>
                             </InputLeftElement>
                             <Input
-                                onChange={() => {
-                                    onClose();
-                                    props.onChange();
-                                }}
+                                onChange={() => props.onChange()}
                                 value={props.value}
                                 placeholder="Search"
                                 color='white'

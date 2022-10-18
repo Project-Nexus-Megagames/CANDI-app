@@ -25,9 +25,13 @@ const Actions = (props) => {
 
     if (!props.login) {
         props.history.push('/');
-        return <Loader inverse
-                       center
-                       content="doot..."/>;
+        return (
+            <Loader
+                inverse
+                center
+                content="doot..."
+            />
+        );
     }
 
     const actionTypes = [];
@@ -50,12 +54,18 @@ const Actions = (props) => {
                 />
 
                 {!selected && <h4 style={{width: '100%'}}>No Action Selected</h4>}
-                {selected && <SelectedAction handleSelect={handleSelect}
-                                             selected={selected}/>}
+                {selected &&
+                    <SelectedAction
+                        handleSelect={handleSelect}
+                        selected={selected}
+                    />
+                }
 
-                <NewAction show={showNew}
-                           closeNew={() => setShowNew(false)}
-                           gamestate={props.gamestate}/>
+                <NewAction
+                    show={showNew}
+                    closeNew={() => setShowNew(false)}
+                    gamestate={props.gamestate}
+                />
             </Container>
         </React.Fragment>
     );
