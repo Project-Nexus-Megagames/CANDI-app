@@ -12,7 +12,7 @@ import Result from './Result';
 import NewEffects from './NewEffect';
 import Effect from './Effect';
 
-const SelectedAction = (props) => {
+const Action = (props) => {
     const [selectedArray, setSelectedArray] = useState([]);
     const [add, setAdd] = useState(false);
     const [support, setSupport] = useState(false);
@@ -165,8 +165,10 @@ const SelectedAction = (props) => {
                     gamestate={props.gamestate}
                     submission={props.selected.submission}
                     selected={props.selected}
+
                 />
             }
+
 
             <NewComment
                 show={comment}
@@ -202,4 +204,4 @@ const mapDispatchToProps = (dispatch) => ({
     updateCharacter: (data) => dispatch(characterUpdated(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectedAction);
+export default connect(mapStateToProps, mapDispatchToProps)(Action);

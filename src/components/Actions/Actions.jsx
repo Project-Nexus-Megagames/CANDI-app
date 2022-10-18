@@ -4,8 +4,8 @@ import { Container, Loader } from 'rsuite';
 import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './NewAction';
-import SelectedAction from './SelectedAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
+import Action from "./Action";
 
 const Actions = (props) => {
     const [selected, setSelected] = useState(null);
@@ -55,7 +55,7 @@ const Actions = (props) => {
 
                 {!selected && <h4 style={{width: '100%'}}>No Action Selected</h4>}
                 {selected &&
-                    <SelectedAction
+                    <Action
                         handleSelect={handleSelect}
                         selected={selected}
                     />
