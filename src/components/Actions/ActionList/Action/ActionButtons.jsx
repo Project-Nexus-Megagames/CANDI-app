@@ -3,6 +3,7 @@ import usePermissions from "../../../../hooks/usePermissions";
 import { useSelector } from "react-redux";
 import { Box, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from "@chakra-ui/react";
 import { HiPencilAlt, HiTrash } from 'react-icons/hi';
+import socket from "../../../../socket";
 
 function ActionButtons({action}) {
     const {isControl, characterId} = usePermissions();
@@ -14,6 +15,13 @@ function ActionButtons({action}) {
     const isDisabled = (game.status !== 'Active' || game.round > action.round) && !isControl;
     const isPublishable = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0)
         && action.type === 'Agenda';
+
+    const handlePublish = async () => {
+        const id = action._id;
+        socket.emit('request', {route: 'action', action: 'publish', id});
+    };
+
+    //TODO: add logic for modal toggling when buttons are pressed
 
     return (
         <Box>
@@ -30,10 +38,11 @@ function ActionButtons({action}) {
                             <IconButton
                                 disabled={isDisabled}
                                 size="md"
-                                // onClick={() => handlePublish()}
+                                onClick={() => handlePublish()}
                                 backgroundColor="green"
                                 icon={<Icon as={HiPencilAlt}/>}
                                 marginTop='0.25rem'
+                                aria-label={'Publish Action'}
                             />
                         </Tooltip>
                     )}
@@ -44,6 +53,7 @@ function ActionButtons({action}) {
                         backgroundColor="orange"
                         icon={<Icon as={HiPencilAlt}/>}
                         marginTop='0.25rem'
+                        aria-label={'Edit Action'}
                     />
                     <IconButton
                         disabled={isDisabled}
@@ -52,6 +62,7 @@ function ActionButtons({action}) {
                         backgroundColor="red"
                         icon={<Icon as={HiTrash}/>}
                         marginTop='0.25rem'
+                        aria-label={'Delete Action'}
                     />
                 </ButtonGroup>
             )}

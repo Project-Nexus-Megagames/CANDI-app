@@ -22,7 +22,7 @@ import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 
 function ActionDrawer(props) {
     const {isOpen, onClose} = useDisclosure({defaultIsOpen: true});
-    const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'})
+    const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
 
     return (
         <Drawer

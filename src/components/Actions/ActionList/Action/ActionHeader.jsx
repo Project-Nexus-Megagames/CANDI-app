@@ -22,9 +22,7 @@ function ActionHeader({action, time}) {
                         marginRight='auto'
                     />
                 </Box>
-                <Flex
-                    flex={1}
-                >
+                <Flex flex={1}>
                     <Box
                         alignItems='center'
                         justifyContent='center'
@@ -43,18 +41,10 @@ function ActionHeader({action, time}) {
                         />
                     </Box>
                 </Flex>
-                <Flex
-                    flex={1}
-                >
-                    <Box
-                        marginLeft='auto'
-                    >
-                        <ActionButtons
-                            action={action}
-                        />
-                        <AccordionIcon
-                            marginTop='1rem'
-                        />
+                <Flex flex={1}>
+                    <Box marginLeft='auto'>
+                        <ActionButtons action={action}/>
+                        <AccordionIcon marginTop='1rem'/>
                     </Box>
                 </Flex>
             </AccordionButton>
