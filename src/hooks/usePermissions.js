@@ -3,7 +3,12 @@ import { useSelector } from "react-redux";
 
 function usePermissions() {
     const isControl = useSelector(state => state.auth?.character?.tags);
-    return isControl.includes('Control');
+    const characterId = useSelector(state => state.auth?.character?._id);
+
+    return {
+        isControl: isControl.includes('Control'),
+        characterId
+    };
 }
 
 export default usePermissions;
