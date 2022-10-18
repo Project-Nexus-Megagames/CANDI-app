@@ -76,7 +76,8 @@ function ActionList(props) {
         <Container>
             <Accordion
                 allowMultiple
-                defaultIndex={0}
+                defaultIndex={[0]}
+                allowToggle
             >
                 {rounds.map((round, index) => (
                     <AccordionItem

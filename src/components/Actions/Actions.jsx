@@ -5,7 +5,7 @@ import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '..
 import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
-import Action from "./Action";
+import Action from "./ActionList/Action";
 
 const Actions = (props) => {
     const [selected, setSelected] = useState(null);
@@ -57,7 +57,7 @@ const Actions = (props) => {
                 {selected &&
                     <Action
                         handleSelect={handleSelect}
-                        selected={selected}
+                        action={selected}
                     />
                 }
 
