@@ -11,7 +11,7 @@ import DynamicForm from "./DynamicForm";
 import { getGodBonds, getMortalBonds } from "../../redux/entities/assets";
 import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated, getMyUnlockedCharacters } from "./../../redux/entities/characters";
 import CharacterListItem from "./CharacterListItem";
-import { getFadedColor, getTextColor } from "../../scripts/frontend";
+import { getFadedColor, getTextColor, tagStyle } from "../../scripts/frontend";
 import ViewCharacter from "../Common/ViewCharacter";
 import ResourceNugget from "../Common/ResourceNugget";
 
@@ -205,18 +205,6 @@ const OtherCharacters = (props) => {
               }}
             >
               <div>
-                {/* {renderTags.map((tag, index) => (
-                  <List key={index} hover>
-                    {filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0 && <p style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`) }}>{tag}</p>}
-                    {filteredCharacters
-                      .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
-                      .map((character, index0) => (
-                        <List.Item key={`${character._id}-${index}-${index0}`} style={listStyle(character)}>
-                          <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
-                        </List.Item>
-                      ))}
-                  </List>
-                ))} */}
                   <List hover>
                     {filteredCharacters
                       .map((character, index0) => (

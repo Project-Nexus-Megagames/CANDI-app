@@ -1,36 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-	Loader,
-	Panel,
-	IconButton,
-	Icon,
-	Form,
-	FormGroup,
-	Button,
-	ButtonToolbar,
-	FormControl,
-	ControlLabel,
-	Divider,
-	Content,
-	Tag,
-	Modal,
-	Drawer,
-	SelectPicker,
-	Placeholder,
-	Grid,
-	Col,
-	Row,
-	List,
-	TagGroup
-} from 'rsuite';
-import { getMyCharacter } from '../../redux/entities/characters';
+import { Loader, Panel, IconButton, Icon, Form, FormGroup, Button, ButtonToolbar, FormControl, ControlLabel, Divider, Content, Tag, Modal, Drawer, SelectPicker, Placeholder, Grid, Col, Row, List, TagGroup } from 'rsuite';
+import { getMyCharacter, getMyUnlockedCharacters } from '../../redux/entities/characters';
 import { assetLent, assetUpdated, getMyAssets } from '../../redux/entities/assets';
 import socket from '../../socket';
 // import { playerActionsRequested } from "../../redux/entities/playerActions";
 import NavigationBar from '../Navigation/NavigationBar';
 import AssetInfo from '../Actions/AssetInfo';
 import Contacts from '../MyCharacters/Contacts';
+import CharacterListItem from '../OtherCharacters/CharacterListItem';
+import { tagStyle } from '../../scripts/frontend';
 
 class CharacterProfile extends Component {
 	state = {
@@ -78,11 +57,9 @@ class CharacterProfile extends Component {
 			const win = window.open(url, '_blank');
 			win.focus();
 		} else {
-			let url = 'https://godswars.miraheze.org/wiki/';
-			let temp = url.concat(character.characterName.split(' ').join('_'));
-			const win = window.open(temp, '_blank');
+			let url = "https://www.worldanvil.com/w/ur2C-the-nexus-city-jkeywo/a/ur-settlement";
+			const win = window.open(url, '_blank');
 			win.focus();
-			console.log(temp);
 		}
 	};
 
@@ -134,12 +111,10 @@ class CharacterProfile extends Component {
 	};
 
 	handleSharingContacts = () => {
-		console.log('boop');
 		this.setState({ showContacts: true });
 	};
 
 	openInfo = (asset) => {
-		console.log(asset);
 		const found = this.props.assets.find((el) => el._id === asset._id);
 		this.setState({ infoAsset: found, infoModal: true });
 	};
@@ -160,6 +135,7 @@ class CharacterProfile extends Component {
 							<div>
 								<p>
 									<img className="portrait" src={`${playerCharacter.profilePicture}`} alt="Unable to load img" style={{ maxHeight: '50vh' }} />
+									<h5>{playerCharacter.characterName}</h5>
 								</p>
 								<TagGroup>
 									Tags
@@ -197,16 +173,6 @@ class CharacterProfile extends Component {
 									</FormGroup>
 								</Form>
 							</Panel>
-							{/*<Panel header="My Contacts" style={{ width: '95%' }}>
-								<ButtonToolbar>
-									<Button
-										appearance="primary"
-										onClick={() => this.handleSharingContacts()}
-									>
-										Share My Contacts with Another Character
-									</Button>
-								</ButtonToolbar>
-							</Panel>*/}
 							{/*<Panel header="My Injuries" style={{ width: '95%' }}>
 								<p>
 									<b>Current injuries:</b> {playerCharacter.injuries.length}
@@ -229,7 +195,7 @@ class CharacterProfile extends Component {
 								</List>
 							</Panel>*/}
 						</Col>
-						<Col>
+						{/* <Col>
 							<div>
 								<List
 									xs={24}
@@ -250,6 +216,26 @@ class CharacterProfile extends Component {
 									{this.renderList('Title', 'purple')}
 								</List>
 							</div>
+						</Col> */}
+						<Col xs={24} sm={24} md={8} className="gridbox">
+							<Panel header="My Contacts" style={{ width: '95%' }}>
+								<ButtonToolbar>
+									<Button
+										appearance="primary"
+										onClick={() => this.handleSharingContacts()}
+									>
+										Share My Contacts with Another Character
+									</Button>
+								</ButtonToolbar>
+								<List hover>
+                    {this.props.knownContacts
+                      .map((character, index0) => (
+                        <List.Item key={`${character._id}-${index0}`} >
+                          <CharacterListItem setSelected={() => console.log('Hello!')} character={character} tagStyle={tagStyle} key={character._id} />
+                        </List.Item>
+                      ))}
+                  </List>
+							</Panel>
 						</Col>
 					</Row>
 				</Grid>
@@ -439,6 +425,7 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	assets: state.assets.list,
 	characters: state.characters.list,
+  knownContacts: state.auth.user ? getMyUnlockedCharacters(state) : undefined,
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
 	myAssets: getMyAssets(state)
 });

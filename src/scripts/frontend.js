@@ -1,4 +1,4 @@
-import { Icon } from "rsuite";
+import { Icon, Tag } from "rsuite";
 
 function getFadedColor(color, fade = 1) {
 	// console.log(color)
@@ -118,6 +118,43 @@ function getTextColor(color, fade = 1) {
 	}
 }
 
+const tagStyle = (item, index) => {
+	switch (item) {
+		case "Control":
+			return (
+				<Tag index={index} style={{ color: "black" }} color='orange'>
+					{item}
+				</Tag>
+			);
+		case "God":
+			return (
+				<Tag index={index} color='green'>
+					{item}
+				</Tag>
+			);
+		case "NPC":
+			return (
+				<Tag index={index} color='blue'>
+					{item}
+				</Tag>
+			);
+		case "PC":
+			return (
+				<Tag index={index} color='cyan'>
+					{item}
+				</Tag>
+			);
+		case "Private":
+			return (
+				<Tag index={index} color='red'>
+					{item}
+				</Tag>
+			);
+		default:
+			return <Tag index={index}>{item}</Tag>;
+	}
+};
+
 
 function getIcon (type) {
 	switch(type){
@@ -150,4 +187,4 @@ const getTime = (date) => {
 	);
 };
 
-export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime };
+export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, tagStyle };
