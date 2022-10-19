@@ -2,6 +2,7 @@ import React from 'react';
 import { Accordion, AccordionItem, AccordionPanel, Box, Flex } from "@chakra-ui/react";
 import { getFadedColor } from "../../../../scripts/frontend";
 import ActionHeader from "./ActionHeader";
+import ActionResources from "./ActionResources";
 
 const Action = (props) => {
     function getBorder() {
@@ -16,6 +17,7 @@ const Action = (props) => {
         const time = new Date(date).toLocaleTimeString();
         return `${day} - ${time}`;
     };
+
 
     return (
         <Flex
@@ -48,7 +50,9 @@ const Action = (props) => {
                             time={getTime(props.action.submission.createdAt)}
                         />
                         <AccordionPanel>
-                            Foobar
+                            <ActionResources
+                                assets={props.action.submission.assets}
+                            />
                         </AccordionPanel>
                     </AccordionItem>
                 </Accordion>
