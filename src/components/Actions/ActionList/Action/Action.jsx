@@ -4,6 +4,7 @@ import { getFadedColor } from "../../../../scripts/frontend";
 import ActionHeader from "./ActionHeader";
 import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
+import ActionEffort from "./ActionEffort";
 
 const Action = (props) => {
     function getBorder() {
@@ -59,6 +60,9 @@ const Action = (props) => {
                                 tooltip='An out of character explanation of what you, the player, want to happen as a result.'
                                 header='Intent'
                                 markdown={props.action.submission.intent}
+                            />
+                            <ActionEffort
+                                submission={props.action.submission}
                             />
                             <ActionResources
                                 assets={props.action.submission.assets}
