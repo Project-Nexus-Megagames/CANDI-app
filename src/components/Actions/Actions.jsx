@@ -66,7 +66,13 @@ const Actions = (props) => {
         <Box
             overflowY={'scroll'}
         >
-            <NavigationBar>
+            <NavigationBar/>
+            <Container
+                height={'calc(100vh - 50px)'}
+                centerContent
+                maxW={'1200px'}
+                minW={'350px'}
+            >
                 <Flex
                     marginTop='2rem'
                     width={'100%'}
@@ -97,13 +103,7 @@ const Actions = (props) => {
                         </Button>
                     </Box>
                 </Flex>
-            </NavigationBar>
-            <Container
-                height={'calc(100vh - 50px)'}
-                centerContent
-                maxW={'1200px'}
-                minW={'350px'}
-            >
+
                 <ActionDrawer
                     onChange={(value) => props.setFilter(value)}
                     value={props.filter}
