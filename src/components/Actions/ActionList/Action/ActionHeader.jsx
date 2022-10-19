@@ -1,12 +1,9 @@
 import React from "react";
 import { AccordionButton, AccordionIcon, Avatar, Box, Flex, Heading } from "@chakra-ui/react";
-import usePermissions from "../../../../hooks/usePermissions";
 import ActionTags from "./ActionTags";
 import ActionButtons from "./ActionButtons";
 
 function ActionHeader({action, time}) {
-    const {isControl} = usePermissions();
-
     const creator = action.creator;
     return (
         <h7>
