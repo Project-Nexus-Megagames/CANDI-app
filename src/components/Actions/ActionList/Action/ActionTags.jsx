@@ -31,7 +31,11 @@ function ActionTags({actionId, tags}) {
                     key={index}
                 >
                     <TagLabel>{item}</TagLabel>
-                    <TagCloseButton onClick={() => handleTagRemove(item, 'tags')}/>
+                    <TagCloseButton onClick={(e) => {
+                        handleTagRemove(item, 'tags');
+                        e.stopPropagation();
+                    }}
+                    />
                 </Tag>
             ))
         }

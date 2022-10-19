@@ -38,7 +38,10 @@ function ActionButtons({action}) {
                             <IconButton
                                 disabled={isDisabled}
                                 size="md"
-                                onClick={() => handlePublish()}
+                                onClick={(e) => {
+                                    handlePublish();
+                                    e.stopPropagation();
+                                }}
                                 backgroundColor="green"
                                 icon={<Icon as={HiPencilAlt}/>}
                                 marginTop='0.25rem'
@@ -49,7 +52,7 @@ function ActionButtons({action}) {
                     <IconButton
                         disabled={isDisabled}
                         size="md"
-                        // onClick={() => setShow('edit')}
+                        onClick={(e) => e.stopPropagation()}
                         backgroundColor="orange"
                         icon={<Icon as={HiPencilAlt}/>}
                         marginTop='0.25rem'
@@ -58,7 +61,7 @@ function ActionButtons({action}) {
                     <IconButton
                         disabled={isDisabled}
                         size="md"
-                        // onClick={() => setShow('delete')}
+                        onClick={(e) => e.stopPropagation()}
                         backgroundColor="red"
                         icon={<Icon as={HiTrash}/>}
                         marginTop='0.25rem'
