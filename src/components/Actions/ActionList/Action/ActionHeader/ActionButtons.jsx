@@ -1,9 +1,9 @@
 import React from "react";
-import usePermissions from "../../../../hooks/usePermissions";
+import usePermissions from "../../../../../hooks/usePermissions";
 import { useSelector } from "react-redux";
 import { Box, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from "@chakra-ui/react";
 import { HiPencilAlt, HiTrash } from 'react-icons/hi';
-import socket from "../../../../socket";
+import socket from "../../../../../socket";
 
 function ActionButtons({action}) {
     const {isControl, characterId} = usePermissions();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Accordion, AccordionItem, AccordionPanel, Box, Flex } from "@chakra-ui/react";
 import { getFadedColor } from "../../../../scripts/frontend";
-import ActionHeader from "./ActionHeader";
+import ActionHeader from "./ActionHeader/ActionHeader";
 import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
 import ActionEffort from "./ActionEffort";

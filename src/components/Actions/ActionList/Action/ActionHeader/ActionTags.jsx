@@ -1,8 +1,8 @@
 //TODO: render tag add logic
 import { Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
 import React from "react";
-import usePermissions from "../../../../hooks/usePermissions";
-import socket from "../../../../socket";
+import usePermissions from "../../../../../hooks/usePermissions";
+import socket from "../../../../../socket";
 
 function ActionTags({actionId, tags}) {
     const {isControl} = usePermissions();
