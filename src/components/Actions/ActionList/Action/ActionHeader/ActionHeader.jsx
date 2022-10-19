@@ -27,7 +27,7 @@ function ActionHeader({action, time}) {
                     >
                         <Heading
                             as="h8"
-                            size={'lg'}
+                            size={'md'}
                             textAlign={'center'}
                         >
                             {action.name}

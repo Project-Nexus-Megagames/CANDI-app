@@ -69,7 +69,7 @@ function ActionResources({assets}) {
 
         return (
             <Flex
-                backgroundColor={retrievedAsset ? '#272b34' : '#0e1013'}
+                backgroundColor={'#0e1013'}
                 textAlign={'center'}
                 justifyContent={'center'}
                 alignItems={'center'}

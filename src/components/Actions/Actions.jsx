@@ -8,22 +8,20 @@ import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
 import { Accordion, Box, Container } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
+import WordDivider from "../WordDivider";
 
 const Actions = (props) => {
-    const [selected, setSelected] = useState(null);
     const [showNew, setShowNew] = useState(false);
     const {isControl} = usePermissions();
+    const [rounds, setRounds] = useState([]);
 
     useEffect(() => {
-        if (selected) {
-            const newSelected = props.actions.find((el) => el._id === selected._id);
-            setSelected(newSelected);
+        try {
+            createListCategories(isControl ? props.filteredActions : props.myActions);
+        } catch (err) {
+            console.log(err);
         }
-    }, [props.actions, selected]);
-
-    const handleSelect = (fuuuck) => {
-        setSelected(fuuuck);
-    };
+    }, [isControl, props.myActions, props.filteredActions])
 
     if (!props.login) {
         props.history.push('/');
@@ -34,6 +32,32 @@ const Actions = (props) => {
                 content="doot..."
             />
         );
+    }
+
+    const createListCategories = (actions) => {
+        const rounds = [];
+        for (const action of actions) {
+            if (!rounds.some((item) => item === action.round)) {
+                rounds.push(action.round);
+            }
+        }
+        rounds.reverse();
+        setRounds(rounds);
+    };
+
+    const sortedActions = (currRound, actions) => {
+        return actions
+            .filter((action) => action.round === currRound)
+            .sort((a, b) => {
+                // sort alphabetically
+                if (a.creator.characterName < b.creator.characterName) {
+                    return -1;
+                }
+                if (a.creator.characterName > b.creator.characterName) {
+                    return 1;
+                }
+                return 0;
+            })
     }
 
     const actionList = isControl ? props.filteredActions : props.myActions;
@@ -55,7 +79,7 @@ const Actions = (props) => {
                     value={props.filter}
                     onClick={() => setShowNew(true)}
                     actions={actionList}
-                    handleSelect={handleSelect}
+                    handleSelect={() => console.log('something selected')}
                 />
 
                 <Accordion
@@ -63,14 +87,29 @@ const Actions = (props) => {
                     allowMultiple
                     allowToggle
                 >
-                    {actionList.map(action => {
-                        return (
-                            <Action
-                                action={action}
-                                key={action._id}
+                    {rounds.map((round, index) => (
+                        <Box
+                            key={index}
+                        >
+                            <Box
+                                marginTop='2rem'
                             />
-                        );
-                    })}
+                            <WordDivider
+                                word={`Round ${round}`}
+                                size={'xl'}
+                                marginTop={'1rem'}
+                            />
+                            <Box
+                                marginBottom='1rem'
+                            />
+                            {sortedActions(round, actionList).map((action =>
+                                    <Action
+                                        action={action}
+                                        key={action._id}
+                                    />
+                            ))}
+                        </Box>
+                    ))}
                 </Accordion>
 
                 <NewAction
