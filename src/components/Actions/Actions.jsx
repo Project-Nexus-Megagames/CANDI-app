@@ -84,7 +84,7 @@ const Actions = (props) => {
                             <SearchIcon/>
                         </InputLeftElement>
                         <Input
-                            onChange={(value) => props.setFilter(value)}
+                            onChange={(e) => props.setFilter(e.target.value)}
                             value={props.filter}
                             placeholder="Search"
                             color='white'
@@ -105,7 +105,7 @@ const Actions = (props) => {
                 </Flex>
 
                 <ActionDrawer
-                    onChange={(value) => props.setFilter(value)}
+                    onChange={(e) => props.setFilter(e.target.value)}
                     value={props.filter}
                     onClick={() => console.log('create new action')}
                     actions={actionList}
@@ -116,6 +116,7 @@ const Actions = (props) => {
                     defaultIndex={[0]}
                     allowMultiple
                     allowToggle
+                    width={'100%'}
                 >
                     {rounds.map((round, index) => (
                         <Box
