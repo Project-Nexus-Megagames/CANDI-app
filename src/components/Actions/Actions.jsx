@@ -61,8 +61,6 @@ const Actions = (props) => {
     }
 
     const actionList = isControl ? props.filteredActions : props.myActions;
-    //TODO: sort and group by rounds
-    console.log('actionList', actionList);
     return (
         <Box
             overflowY={'scroll'}
