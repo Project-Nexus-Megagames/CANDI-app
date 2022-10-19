@@ -64,7 +64,6 @@ const Actions = (props) => {
                 {!selected && <h4 style={{width: '100%'}}>No Action Selected</h4>}
                 {selected &&
                     <Action
-                        handleSelect={handleSelect}
                         action={selected}
                     />
                 }

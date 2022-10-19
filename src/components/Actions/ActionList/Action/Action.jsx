@@ -1,8 +1,9 @@
 import React from 'react';
-import { Accordion, AccordionItem, AccordionPanel, Box, Flex } from "@chakra-ui/react";
+import { Accordion, AccordionItem, AccordionPanel, Box, Divider, Flex } from "@chakra-ui/react";
 import { getFadedColor } from "../../../../scripts/frontend";
 import ActionHeader from "./ActionHeader";
 import ActionResources from "./ActionResources";
+import ActionMarkdown from "./ActionMarkdown";
 
 const Action = (props) => {
     function getBorder() {
@@ -50,6 +51,16 @@ const Action = (props) => {
                             time={getTime(props.action.submission.createdAt)}
                         />
                         <AccordionPanel>
+                            <Divider orientation='horizontal'/>
+                            <ActionMarkdown
+                                header='Description'
+                                markdown={props.action.submission.description}
+                            />
+                            <ActionMarkdown
+                                tooltip='An out of character explanation of what you, the player, want to happen as a result.'
+                                header='Intent'
+                                markdown={props.action.submission.intent}
+                            />
                             <ActionResources
                                 assets={props.action.submission.assets}
                             />
