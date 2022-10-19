@@ -6,7 +6,7 @@ import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
-import { Box, Container } from "@chakra-ui/react";
+import { Accordion, Box, Container } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
 
 const Actions = (props) => {
@@ -36,6 +36,9 @@ const Actions = (props) => {
         );
     }
 
+    const actionList = isControl ? props.filteredActions : props.myActions;
+    //TODO: sort and group by rounds
+    console.log('actionList', actionList);
     return (
         <Box
             overflowY={'scroll'}
@@ -51,15 +54,24 @@ const Actions = (props) => {
                     onChange={(value) => props.setFilter(value)}
                     value={props.filter}
                     onClick={() => setShowNew(true)}
-                    actions={isControl ? props.filteredActions : props.myActions}
+                    actions={actionList}
                     handleSelect={handleSelect}
                 />
 
-                {selected &&
-                    <Action
-                        action={selected}
-                    />
-                }
+                <Accordion
+                    defaultIndex={[0]}
+                    allowMultiple
+                    allowToggle
+                >
+                    {actionList.map(action => {
+                        return (
+                            <Action
+                                action={action}
+                                key={action._id}
+                            />
+                        );
+                    })}
+                </Accordion>
 
                 <NewAction
                     show={showNew}

@@ -6,7 +6,7 @@ function usePermissions() {
     const characterId = useSelector(state => state.auth?.character?._id);
 
     return {
-        isControl: isControl.includes('Control'),
+        isControl: isControl && isControl.includes('Control'),
         characterId
     };
 }
