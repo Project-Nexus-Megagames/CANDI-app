@@ -18,8 +18,9 @@ function ActionResources({assets}) {
     const assetList = useSelector(state => state.assets.list);
     const {isControl} = usePermissions();
     const breakpoints = useBreakpointValue({
-        base: {columns: 0, rows: 3, width: '20rem', bottom: '1.75rem', left: '10rem'},
-        md: {columns: 3, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'}
+        base: {columns: 0, rows: 3, width: '15rem', bottom: '1.75rem', left: '7.5rem'},
+        md: {columns: 3, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'},
+        lg: {columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
     })
 
     function getAsset(assetID) {
@@ -85,12 +86,15 @@ function ActionResources({assets}) {
                         <Heading
                             as='h6'
                             size={'sm'}
-                            marginTop={'-1.5rem'}
+                            marginTop={isControl ? '-1.5rem' : 0}
                             marginBottom={'1rem'}
+                            wordBreak={'break-word'}
                         >
                             {'Asset'}
                         </Heading>
-                        <Box>{'Some Asset Name'}</Box>
+                        <Box
+                            wordBreak={'break-word'}
+                        >{'Some veryveryveryveryveryveryveryveryveryveryveryvery very Asset Name'}</Box>
                         <Box
                             height={'1.5rem'}
                             marginTop={'1rem'}

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { Container, Loader } from 'rsuite';
+import { Loader } from 'rsuite';
 import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
+import { Box, Container } from "@chakra-ui/react";
 
 const Actions = (props) => {
     const [selected, setSelected] = useState(null);
@@ -38,9 +39,16 @@ const Actions = (props) => {
     for (const actionType of gameConfig.actionTypes) actionTypes.push(actionType.type);
 
     return (
-        <React.Fragment>
+        <Box
+            overflowY={'scroll'}
+        >
             <NavigationBar/>
-            <Container style={{height: 'calc(100vh - 50px)'}}>
+            <Container
+                height={'calc(100vh - 50px)'}
+                centerContent
+                maxW={'1200px'}
+                minW={'350px'}
+            >
                 <ActionDrawer
                     onChange={(value) => props.setFilter(value)}
                     value={props.filter}
@@ -67,7 +75,7 @@ const Actions = (props) => {
                     gamestate={props.gamestate}
                 />
             </Container>
-        </React.Fragment>
+        </Box>
     );
 };
 

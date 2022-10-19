@@ -22,9 +22,9 @@ const Action = (props) => {
     return (
         <Flex
             style={{
-                overflow: 'auto',
                 height: '100%',
                 justifyContent: 'center',
+                width: '100%',
             }}
         >
             <Box
