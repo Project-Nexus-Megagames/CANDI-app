@@ -1,18 +1,8 @@
 import React from "react";
-import {
-    Box,
-    ButtonGroup,
-    Divider,
-    Flex,
-    Heading,
-    IconButton,
-    SimpleGrid,
-    Tag,
-    useBreakpointValue
-} from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, IconButton, SimpleGrid, Tag, useBreakpointValue } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
-import { CloseIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import { CloseIcon } from "@chakra-ui/icons";
 
 function ActionResources({assets}) {
     const assetList = useSelector(state => state.assets.list);
@@ -31,38 +21,6 @@ function ActionResources({assets}) {
         const retrievedAsset = getAsset(assetID);
         let inner;
         if (retrievedAsset) {
-            inner = (
-                <Box>
-                    <Heading
-                        as='h6'
-                        size={'xs'}
-                    >
-                        {retrievedAsset.type}
-                    </Heading>
-                    <ButtonGroup>
-                        <IconButton
-                            size="xs"
-                            appearance={'link'}
-                            //onClick={() => openInfo(asset)}
-                            backgroundColor="blue"
-                            icon={<InfoOutlineIcon/>}
-                            aria-label={'Asset Info'}
-                        />
-                        {isControl &&
-                            <IconButton
-                                size="sm"
-                                //onClick={() => controlRemove(asset._id)}
-                                icon={<CloseIcon/>}
-                                backgroundColor="red"
-                                aria-label={'Remove Asset'}
-                            />
-                        }
-                    </ButtonGroup>
-                    <Box>{retrievedAsset.name}</Box>
-                    {retrievedAsset.status.used && <Tag>Used</Tag>}
-                </Box>
-            );
-        } else {
             inner = (
                 <Box>
                     {isControl &&
@@ -90,20 +48,22 @@ function ActionResources({assets}) {
                             marginBottom={'1rem'}
                             wordBreak={'break-word'}
                         >
-                            {'Asset'}
+                            {retrievedAsset.type}
                         </Heading>
                         <Box
                             wordBreak={'break-word'}
-                        >{'Some veryveryveryveryveryveryveryveryveryveryveryvery very Asset Name'}</Box>
+                        >{retrievedAsset.name}</Box>
                         <Box
                             height={'1.5rem'}
                             marginTop={'1rem'}
                         >
-                            <Tag colorScheme='whiteAlpha'>Used</Tag>
+                            {retrievedAsset.status.used && <Tag colorScheme='whiteAlpha'>Used</Tag>}
                         </Box>
                     </Box>
                 </Box>
             );
+        } else {
+            inner = 'Empty Slot'
         }
 
         return (
@@ -117,6 +77,12 @@ function ActionResources({assets}) {
                 border={'1px solid white'}
                 borderRadius={'10'}
                 marginTop={'2rem'}
+                cursor={retrievedAsset ? 'pointer' : 'initial'}
+                onClick={() => {
+                    //TODO: add show info logic
+                    //retrievedAsset &&
+                    console.log('am clicked');
+                }}
             >
                 {inner}
             </Flex>
@@ -142,11 +108,6 @@ function ActionResources({assets}) {
                     <Flex
                         key={index}
                         justifyContent={'center'}
-                        cursor={'pointer'}
-                        onClick={() => {
-                            //TODO: add show info logic
-                            console.log('am clicked');
-                        }}
                     >
                         {renderAsset(assets[index])}
                     </Flex>
