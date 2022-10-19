@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { Loader } from 'rsuite';
 import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
-import NewAction from './NewAction';
+import NewAction from './Modals/NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
-import { Accordion, Box, Container } from "@chakra-ui/react";
+import { Accordion, Box, Button, Container, Flex, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
 import WordDivider from "../WordDivider";
+import { PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 
 const Actions = (props) => {
     const [showNew, setShowNew] = useState(false);
@@ -75,10 +76,36 @@ const Actions = (props) => {
                 <ActionDrawer
                     onChange={(value) => props.setFilter(value)}
                     value={props.filter}
-                    onClick={() => setShowNew(true)}
+                    onClick={() => console.log('create new action')}
                     actions={actionList}
                     handleSelect={() => console.log('something selected')}
                 />
+
+                <Flex>
+                    <InputGroup>
+                        <InputLeftElement
+                            pointerEvents='none'
+                        >
+                            <SearchIcon/>
+                        </InputLeftElement>
+                        <Input
+                            onChange={(value) => props.setFilter(value)}
+                            value={props.filter}
+                            placeholder="Search"
+                            color='white'
+                        />
+                    </InputGroup>
+                    <Box>
+                        <Button
+                            onClick={() => setShowNew(true)}
+                            leftIcon={<PlusSquareIcon/>}
+                            colorScheme='green'
+                            variant='solid'
+                        >
+                            Create New Action
+                        </Button>
+                    </Box>
+                </Flex>
 
                 <Accordion
                     defaultIndex={[0]}

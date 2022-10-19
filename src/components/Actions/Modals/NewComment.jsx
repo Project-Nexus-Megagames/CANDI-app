@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Loader, Toggle } from 'rsuite';
-import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
-import { getMyCharacter, characterUpdated } from '../../redux/entities/characters';
-import { playerActionsRequested } from '../../redux/entities/playerActions';
-import socket from '../../socket';
+import { Button, Loader, Modal, Toggle } from 'rsuite';
+import { getMyAssets, getMyUsedAssets } from '../../../redux/entities/assets';
+import { characterUpdated, getMyCharacter } from '../../../redux/entities/characters';
+import { playerActionsRequested } from '../../../redux/entities/playerActions';
+import socket from '../../../socket';
+
 class NewComment extends Component {
 	constructor(props) {
 		super(props);

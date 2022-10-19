@@ -1,11 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Alert, Modal, SelectPicker, CheckPicker, Divider, Button, ButtonGroup, Panel, InputPicker, Placeholder, InputNumber, Checkbox, CheckboxGroup, Toggle, Input } from 'rsuite';
-import socket from '../../socket';
+import {
+	Alert,
+	Button,
+	ButtonGroup,
+	Checkbox,
+	CheckboxGroup,
+	CheckPicker,
+	Divider,
+	Input,
+	InputNumber,
+	InputPicker,
+	Modal,
+	Panel,
+	Placeholder,
+	SelectPicker,
+	Toggle
+} from 'rsuite';
+import socket from '../../../socket';
 import _ from 'lodash';
 
-import { getGods, getNonPlayerCharacters, getUnlockedCharacters } from '../../redux/entities/characters';
-import { getCharacterById, getMyCharacter } from './../../redux/entities/characters';
+import {
+	getCharacterById,
+	getGods,
+	getMyCharacter,
+	getNonPlayerCharacters,
+	getUnlockedCharacters
+} from '../../../redux/entities/characters';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -161,17 +182,33 @@ const NewEffects = (props) => {
 	const renderAspects = () => {
 		return (
 			<div>
-				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one or more aspects</Divider>
+				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
+					or more aspects</Divider>
 				<label>Happiness: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHappiness', value)} />
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcHappiness', value)}
+				/>
 				<label>Health: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHealth', value)} />
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcHealth', value)}
+				/>
 				<label>Security: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcSecurity', value)} />
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcSecurity', value)}
+				/>
 				<label>Diplomacy: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcDiplomacy', value)} />
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcDiplomacy', value)}
+				/>
 				<label>Politics: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcPolitics', value)} />
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcPolitics', value)}
+				/>
 			</div>
 		);
 	};
@@ -196,7 +233,10 @@ const NewEffects = (props) => {
 							autoheal = `Autoheal at the end of round ${expires}`;
 						}
 						return (
-							<Checkbox value={injury._id} key={index}>
+							<Checkbox
+								value={injury._id}
+								key={index}
+							>
 								{injury.name} ({autoheal}).
 							</Checkbox>
 						);
@@ -229,23 +269,51 @@ const NewEffects = (props) => {
 			return (
 				<Panel>
 					Name: {selected.name}
-					<textarea value={selected.name} className="textStyle" onChange={(event) => handleEdit('name', event.target.value)}></textarea>
+					<textarea
+						value={selected.name}
+						className="textStyle"
+						onChange={(event) => handleEdit('name', event.target.value)}
+					></textarea>
 					Description:
-					<textarea rows="4" value={selected.description} className="textStyle" onChange={(event) => handleEdit('description', event.target.value)}></textarea>
+					<textarea
+						rows="4"
+						value={selected.description}
+						className="textStyle"
+						onChange={(event) => handleEdit('description', event.target.value)}
+					></textarea>
 					Dice
-					<textarea value={selected.dice} className="textStyle" onChange={(event) => handleEdit('dice', event.target.value)}></textarea>
+					<textarea
+						value={selected.dice}
+						className="textStyle"
+						onChange={(event) => handleEdit('dice', event.target.value)}
+					></textarea>
 					Uses
-					<InputNumber value={selected.uses} onChange={(value) => handleEdit('uses', value)} />
+					<InputNumber
+						value={selected.uses}
+						onChange={(value) => handleEdit('uses', value)}
+					/>
 					{selected.type === 'Trait' && (
 						<div>
-							<Divider />
-							<Toggle onChange={handleArcane} checked={arcane} checkedChildren=" Arcane" unCheckedChildren=" Not Arcane"></Toggle>
+							<Divider/>
+							<Toggle
+								onChange={handleArcane}
+								checked={arcane}
+								checkedChildren=" Arcane"
+								unCheckedChildren=" Not Arcane"
+							></Toggle>
 						</div>
 					)}
 					{selected.type === 'MortalBond' && (
 						<div>
 							Bond Level
-							<InputPicker labelKey="label" valueKey="value" data={mortalPickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={(event) => handleEdit('level', event)} />
+							<InputPicker
+								labelKey="label"
+								valueKey="value"
+								data={mortalPickerData}
+								defaultValue={selected.level}
+								style={{width: '100%'}}
+								onChange={(event) => handleEdit('level', event)}
+							/>
 						</div>
 					)}
 				</Panel>
@@ -256,7 +324,12 @@ const NewEffects = (props) => {
 	};
 
 	return (
-		<Modal size="lg" placement="right" show={props.show} onHide={handleExit}>
+		<Modal
+			size="lg"
+			placement="right"
+			show={props.show}
+			onHide={handleExit}
+		>
 			<Modal.Header></Modal.Header>
 			{
 				<Modal.Body>
@@ -264,13 +337,21 @@ const NewEffects = (props) => {
 						{/* <Button  appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'cyan'} onClick={type !== 'bond' ? () => handleType('bond') : undefined}>
 							Edit Bond
 						</Button> */}
-						<Button appearance={type !== 'asset' ? 'ghost' : 'primary'} color={'blue'} onClick={type !== 'asset' ? () => handleType('asset') : undefined}>
+						<Button
+							appearance={type !== 'asset' ? 'ghost' : 'primary'}
+							color={'blue'}
+							onClick={type !== 'asset' ? () => handleType('asset') : undefined}
+						>
 							Edit Resource
 						</Button>
 						{/* <Button appearance={type !== 'map' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
 							Unlock Map Tile
 						</Button> */}
-						<Button appearance={type !== 'character' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'character' ? () => handleType('character') : undefined}>
+						<Button
+							appearance={type !== 'character' ? 'ghost' : 'primary'}
+							color={'orange'}
+							onClick={type !== 'character' ? () => handleType('character') : undefined}
+						>
 							Unlock Character
 						</Button>
 						{/* <Button appearance={type !== 'addInjury' ? 'ghost' : 'primary'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
@@ -279,42 +360,91 @@ const NewEffects = (props) => {
 						{/* <Button appearance={type !== 'healInjuries' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
 							Heal Injuries
 						</Button> */}
-						<Button appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}>
+						<Button
+							appearance={type !== 'aspect' ? 'ghost' : 'primary'}
+							color={'orange'}
+							onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}
+						>
 							Edit an Aspect
 						</Button>
-						<Button appearance={type !== 'new' ? 'ghost' : 'primary'} color={'green'} onClick={type !== 'new' ? () => handleType('new') : undefined}>
+						<Button
+							appearance={type !== 'new' ? 'ghost' : 'primary'}
+							color={'green'}
+							onClick={type !== 'new' ? () => handleType('new') : undefined}
+						>
 							New Resource
 						</Button>
 					</ButtonGroup>
-					<Divider />
+					<Divider/>
 					{type === 'new' && selected && (
 						<div>
 							Type
-							<InputPicker labelKey="label" valueKey="value" data={pickerData} defaultValue={selected.level} style={{ width: '100%' }} onChange={(event) => handleEdit('type', event)} />
+							<InputPicker
+								labelKey="label"
+								valueKey="value"
+								data={pickerData}
+								defaultValue={selected.level}
+								style={{width: '100%'}}
+								onChange={(event) => handleEdit('type', event)}
+							/>
 							{selected.type === 'GodBond' && (
-								<SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={gods} valueKey="_id" labelKey="characterName" />
+								<SelectPicker
+									block
+									placeholder={`${selected.type} with...`}
+									onChange={(event) => handleEdit('with', event)}
+									data={gods}
+									valueKey="_id"
+									labelKey="characterName"
+								/>
 							)}
 							{selected.type === 'MortalBond' && (
-								<SelectPicker block placeholder={`${selected.type} with...`} onChange={(event) => handleEdit('with', event)} data={mortals} valueKey="_id" labelKey="characterName" />
+								<SelectPicker
+									block
+									placeholder={`${selected.type} with...`}
+									onChange={(event) => handleEdit('with', event)}
+									data={mortals}
+									valueKey="_id"
+									labelKey="characterName"
+								/>
 							)}
 							{renderAss()}
 						</div>
 					)}
 					{(type === 'bond' || type === 'asset') && (
 						<div>
-							<SelectPicker block placeholder={`Edit ${type}`} onChange={(event) => handleSelect(event)} data={array} valueKey="_id" labelKey="name" groupBy="type"></SelectPicker>
+							<SelectPicker
+								block
+								placeholder={`Edit ${type}`}
+								onChange={(event) => handleSelect(event)}
+								data={array}
+								valueKey="_id"
+								labelKey="name"
+								groupBy="type"
+							></SelectPicker>
 							{renderAss()}
 						</div>
 					)}
 					{type === 'map' && (
 						<div>
-							<CheckPicker placeholder="Select Location(s) to unlock..." onSelect={(event) => handleLocSelect(event)} data={sortedLocations} valueKey="_id" labelKey="name" />
+							<CheckPicker
+								placeholder="Select Location(s) to unlock..."
+								onSelect={(event) => handleLocSelect(event)}
+								data={sortedLocations}
+								valueKey="_id"
+								labelKey="name"
+							/>
 						</div>
 					)}
 					{type === 'aspect' && <div>{renderAspects()}</div>}
 					{type === 'character' && (
 						<div>
-							<CheckPicker placeholder="Select character(s) to unlock..." onSelect={(event) => handleCharSelect(event)} data={sortedCharacters} valueKey="_id" labelKey="characterName" />
+							<CheckPicker
+								placeholder="Select character(s) to unlock..."
+								onSelect={(event) => handleCharSelect(event)}
+								data={sortedCharacters}
+								valueKey="_id"
+								labelKey="characterName"
+							/>
 						</div>
 					)}
 					{type === 'healInjuries' && (
@@ -327,23 +457,42 @@ const NewEffects = (props) => {
 						<div>
 							<Divider>Add Injury</Divider>
 							<div>Title:</div>
-							<Input onChange={(value) => handleAddInjury('name', value)} style={{ marginBottom: ' 10px' }}></Input>
+							<Input
+								onChange={(value) => handleAddInjury('name', value)}
+								style={{marginBottom: ' 10px'}}
+							></Input>
 							{!selected.permanent && (
 								<div>
 									Duration:
-									<InputNumber min={0} onChange={(value) => handleAddInjury('duration', value)} style={{ marginBottom: ' 10px' }} />
+									<InputNumber
+										min={0}
+										onChange={(value) => handleAddInjury('duration', value)}
+										style={{marginBottom: ' 10px'}}
+									/>
 								</div>
 							)}
-							<Toggle onChange={(checked) => handleAddInjury('permanent', checked)} checked={selected.permanent} checkedChildren="Permanent Injury" unCheckedChildren="Not Permanent"></Toggle>
+							<Toggle
+								onChange={(checked) => handleAddInjury('permanent', checked)}
+								checked={selected.permanent}
+								checkedChildren="Permanent Injury"
+								unCheckedChildren="Not Permanent"
+							></Toggle>
 						</div>
 					)}
 				</Modal.Body>
 			}
 			<Modal.Footer>
-				<Button disabled={type === ''} onClick={handleSubmit} appearance="primary">
+				<Button
+					disabled={type === ''}
+					onClick={handleSubmit}
+					appearance="primary"
+				>
 					Confirm
 				</Button>
-				<Button onClick={handleExit} appearance="subtle">
+				<Button
+					onClick={handleExit}
+					appearance="subtle"
+				>
 					Cancel
 				</Button>
 			</Modal.Footer>

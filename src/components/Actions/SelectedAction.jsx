@@ -4,12 +4,12 @@ import { Button, ButtonGroup, Content, Divider, FlexboxGrid, Icon, IconButton } 
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted } from '../../redux/entities/playerActions';
-import NewComment from './NewComment';
-import NewResult from './NewResult';
+import NewComment from './Modals/NewComment';
+import NewResult from './Modals/NewResult';
 import Submission from './Submission';
 import Comment from './Comment';
 import Result from './Result';
-import NewEffects from './NewEffect';
+import NewEffects from './Modals/NewEffect';
 import Effect from './Effect';
 
 const SelectedAction = (props) => {
