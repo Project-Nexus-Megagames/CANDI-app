@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Loader } from 'rsuite';
 import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
@@ -7,11 +7,12 @@ import NewAction from './NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
 import { Box, Container } from "@chakra-ui/react";
+import usePermissions from "../../hooks/usePermissions";
 
 const Actions = (props) => {
     const [selected, setSelected] = useState(null);
     const [showNew, setShowNew] = useState(false);
-    const gameConfig = useSelector((state) => state.gameConfig);
+    const {isControl} = usePermissions();
 
     useEffect(() => {
         if (selected) {
@@ -35,9 +36,6 @@ const Actions = (props) => {
         );
     }
 
-    const actionTypes = [];
-    for (const actionType of gameConfig.actionTypes) actionTypes.push(actionType.type);
-
     return (
         <Box
             overflowY={'scroll'}
@@ -53,15 +51,10 @@ const Actions = (props) => {
                     onChange={(value) => props.setFilter(value)}
                     value={props.filter}
                     onClick={() => setShowNew(true)}
-                    control={props.control}
-                    filteredActions={props.filteredActions}
-                    myActions={props.myActions}
-                    actionTypes={actionTypes}
-                    selected={selected}
+                    actions={isControl ? props.filteredActions : props.myActions}
                     handleSelect={handleSelect}
                 />
 
-                {!selected && <h4 style={{width: '100%'}}>No Action Selected</h4>}
                 {selected &&
                     <Action
                         action={selected}
@@ -82,7 +75,6 @@ const mapStateToProps = (state) => ({
     actions: state.actions.list,
     explore: state.auth.user ? getCurrentExplores(state) : 'undefined',
     user: state.auth.user,
-    control: state.auth.character ? state.auth.character.tags.some((el) => el.toLowerCase() === 'control') : state.auth.control,
     filter: state.actions.filter,
     login: state.auth.login,
     gamestate: state.gamestate,

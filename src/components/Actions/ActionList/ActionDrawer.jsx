@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 
-function ActionDrawer(props) {
+function ActionDrawer({actions, value, onChange, onClick, handleSelect}) {
     const {isOpen, onClose} = useDisclosure({defaultIsOpen: true});
     const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
 
@@ -51,8 +51,8 @@ function ActionDrawer(props) {
                                 <SearchIcon/>
                             </InputLeftElement>
                             <Input
-                                onChange={() => props.onChange()}
-                                value={props.value}
+                                onChange={onChange}
+                                value={value}
                                 placeholder="Search"
                                 color='white'
                             />
@@ -63,7 +63,7 @@ function ActionDrawer(props) {
                         >
                             <IconButton
                                 icon={<AddIcon/>}
-                                onClick={props.onClick}
+                                onClick={onClick}
                                 colorScheme={'green'}
                                 style={{
                                     marginLeft: '1rem'
@@ -75,10 +75,8 @@ function ActionDrawer(props) {
                 </DrawerHeader>
                 <DrawerBody>
                     <ActionList
-                        actions={props.control ? props.filteredActions : props.myActions}
-                        actionTypes={props.actionTypes}
-                        selected={props.selected}
-                        handleSelect={props.handleSelect}
+                        actions={actions}
+                        handleSelect={handleSelect}
                     />
                 </DrawerBody>
                 <DrawerFooter/>

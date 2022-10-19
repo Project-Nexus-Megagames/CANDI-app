@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { getMyCharacter } from '../../../redux/entities/characters';
 import {
     Accordion,
     AccordionButton,
@@ -18,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import ActionTag from "./ActionTag";
 
-function ActionList(props) {
+function ActionList({actions, handleSelect}) {
     const [rounds, setRounds] = useState([]);
 
     useEffect(() => {
@@ -27,11 +25,11 @@ function ActionList(props) {
         } catch (err) {
             console.log(err);
         }
-    }, [props.actions])
+    }, [actions])
 
     const createListCategories = () => {
         const rounds = [];
-        for (const action of props.actions) {
+        for (const action of actions) {
             if (!rounds.some((item) => item === action.round)) {
                 rounds.push(action.round);
             }
@@ -58,7 +56,7 @@ function ActionList(props) {
     };
 
     const sortedActions = (currRound) => {
-        return props.actions
+        return actions
             .filter((action) => action.round === currRound)
             .sort((a, b) => {
                 // sort the catagories alphabetically
@@ -115,7 +113,7 @@ function ActionList(props) {
                                 {sortedActions(round).map((action, index) => (
                                         <Flex
                                             key={index}
-                                            onClick={() => props.handleSelect(action)}
+                                            onClick={() => handleSelect(action)}
                                             style={{
                                                 marginTop: '0',
                                                 cursor: 'pointer',
@@ -188,12 +186,4 @@ const titleStyle = {
     overflow: 'ellipsis'
 };
 
-const mapStateToProps = (state) => ({
-    user: state.auth.user,
-    gamestate: state.gamestate,
-    myCharacter: state.auth.user ? getMyCharacter(state) : undefined
-});
-
-const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ActionList);
+export default ActionList;
