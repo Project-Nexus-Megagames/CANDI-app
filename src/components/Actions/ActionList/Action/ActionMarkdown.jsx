@@ -1,47 +1,22 @@
-import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import React from "react";
+import WordDivider from "../../../WordDivider";
 
 function ActionMarkdown({header, markdown, tooltip}) {
-
-    function getHeading() {
-        return tooltip !== '' ? (
-            <Tooltip
-                label={tooltip}
-                aria-label='A tooltip'
-            >
-                <Heading
-                    as='h5'
-                    size='md'
-                >
-                    {header}
-                </Heading>
-            </Tooltip>
-        ) : (
-            <Heading
-                as='h5'
-                size='md'
-            >
-                {header}
-            </Heading>
-        );
-
-    }
-
     return (
         <Box>
-            <Flex
-                justifyContent='center'
-            >
-                <Box>
-                    {getHeading()}
-                </Box>
-            </Flex>
+            <WordDivider
+                word={header}
+                tooltip={tooltip}
+            />
             <Box
                 textAlign='left'
                 whiteSpace='pre-line'
                 wordBreak='breakword'
+                marginTop='0.5rem'
+                marginBottom='0.5rem'
             >
                 <ReactMarkdown
                     remarkPlugins={[remarkGfm]}

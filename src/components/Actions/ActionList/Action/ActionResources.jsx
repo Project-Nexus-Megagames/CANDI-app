@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Divider, Flex, Heading, IconButton, SimpleGrid, Tag, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, SimpleGrid, Tag, useBreakpointValue } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
 import { CloseIcon } from "@chakra-ui/icons";
+import WordDivider from "../../../WordDivider";
 
 function ActionResources({assets}) {
     const assetList = useSelector(state => state.assets.list);
@@ -91,15 +92,7 @@ function ActionResources({assets}) {
 
     return (
         <Box>
-            <Box>
-                <Divider orientation='horizontal'/>
-                <Heading
-                    as='h5'
-                    size={'md'}
-                >
-                    Resources
-                </Heading>
-            </Box>
+            <WordDivider word='Resources'/>
             <SimpleGrid
                 columns={breakpoints.columns}
                 rows={breakpoints.rows}

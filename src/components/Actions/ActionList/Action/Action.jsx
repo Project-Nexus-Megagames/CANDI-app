@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, AccordionItem, AccordionPanel, Box, Divider, Flex } from "@chakra-ui/react";
+import { Accordion, AccordionItem, AccordionPanel, Box, Flex } from "@chakra-ui/react";
 import { getFadedColor } from "../../../../scripts/frontend";
 import ActionHeader from "./ActionHeader";
 import ActionResources from "./ActionResources";
@@ -51,7 +51,6 @@ const Action = (props) => {
                             time={getTime(props.action.submission.createdAt)}
                         />
                         <AccordionPanel>
-                            <Divider orientation='horizontal'/>
                             <ActionMarkdown
                                 header='Description'
                                 markdown={props.action.submission.description}

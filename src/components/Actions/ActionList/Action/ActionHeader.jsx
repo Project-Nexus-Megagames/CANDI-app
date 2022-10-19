@@ -9,7 +9,7 @@ function ActionHeader({action, time}) {
 
     const creator = action.creator;
     return (
-        <h5>
+        <h7>
             <AccordionButton>
                 <Box
                     display='flex'
@@ -28,13 +28,13 @@ function ActionHeader({action, time}) {
                         justifyContent='center'
                     >
                         <Heading
-                            as="h5"
+                            as="h8"
                             size={'lg'}
                         >
                             {action.name}
                         </Heading>
-                        <div>{creator.playerName} - {creator.characterName}</div>
-                        <div>{time}</div>
+                        <Box as={'p'}>{creator.playerName} - {creator.characterName}</Box>
+                        <Box>{time}</Box>
                         <ActionTags
                             tags={action.tags}
                             actionId={action._id}
@@ -48,7 +48,7 @@ function ActionHeader({action, time}) {
                     </Box>
                 </Flex>
             </AccordionButton>
-        </h5>
+        </h7>
     );
 }
 
