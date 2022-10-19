@@ -66,22 +66,11 @@ const Actions = (props) => {
         <Box
             overflowY={'scroll'}
         >
-            <NavigationBar/>
-            <Container
-                height={'calc(100vh - 50px)'}
-                centerContent
-                maxW={'1200px'}
-                minW={'350px'}
-            >
-                <ActionDrawer
-                    onChange={(value) => props.setFilter(value)}
-                    value={props.filter}
-                    onClick={() => console.log('create new action')}
-                    actions={actionList}
-                    handleSelect={() => console.log('something selected')}
-                />
-
-                <Flex>
+            <NavigationBar>
+                <Flex
+                    marginTop='2rem'
+                    width={'100%'}
+                >
                     <InputGroup>
                         <InputLeftElement
                             pointerEvents='none'
@@ -95,7 +84,9 @@ const Actions = (props) => {
                             color='white'
                         />
                     </InputGroup>
-                    <Box>
+                    <Box
+                        marginLeft='1rem'
+                    >
                         <Button
                             onClick={() => setShowNew(true)}
                             leftIcon={<PlusSquareIcon/>}
@@ -106,6 +97,20 @@ const Actions = (props) => {
                         </Button>
                     </Box>
                 </Flex>
+            </NavigationBar>
+            <Container
+                height={'calc(100vh - 50px)'}
+                centerContent
+                maxW={'1200px'}
+                minW={'350px'}
+            >
+                <ActionDrawer
+                    onChange={(value) => props.setFilter(value)}
+                    value={props.filter}
+                    onClick={() => console.log('create new action')}
+                    actions={actionList}
+                    handleSelect={() => console.log('something selected')}
+                />
 
                 <Accordion
                     defaultIndex={[0]}

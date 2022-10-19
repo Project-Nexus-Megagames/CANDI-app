@@ -1,97 +1,149 @@
 import React, { useEffect } from 'react';
-import { Icon, IconButton, FlexboxGrid, SelectPicker } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
-import { signOut, setCharacter } from '../../redux/entities/auth';
-import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../redux/entities/characters';
+import { setCharacter, signOut } from '../../redux/entities/auth';
+import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
+import { Box, Button, Container, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { ArrowBackIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import usePermissions from "../../hooks/usePermissions";
 
 const Navigation = (props) => {
-	const [days, setDays] = React.useState(0);
-	const [minutes, setMinutes] = React.useState(0);
-	const [hours, setHours] = React.useState(0);
-	const myChar = useSelector(getMyCharacter);
+    const [time, setTime] = React.useState('');
+    const myChar = useSelector(getMyCharacter);
+    const [selectedChar, setSelectedChar] = React.useState(myChar._id);
+    const currentCharacter = useSelector(getCharacterById(selectedChar));
+    const allCharacters = useSelector(state => state.characters.list);
+    const history = useHistory();
+    const {isControl} = usePermissions();
 
-	const [selectedChar, setSelectedChar] = React.useState(myChar._id);
-	const currentCharacter = useSelector(getCharacterById(selectedChar));
+    useEffect(() => {
+        renderTime();
+        setInterval(() => {
+            renderTime();
+            //clearInterval(interval);
+        }, 60000);
+    }, [props.gamestate.endTime]);
 
-	const allCharacters = useSelector(state => state.characters.list);
+    useEffect(() => {
+        props.setCharacter(currentCharacter);
+    }, [currentCharacter]);
 
-	const history = useHistory();
+    const handleCharChange = (charId) => {
+        console.log('charID', charId);
+        if (charId) {
+            setSelectedChar(charId);
+        } else setSelectedChar(myChar._id);
+    };
 
-	useEffect(() => {
-		renderTime(props.gamestate.endTime);
-		setInterval(() => {
-			renderTime(props.gamestate.endTime);
-			//clearInterval(interval);
-		}, 60000);
-	}, [props.gamestate.endTime]);
+    const getTimeToEndOfRound = () => {
+        return new Date(props.gamestate.endTime).getTime() - new Date().getTime();
+    }
 
-	useEffect(() => {
-		props.setCharacter(currentCharacter);
-	}, [currentCharacter]);
+    const renderTime = () => {
+        const distance = getTimeToEndOfRound();
+        const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
+        const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+        setTime(`${days} Days, ${hours} Hours, ${minutes} Minutes`);
+    };
 
-	const handleCharChange = (charId) => {
-		if (charId) {
-			setSelectedChar(charId);
-		} else setSelectedChar(myChar._id);
-	};
-
-	const renderTime = (endTime) => {
-		let countDownDate = new Date(endTime).getTime();
-		const now = new Date().getTime();
-		let distance = countDownDate - now;
-		let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		setDays(days);
-		setHours(hours);
-		setMinutes(minutes);
-	};
-
-	return (
-		<div style={{ height: '50px', backgroundColor: '#746D75', width: '100%', fontSize: '0.966em', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37' }}>
-			<FlexboxGrid justify="start" align="middle">
-				<FlexboxGrid.Item onClick={() => history.push('/home')} justify="start" colspan={1}>
-					<IconButton onClick={() => history.push('/home')} icon={<Icon icon="arrow-left" />} appearance="subtle" color="cyan" style={{}}></IconButton>
-				</FlexboxGrid.Item>
-				<FlexboxGrid.Item onClick={() => history.push('/home')} justify="start" colspan={1} />
-				<FlexboxGrid.Item colspan={19}>
-					<div>
-						<p>Round: {props.gamestate.round} </p>
-						{days > 0 && (
-							<p>
-								Time Left: {days} Days, {hours} Hours{' '}
-							</p>
-						)}
-						{hours > 0 && days <= 0 && (
-							<p>
-								Time Left: {hours} Hours, {minutes} Minutes
-							</p>
-						)}
-						{days + hours + minutes <= 0 && <p>Game Status: {props.gamestate.status}</p>}
-					</div>
-				</FlexboxGrid.Item>
-				<FlexboxGrid.Item colspan={3}>
-					{currentCharacter.tags.some((el) => el.toLowerCase() === 'control') && (
-						<p>
-							VIEW AS:
-							<SelectPicker data={allCharacters} valueKey="_id" labelKey="characterName" onChange={(event) => handleCharChange(event)}></SelectPicker>
-						</p>
-					)}
-				</FlexboxGrid.Item>
-			</FlexboxGrid>
-		</div>
-	);
+    return (
+        <Container
+            style={{
+                backgroundColor: '#0f131a',
+                width: '100%',
+                fontSize: '0.966em',
+                borderBottom: '3px solid',
+                borderRadius: 0,
+                borderColor: 'white',
+            }}
+            maxW={'1200px'}
+            minW={'350px'}
+            paddingTop={'1rem'}
+            paddingBottom={'1rem'}
+        >
+            <Flex
+                alignItems={'center'}
+            >
+                <Box
+                    onClick={() => history.push('/home')}
+                    justify="start"
+                    flex={1}
+                    display='flex'
+                    marginRight='auto'
+                >
+                    <IconButton
+                        onClick={() => history.push('/home')}
+                        icon={<ArrowBackIcon/>}
+                        variant='outline'
+                        aria-label={'go home'}
+                    />
+                </Box>
+                <Box
+                    display='flex'
+                    flex={3}
+                >
+                    <Box
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                        display='flex'
+                        flexDir={'column'}
+                        width={'100%'}
+                    >
+                        <p>Round: {props.gamestate.round} </p>
+                        <Box>Time Left: {time}</Box>
+                        {getTimeToEndOfRound <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
+                    </Box>
+                </Box>
+                <Box
+                    flex={1}
+                    display='flex'
+                    marginLeft='auto'
+                    justifyContent='right'
+                >
+                    {isControl && (
+                        <Menu>
+                            <MenuButton
+                                as={Button}
+                                rightIcon={<ChevronDownIcon/>}
+                                colorScheme={'#0f131a'}
+                                _hover={{bg: 'gray.400'}}
+                            >
+                                View As
+                            </MenuButton>
+                            <MenuList
+                                backgroundColor={'#0f131a'}
+                            >
+                                {allCharacters.map(character => (
+                                    <MenuItem
+                                        key={character._id}
+                                        value={character._id}
+                                        _hover={{bg: 'gray.400'}}
+                                        onClick={(event) => {
+                                            console.log(event);
+                                            handleCharChange(event.target.attributes.value);
+                                        }}
+                                    >
+                                        {character.characterName}
+                                    </MenuItem>
+                                ))}
+                            </MenuList>
+                        </Menu>
+                    )}
+                </Box>
+            </Flex>
+        </Container>
+    );
 };
 
 const mapStateToProps = (state) => ({
-	user: state.auth.user,
-	gamestate: state.gamestate
+    user: state.auth.user,
+    gamestate: state.gamestate
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	logOut: () => dispatch(signOut()),
-	setCharacter: (payload) => dispatch(setCharacter(payload))
+    logOut: () => dispatch(signOut()),
+    setCharacter: (payload) => dispatch(setCharacter(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
