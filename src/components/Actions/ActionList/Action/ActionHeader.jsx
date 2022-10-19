@@ -22,14 +22,16 @@ function ActionHeader({action, time}) {
                         marginRight='auto'
                     />
                 </Box>
-                <Flex flex={1}>
+                <Flex flex={3}>
                     <Box
                         alignItems='center'
                         justifyContent='center'
+                        width='100%'
                     >
                         <Heading
                             as="h8"
                             size={'lg'}
+                            textAlign={'center'}
                         >
                             {action.name}
                         </Heading>
