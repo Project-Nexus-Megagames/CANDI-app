@@ -32,8 +32,8 @@ function ActionHeader({action, time}) {
                         >
                             {action.name}
                         </Heading>
-                        <Box as={'p'}>{creator.playerName} - {creator.characterName}</Box>
-                        <Box>{time}</Box>
+                        <Box fontSize={'.9rem'}>{creator.playerName} - {creator.characterName}</Box>
+                        <Box fontSize={'.9rem'}>{time}</Box>
                         <ActionTags
                             tags={action.tags}
                             actionId={action._id}
