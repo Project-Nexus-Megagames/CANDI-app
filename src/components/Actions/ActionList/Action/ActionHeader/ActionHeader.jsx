@@ -3,7 +3,7 @@ import { AccordionButton, AccordionIcon, Avatar, Box, Flex, Heading } from "@cha
 import ActionTags from "./ActionTags";
 import ActionButtons from "./ActionButtons";
 
-function ActionHeader({action, time}) {
+function ActionHeader({action, time, toggleEdit}) {
     const creator = action.creator;
     return (
         <h7>
@@ -42,7 +42,10 @@ function ActionHeader({action, time}) {
                 </Flex>
                 <Flex flex={1}>
                     <Box marginLeft='auto'>
-                        <ActionButtons action={action}/>
+                        <ActionButtons
+                            action={action}
+                            toggleEdit={toggleEdit}
+                        />
                         <AccordionIcon marginTop='1rem'/>
                     </Box>
                 </Flex>

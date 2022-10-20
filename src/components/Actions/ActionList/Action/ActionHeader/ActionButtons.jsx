@@ -5,7 +5,7 @@ import { Box, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from 
 import { HiPencilAlt, HiTrash } from 'react-icons/hi';
 import socket from "../../../../../socket";
 
-function ActionButtons({action}) {
+function ActionButtons({action, toggleEdit}) {
     const {isControl, characterId} = usePermissions();
     const game = useSelector(state => state.gamestate);
     const buttonDirection = useBreakpointValue({base: 'column', md: 'row'});
@@ -19,6 +19,14 @@ function ActionButtons({action}) {
     const handlePublish = async () => {
         const id = action._id;
         socket.emit('request', {route: 'action', action: 'publish', id});
+    };
+
+    const deleteAction = async () => {
+        socket.emit('request', {
+            route: 'action',
+            action: 'delete',
+            data: {id: action._id}
+        });
     };
 
     //TODO: add logic for modal toggling when buttons are pressed
@@ -52,7 +60,10 @@ function ActionButtons({action}) {
                     <IconButton
                         disabled={isDisabled}
                         size="md"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                            toggleEdit(action)
+                            e.stopPropagation();
+                        }}
                         backgroundColor="orange"
                         icon={<Icon as={HiPencilAlt}/>}
                         marginTop='0.25rem'
@@ -61,7 +72,10 @@ function ActionButtons({action}) {
                     <IconButton
                         disabled={isDisabled}
                         size="md"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                            deleteAction();
+                            e.stopPropagation();
+                        }}
                         backgroundColor="red"
                         icon={<Icon as={HiTrash}/>}
                         marginTop='0.25rem'

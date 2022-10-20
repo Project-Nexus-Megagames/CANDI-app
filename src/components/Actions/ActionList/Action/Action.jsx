@@ -6,7 +6,7 @@ import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
 import ActionEffort from "./ActionEffort";
 
-const Action = ({action, toggleAssetInfo}) => {
+const Action = ({action, toggleAssetInfo, toggleEdit}) => {
     function getBorder() {
         const isUnpublishedAgenda = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0) && action.type === 'Agenda';
         return isUnpublishedAgenda
@@ -44,6 +44,7 @@ const Action = ({action, toggleAssetInfo}) => {
                     <ActionHeader
                         action={action}
                         time={getTime(action.submission.createdAt)}
+                        toggleEdit={toggleEdit}
                     />
                     <AccordionPanel>
                         <ActionMarkdown

@@ -1,36 +1,34 @@
 import React, { useState } from 'react';
 import { Button, Divider, Modal, Tag } from 'rsuite';
-import { useSelector } from "react-redux";
 
 function AssetInfo({asset, showInfo, closeInfo}) {
 	const [arcane, setArcane] = useState(false);
-	const assetList = useSelector(state => state.assets.list);
 
 	const handleClose = () => {
 		closeInfo();
 		setArcane(false);
-	};
+    };
 
-	const handleShow = () => {
-		if (asset.tags) {
-			for (const el of asset.tags) {
-				if (el === 'arcane') setArcane(true);
-			}
-		}
-	};
+    const handleShow = () => {
+        if (asset.tags) {
+            for (const el of asset.tags) {
+                if (el === 'arcane') setArcane(true);
+            }
+        }
+    };
 
-	if (!asset) {
-		return <></>
-	}
+    if (!showInfo) {
+        return <></>;
+    }
 
-	return (
-		<Modal
-			show={showInfo}
-			onHide={() => handleClose()}
-			onEnter={() => handleShow()}
-		>
-			<Modal.Header>
-				<Modal.Title>{asset.name}</Modal.Title>
+    return (
+        <Modal
+            show={showInfo}
+            onHide={() => handleClose()}
+            onEnter={() => handleShow()}
+        >
+            <Modal.Header>
+                <Modal.Title>{asset.name}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<p>Dice: {asset.dice}</p>

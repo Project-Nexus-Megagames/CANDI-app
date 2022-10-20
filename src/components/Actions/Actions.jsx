@@ -11,10 +11,12 @@ import usePermissions from "../../hooks/usePermissions";
 import WordDivider from "../WordDivider";
 import { PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import AssetInfo from "./AssetInfo";
+import EditAction from "./Modals/EditAction";
 
 const Actions = (props) => {
     const [showNewActionModal, setShowNewActionModal] = useState(false);
     const [assetInfo, setAssetInfo] = useState({show: false, asset: ''});
+    const [editAction, setEditAction] = useState({show: false, action: null})
     const {isControl} = usePermissions();
     const [rounds, setRounds] = useState([]);
 
@@ -62,8 +64,6 @@ const Actions = (props) => {
                 return 0;
             })
     }
-
-    console.log('assetInfo', assetInfo);
 
     const actionList = isControl ? props.filteredActions : props.myActions;
     return (
@@ -144,6 +144,9 @@ const Actions = (props) => {
                                         toggleAssetInfo={(asset) => {
                                             setAssetInfo({show: true, asset});
                                         }}
+                                        toggleEdit={(action) => {
+                                            setEditAction({show: true, action})
+                                        }}
                                     />
                             ))}
                         </Box>
@@ -160,6 +163,12 @@ const Actions = (props) => {
                     asset={assetInfo.asset}
                     showInfo={assetInfo.show}
                     closeInfo={() => setAssetInfo({asset: '', show: false})}
+                />
+
+                <EditAction
+                    action={editAction.action}
+                    showEdit={editAction.show}
+                    handleClose={() => setEditAction({action: null, show: false})}
                 />
             </Container>
         </Box>
