@@ -6,7 +6,7 @@ import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
 import ActionEffort from "./ActionEffort";
 
-const Action = ({action}) => {
+const Action = ({action, toggleAssetInfo}) => {
     function getBorder() {
         const isUnpublishedAgenda = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0) && action.type === 'Agenda';
         return isUnpublishedAgenda
@@ -60,6 +60,7 @@ const Action = ({action}) => {
                         />
                         <ActionResources
                             assets={action.submission.assets}
+                            toggleAssetInfo={toggleAssetInfo}
                         />
                     </AccordionPanel>
                 </AccordionItem>

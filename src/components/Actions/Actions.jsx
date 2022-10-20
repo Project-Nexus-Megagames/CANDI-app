@@ -10,9 +10,11 @@ import { Accordion, Box, Button, Container, Flex, Input, InputGroup, InputLeftEl
 import usePermissions from "../../hooks/usePermissions";
 import WordDivider from "../WordDivider";
 import { PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import AssetInfo from "./AssetInfo";
 
 const Actions = (props) => {
-    const [showNew, setShowNew] = useState(false);
+    const [showNewActionModal, setShowNewActionModal] = useState(false);
+    const [assetInfo, setAssetInfo] = useState({show: false, asset: ''});
     const {isControl} = usePermissions();
     const [rounds, setRounds] = useState([]);
 
@@ -61,6 +63,8 @@ const Actions = (props) => {
             })
     }
 
+    console.log('assetInfo', assetInfo);
+
     const actionList = isControl ? props.filteredActions : props.myActions;
     return (
         <Box
@@ -94,7 +98,7 @@ const Actions = (props) => {
                         marginLeft='1rem'
                     >
                         <Button
-                            onClick={() => setShowNew(true)}
+                            onClick={() => setShowNewActionModal(true)}
                             leftIcon={<PlusSquareIcon/>}
                             colorScheme='green'
                             variant='solid'
@@ -107,7 +111,7 @@ const Actions = (props) => {
                 <ActionDrawer
                     onChange={(e) => props.setFilter(e.target.value)}
                     value={props.filter}
-                    onClick={() => console.log('create new action')}
+                    onClick={() => setShowNewActionModal(true)}
                     actions={actionList}
                     handleSelect={() => console.log('something selected')}
                 />
@@ -137,6 +141,9 @@ const Actions = (props) => {
                                     <Action
                                         action={action}
                                         key={action._id}
+                                        toggleAssetInfo={(asset) => {
+                                            setAssetInfo({show: true, asset});
+                                        }}
                                     />
                             ))}
                         </Box>
@@ -144,9 +151,15 @@ const Actions = (props) => {
                 </Accordion>
 
                 <NewAction
-                    show={showNew}
-                    closeNew={() => setShowNew(false)}
+                    show={showNewActionModal}
+                    closeNew={() => setShowNewActionModal(false)}
                     gamestate={props.gamestate}
+                />
+
+                <AssetInfo
+                    asset={assetInfo.asset}
+                    showInfo={assetInfo.show}
+                    closeInfo={() => setAssetInfo({asset: '', show: false})}
                 />
             </Container>
         </Box>

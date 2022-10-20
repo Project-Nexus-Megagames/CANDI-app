@@ -5,7 +5,7 @@ import usePermissions from "../../../../hooks/usePermissions";
 import { CloseIcon } from "@chakra-ui/icons";
 import WordDivider from "../../../WordDivider";
 
-function ActionResources({assets}) {
+function ActionResources({assets, toggleAssetInfo}) {
     const assetList = useSelector(state => state.assets.list);
     const {isControl} = usePermissions();
     const breakpoints = useBreakpointValue({
@@ -79,11 +79,7 @@ function ActionResources({assets}) {
                 borderRadius={'10'}
                 marginTop={'2rem'}
                 cursor={retrievedAsset ? 'pointer' : 'initial'}
-                onClick={() => {
-                    //TODO: add show info logic
-                    //retrievedAsset &&
-                    console.log('am clicked');
-                }}
+                onClick={() => retrievedAsset && toggleAssetInfo(retrievedAsset)}
             >
                 {inner}
             </Flex>

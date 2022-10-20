@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Divider, Modal, Tag } from 'rsuite';
+import { useSelector } from "react-redux";
 
-function AssetInfo({ asset, showInfo, closeInfo }) {
+function AssetInfo({asset, showInfo, closeInfo}) {
 	const [arcane, setArcane] = useState(false);
+	const assetList = useSelector(state => state.assets.list);
 
 	const handleClose = () => {
 		closeInfo();
@@ -17,9 +19,12 @@ function AssetInfo({ asset, showInfo, closeInfo }) {
 		}
 	};
 
+	if (!asset) {
+		return <></>
+	}
+
 	return (
 		<Modal
-			
 			show={showInfo}
 			onHide={() => handleClose()}
 			onEnter={() => handleShow()}
@@ -33,7 +38,7 @@ function AssetInfo({ asset, showInfo, closeInfo }) {
 				<p>{asset.description}</p>
 				{asset.uses !== 999 && (
 					<React.Fragment>
-						<Divider />{' '}
+						<Divider/>{' '}
 						<div>
 							<b>Uses: {asset.uses}</b>{' '}
 							{arcane && <Tag color="violet">Arcane</Tag>}
@@ -42,7 +47,11 @@ function AssetInfo({ asset, showInfo, closeInfo }) {
 				)}
 			</Modal.Body>
 			<Modal.Footer>
-				<Button onClick={() => handleClose()} color="red" appearance="ghost">
+				<Button
+					onClick={() => handleClose()}
+					color="red"
+					appearance="ghost"
+				>
 					Close
 				</Button>
 			</Modal.Footer>
