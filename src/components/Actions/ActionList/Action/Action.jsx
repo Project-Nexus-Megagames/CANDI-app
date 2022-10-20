@@ -5,6 +5,7 @@ import ActionHeader from "./ActionHeader/ActionHeader";
 import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
 import ActionEffort from "./ActionEffort";
+import Feed from "./Feed";
 
 const Action = ({action, toggleAssetInfo, toggleEdit}) => {
     function getBorder() {
@@ -19,7 +20,6 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
         const time = new Date(date).toLocaleTimeString();
         return `${day} - ${time}`;
     };
-
 
     return (
         <Flex
@@ -47,21 +47,26 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
                         toggleEdit={toggleEdit}
                     />
                     <AccordionPanel>
-                        <ActionMarkdown
-                            header='Description'
-                            markdown={action.submission.description}
-                        />
-                        <ActionMarkdown
-                            tooltip='An out of character explanation of what you, the player, want to happen as a result.'
-                            header='Intent'
-                            markdown={action.submission.intent}
-                        />
-                        <ActionEffort
-                            submission={action.submission}
-                        />
-                        <ActionResources
-                            assets={action.submission.assets}
-                            toggleAssetInfo={toggleAssetInfo}
+                        <Box>
+                            <ActionMarkdown
+                                header='Description'
+                                markdown={action.submission.description}
+                            />
+                            <ActionMarkdown
+                                tooltip='An out of character explanation of what you, the player, want to happen as a result.'
+                                header='Intent'
+                                markdown={action.submission.intent}
+                            />
+                            <ActionEffort
+                                submission={action.submission}
+                            />
+                            <ActionResources
+                                assets={action.submission.assets}
+                                toggleAssetInfo={toggleAssetInfo}
+                            />
+                        </Box>
+                        <Feed
+                            action={action}
                         />
                     </AccordionPanel>
                 </AccordionItem>
