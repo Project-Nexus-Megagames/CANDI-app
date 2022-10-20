@@ -16,12 +16,10 @@ import {
     InputLeftElement,
     Tooltip,
     useBreakpointValue,
-    useDisclosure
 } from "@chakra-ui/react";
 import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 
-function ActionDrawer({actions, value, onChange, onClick, handleSelect}) {
-    const {isOpen, onClose} = useDisclosure({defaultIsOpen: true});
+function ActionDrawer({actions, value, onChange, onClick, handleSelect, isOpen, onClose}) {
     const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
 
     return (
@@ -40,7 +38,9 @@ function ActionDrawer({actions, value, onChange, onClick, handleSelect}) {
             >
                 <DrawerCloseButton/>
                 <DrawerHeader>
-                    <Center>
+                    <Center
+                        marginBottom='1rem'
+                    >
                         Action List
                     </Center>
                     <Flex>

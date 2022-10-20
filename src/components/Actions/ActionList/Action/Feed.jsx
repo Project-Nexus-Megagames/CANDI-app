@@ -81,7 +81,7 @@ function Feed({action}) {
             <WordDivider word={'Feed'}/>
             {list.map((item, index) => renderSwitch(item, index))}
             <Divider vertical/>
-            <div style={{transition: '3s ease', marginBottom: '30px'}}>
+            <div style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem'}}>
                 {!add && (
                     <IconButton
                         onClick={() => setAdd(true)}

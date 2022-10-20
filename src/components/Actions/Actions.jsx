@@ -6,10 +6,20 @@ import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './Modals/NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
-import { Accordion, Box, Button, Container, Flex, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import {
+    Accordion,
+    Box,
+    Button,
+    Container,
+    Flex,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    useDisclosure
+} from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
 import WordDivider from "../WordDivider";
-import { PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import AssetInfo from "./AssetInfo";
 import EditAction from "./Modals/EditAction";
 
@@ -19,6 +29,7 @@ const Actions = (props) => {
     const [editAction, setEditAction] = useState({show: false, action: null})
     const {isControl} = usePermissions();
     const [rounds, setRounds] = useState([]);
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     useEffect(() => {
         try {
@@ -81,6 +92,18 @@ const Actions = (props) => {
                     marginTop='2rem'
                     width={'100%'}
                 >
+                    <Box
+                        marginRight='1rem'
+                    >
+                        <Button
+                            onClick={() => onOpen()}
+                            leftIcon={<ChevronLeftIcon/>}
+                            colorScheme='orange'
+                            variant='solid'
+                        >
+                            Open Drawer
+                        </Button>
+                    </Box>
                     <InputGroup>
                         <InputLeftElement
                             pointerEvents='none'
@@ -114,6 +137,8 @@ const Actions = (props) => {
                     onClick={() => setShowNewActionModal(true)}
                     actions={actionList}
                     handleSelect={() => console.log('something selected')}
+                    isOpen={isOpen}
+                    onClose={onClose}
                 />
 
                 <Accordion

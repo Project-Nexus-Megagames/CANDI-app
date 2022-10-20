@@ -64,7 +64,7 @@ function ActionButtons({action, toggleEdit}) {
                             toggleEdit(action)
                             e.stopPropagation();
                         }}
-                        backgroundColor="orange"
+                        colorScheme="orange"
                         icon={<Icon as={HiPencilAlt}/>}
                         marginTop='0.25rem'
                         aria-label={'Edit Action'}

@@ -6,7 +6,7 @@ import ActionButtons from "./ActionButtons";
 function ActionHeader({action, time, toggleEdit}) {
     const creator = action.creator;
     return (
-        <h7>
+        <h5>
             <AccordionButton>
                 <Box
                     display='flex'
@@ -26,14 +26,23 @@ function ActionHeader({action, time, toggleEdit}) {
                         width='100%'
                     >
                         <Heading
-                            as="h8"
                             size={'md'}
                             textAlign={'center'}
                         >
                             {action.name}
                         </Heading>
-                        <Box fontSize={'.9rem'}>{creator.playerName} - {creator.characterName}</Box>
-                        <Box fontSize={'.9rem'}>{time}</Box>
+                        <Box
+                            fontSize={'.9rem'}
+                            fontWeight={'normal'}
+                        >
+                            {creator.playerName} - {creator.characterName}
+                        </Box>
+                        <Box
+                            fontSize={'.9rem'}
+                            fontWeight={'normal'}
+                        >
+                            {time}
+                        </Box>
                         <ActionTags
                             tags={action.tags}
                             actionId={action._id}
@@ -50,7 +59,7 @@ function ActionHeader({action, time, toggleEdit}) {
                     </Box>
                 </Flex>
             </AccordionButton>
-        </h7>
+        </h5>
     );
 }
 
