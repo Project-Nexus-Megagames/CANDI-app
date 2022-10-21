@@ -17,7 +17,7 @@ const NewActionUr = (props) => {
 	const myCharacter = useSelector(getMyCharacter);
 	const myAssets = useSelector(getMyAssets);
 
-	const [effort, setEffort] = React.useState({ effortType: 'Normal', amount: 0 });
+	const [effort, setEffort] = React.useState({ effortType: 'Main', amount: 0 });
 	const [resource, setResource] = React.useState([]);
 	const [actionType, setActionType] = React.useState(false);
 	const [actionSubType, setActionSubType] = React.useState(false);
@@ -35,7 +35,7 @@ const NewActionUr = (props) => {
 	const setMaxEffort = () => {
 		let charEffort = getThisEffort(myCharacter.effort, actionType.effortTypes[0]);
 		setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
-        if (charEffort > 0) setEffort({ effortType: effort.effortType, amount: 1 });
+        if (charEffort > 0) setEffort({ effortType: actionType.effortTypes[0], amount: 1 });
 	};
 
 	useEffect(() => {
@@ -92,21 +92,10 @@ const NewActionUr = (props) => {
 	};
 
 	function isDisabled(effort) {
-		if (description.length < 10 || intent.length < 10 || name.length < 10) return true;
-		if (!actionLocation || !actionSubType) return true;
+		if (description.length < 10 || name.length < 10) return true;
+		if (!actionLocation) return true;
 		if (effort.amount === 0 || effort <= 0) return true;
 		else return false;
-	}
-
-	function formattedUsedAssets() {
-		let temp = [];
-		let assets = myAssets;
-		assets = assets.filter((el) => el.uses <= 0 || el.status.used);
-
-		for (const asset of assets) {
-			temp.push(asset._id);
-		}
-		return temp;
 	}
 
 	return (
@@ -172,7 +161,7 @@ const NewActionUr = (props) => {
 							)}
 							<textarea rows="6" value={description} style={textStyle} onChange={(event) => setDescription(event.target.value)}></textarea>
 							<br></br>
-							<FlexboxGrid>
+							{actionType.type === 'Main' && <div>
 								{"Intent - What is your intended outcome? (1000 character limit) - "}
 								{10 - intent.length > 0 && (
 									<Tag style={{ color: 'black' }} color={'orange'}>
@@ -192,7 +181,7 @@ const NewActionUr = (props) => {
 								</Tag>
 								)}
 								<textarea rows="6" value={intent} style={textStyle} onChange={(event) => setIntent(event.target.value)}></textarea>
-							</FlexboxGrid>
+							</div>}
 							<FlexboxGrid>
 								{false && <FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align="middle" colspan={6}>
 									<h5 style={{ textAlign: 'center' }}>
@@ -222,28 +211,32 @@ const NewActionUr = (props) => {
 									<br />
 									<Slider graduated min={0} max={max} defaultValue={0} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
 								</FlexboxGrid.Item>}
+								
 								<FlexboxGrid.Item colspan={10}>
-									<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
-									{"1) "} 
-									{arg0.length > 500 && <Tag color={'red'}>
-										<Icon icon="bullhorn"/>
-										- Warning - Too Long!
-									</Tag>}
-									<textarea rows="1" value={arg0} style={textStyle} onChange={(event) => setArg0(event.target.value)}></textarea>
+									{actionType.type === 'Main' && <div>
+										<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
+										{"1) "} 
+										{arg0.length > 500 && <Tag color={'red'}>
+											<Icon icon="bullhorn"/>
+											- Warning - Too Long!
+										</Tag>}
+										<textarea rows="1" value={arg0} style={textStyle} onChange={(event) => setArg0(event.target.value)}></textarea>
 
-									{"2) "}
-									{arg1.length > 500 && <Tag color={'red'}>
-										<Icon icon="bullhorn"/>
-										- Warning - Too Long!
-									</Tag>}
-									<textarea rows="1" value={arg1} style={textStyle} onChange={(event) => setArg1(event.target.value)}></textarea>
+										{"2) "}
+										{arg1.length > 500 && <Tag color={'red'}>
+											<Icon icon="bullhorn"/>
+											- Warning - Too Long!
+										</Tag>}
+										<textarea rows="1" value={arg1} style={textStyle} onChange={(event) => setArg1(event.target.value)}></textarea>
 
-									{"3) "}
-									{arg2.length > 500 && <Tag color={'red'}>
-										<Icon icon="bullhorn"/>
-										- Warning - Too Long!
-									</Tag>}
-									<textarea rows="1" value={arg2} style={textStyle} onChange={(event) => setArg2(event.target.value)}></textarea>
+										{"3) "}
+										{arg2.length > 500 && <Tag color={'red'}>
+											<Icon icon="bullhorn"/>
+											- Warning - Too Long!
+										</Tag>}
+										<textarea rows="1" value={arg2} style={textStyle} onChange={(event) => setArg2(event.target.value)}></textarea>
+									</div>}
+
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
@@ -257,9 +250,16 @@ const NewActionUr = (props) => {
 								>
 									{actionType.subTypes && actionType.subTypes.length >0 && <div>
                       What Kind of action is this? -{' '}
-                      {actionType.subTypes.map((type, index) => (
-                          <Tag index={index}>{type}</Tag>
-                      ))}
+											{!actionSubType && (
+												<Tag style={{ color: 'black' }} color={'orange'}>
+													<Icon icon="close" />
+												</Tag>
+											)}
+											{actionSubType && (
+												<Tag color={'green'}>
+													<Icon icon="check" />
+												</Tag>
+											)}
                       <SelectPicker 
                           searchable={false}
                           data={actionType.subTypes.map( item => ({label: item, value: item}) )}
@@ -272,6 +272,16 @@ const NewActionUr = (props) => {
 
 									{locations && locations.length >0 && <div>
                       Where is this Action Happening? -{' '}
+											{!actionLocation && (
+												<Tag style={{ color: 'black' }} color={'orange'}>
+													<Icon icon="close" />
+												</Tag>
+											)}
+											{actionLocation && (
+												<Tag color={'green'}>
+													<Icon icon="check" />
+												</Tag>
+											)}
                       <SelectPicker 
                           data={locations.map( item => ({label: item.name, value: item._id}) )}
                           value={actionLocation}

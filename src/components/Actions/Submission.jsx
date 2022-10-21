@@ -320,7 +320,7 @@ const Submission = (props) => {
 					<p style={slimText}>Description</p>
 					<ReactMarkdown children={submission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 
-					{!props.special && (
+					{!submission.intent && submission.intent.length > 0 && (
 						<div>
 							<Whisper
 								placement="top"
@@ -346,10 +346,11 @@ const Submission = (props) => {
 						</div>
 					)}
 
-					<p style={slimText}>Arguments</p>
+					
+					{actionType.type === 'Main' && <p style={slimText}>Arguments</p>}
 					{props.action.arguments.map((aaaarrrg, index) => (
 						<div index={index}>
-							<b>{index+1}) {aaaarrrg.text}</b>
+							{aaaarrrg.text.length > 0 && <b>{index+1}) {aaaarrrg.text}</b>}
 						</div>
 					))}
 

@@ -317,12 +317,12 @@ const ActionTable = () => {
 							<GridItem overflow="hidden">
 								<Text>{item.creator.characterName}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							{/* <GridItem overflow="hidden">
 								<Text>{renderAssets(item.submission)}</Text>
 							</GridItem>
 							<GridItem overflow="hidden">
 								<Text>{renderDicePool(item.submission)}</Text>
-							</GridItem>
+							</GridItem> */}
 							<GridItem overflow="hidden">
 								<Input defaultValue={item.diceresult} onBlur={(event) => handleDiceResult(item._id, event.target.value)}></Input>
 							</GridItem>

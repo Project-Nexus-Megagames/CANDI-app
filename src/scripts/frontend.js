@@ -11,13 +11,15 @@ function getFadedColor(color, fade = 1) {
 
 		case 'Normal':
 		case 'Default':
+		case 'Main':
 			return `#5b26b0`;
 		case 'Default-rs':
 		case 'Normal-rs':
+		case 'Main-rs':
 			return `violet`;
 
-		case 'Auxilliery - Army':
-		case 'Auxilliery - Army-rs':
+		case 'Auxiliary - Army':
+		case 'Auxiliary - Army-rs':
 			return `red`;
 
 		case 'Control':
