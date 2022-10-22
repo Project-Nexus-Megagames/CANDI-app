@@ -52,6 +52,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "client": "react-scripts start",
+    "serve": "serve -s build"
     "server": "npm run server --prefix ../CANDI-server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint"
