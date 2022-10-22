@@ -34,6 +34,7 @@
     "redux": "^4.0.5",
     "remark-gfm": "^3.0.0",
     "rsuite": "^4.10.3",
+    "serve": "^13.0.2",
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.0.1",
     "web-vitals": "^0.2.4"
