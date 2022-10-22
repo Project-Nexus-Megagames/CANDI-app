@@ -78,7 +78,7 @@ const Actions = (props) => {
 								borderRight: '1px solid rgba(255, 255, 255, 0.12)'
 							}}
 						>
-							<ActionList actions={props.control ? props.filteredActions : props.myActions} actionTypes={actionTypes} selected={selected} handleSelect={handleSelect} />
+							<ActionList actions={props.filteredActions} actionTypes={actionTypes} selected={selected} handleSelect={handleSelect} />
 						</div>
 						ActionList
 					</PanelGroup>
