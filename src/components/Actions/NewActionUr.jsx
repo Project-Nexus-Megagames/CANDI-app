@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Modal, Button, Slider, Tag, FlexboxGrid, Icon, CheckPicker, Loader, Whisper, Tooltip, ButtonGroup, ButtonToolbar, Dropdown, SelectPicker } from 'rsuite';
+import { Modal, Button, Slider, Tag, FlexboxGrid, Icon, CheckPicker, Loader, Whisper, Tooltip, ButtonGroup, ButtonToolbar, Dropdown, SelectPicker, Divider } from 'rsuite';
 import { getFadedColor, getIcon, getThisEffort } from '../../scripts/frontend';
 import { getMyAssets } from '../../redux/entities/assets';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -81,14 +81,14 @@ const NewActionUr = (props) => {
 			creator: myCharacter._id,
 			numberOfInjuries: myCharacter.injuries.length
 		};
-		// setActionType(false);
-		// setDescription('');
-		// setIntent('');
-		// setName('');
-		// setResource([]);
+		setActionType(false);
+		setDescription('');
+		setIntent('');
+		setName('');
+		setResource([]);
 
 		socket.emit('request', { route: 'action', action: 'create', data });
-		// props.closeNew();
+		props.closeNew();
 	};
 
 	function isDisabled(effort) {
@@ -128,6 +128,7 @@ const NewActionUr = (props) => {
 				</ButtonToolbar>
 				{actionType.type && (
 					<div>
+						{!actionType.type === 'Main' && <Divider>Auxilliary: {myCharacter.auxName} ({myCharacter.auxSpeciality})</Divider>}
 						<form>
 							Name:
 							{10 - name.length > 0 && (

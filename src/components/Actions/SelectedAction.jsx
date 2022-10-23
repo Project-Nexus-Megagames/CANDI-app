@@ -149,6 +149,7 @@ const SelectedAction = (props) => {
 				gamestate={props.gamestate}
 				submission={props.selected.submission}
 				selected={props.selected}
+				character={props.characters.find(el => el._id === props.selected.creator._id)}
 			/>}
 
 			<NewComment
@@ -173,6 +174,7 @@ const SelectedAction = (props) => {
 const mapStateToProps = (state) => ({
 	user: state.auth.user,
 	gamestate: state.gamestate,
+	characters: state.characters.list,
 	actions: state.actions.list,
 	assetsRedux: state.assets.list,
 	usedAssets: getMyUsedAssets(state),

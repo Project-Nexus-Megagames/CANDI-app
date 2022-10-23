@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import { Modal, Button, Panel, ButtonGroup } from 'rsuite';
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Select } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import { cloudinaryUploadMedium } from '../../services/uploads';
@@ -228,6 +228,34 @@ const ModifyCharacter = (props) => {
 									</Text>
 								</FormControl>
 							</HStack>
+
+							<HStack w="100%">
+								<FormControl>
+									<FormLabel>speciality </FormLabel>
+									<Select color='white' {...register('speciality')}>
+										<option style={{ backgroundColor: 'black' }} value='Aether'>Aether</option>
+										<option style={{ backgroundColor: 'black' }} value='Grease'>Grease</option>
+										<option style={{ backgroundColor: 'black' }} value='Malice'>Malice</option>
+										<option style={{ backgroundColor: 'black' }} value='Clocks'>Clocks</option>
+										<option style={{ backgroundColor: 'black' }} value='Masks'>Masks</option>
+									</Select>
+								</FormControl>
+								<FormControl>
+									<FormLabel>auxName </FormLabel>
+									<Input type="text" size="md" variant="outline" {...register('auxName')}></Input>
+								</FormControl>
+								<FormControl>
+									<FormLabel>auxSpeciality </FormLabel>
+									<Select color='white' {...register('auxSpeciality')}>
+										<option style={{ backgroundColor: 'black' }} value='Aether'>Aether</option>
+										<option style={{ backgroundColor: 'black' }} value='Grease'>Grease</option>
+										<option style={{ backgroundColor: 'black' }} value='Malice'>Malice</option>
+										<option style={{ backgroundColor: 'black' }} value='Clocks'>Clocks</option>
+										<option style={{ backgroundColor: 'black' }} value='Masks'>Masks</option>
+									</Select>
+								</FormControl>
+							</HStack>
+
 							<FormControl>
 								<FormLabel>Bio </FormLabel>
 								<Input type="text" size="md" variant="outline" {...register('bio', validation.bio)}></Input>

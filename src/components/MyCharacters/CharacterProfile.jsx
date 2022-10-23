@@ -155,6 +155,9 @@ class CharacterProfile extends Component {
 								<p>
 									<b>Bio:</b> {playerCharacter.bio}
 								</p>
+								<p>
+									<b>Auxilliary:</b> {playerCharacter.auxName} ({playerCharacter.auxSpeciality})
+								</p>
 							</div>
 						</Col>
 						<Col xs={24} sm={24} md={8} className="gridbox">
