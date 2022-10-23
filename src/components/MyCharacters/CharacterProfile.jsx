@@ -136,6 +136,9 @@ class CharacterProfile extends Component {
 								<p>
 									<img className="portrait" src={`${playerCharacter.profilePicture}`} alt="Unable to load img" style={{ maxHeight: '50vh' }} />
 									<h5>{playerCharacter.characterName}</h5>
+									<p>
+									<b>Speciality:</b> {playerCharacter.speciality}
+								</p>
 								</p>
 								<TagGroup>
 									Tags

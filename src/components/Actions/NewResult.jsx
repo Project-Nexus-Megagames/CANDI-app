@@ -70,7 +70,9 @@ class NewResult extends Component {
 				<Modal.Body>
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
-						<Divider>Auxilliary: {this.props.character.auxName} ({this.props.character.auxSpeciality})</Divider>
+					<b>Character Speciality:</b> {this.props.character.speciality}
+					<br/>
+						<b>Auxilliary: {this.props.character.auxName} ({this.props.character.auxSpeciality})</b>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={24}>
 								{this.state.args.map((arg, index) => (
