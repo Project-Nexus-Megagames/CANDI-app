@@ -121,11 +121,11 @@ const ViewArticle = (props) => {
 
               <ReactMarkdown children={article?.body} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 
-              <Divider orientation='horizontal' />
+              {/* <Divider orientation='horizontal' />
               <Textarea value={newComment} componentClass='textarea' placeholder='Leave a Comment!' rows={3} onChange={(e) => setNewComment(e.target.value)} />
               <Button bg='black' onClick={() => handleComment()}>
                 Send Comment
-              </Button>
+              </Button> */}
               <List hover>
                 {article?.comments.map((comment, index) => (
                   <List.Item key={index}>

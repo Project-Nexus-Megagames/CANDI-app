@@ -139,9 +139,9 @@ const NewsFeed = (props) => {
 										<div style={{ height: '50px', textAlign: 'left', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis' }}>
 											<ReactMarkdown children={item?.body} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 										</div>
-										<Text align="right">
+										{/* <Text align="right">
 											{item.comments?.length} {translateComment(item.comments?.length)}
-										</Text>
+										</Text> */}
 									</VStack>
 								</HStack>
 							</Stack>
