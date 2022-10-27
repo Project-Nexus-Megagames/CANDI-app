@@ -348,7 +348,7 @@ const Submission = (props) => {
 
 					
 					{actionType.type === 'Main' && <p style={slimText}>Arguments</p>}
-					{props.action.arguments.map((aaaarrrg, index) => (
+					{actionType.type === 'Main' && props.action.arguments.map((aaaarrrg, index) => (
 						<div index={index}>
 							{aaaarrrg.text.length > 0 && <b>{index+1}) {aaaarrrg.text}</b>}
 						</div>
@@ -454,30 +454,33 @@ const Submission = (props) => {
 									</FlexboxGrid.Item>
 								)}
 								<FlexboxGrid.Item colspan={10}>
-									<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
-									{'1) '}
-									{arg0.length > 500 && (
-										<Tag color={'red'}>
-											<Icon icon="bullhorn" />- Warning - Too Long!
-										</Tag>
-									)}
-									<textarea rows="1" value={arg0} onChange={(event) => setArg0(event.target.value)}></textarea>
+									{actionType.type === 'Main' &&  <div>
+										<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
+										{'1) '}
+										{arg0.length > 500 && (
+											<Tag color={'red'}>
+												<Icon icon="bullhorn" />- Warning - Too Long!
+											</Tag>
+										)}
+										<textarea rows="1" value={arg0} onChange={(event) => setArg0(event.target.value)}></textarea>
 
-									{'2) '}
-									{arg1.length > 500 && (
-										<Tag color={'red'}>
-											<Icon icon="bullhorn" />- Warning - Too Long!
-										</Tag>
-									)}
-									<textarea rows="1" value={arg1} onChange={(event) => setArg1(event.target.value)}></textarea>
+										{'2) '}
+										{arg1.length > 500 && (
+											<Tag color={'red'}>
+												<Icon icon="bullhorn" />- Warning - Too Long!
+											</Tag>
+										)}
+										<textarea rows="1" value={arg1} onChange={(event) => setArg1(event.target.value)}></textarea>
 
-									{'3) '}
-									{arg2.length > 500 && (
-										<Tag color={'red'}>
-											<Icon icon="bullhorn" />- Warning - Too Long!
-										</Tag>
-									)}
-									<textarea rows="1" value={arg2} onChange={(event) => setArg2(event.target.value)}></textarea>
+										{'3) '}
+										{arg2.length > 500 && (
+											<Tag color={'red'}>
+												<Icon icon="bullhorn" />- Warning - Too Long!
+											</Tag>
+										)}
+										<textarea rows="1" value={arg2} onChange={(event) => setArg2(event.target.value)}></textarea>										
+										</div>}
+
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
