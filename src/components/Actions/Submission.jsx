@@ -29,7 +29,7 @@ import { getMyCharacter } from '../../redux/entities/characters';
 import { actionDeleted, playerActionsRequested } from '../../redux/entities/playerActions';
 import socket from '../../socket';
 import AssetInfo from './AssetInfo';
-import { getFadedColor, getThisEffort } from '../../scripts/frontend';
+import { getFadedColor, getMathColors, getThisEffort } from '../../scripts/frontend';
 /* To Whoever is reading this code. The whole "action" branch turned into a real mess, for which I am sorry. If you are looking into a better way of implementation, try the OtherCharacters page for lists. I hate forms.... */
 
 const Submission = (props) => {
@@ -64,7 +64,7 @@ const Submission = (props) => {
 			setIntent(props.submission.intent);
 			setName(props.action.name);
 			setTags(props.submission.tags);
-			setactionLocation(props.submission.location);
+			setactionLocation(props.submission.location._id);
 			setActionSubType(props.action.subType);
 			(props.action.arguments[0]) ? setArg0(props.action.arguments[0].text) : setArg0('');
 			(props.action.arguments[1]) ? setArg1(props.action.arguments[1].text) : setArg1('');
@@ -91,7 +91,7 @@ const Submission = (props) => {
 			id: props.action._id,
 			tags: nextTags
 		};
-		socket.emit('request', { route: 'action', action: 'update', data });
+		socket.emit('request', { route: 'action', action: 'tags', data });
 	};
 
 	const handleTagRemove = (tag) => {
@@ -100,7 +100,7 @@ const Submission = (props) => {
 			id: props.action._id,
 			tags: nextTags
 		};
-		socket.emit('request', { route: 'action', action: 'update', data });
+		socket.emit('request', { route: 'action', action: 'tags', data });
 	};
 
 	const renderTagAdd = () => {
@@ -317,10 +317,11 @@ const Submission = (props) => {
 						whiteSpace: 'pre-line'
 					}}
 				>
-					<p style={slimText}>Description</p>
+					<b className='styleCenter'>Location: {submission.location.name}</b>
+					<Divider style={slimText}>Description</Divider>
 					<ReactMarkdown children={submission.description} remarkPlugins={[remarkGfm]}></ReactMarkdown>
 
-					{!submission.intent && submission.intent.length > 0 && (
+					{submission.intent && submission.intent.length > 0 && (
 						<div>
 							<Whisper
 								placement="top"
@@ -331,7 +332,7 @@ const Submission = (props) => {
 									</Tooltip>
 								}
 							>
-								<p style={slimText}>Intent</p>
+								<Divider style={slimText}>Intent</Divider>
 							</Whisper>
 
 							<ReactMarkdown children={submission.intent} remarkPlugins={[remarkGfm]}></ReactMarkdown>
@@ -347,10 +348,15 @@ const Submission = (props) => {
 					)}
 
 					
-					{actionType.type === 'Main' && <p style={slimText}>Arguments</p>}
+					{actionType.type === 'Main' && <Divider style={slimText}>Arguments</Divider>}
 					{actionType.type === 'Main' && props.action.arguments.map((aaaarrrg, index) => (
 						<div index={index}>
-							{aaaarrrg.text.length > 0 && <b>{index+1}) {aaaarrrg.text}</b>}
+							{aaaarrrg.text.length > 0 && 
+									<div>
+										<Avatar style={{ backgroundColor: getMathColors(aaaarrrg.modifier) }} size="sm" circle>{aaaarrrg.modifier}</Avatar>
+										<b> {index+1}) {aaaarrrg.text}</b>
+									</div>							
+							}
 						</div>
 					))}
 

@@ -268,15 +268,20 @@ const ActionTable = () => {
 					</Text>
 				</GridItem>
 				<GridItem overflow="hidden">
+					<Text fontSize="lg" as="b" onClick={() => handleSort('submission.location.name')} cursor="pointer">
+						Location
+					</Text>
+				</GridItem>
+				{/* <GridItem overflow="hidden">
 					<Text fontSize="lg" as="b">
 						Assets
 					</Text>
-				</GridItem>
-				<GridItem overflow="hidden">
+				</GridItem> */}
+				{/* <GridItem overflow="hidden">
 					<Text fontSize="lg" as="b">
 						Dice Pool
 					</Text>
-				</GridItem>
+				</GridItem> */}
 				<GridItem overflow="hidden">
 					<Text fontSize="lg" as="b">
 						Dice Result
@@ -316,6 +321,9 @@ const ActionTable = () => {
 							</GridItem>
 							<GridItem overflow="hidden">
 								<Text>{item.creator.characterName}</Text>
+							</GridItem>
+							<GridItem overflow="hidden">
+								<Text>{item.submission.location.name}</Text>
 							</GridItem>
 							{/* <GridItem overflow="hidden">
 								<Text>{renderAssets(item.submission)}</Text>

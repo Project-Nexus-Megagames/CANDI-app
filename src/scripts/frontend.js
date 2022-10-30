@@ -157,6 +157,11 @@ const tagStyle = (item, index) => {
 	}
 };
 
+const getMathColors = (number) => {
+	if (number > 0) return 'green';
+	if (number < 0) return 'red';
+	return 'grey'
+}
 
 function getIcon (type) {
 	switch(type){
@@ -189,4 +194,4 @@ const getTime = (date) => {
 	);
 };
 
-export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, tagStyle };
+export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, tagStyle, getMathColors };

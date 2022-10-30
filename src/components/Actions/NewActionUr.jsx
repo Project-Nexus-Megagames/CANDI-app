@@ -73,6 +73,7 @@ const NewActionUr = (props) => {
 				assets: resource,
 				description: description,
 				intent: intent,
+				location: actionLocation,
 				args: [ arg0, arg1, arg2]
 			},
 			name: name,
