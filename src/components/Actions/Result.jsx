@@ -90,7 +90,7 @@ class Result extends Component {
 				id: this.props.result._id
 			},
 			dice: this.state.dice,
-			arguments: this.state.args,
+			arguments: this.state.args
 		};
 		socket.emit('request', {
 			route: 'action',
@@ -168,9 +168,9 @@ class Result extends Component {
 						{/* <p style={slimText}>
 							{this.props.result.description}
 						</p> */}
-						{/* <p style={slimText}>
-							{this.props.result.dice}
-						</p> */}
+						<p style={slimText}>
+							<b>Dice Result:</b> {this.state.dice}
+						</p>
 					</Panel>
 				)}
 
@@ -182,15 +182,14 @@ class Result extends Component {
 						{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 						<form>
 							<FlexboxGrid>
-							<FlexboxGrid.Item colspan={24}>
-								{this.state.args.map((arg, index) => (
-									<div style={{ display: 'flex', margin: '5px', alignItems: 'center' }}>
-										<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
-										<b style={{ marginLeft: '5px' }}>{arg.text}</b>
-									</div>
-								))}
-							</FlexboxGrid.Item>
-								{' '}
+								<FlexboxGrid.Item colspan={24}>
+									{this.state.args.map((arg, index) => (
+										<div style={{ display: 'flex', margin: '5px', alignItems: 'center' }}>
+											<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
+											<b style={{ marginLeft: '5px' }}>{arg.text}</b>
+										</div>
+									))}
+								</FlexboxGrid.Item>{' '}
 								Description
 								<textarea rows="6" value={this.state.description} style={textStyle} onChange={(event) => this.setState({ description: event.target.value })}></textarea>
 							</FlexboxGrid>
@@ -219,14 +218,18 @@ class Result extends Component {
 								>
 									Dice Roll Result
 									{/* <textarea rows="2" value={this.state.dice} style={textStyle} onChange={(event) => this.setState({ dice: event.target.value })}></textarea> */}
-								<SelectPicker
-									searchable={false}
-									cleanable={false}
-									data={[ { label: 'Failure', value: 'Failure'}, { label: 'Weak Success', value: 'Weak Success'}, { label: 'Strong Success', value: 'Strong Success'} ]}
-									value={this.state.dice}
-									style={{ width: '100%' }}
-									onChange={(event) => this.setState({ dice: event })}
-								/>
+									<SelectPicker
+										searchable={false}
+										cleanable={false}
+										data={[
+											{ label: 'Failure', value: 'Failure' },
+											{ label: 'Weak Success', value: 'Weak Success' },
+											{ label: 'Strong Success', value: 'Strong Success' }
+										]}
+										value={this.state.dice}
+										style={{ width: '100%' }}
+										onChange={(event) => this.setState({ dice: event })}
+									/>
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
 							</FlexboxGrid>
