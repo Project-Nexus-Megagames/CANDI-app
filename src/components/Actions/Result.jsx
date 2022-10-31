@@ -222,9 +222,11 @@ class Result extends Component {
 										searchable={false}
 										cleanable={false}
 										data={[
+											{ label: 'Critical Failure', value: 'Critical Failure' },
 											{ label: 'Failure', value: 'Failure' },
 											{ label: 'Weak Success', value: 'Weak Success' },
-											{ label: 'Strong Success', value: 'Strong Success' }
+											{ label: 'Strong Success', value: 'Strong Success' },
+											{ label: 'Critical Success', value: 'Critical Success' }
 										]}
 										value={this.state.dice}
 										style={{ width: '100%' }}
