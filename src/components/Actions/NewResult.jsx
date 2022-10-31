@@ -35,7 +35,7 @@ class NewResult extends Component {
 			dice: diceresult ? diceresult : '0',
 			id: this.props.selected._id,
 			creator: this.props.myCharacter._id,
-			args: this.state.args,
+			args: this.state.args
 		};
 		socket.emit('request', { route: 'action', action: 'result', data });
 		this.props.closeNew();
@@ -70,9 +70,11 @@ class NewResult extends Component {
 				<Modal.Body>
 					{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 					<form>
-					<b>Character Speciality:</b> {this.props.character.speciality}
-					<br/>
-						<b>Auxilliary: {this.props.character.auxName} ({this.props.character.auxSpeciality})</b>
+						<b>Character Speciality:</b> {this.props.character.speciality}
+						<br />
+						<b>
+							Auxilliary: {this.props.character.auxName} ({this.props.character.auxSpeciality})
+						</b>
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={24}>
 								{this.state.args.map((arg, index) => (
@@ -97,9 +99,11 @@ class NewResult extends Component {
 									searchable={false}
 									cleanable={false}
 									data={[
+										{ label: 'Critical Failure', value: 'Critical Failure' },
 										{ label: 'Failure', value: 'Failure' },
 										{ label: 'Weak Success', value: 'Weak Success' },
-										{ label: 'Strong Success', value: 'Strong Success' }
+										{ label: 'Strong Success', value: 'Strong Success' },
+										{ label: 'Critical Success', value: 'Critical Success' }
 									]}
 									value={this.state.dice}
 									style={{ width: '100%' }}
