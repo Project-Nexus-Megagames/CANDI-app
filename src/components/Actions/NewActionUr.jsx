@@ -35,7 +35,7 @@ const NewActionUr = (props) => {
 	const setMaxEffort = () => {
 		let charEffort = getThisEffort(myCharacter.effort, actionType.effortTypes[0]);
 		setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
-        if (charEffort > 0) setEffort({ effortType: actionType.effortTypes[0], amount: 1 });
+		if (charEffort > 0) setEffort({ effortType: actionType.effortTypes[0], amount: 1 });
 	};
 
 	useEffect(() => {
@@ -44,7 +44,6 @@ const NewActionUr = (props) => {
 			setMaxEffort();
 		}
 	}, [actionType]);
-
 
 	const editState = (incoming, type) => {
 		let thing;
@@ -74,7 +73,7 @@ const NewActionUr = (props) => {
 				description: description,
 				intent: intent,
 				location: actionLocation,
-				args: [ arg0, arg1, arg2]
+				args: [arg0, arg1, arg2]
 			},
 			name: name,
 			type: actionType.type,
@@ -100,36 +99,42 @@ const NewActionUr = (props) => {
 	}
 
 	return (
-		<Modal overflow style={{ width: '90%' }} size="md" show={props.show} onHide={() => props.closeNew()}>
+		<Modal overflow style={{ width: '90%' }} size='md' show={props.show} onHide={() => props.closeNew()}>
 			<Modal.Header>
 				<Modal.Title>Submit a new{actionType ? ` ~${actionType.type}~` : ''} Action</Modal.Title>
 			</Modal.Header>
 			<Modal.Body style={{ border: `4px solid ${getFadedColor(actionType.type)}`, borderRadius: '5px', padding: '15px' }}>
-				{props.actionLoading && <Loader backdrop content="loading..." vertical />}
+				{props.actionLoading && <Loader backdrop content='loading...' vertical />}
 				<ButtonToolbar>
 					<ButtonGroup justified>
 						{gameConfig &&
-							gameConfig.actionTypes.filter(el => myCharacter.effort.some(eff => el.effortTypes.some(ty => ty === eff.type) ) ).map((aType) => (
-								<Whisper
-									key={aType.type}
-									placement="top"
-									trigger="hover"
-									speaker={
-										<Tooltip>
-											<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>
-										</Tooltip>
-									}
-								>
-									<Button style={{}} onClick={() => setActionType(aType)} color={getFadedColor(`${aType.type}-rs`)} appearance={actionType.type === aType.type ? 'default' : 'ghost'}>
-										{aType.type}
-									</Button>
-								</Whisper>
-							))}
+							gameConfig.actionTypes
+								.filter((el) => myCharacter.effort.some((eff) => el.effortTypes.some((ty) => ty === eff.type && eff.amount > 0)))
+								.map((aType) => (
+									<Whisper
+										key={aType.type}
+										placement='top'
+										trigger='hover'
+										speaker={
+											<Tooltip>
+												<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>
+											</Tooltip>
+										}
+									>
+										<Button style={{}} onClick={() => setActionType(aType)} color={getFadedColor(`${aType.type}-rs`)} appearance={actionType.type === aType.type ? 'default' : 'ghost'}>
+											{aType.type}
+										</Button>
+									</Whisper>
+								))}
 					</ButtonGroup>
 				</ButtonToolbar>
 				{actionType.type && (
 					<div>
-						{!actionType.type === 'Main' && <Divider>Auxilliary: {myCharacter.auxName} ({myCharacter.auxSpeciality})</Divider>}
+						{!actionType.type === 'Main' && (
+							<Divider>
+								Auxilliary: {myCharacter.auxName} ({myCharacter.auxSpeciality})
+							</Divider>
+						)}
 						<form>
 							Name:
 							{10 - name.length > 0 && (
@@ -139,11 +144,11 @@ const NewActionUr = (props) => {
 							)}
 							{10 - name.length <= 0 && (
 								<Tag color={'green'}>
-									<Icon icon="check" />
+									<Icon icon='check' />
 								</Tag>
 							)}
-							<textarea rows="1" value={name} style={textStyle} onChange={(event) => setName(event.target.value)}></textarea>
-							{"Description - What are you doing? (1000 character limit) - "}
+							<textarea rows='1' value={name} style={textStyle} onChange={(event) => setName(event.target.value)}></textarea>
+							{'Description - What are you doing? (1000 character limit) - '}
 							{10 - description.length > 0 && (
 								<Tag style={{ color: 'black' }} color={'orange'}>
 									{10 - description.length} more characters...
@@ -151,94 +156,98 @@ const NewActionUr = (props) => {
 							)}
 							{10 - description.length <= 0 && (
 								<Tag color={'green'}>
-									<Icon icon="check" /> {" "}
-									{description.length}
+									<Icon icon='check' /> {description.length}
 								</Tag>
 							)}
 							{description.length > 1000 && (
 								<Tag color={'red'}>
-									<Icon icon="bullhorn"/>
-									- Warning - Too Long!
+									<Icon icon='bullhorn' />- Warning - Too Long!
 								</Tag>
 							)}
-							<textarea rows="6" value={description} style={textStyle} onChange={(event) => setDescription(event.target.value)}></textarea>
+							<textarea rows='6' value={description} style={textStyle} onChange={(event) => setDescription(event.target.value)}></textarea>
 							<br></br>
-							{actionType.type === 'Main' && <div>
-								{"Intent - What is your intended outcome? (1000 character limit) - "}
-								{10 - intent.length > 0 && (
-									<Tag style={{ color: 'black' }} color={'orange'}>
-										{10 - intent.length} more characters...
-									</Tag>
-								)}
-								{10 - intent.length <= 0 && (
-									<Tag color={'green'}>
-										<Icon icon="check" /> {" "}
-										{intent.length}
-									</Tag>
-								)}
-								{intent.length > 1000 && (
-								<Tag color={'red'}>
-									<Icon icon="bullhorn"/>
-									- Warning - Too Long!
-								</Tag>
-								)}
-								<textarea rows="6" value={intent} style={textStyle} onChange={(event) => setIntent(event.target.value)}></textarea>
-							</div>}
+							{actionType.type === 'Main' && (
+								<div>
+									{'Intent - What is your intended outcome? (1000 character limit) - '}
+									{10 - intent.length > 0 && (
+										<Tag style={{ color: 'black' }} color={'orange'}>
+											{10 - intent.length} more characters...
+										</Tag>
+									)}
+									{10 - intent.length <= 0 && (
+										<Tag color={'green'}>
+											<Icon icon='check' /> {intent.length}
+										</Tag>
+									)}
+									{intent.length > 1000 && (
+										<Tag color={'red'}>
+											<Icon icon='bullhorn' />- Warning - Too Long!
+										</Tag>
+									)}
+									<textarea rows='6' value={intent} style={textStyle} onChange={(event) => setIntent(event.target.value)}></textarea>
+								</div>
+							)}
 							<FlexboxGrid>
-								{false && <FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align="middle" colspan={6}>
-									<h5 style={{ textAlign: 'center' }}>
-										Effort {effort.amount} / {max}
-										{effort.amount === 0 && (
-											<Tag style={{ color: 'black' }} size="sm" color={'orange'}>
-												Need Effort
-											</Tag>
-										)}
-									</h5>
-									<ButtonToolbar>
-										<ButtonGroup justified>
-											{actionType &&
-												actionType.effortTypes.map((e) => (
-													<Button
-														key={e}
-														onClick={() => editState(e, 'effort')}
-														color={getFadedColor(`${e}-rs`)}
-														disabled={getThisEffort(myCharacter.effort, e) < 1}
-														appearance={effort.effortType == e ? 'default' : 'ghost'}
-													>
-														{e} - ({getThisEffort(myCharacter.effort, e)})
-													</Button>
-												))}
-										</ButtonGroup>
-									</ButtonToolbar>
-									<br />
-									<Slider graduated min={0} max={max} defaultValue={0} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
-								</FlexboxGrid.Item>}
-								
+								{false && (
+									<FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align='middle' colspan={6}>
+										<h5 style={{ textAlign: 'center' }}>
+											Effort {effort.amount} / {max}
+											{effort.amount === 0 && (
+												<Tag style={{ color: 'black' }} size='sm' color={'orange'}>
+													Need Effort
+												</Tag>
+											)}
+										</h5>
+										<ButtonToolbar>
+											<ButtonGroup justified>
+												{actionType &&
+													actionType.effortTypes.map((e) => (
+														<Button
+															key={e}
+															onClick={() => editState(e, 'effort')}
+															color={getFadedColor(`${e}-rs`)}
+															disabled={getThisEffort(myCharacter.effort, e) < 1}
+															appearance={effort.effortType == e ? 'default' : 'ghost'}
+														>
+															{e} - ({getThisEffort(myCharacter.effort, e)})
+														</Button>
+													))}
+											</ButtonGroup>
+										</ButtonToolbar>
+										<br />
+										<Slider graduated min={0} max={max} defaultValue={0} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
+									</FlexboxGrid.Item>
+								)}
+
 								<FlexboxGrid.Item colspan={10}>
-									{actionType.type === 'Main' && <div>
-										<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
-										{"1) "} 
-										{arg0.length > 500 && <Tag color={'red'}>
-											<Icon icon="bullhorn"/>
-											- Warning - Too Long!
-										</Tag>}
-										<textarea rows="1" value={arg0} style={textStyle} onChange={(event) => setArg0(event.target.value)}></textarea>
+									{actionType.type === 'Main' && (
+										<div>
+											<p>Give up to three reasons why this will succeed? (500 character limit each)</p>
+											{'1) '}
+											{arg0.length > 500 && (
+												<Tag color={'red'}>
+													<Icon icon='bullhorn' />- Warning - Too Long!
+												</Tag>
+											)}
+											<textarea rows='1' value={arg0} style={textStyle} onChange={(event) => setArg0(event.target.value)}></textarea>
 
-										{"2) "}
-										{arg1.length > 500 && <Tag color={'red'}>
-											<Icon icon="bullhorn"/>
-											- Warning - Too Long!
-										</Tag>}
-										<textarea rows="1" value={arg1} style={textStyle} onChange={(event) => setArg1(event.target.value)}></textarea>
+											{'2) '}
+											{arg1.length > 500 && (
+												<Tag color={'red'}>
+													<Icon icon='bullhorn' />- Warning - Too Long!
+												</Tag>
+											)}
+											<textarea rows='1' value={arg1} style={textStyle} onChange={(event) => setArg1(event.target.value)}></textarea>
 
-										{"3) "}
-										{arg2.length > 500 && <Tag color={'red'}>
-											<Icon icon="bullhorn"/>
-											- Warning - Too Long!
-										</Tag>}
-										<textarea rows="1" value={arg2} style={textStyle} onChange={(event) => setArg2(event.target.value)}></textarea>
-									</div>}
-
+											{'3) '}
+											{arg2.length > 500 && (
+												<Tag color={'red'}>
+													<Icon icon='bullhorn' />- Warning - Too Long!
+												</Tag>
+											)}
+											<textarea rows='1' value={arg2} style={textStyle} onChange={(event) => setArg2(event.target.value)}></textarea>
+										</div>
+									)}
 								</FlexboxGrid.Item>
 
 								<FlexboxGrid.Item colspan={2}></FlexboxGrid.Item>
@@ -250,49 +259,52 @@ const NewActionUr = (props) => {
 									}}
 									colspan={10}
 								>
-									{actionType.subTypes && actionType.subTypes.length >0 && <div>
-                      What Kind of action is this? -{' '}
+									{actionType.subTypes && actionType.subTypes.length > 0 && (
+										<div>
+											What Kind of action is this? -{' '}
 											{!actionSubType && (
 												<Tag style={{ color: 'black' }} color={'orange'}>
-													<Icon icon="close" />
+													<Icon icon='close' />
 												</Tag>
 											)}
 											{actionSubType && (
 												<Tag color={'green'}>
-													<Icon icon="check" />
+													<Icon icon='check' />
 												</Tag>
 											)}
-                      <SelectPicker 
-                          searchable={false}
-                          data={actionType.subTypes.map( item => ({label: item, value: item}) )}
-                          value={actionSubType}
-													cleanable={false}
-                          style={{ width: '100%' }}
-                          onChange={setActionSubType}
-                      />                                        
-                  </div>}
+											<SelectPicker
+												searchable={false}
+												data={actionType.subTypes.map((item) => ({ label: item, value: item }))}
+												value={actionSubType}
+												cleanable={false}
+												style={{ width: '100%' }}
+												onChange={setActionSubType}
+											/>
+										</div>
+									)}
 
-									{locations && locations.length >0 && <div>
-                      Where is this Action Happening? -{' '}
+									{locations && locations.length > 0 && (
+										<div>
+											Where is this Action Happening? -{' '}
 											{!actionLocation && (
 												<Tag style={{ color: 'black' }} color={'orange'}>
-													<Icon icon="close" />
+													<Icon icon='close' />
 												</Tag>
 											)}
 											{actionLocation && (
 												<Tag color={'green'}>
-													<Icon icon="check" />
+													<Icon icon='check' />
 												</Tag>
 											)}
-                      <SelectPicker 
-                          data={locations.map( item => ({label: item.name, value: item._id}) )}
-                          value={actionLocation}
-													cleanable={false}
-                          style={{ width: '100%' }}
-                          onChange={setactionLocation}
-                      />                                        
-                  </div>}
-
+											<SelectPicker
+												data={locations.map((item) => ({ label: item.name, value: item._id }))}
+												value={actionLocation}
+												cleanable={false}
+												style={{ width: '100%' }}
+												onChange={setactionLocation}
+											/>
+										</div>
+									)}
 								</FlexboxGrid.Item>
 							</FlexboxGrid>
 						</form>
@@ -303,10 +315,10 @@ const NewActionUr = (props) => {
 								marginTop: '15px'
 							}}
 						>
-							<Button onClick={() => handleSubmit()} disabled={isDisabled(effort)} color={isDisabled(effort) ? 'red' : 'green'} appearance="primary">
+							<Button onClick={() => handleSubmit()} disabled={isDisabled(effort)} color={isDisabled(effort) ? 'red' : 'green'} appearance='primary'>
 								<b>Submit</b>
 							</Button>
-							<Button onClick={() => props.closeNew()} appearance="subtle">
+							<Button onClick={() => props.closeNew()} appearance='subtle'>
 								Cancel
 							</Button>
 						</div>
