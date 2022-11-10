@@ -9,16 +9,18 @@ import NewCharacter from "../Control/NewCharacter";
 import MobileOtherCharacters from "./MobileOtherCharacters";
 import DynamicForm from "./DynamicForm";
 import { getGodBonds, getMortalBonds } from "../../redux/entities/assets";
-import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated, getMyUnlockedCharacters } from "./../../redux/entities/characters";
+import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated, getMyUnlockedCharacters, getControl } from "./../../redux/entities/characters";
 import CharacterListItem from "./CharacterListItem";
 import { getFadedColor, getTextColor, tagStyle } from "../../scripts/frontend";
 import ViewCharacter from "../Common/ViewCharacter";
 import ResourceNugget from "../Common/ResourceNugget";
+import _ from "lodash";
 
 const OtherCharacters = (props) => {
   const publicCharacters = useSelector(getPublicCharacters);
   const privateCharacters = useSelector(getPrivateCharacters);
   const knownContacts = useSelector(getMyUnlockedCharacters);
+  const controlContacts = useSelector(getControl);
   const [selected, setSelected] = useState(null);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -34,13 +36,17 @@ const OtherCharacters = (props) => {
     return <Loader inverse center content='doot...' />;
   }
 
-  let characters = [...publicCharacters, ...knownContacts];
+  let contacts = _.sortBy([...publicCharacters, ...knownContacts], "characterName");
+  const sortedControl = _.sortBy(controlContacts, "characterName");
+  const sortedPrivate = _.sortBy(privateCharacters, "characterName");
+  let characters = [...sortedControl, ...contacts];
   characters = [...new Set(characters)];
+
   const [renderTags] = React.useState(["Frog", "Pig", "Spider", "Myconid", "Raccoon", "Drow", "Dwarves", "Whitewall", "The Overlord", "Other", "Control"]); // TODO: update with Faction tags
 
   useEffect(() => {
     filterThis("");
-  }, [publicCharacters, privateCharacters, knownContacts]);
+  }, [publicCharacters, privateCharacters, knownContacts, controlContacts]);
 
   const theBox = () => {
     const audio = new Audio("/candi1.mp3");
@@ -52,39 +58,38 @@ const OtherCharacters = (props) => {
     if (character.characterName === "The Box") {
       theBox();
     } else {
-			// Build a transitive closure of all control affected.
-			let board = `${character.email}`;
+      // Build a transitive closure of all control affected.
+      let board = `${character.email}`;
 
-			// First get the control of the searched character and the current character
-			let pending = [...character.control]
-			let seen = [];
-			for (const controller of props.myCharacter.control) {
-				if (!pending.some((el) => el === controller)) {
-					pending.push(controller);
-				}
-			}
-			while (pending.length != 0)  {
-				const cur = pending.shift()
-				seen.push(cur)
-				const character = props.characters.find((el) => el.characterName === cur)
-				if(character) {
-					// add their controllers to the list to be searched if we haven't already done them
-					for (const controller of character.control) {
-						if ((!seen.some((el) => el === controller)) && (!pending.some((el) => el === controller))) {
-							pending.push(controller);
-						}
-					}
-					board = board.concat(`; ${character.email}`);
-				} else {
-					console.log(`${character} could not be added to clipboard`);
-					Alert.error(`${character} could not be added to clipboard`, 6000);
-				}
-			}
+      // First get the control of the searched character and the current character
+      let pending = [...character.control];
+      let seen = [];
+      for (const controller of props.myCharacter.control) {
+        if (!pending.some((el) => el === controller)) {
+          pending.push(controller);
+        }
+      }
+      while (pending.length != 0) {
+        const cur = pending.shift();
+        seen.push(cur);
+        const character = props.characters.find((el) => el.characterName === cur);
+        if (character) {
+          // add their controllers to the list to be searched if we haven't already done them
+          for (const controller of character.control) {
+            if (!seen.some((el) => el === controller) && !pending.some((el) => el === controller)) {
+              pending.push(controller);
+            }
+          }
+          board = board.concat(`; ${character.email}`);
+        } else {
+          console.log(`${character} could not be added to clipboard`);
+          Alert.error(`${character} could not be added to clipboard`, 6000);
+        }
+      }
 
-      const gameControl = props.characters.find((el) => el.characterName === 'Game Control');
+      const gameControl = props.characters.find((el) => el.characterName === "Game Control");
       board = board.concat(`; ${gameControl.email}`);
 
-      
       navigator.clipboard.writeText(board);
       Alert.success("Email Copied!", 6000);
     }
@@ -205,19 +210,18 @@ const OtherCharacters = (props) => {
               }}
             >
               <div>
-                  <List hover>
-                    {filteredCharacters
-                      .map((character, index0) => (
-                        <List.Item key={`${character._id}-${index0}`} style={listStyle(character)}>
-                          <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
-                        </List.Item>
-                      ))}
-                  </List>
+                <List hover>
+                  {filteredCharacters.map((character, index0) => (
+                    <List.Item key={`${character._id}-${index0}`} style={listStyle(character)}>
+                      <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
+                    </List.Item>
+                  ))}
+                </List>
 
                 {props.myCharacter.tags.some((el) => el === "Control") && (
                   <List hover>
                     <p style={{ backgroundColor: getFadedColor("Unknown"), color: getTextColor(`${"Unknown"}-text`) }}>{"( Hidden )"}</p>
-                    {privateCharacters
+                    {sortedPrivate
                       // .filter()
                       .map((character) => (
                         <List.Item key={character._id} style={listStyle(character)}>
@@ -275,15 +279,14 @@ const OtherCharacters = (props) => {
                     >
                       <h5>Effort</h5>
                       <Row style={{ display: "flex", overflow: "auto" }}>
-                        {selected.effort
-                          .map((effort, index) => (
-                            <Col index={index} key={index} md={6} sm={12}>
-                              <Panel bordered>
-                                <h5>{effort.type}</h5>
-                                <b>{effort.amount}</b>
-                              </Panel>
-                            </Col>
-                          ))}
+                        {selected.effort.map((effort, index) => (
+                          <Col index={index} key={index} md={6} sm={12}>
+                            <Panel bordered>
+                              <h5>{effort.type}</h5>
+                              <b>{effort.amount}</b>
+                            </Panel>
+                          </Col>
+                        ))}
                       </Row>
                     </Panel>
                   </Panel>
@@ -350,15 +353,15 @@ const OtherCharacters = (props) => {
 
                     {/*Profile Pic*/}
                     <FlexboxGrid.Item colspan={9}>
-                       Click to open World Anvil
+                      Click to open World Anvil
                       <img
                         src={`${image}`}
                         alt='Img could not be displayed'
                         style={{ maxHeight: "50vh" }}
                         onClick={() => {
-                          openAnvil(selected)
+                          openAnvil(selected);
                         }}
-                      />                      
+                      />
                     </FlexboxGrid.Item>
                   </FlexboxGrid>
                 </Panel>
