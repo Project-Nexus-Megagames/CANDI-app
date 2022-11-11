@@ -229,7 +229,7 @@ const NewActionUr = (props) => {
 													<Icon icon='bullhorn' />- Warning - Too Long!
 												</Tag>
 											)}
-											<textarea rows='1' value={arg0} style={textStyle} onChange={(event) => setArg0(event.target.value)}></textarea>
+											<textarea rows='4' value={arg0} style={textStyle} onChange={(event) => setArg0(event.target.value)}></textarea>
 
 											{'2) '}
 											{arg1.length > 500 && (
@@ -237,7 +237,7 @@ const NewActionUr = (props) => {
 													<Icon icon='bullhorn' />- Warning - Too Long!
 												</Tag>
 											)}
-											<textarea rows='1' value={arg1} style={textStyle} onChange={(event) => setArg1(event.target.value)}></textarea>
+											<textarea rows='4' value={arg1} style={textStyle} onChange={(event) => setArg1(event.target.value)}></textarea>
 
 											{'3) '}
 											{arg2.length > 500 && (
@@ -245,7 +245,7 @@ const NewActionUr = (props) => {
 													<Icon icon='bullhorn' />- Warning - Too Long!
 												</Tag>
 											)}
-											<textarea rows='1' value={arg2} style={textStyle} onChange={(event) => setArg2(event.target.value)}></textarea>
+											<textarea rows='4' value={arg2} style={textStyle} onChange={(event) => setArg2(event.target.value)}></textarea>
 										</div>
 									)}
 								</FlexboxGrid.Item>
