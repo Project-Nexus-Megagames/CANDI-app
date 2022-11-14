@@ -78,9 +78,10 @@ class NewResult extends Component {
 						<FlexboxGrid>
 							<FlexboxGrid.Item colspan={24}>
 								{this.state.args.map((arg, index) => (
-									<div style={{ display: 'flex', margin: '5px', alignItems: 'center' }}>
-										<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
-										<b style={{ marginLeft: '5px' }}>{arg.text}</b>
+									<div key={index} style={{ display: 'flex', margin: '5px', alignItems: 'center' }}>
+										<InputNumber style={{ width: '120px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
+										<p style={{ marginLeft: '5px' }}>{arg.text}</p>
+										<Divider />
 									</div>
 								))}
 							</FlexboxGrid.Item>
