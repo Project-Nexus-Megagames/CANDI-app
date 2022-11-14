@@ -16,12 +16,11 @@ class NewResult extends Component {
 		};
 	}
 
-	// componentDidMount = () => {
-	// 	// localStorage.removeItem('newActionState');
-	// 	const stateReplace = JSON.parse(localStorage.getItem('newResultStateGW'));
-	// 	console.dir(stateReplace);
-	// 	if (stateReplace) this.setState(stateReplace);
-	// }
+	componentDidUpdate = (prevProps) => {
+		if (this.props.selected !== prevProps.selected) {
+			this.setState({ args: this.props.selected.arguments });
+		}
+	};
 
 	handleSubmit = async () => {
 		this.props.actionDispatched();
