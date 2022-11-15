@@ -15,7 +15,8 @@ class Result extends Component {
 		deleteWarning: false, // used to open delete action popup
 		id: this.props.result._id,
 		description: this.props.result.description ? this.props.result.description : '',
-		dice: this.props.selected.diceresult ? this.props.selected.diceresult : '',
+		dice: this.props.result.diceresult ? this.props.result.diceresult : '',
+		status: this.props.selected.status ? this.props.selected.status : '',
 		private: true,
 		infoModal: false,
 		args: this.props.selected.arguments,
@@ -30,7 +31,8 @@ class Result extends Component {
 		this.setState({
 			id: this.props.result._id,
 			description: this.props.result.description,
-			dice: this.props.selected.diceresult
+			dice: this.props.selected.diceresult,
+			status: this.props.result.status,
 		});
 	};
 
@@ -85,7 +87,7 @@ class Result extends Component {
 		const data = {
 			id: this.props.selected._id,
 			result: {
-				status: this.state.private ? 'Private' : 'Public',
+				status: this.state.status,
 				description: this.state.description,
 				id: this.props.result._id
 			},
@@ -185,8 +187,8 @@ class Result extends Component {
 								<FlexboxGrid.Item colspan={24}>
 									{this.state.args.map((arg, index) => (
 										<div style={{ display: 'flex', margin: '5px', alignItems: 'center' }}>
-											<InputNumber style={{ width: '80px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
-											<b style={{ marginLeft: '5px' }}>{arg.text}</b>
+											<InputNumber style={{ width: '120px' }} value={arg.modifier} onChange={(value) => this.editArgument(value, index)} />
+											<p style={{ marginLeft: '5px' }}>{arg.text}</p>
 										</div>
 									))}
 								</FlexboxGrid.Item>{' '}
@@ -229,8 +231,21 @@ class Result extends Component {
 											{ label: 'Critical Success', value: 'Critical Success' }
 										]}
 										value={this.state.dice}
-										style={{ width: '100%' }}
+										style={{ width: '40%' }}
 										onChange={(event) => this.setState({ dice: event })}
+									/>
+									Status
+									<SelectPicker
+										searchable={false}
+										cleanable={false}
+										data={[
+											{ label: 'Public', value: 'Public' },
+											{ label: 'Private', value: 'Private' },
+											{ label: 'Temp-Hidden', value: 'Temp-Hidden' }
+										]}
+										value={this.state.status}
+										style={{ width: '40%' }}
+										onChange={(event) => this.setState({ status: event })}
 									/>
 								</FlexboxGrid.Item>
 								<FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
