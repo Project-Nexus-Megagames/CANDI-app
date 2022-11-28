@@ -353,9 +353,12 @@ const Submission = (props) => {
 							<div index={index}>
 								{aaaarrrg.text.length > 0 && (
 									<div>
-										<Avatar style={{ backgroundColor: getMathColors(aaaarrrg.modifier) }} size='sm' circle>
+										{props.gamestate.status !== "Resolution" && <Avatar style={{ backgroundColor: getMathColors(aaaarrrg.modifier) }} size='sm' circle>
 											{aaaarrrg.modifier}
-										</Avatar>
+										</Avatar>}
+										{props.gamestate.status === "Resolution" && <Avatar size='sm' circle>
+											?
+										</Avatar>}
 										<b>
 											{index + 1}) {aaaarrrg.text}
 										</b>
