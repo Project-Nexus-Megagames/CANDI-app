@@ -39,6 +39,7 @@ import { loadGameConfig } from "./redux/entities/gameConfig";
 import { loadArticles } from "./redux/entities/articles";
 import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
+import GameConfig3 from "./components/GameConfig/GameConfigStep3";
 
 // React App Component
 initUpdates();
@@ -147,6 +148,7 @@ const App = (props) => {
           <Route exact path='/actions' render={(props) => <Actions {...props} />} />
           <Route exact path='/gameConfig' render={(props) => <GameConfig {...props} />} />
           <Route exact path='/gameConfig2' render={(props) => <GameConfig2 {...props} />} />
+          <Route exact path='/gameConfig3' render={(props) => <GameConfig3 {...props} />} />
           <Route exact path='/control' render={(props) => <ControlTerminal {...props} />} />
           <Route exact path='/log' render={(props) => <Log {...props} />} />
           <Route exact path='/quests' render={(props) => <Quests {...props} />} />

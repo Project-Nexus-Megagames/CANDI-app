@@ -3,24 +3,24 @@ import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { Button, ButtonGroup } from 'rsuite';
-import { effortTypesAdded } from '../../redux/entities/gameConfig';
+import { statsAdded } from '../../redux/entities/gameConfig';
 
 import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
 
-function GameConfig() {
+function GameConfig3() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const oldConfig = useSelector((state) => state.gameConfig);
 
 	const { register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
-			effortTypes: [oldConfig.effortTypes]
+			stats: [oldConfig.stats]
 		}
 	});
 
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
-		name: 'effortTypes',
+		name: 'stats',
 		control
 	});
 
@@ -29,25 +29,24 @@ function GameConfig() {
 			required: 'Type is required',
 			maxLength: {
 				value: 300,
-				message: "That's way too long, try again"
+				message: "That's way too long!"
 			}
 		},
 		effortAmount: {
-			required: 'Effort Amount is required',
-			min: { value: 0, message: 'Must be larger than 0' }
+			required: 'Amount is required',
 		}
 	};
 
 	useEffect(() => {
 		const resetValues = [];
-		oldConfig.effortTypes.forEach((type) => {
+		oldConfig.stats.forEach((stat) => {
 			let a = {};
-			a.type = type.type;
-			a.effortAmount = type.effortAmount;
+			a.type = stat.type;
+			a.statAmount = stat.statAmount;
 			resetValues.push(a);
 		});
 		reset({
-			effortTypes: resetValues
+			stats: resetValues
 		});
 	}, [reset]);
 
@@ -63,15 +62,16 @@ function GameConfig() {
 	}
 
 	const onSubmit = (data) => {
-		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
-		dispatch(effortTypesAdded(data));
-		history.push('./GameConfig3');
+		if (hasDuplicates(data.stats)) return alert('Effort Types have to be unique');
+		dispatch(statsAdded(data));
+		history.push('./GameConfig2');
 	};
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
 			<Flex padding="20px">
 				<VStack spacing="24px" align="left">
+					<h4>Modify Stats</h4>
 					{fields.map((item, i) => (
 						<div key={i} className="list-group list-group-flush">
 							<div className="list-group-item">
@@ -79,30 +79,26 @@ function GameConfig() {
 									<Box>
 										<HStack spacing="24px">
 											<FormControl variant="floating">
-												<FormLabel>Type of Effort</FormLabel>
-												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.effortTypes?.[i]?.type} {...register(`effortTypes.${i}.type`, validation.type)} />
+												<FormLabel>Stat name</FormLabel>
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.stats?.[i]?.type} {...register(`stats.${i}.type`, validation.type)} />
 
 												<Text fontSize="sm" color="red.500">
-													{errors.effortTypes?.[i]?.type && errors.effortTypes[i].type.message}
+													{errors.stats?.[i]?.type && errors.stats[i].type.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
-												<FormLabel>Amount of Effort</FormLabel>
+												<FormLabel>Stat Amount</FormLabel>
 												<Input
 													key={item.id}
 													type="number"
 													size="md"
 													variant="outline"
-													defaultValue={oldConfig.effortTypes?.[i]?.effortAmount}
-													{...register(`effortTypes.${i}.effortAmount`, validation.effortAmount)}
+													defaultValue={oldConfig.stats?.[i]?.effortAmount}
+													{...register(`stats.${i}.effortAmount`, validation.effortAmount)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.effortTypes?.[i]?.effortAmount && errors.effortTypes[i].effortAmount.message}
+													{errors.stats?.[i]?.effortAmount && errors.stats[i].effortAmount.message}
 												</Text>
-											</FormControl>
-											<FormControl variant="floating">
-												<FormLabel>Effort Tag</FormLabel>
-												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.effortTypes?.[i]?.tag} {...register(`effortTypes.${i}.tag`)} />
 											</FormControl>
 											<Button size="xs" onClick={() => remove(i)}>
 												-
@@ -136,4 +132,4 @@ function GameConfig() {
 		</form>
 	);
 }
-export default GameConfig;
+export default GameConfig3;
