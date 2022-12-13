@@ -132,8 +132,8 @@
 
 .styleCenter {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: top;
 }
 
 .container {

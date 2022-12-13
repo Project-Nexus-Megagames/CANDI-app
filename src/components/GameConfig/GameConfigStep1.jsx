@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
-import { Button, ButtonGroup } from 'rsuite';
 import { effortTypesAdded } from '../../redux/entities/gameConfig';
 
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Button, ButtonGroup } from '@chakra-ui/react';
+import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons'
 
-function GameConfig() {
+function GameConfigStep1(props) {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const oldConfig = useSelector((state) => state.gameConfig);
+	const [step, setStep] = React.useState(1);
 
-	const { register, control, handleSubmit, reset, formState } = useForm({
+	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
 			effortTypes: [oldConfig.effortTypes]
 		}
@@ -51,6 +50,10 @@ function GameConfig() {
 		});
 	}, [reset]);
 
+	useEffect(() => {
+		console.log('yeet')
+	}, [fields]);
+
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
 	};
@@ -65,7 +68,6 @@ function GameConfig() {
 	const onSubmit = (data) => {
 		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
 		dispatch(effortTypesAdded(data));
-		history.push('./GameConfig3');
 	};
 
 	return (
@@ -113,27 +115,32 @@ function GameConfig() {
 							</div>
 						</div>
 					))}
-					<ButtonGroup>
-						<Button
-							onClick={() =>
-								append({
-									type: '',
-									effortAmount: 0
-								})
-							}
-						>
-							Add Type
-						</Button>
-						<Button type="submit" className="btn btn-primary mr-1">
-							Next
-						</Button>
-						<Button onClick={() => reset()} type="button" className="btn btn-secondary mr-1">
-							Reset
-						</Button>
-					</ButtonGroup>
+					<HStack spacing="24px">
+						<ButtonGroup isAttached >
+							<Button
+								rightIcon={<PlusSquareIcon />}
+								colorScheme={'whatsapp'}
+								onClick={() =>
+									append({
+										type: '',
+										effortAmount: 0
+									})
+								}
+							>
+								Add Type
+							</Button>
+							<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
+								Save
+							</Button>
+							<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
+								Reset
+							</Button>
+						</ButtonGroup>						
+					</HStack>
+
 				</VStack>
 			</Flex>
 		</form>
 	);
 }
-export default GameConfig;
+export default GameConfigStep1;

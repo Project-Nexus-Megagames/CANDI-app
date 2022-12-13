@@ -20,7 +20,7 @@ export const CandiModal = ({ open, title, onClose, onOpen, children }) => {
   }, [open]);
 
   return (
-    <Modal size="2xl" isOpen={isOpen} onClose={handleClose} isCentered>
+    <Modal size="4x1" isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent bgColor="#0f131a">
         <ModalCloseButton size="sm" top="0px" right="0px" />

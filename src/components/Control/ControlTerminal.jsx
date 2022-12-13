@@ -11,6 +11,9 @@ import ManageContacts from './ManageContacts';
 import HealInjury from './HealInjury';
 import Aspects from './Aspects';
 import ActionTable from './ActionTable';
+import GameConfig from '../GameConfig/GameConfig';
+import { CandiDrawer } from '../Common/Drawer';
+import { CandiModal } from '../Common/Modal';
 
 class ControlTerminal extends Component {
 	state = {
@@ -24,6 +27,7 @@ class ControlTerminal extends Component {
 		projectModal: false,
 		newCharater: false,
 		editTerritory: false,
+		editConfig: false,
 		formValue: {
 			round: null,
 			status: ''
@@ -229,7 +233,7 @@ class ControlTerminal extends Component {
 									<Button appearance="ghost" onClick={() => this.props.history.push('/log')}>
 										View Log
 									</Button>
-									<Button appearance="ghost" color="red" onClick={() => this.props.history.push('/gameConfig')}>
+									<Button appearance="ghost" color="red" onClick={() => this.setState({ editConfig: true })}> 
 										Edit Game Config
 									</Button>
 								</ButtonGroup>
@@ -332,6 +336,10 @@ class ControlTerminal extends Component {
 				<HealInjury open={true} show={this.state.injuryModal} closeModal={() => setInjuryModal(false)} />
 
 				<Aspects open={true} show={this.state.aspectModal} closeModal={() => setAspectModal(false)} />
+				
+				{this.state.editConfig && 
+					<GameConfig onClose={() => this.setState({ editConfig: false })} editConfig={this.state.editConfig} />
+				}
 			</Content>
 		);
 	}

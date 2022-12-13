@@ -114,7 +114,6 @@ function GameConfig2() {
 													name={`actionTypes.${i}.assetType`}
 													control={control}
 													render={({ field: { ref, ...rest } }) => {
-														console.log(rest);
 														return (
 															<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.assetType} {...rest}>
 																<Stack spacing={[1]} direction={['column']}>
