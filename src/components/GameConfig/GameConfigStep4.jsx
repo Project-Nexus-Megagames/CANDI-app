@@ -3,25 +3,25 @@ import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import {  } from 'rsuite';
-import { globalStatsAdded } from '../../redux/entities/gameConfig';
+import { characterStatsAdded } from '../../redux/entities/gameConfig';
 
 import { Button, ButtonGroup,  HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Stack } from '@chakra-ui/react';
 import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
-function GameConfig3() {
+function GameConfigStep4() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const oldConfig = useSelector((state) => state.gameConfig);
 
 	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState, } = useForm({
 		defaultValues: {
-			globalStats: [oldConfig.globalStats]
+			characterStats: [oldConfig.characterStats]
 		}
 	});
 
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
-		name: 'globalStats',
+		name: 'characterStats',
 		control
 	});
 
@@ -40,14 +40,14 @@ function GameConfig3() {
 
 	useEffect(() => {
 		const resetValues = [];
-		oldConfig.globalStats.forEach((stat) => {
+		oldConfig.characterStats?.forEach((stat) => {
 			let a = {};
 			a.type = stat.type;
 			a.statAmount = stat.statAmount;
 			resetValues.push(a);
 		});
 		reset({
-			globalStats: resetValues
+			characterStats: resetValues
 		});
 	}, [reset]);
 
@@ -63,8 +63,8 @@ function GameConfig3() {
 	}
 
 	const onSubmit = (data) => {
-		if (hasDuplicates(data.globalStats)) return alert('Effort Types have to be unique');
-		dispatch(globalStatsAdded(data));
+		if (hasDuplicates(data.characterStats)) return alert('Effort Types have to be unique');
+		dispatch(characterStatsAdded(data));
 		reset({keepValues: true});
 	};
 
@@ -72,7 +72,7 @@ function GameConfig3() {
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
 			<Flex padding="20px">
 				<VStack spacing="24px" align="left">
-					<h4>Modify globalStats</h4>
+					<h4>Modify characterStats</h4>
 					{fields && fields.map((item, i) => (
 						<div key={i} className="list-group list-group-flush">
 							<div className="list-group-item">
@@ -81,10 +81,10 @@ function GameConfig3() {
 										<HStack spacing="24px">
 											<FormControl variant="floating">
 												<FormLabel>Stat name</FormLabel>
-												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.globalStats?.[i]?.type} {...register(`globalStats.${i}.type`, validation.type)} />
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.characterStats?.[i]?.type} {...register(`characterStats.${i}.type`, validation.type)} />
 
 												<Text fontSize="sm" color="red.500">
-													{errors.globalStats?.[i]?.type && errors.globalStats[i].type.message}
+													{errors.characterStats?.[i]?.type && errors.characterStats[i].type.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
@@ -94,11 +94,11 @@ function GameConfig3() {
 													type="number"
 													size="md"
 													variant="outline"
-													defaultValue={oldConfig.globalStats?.[i]?.statAmount}
-													{...register(`globalStats.${i}.statAmount`, validation.statAmount)}
+													defaultValue={oldConfig.characterStats?.[i]?.statAmount}
+													{...register(`characterStats.${i}.statAmount`, validation.statAmount)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.globalStats?.[i]?.statAmount && errors.globalStats[i].statAmount.message}
+													{errors.characterStats?.[i]?.statAmount && errors.characterStats[i].statAmount.message}
 												</Text>
 											</FormControl>
 											<Button size="xs" onClick={() => remove(i)}>
@@ -117,7 +117,7 @@ function GameConfig3() {
 						<Button
 							rightIcon={<PlusSquareIcon />}
 							colorScheme={'whatsapp'}
-							onClick={() => append({ type: 'Global_Stat', statAmount: 0 })} >
+							onClick={() => append({ type: 'Character_Stat', statAmount: 0 })} >
 							Add Type
 						</Button>
 						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
@@ -130,4 +130,4 @@ function GameConfig3() {
 		</form>
 	);
 }
-export default GameConfig3;
+export default GameConfigStep4;

@@ -3,13 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
 import { effortTypesAdded } from '../../redux/entities/gameConfig';
 
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Button, ButtonGroup } from '@chakra-ui/react';
-import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons'
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Button, ButtonGroup, Stack } from '@chakra-ui/react';
+import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 function GameConfigStep1(props) {
 	const dispatch = useDispatch();
 	const oldConfig = useSelector((state) => state.gameConfig);
-	const [step, setStep] = React.useState(1);
 
 	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
@@ -51,8 +50,8 @@ function GameConfigStep1(props) {
 	}, [reset]);
 
 	useEffect(() => {
-		console.log('yeet')
-	}, [fields]);
+		console.log(isDirty)
+	}, [isDirty]);
 
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
@@ -68,6 +67,7 @@ function GameConfigStep1(props) {
 	const onSubmit = (data) => {
 		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
 		dispatch(effortTypesAdded(data));
+		reset({keepValues: true});
 	};
 
 	return (
@@ -114,29 +114,22 @@ function GameConfigStep1(props) {
 								</div>
 							</div>
 						</div>
-					))}
-					<HStack spacing="24px">
-						<ButtonGroup isAttached >
-							<Button
-								rightIcon={<PlusSquareIcon />}
-								colorScheme={'whatsapp'}
-								onClick={() =>
-									append({
-										type: '',
-										effortAmount: 0
-									})
-								}
-							>
-								Add Type
-							</Button>
-							<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
-								Save
-							</Button>
-							<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
-								Reset
-							</Button>
-						</ButtonGroup>						
-					</HStack>
+					))}				
+
+					<Stack spacing={8} direction='row' align='right' justify={"center"}>
+						<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
+							Save
+						</Button>
+						<Button
+							rightIcon={<PlusSquareIcon />}
+							colorScheme={'whatsapp'}
+							onClick={() => append({ type: '', effortAmount: 0 })} >
+							Add Type
+						</Button>
+						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
+							Reset
+						</Button>
+					</Stack>
 
 				</VStack>
 			</Flex>

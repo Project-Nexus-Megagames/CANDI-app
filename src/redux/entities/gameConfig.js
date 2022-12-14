@@ -12,7 +12,8 @@ const slice = createSlice({
     lastFetch: null,
 		actionTypes: [],
 		effortTypes: [],
-		stats: [],
+		globalStats: [],
+		characterStats: [],
   },
   // Reducers - Events
   reducers: {
@@ -25,7 +26,8 @@ const slice = createSlice({
 			gameConfig.name = action.payload.name;
 			gameConfig.actionTypes = action.payload.actionTypes;
 			gameConfig.effortTypes = action.payload.effortTypes;
-			gameConfig.stats = action.payload.stats;
+			gameConfig.globalStats = action.payload.globalStats;
+			gameConfig.characterStats = action.payload.characterStats;
       gameConfig.loading = false;
       gameConfig.lastFetch = Date.now();
       gameConfig.loaded = true;
@@ -42,9 +44,13 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       state.effortTypes = action.payload.effortTypes;
     },
-    statsAdded: (state, action) => {
+    globalStatsAdded: (state, action) => {
       console.log(`${action.type} Dispatched`)
-      state.stats = action.payload.stats;
+      state.globalStats = action.payload.globalStats;
+    },
+    characterStatsAdded: (state, action) => {
+      console.log(`${action.type} Dispatched`)
+      state.characterStats = action.payload.characterStats;
     },
   }
 });
@@ -53,7 +59,8 @@ const slice = createSlice({
 export const {
   actionTypesAdded,
 	effortTypesAdded,
-  statsAdded,
+  globalStatsAdded,
+  characterStatsAdded,
   gameConfigReceived,
   gameConfigRequested,
   gameConfigRequestFailed,

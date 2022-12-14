@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { Button, ButtonGroup } from 'rsuite';
 import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack } from '@chakra-ui/react';
+import { Button, ButtonGroup, HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack } from '@chakra-ui/react';
+import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 function GameConfig2() {
 	const oldConfig = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
 
-	const { register, control, handleSubmit, reset, formState } = useForm({
+	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
 			actionTypes: [oldConfig.actionTypes]
 		}
@@ -75,27 +75,15 @@ function GameConfig2() {
 
 	function onSubmit(data) {
 		if (hasDuplicates(data.actionTypes)) return alert('Action Types have to be unique');
-		dispatch(actionTypesAdded(data));
-
-		let configToBeSent = { ...oldConfig };
-		configToBeSent.actionTypes = data.actionTypes;
-		console.log('DATA', configToBeSent);
-		try {
-			socket.emit('request', {
-				route: 'gameConfig',
-				action: 'create',
-				data: configToBeSent
-			});
-		} catch (err) {
-			console.log('catch block called', err);
-		}
+		dispatch(actionTypesAdded(data));		
+		reset({keepValues: true});
 	}
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
 			<Flex padding="20px">
 				<VStack spacing="24px" align="left">
-					{fields.map((item, i) => (
+					{oldConfig && fields.map((item, i) => (
 						<div key={i} className="list-group list-group-flush">
 							<div className="list-group-item">
 								<div>
@@ -200,30 +188,22 @@ function GameConfig2() {
 							</div>
 						</div>
 					))}
-					<ButtonGroup>
+
+					<Stack spacing={8} direction='row' align='right' justify={"center"}>
+						<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
+							Save
+						</Button>
 						<Button
-							onClick={() =>
-								append({
-									type: '',
-									minEffort: 0,
-									maxEffort: 0,
-									assetType: [],
-									effortTypes: [],
-									maxAssets: 0,
-									public: false,
-									icon: ''
-								})
-							}
-						>
+							rightIcon={<PlusSquareIcon />}
+							colorScheme={'whatsapp'}
+							onClick={() => append({ type: 'Effot_Type', effortAmount: 0 })} >
 							Add Type
 						</Button>
-						<Button type="submit" className="btn btn-primary mr-1">
-							Create Initial Config
-						</Button>
-						<Button onClick={() => reset()} type="button" className="btn btn-secondary mr-1">
+						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
 							Reset
 						</Button>
-					</ButtonGroup>
+					</Stack>
+
 				</VStack>
 			</Flex>
 		</form>
