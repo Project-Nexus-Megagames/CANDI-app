@@ -8,6 +8,7 @@ import { getGods, getNonPlayerCharacters, getUnlockedCharacters } from '../../re
 import { getCharacterById, getMyCharacter } from './../../redux/entities/characters';
 
 const NewEffects = (props) => {
+	const config = useSelector((state) => state.gameConfig);
 	const [type, setType] = useState('');
 	const [selected, setSelected] = useState(undefined);
 	const [array, setArray] = useState([]);
@@ -66,13 +67,7 @@ const NewEffects = (props) => {
 				});
 				break;
 			case 'aspect':
-				setSelected({
-					gcHappiness: 0,
-					gcSecurity: 0,
-					gcDiplomacy: 0,
-					gcPolitics: 0,
-					gcHealth: 0
-				});
+				setSelected();
 				break;
 			case 'addInjury':
 				setSelected({
@@ -161,17 +156,29 @@ const NewEffects = (props) => {
 	const renderAspects = () => {
 		return (
 			<div>
-				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one or more aspects</Divider>
-				<label>Happiness: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHappiness', value)} />
-				<label>Health: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcHealth', value)} />
-				<label>Security: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcSecurity', value)} />
-				<label>Diplomacy: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcDiplomacy', value)} />
-				<label>Politics: </label>
-				<InputNumber defaultValue="0" onChange={(value) => handleEdit('gcPolitics', value)} />
+				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one or more Global Stats</Divider>
+				
+				{config.globalStats.map((stat, index) => (
+					<div key={index}>
+						<label>{stat.type}: </label>
+						<InputNumber defaultValue={stat.amount} onChange={(value) => handleEdit(stat.type, value)} />
+					</div>
+				))}
+			</div>
+		);
+	};
+
+	const renderStat = () => {
+		return (
+			<div>
+				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one or more Character Stats</Divider>
+				
+				{config.characterStats.map((stat, index) => (
+					<div key={index}>
+						<label>{stat.type}: </label>
+						<InputNumber defaultValue={stat.statAmount} onChange={(value) => handleEdit(stat.type, value)} />
+					</div>
+				))}
 			</div>
 		);
 	};
@@ -280,7 +287,10 @@ const NewEffects = (props) => {
 							Heal Injuries
 						</Button> */}
 						<Button appearance={type !== 'aspect' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}>
-							Edit an Aspect
+							Edit a Global Stat
+						</Button>
+						<Button appearance={type !== 'character-stat' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'character-stat' ? () => handleType('character-stat') : undefined}>
+							Edit a character Stat
 						</Button>
 						<Button appearance={type !== 'new' ? 'ghost' : 'primary'} color={'green'} onClick={type !== 'new' ? () => handleType('new') : undefined}>
 							New Resource
@@ -312,6 +322,7 @@ const NewEffects = (props) => {
 						</div>
 					)}
 					{type === 'aspect' && <div>{renderAspects()}</div>}
+					{type === 'character-stat' && <div>{renderStat()}</div>}
 					{type === 'character' && (
 						<div>
 							<CheckPicker placeholder="Select character(s) to unlock..." onSelect={(event) => handleCharSelect(event)} data={sortedCharacters} valueKey="_id" labelKey="characterName" />

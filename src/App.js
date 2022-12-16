@@ -40,6 +40,7 @@ import { loadArticles } from "./redux/entities/articles";
 import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
 import GameConfig3 from "./components/GameConfig/GameConfigStep3";
+import CharacterStats from "./components/StatDisplays/CharacterStats";
 
 // React App Component
 initUpdates();
@@ -144,6 +145,7 @@ const App = (props) => {
           <Route exact path='/character' render={(props) => <CharacterProfile {...props} />} />
           <Route path='/news' render={(props) => <News {...props} />} />
           <Route path='/agendas' render={(props) => <Agendas {...props} />} />
+          <Route path='/leaderboard' render={(props) => <CharacterStats {...props} />} />
           <Route exact path='/others' render={(props) => <OtherCharacters {...props} />} />
           <Route exact path='/actions' render={(props) => <Actions {...props} />} />
           <Route exact path='/gameConfig' render={(props) => <GameConfig {...props} />} />

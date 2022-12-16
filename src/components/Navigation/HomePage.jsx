@@ -183,9 +183,13 @@ const HomePage = (props) => {
 				<Col lg={6} md={12}>
 					<ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
 				</Col>
-
+{/* 
 				<Col lg={6} md={12}>
 					<ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="The Mootening awaits" />
+				</Col> */}
+				
+				<Col lg={6} md={12}>
+					<ImgPanel img={agendas} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
 				</Col>
 
 				<Col lg={8} md={24}>
