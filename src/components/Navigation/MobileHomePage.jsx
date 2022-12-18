@@ -79,7 +79,7 @@ const HomePage = (props) => {
 					fontSize: '0.966em',
 					borderBottom: '3px solid',
 					borderRadius: 0,
-					borderColor: '#d4af37'
+					borderColor: '#FA9C37'
 				}}
 			>
 				<FlexboxGrid align="middle">

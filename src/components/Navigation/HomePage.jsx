@@ -129,7 +129,7 @@ const HomePage = (props) => {
 					color: '',
 					borderBottom: '3px solid',
 					borderRadius: 0,
-					borderColor: '#d4af37'
+					borderColor: '#FA9C37'
 				}}
 				align="middle"
 			>
