@@ -9,7 +9,7 @@ import ImgPanel from './ImgPanel';
 import nexus from '../Images/Project_Nexus.jpg';
 import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
-import actions from '../Images/Actions.jpg';
+import actions from '../Images/actions1.jpg';
 import leaderboard from '../Images/Score Charts.jpg';
 
 import socket from '../../socket';
