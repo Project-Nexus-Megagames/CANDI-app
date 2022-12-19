@@ -6,12 +6,11 @@ import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../red
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
-import control2 from '../Images/control.png';
+import nexus from '../Images/Project_Nexus.jpg';
 import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
-import actions from '../Images/actions.jpg';
-import agendas from '../Images/agendas.webp';
-import hello from '../Images/hello.jpg';
+import actions from '../Images/Actions.jpg';
+import leaderboard from '../Images/Score Charts.jpg';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -185,11 +184,11 @@ const HomePage = (props) => {
 				</Col>
 {/* 
 				<Col lg={6} md={12}>
-					<ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="The Mootening awaits" />
+					<ImgPanel img={leaderboard} to="leaderboard" title="~ Agendas ~" body="The Mootening awaits" />
 				</Col> */}
 				
 				<Col lg={6} md={12}>
-					<ImgPanel img={agendas} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
+					<ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
 				</Col>
 
 				<Col lg={8} md={24}>
@@ -199,13 +198,13 @@ const HomePage = (props) => {
 				{props.control && (
 					<Col lg={8} md={24}>
 						{/*{props.user.username.toLowerCase() === "bobtheninjaman" && <ImgPanel img={hello} to='control' title={"~ Control Terminal ~"} body='"Now he gets it!"' />}*/}
-						<ImgPanel img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
+						<ImgPanel img={nexus} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
 					</Col>
 				)}
 
 				{!props.control && (
 					<Col onClick={() => openNexus()} lg={8} md={24}>
-						{<ImgPanel img={control2} to="" title="~ Project Nexus ~" body="Support the Programmers" />}
+						{<ImgPanel img={nexus} to="" title="~ Project Nexus ~" body="Support the Programmers" />}
 					</Col>
 				)}
 
