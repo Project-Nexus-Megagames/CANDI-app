@@ -40,7 +40,7 @@ const Carousel = ({ data, height, to, disabled }) => {
 			height={height}
 			overflow={'hidden'}
 			style={{
-				border: '5px solid #d4af37',
+				border: '5px solid #FA9C37',
 				borderRadius: '10px',
 				margin: '10px'
 			}}

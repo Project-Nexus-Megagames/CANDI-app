@@ -8,7 +8,7 @@ const ImgPanel = (props) => {
 			{props.new && <Tag size='lg' color='red' style={{ position: 'absolute', zIndex: 999, top: '20px', right: '30px' }}>New</Tag>}
 			<div
 				style={{
-					border: '5px solid #d4af37',
+					border: '5px solid #FA9C37',
 					borderRadius: '10px',
 					position: 'relative',
 					margin: '10px',
@@ -30,7 +30,7 @@ const ImgPanel = (props) => {
 						bottom: '25px',
 						left: '15px',
 						color: 'white',
-						background: '#800080'
+						background: '#00A36C'
 					}}
 				>{`${props.disabled ? '[DISABLED] ' : ''}${props.title}`}</h6>
 				<p
@@ -39,7 +39,7 @@ const ImgPanel = (props) => {
 						bottom: '10px',
 						left: '15px',
 						color: 'white',
-						background: '#800080',
+						background: '#00A36C',
 						fontSize: '0.966em'
 					}}
 				>
