@@ -16,7 +16,7 @@ import {
 } from 'rsuite';
 import { loadAllActions } from '../../redux/entities/playerActions';
 import { authReceived, loginUser } from '../../redux/entities/auth';
-import banner from '../Images/Banner.png';
+import banner from '../Images/Banner.jpg';
 
 const { StringType } = Schema.Types;
 

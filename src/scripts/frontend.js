@@ -35,8 +35,6 @@ function getFadedColor(color, fade = 1) {
 		case 'Other':
 			return `#992d22`
 			
-
-			
 		case 'The Overlord':
 			return `#6d6d6d`
 
@@ -46,6 +44,16 @@ function getFadedColor(color, fade = 1) {
 		case 'gold':
 			return `rgb(212, 175, 55, ${fade})`
 
+		case 'Atum': return '#FEDD00';
+		case	'Shu': return '#AD000E';
+		case	'Tefnut' : return '#F96815'
+		case	'Geb': return '#74663B'
+		case	'Nut': return '#06038D'
+		case	'Osiris': return '#78BE21'
+		case	'Isis': return '#EEE1C6'
+		case	'Set': return '#63666A'
+		case	'Stability': return '#B1C9E8'
+		case	'Nephthys': return '#9063CD'
 
 		default:
 			return `rgba( 0, 160, 189, ${fade} )`;
@@ -90,6 +98,7 @@ function getTextColor(color, fade = 1) {
 		case 'Other-text':
 		case 'The Overlord-text':
 		case 'PC-text':
+		case 'Nut':
 		return 'white'
 
 		case 'Control-text':

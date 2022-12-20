@@ -4,6 +4,7 @@ import { characterUpdated, getMyCharacter } from '../../redux/entities/character
 import { connect, useSelector } from 'react-redux';
 import NavigationBar from '../Navigation/NavigationBar';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
+import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
 const  CharacterStats = (props) => {
 	const config = useSelector((state) => state.gameConfig);
@@ -24,16 +25,16 @@ const  CharacterStats = (props) => {
         <Divider>Global Stats</Divider>
         {config.globalStats.map((stat, index) => (
           <Col key={index} xs={24/config.globalStats.length} sm={24/config.globalStats.length} md={24/config.globalStats.length} className="gridbox">
-            <div  style={{ border: '3px solid pink', borderRadius: '5px', width: '100%', }} >
-              <h5 style={{ backgroundColor: 'pink', color: 'black' }}>{stat.type} ~ {stat.statAmount}</h5>
+            <div  style={{ border: `3px solid ${getFadedColor(stat.type)}`, borderRadius: '5px', width: '100%', }} >
+              <h5 style={{ backgroundColor: getFadedColor(stat.type), color: 'black' }}>{stat.type} ~ {stat.statAmount}</h5>
             </div>
           </Col>
         ))}
         <Divider>Character Stats</Divider>
         {config.characterStats.map((stat, index) => (
-          <Col key={index} xs={12} sm={12} md={12} className="gridbox">
-            <div  style={{ border: '3px solid pink', borderRadius: '5px', width: '100%', }} >
-              <h5 style={{ backgroundColor: 'pink', color: 'black' }}>{stat.type}</h5>
+          <Col key={index} xs={8} sm={8} md={8} className="gridbox">
+            <div  style={{ border: `3px solid ${getFadedColor(stat.type)}`, borderRadius: '5px', width: '100%', }} >
+              <h5 style={{ backgroundColor: getFadedColor(stat.type), color: getTextColor(stat.type) }}>{stat.type}</h5>
               <List hover size="sm">
                 {props.characters.filter(el => el.tags.some(tag => tag.toLowerCase() === 'pc')).sort(function(a, b){return b[stat.type] - a[stat.type]}).splice(0, number).map((character, index) => (
                 <List.Item key={index} index={index}>
