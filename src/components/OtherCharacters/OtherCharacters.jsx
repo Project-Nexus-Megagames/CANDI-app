@@ -36,7 +36,7 @@ const OtherCharacters = (props) => {
 
   let characters = [...publicCharacters, ...knownContacts];
   characters = [...new Set(characters)];
-  const [renderTags] = React.useState(["Frog", "Pig", "Spider", "Myconid", "Raccoon", "Drow", "Dwarves", "Whitewall", "The Overlord", "Other", "Control"]); // TODO: update with Faction tags
+  const [renderTags] = React.useState(["PC", "NPC", "Control"]); // TODO: update with Faction tags
 
   useEffect(() => {
     filterThis("");

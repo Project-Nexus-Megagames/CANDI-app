@@ -16,7 +16,7 @@ const NewAction = (props) => {
 	const myCharacter = useSelector(getMyCharacter);
 	const myAssets = useSelector(getMyAssets);
 
-	const [effort, setEffort] = React.useState({ effortType: 'Normal', amount: 0 });
+	const [effort, setEffort] = React.useState({ effortType: 'Normal', amount: 1 });
 	const [resource, setResource] = React.useState([]);
 	const [actionType, setActionType] = React.useState(false);
 	const [description, setDescription] = React.useState('');
@@ -31,7 +31,8 @@ const NewAction = (props) => {
 
 	useEffect(() => {
 		if (actionType && actionType.type) {
-			setEffort({ effortType: actionType.type, amount: 0 });
+			console.log(actionType.type)
+			setEffort({ effortType: actionType.type, amount: 1 });
 			setMaxEffort();
 		}
 	}, [actionType]);
@@ -171,7 +172,7 @@ const NewAction = (props) => {
 								<textarea rows="6" value={intent} style={textStyle} onChange={(event) => setIntent(event.target.value)}></textarea>
 							</FlexboxGrid>
 							<FlexboxGrid>
-								<FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align="middle" colspan={6}>
+								{max !== 1 && <FlexboxGrid.Item style={{ paddingTop: '25px', paddingLeft: '10px', textAlign: 'left' }} align="middle" colspan={6}>
 									<h5 style={{ textAlign: 'center' }}>
 										Effort {effort.amount} / {max}
 										{effort.amount === 0 && (
@@ -198,7 +199,7 @@ const NewAction = (props) => {
 									</ButtonToolbar>
 									<br />
 									<Slider graduated min={0} max={max} defaultValue={0} progress value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></Slider>
-								</FlexboxGrid.Item>
+								</FlexboxGrid.Item>}
 								<FlexboxGrid.Item
 									style={{
 										paddingTop: '25px',

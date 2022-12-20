@@ -20,8 +20,16 @@ const  CharacterStats = (props) => {
 		<React.Fragment>
 			<NavigationBar/>
 				<h3>Leaderboard</h3>
-				{<Button onClick={() => setNumber(number === 3 ? 100 : 3)}>Show All</Button>}
-
+				{props.control && <Button onClick={() => setNumber(number === 3 ? 100 : 3)}>Show All</Button>}
+        <Divider>Global Stats</Divider>
+        {config.globalStats.map((stat, index) => (
+          <Col key={index} xs={24/config.globalStats.length} sm={24/config.globalStats.length} md={24/config.globalStats.length} className="gridbox">
+            <div  style={{ border: '3px solid pink', borderRadius: '5px', width: '100%', }} >
+              <h5 style={{ backgroundColor: 'pink', color: 'black' }}>{stat.type} ~ {stat.statAmount}</h5>
+            </div>
+          </Col>
+        ))}
+        <Divider>Character Stats</Divider>
         {config.characterStats.map((stat, index) => (
           <Col key={index} xs={12} sm={12} md={12} className="gridbox">
             <div  style={{ border: '3px solid pink', borderRadius: '5px', width: '100%', }} >
@@ -56,6 +64,7 @@ const  CharacterStats = (props) => {
 }
 
 const mapStateToProps = (state) => ({
+	control: state.auth.character ? state.auth.character.tags.some((el) => el.toLowerCase() === 'control') : state.auth.control,
 	user: state.auth.user,
 	gamestate: state.gamestate,
 	assets: state.assets.list,
