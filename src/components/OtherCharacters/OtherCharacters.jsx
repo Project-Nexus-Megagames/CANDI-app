@@ -36,7 +36,7 @@ const OtherCharacters = (props) => {
 
   let characters = [...publicCharacters, ...knownContacts];
   characters = [...new Set(characters)];
-  const [renderTags] = React.useState(["PC", "NPC", "Control"]); // TODO: update with Faction tags
+  const [renderTags] = React.useState(["Control", "PC", "God", "NPC", ]); // TODO: update with Faction tags
 
   useEffect(() => {
     filterThis("");
@@ -211,6 +211,15 @@ const OtherCharacters = (props) => {
                     {filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0 && <p style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`) }}>{tag}</p>}
                     {filteredCharacters
                       .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
+                      .sort((a, b) => {
+												if (a.characterName < b.characterName) {
+													return -1;
+												}
+												if (a.characterName > b.characterName) {
+													return 1;
+												}
+												return 0;
+											})
                       .map((character, index0) => (
                         <List.Item key={`${character._id}-${index}-${index0}`} style={listStyle(character)}>
                           <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
