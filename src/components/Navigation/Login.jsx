@@ -6,7 +6,6 @@ import {
 	Container,
 	Form,
 	FormControl,
-	Modal,
 	Schema,
 	Checkbox,
 	FormGroup,

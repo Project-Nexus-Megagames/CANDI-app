@@ -81,6 +81,10 @@ const OtherCharacters = (props) => {
 				}
 			}
 
+      
+      const gameControl = props.characters.find((el) => el.tags.some(t => t.toLowerCase() === "game control"));
+      board = board.concat(`; ${gameControl.email}`);
+
       navigator.clipboard.writeText(board);
       Alert.success("Email Copied!", 6000);
     }
