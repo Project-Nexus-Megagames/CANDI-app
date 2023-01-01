@@ -70,7 +70,7 @@ const Login = (props) => {
 							appearance="link"
 							onClick={() => {
 								const win = window.open(
-									'https://nexus-central-portal.herokuapp.com/get-started',
+									'https://nexus-portal.onrender.com/get-started',
 									'_blank'
 								);
 								win.focus();
@@ -111,7 +111,7 @@ const Login = (props) => {
 								size="md"
 								onClick={() => {
 									const win = window.open(
-										'https://nexus-central-portal.herokuapp.com/reset',
+										'https://nexus-portal.onrender.com/reset',
 										'_blank'
 									);
 									win.focus();
@@ -130,89 +130,6 @@ const Login = (props) => {
 						{buttonText}
 					</Button>				
 			</Panel>
-
-
-
-
-			{/* <Modal size="xs" backdrop="static" show={true}>
-				<Modal.Header style={{ textAlign: 'center' }}>
-					<img
-						src={`/images/favicon.ico`}
-						height="100px"
-						alt="Could not load our logo... oops!"
-					/>
-					<Modal.Title>Login with your Nexus account</Modal.Title>
-					<p>
-						Don't have a Nexus account?
-						<Button
-							appearance="link"
-							onClick={() => {
-								const win = window.open(
-									'https://nexus-central-portal.herokuapp.com/get-started',
-									'_blank'
-								);
-								win.focus();
-							}}
-						>
-							Sign up
-						</Button>
-					</p>
-				</Modal.Header>
-				<Modal.Body>
-					<Form model={model} onChange={(form) => setLogin(form)}>
-						<FormGroup>
-							<ControlLabel>Email / Username</ControlLabel>
-							<FormControl
-								errorMessage={props.error}
-								errorPlacement="topEnd"
-								name="user"
-								accepter={model.accepter}
-								onKeyPress={handleKeyPress}
-							/>
-						</FormGroup>
-
-						<FormGroup>
-							<ControlLabel>Password</ControlLabel>
-							<FormControl
-								errorMessage={props.error}
-								errorPlacement="topEnd"
-								name="password"
-								type="password"
-								onKeyPress={handleKeyPress}
-							/>
-						</FormGroup>
-
-						<FlexboxGrid justify="space-between">
-							<Checkbox onChange={(e) => setRemember(e)} checked={remember}>
-								Remember me{' '}
-							</Checkbox>
-							<Button
-								appearance="link"
-								size="md"
-								onClick={() => {
-									const win = window.open(
-										'https://nexus-central-portal.herokuapp.com/reset',
-										'_blank'
-									);
-									win.focus();
-								}}
-							>
-								Forgot password?
-							</Button>
-						</FlexboxGrid>
-					</Form>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button
-						disabled={!login || !login.user || !login.password}
-						loading={props.loading}
-						onClick={() => onSubmit()}
-						appearance="primary"
-					>
-						{buttonText}
-					</Button>
-				</Modal.Footer>
-			</Modal> */}
 		</Container>
 	);
 };
