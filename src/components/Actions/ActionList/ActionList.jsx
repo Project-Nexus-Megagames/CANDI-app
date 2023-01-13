@@ -1,19 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Accordion,
-    AccordionButton,
-    AccordionIcon,
-    AccordionItem,
-    AccordionPanel,
-    Avatar,
-    Box,
-    Container,
-    Flex,
-    Heading,
-    StackDivider,
-    Tag,
-    VStack
-} from "@chakra-ui/react";
+import {    Accordion,    AccordionButton,    AccordionIcon,    AccordionItem,    AccordionPanel,    Avatar,    Box,    Container,    Flex,    Heading,    StackDivider,    Tag,    VStack} from "@chakra-ui/react";
 import ActionTag from "./ActionTag";
 
 function ActionList({actions, handleSelect}) {
@@ -79,7 +65,7 @@ function ActionList({actions, handleSelect}) {
             >
                 {rounds.map((round, index) => (
                     <AccordionItem
-                        key={index}
+                        key={index + round}
                         style={{
                             borderTop: 0,
                             borderBottom: 0,
@@ -110,9 +96,9 @@ function ActionList({actions, handleSelect}) {
                                 divider={<StackDivider/>}
                                 align='stretch'
                             >
-                                {sortedActions(round).map((action, index) => (
+                                {sortedActions(round).map((action) => (
                                         <Flex
-                                            key={index}
+                                            key={action._id}
                                             onClick={() => handleSelect(action)}
                                             style={{
                                                 marginTop: '0',

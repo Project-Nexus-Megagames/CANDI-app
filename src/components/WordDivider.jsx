@@ -12,7 +12,7 @@ function WordDivider({word, tooltip, size = 'md'}) {
                 aria-label='a tooltip'
             >
                 <Heading
-                    as='h8'
+                    as='h5'
                     size={size}
                     marginLeft='1rem'
                     marginRight='1rem'
@@ -24,7 +24,7 @@ function WordDivider({word, tooltip, size = 'md'}) {
             </Tooltip>
         ) : (
             <Heading
-                as='h8'
+                as='h5'
                 size={size}
                 marginLeft='1rem'
                 marginRight='1rem'

@@ -30,7 +30,7 @@ function Feed({action}) {
         switch (item.model) {
             case 'Comment':
                 return (
-                    <div>
+                    <div key={item._id} >
                         <Comment
                             selected={action}
                             index={index}
@@ -40,7 +40,7 @@ function Feed({action}) {
                 );
             case 'Result':
                 return (
-                    <div>
+                    <div key={item._id} >
                         <Divider vertical/>
                         <Result
                             index={index}
@@ -52,7 +52,7 @@ function Feed({action}) {
                 );
             case 'Effect':
                 return (
-                    <div>
+                    <div key={item._id} >
                         <Divider vertical/>
                         <Effect
                             selected={action}

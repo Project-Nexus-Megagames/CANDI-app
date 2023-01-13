@@ -1,9 +1,26 @@
-import { Button, CheckPicker, FlexboxGrid, Icon, Loader, Modal, Slider, Tag } from "rsuite";
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    Tag,
+    Icon,
+    Spinner,
+    Box,
+    Slider,
+    Flex,
+    Button,
+  } from '@chakra-ui/react'
 import { getFadedColor, getThisEffort } from "../../../scripts/frontend";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import socket from "../../../socket";
 import { getMyAssets } from "../../../redux/entities/assets";
+import { CheckIcon } from '@chakra-ui/icons';
+import CheckerPick from '../../Common/CheckerPick';
 
 function EditAction({action, showEdit, handleClose}) {
     if (!showEdit) {
@@ -79,165 +96,156 @@ function EditAction({action, showEdit, handleClose}) {
             overflow
             style={{width: '90%'}}
             size="md"
-            show={showEdit}
-            onHide={handleClose}
+            isOpen={showEdit}
+            onClose={handleClose}
         >
-            <Modal.Header>
-                <Modal.Title>
-                    Edit {action.type} action {name}
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{
-                border: `4px solid ${getFadedColor(action.type)}`,
-                borderRadius: '5px',
-                padding: '15px'
-            }}
-            >
-                {actionLoading &&
-                    <Loader
-                        backdrop
-                        content="loading..."
-                        vertical
-                    />
-                }
-                <form>
-                    Name:
-                    {10 - name.length > 0 && (
-                        <Tag
-                            style={{color: 'black'}}
-                            color={'orange'}
-                        >
-                            {10 - name.length} more characters...
-                        </Tag>
-                    )}
-                    {10 - name.length <= 0 && (
-                        <Tag color={'green'}>
-                            <Icon icon="check"/>
-                        </Tag>
-                    )}
-                    <textarea
-                        rows="1"
-                        value={name}
-                        className="textStyle"
-                        onChange={(event) => setName(event.target.value)}
-                    ></textarea>
-                    Description:
-                    {10 - description.length > 0 && (
-                        <Tag
-                            style={{color: 'black'}}
-                            color={'orange'}
-                        >
-                            {10 - description.length} more characters...
-                        </Tag>
-                    )}
-                    {10 - description.length <= 0 && (
-                        <Tag color={'green'}>
-                            <Icon icon="check"/>
-                        </Tag>
-                    )}
-                    <textarea
-                        rows="6"
-                        value={description}
-                        className="textStyle"
-                        onChange={(event) => setDescription(event.target.value)}
-                    />
-                    <br/>
-                    <FlexboxGrid>
-                        Intent:
-                        {10 - intent.length > 0 && (
-                            <Tag
-                                style={{color: 'black'}}
-                                color={'orange'}
-                            >
-                                {10 - intent.length} more characters...
-                            </Tag>
-                        )}
-                        {10 - intent.length <= 0 && (
-                            <Tag color={'green'}>
-                                <Icon icon="check"/>
-                            </Tag>
-                        )}
-                        <textarea
-                            rows="6"
-                            value={intent}
-                            className="textStyle"
-                            onChange={(event) => setIntent(event.target.value)}
-                        />
-                    </FlexboxGrid>
-                    {(
-                        <FlexboxGrid>
-                            <FlexboxGrid.Item
-                                style={{
-                                    paddingTop: '25px',
-                                    paddingLeft: '10px',
-                                    textAlign: 'left'
-                                }}
-                                align="middle"
-                                colspan={6}
-                            >
-                                <h5 style={{textAlign: 'center'}}>
-                                    Effort {effort.amount} / {max}
-                                    {effort === 0 && (
-                                        <Tag
-                                            style={{color: 'black'}}
-                                            color={'orange'}
-                                        >
-                                            Need Effort
-                                        </Tag>
-                                    )}
-                                </h5>
+          <ModalOverlay />
+            <ModalContent>
+            <ModalHeader>
+                Edit {action.type} action {name}
+            </ModalHeader>
+            <ModalCloseButton />
+              <ModalBody style={{
+                  border: `4px solid ${getFadedColor(action.type)}`,
+                  borderRadius: '5px',
+                  padding: '15px'
+              }}
+              >
+                  {actionLoading &&
+                      <Spinner
+                          backdrop
+                          content="loading..."
+                          vertical
+                      />
+                  }
+                  <form>
+                      Name:
+                      {10 - name.length > 0 && (
+                          <Tag
+                              style={{color: 'black'}}
+                              colorScheme={'orange'}
+                          >
+                              {10 - name.length} more characters...
+                          </Tag>
+                      )}
+                      {10 - name.length <= 0 && (
+                          <Tag colorScheme={'green'}>
+                              <CheckIcon/>
+                          </Tag>
+                      )}
+                      <textarea
+                          rows="1"
+                          value={name}
+                          className="textStyle"
+                          onChange={(event) => setName(event.target.value)}
+                      ></textarea>
+                      Description:
+                      {10 - description.length > 0 && (
+                          <Tag
+                              style={{color: 'black'}}
+                              colorScheme={'orange'}
+                          >
+                              {10 - description.length} more characters...
+                          </Tag>
+                      )}
+                      {10 - description.length <= 0 && (
+                          <Tag colorScheme={'green'}>
+                              <Icon icon="check"/>
+                          </Tag>
+                      )}
+                      <textarea
+                          rows="6"
+                          value={description}
+                          className="textStyle"
+                          onChange={(event) => setDescription(event.target.value)}
+                      />
+                      <br/>
+                      <Box>
+                          Intent:
+                          {10 - intent.length > 0 && (
+                              <Tag
+                                  style={{color: 'black'}}
+                                  colorScheme={'orange'}
+                              >
+                                  {10 - intent.length} more characters...
+                              </Tag>
+                          )}
+                          {10 - intent.length <= 0 && (
+                              <Tag colorScheme={'green'}>
+                                  <Icon icon="check"/>
+                              </Tag>
+                          )}
+                          <textarea
+                              rows="6"
+                              value={intent}
+                              className="textStyle"
+                              onChange={(event) => setIntent(event.target.value)}
+                          />
+                      </Box>
 
-                                <Slider
-                                    graduated
-                                    min={0}
-                                    max={max}
-                                    defaultValue={action.submission.effort.amount}
-                                    progress
-                                    value={effort.amount}
-                                    onChange={(event) => editEffort(parseInt(event), 'effort')}
-                                ></Slider>
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item
-                                style={{
-                                    paddingTop: '25px',
-                                    paddingLeft: '10px',
-                                    textAlign: 'left'
-                                }}
-                                colspan={2}
-                            >
-                                {/* <InputNumber value={effort} max={this.myCharacter.effort} min={0} onChange={(event)=> this.setState({effort: event})}></InputNumber>								 */}
-                            </FlexboxGrid.Item>
-                            <FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
-                            <FlexboxGrid.Item
-                                style={{
-                                    paddingTop: '5px',
-                                    paddingLeft: '10px',
-                                    textAlign: 'left'
-                                }}
-                                colspan={10}
-                            >
-                                {' '}
-                                Resources
-                                <CheckPicker
-                                    labelKey="name"
-                                    valueKey="_id"
-                                    data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
-                                    style={{width: '100%'}}
-                                    defaultValue={action.submission.assets}
-                                    disabledItemValues={formattedUsedAssets(action.submission.assets)}
-                                    onChange={(event) => setResources(event)}
-                                />
-                            </FlexboxGrid.Item>
-                        </FlexboxGrid>
-                    )}
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
+                      <Flex>
+                              <Box
+                                  style={{
+                                      paddingTop: '25px',
+                                      paddingLeft: '10px',
+                                      textAlign: 'left'
+                                  }}
+                                  align="middle"
+                                  colspan={6}
+                              >
+                                  <h5 style={{textAlign: 'center'}}>
+                                      Effort {effort.amount} / {max}
+                                      {effort === 0 && (
+                                          <Tag
+                                              style={{color: 'black'}}
+                                              colorScheme={'orange'}
+                                          >
+                                              Need Effort
+                                          </Tag>
+                                      )}
+                                  </h5>
+
+                                  <Slider
+                                      graduated
+                                      min={0}
+                                      max={max}
+                                      defaultValue={action.submission.effort.amount}
+                                      progress
+                                      value={effort.amount}
+                                      onChange={(event) => editEffort(parseInt(event), 'effort')}
+                                  ></Slider>
+                              </Box>
+
+                              <Box
+                                  style={{
+                                      paddingTop: '5px',
+                                      paddingLeft: '10px',
+                                      textAlign: 'left'
+                                  }}
+                                  colspan={10}
+                              >
+                                  {' '}
+                                  Resources
+                                  <CheckerPick
+                                      labelKey="name"
+                                      valueKey="_id"
+                                      data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
+                                      style={{width: '100%'}}
+                                      defaultValue={action.submission.assets}
+                                      disabledItemValues={formattedUsedAssets(action.submission.assets)}
+                                      onChange={(event) => setResources(event)}
+                                  />
+                              </Box>
+                      </Flex>
+                  </form>
+              </ModalBody>
+
+              <ModalFooter>
                 <Button
                     loading={actionLoading}
                     onClick={() => handleSubmit()}
                     disabled={effort.amount <= 0 || description.length < 10 || intent.length < 10 || name.length < 10}
-                    color={description.length > 10 && intent.length > 10 ? 'green' : 'red'}
+                    colorScheme={description.length > 10 && intent.length > 10 ? 'green' : 'red'}
                     appearance="primary"
                 >
                     <b>Submit</b>
@@ -247,8 +255,10 @@ function EditAction({action, showEdit, handleClose}) {
                     appearance="subtle"
                 >
                     Cancel
-                </Button>
-            </Modal.Footer>
+                </Button>                
+              </ModalFooter>
+            </ModalContent>
+
         </Modal>
     )
 }

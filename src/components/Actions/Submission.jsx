@@ -431,7 +431,7 @@ const Submission = (props) => {
                             backdrop
                             content="loading..."
                             vertical
-                        />}
+                                                />}
                         <form>
                             Name:
                             {10 - name.length > 0 && (

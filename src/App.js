@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
 import { Alert } from "rsuite";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { ChakraProvider, useToast } from "@chakra-ui/react";
+import { Route, Routes, Redirect } from "react-router-dom";
+import { ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
@@ -39,6 +39,7 @@ import { loadGameConfig } from "./redux/entities/gameConfig";
 import { loadArticles } from "./redux/entities/articles";
 import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
+import NavigationBar from "./components/Navigation/NavigationBar";
 
 // React App Component
 initUpdates();
@@ -136,30 +137,44 @@ const App = (props) => {
           : {}
       }
     >
-      <ChakraProvider>
-        <Switch>
-          <Route exact path='/login' render={(props) => <Login {...props} />} />
-          <Route exact path='/home' render={(props) => <HomePage {...props} />} />
-          <Route exact path='/character' render={(props) => <CharacterProfile {...props} />} />
-          <Route path='/news' render={(props) => <News {...props} />} />
-          <Route path='/agendas' render={(props) => <Agendas {...props} />} />
-          <Route exact path='/others' render={(props) => <OtherCharacters {...props} />} />
-          <Route exact path='/actions' render={(props) => <Actions {...props} />} />
-          <Route exact path='/gameConfig' render={(props) => <GameConfig {...props} />} />
-          <Route exact path='/gameConfig2' render={(props) => <GameConfig2 {...props} />} />
-          <Route exact path='/control' render={(props) => <ControlTerminal {...props} />} />
-          <Route exact path='/log' render={(props) => <Log {...props} />} />
-          <Route exact path='/quests' render={(props) => <Quests {...props} />} />
-          <Route exact path='/map' render={(props) => <Map {...props} />} />
-          <Route exact path='/404' render={(props) => <NotFound {...props} />} />
-          <Route exact path='/no-character' render={(props) => <NoCharacter {...props} />} />
-          <Route exact path='/registration' render={(props) => <Registration {...props} />} />
-          <Route exact path='/down' render={(props) => <Down {...props} />} />
-          <Route exact path='/bitsy' render={(props) => <Bitsy {...props} />} />
-          <Redirect from='/' exact to='login' />
-          <Redirect to='/404' />
-        </Switch>
-      </ChakraProvider>
+        <Grid
+          templateAreas={`"header header"
+                          "main main"`}
+          gridTemplateRows={'250px 1fr'}
+          h='100vh'
+          gap='2'
+          color={'#fff'}
+        >
+          <GridItem pl='2' bg='#343a40' area={'header'} >
+            <NavigationBar />
+          </GridItem>
+
+          <GridItem pl='2' bg='#0f131a' area={'main'}  >
+            <Routes>
+             <Route exact path='/login' render={(props) => <Login {...props} />} />
+              <Route exact path='/home' render={(props) => <HomePage {...props} />} />
+              <Route exact path='/character' render={(props) => <CharacterProfile {...props} />} />
+              <Route path='/news' render={(props) => <News {...props} />} />
+              <Route path='/agendas' render={(props) => <Agendas {...props} />} />
+              <Route exact path='/others' render={(props) => <OtherCharacters {...props} />} />
+              <Route exact path='/actions' render={(props) => <Actions {...props} />} />
+              <Route exact path='/gameConfig' render={(props) => <GameConfig {...props} />} />
+              <Route exact path='/gameConfig2' render={(props) => <GameConfig2 {...props} />} />
+              <Route exact path='/control' render={(props) => <ControlTerminal {...props} />} />
+              <Route exact path='/log' render={(props) => <Log {...props} />} />
+              <Route exact path='/quests' render={(props) => <Quests {...props} />} />
+              <Route exact path='/map' render={(props) => <Map {...props} />} />
+              <Route exact path='/404' render={(props) => <NotFound {...props} />} />
+              <Route exact path='/no-character' render={(props) => <NoCharacter {...props} />} />
+              <Route exact path='/registration' render={(props) => <Registration {...props} />} />
+              <Route exact path='/down' render={(props) => <Down {...props} />} />
+              <Route exact path='/bitsy' render={(props) => <Bitsy {...props} />} />
+              <Redirect from='/' exact to='login' />
+              <Redirect to='/404' />        
+            </Routes>    
+          </GridItem>
+
+        </Grid>    
     </div>
   );
 };

@@ -1,23 +1,29 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {
-    Button,
-    ButtonGroup,
-    ButtonToolbar,
-    CheckPicker,
-    FlexboxGrid,
-    Icon,
-    Loader,
-    Modal,
-    Slider,
-    Tag,
-    Tooltip,
-    Whisper
-} from 'rsuite';
 import { getFadedColor, getIcon, getThisEffort } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import socket from '../../../socket';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Tag,
+  Icon,
+  Spinner,
+  Box,
+  Slider,
+  Flex,
+  Button,
+  ButtonGroup,
+  Tooltip,
+} from '@chakra-ui/react'
+import CheckerPick from '../../Common/CheckerPick';
+import { CheckIcon } from '@chakra-ui/icons';
 
 /**
  * Form for a new ACTION
@@ -118,230 +124,225 @@ const NewAction = (props) => {
             overflow
             style={{width: '90%'}}
             size="md"
-            show={props.show}
-            onHide={() => props.closeNew()}
+            isOpen={props.show}
+            onClose={() => props.closeNew()}
         >
-            <Modal.Header>
-                <Modal.Title>Submit a new{actionType ? ` ~${actionType.type}~` : ''} Action</Modal.Title>
-            </Modal.Header>
-            <Modal.Body
-                style={{border: `4px solid ${getFadedColor(actionType.type)}`, borderRadius: '5px', padding: '15px'}}
-            >
-                {props.actionLoading &&
-                    <Loader
-                        backdrop
-                        content="loading..."
-                        vertical
-                    />
-                }
-                <ButtonToolbar>
-                    <ButtonGroup justified>
-                        {gameConfig &&
-                            gameConfig.actionTypes.map((aType) => (
-                                <Whisper
-                                    key={aType.type}
-                                    placement="top"
-                                    trigger="hover"
-                                    speaker={
-                                        <Tooltip>
-                                            <b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>
-                                        </Tooltip>
-                                    }
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>
+              Submit a new{actionType ? ` ~${actionType.type}~` : ''} Action
+            </ModalHeader>
+            <ModalCloseButton />
+              <ModalBody
+                  style={{border: `4px solid ${getFadedColor(actionType.type)}`, borderRadius: '5px', padding: '15px'}}
+              >
+                  {props.actionLoading &&
+                      <Spinner
+                          backdrop
+                          content="loading..."
+                          vertical
+                      />
+                  }
+                     <ButtonGroup isAttached>
+                          {gameConfig &&
+                              gameConfig.actionTypes.map((aType) => (
+                                <Tooltip
+                                  key={aType.type}
+                                  openDelay={50}
+                                  placement="top"
+                                  label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>}
                                 >
-                                    <Button
-                                        style={{}}
-                                        onClick={() => setActionType(aType)}
-                                        color={getFadedColor(`${aType.type}-rs`)}
-                                        appearance={actionType.type === aType.type ? 'default' : 'ghost'}
-                                    >
-                                        {getIcon(aType.type)}
-                                    </Button>
-                                </Whisper>
-                            ))}
-                    </ButtonGroup>
-                </ButtonToolbar>
-                {actionType.type && (
-                    <div>
-                        <form>
-                            Name:
-                            {10 - name.length > 0 && (
-                                <Tag
-                                    style={{color: 'black'}}
-                                    color={'orange'}
-                                >
-                                    {10 - name.length} more characters...
-                                </Tag>
-                            )}
-                            {10 - name.length <= 0 && (
-                                <Tag color={'green'}>
-                                    <Icon icon="check"/>
-                                </Tag>
-                            )}
-                            <textarea
-                                rows="1"
-                                value={name}
-                                style={textStyle}
-                                onChange={(event) => setName(event.target.value)}
-                            ></textarea>
-                            Description:
-                            {10 - description.length > 0 && (
-                                <Tag
-                                    style={{color: 'black'}}
-                                    color={'orange'}
-                                >
-                                    {10 - description.length} more characters...
-                                </Tag>
-                            )}
-                            {10 - description.length <= 0 && (
-                                <Tag color={'green'}>
-                                    <Icon icon="check"/>
-                                </Tag>
-                            )}
-                            <textarea
-                                rows="6"
-                                value={description}
-                                style={textStyle}
-                                onChange={(event) => setDescription(event.target.value)}
-                            ></textarea>
-                            <br></br>
-                            <FlexboxGrid>
-                                Intent:
-                                {10 - intent.length > 0 && (
-                                    <Tag
-                                        style={{color: 'black'}}
-                                        color={'orange'}
-                                    >
-                                        {10 - intent.length} more characters...
-                                    </Tag>
-                                )}
-                                {10 - intent.length <= 0 && (
-                                    <Tag color={'green'}>
-                                        <Icon icon="check"/>
-                                    </Tag>
-                                )}
-                                <textarea
-                                    rows="6"
-                                    value={intent}
-                                    style={textStyle}
-                                    onChange={(event) => setIntent(event.target.value)}
-                                ></textarea>
-                            </FlexboxGrid>
-                            <FlexboxGrid>
-                                <FlexboxGrid.Item
-                                    style={{paddingTop: '25px', paddingLeft: '10px', textAlign: 'left'}}
-                                    align="middle"
-                                    colspan={6}
-                                >
-                                    <h5 style={{textAlign: 'center'}}>
-                                        Effort {effort.amount} / {max}
-                                        {effort.amount === 0 && (
-                                            <Tag
-                                                style={{color: 'black'}}
-                                                size="sm"
-                                                color={'orange'}
-                                            >
-                                                Need Effort
-                                            </Tag>
-                                        )}
-                                    </h5>
-                                    <ButtonToolbar>
-                                        <ButtonGroup justified>
-                                            {actionType &&
-                                                actionType.effortTypes.map((e) => (
-                                                    <Button
-                                                        key={e}
-                                                        onClick={() => editState(e, 'effort')}
-                                                        color={getFadedColor(`${e}-rs`)}
-                                                        disabled={getThisEffort(myCharacter.effort, e) < 1}
-                                                        appearance={effort.effortType == e ? 'default' : 'ghost'}
-                                                    >
-                                                        {e} - ({getThisEffort(myCharacter.effort, e)})
-                                                    </Button>
-                                                ))}
-                                        </ButtonGroup>
-                                    </ButtonToolbar>
-                                    <br/>
-                                    <Slider
-                                        graduated
-                                        min={0}
-                                        max={max}
-                                        defaultValue={0}
-                                        progress
-                                        value={effort.amount}
-                                        onChange={(event) => editState(parseInt(event), 'effort')}
-                                    ></Slider>
-                                </FlexboxGrid.Item>
-                                <FlexboxGrid.Item
-                                    style={{
-                                        paddingTop: '25px',
-                                        paddingLeft: '10px',
-                                        textAlign: 'left'
-                                    }}
-                                    colspan={2}
-                                ></FlexboxGrid.Item>
-                                <FlexboxGrid.Item colspan={4}></FlexboxGrid.Item>
-                                <FlexboxGrid.Item
-                                    style={{
-                                        paddingTop: '5px',
-                                        paddingLeft: '10px',
-                                        textAlign: 'left'
-                                    }}
-                                    colspan={10}
-                                >
-                                    {' '}
-                                    Resources -{' '}
-                                    {actionType.assetType.map((type, index) => (
-                                        <Tag index={index}>{type}</Tag>
-                                    ))}
-                                    <CheckPicker
-                                        labelKey="name"
-                                        valueKey="_id"
-                                        data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
-                                        style={{width: '100%'}}
-                                        disabledItemValues={formattedUsedAssets()}
-                                        onChange={(event) => setResource(event)}
-                                    />
-                                </FlexboxGrid.Item>
-                            </FlexboxGrid>
-                        </form>
-                        <div
-                            style={{
-                                justifyContent: 'end',
-                                display: 'flex',
-                                marginTop: '15px'
-                            }}
+                                  <Button
+                                  style={{}}
+                                  onClick={() => setActionType(aType)}
+                                  color={getFadedColor(`${aType.type}-rs`)}
+                                  appearance={actionType.type === aType.type ? 'default' : 'ghost'}
+                                  >
+                                  {getIcon(aType.type)}
+                                </Button>
+                              </Tooltip >
+                              ))}
+                     </ButtonGroup>
+                  {actionType.type && (
+                      <div>
+                       <form>
+                      Name:
+                      {10 - name.length > 0 && (
+                          <Tag
+                              style={{color: 'black'}}
+                              colorScheme={'orange'}
+                          >
+                              {10 - name.length} more characters...
+                          </Tag>
+                      )}
+                      {10 - name.length <= 0 && (
+                          <Tag colorScheme={'green'}>
+                              <CheckIcon/>
+                          </Tag>
+                      )}
+                      <textarea
+                          rows="1"
+                          value={name}
+                          className="textStyle"
+                          onChange={(event) => setName(event.target.value)}
+                      ></textarea>
+                      Description:
+                      {10 - description.length > 0 && (
+                          <Tag
+                              style={{color: 'black'}}
+                              colorScheme={'orange'}
+                          >
+                              {10 - description.length} more characters...
+                          </Tag>
+                      )}
+                      {10 - description.length <= 0 && (
+                          <Tag colorScheme={'green'}>
+                              <Icon icon="check"/>
+                          </Tag>
+                      )}
+                      <textarea
+                          rows="6"
+                          value={description}
+                          className="textStyle"
+                          onChange={(event) => setDescription(event.target.value)}
+                      />
+                      <br/>
+                      <Box>
+                          Intent:
+                          {10 - intent.length > 0 && (
+                              <Tag
+                                  style={{color: 'black'}}
+                                  colorScheme={'orange'}
+                              >
+                                  {10 - intent.length} more characters...
+                              </Tag>
+                          )}
+                          {10 - intent.length <= 0 && (
+                              <Tag colorScheme={'green'}>
+                                  <Icon icon="check"/>
+                              </Tag>
+                          )}
+                          <textarea
+                              rows="6"
+                              value={intent}
+                              className="textStyle"
+                              onChange={(event) => setIntent(event.target.value)}
+                          />
+                      </Box>
+
+                      <Flex>
+                        <Box
+                          style={{
+                              paddingTop: '25px',
+                              paddingLeft: '10px',
+                              textAlign: 'left'
+                          }}
+                          align="middle"
+                          colspan={6}
                         >
-                            <Button
-                                onClick={() => handleSubmit()}
-                                disabled={isDisabled(effort)}
-                                color={isDisabled(effort) ? 'red' : 'green'}
-                                appearance="primary"
-                            >
-                                <b>Submit</b>
-                            </Button>
-                            <Button
-                                onClick={() => props.closeNew()}
-                                appearance="subtle"
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
-                )}
-            </Modal.Body>
-            <Modal.Footer></Modal.Footer>
+                          <h5 style={{textAlign: 'center'}}>
+                              Effort {effort.amount} / {max}
+                              {effort === 0 && (
+                                  <Tag
+                                      style={{color: 'black'}}
+                                      colorScheme={'orange'}
+                                  >
+                                      Need Effort
+                                  </Tag>
+                              )}
+                          </h5>
+                          <ButtonGroup justified>
+                            {actionType &&
+                              actionType.effortTypes.map((e) => (
+                                <Button
+                                  key={e}
+                                  onClick={() => editState(e, 'effort')}
+                                  color={getFadedColor(`${e}-rs`)}
+                                  disabled={getThisEffort(myCharacter.effort, e) < 1}
+                                  appearance={effort.effortType == e ? 'default' : 'ghost'}
+                                >
+                                  {e} - ({getThisEffort(myCharacter.effort, e)})
+                                </Button>
+                              ))}
+                          </ButtonGroup>
+                          <Slider
+graduated
+min={0}
+max={max}
+defaultValue={0}
+progress
+value={effort.amount}
+onChange={(event) => editState(parseInt(event), 'effort')}
+                          ></Slider>
+
+                        </Box>
+
+                              <Box
+                                  style={{
+                                      paddingTop: '5px',
+                                      paddingLeft: '10px',
+                                      textAlign: 'left'
+                                  }}
+                                  colspan={10}
+                              >
+                                  {' '}
+                                  Resources
+                                  <CheckerPick
+                                    labelKey="name"
+                                    valueKey="_id"
+                                    data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
+                                    style={{width: '100%'}}
+                                    disabledItemValues={formattedUsedAssets()}
+                                    onChange={(event) => setResource(event)}
+                                  />
+                              </Box>
+                      </Flex>
+                  </form>
+                          <div
+                              style={{
+                                  justifyContent: 'end',
+                                  display: 'flex',
+                                  marginTop: '15px'
+                              }}
+                          >
+                              <Button
+                                  onClick={() => handleSubmit()}
+                                  disabled={isDisabled(effort)}
+                                  color={isDisabled(effort) ? 'red' : 'green'}
+                                  appearance="primary"
+                              >
+                                  <b>Submit</b>
+                              </Button>
+                              <Button
+                                  onClick={() => props.closeNew()}
+                                  appearance="subtle"
+                              >
+                                  Cancel
+                              </Button>
+                          </div>
+                      </div>
+                  )}
+              </ModalBody>            
+              <ModalFooter>
+              <ButtonGroup justified>
+								{actionType &&
+									actionType.effortTypes.map((e) => (
+										<Button
+											key={e}
+											onClick={() => editState(e, 'effort')}
+											color={getFadedColor(`${e}-rs`)}
+											disabled={getThisEffort(myCharacter.effort, e) < 1}
+											appearance={effort.effortType == e ? 'default' : 'ghost'}
+										>
+											{e} - ({getThisEffort(myCharacter.effort, e)})
+										</Button>
+									))}
+							</ButtonGroup>
+            </ModalFooter>
+            
+          </ModalContent>
         </Modal>
     );
-};
-
-const textStyle = {
-    backgroundColor: '#1a1d24',
-    border: '1.5px solid #3c3f43',
-    borderRadius: '5px',
-    width: '100%',
-    padding: '5px',
-    overflow: 'auto',
-    scrollbarWidth: 'none'
 };
 
 export default NewAction;

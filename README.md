@@ -1,6 +1,6 @@
 ## Setup
 
-Greetings human/robot/other! You have made the unfortunate decision to help with the CANDI app! Here's how to se up:
+Greetings human/robot/other! You have made the unfortunate decision to help with the CANDI app! Here's how to set up:
 
 1) Once you have cloned the repository, move into the folder candi-app with the terminal (cd candi-app)
 2) Enter the command npm i to install dependencies. Don't worry about any warnings about vulnerabilites, I am sure thosewill never be relevent or a problem!

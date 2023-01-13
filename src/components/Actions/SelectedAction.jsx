@@ -46,7 +46,7 @@ const SelectedAction = (props) => {
         switch (el.model) {
             case 'Submission':
                 return (
-                    <div>
+                    <div key={el._id} >
                         <Submission
                             special={props.special}
                             handleSelect={props.handleSelect}
@@ -59,7 +59,7 @@ const SelectedAction = (props) => {
                 );
             case 'Comment':
                 return (
-                    <div>
+                    <div key={el._id} >
                         <Comment
                             selected={props.selected}
                             index={index}
@@ -69,7 +69,7 @@ const SelectedAction = (props) => {
                 );
             case 'Result':
                 return (
-                    <div>
+                    <div key={el._id} >
                         <Divider vertical/>
                         <Result
                             index={index}
@@ -81,7 +81,7 @@ const SelectedAction = (props) => {
                 );
             case 'Effect':
                 return (
-                    <div>
+                    <div key={el._id} >
                         <Divider vertical/>
                         <Effect
                             selected={props.selected}

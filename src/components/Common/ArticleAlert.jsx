@@ -24,7 +24,7 @@ export const ArticleAlert = (props) => {
       justifyContent='center'
       textAlign='center'
       height='300px'
-    >
+               >
       <h5>New Article Posted!</h5>
       <CloseButton
           alignSelf='flex-end'
@@ -32,8 +32,13 @@ export const ArticleAlert = (props) => {
           right={10}
           top={-20}
           onClick={() => setShow(false)}
-        />
-      {article.image && <Image src={article.image} width="100%" height={'15vh'} fit='cover' />}
+      />
+      {article.image && <Image
+      src={article.image}
+      width="100%"
+      height={'15vh'}
+      fit='cover'
+                        />}
       <h3>      {article.title}    </h3>
       
     </Alert>}      
