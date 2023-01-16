@@ -38,7 +38,7 @@ const CharacterStats = (props) => {
               <h5 style={{ backgroundColor: getFadedColor(stat.type), color: getTextColor(stat.type) }}>{stat.type}</h5>
               <List hover size="sm">
 				  {props.characters.filter(el => el.tags.some(tag => tag.toLowerCase() === 'pc')).sort(function (a, b) {
-					  return b[stat.amount] - a[stat.amount]
+					  return b[stat.statAmount] - a[stat.statAmount]
 				  }).splice(0, number).map((character, index) => (
 					  <List.Item key={index} index={index}>
 						  <FlexboxGrid>
