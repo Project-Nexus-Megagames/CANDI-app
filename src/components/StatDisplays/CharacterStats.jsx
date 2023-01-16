@@ -47,7 +47,7 @@ const  CharacterStats = (props) => {
                     {character.characterName} ({character.characterTitle})
                   </FlexboxGrid.Item>
                   <FlexboxGrid.Item colspan={2}>
-                    {<div>
+                    {props.control && <div>
                       {character.characterStats.find(el => el.type === stat.type)?.statAmount}
                       </div>}
                   </FlexboxGrid.Item>
