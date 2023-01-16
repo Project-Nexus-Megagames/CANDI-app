@@ -1,30 +1,16 @@
 import React, { useEffect } from 'react'; // React imports
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import {
-	Button,
-	Container,
-	Form,
-	FormControl,
-	Modal,
-	Schema,
-	Checkbox,
-	FormGroup,
-	FlexboxGrid,
-	ControlLabel,
-	Panel
-} from 'rsuite';
-import { loadAllActions } from '../../redux/entities/playerActions';
-import { authReceived, loginUser } from '../../redux/entities/auth';
-import banner from '../Images/Banner.png';
-
-const { StringType } = Schema.Types;
+import { useNavigate } from 'react-router-dom';
+import { Card } from '@chakra-ui/card';
+import { FormControl, FormLabel } from '@chakra-ui/form-control';
+import { Input } from '@chakra-ui/input';
+import { Button } from '@chakra-ui/button';
 
 const Login = (props) => {
 	let { tokenLogin, loadAction, user } = props;
-	const [login, setLogin] = React.useState({ user: '', password: '' });
+	const [login, setLogin] = React.useState('');
+	const [password, setPassword] = React.useState('');
 	const [remember, setRemember] = React.useState(true);
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		let token = localStorage.getItem('candi-token');
@@ -38,9 +24,9 @@ const Login = (props) => {
 	useEffect(() => {
 		if (props.login) {
 			loadAction(user);
-			history.push('/home');
+			navigate('/home');
 		}
-	}, [props.login, user, loadAction, history]);
+	}, [props.login, user, loadAction, navigate]);
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') props.handleLogin(login);
@@ -56,185 +42,52 @@ const Login = (props) => {
 	let buttonText = props.loading ? 'Loading' : 'Login';
 
 	return (
-		<Container style={{ display: 'flex', alignItems: 'center', }}>
+    <div className="styleCenter">
+      <Card maxW='lg'>
+      <img
+        src={'/images/Locations/Silicon District.jpg'}
+        width={800}
+        alt="Failed to load img"
+      />
+      <h5>Login with your Nexus account</h5>
+          <p>
+            Don't have a Nexus account?{" "}
+            <Button
+              colorScheme={'blue'}
+              variant="link"
+              onClick={() => {
+                const win = window.open(
+                  'https://nexus-central-portal.herokuapp.com/get-started',
+                  '_blank'
+                );
+                win.focus();
+              }}
+            >
+              Sign up
+            </Button>
+          </p>
+          <FormControl>
+            <FormLabel>Email / Username</FormLabel>
+            <Input value={login} onKeyPress={handleKeyPress} onChange={(e)=> setLogin(e.target.value)}  />
+          </FormControl>
 
-			<Panel bordered style={{ display: 'flex', alignItems: 'center', }}>
-			<img
-				src={banner}
-				width={800}
-				alt="Failed to load img"
-			/>
-			<h5>Login with your Nexus account</h5>
-					<p>
-						Don't have a Nexus account?
-						<Button
-							appearance="link"
-							onClick={() => {
-								const win = window.open(
-									'https://nexus-central-portal.herokuapp.com/get-started',
-									'_blank'
-								);
-								win.focus();
-							}}
-						>
-							Sign up
-						</Button>
-					</p>
-					<Form model={model} onChange={(form) => setLogin(form)}>
-						<FormGroup>
-							<ControlLabel>Email / Username</ControlLabel>
-							<FormControl
-								errorMessage={props.error}
-								errorPlacement="topEnd"
-								name="user"
-								accepter={model.accepter}
-								onKeyPress={handleKeyPress}
-							/>
-						</FormGroup>
+          <FormControl>
+            <FormLabel>Password</FormLabel>
+            <Input type='password' onKeyPress={handleKeyPress} value={password} onChange={(e)=> setPassword(e.target.value)} />
+          </FormControl>
 
-						<FormGroup>
-							<ControlLabel>Password</ControlLabel>
-							<FormControl
-								errorMessage={props.error}
-								errorPlacement="topEnd"
-								name="password"
-								type="password"
-								onKeyPress={handleKeyPress}
-							/>
-						</FormGroup>
-
-						<FlexboxGrid justify="space-between">
-							<Checkbox onChange={(e) => setRemember(e)} checked={remember}>
-								Remember me{' '}
-							</Checkbox>
-							<Button
-								appearance="link"
-								size="md"
-								onClick={() => {
-									const win = window.open(
-										'https://nexus-central-portal.herokuapp.com/reset',
-										'_blank'
-									);
-									win.focus();
-								}}
-							>
-								Forgot password?
-							</Button>
-						</FlexboxGrid>
-					</Form>
-					<Button
-						disabled={!login || !login.user || !login.password}
-						loading={props.loading}
-						onClick={() => onSubmit()}
-						appearance="primary"
-					>
-						{buttonText}
-					</Button>				
-			</Panel>
-
-
-
-
-			{/* <Modal size="xs" backdrop="static" show={true}>
-				<Modal.Header style={{ textAlign: 'center' }}>
-					<img
-						src={`/images/favicon.ico`}
-						height="100px"
-						alt="Could not load our logo... oops!"
-					/>
-					<Modal.Title>Login with your Nexus account</Modal.Title>
-					<p>
-						Don't have a Nexus account?
-						<Button
-							appearance="link"
-							onClick={() => {
-								const win = window.open(
-									'https://nexus-central-portal.herokuapp.com/get-started',
-									'_blank'
-								);
-								win.focus();
-							}}
-						>
-							Sign up
-						</Button>
-					</p>
-				</Modal.Header>
-				<Modal.Body>
-					<Form model={model} onChange={(form) => setLogin(form)}>
-						<FormGroup>
-							<ControlLabel>Email / Username</ControlLabel>
-							<FormControl
-								errorMessage={props.error}
-								errorPlacement="topEnd"
-								name="user"
-								accepter={model.accepter}
-								onKeyPress={handleKeyPress}
-							/>
-						</FormGroup>
-
-						<FormGroup>
-							<ControlLabel>Password</ControlLabel>
-							<FormControl
-								errorMessage={props.error}
-								errorPlacement="topEnd"
-								name="password"
-								type="password"
-								onKeyPress={handleKeyPress}
-							/>
-						</FormGroup>
-
-						<FlexboxGrid justify="space-between">
-							<Checkbox onChange={(e) => setRemember(e)} checked={remember}>
-								Remember me{' '}
-							</Checkbox>
-							<Button
-								appearance="link"
-								size="md"
-								onClick={() => {
-									const win = window.open(
-										'https://nexus-central-portal.herokuapp.com/reset',
-										'_blank'
-									);
-									win.focus();
-								}}
-							>
-								Forgot password?
-							</Button>
-						</FlexboxGrid>
-					</Form>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button
-						disabled={!login || !login.user || !login.password}
-						loading={props.loading}
-						onClick={() => onSubmit()}
-						appearance="primary"
-					>
-						{buttonText}
-					</Button>
-				</Modal.Footer>
-			</Modal> */}
-		</Container>
+          <Button
+            disabled={!login || !password}
+            // isLoading={loading.toString()}
+            onClick={() => onSubmit()}
+            variant="solid"
+          >
+            {buttonText}
+          </Button>				
+      </Card>      
+    </div>
 	);
 };
 
-const model = Schema.Model({
-	email: StringType().isRequired('This field is required.')
-});
 
-const mapStateToProps = (state) => ({
-	auth: state.auth,
-	login: state.auth.login,
-	error: state.auth.error,
-	user: state.auth.user,
-	loading: state.auth.loading,
-	gamestateLast: state.gamestate.lastFetch
-});
-
-const mapDispatchToProps = (dispatch) => ({
-	handleLogin: (data) => dispatch(loginUser(data)),
-	tokenLogin: (data) => dispatch(authReceived(data)),
-	loadAction: (data) => dispatch(loadAllActions(data)) // dispatch(loadplayerActions(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default (Login);

@@ -1,6 +1,6 @@
 import { Divider } from '@chakra-ui/layout';
 import React, { useState } from 'react';
-import { CandiModal } from '../Common/Modal';
+import { CandiModal } from '../Common/CandiModal';
 
 function AssetInfo({asset, showInfo, closeInfo}) {
 	const [arcane, setArcane] = useState(false);
@@ -32,7 +32,6 @@ function AssetInfo({asset, showInfo, closeInfo}) {
 						<Divider/>{' '}
 						<div>
 							<b>Uses: {asset.uses}</b>{' '}
-							{arcane && <Tag color="violet">Arcane</Tag>}
 						</div>
 					</React.Fragment>
 				)}

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { IconButton, Icon, List } from "rsuite";
 import {
   useDisclosure,
   Textarea,
@@ -27,12 +26,14 @@ import {
   Stack,
   Text,
   VStack,
+  IconButton,
 } from "@chakra-ui/react";
 import { getDateString } from "../../scripts/dateTime";
 import { getMyCharacter } from "../../redux/entities/characters";
 import socket from "../../socket";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { IoTrashBin } from "react-icons/io5";
 
 const ViewArticle = (props) => {
   const [newComment, setNewComment] = useState("");
@@ -126,9 +127,9 @@ const ViewArticle = (props) => {
               <Button bg='black' onClick={() => handleComment()}>
                 Send Comment
               </Button>
-              <List hover>
+              <HStack hover>
                 {article?.comments.map((comment, index) => (
-                  <List.Item key={index}>
+                  <div key={index}>
                     <Stack align='left'>
                       <HStack align='left'>{/* <TeamAvatar size={'sm'} code={'none'} />  */}</HStack>
                       <VStack align='left'>
@@ -146,7 +147,7 @@ const ViewArticle = (props) => {
                                     onOpen(setCommentId(comment._id));
                                   }}
                                   color='red'
-                                  icon={<Icon icon='trash2' />}
+                                  icon={<IoTrashBin icon='trash2' />}
                                 />
                               )}
                             </ButtonGroup>
@@ -155,9 +156,9 @@ const ViewArticle = (props) => {
                         <p>{comment.body}</p>
                       </VStack>
                     </Stack>
-                  </List.Item>
+                  </div>
                 ))}
-              </List>
+              </HStack>
             </Stack>
           </Center>
         </DrawerBody>

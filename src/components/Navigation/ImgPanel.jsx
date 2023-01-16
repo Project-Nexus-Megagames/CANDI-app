@@ -1,6 +1,6 @@
+import { Tag } from '@chakra-ui/tag';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Tag } from 'rsuite';
 
 const ImgPanel = (props) => {
 	return (

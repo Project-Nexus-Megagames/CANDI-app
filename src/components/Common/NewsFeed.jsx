@@ -153,7 +153,9 @@ const NewsFeed = (props) => {
 						))}
 				</Stack>
 			</Box>
+
 			<ViewArticle isOpen={articleModal} show={articleModal} selected={selected} closeDrawer={() => setArticleModal(false)} />
+      
 			<CandiDrawer open={isOpen} title="" onClose={onClose} onOpen={onOpen}>
 				<ArticleForm article={article} onSubmit={onClose} onCancel={onClose} />
 			</CandiDrawer>

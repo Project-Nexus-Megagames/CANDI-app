@@ -1,6 +1,6 @@
+import { Box } from '@chakra-ui/layout';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Panel, InputPicker, Timeline } from 'rsuite';
 import { getGameStateLog, getControlLog } from '../../redux/entities/log';
 import { getDateTimeString } from '../../scripts/dateTime';
 
@@ -53,9 +53,9 @@ const Log = () => {
 					const created = getDateTimeString(nextRound.createdAt);
 					const headerString = 'New Round ' + nextRound.round + ' Initiated by ' + nextRound.control + ' on ' + created;
 					return (
-						<Panel key={index} header={headerString} style={{ fontWeight: 'bold' }} collapsible bordered>
+						<Box key={index} header={headerString} style={{ fontWeight: 'bold' }} collapsible bordered>
 							{renderEachNextRoundMessage(nextRound)}
-						</Panel>
+						</Box>
 					);
 				})}
 			</div>
@@ -64,21 +64,23 @@ const Log = () => {
 
 	const renderControlMessages = (controlMessages) => {
 		return (
-			<Timeline className="custom-timeline">
-				{controlMessages.map((message, index) => {
-					return <ControlLogEntry log={message} key={index}></ControlLogEntry>;
-				})}
-			</Timeline>
+      <div>TODO fix this</div>
+			// <Timeline className="custom-timeline">
+			// 	{controlMessages.map((message, index) => {
+			// 		return <ControlLogEntry log={message} key={index}></ControlLogEntry>;
+			// 	})}
+			// </Timeline>
 		);
 	};
 
 	return (
 		<div>
 			<NavigationBar />
-			<Panel>
-				<InputPicker block placeholder="Pick a Category" onChange={(event) => handleCatChange(event)} data={logCategories} />
-			</Panel>
-			<Panel>{renderCat()}</Panel>
+			<Box>
+				{/* <InputPicker block placeholder="Pick a Category" onChange={(event) => handleCatChange(event)} data={logCategories} /> */}
+        Todo: Fix Logs
+			</Box>
+			<Box>{renderCat()}</Box>
 		</div>
 	);
 };

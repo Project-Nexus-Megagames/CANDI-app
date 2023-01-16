@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { Button, ButtonGroup } from 'rsuite';
 import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack, Button, ButtonGroup } from '@chakra-ui/react';
 
 function GameConfig2() {
 	const oldConfig = useSelector((state) => state.gameConfig);

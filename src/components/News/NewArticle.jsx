@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CandiDrawer } from '../Common/Drawer';
 import { ArticleForm } from './ArticleForm';
-import { CandiModal } from '../Common/Modal';
+import { CandiModal } from '../Common/CandiModal';
 import { Button } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 

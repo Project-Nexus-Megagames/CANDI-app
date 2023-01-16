@@ -1,6 +1,5 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit"; // Import from reactjs toolkit
 import { apiCallBegan } from "../api"; // Import Redux API call
-import { Alert } from "rsuite";
 import { gameServer } from "../../config";
 
 
@@ -23,14 +22,12 @@ const slice = createSlice({
     },
     articlesReceived: (articles, action) => {
       console.log(`${action.type} Dispatched...`);
-      // Alert.info('article State Loaded!', 3000);
       articles.list = action.payload;
       articles.loading = false;
       articles.lastFetch = Date.now();
     },
     articlesRequestFailed: (articles, action) => {
       console.log(`${action.type} Dispatched`)
-      Alert.error(`${action.type}: ${action.payload}`, 4000);
       articles.loading = false;
     },
     articleAdded: (articles, action) => {

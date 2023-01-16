@@ -10,7 +10,6 @@ import Actions from "./components/Actions/Actions";
 import News from "./components/News/News";
 import Agendas from "./components/Agendas/Agendas";
 import HomePage from "./components/Navigation/HomePage";
-import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
 import GameConfig from "./components/GameConfig/GameConfigStep1";
@@ -29,10 +28,8 @@ import NoCharacter from "./components/Navigation/NoCharacter";
 import { initConnection } from "./socket";
 import Registration from "./components/Control/Registration";
 import NotFound from "./components/Navigation/NotFound";
-import Bitsy from "./components/Navigation/Bitsy";
 import Down from "./components/Navigation/Down";
 import { signOut, usersRecieved } from "./redux/entities/auth";
-import Map from "./components/Map/Map";
 import { loadGameConfig } from "./redux/entities/gameConfig";
 import { loadArticles } from "./redux/entities/articles";
 import { loadLog } from "./redux/entities/log";
@@ -151,7 +148,6 @@ const App = (props) => {
             <Routes>
              <Route exact path='/login' render={(props) => <Login {...props} />} />
               <Route exact path='/home' render={(props) => <HomePage {...props} />} />
-              <Route exact path='/character' render={(props) => <CharacterProfile {...props} />} />
               <Route path='/news' render={(props) => <News {...props} />} />
               <Route path='/agendas' render={(props) => <Agendas {...props} />} />
               <Route exact path='/others' render={(props) => <OtherCharacters {...props} />} />
@@ -160,12 +156,10 @@ const App = (props) => {
               <Route exact path='/gameConfig2' render={(props) => <GameConfig2 {...props} />} />
               <Route exact path='/control' render={(props) => <ControlTerminal {...props} />} />
               <Route exact path='/log' render={(props) => <Log {...props} />} />
-              <Route exact path='/map' render={(props) => <Map {...props} />} />
               <Route exact path='/404' render={(props) => <NotFound {...props} />} />
               <Route exact path='/no-character' render={(props) => <NoCharacter {...props} />} />
               <Route exact path='/registration' render={(props) => <Registration {...props} />} />
               <Route exact path='/down' render={(props) => <Down {...props} />} />
-              <Route exact path='/bitsy' render={(props) => <Bitsy {...props} />} />
               <Route path="/" element={<Navigate to="/login" />}/>   
               <Route exact path='/404' element={<NotFound {...props} />} />      
             </Routes>    

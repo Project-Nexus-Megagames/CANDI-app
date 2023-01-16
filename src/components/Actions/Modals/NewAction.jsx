@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFadedColor, getIcon, getThisEffort } from '../../../scripts/frontend';
+import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import socket from '../../../socket';
@@ -23,7 +23,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 import CheckerPick from '../../Common/CheckerPick';
-import { CheckIcon } from '@chakra-ui/icons';
+import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
 
 /**
  * Form for a new ACTION
@@ -117,6 +117,15 @@ const NewAction = (props) => {
             temp.push(asset._id);
         }
         return temp;
+    }
+
+    function getIcon (type) {
+      switch(type){
+          case 'Normal':  return(<PlusSquareIcon/>)
+          case 'Agenda':  return(<PlusSquareIcon/>)
+          default:
+            return(<PlusSquareIcon/>)
+      }
     }
 
     return (

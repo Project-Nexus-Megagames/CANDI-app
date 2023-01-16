@@ -1,5 +1,3 @@
-import { Icon } from "rsuite";
-
 function getFadedColor(color, fade = 1) {
 	// console.log(color)
 	switch (color) {
@@ -112,16 +110,6 @@ function getTextColor(color, fade = 1) {
 	}
 }
 
-
-function getIcon (type) {
-	switch(type){
-			case 'Normal':  return(<Icon icon="plus" />)
-			case 'Agenda':  return(<Icon icon="plus" />)
-			default:
-				return(<Icon icon="plus" />)
-	}
-}
-
 function getCountdownHours(start, end) {
 	let countDownDate = new Date(end).getTime();
 	const now = new Date(start).getTime();
@@ -144,4 +132,4 @@ const getTime = (date) => {
 	);
 };
 
-export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime };
+export { getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime };

@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
-import { Button, ButtonGroup } from 'rsuite';
 import { effortTypesAdded } from '../../redux/entities/gameConfig';
 
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Button, ButtonGroup } from '@chakra-ui/react';
 
 function GameConfig() {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const oldConfig = useSelector((state) => state.gameConfig);
 
 	const { register, control, handleSubmit, reset, formState } = useForm({
@@ -65,7 +62,7 @@ function GameConfig() {
 	const onSubmit = (data) => {
 		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
 		dispatch(effortTypesAdded(data));
-		history.push('./GameConfig2');
+		// history.push('./GameConfig2'); // TODO remake this so it doesn't use navigation
 	};
 
 	return (

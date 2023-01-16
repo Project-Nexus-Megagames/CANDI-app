@@ -1,11 +1,10 @@
+import { Button } from '@chakra-ui/button';
+import { Box } from '@chakra-ui/layout';
 import React, { useState } from 'react';
-import { Button, Content, Header } from 'rsuite';
-import { useHistory } from 'react-router-dom';
 
 const NotFound = () => {
 	const [seconds, setSeconds] = useState(25);
 	const [startBool, setStart] = useState(false);
-	const history = useHistory();
 
 	const start = () => {
 		setStart((startBool) => (startBool = true));
@@ -24,7 +23,7 @@ const NotFound = () => {
 	return (
 		<React.Fragment>
 			{!startBool && (
-				<Header
+				<div
 					style={{
 						position: 'fixed',
 						top: '50%',
@@ -35,13 +34,13 @@ const NotFound = () => {
 					<Button appearance={'ghost'} onClick={() => start()}>
 						Click Me
 					</Button>
-					<Button color="white" appearance='text' size="lg" onClick={() => history.push('/')}>
+					<Button color="white" appearance='text' size="lg" onClick={() => console.log('/')}>
 							I'm scared take me back!
 						</Button>
-				</Header>
+				</div>
 			)}
 			{startBool && (
-				<Content
+				<Box
 					style={{
 						position: 'fixed',
 						top: '50%',
@@ -88,12 +87,12 @@ const NotFound = () => {
 						</div>
 					)}
 					{seconds >= 1200 && (
-						<Button color="red" size="lg" onClick={() => history.push('/')}>
+						<Button color="red" size="lg" onClick={() => console.log('/')}>
 							Take me back!
 						</Button>
 					)}
 					{seconds >= 1300 && <p>Also I really hope you had audio on...</p>}
-				</Content>
+				</Box>
 			)}
 		</React.Fragment>
 	);

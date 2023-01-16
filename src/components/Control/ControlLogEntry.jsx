@@ -1,7 +1,4 @@
 import React from 'react';
-
-import { Timeline } from 'rsuite';
-
 import { getDateTimeString } from '../../scripts/dateTime';
 
 const ControlLogEntry = (props) => {
@@ -26,11 +23,12 @@ const ControlLogEntry = (props) => {
 	};
 
 	return (
-		<Timeline.Item time={getDateTimeString(log.createdAt)}>
+		<div>
+      {getDateTimeString(log.createdAt)}
 			<p>
 				{getEnglish(log)} {log.message}
 			</p>
-		</Timeline.Item>
+		</div>
 	);
 };
 

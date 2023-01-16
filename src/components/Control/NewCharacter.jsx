@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, Button, Panel, ButtonGroup } from 'rsuite';
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import { cloudinaryUploadMedium } from '../../services/uploads';
+import { CandiModal } from '../Common/CandiModal';
 
 const NewCharacter = (props) => {
 	const gameConfig = useSelector((state) => state.gameConfig);
@@ -155,20 +155,8 @@ const NewCharacter = (props) => {
 	};
 
 	return (
-		<Modal
-			overflow
-			full
-			size="lg"
-			show={props.show}
-			onHide={() => {
-				handleExit();
-			}}
-		>
-			<Modal.Header>
-				<Modal.Title>New Character "{watchCharName}"</Modal.Title>
-			</Modal.Header>
+		<CandiModal>
 			<form onSubmit={handleSubmit(onSubmit, handleError)}>
-				<Panel>
 					<Flex w="100%">
 						<VStack spacing="24px" w="100%">
 							<HStack w="100%">
@@ -286,8 +274,7 @@ const NewCharacter = (props) => {
 							</Box>
 						</VStack>
 					</Flex>
-				</Panel>
-				<Modal.Footer>
+
 					<ButtonGroup>
 						<Button type="submit" color="green" className="btn btn-primary mr-1">
 							Create new Character
@@ -296,9 +283,8 @@ const NewCharacter = (props) => {
 							Reset Form
 						</Button>
 					</ButtonGroup>
-				</Modal.Footer>
 			</form>
-		</Modal>
+		</CandiModal>
 	);
 };
 

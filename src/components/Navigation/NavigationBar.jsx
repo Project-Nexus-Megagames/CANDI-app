@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { setCharacter, signOut } from '../../redux/entities/auth';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
@@ -13,7 +12,6 @@ const Navigation = (props) => {
     const [selectedChar, setSelectedChar] = React.useState(myChar._id);
     const currentCharacter = useSelector(getCharacterById(selectedChar));
     const allCharacters = useSelector(state => state.characters.list);
-    const history = useHistory();
     const {isControl} = usePermissions();
 
     useEffect(() => {
@@ -66,14 +64,14 @@ const Navigation = (props) => {
                 alignItems={'center'}
             >
                 <Box
-                    onClick={() => history.push('/home')}
+                    onClick={() => console.log('/home')}
                     justify="start"
                     flex={1}
                     display='flex'
                     marginRight='auto'
                 >
                     <IconButton
-                        onClick={() => history.push('/home')}
+                        onClick={() => console.log('/home')}
                         icon={<ArrowBackIcon/>}
                         variant='outline'
                         aria-label={'go home'}
