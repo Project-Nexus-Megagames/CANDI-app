@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { Grid, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Avatar, IconButton, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon, Table, Divider} from 'rsuite';
+import React from 'react';
+import { Button, Col, Divider, FlexboxGrid, List, Loader } from 'rsuite';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { connect, useSelector } from 'react-redux';
 import NavigationBar from '../Navigation/NavigationBar';
 import { getGodBonds, getMortalBonds } from '../../redux/entities/assets';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
-const  CharacterStats = (props) => {
+const CharacterStats = (props) => {
 	const config = useSelector((state) => state.gameConfig);
 	const gamestate = useSelector((state) => state.gamestate);
 	const [copy, setCopy] = React.useState([]);
@@ -37,17 +37,19 @@ const  CharacterStats = (props) => {
             <div  style={{ border: `3px solid ${getFadedColor(stat.type)}`, borderRadius: '5px', width: '100%', }} >
               <h5 style={{ backgroundColor: getFadedColor(stat.type), color: getTextColor(stat.type) }}>{stat.type}</h5>
               <List hover size="sm">
-                {props.characters.filter(el => el.tags.some(tag => tag.toLowerCase() === 'pc')).sort(function(a, b){return b[stat.type] - a[stat.type]}).splice(0, number).map((character, index) => (
-                <List.Item key={index} index={index}>
-                <FlexboxGrid>
-                  <FlexboxGrid.Item colspan={2}>
-                    <b>{index+1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
-                  </FlexboxGrid.Item>
-                  <FlexboxGrid.Item colspan={20}>
-                    {character.characterName} ({character.characterTitle})
-                  </FlexboxGrid.Item>
-                  <FlexboxGrid.Item colspan={2}>
-                    {props.control && <div>
+				  {props.characters.filter(el => el.tags.some(tag => tag.toLowerCase() === 'pc')).sort(function (a, b) {
+					  return b[stat.amount] - a[stat.amount]
+				  }).splice(0, number).map((character, index) => (
+					  <List.Item key={index} index={index}>
+						  <FlexboxGrid>
+							  <FlexboxGrid.Item colspan={2}>
+								  <b>{index + 1}</b>{index === 0 ? <b>st</b> : index === 1 ? <b>nd</b> : <b>rd</b>}
+							  </FlexboxGrid.Item>
+							  <FlexboxGrid.Item colspan={20}>
+								  {character.characterName} ({character.characterTitle})
+							  </FlexboxGrid.Item>
+							  <FlexboxGrid.Item colspan={2}>
+								  {props.control && <div>
                       {character.characterStats.find(el => el.type === stat.type)?.statAmount}
                       </div>}
                   </FlexboxGrid.Item>
