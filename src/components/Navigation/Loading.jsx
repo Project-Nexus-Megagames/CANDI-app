@@ -1,20 +1,25 @@
+import { Box, Button, Flex, Progress, Spinner } from '@chakra-ui/react';
+import { Check } from '@rsuite/icons';
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Progress, Loader, Panel, Icon, IconStack, Row, Col, Button } from 'rsuite';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { finishLoading, setControl, signOut, setCharacter } from '../../redux/entities/auth';
 
-const { Line } = Progress;
-
-const LoadingNew = (props) => {
+const Loading = (props) => {
 	const [message] = useState('Scott quip goes here...');
 	const [sections] = useState(Object.keys(props.entities).sort());
+  const reduxAction = useDispatch();
+	const navigate = useNavigate();
 
-	let done = Object.keys(props.entities)
+	const { loadingStart, user, character, team } = useSelector(s => s.auth)
+	const characters  = useSelector(s => s.characters.list)
+	const entities  = useSelector(s => s)
+
+
+	let done = Object.keys(entities)
 		.sort()
-		.filter((key) => props.entities[key].lastFetch !== null);
-	const history = useHistory();
+		.filter((key) => entities[key].lastFetch !== null);
 
 	const boredClick = () => {
 		const random = Math.floor(Math.random() * bored.length);
@@ -22,17 +27,17 @@ const LoadingNew = (props) => {
 		win.focus();
 	};
 
-	if (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100) {
-		const character = props.entities.characters.list.find((el) => el.username === props.auth.user.username);
+	if (user && (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100)) {
+		const character = entities.characters.list.find((el) => el.username === user.username);
 
-		if (props.auth.user.roles.some((el) => el === 'Control')) {
-			character ? props.setCharacter(character) : console.log(character);
-			props.finishLoading();
-			history.push('/home');
+		if (user.roles.some((el) => el === 'Control')) {
+			character ? setCharacter(character) : console.log(character);
+			reduxAction(finishLoading());
+			navigate('/home');
 		} else if (character) {
-			character ? props.setCharacter(character) : console.log(character);
-			props.finishLoading();
-			history.push('/home');
+			character ? reduxAction(setCharacter(character)) : console.log(character);
+			reduxAction(finishLoading());
+			navigate('/home');
 		} else {
 			// Alert.error('You do not have an assigned team!', 1000);
 			return (
@@ -48,7 +53,7 @@ const LoadingNew = (props) => {
 					<Button
 						onClick={() => {
 							props.logOut();
-							history.push('/login');
+							navigate('/login');
 						}}
 					>
 						Log Out
@@ -64,7 +69,22 @@ const LoadingNew = (props) => {
 			<img style={{ maxHeight: '400px', height: '40vh' }} className="center-img" src={gamePhotos[rand]} alt={'Loading...'} onClick={() => boredClick()} />
 			{/* src={spook[rand]} */}
 			{<h5>{loadingMsg[rand1]}</h5>}
-			<Line percent={Math.floor((done.length / sections.length) * 100)} status="active" />
+      <Progress 
+				value={Math.floor( Object.keys(entities).sort().filter( key => entities[key].lastFetch !== null).length / sections.length * 100)} 
+				status='active' />
+			<hr />
+			<Flex>
+				{sections.map(((section, index) =>
+					<Box key={index} index={index}>
+							{ entities[section].lastFetch ? 
+								<Check style={{ color: 'green' }} /> : 
+								<Spinner  />
+							}
+						{section}
+					</Box>
+				))}
+			</Flex>
+			{/* <Line percent={Math.floor((done.length / sections.length) * 100)} status="active" />
 			<hr />
 			<Row>
 				{sections.map((section, index) => (
@@ -75,30 +95,12 @@ const LoadingNew = (props) => {
 						</Panel>
 					</Col>
 				))}
-			</Row>
+			</Row> */}
 		</div>
 	);
 };
 
-const mapStateToProps = (state) => ({
-	actionsFailed: state.actions.failedAttempts,
-	charactersFailed: state.characters.failedAttempts,
-	assetsFailed: state.assets.failedAttempts,
-	locationsFailed: state.locations.failedAttempts,
-	appState: state,
-	auth: state.auth,
-	entities: state,
-	user: state.auth.user
-});
-
-const mapDispatchToProps = (dispatch) => ({
-	setCharacter: (payload) => dispatch(setCharacter(payload)),
-	finishLoading: () => dispatch(finishLoading()),
-	logOut: () => dispatch(signOut()),
-	isControl: (payload) => dispatch(setControl(payload))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingNew);
+export default (Loading);
 
 const gamePhotos = [
 	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif'

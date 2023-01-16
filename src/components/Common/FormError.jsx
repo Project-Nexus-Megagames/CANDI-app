@@ -1,6 +1,7 @@
+import { CheckIcon } from '@chakra-ui/icons';
+import { Tag } from '@chakra-ui/react';
 import React from 'react'
 import { useEffect } from 'react';
-import { Icon, Tag } from 'rsuite';
 
 const ErrorTag = ({ error }) => {
   
@@ -16,7 +17,7 @@ const ErrorTag = ({ error }) => {
 
   return (
     <Tag color={'green'}>
-      <Icon icon="check" />
+      <CheckIcon />
     </Tag>
   )
 };

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IconButton, Icon, List } from 'rsuite';
 import { useDisclosure, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Text, StatHelpText } from '@chakra-ui/react';
 import { getDateString } from '../../scripts/dateTime';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -45,7 +44,7 @@ const ActionDrawer = (props) => {
 				<DrawerHeader align="center">
 					<Text>{selected?.name}</Text>
 				</DrawerHeader>
-				<DrawerBody align="center">{selected && <SelectedAction special={false} handleSelect={props.closeDrawer} selected={selected} />}</DrawerBody>
+				{/* <DrawerBody align="center">{selected && <SelectedAction special={false} handleSelect={props.closeDrawer} selected={selected} />}</DrawerBody> */}
 			</DrawerContent>
 		</Drawer>
 	);

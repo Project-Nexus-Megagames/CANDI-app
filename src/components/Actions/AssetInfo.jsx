@@ -1,5 +1,6 @@
+import { Divider } from '@chakra-ui/layout';
 import React, { useState } from 'react';
-import { Button, Divider, Modal, Tag } from 'rsuite';
+import { CandiModal } from '../Common/Modal';
 
 function AssetInfo({asset, showInfo, closeInfo}) {
 	const [arcane, setArcane] = useState(false);
@@ -22,16 +23,8 @@ function AssetInfo({asset, showInfo, closeInfo}) {
     }
 
     return (
-        <Modal
-            show={showInfo}
-            onHide={() => handleClose()}
-            onEnter={() => handleShow()}
-        >
-            <Modal.Header>
-                <Modal.Title>{asset.name}</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				<p>Dice: {asset.dice}</p>
+      <CandiModal>
+        				<p>Dice: {asset.dice}</p>
 				{asset.type === 'Bond' && <b>Level: {asset.level}</b>}
 				<p>{asset.description}</p>
 				{asset.uses !== 999 && (
@@ -43,17 +36,7 @@ function AssetInfo({asset, showInfo, closeInfo}) {
 						</div>
 					</React.Fragment>
 				)}
-			</Modal.Body>
-			<Modal.Footer>
-				<Button
-					onClick={() => handleClose()}
-					color="red"
-					appearance="ghost"
-				>
-					Close
-				</Button>
-			</Modal.Footer>
-		</Modal>
+      </CandiModal>
 	);
 }
 

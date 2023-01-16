@@ -1,15 +1,13 @@
-import { Box } from "@chakra-ui/react";
-import Comment from "../../Comment";
-import Result from "../../Result";
-import Effect from "../../Effect";
+import { Box, Button, ButtonGroup, Divider, IconButton } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Button, ButtonGroup, Divider, Icon, IconButton } from "rsuite";
 import WordDivider from "../../../WordDivider";
 import NewResult from "../../Modals/NewResult";
 import NewComment from "../../Modals/NewComment";
 import NewEffects from "../../Modals/NewEffect";
 import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
+import ActionSubObject from "./ActionSubobject";
+import { PlusSquareIcon } from "@chakra-ui/icons";
 
 function Feed({action}) {
     const gamestate = useSelector(state => state.gamestate);
@@ -26,46 +24,6 @@ function Feed({action}) {
         ...action.comments
     ]
 
-    const renderSwitch = (item, index) => {
-        switch (item.model) {
-            case 'Comment':
-                return (
-                    <div key={item._id} >
-                        <Comment
-                            selected={action}
-                            index={index}
-                            comment={item}
-                        />
-                    </div>
-                );
-            case 'Result':
-                return (
-                    <div key={item._id} >
-                        <Divider vertical/>
-                        <Result
-                            index={index}
-                            result={item}
-                            selected={action}
-                            submission={action.submission}
-                        />
-                    </div>
-                );
-            case 'Effect':
-                return (
-                    <div key={item._id} >
-                        <Divider vertical/>
-                        <Effect
-                            selected={action}
-                            index={index}
-                            effect={item}
-                        />
-                    </div>
-                );
-            default:
-                return <b> Oops </b>;
-        }
-    };
-
     const closeIt = () => {
         setAdd(false);
         setResult(false);
@@ -79,14 +37,16 @@ function Feed({action}) {
             marginTop={'1rem'}
         >
             <WordDivider word={'Feed'}/>
-            {list.map((item, index) => renderSwitch(item, index))}
+            {list.map((item, index) => 
+              <ActionSubObject key={item._id} subObject={item} />
+            )}
             <Divider vertical/>
             <div style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem'}}>
                 {!add && (
                     <IconButton
                         onClick={() => setAdd(true)}
                         color="blue"
-                        icon={<Icon icon="plus"/>}
+                        icon={<PlusSquareIcon icon="plus"/>}
                     ></IconButton>
                 )}
                 {add && (

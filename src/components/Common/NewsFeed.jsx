@@ -17,9 +17,11 @@ import {
 	AlertDialogFooter,
 	AlertDialog,
 	Button,
-	AlertDialogOverlay
+	AlertDialogOverlay,
+  Tag,
+  ButtonGroup,
+  IconButton
 } from '@chakra-ui/react';
-import { IconButton, Icon, ButtonGroup, Tag, Divider } from 'rsuite';
 import { getDateString } from '../../scripts/dateTime';
 import ViewArticle from './ViewArticle';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -29,6 +31,9 @@ import socket from '../../socket';
 import { clearNewArticle } from '../../redux/entities/articles';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import WordDivider from '../WordDivider';
+import { IoTrash } from 'react-icons/io5';
+import { HiPencil } from 'react-icons/hi';
 
 const NewsFeed = (props) => {
 	const dispatch = useDispatch();
@@ -79,7 +84,7 @@ const NewsFeed = (props) => {
 	return (
 		<Center maxW="960px" mx="auto">
 			<Box bg="bg-surface" py="4">
-				<Divider>Round: {props.round}</Divider>
+        <WordDivider word={`Round: ${props.round}`}/>
 				<Stack divider={<StackDivider />} spacing="4">
 					{data.filter((el) => el.round === props.round).length === 0 && <b>Nothing here yet...</b>}
 					{data
@@ -97,7 +102,7 @@ const NewsFeed = (props) => {
 													</Text>
 												)}
 												{newArticles.some((el) => el.title == item.title) && (
-													<Tag size="lg" color="red" style={{ right: '30px' }}>
+													<Tag size="lg" colorScheme="red" style={{ right: '30px' }}>
 														New
 													</Tag>
 												)}
@@ -108,14 +113,14 @@ const NewsFeed = (props) => {
 											<HStack>
 												{showEditAndDelete(item) && (
 													<ButtonGroup>
-														<IconButton size="xs" onClick={() => onOpen(setArticle(item))} color="blue" icon={<Icon icon="edit" />} align="right" />
+														<IconButton size="xs" onClick={() => onOpen(setArticle(item))} color="blue" icon={<HiPencil icon="edit" />} align="right" />
 														<IconButton
 															size="xs"
 															onClick={() => {
 																onOpenDelete(setArticleId(item.articleId));
 															}}
 															color="red"
-															icon={<Icon icon="trash2" />}
+															icon={<IoTrash icon="trash2" />}
 															align="right"
 														/>
 													</ButtonGroup>
@@ -137,7 +142,7 @@ const NewsFeed = (props) => {
 											</Stack>
 										</Box>
 										<div style={{ height: '50px', textAlign: 'left', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis' }}>
-											<ReactMarkdown children={item?.body} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+											<ReactMarkdown remarkPlugins={[remarkGfm]}>{item?.body}</ReactMarkdown>
 										</div>
 										<Text align="right">
 											{item.comments?.length} {translateComment(item.comments?.length)}

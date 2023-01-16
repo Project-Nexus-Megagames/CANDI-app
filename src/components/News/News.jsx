@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
-import { Heading } from '@chakra-ui/react';
+import { Button, Flex, Heading, InputGroup, Spinner, Input, Divider, Grid, GridItem, Box } from '@chakra-ui/react';
 import { NewArticle } from './NewArticle';
-import { Container, FlexboxGrid, Header, Input, InputGroup, Button, Divider } from 'rsuite';
-import { Loader } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { getMyArticles, getPublishedArticles } from './../../redux/entities/articles';
 import socket from '../../socket';
@@ -33,7 +31,7 @@ const News = (props) => {
 
 	if (!login) {
 		props.history.push('/');
-		return <Loader inverse center content="doot..." />;
+		return <Spinner />;
 	}
 
 	const myArticleEffort = myChar.effort?.find((el) => el.type === 'Article')?.amount;
@@ -122,7 +120,7 @@ const News = (props) => {
 			return (
 				<tbody>
 					{[...Array(maxRound)].map((x, i) => (
-						<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
+						<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} colorScheme="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
 							{i + 1}
 						</Button>
 					))}
@@ -132,7 +130,7 @@ const News = (props) => {
 			return (
 				<tbody>
 					{[...Array(gamestate.round)].map((x, i) => (
-						<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
+						<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} colorScheme="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle key={gamestate.round}>
 							{i + 1}
 						</Button>
 					))}
@@ -153,26 +151,35 @@ const News = (props) => {
 	return (
 		<React.Fragment>
 			<NavigationBar />
-			<Header>
-				<FlexboxGrid justify="center" align="middle">
-					{getRoundMap()}
-					<FlexboxGrid.Item colspan={4}>
-						<InputGroup>
-							<Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />
-							{myArticleEffort > 0 && <NewArticle drawer={true} />}
-						</InputGroup>
-					</FlexboxGrid.Item>
-					<Divider />
-					{myArticles && myArticles.length > 0 && (
-						<Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
-							{filterButtonText}
-						</Button>
-					)}
-				</FlexboxGrid>
-			</Header>
-			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto' }}>
-				<NewsFeed round={round} data={filteredData} />
-			</Container>
+      <Grid
+      templateAreas={`"nav main"`}
+      gridTemplateColumns={ '20% 80%'}
+      gap='1'
+      fontWeight='bold'>
+    <GridItem pl='2' bg='#0f131a' area={'nav'} >
+      <Flex justify="center" align="middle">
+            {getRoundMap()}
+            <div >
+              <InputGroup>
+                <Input style={{ width: '80%' }} placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e)} />
+                {myArticleEffort > 0 && <NewArticle drawer={true} />}
+              </InputGroup>
+            </div>
+            <Divider />
+            {myArticles && myArticles.length > 0 && (
+              <Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} color="cyan" onClick={() => handleFilter()}>
+                {filterButtonText}
+              </Button>
+            )}
+          </Flex>
+    </GridItem>
+    <GridItem pl='2' bg='#0f131a' area={'main'} >
+      
+      <Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
+        <NewsFeed round={round} data={filteredData} />
+      </Box>
+    </GridItem>
+  </Grid>
 		</React.Fragment>
 	);
 };

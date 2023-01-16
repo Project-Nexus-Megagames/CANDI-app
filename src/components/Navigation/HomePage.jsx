@@ -17,7 +17,7 @@ import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 //import { Link } from 'react-router-dom';
 import UserList from './UserList';
-import LoadingNew from './LoadingNew';
+import LoadingNew from './Loading';
 import { getPublishedArticles } from '../../redux/entities/articles';
 import { signOut, setCharacter } from '../../redux/entities/auth';
 

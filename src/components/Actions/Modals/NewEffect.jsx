@@ -1,22 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	Alert,
-	Button,
-	ButtonGroup,
-	Checkbox,
-	CheckboxGroup,
-	CheckPicker,
-	Divider,
-	Input,
-	InputNumber,
-	InputPicker,
-	Modal,
-	Panel,
-	Placeholder,
-	SelectPicker,
-	Toggle
-} from 'rsuite';
 import socket from '../../../socket';
 import _ from 'lodash';
 
@@ -27,6 +10,11 @@ import {
 	getNonPlayerCharacters,
 	getUnlockedCharacters
 } from '../../../redux/entities/characters';
+import WordDivider from '../../WordDivider';
+import InputNumber from '../../Common/InputNumber';
+import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalOverlay, Switch, Text, VStack } from '@chakra-ui/react';
+import CheckerPick from '../../Common/CheckerPick';
+import SelectPicker from '../../Common/SelectPicker';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -182,8 +170,8 @@ const NewEffects = (props) => {
 	const renderAspects = () => {
 		return (
 			<div>
-				<Divider>Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
-					or more aspects</Divider>
+				<WordDivider word="Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
+					or more aspects" />
 				<label>Happiness: </label>
 				<InputNumber
 					defaultValue="0"
@@ -218,8 +206,7 @@ const NewEffects = (props) => {
 		if (char.injuries.length === 0) return <div>{char.characterName} currently does not have any injuries</div>;
 		return (
 			<div>
-				<CheckboxGroup
-					name="injuryList"
+				<VStack
 					onChange={(value) => {
 						handleHealInjuries(value);
 					}}
@@ -241,7 +228,7 @@ const NewEffects = (props) => {
 							</Checkbox>
 						);
 					})}
-				</CheckboxGroup>
+				</VStack>
 			</div>
 		);
 	};
@@ -259,7 +246,7 @@ const NewEffects = (props) => {
 			};
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
-			Alert.error(`Error: ${err.body} ${err.message}`, 5000);
+			// Alert.error(`Error: ${err.body} ${err.message}`, 5000);
 		}
 		handleExit();
 	};
@@ -267,7 +254,7 @@ const NewEffects = (props) => {
 	const renderAss = () => {
 		if (selected) {
 			return (
-				<Panel>
+				<Box>
 					Name: {selected.name}
 					<textarea
 						value={selected.name}
@@ -292,34 +279,10 @@ const NewEffects = (props) => {
 						value={selected.uses}
 						onChange={(value) => handleEdit('uses', value)}
 					/>
-					{selected.type === 'Trait' && (
-						<div>
-							<Divider/>
-							<Toggle
-								onChange={handleArcane}
-								checked={arcane}
-								checkedChildren=" Arcane"
-								unCheckedChildren=" Not Arcane"
-							></Toggle>
-						</div>
-					)}
-					{selected.type === 'MortalBond' && (
-						<div>
-							Bond Level
-							<InputPicker
-								labelKey="label"
-								valueKey="value"
-								data={mortalPickerData}
-								defaultValue={selected.level}
-								style={{width: '100%'}}
-								onChange={(event) => handleEdit('level', event)}
-							/>
-						</div>
-					)}
-				</Panel>
+				</Box>
 			);
 		} else {
-			return <Placeholder.Paragraph rows={5}>Awaiting Selection</Placeholder.Paragraph>;
+			return <Text rows={5}>Awaiting Selection</Text>;
 		}
 	};
 
@@ -327,48 +290,45 @@ const NewEffects = (props) => {
 		<Modal
 			size="lg"
 			placement="right"
-			show={props.show}
-			onHide={handleExit}
+			isOpen={props.show}
+			onClose={handleExit}
 		>
-			<Modal.Header></Modal.Header>
-			{
-				<Modal.Body>
+      <ModalOverlay />
+      <ModalContent>
+				<ModalBody>
 					<ButtonGroup>
-						{/* <Button  appearance={type !== 'bond' ? 'ghost' : 'primary'} color={'cyan'} onClick={type !== 'bond' ? () => handleType('bond') : undefined}>
-							Edit Bond
-						</Button> */}
 						<Button
-							appearance={type !== 'asset' ? 'ghost' : 'primary'}
+							variant={type !== 'asset' ? 'ghost' : 'solid'}
 							color={'blue'}
 							onClick={type !== 'asset' ? () => handleType('asset') : undefined}
 						>
 							Edit Resource
 						</Button>
-						{/* <Button appearance={type !== 'map' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
+						{/* <Button variant={type !== 'map' ? 'ghost' : 'solid'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
 							Unlock Map Tile
 						</Button> */}
 						<Button
-							appearance={type !== 'character' ? 'ghost' : 'primary'}
+							variant={type !== 'character' ? 'ghost' : 'solid'}
 							color={'orange'}
 							onClick={type !== 'character' ? () => handleType('character') : undefined}
 						>
 							Unlock Character
 						</Button>
-						{/* <Button appearance={type !== 'addInjury' ? 'ghost' : 'primary'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
+						<Button variant={type !== 'addInjury' ? 'ghost' : 'solid'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
 							Add an injury
-						</Button> */}
-						{/* <Button appearance={type !== 'healInjuries' ? 'ghost' : 'primary'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
+						</Button>
+						<Button variant={type !== 'healInjuries' ? 'ghost' : 'solid'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
 							Heal Injuries
-						</Button> */}
+						</Button>
 						<Button
-							appearance={type !== 'aspect' ? 'ghost' : 'primary'}
+							variant={type !== 'aspect' ? 'ghost' : 'solid'}
 							color={'orange'}
 							onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}
 						>
 							Edit an Aspect
 						</Button>
 						<Button
-							appearance={type !== 'new' ? 'ghost' : 'primary'}
+							variant={type !== 'new' ? 'ghost' : 'solid'}
 							color={'green'}
 							onClick={type !== 'new' ? () => handleType('new') : undefined}
 						>
@@ -379,34 +339,15 @@ const NewEffects = (props) => {
 					{type === 'new' && selected && (
 						<div>
 							Type
-							<InputPicker
+							{/* <InputPicker
 								labelKey="label"
 								valueKey="value"
 								data={pickerData}
 								defaultValue={selected.level}
 								style={{width: '100%'}}
 								onChange={(event) => handleEdit('type', event)}
-							/>
-							{selected.type === 'GodBond' && (
-								<SelectPicker
-									block
-									placeholder={`${selected.type} with...`}
-									onChange={(event) => handleEdit('with', event)}
-									data={gods}
-									valueKey="_id"
-									labelKey="characterName"
-								/>
-							)}
-							{selected.type === 'MortalBond' && (
-								<SelectPicker
-									block
-									placeholder={`${selected.type} with...`}
-									onChange={(event) => handleEdit('with', event)}
-									data={mortals}
-									valueKey="_id"
-									labelKey="characterName"
-								/>
-							)}
+							/> */}
+
 							{renderAss()}
 						</div>
 					)}
@@ -426,7 +367,7 @@ const NewEffects = (props) => {
 					)}
 					{type === 'map' && (
 						<div>
-							<CheckPicker
+							<CheckerPick
 								placeholder="Select Location(s) to unlock..."
 								onSelect={(event) => handleLocSelect(event)}
 								data={sortedLocations}
@@ -438,7 +379,7 @@ const NewEffects = (props) => {
 					{type === 'aspect' && <div>{renderAspects()}</div>}
 					{type === 'character' && (
 						<div>
-							<CheckPicker
+							<CheckerPick
 								placeholder="Select character(s) to unlock..."
 								onSelect={(event) => handleCharSelect(event)}
 								data={sortedCharacters}
@@ -455,7 +396,7 @@ const NewEffects = (props) => {
 					)}
 					{type === 'addInjury' && selected && (
 						<div>
-							<Divider>Add Injury</Divider>
+							<WordDivider word={"Add Injury"} >Add Injury</WordDivider>
 							<div>Title:</div>
 							<Input
 								onChange={(value) => handleAddInjury('name', value)}
@@ -471,27 +412,30 @@ const NewEffects = (props) => {
 									/>
 								</div>
 							)}
-							<Toggle
+							<Switch
 								onChange={(checked) => handleAddInjury('permanent', checked)}
-								checked={selected.permanent}
-								checkedChildren="Permanent Injury"
-								unCheckedChildren="Not Permanent"
-							></Toggle>
+								isChecked={selected.permanent}
+								// checkedChildren="Permanent Injury"
+								// unCheckedChildren="Not Permanent"
+							></Switch>
 						</div>
 					)}
-				</Modal.Body>
-			}
+				</ModalBody>
+      </ModalContent>
+			
+
+			
 			<Modal.Footer>
 				<Button
 					disabled={type === ''}
 					onClick={handleSubmit}
-					appearance="primary"
+					variant="solid"
 				>
 					Confirm
 				</Button>
 				<Button
 					onClick={handleExit}
-					appearance="subtle"
+					variant="subtle"
 				>
 					Cancel
 				</Button>
@@ -499,33 +443,6 @@ const NewEffects = (props) => {
 		</Modal>
 	);
 };
-
-const mortalPickerData = [
-	{
-		label: 'Loathing',
-		value: 'Loathing'
-	},
-	{
-		label: 'Unfriendly',
-		value: 'Unfriendly'
-	},
-	{
-		label: 'Neutral',
-		value: 'Neutral'
-	},
-	{
-		label: 'Warm',
-		value: 'Warm'
-	},
-	{
-		label: 'Friendly',
-		value: 'Friendly'
-	},
-	{
-		label: 'Bonded',
-		value: 'Bonded'
-	}
-];
 
 const pickerData = [
 	{

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Loader } from 'rsuite';
 import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NavigationBar from '../Navigation/NavigationBar';
 import NewAction from './Modals/NewAction';
@@ -15,6 +14,7 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
+    Spinner,
     useDisclosure
 } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
@@ -42,7 +42,7 @@ const Actions = (props) => {
     if (!props.login) {
         props.history.push('/');
         return (
-            <Loader
+            <Spinner
                 inverse
                 center
                 content="doot..."

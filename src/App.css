@@ -237,3 +237,16 @@ button {
 ul li {
   margin-left: 1.5em;
 }
+
+
+.publicComm {
+	background-color: #00a0bd
+};
+
+.privateComm {
+	background-color: #61342e
+};
+
+.infoComm {
+	background-color: #531ba8
+};

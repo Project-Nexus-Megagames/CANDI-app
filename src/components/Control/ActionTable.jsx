@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
 import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, HStack, Button, Input } from '@chakra-ui/react';
-import { SelectPicker } from 'rsuite';
 import { CheckRound, WarningRound, InfoRound } from '@rsuite/icons';
 import ActionDrawer from './ActionDrawer';
 import socket from '../../socket';
@@ -326,9 +325,9 @@ const ActionTable = () => {
 							<GridItem overflow="hidden">
 								<Input defaultValue={item.diceresult} onBlur={(event) => handleDiceResult(item._id, event.target.value)}></Input>
 							</GridItem>
-							<GridItem>
+							{/* <GridItem>
 								<SelectPicker value={item.controller?._id} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
-							</GridItem>
+							</GridItem> */}
 							<GridItem>
 								<Checkbox defaultChecked={item.news} onChange={(event) => handleNews(item._id, event.target.checked)}></Checkbox>
 							</GridItem>

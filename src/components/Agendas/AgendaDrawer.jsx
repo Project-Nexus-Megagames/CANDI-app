@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { IconButton, Icon, List } from "rsuite";
 import { useDisclosure, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Text, StatHelpText } from "@chakra-ui/react";
 import { getDateString } from "../../scripts/dateTime";
 import { getMyCharacter } from "../../redux/entities/characters";
-import socket from "../../socket";
-import SelectedAction from "../Actions/SelectedAction";
+import Action from "../Actions/ActionList/Action/Action";
 
 const AgendaDrawer = (props) => {
   const [newComment, setNewComment] = useState("");
@@ -45,7 +43,20 @@ const AgendaDrawer = (props) => {
         <DrawerHeader align='center'>
           <Text>{selected?.name}</Text>
         </DrawerHeader>
-        <DrawerBody align='center'>{selected && <SelectedAction special={true} handleSelect={props.closeDrawer} selected={selected} />}</DrawerBody>
+        <DrawerBody align='center'>
+          {selected &&  
+          <Action
+              action={selected}
+              key={selected._id}
+              toggleAssetInfo={(asset) => {
+                  console.log({show: true, asset});
+              }}
+              toggleEdit={(action) => {
+                  console.log({show: true, action})
+              }}
+          />}
+          {/* {selected && <SelectedAction special={true} handleSelect={props.closeDrawer} selected={selected} />} */}
+        </DrawerBody>
       </DrawerContent>
     </Drawer>
   );

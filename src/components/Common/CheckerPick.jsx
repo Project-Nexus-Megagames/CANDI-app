@@ -3,7 +3,7 @@ import React from 'react';
 import { IoChevronDownCircleOutline } from 'react-icons/io5';
 
 function CheckerPick(props) {
-  const { data, value, onChange, placeholder, disabledItemValues } = props;
+  const { data, value, onChange, placeholder, disabledItemValues, labelKey } = props;
 
   const handleChange = (id) => {
     if (value.some(el => el === id)) {
@@ -28,7 +28,7 @@ function CheckerPick(props) {
         {value && <Box width={'90%'} overflow={'hidden'}>
           {value.length === 0 && placeholder}
           {value.map(el => (
-            <Tag key={el._id}>{data.find(e => e._id === el)?.name}</Tag>
+            <Tag key={el._id}>{data.find(e => e._id === el)[labelKey]}</Tag>
           ))}  
         </Box>}
         <IconButton icon={<IoChevronDownCircleOutline />} />        
@@ -39,7 +39,7 @@ function CheckerPick(props) {
       <MenuList minWidth={'90%'}  >
         <VStack spacing={1} align="start" marginLeft="5px">
           {data && data.map(el => (
-            <Checkbox onChange={() => handleChange(el._id)} key={el._id} isChecked={value.some(e => e === el._id)}  >{el.name}</Checkbox>                        
+            <Checkbox onChange={() => handleChange(el._id)} key={el._id} isChecked={value.some(e => e === el._id)}  >{el[labelKey]}</Checkbox>                        
           ))}      
         </VStack>
       </MenuList>

@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'; // React import
 import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Spinner } from '@chakra-ui/react';
 import { getAgendaActions, getPublishedAgendas } from '../../redux/entities/playerActions';
 import { Stack } from '@chakra-ui/react';
-import { Loader, Header, Container, Input, FlexboxGrid, ButtonToolbar, ButtonGroup, Avatar, Button, IconButton, Icon, Divider } from 'rsuite';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { getFadedColor, getTime } from '../../scripts/frontend';
 import socket from '../../socket';
@@ -35,7 +34,7 @@ const Agendas = (props) => {
 
 	if (!login) {
 		props.history.push('/');
-		return <Loader inverse center content="doot..." />;
+		return <Spinner />;
 	}
 
 	useEffect(() => {
@@ -73,7 +72,7 @@ const Agendas = (props) => {
 	return (
 		<React.Fragment>
 			<NavigationBar />
-			<Header>
+			{/* <Header>
 				<Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
 					<tbody>
 						{[...Array(gamestate.round)].map((x, i) => (
@@ -85,8 +84,8 @@ const Agendas = (props) => {
 
 					<Input style={{ width: '20%' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
 				</Stack>
-			</Header>
-			<Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto', display: 'flex', alignItems: 'center' }}>
+			</Header> */}
+			{/* <Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto', display: 'flex', alignItems: 'center' }}>
 				<h5>Round {round}</h5>
 				{filteredData.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
 				{filteredData
@@ -126,7 +125,7 @@ const Agendas = (props) => {
 						</div>
 					))}
 				<AgendaDrawer isOpen={selected} show={selected} selected={selected} closeDrawer={() => setSelected(false)} />
-			</Container>
+			</Container> */}
 		</React.Fragment>
 	);
 };

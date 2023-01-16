@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Input, FormControl, FormLabel, InputGroup, InputLeftElement, FormErrorMessage, useToast } from '@chakra-ui/react';
+import { Input, FormControl, FormLabel, InputGroup, InputLeftElement, FormErrorMessage, useToast, } from '@chakra-ui/react';
 import { useController } from 'react-hook-form';
-import { Icon } from 'rsuite';
 import { cloudinaryUploadLarge, cloudinaryUpload, cloudinaryUploadSmall, cloudinaryUploadMedium } from '../../services/uploads';
+import { IoFileTray } from 'react-icons/io5';
 
 export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, size, isRequired = false }) => {
 	const [imgName, setImgName] = useState();
@@ -103,7 +103,7 @@ export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, chil
 			<FormLabel htmlFor="writeUpFile">{children}</FormLabel>
 			<InputGroup>
 				<InputLeftElement pointerEvents="none">
-					<Icon icon="file" />
+					<IoFileTray/>
 				</InputLeftElement>
 				<input type="file" onChange={(e) => handleFileUpload(e)} accept={acceptedFileTypes} name={name} ref={inputRef} {...inputProps} style={{ display: 'none' }} />
 				<Input placeholder={placeholder || 'Your file ...'} onClick={() => inputRef.current.click()} onChange={(e) => handleFileUpload(e)} readOnly={true} value={(value && imgName) || ''} />

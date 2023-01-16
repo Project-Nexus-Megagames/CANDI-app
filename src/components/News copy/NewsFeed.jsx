@@ -1,7 +1,5 @@
 import React, { Component } from 'react'; // React import
 import { connect } from 'react-redux'; // Redux store provider
-import { Button, CheckPicker, Col, Container, FlexboxGrid, Grid, Header, Input, InputGroup, Popover, Row, SelectPicker, TagPicker, Tooltip, Whisper } from 'rsuite';
-import { Panel, PanelGroup, IconButton, ButtonGroup, ButtonToolbar, Icon, Content, Sidebar, Modal } from 'rsuite';
 import { articleHidden } from '../../redux/entities/articles';
 import socket from '../../socket';
 import Article from './Article';

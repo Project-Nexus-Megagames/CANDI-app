@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
-import { Alert } from "rsuite";
-import { Route, Routes, Redirect } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate, BrowserRouter } from 'react-router-dom';
 import { ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
@@ -33,7 +32,6 @@ import NotFound from "./components/Navigation/NotFound";
 import Bitsy from "./components/Navigation/Bitsy";
 import Down from "./components/Navigation/Down";
 import { signOut, usersRecieved } from "./redux/entities/auth";
-import Quests from "./components/Control/Quests";
 import Map from "./components/Map/Map";
 import { loadGameConfig } from "./redux/entities/gameConfig";
 import { loadArticles } from "./redux/entities/articles";
@@ -93,10 +91,10 @@ const App = (props) => {
         switch (data.type) {
           case "error":
             // console.log(data.message);
-            Alert.error(data.message, 6000);
+            // Alert.error(data.message, 6000);
             break;
           case "success":
-            Alert.success(data.message, 6000);
+            // Alert.success(data.message, 6000);
             break;
           case "article":
             toast({
@@ -110,7 +108,7 @@ const App = (props) => {
             window.location.reload(false);
             break;
           default:
-            Alert.info(data.message, 6000);
+            // Alert.info(data.message, 6000);
         }
       }
     });
@@ -162,15 +160,14 @@ const App = (props) => {
               <Route exact path='/gameConfig2' render={(props) => <GameConfig2 {...props} />} />
               <Route exact path='/control' render={(props) => <ControlTerminal {...props} />} />
               <Route exact path='/log' render={(props) => <Log {...props} />} />
-              <Route exact path='/quests' render={(props) => <Quests {...props} />} />
               <Route exact path='/map' render={(props) => <Map {...props} />} />
               <Route exact path='/404' render={(props) => <NotFound {...props} />} />
               <Route exact path='/no-character' render={(props) => <NoCharacter {...props} />} />
               <Route exact path='/registration' render={(props) => <Registration {...props} />} />
               <Route exact path='/down' render={(props) => <Down {...props} />} />
               <Route exact path='/bitsy' render={(props) => <Bitsy {...props} />} />
-              <Redirect from='/' exact to='login' />
-              <Redirect to='/404' />        
+              <Route path="/" element={<Navigate to="/login" />}/>   
+              <Route exact path='/404' element={<NotFound {...props} />} />      
             </Routes>    
           </GridItem>
 
