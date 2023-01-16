@@ -11,6 +11,7 @@ const ModifyCharacter = (props) => {
 	const loggedInUser = useSelector((state) => state.auth.user);
 
 	const effortTypes = gameConfig.effortTypes;
+	const characterStats = gameConfig.characterStats;
 	const [imageURL, setImageURL] = useState('');
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm(
@@ -108,6 +109,12 @@ const ModifyCharacter = (props) => {
 		name: 'effort',
 		control
 	});
+
+  const { fields: statFields } = useFieldArray({
+		name: 'characterStats',
+		control
+	});
+
 
 	const {
 		fields: controlFields,
@@ -248,6 +255,22 @@ const ModifyCharacter = (props) => {
 									</div>
 								))}
 							</HStack>
+
+							<HStack w="100%">
+								{statFields.map((item, i) => (
+									<div key={i}>
+										<FormControl>
+											<FormLabel>Stat: {characterStats?.[i]?.type}</FormLabel>
+											<Input key={item.id} type="number" size="md" variant="outline" defaultValue={characterStats?.[i]?.statAmount} {...register(`characterStats.${i}.statAmount`, validation.amount)}></Input>
+											<Text fontSize="sm" color="red.500">
+												{errors.stat?.[i]?.amount && errors.stat[i].amount.message}
+											</Text>
+										</FormControl>
+									</div>
+								))}
+							</HStack>
+
+
 							<HStack w="100%">
 								<FormLabel>Tags</FormLabel>
 								{tagFields.map((item, i) => (

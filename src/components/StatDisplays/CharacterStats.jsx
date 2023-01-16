@@ -8,6 +8,7 @@ import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
 const  CharacterStats = (props) => {
 	const config = useSelector((state) => state.gameConfig);
+	const gamestate = useSelector((state) => state.gamestate);
 	const [copy, setCopy] = React.useState([]);
 	const [number, setNumber] = React.useState(3);
 
@@ -23,8 +24,8 @@ const  CharacterStats = (props) => {
 				<h3>Leaderboard</h3>
 				{props.control && <Button onClick={() => setNumber(number === 3 ? 100 : 3)}>Show All</Button>}
         <Divider>Global Stats</Divider>
-        {config.globalStats.map((stat, index) => (
-          <Col key={index} xs={24/config.globalStats.length} sm={24/config.globalStats.length} md={24/config.globalStats.length} className="gridbox">
+        {gamestate.globalStats.map((stat, index) => (
+          <Col key={index} xs={24/gamestate.globalStats.length} sm={24/gamestate.globalStats.length} md={24/gamestate.globalStats.length} className="gridbox">
             <div  style={{ border: `3px solid ${getFadedColor(stat.type)}`, borderRadius: '5px', width: '100%', }} >
               <h5 style={{ backgroundColor: getFadedColor(stat.type), color: 'black' }}>{stat.type} ~ {stat.statAmount}</h5>
             </div>
@@ -46,7 +47,7 @@ const  CharacterStats = (props) => {
                     {character.characterName} ({character.characterTitle})
                   </FlexboxGrid.Item>
                   <FlexboxGrid.Item colspan={2}>
-                    {<div> 
+                    {<div>
                       {character.characterStats.find(el => el.type === stat.type)?.statAmount}
                       </div>}
                   </FlexboxGrid.Item>
