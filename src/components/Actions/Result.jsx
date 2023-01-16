@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 import remarkGfm from 'remark-gfm';
-import { Panel, FlexboxGrid, ButtonGroup, Button, Modal, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader } from 'rsuite';
+import { Panel, FlexboxGrid, ButtonGroup, Button, Modal, Toggle, IconButton, Icon, Avatar, ButtonToolbar, Loader, SelectPicker } from 'rsuite';
 import { getMyAssets, getMyUsedAssets } from '../../redux/entities/assets';
 import { characterUpdated, getMyCharacter } from '../../redux/entities/characters';
 import { playerActionsRequested } from '../../redux/entities/playerActions';
@@ -15,7 +15,8 @@ class Result extends Component {
 		deleteWarning: false, // used to open delete action popup
 		id: this.props.result._id,
 		description: this.props.result.description ? this.props.result.description : '',
-		dice: this.props.selected.diceresult ? this.props.selected.diceresult : '',
+		dice: this.props.result.diceresult ? this.props.result.diceresult : '',
+		status: this.props.result.status ? this.props.result.status : '',
 		private: true,
 		infoModal: false,
 		infoAsset: {}
@@ -29,6 +30,7 @@ class Result extends Component {
 		this.setState({
 			id: this.props.result._id,
 			description: this.props.result.description,
+			status: this.props.result.status,
 			dice: this.props.selected.diceresult
 		});
 	};
@@ -41,6 +43,7 @@ class Result extends Component {
 			this.setState({
 				id: this.props.result._id,
 				description: this.props.result.description,
+        status: this.props.result.status,
 				dice: this.props.selected.diceresult
 			});
 		}
@@ -84,8 +87,8 @@ class Result extends Component {
 		const data = {
 			id: this.props.selected._id,
 			result: {
-				status: this.state.private ? 'Private' : 'Public',
 				description: this.state.description,
+        status: this.state.status,
 				id: this.props.result._id
 			},
 			dice: this.state.dice
@@ -172,6 +175,15 @@ class Result extends Component {
 					<Modal.Body>
 						{this.props.actionLoading && <Loader backdrop content="loading..." vertical />}
 						<form>
+            <SelectPicker 
+              block 
+              placeholder={`Edit Status`} 
+              defaultValue={this.props.result.status}
+              onChange={(event) => this.setState({ status: event })} 
+              data={[{ label: 'Public' }, { label: 'Private' }, { label: 'Temp-Hidden' }]} 
+              valueKey="label" 
+              labelKey="label"/>
+
 							<FlexboxGrid>
 								{' '}
 								Description
