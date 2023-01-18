@@ -1,29 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { filteredActions, getCurrentExplores, getMyActions, setFilter } from '../../redux/entities/playerActions';
-import NavigationBar from '../Navigation/NavigationBar';
+import { filteredActions, getMyActions, setFilter } from '../../redux/entities/playerActions';
 import NewAction from './Modals/NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
-import {
-    Accordion,
-    Box,
-    Button,
-    Container,
-    Flex,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    Spinner,
-    useDisclosure
-} from "@chakra-ui/react";
+import { Accordion, Box, Button, Container, Flex, Hide, Input, InputGroup, InputLeftElement, Spinner, useDisclosure } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
 import WordDivider from "../WordDivider";
 import { ChevronLeftIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import AssetInfo from "./AssetInfo";
 import EditAction from "./Modals/EditAction";
+import { useNavigate } from 'react-router';
+import { getFadedColor } from '../../scripts/frontend';
 
 const Actions = (props) => {
+	  const navigate = useNavigate();
     const [showNewActionModal, setShowNewActionModal] = useState(false);
     const [assetInfo, setAssetInfo] = useState({show: false, asset: ''});
     const [editAction, setEditAction] = useState({show: false, action: null})
@@ -40,14 +31,14 @@ const Actions = (props) => {
     }, [isControl, props.myActions, props.filteredActions])
 
     if (!props.login) {
-        props.history.push('/');
-        return (
-            <Spinner
-                inverse
-                center
-                content="doot..."
-            />
-        );
+      navigate('/');
+      return (
+          <Spinner
+              inverse
+              center
+              content="doot..."
+          />
+      );
     }
 
     const createListCategories = (actions) => {
@@ -81,9 +72,8 @@ const Actions = (props) => {
         <Box
             overflowY={'scroll'}
         >
-            <NavigationBar/>
             <Container
-                height={'calc(100vh - 50px)'}
+                height={'calc(100vh - 90px)'}
                 centerContent
                 maxW={'1200px'}
                 minW={'350px'}
@@ -101,7 +91,7 @@ const Actions = (props) => {
                             colorScheme='orange'
                             variant='solid'
                         >
-                            Open Drawer
+                          <Hide below='md'>Open Drawer</Hide>                            
                         </Button>
                     </Box>
                     <InputGroup>
@@ -126,7 +116,7 @@ const Actions = (props) => {
                             colorScheme='green'
                             variant='solid'
                         >
-                            Create New Action
+                          <Hide below='md'>Create New Action</Hide>                           
                         </Button>
                     </Box>
                 </Flex>
@@ -142,9 +132,7 @@ const Actions = (props) => {
                 />
 
                 <Accordion
-                    defaultIndex={[0]}
-                    allowMultiple
-                    allowToggle
+                    allowMultiple                    
                     width={'100%'}
                 >
                     {rounds.map((round, index) => (
@@ -154,11 +142,12 @@ const Actions = (props) => {
                             <Box
                                 marginTop='2rem'
                             />
-                            <WordDivider
+                            <h4 style={{ backgroundColor: getFadedColor('gold'), color: 'black' }} >Round {round}</h4>
+                            {/* <WordDivider
                                 word={`Round ${round}`}
                                 size={'xl'}
                                 marginTop={'1rem'}
-                            />
+                            /> */}
                             <Box
                                 marginBottom='1rem'
                             />
@@ -173,7 +162,7 @@ const Actions = (props) => {
                                             setEditAction({show: true, action})
                                         }}
                                     />
-                            ))}
+                            ))}                            
                         </Box>
                     ))}
                 </Accordion>
@@ -202,7 +191,6 @@ const Actions = (props) => {
 
 const mapStateToProps = (state) => ({
     actions: state.actions.list,
-    explore: state.auth.user ? getCurrentExplores(state) : 'undefined',
     user: state.auth.user,
     filter: state.actions.filter,
     login: state.auth.login,

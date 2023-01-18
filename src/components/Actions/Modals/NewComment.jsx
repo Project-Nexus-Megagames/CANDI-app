@@ -1,29 +1,20 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/jsx-max-props-per-line */
-import React, { useEffect } from 'react';
-import {
-  Modal,
-  Button,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Spinner,
-  Switch,
-} from '@chakra-ui/react'
+import React from 'react';
+import {  Modal,  Button,  ModalOverlay,  ModalContent,  ModalHeader,  ModalFooter,  ModalBody,  ModalCloseButton,  Spinner,  Switch,} from '@chakra-ui/react'
 import socket from '../../../socket';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getMyCharacter } from '../../../redux/entities/characters';
+import { playerActionsRequested } from '../../../redux/entities/playerActions';
 
 const NewComment = (props) => {
+  const reduxAction = useDispatch();
 	const myChar = useSelector(getMyCharacter);
 	const [body, setBody] = React.useState('');
 	const [isPrivate, setIsPrivate] = React.useState(false);
 
   const handleSubmit = async () => {
-		props.actionDispatched();
+		reduxAction(playerActionsRequested());
 		// 1) make a new action
 		const data = {
 			id: props.selected._id,
@@ -48,8 +39,7 @@ const NewComment = (props) => {
 };
 
 	return ( 
-    <>
-      <Modal isOpen={props.show} onClose={() => props.closeNew()} >
+    <Modal closeOnOverlayClick={false} isOpen={props.show} onClose={() => props.closeNew()} >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Modal Title</ModalHeader>
@@ -77,8 +67,7 @@ const NewComment = (props) => {
    					</Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
-    </>
+    </Modal>
 	);
 }
 

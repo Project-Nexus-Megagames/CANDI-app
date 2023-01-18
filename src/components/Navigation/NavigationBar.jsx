@@ -5,8 +5,10 @@ import { getCharacterById, getMyCharacter } from '../../redux/entities/character
 import { Box, Button, Container, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ArrowBackIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import usePermissions from "../../hooks/usePermissions";
+import { useNavigate } from 'react-router';
 
 const Navigation = (props) => {
+	  const navigate = useNavigate();
     const [time, setTime] = React.useState('');
     const myChar = useSelector(getMyCharacter);
     const [selectedChar, setSelectedChar] = React.useState(myChar._id);
@@ -48,12 +50,12 @@ const Navigation = (props) => {
     return (
         <Container
             style={{
-                backgroundColor: '#0f131a',
+                backgroundColor: '#746d75',
                 width: '100%',
                 fontSize: '0.966em',
                 borderBottom: '3px solid',
                 borderRadius: 0,
-                borderColor: 'white',
+                borderColor: '#d4af37',
             }}
             maxW={'1200px'}
             minW={'350px'}
@@ -64,14 +66,14 @@ const Navigation = (props) => {
                 alignItems={'center'}
             >
                 <Box
-                    onClick={() => console.log('/home')}
+                    onClick={() => navigate('/home')}
                     justify="start"
                     flex={1}
                     display='flex'
                     marginRight='auto'
                 >
                     <IconButton
-                        onClick={() => console.log('/home')}
+                        onClick={() => navigate('/home')}
                         icon={<ArrowBackIcon/>}
                         variant='outline'
                         aria-label={'go home'}
@@ -89,8 +91,8 @@ const Navigation = (props) => {
                         width={'100%'}
                     >
                         <p>Round: {props.gamestate.round} </p>
-                        <Box>Time Left: {time}</Box>
-                        {getTimeToEndOfRound <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
+                        {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
+                        {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
                     </Box>
                 </Box>
                 <Box

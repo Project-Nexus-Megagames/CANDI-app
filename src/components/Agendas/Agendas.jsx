@@ -9,8 +9,10 @@ import { getMyCharacter } from '../../redux/entities/characters';
 import { getFadedColor, getTime } from '../../scripts/frontend';
 import socket from '../../socket';
 import AgendaDrawer from './AgendaDrawer';
+import { useNavigate } from 'react-router';
 
 const Agendas = (props) => {
+	const navigate = useNavigate();
 	const login = useSelector((state) => state.auth.login);
 	const gamestate = useSelector((state) => state.gamestate);
 	const myChar = useSelector(getMyCharacter);
@@ -33,7 +35,7 @@ const Agendas = (props) => {
 	const [filteredData, setFilteredData] = useState([]);
 
 	if (!login) {
-		props.history.push('/');
+		navigate('/');
 		return <Spinner />;
 	}
 

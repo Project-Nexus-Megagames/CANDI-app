@@ -209,8 +209,7 @@ function EditAction({action, showEdit, handleClose}) {
                                       graduated
                                       min={0}
                                       max={max}
-                                      defaultValue={action.submission.effort.amount}
-                                      progress
+                                      defaultValue={action.submission.effort.amount}                                      
                                       value={effort.amount}
                                       onChange={(event) => editEffort(parseInt(event), 'effort')}
                                   ></Slider>

@@ -60,12 +60,11 @@ function ActionList({actions, handleSelect}) {
         <Container>
             <Accordion
                 allowMultiple
-                defaultIndex={[0]}
-                allowToggle
+                defaultIndex={[0]}                
             >
                 {rounds.map((round, index) => (
                     <AccordionItem
-                        key={index + round}
+                        key={round}
                         style={{
                             borderTop: 0,
                             borderBottom: 0,
@@ -111,7 +110,7 @@ function ActionList({actions, handleSelect}) {
                                                 display={'flex'}
                                             >
                                                 <Avatar
-                                                    circle
+                                                    
                                                     src={action.creator.profilePicture}
                                                 />
                                             </Box>

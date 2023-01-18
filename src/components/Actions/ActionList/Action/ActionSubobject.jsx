@@ -1,40 +1,78 @@
-import { Box } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { getTime } from "../../../../scripts/frontend";
-import ActionEffort from "./ActionEffort";
-import ActionHeader from "./ActionHeader/ActionHeader";
+import { Avatar, Box, Divider, Flex, Heading } from "@chakra-ui/react";
+import React from "react";
+import { getFadedColor, getTime } from "../../../../scripts/frontend";
+import ActionButtons from "./ActionHeader/ActionButtons";
 import ActionMarkdown from "./ActionMarkdown";
-import ActionResources from "./ActionResources";
 
 
 const ActionSubObject = (props) => {
-  const { subObject, toggleAssetInfo, toggleEdit } = props;
+  const { subObject, toggleEdit } = props;
+  const time = getTime(subObject.createdAt);
+  const creator = subObject.resolver ? subObject.resolver :
+                  subObject.effector ? subObject.effector :
+                  subObject.commentor;
   return ( 
-    <div key={subObject._id}>
-      <ActionHeader
-          action={subObject}
-          time={getTime(subObject.submission.createdAt)}
-          toggleEdit={toggleEdit}
-      />
-      <Box>
+    <div>
+      <div key={subObject._id} style={{ border: `3px solid ${getFadedColor(subObject.model)}`, borderRadius: '5px', padding: '5px' }}>
+        <Flex style={{ backgroundColor: getFadedColor(subObject.model), padding: '10px' }} >
+          <Box
+                      display='flex'
+                      flex={1}
+                      alignItems='center'
+                  >
+                      <Avatar
+                          name={creator.characterName}
+                          src={creator.profilePicture}
+                          marginRight='auto'
+                      />
+          </Box>
+          <Flex flex={3}>
+                      <Box
+                          alignItems='center'
+                          justifyContent='center'
+                          width='100%'
+                      >
+                          <Heading
+                              size={'md'}
+                              textAlign={'center'}
+                          >
+                              {subObject.model}
+                          </Heading>
+                          <Box
+                              fontSize={'.9rem'}
+                              fontWeight={'normal'}
+                          >
+                              {creator.playerName} - {creator.characterName}
+                          </Box>
+                          <Box
+                              fontSize={'.9rem'}
+                              fontWeight={'normal'}
+                          >
+                              {time}
+                          </Box>
+
+                      </Box>
+          </Flex>
+          <Flex flex={1}>
+                      <Box marginLeft='auto'>
+                          <ActionButtons
+                              action={subObject}
+                              toggleEdit={toggleEdit}
+                              creator={creator}
+                          />
+                      </Box>
+          </Flex>          
+        </Flex>
+
+        <Box>
           <ActionMarkdown
-              header='Description'
-              markdown={subObject.submission.description}
+              markdown={subObject.description ? subObject.description : subObject.body}
           />
-          <ActionMarkdown
-              tooltip='An out of character explanation of what you, the player, want to happen as a result.'
-              header='Intent'
-              markdown={subObject.submission.intent}
-          />
-          <ActionEffort
-              submission={subObject.submission}
-          />
-          <ActionResources
-              assets={subObject.submission.assets}
-              toggleAssetInfo={toggleAssetInfo}
-          />
-      </Box>
+        </Box>
+      </div>    
+      <Divider orientation='vertical' />   
     </div>
+
    );
 }
  

@@ -33,7 +33,12 @@ function getFadedColor(color, fade = 1) {
 		case 'Other':
 			return `#992d22`
 			
-
+    case 'Result': 
+      return '#0d73d4'
+    case 'Comment': 
+			return `#e74c3c`
+    case 'Effect': 
+      return '#531ba8'
 			
 		case 'The Overlord':
 			return `#6d6d6d`

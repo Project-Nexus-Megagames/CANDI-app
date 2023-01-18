@@ -4,42 +4,51 @@ import { Card } from '@chakra-ui/card';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input } from '@chakra-ui/input';
 import { Button } from '@chakra-ui/button';
+import { useDispatch, useSelector } from 'react-redux';
+import { authReceived, authRequestFailed, loginRequested, loginUser } from '../../redux/entities/auth';
+import axios from "axios";
+import { loadAllActions, loadplayerActions } from '../../redux/entities/playerActions';
 
 const Login = (props) => {
-	let { tokenLogin, loadAction, user } = props;
+  const  { user, loading } = useSelector(s => s.auth);
+	const reduxAction = useDispatch();
 	const [login, setLogin] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [remember, setRemember] = React.useState(true);
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		let token = localStorage.getItem('candi-token');
-		console.log('token ' + token);
-		if (token !== null && props.login === false) {
-			console.log('Attempting to login!');
-			tokenLogin({ token });
-		}
-	}, [props.login]);
+	// useEffect(() => {
+	// 	let token = localStorage.getItem('candi-token');
+	// 	console.log('token ' + token);
+	// 	console.log(token);
+
+	// 	if (token && token !== null && token !== undefined && props.login === false) {
+	// 		console.log('Attempting to login!');
+  //     reduxAction(authReceived({ token }));
+  //     reduxAction(loginRequested());
+  //     navigate('/home');
+	// 	}
+	// }, [props.login]);
 
 	useEffect(() => {
 		if (props.login) {
-			loadAction(user);
+			reduxAction(loadAllActions(user));
 			navigate('/home');
 		}
-	}, [props.login, user, loadAction, navigate]);
+	}, [props.login, user, navigate]);
 
 	const handleKeyPress = (e) => {
-		if (e.key === 'Enter') props.handleLogin(login);
+		if (e.key === 'Enter') reduxAction(loginUser({ user: login, password }));
 	};
 
 	const onSubmit = async () => {
 		remember
-			? localStorage.setItem('candi-token', login.user)
+			? localStorage.setItem('candi-token', login)
 			: localStorage.removeItem('candi-token');
-		props.handleLogin(login);
+		reduxAction(loginUser({ user: login, password }));
 	};
 
-	let buttonText = props.loading ? 'Loading' : 'Login';
+	let buttonText = loading ? 'Loading' : 'Login';
 
 	return (
     <div className="styleCenter">

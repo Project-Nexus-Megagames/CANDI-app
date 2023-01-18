@@ -8,11 +8,11 @@ const slice = createSlice({
   name: 'auth',
   initialState: {
     user: undefined,
-    character: undefined,
+    myCharacter: undefined,
     login: false,
     loading: false,
-    lastLogin: null,
     control: false,
+    lastFetch: false,
     users: [],
     error: null,
   },
@@ -35,7 +35,7 @@ const slice = createSlice({
 
       auth.error = null;
       auth.user = user;
-      auth.lastLogin = Date.now();
+      auth.lastFetch = Date.now();
       auth.loading = false;
       auth.login = true;
     },
@@ -54,7 +54,7 @@ const slice = createSlice({
     },
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      auth.character = action.payload;
+      auth.myCharacter = action.payload;
       if (action.payload.tags.some((el) => el.toLowerCase() === 'control')) auth.control = true;
       // initConnection(auth.user, auth.team, auth.version);
     },
@@ -71,7 +71,7 @@ const slice = createSlice({
       auth.user = null;
       auth.login = false;
       auth.loading = false;
-      auth.lastLogin = null;
+      auth.lastFetch = null;
       auth.error = null;
     },
     usersRecieved: (auth, action) => {

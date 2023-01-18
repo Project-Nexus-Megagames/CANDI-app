@@ -5,15 +5,15 @@ import { Box, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from 
 import { HiPencilAlt, HiTrash } from 'react-icons/hi';
 import socket from "../../../../../socket";
 
-function ActionButtons({action, toggleEdit}) {
+function ActionButtons({action, toggleEdit, creator}) {
     const {isControl, characterId} = usePermissions();
     const game = useSelector(state => state.gamestate);
     const buttonDirection = useBreakpointValue({base: 'column', md: 'row'});
     const buttonSpacing = useBreakpointValue({base: 0, md: '0.5rem'});
 
-    const isAccessible = characterId === action.creator._id || isControl;
+    const isAccessible = characterId === creator._id || isControl;
     const isDisabled = (game.status !== 'Active' || game.round > action.round) && !isControl;
-    const isPublishable = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0)
+    const isPublishable = (action.tags?.some((tag) => tag !== 'Published') || !action.tags?.length > 0)
         && action.type === 'Agenda';
 
     const handlePublish = async () => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
-import { Route, Routes, Navigate, useNavigate, BrowserRouter } from 'react-router-dom';
+import { Route, Routes, Navigate,} from 'react-router-dom';
 import { ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
@@ -35,13 +35,14 @@ import { loadArticles } from "./redux/entities/articles";
 import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
 import NavigationBar from "./components/Navigation/NavigationBar";
+import { loadAllActions } from "./redux/entities/playerActions";
 
 // React App Component
 initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog } = props;
+  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog, loadAllActions } = props;
 
   const toast = useToast();
   useEffect(() => {
@@ -76,6 +77,7 @@ const App = (props) => {
     loadGamestate();
     loadGameConfig();
     loadLog();
+    loadAllActions();
     socket.onAny((event, ...args) => {
       console.log(event);
       if (event === "clients") {
@@ -135,31 +137,31 @@ const App = (props) => {
         <Grid
           templateAreas={`"header header"
                           "main main"`}
-          gridTemplateRows={'250px 1fr'}
+          gridTemplateRows={'80px 1fr'}
           h='100vh'
           gap='2'
           color={'#fff'}
         >
-          <GridItem pl='2' bg='#343a40' area={'header'} >
+          {myCharacter && <GridItem pl='2'  area={'header'} >
             <NavigationBar />
-          </GridItem>
+          </GridItem>}
 
-          <GridItem pl='2' bg='#0f131a' area={'main'}  >
+          <GridItem pl='2' area={'main'} overflow='auto' >
             <Routes>
-             <Route exact path='/login' render={(props) => <Login {...props} />} />
-              <Route exact path='/home' render={(props) => <HomePage {...props} />} />
-              <Route path='/news' render={(props) => <News {...props} />} />
-              <Route path='/agendas' render={(props) => <Agendas {...props} />} />
-              <Route exact path='/others' render={(props) => <OtherCharacters {...props} />} />
-              <Route exact path='/actions' render={(props) => <Actions {...props} />} />
-              <Route exact path='/gameConfig' render={(props) => <GameConfig {...props} />} />
-              <Route exact path='/gameConfig2' render={(props) => <GameConfig2 {...props} />} />
-              <Route exact path='/control' render={(props) => <ControlTerminal {...props} />} />
-              <Route exact path='/log' render={(props) => <Log {...props} />} />
-              <Route exact path='/404' render={(props) => <NotFound {...props} />} />
-              <Route exact path='/no-character' render={(props) => <NoCharacter {...props} />} />
-              <Route exact path='/registration' render={(props) => <Registration {...props} />} />
-              <Route exact path='/down' render={(props) => <Down {...props} />} />
+             <Route exact path='/login' element={<Login {...props} />} />
+              <Route exact path='/home' element={<HomePage {...props} />} />
+              <Route path='/news' element={<News {...props} />} />
+              <Route path='/agendas' element={<Agendas {...props} />} />
+              <Route exact path='/others' element={<OtherCharacters {...props} />} />
+              <Route exact path='/home/actions' element={<Actions {...props} />} />
+              <Route exact path='/gameConfig' element={<GameConfig {...props} />} />
+              <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />
+              <Route exact path='/control' element={<ControlTerminal {...props} />} />
+              <Route exact path='/log' element={<Log {...props} />} />
+              <Route exact path='/404' element={<NotFound {...props} />} />
+              <Route exact path='/no-character' element={<NoCharacter {...props} />} />
+              <Route exact path='/registration' element={<Registration {...props} />} />
+              <Route exact path='/down' element={<Down {...props} />} />
               <Route path="/" element={<Navigate to="/login" />}/>   
               <Route exact path='/404' element={<NotFound {...props} />} />      
             </Routes>    
@@ -172,9 +174,6 @@ const App = (props) => {
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
-  actions: state.actions.list,
-  loading: state.auth.loading,
-  error: state.auth.error,
   login: state.auth.login,
   gameConfig: state.gameConfig,
   version: state.gamestate.version,
@@ -186,6 +185,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadChar: () => dispatch(loadCharacters()),
   loadAssets: () => dispatch(loadAssets()),
+  loadAllActions: () => dispatch(loadAllActions()),
   loadArticles: () => dispatch(loadArticles()),
   loadLocations: () => dispatch(loadLocations()),
   loadGamestate: () => dispatch(loadGamestate()),

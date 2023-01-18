@@ -3,7 +3,7 @@ import { Avatar, ButtonGroup, Card, Divider, Flex, IconButton,  } from "@chakra-
 import { IoPencilOutline, IoTrash } from 'react-icons/io5';
 import { getTime } from '../../scripts/frontend';
 
-const aaaaaaaa = (props) => {
+const ActionHeader = (props) => {
   const { showButton, thing, character } = props;
   return ( 
     <Flex className={thing.status} align="middle" justify="start">
@@ -29,17 +29,5 @@ const aaaaaaaa = (props) => {
   </Flex>
    );
 }
-
-const publicComm = {
-	backgroundColor: '#00a0bd'
-};
-
-const privateComm = {
-	backgroundColor: '#61342e'
-};
-
-const infoComm = {
-	backgroundColor: '#531ba8'
-};
  
-export default aaaaaaaa;
+export default ActionHeader;

@@ -4,24 +4,7 @@ import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Tag,
-  Icon,
-  Spinner,
-  Box,
-  Slider,
-  Flex,
-  Button,
-  ButtonGroup,
-  Tooltip,
-} from '@chakra-ui/react'
+import {  Modal,  ModalOverlay,  ModalContent,  ModalHeader,  ModalFooter,  ModalBody,  ModalCloseButton,  Tag,  Icon,  Spinner,  Box,  Slider,  Flex,  Button,  ButtonGroup,  Tooltip,} from '@chakra-ui/react'
 import CheckerPick from '../../Common/CheckerPick';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
 
@@ -260,7 +243,7 @@ const NewAction = (props) => {
                                   </Tag>
                               )}
                           </h5>
-                          <ButtonGroup justified>
+                          <ButtonGroup >
                             {actionType &&
                               actionType.effortTypes.map((e) => (
                                 <Button
@@ -275,13 +258,12 @@ const NewAction = (props) => {
                               ))}
                           </ButtonGroup>
                           <Slider
-graduated
-min={0}
-max={max}
-defaultValue={0}
-progress
-value={effort.amount}
-onChange={(event) => editState(parseInt(event), 'effort')}
+                            graduated
+                            min={0}
+                            max={max}
+                            defaultValue={0}
+                            value={effort.amount}
+                            onChange={(event) => editState(parseInt(event), 'effort')}
                           ></Slider>
 
                         </Box>
@@ -333,7 +315,7 @@ onChange={(event) => editState(parseInt(event), 'effort')}
                   )}
               </ModalBody>            
               <ModalFooter>
-              <ButtonGroup justified>
+              <ButtonGroup >
 								{actionType &&
 									actionType.effortTypes.map((e) => (
 										<Button

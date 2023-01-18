@@ -45,6 +45,7 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
                         action={action}
                         time={getTime(action.submission.createdAt)}
                         toggleEdit={toggleEdit}
+                        creator={action.creator}
                     />
                     <AccordionPanel>
                         <Box>

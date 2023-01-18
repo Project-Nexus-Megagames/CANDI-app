@@ -2,17 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import socket from '../../../socket';
 import _ from 'lodash';
-
-import {
-	getCharacterById,
-	getGods,
-	getMyCharacter,
-	getNonPlayerCharacters,
-	getUnlockedCharacters
-} from '../../../redux/entities/characters';
+import {	getCharacterById,	getGods,	getMyCharacter,	getNonPlayerCharacters,	getUnlockedCharacters} from '../../../redux/entities/characters';
 import WordDivider from '../../WordDivider';
 import InputNumber from '../../Common/InputNumber';
-import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalOverlay, Switch, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, Switch, Text, VStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import SelectPicker from '../../Common/SelectPicker';
 
@@ -425,7 +418,7 @@ const NewEffects = (props) => {
 			
 
 			
-			<Modal.Footer>
+			<ModalFooter>
 				<Button
 					disabled={type === ''}
 					onClick={handleSubmit}
@@ -439,7 +432,7 @@ const NewEffects = (props) => {
 				>
 					Cancel
 				</Button>
-			</Modal.Footer>
+			</ModalFooter>
 		</Modal>
 	);
 };

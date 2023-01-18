@@ -1,12 +1,12 @@
 import React from "react";
-import { AccordionButton, AccordionIcon, Avatar, Box, Flex, Heading } from "@chakra-ui/react";
+import { AccordionButton, AccordionIcon, Avatar, background, Box, Flex, Heading } from "@chakra-ui/react";
 import ActionTags from "./ActionTags";
 import ActionButtons from "./ActionButtons";
+import { getFadedColor } from "../../../../../scripts/frontend";
 
-function ActionHeader({action, time, toggleEdit}) {
-    const creator = action.creator;
+function ActionHeader({action, time, toggleEdit, creator}) {
     return (
-        <h5>
+        <h5 style={{ backgroundColor: getFadedColor(action.type) }} >
             <AccordionButton>
                 <Box
                     display='flex'
@@ -54,6 +54,7 @@ function ActionHeader({action, time, toggleEdit}) {
                         <ActionButtons
                             action={action}
                             toggleEdit={toggleEdit}
+                            creator={creator}
                         />
                         <AccordionIcon marginTop='1rem'/>
                     </Box>

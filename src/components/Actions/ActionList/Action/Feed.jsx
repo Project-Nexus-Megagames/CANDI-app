@@ -22,7 +22,11 @@ function Feed({action}) {
     const list = [...action.results,
         ...action.effects,
         ...action.comments
-    ]
+    ].sort((a, b) => {
+      let da = new Date(a.createdAt),
+        db = new Date(b.createdAt);
+      return db - da;
+    })
 
     const closeIt = () => {
         setAdd(false);
@@ -51,7 +55,7 @@ function Feed({action}) {
                 )}
                 {add && (
                     <ButtonGroup
-                        justified
+                        
                         style={{width: '100%', transition: '.5s'}}
                     >
                         {action && action.type === 'Agenda' &&

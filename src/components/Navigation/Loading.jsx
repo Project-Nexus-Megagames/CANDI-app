@@ -1,20 +1,40 @@
 import { Box, Button, Flex, Progress, Spinner } from '@chakra-ui/react';
 import { Check } from '@rsuite/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { finishLoading, setControl, signOut, setCharacter } from '../../redux/entities/auth';
 
 const Loading = (props) => {
+	const entities  = useSelector(s => s)
+ 
 	const [message] = useState('Scott quip goes here...');
-	const [sections] = useState(Object.keys(props.entities).sort());
+	const [sections] = useState(Object.keys(entities).sort());
   const reduxAction = useDispatch();
 	const navigate = useNavigate();
 
-	const { loadingStart, user, character, team } = useSelector(s => s.auth)
+	const { loadingStart, user,  } = useSelector(s => s.auth)
 	const characters  = useSelector(s => s.characters.list)
-	const entities  = useSelector(s => s)
+
+  useEffect(() => {
+		console.log("Trigger B")
+		if (user && (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100)) {
+			console.log("Finished Loading!!!!")
+      const character = entities.characters.list.find((el) => el.username === user.username);
+
+      if (user.roles.some((el) => el === 'Control')) {
+        character ? setCharacter(character) : console.log(character);
+        reduxAction(finishLoading());
+        navigate('/home');
+      } else if (character) {
+        character ? reduxAction(setCharacter(character)) : console.log(character);
+        reduxAction(finishLoading());
+        navigate('/home');
+      }
+      else navigate('/no-character')
+		}
+	}, [user, sections]);
 
 
 	let done = Object.keys(entities)
@@ -26,43 +46,6 @@ const Loading = (props) => {
 		const win = window.open(bored[random], '_blank');
 		win.focus();
 	};
-
-	if (user && (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100)) {
-		const character = entities.characters.list.find((el) => el.username === user.username);
-
-		if (user.roles.some((el) => el === 'Control')) {
-			character ? setCharacter(character) : console.log(character);
-			reduxAction(finishLoading());
-			navigate('/home');
-		} else if (character) {
-			character ? reduxAction(setCharacter(character)) : console.log(character);
-			reduxAction(finishLoading());
-			navigate('/home');
-		} else {
-			// Alert.error('You do not have an assigned team!', 1000);
-			return (
-				<div
-					style={{
-						justifyContent: 'center',
-						textAlign: 'center',
-						width: '100%'
-					}}
-				>
-					<img src="http://cdn.lowgif.com/full/02b057d73bf288f7-.gif" alt={'No Character...'} />
-					<h5>Could not find a character for you... </h5>
-					<Button
-						onClick={() => {
-							props.logOut();
-							navigate('/login');
-						}}
-					>
-						Log Out
-					</Button>
-					{/* <img height={500} src='https://live.staticflickr.com/4782/40236389964_fe77df66a3_b.jpg' alt='failed to find team assigned'/> */}
-				</div>
-			);
-		}
-	}
 
 	return (
 		<div style={{ textAlign: 'center' }}>
