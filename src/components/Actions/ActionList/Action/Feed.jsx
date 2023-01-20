@@ -11,7 +11,7 @@ import { PlusSquareIcon } from "@chakra-ui/icons";
 
 function Feed({action}) {
     const gamestate = useSelector(state => state.gamestate);
-    const myCharacter = useSelector(state => state.auth.character);
+    const myCharacter = useSelector(state => state.auth.myCharacter);
     const {isControl} = usePermissions();
     const [add, setAdd] = useState(false);
     const [support, setSupport] = useState(false);
@@ -44,7 +44,7 @@ function Feed({action}) {
             {list.map((item, index) => 
               <ActionSubObject key={item._id} subObject={item} />
             )}
-            <Divider vertical/>
+            <Divider orientation='vertical'/>
             <div style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem'}}>
                 {!add && (
                     <IconButton

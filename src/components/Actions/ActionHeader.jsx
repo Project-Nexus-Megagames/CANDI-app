@@ -8,7 +8,7 @@ const ActionHeader = (props) => {
   return ( 
     <Flex className={thing.status} align="middle" justify="start">
     <div style={{ margin: '5px' }} >
-      <Avatar circle size="md" src={thing.commentor.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
+      <Avatar size="md" src={thing.commentor.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
     </div>
 
     <div >

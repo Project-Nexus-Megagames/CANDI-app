@@ -130,6 +130,14 @@
   scrollbar-width: none;
 }
 
+/* .titleStyle {
+	font-weight: 100;
+	padding-bottom: 0;
+	font-size: 17;
+	padding-left: 2;
+	margin: -3
+}; */
+
 .styleCenter {
   display: flex;
   justify-content: center;

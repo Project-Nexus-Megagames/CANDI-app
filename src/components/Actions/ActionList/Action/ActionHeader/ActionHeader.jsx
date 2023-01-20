@@ -51,11 +51,6 @@ function ActionHeader({action, time, toggleEdit, creator}) {
                 </Flex>
                 <Flex flex={1}>
                     <Box marginLeft='auto'>
-                        <ActionButtons
-                            action={action}
-                            toggleEdit={toggleEdit}
-                            creator={creator}
-                        />
                         <AccordionIcon marginTop='1rem'/>
                     </Box>
                 </Flex>

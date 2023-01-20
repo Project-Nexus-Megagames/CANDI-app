@@ -1,19 +1,4 @@
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    Tag,
-    Icon,
-    Spinner,
-    Box,
-    Slider,
-    Flex,
-    Button,
-  } from '@chakra-ui/react'
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, } from '@chakra-ui/react'
 import { getFadedColor, getThisEffort } from "../../../scripts/frontend";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -21,6 +6,7 @@ import socket from "../../../socket";
 import { getMyAssets } from "../../../redux/entities/assets";
 import { CheckIcon } from '@chakra-ui/icons';
 import CheckerPick from '../../Common/CheckerPick';
+import NexusSlider from '../../Common/NexusSlider';
 
 function EditAction({action, showEdit, handleClose}) {
     if (!showEdit) {
@@ -28,7 +14,7 @@ function EditAction({action, showEdit, handleClose}) {
     }
 
     const actionLoading = useSelector(state => state.actions.loading);
-    const myCharacter = useSelector(state => state.auth.character);
+    const myCharacter = useSelector(state => state.auth.myCharacter);
     const actionType = useSelector(state => {
         return state.gameConfig.actionTypes?.find((el) => el.type.toLowerCase() === action.type.toLowerCase());
     });
@@ -112,11 +98,7 @@ function EditAction({action, showEdit, handleClose}) {
               }}
               >
                   {actionLoading &&
-                      <Spinner
-                          backdrop
-                          content="loading..."
-                          vertical
-                      />
+                      <Spinner />
                   }
                   <form>
                       Name:
@@ -124,12 +106,13 @@ function EditAction({action, showEdit, handleClose}) {
                           <Tag
                               style={{color: 'black'}}
                               colorScheme={'orange'}
+                              variant='solid'
                           >
                               {10 - name.length} more characters...
                           </Tag>
                       )}
                       {10 - name.length <= 0 && (
-                          <Tag colorScheme={'green'}>
+                          <Tag variant='solid' colorScheme={'green'}>
                               <CheckIcon/>
                           </Tag>
                       )}
@@ -144,13 +127,14 @@ function EditAction({action, showEdit, handleClose}) {
                           <Tag
                               style={{color: 'black'}}
                               colorScheme={'orange'}
+                              variant='solid'
                           >
                               {10 - description.length} more characters...
                           </Tag>
                       )}
                       {10 - description.length <= 0 && (
-                          <Tag colorScheme={'green'}>
-                              <Icon icon="check"/>
+                          <Tag variant='solid' colorScheme={'green'}>
+                              <CheckIcon/>
                           </Tag>
                       )}
                       <textarea
@@ -166,13 +150,14 @@ function EditAction({action, showEdit, handleClose}) {
                               <Tag
                                   style={{color: 'black'}}
                                   colorScheme={'orange'}
+                                  variant='solid'
                               >
                                   {10 - intent.length} more characters...
                               </Tag>
                           )}
                           {10 - intent.length <= 0 && (
-                              <Tag colorScheme={'green'}>
-                                  <Icon icon="check"/>
+                              <Tag variant='solid' colorScheme={'green'}>
+                                  <CheckIcon/>
                               </Tag>
                           )}
                           <textarea
@@ -191,7 +176,6 @@ function EditAction({action, showEdit, handleClose}) {
                                       textAlign: 'left'
                                   }}
                                   align="middle"
-                                  colspan={6}
                               >
                                   <h5 style={{textAlign: 'center'}}>
                                       Effort {effort.amount} / {max}
@@ -205,14 +189,13 @@ function EditAction({action, showEdit, handleClose}) {
                                       )}
                                   </h5>
 
-                                  <Slider
-                                      graduated
+                                  <NexusSlider
                                       min={0}
                                       max={max}
                                       defaultValue={action.submission.effort.amount}                                      
                                       value={effort.amount}
                                       onChange={(event) => editEffort(parseInt(event), 'effort')}
-                                  ></Slider>
+                                  ></NexusSlider>
                               </Box>
 
                               <Box
@@ -221,7 +204,6 @@ function EditAction({action, showEdit, handleClose}) {
                                       paddingLeft: '10px',
                                       textAlign: 'left'
                                   }}
-                                  colspan={10}
                               >
                                   {' '}
                                   Resources
@@ -241,7 +223,7 @@ function EditAction({action, showEdit, handleClose}) {
 
               <ModalFooter>
                 <Button
-                    loading={actionLoading}
+                    isLoading={actionLoading}
                     onClick={() => handleSubmit()}
                     disabled={effort.amount <= 0 || description.length < 10 || intent.length < 10 || name.length < 10}
                     colorScheme={description.length > 10 && intent.length > 10 ? 'green' : 'red'}

@@ -9,6 +9,7 @@ const slice = createSlice({
     list: [],
     loading: false,
     loaded: false,
+    selected: false,
     lastFetch: null,
     failedAttempts: 0,
   },
@@ -59,7 +60,7 @@ const url = `${gameServer}api/characters`;
 // Selector
 export const getMyCharacter = createSelector(
   (state) => state.characters.list,
-  (state) => state.auth.character,
+  (state) => state.auth.myCharacter,
   (state) => state.auth.user,
   (characters, character, user) => {
     if (character) return character;
@@ -105,7 +106,7 @@ export const getCharacterById = (charId) =>
 
 export const getMyUnlockedCharacters = createSelector(
   (state) => state.characters.list,
-  (state) => state.auth.character,
+  (state) => state.auth.myCharacter,
   (characters, character) => {
     if (!character) return [];
     return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id));

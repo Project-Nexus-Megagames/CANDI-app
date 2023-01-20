@@ -69,7 +69,7 @@ const url = `${gameServer}api/locations`;
 // Selector
 export const getMyLocations = createSelector(
   (state) => state.locations.list,
-  (state) => state.auth.character,
+  (state) => state.auth.myCharacter,
   (locations, character) =>
     locations.filter((loc) => loc.unlockedBy.some(el => el._id === character._id))
 );

@@ -123,6 +123,8 @@ function getCountdownHours(start, end) {
 }
 
 function getThisEffort(efforts, type) {
+  // console.log(efforts)
+  // console.log(type)
 	const found = type ?  (efforts.find(el => el.type.toLowerCase() === type.toLowerCase()) ) : false;
 	return(found ? found.amount : -999)
 }

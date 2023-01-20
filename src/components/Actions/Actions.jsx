@@ -34,9 +34,6 @@ const Actions = (props) => {
       navigate('/');
       return (
           <Spinner
-              inverse
-              center
-              content="doot..."
           />
       );
     }

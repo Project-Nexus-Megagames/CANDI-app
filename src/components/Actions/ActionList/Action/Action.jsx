@@ -6,6 +6,7 @@ import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
 import ActionEffort from "./ActionEffort";
 import Feed from "./Feed";
+import ActionButtons from './ActionHeader/ActionButtons';
 
 const Action = ({action, toggleAssetInfo, toggleEdit}) => {
     function getBorder() {
@@ -48,6 +49,11 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
                         creator={action.creator}
                     />
                     <AccordionPanel>
+                        <ActionButtons
+                            action={action}
+                            toggleEdit={toggleEdit}
+                            creator={action.creator}
+                        />
                         <Box>
                             <ActionMarkdown
                                 header='Description'

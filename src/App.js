@@ -150,9 +150,9 @@ const App = (props) => {
             <Routes>
              <Route exact path='/login' element={<Login {...props} />} />
               <Route exact path='/home' element={<HomePage {...props} />} />
-              <Route path='/news' element={<News {...props} />} />
+              <Route path='/home/news' element={<News {...props} />} />
               <Route path='/agendas' element={<Agendas {...props} />} />
-              <Route exact path='/others' element={<OtherCharacters {...props} />} />
+              <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
               <Route exact path='/home/actions' element={<Actions {...props} />} />
               <Route exact path='/gameConfig' element={<GameConfig {...props} />} />
               <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />

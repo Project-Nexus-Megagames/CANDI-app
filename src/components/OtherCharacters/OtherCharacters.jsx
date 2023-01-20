@@ -3,150 +3,44 @@ import { useSelector } from "react-redux"; // Redux store provider
 import NavigationBar from "../Navigation/NavigationBar";
 import NewCharacter from "../Control/NewCharacter";
 import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters } from "./../../redux/entities/characters";
-import { Tag } from "@chakra-ui/tag";
+import { Accordion, Box, Button, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Spinner, Tag, VStack } from "@chakra-ui/react";
+import { getFadedColor, getTextColor } from "../../scripts/frontend";
+import { ChevronLeftIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import CharacterListItem from "./CharacterListItem";
+import CharactersDrawer from "./CharactersDrawer";
+import SelectedCharacter from "./SelectedCharacter";
+import { useNavigate } from "react-router";
 
 const OtherCharacters = (props) => {
-  const publicCharacters = useSelector(getPublicCharacters);
-  const privateCharacters = useSelector(getPrivateCharacters);
-  const knownContacts = useSelector(getMyUnlockedCharacters);
-  const [selected, setSelected] = useState(null);
-  const [filteredCharacters, setFilteredCharacters] = useState([]);
-  const [edit, setEdit] = useState(false);
-  const [add, setAdd] = useState(false);
-  const [asset, setAsset] = useState(false);
-  const [image, setImage] = useState("");
-
+  const myCharacter = useSelector((state) => state.auth.myCharacter);
+	const navigate = useNavigate();
   const [showNew, setShowNew] = useState(false);
   const loggedInUser = useSelector((state) => state.auth.user);
 
+  const publicCharacters = useSelector(getPublicCharacters);
+  const privateCharacters = useSelector(getPrivateCharacters);
+  const knownContacts = useSelector(getMyUnlockedCharacters);
+  const [selected, setSelected] = useState(myCharacter);
+  const [filteredCharacters, setFilteredCharacters] = useState([]);
+  const [mode, setMode] = useState(false);
+  const [asset, setAsset] = useState(false);
+
   if (!props.login) {
-    props.history.push("/");
+    navigate("/");
     return <div />;
   }
 
   let characters = [...publicCharacters, ...knownContacts];
   characters = [...new Set(characters)];
-  const [renderTags] = React.useState(["Frog", "Pig", "Spider", "Myconid", "Raccoon", "Drow", "Dwarves", "Whitewall", "The Overlord", "Other", "Control"]); // TODO: update with Faction tags
 
   useEffect(() => {
     filterThis("");
   }, [publicCharacters, privateCharacters, knownContacts]);
 
-  const theBox = () => {
-    const audio = new Audio("/candi1.mp3");
-    audio.loop = true;
-    audio.play();
-    setImage("https://res.cloudinary.com/df8lwfbar/image/upload/v1664447183/goblinCity/kpj2mcukweiq3edjp4ww.jpg");
-  };
-  const copyToClipboard = (character) => {
-    if (character.characterName === "The Box") {
-      theBox();
-    } else {
-			// Build a transitive closure of all control affected.
-			let board = `${character.email}`;
-
-			// First get the control of the searched character and the current character
-			let pending = [...character.control]
-			let seen = [];
-			for (const controller of props.myCharacter.control) {
-				if (!pending.some((el) => el === controller)) {
-					pending.push(controller);
-				}
-			}
-			while (pending.length != 0)  {
-				const cur = pending.shift()
-				seen.push(cur)
-				const character = props.characters.find((el) => el.characterName === cur)
-				if(character) {
-					// add their controllers to the list to be searched if we haven't already done them
-					for (const controller of character.control) {
-						if ((!seen.some((el) => el === controller)) && (!pending.some((el) => el === controller))) {
-							pending.push(controller);
-						}
-					}
-					board = board.concat(`; ${character.email}`);
-				} else {
-					console.log(`${character} could not be added to clipboard`);
-					// Alert.error(`${character} could not be added to clipboard`, 6000);
-				}
-			}
-
-      navigator.clipboard.writeText(board);
-      // Alert.success("Email Copied!", 6000);
-    }
-  };
-
-  const openAnvil = (character) => {
-    if (character.characterName === "The Box") {
-      const audio = new Audio("/candi1.mp3");
-      audio.loop = true;
-      audio.play();
-    } else {
-      if (character.wiki && character.wiki !== "") {
-        let url = character.wiki;
-        const win = window.open(url, "_blank");
-        win.focus();
-      } else if (character.tags.some((el) => el === "God" || el === "Gods")) {
-        let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
-        const win = window.open(url, "_blank");
-        win.focus();
-      } else {
-        let url = "https://godswars.miraheze.org/wiki/";
-        let temp = url.concat(character.characterName.split(" ").join("_"));
-        const win = window.open(temp, "_blank");
-        win.focus();
-      }
-    }
-  };
-
-  const tagStyle = (item, index) => {
-    switch (item) {
-      case "Control":
-        return (
-          <Tag key={index} style={{ color: "black" }} color='orange'>
-            {item}
-          </Tag>
-        );
-      case "God":
-        return (
-          <Tag key={index} color='green'>
-            {item}
-          </Tag>
-        );
-      case "NPC":
-        return (
-          <Tag key={index} color='blue'>
-            {item}
-          </Tag>
-        );
-      case "PC":
-        return (
-          <Tag key={index} color='cyan'>
-            {item}
-          </Tag>
-        );
-      case "Private":
-        return (
-          <Tag key={index} color='red'>
-            {item}
-          </Tag>
-        );
-      default:
-        return <Tag key={index}>{item}</Tag>;
-    }
-  };
-
-  const listStyle = (item) => {
-    if (selected && item._id === selected._id) {
-      return { cursor: "pointer", backgroundColor: "#212429" };
-    } else return { cursor: "pointer", height: "100%" };
-  };
-
   useEffect(() => {
     if (props.characters && selected) {
       const updated = props.characters.find((el) => el._id === selected._id);
       setSelected(updated);
-      setImage(selected.profilePicture);
     }
   }, [props.characters, selected]);
 
@@ -160,15 +54,81 @@ const OtherCharacters = (props) => {
     );
     setFilteredCharacters(filtered);
   };
-
-  // if (window.innerWidth < 768) {
-  // 	return <MobileOtherCharacters />;
-  // } else
+  
   return (
     <React.Fragment>
-      <NavigationBar />
-        TODO fix this too
+      <Box overflowY={'scroll'}>
+        <Grid
+          templateAreas={`"header header"
+            "main main"
+          `}
+          gridTemplateColumns={ '50% 50%'}
+          gridTemplateRows={'80px 1fr'}
+          gap='1'
+          fontWeight='bold'>
+        <GridItem pl='2' bg='#0f131a' area={'header'} >
+          <Flex
+                    marginTop='2rem'
+                    width={'100%'}
+                >
+                    <Box
+                        marginRight='1rem'
+                    >
+                        <Button
+                            onClick={() => setMode('drawer')}
+                            leftIcon={<ChevronLeftIcon/>}
+                            colorScheme='orange'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Open Drawer</Hide>                            
+                        </Button>
+                    </Box>
+                    <InputGroup>
+                        <InputLeftElement
+                            pointerEvents='none'
+                        >
+                            <SearchIcon/>
+                        </InputLeftElement>
+                        <Input
+                            onChange={(e) => filterThis(e.target.value)}
+                            value={props.filter}
+                            placeholder="Search"
+                            color='white'
+                        />
+                    </InputGroup>
+                    <Box
+                        marginLeft='1rem'
+                    >
+                        <Button
+                            onClick={() => setShowNew(true)}
+                            leftIcon={<PlusSquareIcon/>}
+                            colorScheme='green'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Create New Character</Hide>                           
+                        </Button>
+                    </Box>
+          </Flex>
+        </GridItem>
+
+        <GridItem pl='2' bg='#0f131a' area={'main'} >
+            {!selected && <b>Nothing Selected...</b>}
+            {selected && <SelectedCharacter selected={selected} />}
+        </GridItem>
+
+      </Grid>
+    </Box>
+
       <NewCharacter show={showNew} closeModal={() => setShowNew(false)} />
+      <CharactersDrawer 
+        filteredCharacters={filteredCharacters}
+        onChange={(e) => filterThis(e.target.value)}
+        value={props.filter}
+        onClick={() => setMode('new')}
+        handleSelect={(char) => { setSelected(char); setMode(false); }}
+        isOpen={mode === 'drawer'}
+        onClose={() => setMode(false)}
+      />
     </React.Fragment>
   );
 };

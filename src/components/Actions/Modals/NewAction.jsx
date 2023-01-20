@@ -4,9 +4,10 @@ import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import {  Modal,  ModalOverlay,  ModalContent,  ModalHeader,  ModalFooter,  ModalBody,  ModalCloseButton,  Tag,  Icon,  Spinner,  Box,  Slider,  Flex,  Button,  ButtonGroup,  Tooltip,} from '@chakra-ui/react'
+import {  Modal,  ModalOverlay,  ModalContent,  ModalHeader,  ModalFooter,  ModalBody,  ModalCloseButton,  Tag,  Icon,  Spinner,  Box, Flex,  Button,  ButtonGroup,  Tooltip,} from '@chakra-ui/react'
 import CheckerPick from '../../Common/CheckerPick';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import NexusSlider from '../../Common/NexusSlider';
 
 /**
  * Form for a new ACTION
@@ -115,7 +116,7 @@ const NewAction = (props) => {
         <Modal
             overflow
             style={{width: '90%'}}
-            size="md"
+            size="xl"
             isOpen={props.show}
             onClose={() => props.closeNew()}
         >
@@ -230,7 +231,6 @@ const NewAction = (props) => {
                               textAlign: 'left'
                           }}
                           align="middle"
-                          colspan={6}
                         >
                           <h5 style={{textAlign: 'center'}}>
                               Effort {effort.amount} / {max}
@@ -253,18 +253,17 @@ const NewAction = (props) => {
                                   disabled={getThisEffort(myCharacter.effort, e) < 1}
                                   appearance={effort.effortType == e ? 'default' : 'ghost'}
                                 >
-                                  {e} - ({getThisEffort(myCharacter.effort, e)})
+                                  {e} ~ ({getThisEffort(myCharacter.effort, e)})
                                 </Button>
                               ))}
                           </ButtonGroup>
-                          <Slider
-                            graduated
+                          <NexusSlider
                             min={0}
                             max={max}
                             defaultValue={0}
                             value={effort.amount}
                             onChange={(event) => editState(parseInt(event), 'effort')}
-                          ></Slider>
+                          ></NexusSlider>
 
                         </Box>
 
@@ -274,7 +273,6 @@ const NewAction = (props) => {
                                       paddingLeft: '10px',
                                       textAlign: 'left'
                                   }}
-                                  colspan={10}
                               >
                                   {' '}
                                   Resources
@@ -315,20 +313,7 @@ const NewAction = (props) => {
                   )}
               </ModalBody>            
               <ModalFooter>
-              <ButtonGroup >
-								{actionType &&
-									actionType.effortTypes.map((e) => (
-										<Button
-											key={e}
-											onClick={() => editState(e, 'effort')}
-											color={getFadedColor(`${e}-rs`)}
-											disabled={getThisEffort(myCharacter.effort, e) < 1}
-											appearance={effort.effortType == e ? 'default' : 'ghost'}
-										>
-											{e} - ({getThisEffort(myCharacter.effort, e)})
-										</Button>
-									))}
-							</ButtonGroup>
+
             </ModalFooter>
             
           </ModalContent>

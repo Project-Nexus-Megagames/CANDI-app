@@ -37,6 +37,7 @@ function ActionButtons({action, toggleEdit, creator}) {
                 <ButtonGroup
                     flexDir={buttonDirection}
                     spacing={buttonSpacing}
+                    isAttached
                 >
                     {isPublishable && (
                         <Tooltip
@@ -45,7 +46,7 @@ function ActionButtons({action, toggleEdit, creator}) {
                         >
                             <IconButton
                                 disabled={isDisabled}
-                                size="md"
+                                size="sm"
                                 onClick={(e) => {
                                     handlePublish();
                                     e.stopPropagation();
@@ -59,7 +60,7 @@ function ActionButtons({action, toggleEdit, creator}) {
                     )}
                     <IconButton
                         disabled={isDisabled}
-                        size="md"
+                        size="sm"
                         onClick={(e) => {
                             toggleEdit(action)
                             e.stopPropagation();
@@ -71,7 +72,7 @@ function ActionButtons({action, toggleEdit, creator}) {
                     />
                     <IconButton
                         disabled={isDisabled}
-                        size="md"
+                        size="sm"
                         onClick={(e) => {
                             deleteAction();
                             e.stopPropagation();

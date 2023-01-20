@@ -45,7 +45,7 @@ const NewComment = (props) => {
           <ModalHeader>Modal Title</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {props.actionLoading && <Spinner backdrop content="loading..." vertical />}
+            {props.actionLoading && <Spinner />}
             <form>
       				Comment Text
       				<br></br>
