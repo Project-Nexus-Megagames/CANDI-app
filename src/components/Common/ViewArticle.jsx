@@ -38,6 +38,7 @@ const ViewArticle = (props) => {
   const [newComment, setNewComment] = useState("");
   const [commentId, setCommentId] = useState("");
   const duck = useSelector((state) => state.gamestate.duck);
+  const spook = useSelector((state) => state.gamestate.spook);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -46,7 +47,7 @@ const ViewArticle = (props) => {
   let article = props.selected;
 
   const getDuck = () => {
-    if (duck)
+    if (spook)
       return {
         backgroundImage: `url("https://c.tenor.com/xXMKqzQrpJ0AAAAM/skeleton-trumpet.gif")`,
         color: "red",

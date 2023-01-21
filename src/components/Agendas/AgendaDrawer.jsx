@@ -15,11 +15,12 @@ const AgendaDrawer = (props) => {
   const cancelRef = React.useRef();
   const myChar = useSelector(getMyCharacter);
   const duck = useSelector((state) => state.gamestate.duck);
+  const spook = useSelector((state) => state.gamestate.spook);
 
   let selected = props.selected;
 
   const getDuck = () => {
-    if (duck)
+    if (spook)
       return {
         backgroundImage: `url("https://c.tenor.com/xXMKqzQrpJ0AAAAM/skeleton-trumpet.gif")`,
         color: "red",

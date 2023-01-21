@@ -134,7 +134,6 @@ const mapStateToProps = (state) => ({
 	assets: state.assets.list,
 	login: state.auth.login,
 	characters: state.characters.list,
-	duck: state.gamestate.duck,
 	mortalBonds: getMortalBonds(state),
 	godBonds: getGodBonds(state),
 	myCharacter: state.auth.user ? getMyCharacter(state) : undefined

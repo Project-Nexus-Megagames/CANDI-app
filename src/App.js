@@ -48,6 +48,7 @@ const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
   const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog } = props;
+	const [song] = React.useState(new Audio("/Duck_Song.mp3"));
 
   const toast = useToast();
   useEffect(() => {
@@ -115,10 +116,24 @@ const App = (props) => {
         }
       }
     });
+
   }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 
+
+  useEffect(() => {
+    if (props.duck) {      
+      song.loop = true;
+      song.volume = 0.3;
+      song.play();      
+    }
+    else {
+      song.pause();    
+    }
+
+  }, [props.duck])
+
   const quack = () => {
-    const audio = new Audio("/skullsound2.mp3");
+    const audio = new Audio("/killsound.wav");
     audio.loop = false;
     audio.volume = 0.15;
     audio.play();
@@ -131,9 +146,9 @@ const App = (props) => {
       style={
         props.duck
           ? {
-              backgroundImage: `url("https://c.tenor.com/xXMKqzQrpJ0AAAAM/skeleton-trumpet.gif")`,
-              color: "red",
-              fontFamily: "Spook",
+              backgroundImage: `url("https://media.tenor.com/vjP1NdkBNQwAAAAC/duck-walk.gif")`,
+              // color: "red",
+              // fontFamily: "Spook",
             }
           : {}
       }

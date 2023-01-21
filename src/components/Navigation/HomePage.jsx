@@ -11,6 +11,7 @@ import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
 import actions from '../Images/actions1.jpg';
 import leaderboard from '../Images/Score Charts.jpg';
+import duck from '../Images/duck-dancin.gif';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -141,11 +142,15 @@ const HomePage = (props) => {
 						<Dropdown.Item>Version: {props.version}</Dropdown.Item>
 						<Dropdown.Item onSelect={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</Dropdown.Item>
 						<Dropdown.Item onSelect={() => handleLogOut()}>Log Out</Dropdown.Item>
-						<Dropdown.Item onSelect={() => props.toggleDuck()}>Spook</Dropdown.Item>
+						<Dropdown.Item onSelect={() => props.toggleDuck()}>Ducks!</Dropdown.Item>
 					</Dropdown>
 				</FlexboxGrid.Item>
 
-				<FlexboxGrid.Item colspan={19}>
+        <FlexboxGrid.Item style={{ alignItems: 'center' }} colspan={1}>
+          <img style={{ height: '50px', cursor: 'pointer' }} onClick={() => props.toggleDuck()} src={duck} alt="duck"/>
+        </FlexboxGrid.Item>
+
+				<FlexboxGrid.Item colspan={18}>
 					<div>
 						<p>Round: {props.gamestate.round} </p>
 						{clock.days > 0 && (
