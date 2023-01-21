@@ -3,19 +3,21 @@ import { useSelector } from "react-redux"; // Redux store provider
 import NavigationBar from "../Navigation/NavigationBar";
 import NewCharacter from "../Control/NewCharacter";
 import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters } from "./../../redux/entities/characters";
-import { Accordion, Box, Button, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Spinner, Tag, VStack } from "@chakra-ui/react";
+import { Accordion, Box, Button, ButtonGroup, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Spinner, Tag, VStack } from "@chakra-ui/react";
 import { getFadedColor, getTextColor } from "../../scripts/frontend";
-import { ChevronLeftIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import CharacterListItem from "./CharacterListItem";
 import CharactersDrawer from "./CharactersDrawer";
 import SelectedCharacter from "./SelectedCharacter";
 import { useNavigate } from "react-router";
+import ModifyCharacter from "./ModifyCharacter";
 
 const OtherCharacters = (props) => {
   const myCharacter = useSelector((state) => state.auth.myCharacter);
 	const navigate = useNavigate();
-  const [showNew, setShowNew] = useState(false);
+  const [show, setShow] = useState(false);
   const loggedInUser = useSelector((state) => state.auth.user);
+  const control = useSelector((state) => state.auth.control);
 
   const publicCharacters = useSelector(getPublicCharacters);
   const privateCharacters = useSelector(getPrivateCharacters);
@@ -83,7 +85,7 @@ const OtherCharacters = (props) => {
                           <Hide below='md'>Open Drawer</Hide>                            
                         </Button>
                     </Box>
-                    <InputGroup>
+                    {/* <InputGroup>
                         <InputLeftElement
                             pointerEvents='none'
                         >
@@ -95,19 +97,30 @@ const OtherCharacters = (props) => {
                             placeholder="Search"
                             color='white'
                         />
-                    </InputGroup>
-                    <Box
+                    </InputGroup> */}
+                    {control && <Box
                         marginLeft='1rem'
                     >
+                      <ButtonGroup isAttached>
                         <Button
-                            onClick={() => setShowNew(true)}
+                            onClick={() => setShow('new')}
                             leftIcon={<PlusSquareIcon/>}
                             colorScheme='green'
                             variant='solid'
                         >
                           <Hide below='md'>Create New Character</Hide>                           
                         </Button>
-                    </Box>
+                        <Button
+                            onClick={() => setShow('modify')}
+                            leftIcon={<EditIcon/>}
+                            colorScheme='orange'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Edit Character</Hide>                           
+                        </Button>                        
+                      </ButtonGroup>
+
+                    </Box>}
           </Flex>
         </GridItem>
 
@@ -119,7 +132,8 @@ const OtherCharacters = (props) => {
       </Grid>
     </Box>
 
-      <NewCharacter show={showNew} closeModal={() => setShowNew(false)} />
+      <NewCharacter show={show === 'new'} closeModal={() => setShow(false)} />
+      {selected && <ModifyCharacter show={show === 'modify'} selected={selected} closeModal={() => setShow(false)} />}
       <CharactersDrawer 
         filteredCharacters={filteredCharacters}
         onChange={(e) => filterThis(e.target.value)}

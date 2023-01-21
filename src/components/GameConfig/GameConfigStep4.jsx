@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
-import { effortTypesAdded } from '../../redux/entities/gameConfig';
+import { characterStatsAdded } from '../../redux/entities/gameConfig';
 
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Button, ButtonGroup, Stack } from '@chakra-ui/react';
+import { Button, ButtonGroup,  HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Stack } from '@chakra-ui/react';
 import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
-function GameConfigStep1() {
+function GameConfigStep4() {
 	const dispatch = useDispatch();
 	const oldConfig = useSelector((state) => state.gameConfig);
 
-	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState } = useForm({
+	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState, } = useForm({
 		defaultValues: {
-			effortTypes: [oldConfig.effortTypes]
+			characterStats: [oldConfig.characterStats]
 		}
 	});
 
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
-		name: 'effortTypes',
+		name: 'characterStats',
 		control
 	});
 
@@ -27,25 +27,24 @@ function GameConfigStep1() {
 			required: 'Type is required',
 			maxLength: {
 				value: 300,
-				message: "That's way too long, try again"
+				message: "That's way too long!"
 			}
 		},
-		effortAmount: {
-			required: 'Effort Amount is required',
-			min: { value: 0, message: 'Must be larger than 0' }
+		statAmount: {
+			required: 'Amount is required',
 		}
 	};
 
 	useEffect(() => {
 		const resetValues = [];
-		oldConfig.effortTypes.forEach((type) => {
+		oldConfig.characterStats?.forEach((stat) => {
 			let a = {};
-			a.type = type.type;
-			a.effortAmount = type.effortAmount;
+			a.type = stat.type;
+			a.statAmount = stat.statAmount;
 			resetValues.push(a);
 		});
 		reset({
-			effortTypes: resetValues
+			characterStats: resetValues
 		});
 	}, [reset]);
 
@@ -61,47 +60,44 @@ function GameConfigStep1() {
 	}
 
 	const onSubmit = (data) => {
-		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
-		dispatch(effortTypesAdded(data));
-		// history.push('./GameConfig2'); // TODO remake this so it doesn't use navigation
+		if (hasDuplicates(data.characterStats)) return alert('Effort Types have to be unique');
+		dispatch(characterStatsAdded(data));
+		reset({keepValues: true});
 	};
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
-      <h4>Step 1: Create Effort Types</h4>
+      <h4>Step 2: Create Character Stat Trackers</h4>
 			<Flex padding="20px">
 				<VStack spacing="24px" align="left">
-					{fields.map((item, i) => (
+					<h4>Modify characterStats</h4>
+					{fields && fields.map((item, i) => (
 						<div key={i} className="list-group list-group-flush">
 							<div className="list-group-item">
 								<div>
 									<Box>
 										<HStack spacing="24px">
 											<FormControl variant="floating">
-												<FormLabel>Type of Effort</FormLabel>
-												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.effortTypes?.[i]?.type} {...register(`effortTypes.${i}.type`, validation.type)} />
+												<FormLabel>Stat name</FormLabel>
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.characterStats?.[i]?.type} {...register(`characterStats.${i}.type`, validation.type)} />
 
 												<Text fontSize="sm" color="red.500">
-													{errors.effortTypes?.[i]?.type && errors.effortTypes[i].type.message}
+													{errors.characterStats?.[i]?.type && errors.characterStats[i].type.message}
 												</Text>
 											</FormControl>
 											<FormControl variant="floating">
-												<FormLabel>Amount of Effort</FormLabel>
+												<FormLabel>Stat Amount</FormLabel>
 												<Input
 													key={item.id}
 													type="number"
 													size="md"
 													variant="outline"
-													defaultValue={oldConfig.effortTypes?.[i]?.effortAmount}
-													{...register(`effortTypes.${i}.effortAmount`, validation.effortAmount)}
+													defaultValue={oldConfig.characterStats?.[i]?.statAmount}
+													{...register(`characterStats.${i}.statAmount`, validation.statAmount)}
 												/>
 												<Text fontSize="sm" color="red.500">
-													{errors.effortTypes?.[i]?.effortAmount && errors.effortTypes[i].effortAmount.message}
+													{errors.characterStats?.[i]?.statAmount && errors.characterStats[i].statAmount.message}
 												</Text>
-											</FormControl>
-											<FormControl variant="floating">
-												<FormLabel>Effort Tag</FormLabel>
-												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.effortTypes?.[i]?.tag} {...register(`effortTypes.${i}.tag`)} />
 											</FormControl>
 											<Button size="xs" onClick={() => remove(i)}>
 												-
@@ -119,16 +115,17 @@ function GameConfigStep1() {
 						<Button
 							rightIcon={<PlusSquareIcon />}
 							colorScheme={'whatsapp'}
-							onClick={() => append({ type: 'Main', effortAmount: 1, tag: 'PC' })} >
+							onClick={() => append({ type: 'Character_Stat', statAmount: 0 })} >
 							Add Type
 						</Button>
 						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
 							Reset
 						</Button>
 					</Stack>
+
 				</VStack>
 			</Flex>
 		</form>
 	);
 }
-export default GameConfigStep1;
+export default GameConfigStep4;

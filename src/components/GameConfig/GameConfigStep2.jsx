@@ -4,12 +4,13 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { actionTypesAdded } from '../../redux/entities/gameConfig';
 import socket from '../../socket';
 import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack, Button, ButtonGroup } from '@chakra-ui/react';
+import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 function GameConfig2() {
 	const oldConfig = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
 
-	const { register, control, handleSubmit, reset, formState } = useForm({
+	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
 			actionTypes: [oldConfig.actionTypes]
 		}
@@ -92,6 +93,7 @@ function GameConfig2() {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
+      <h4>Step 2: Create Action Types</h4>
 			<Flex padding="20px">
 				<VStack spacing="24px" align="left">
 					{fields.map((item, i) => (
@@ -201,7 +203,13 @@ function GameConfig2() {
 						</div>
 					))}
 					<ButtonGroup>
+            <Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
+							Save
+						</Button>
+
 						<Button
+            rightIcon={<PlusSquareIcon />}
+            colorScheme={'whatsapp'}
 							onClick={() =>
 								append({
 									type: '',
@@ -217,10 +225,8 @@ function GameConfig2() {
 						>
 							Add Type
 						</Button>
-						<Button type="submit" className="btn btn-primary mr-1">
-							Create Initial Config
-						</Button>
-						<Button onClick={() => reset()} type="button" className="btn btn-secondary mr-1">
+
+						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
 							Reset
 						</Button>
 					</ButtonGroup>

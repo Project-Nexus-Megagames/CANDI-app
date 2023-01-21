@@ -3,10 +3,14 @@ import {  Box, Center,Divider,Drawer,DrawerBody,DrawerCloseButton,DrawerContent,
 import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 import CharacterListItem from "./CharacterListItem";
 import { getFadedColor, getTextColor } from "../../scripts/frontend";
+import { useSelector } from "react-redux";
+import { getPrivateCharacters } from "../../redux/entities/characters";
 
 function CharactersDrawer({filteredCharacters, value, onChange, onClick, handleSelect, isOpen, onClose}) {
   const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
   const [renderTags] = React.useState(["Control", "PC", "NPC"]); // TODO: update with Faction tags
+  const myCharacter = useSelector((state) => state.auth.myCharacter);
+  const privateCharacters = useSelector(getPrivateCharacters);
 
   return (
   <Drawer
@@ -79,6 +83,17 @@ function CharactersDrawer({filteredCharacters, value, onChange, onClick, handleS
 
                   </Box>
                 ))}
+
+                {myCharacter.tags.some((el) => el.toLowerCase() === "control") && (
+                  <VStack divider={<Divider/>} >
+                    <p style={{ backgroundColor: getFadedColor("Unknown"), color: getTextColor(`${"Unknown"}-text`) }}>{"( Hidden )"}</p>
+                    {privateCharacters
+                      // .filter()
+                      .map((character) => (
+                        <CharacterListItem key={character._id} character={character} handleSelect={(character) => handleSelect(character)}  />
+                      ))}
+                  </VStack>
+                )}
 
                 </DrawerBody>
                 <DrawerFooter/>

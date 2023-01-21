@@ -9,6 +9,8 @@ import { authReceived, authRequestFailed, loginRequested, loginUser } from '../.
 import axios from "axios";
 import { loadAllActions, loadplayerActions } from '../../redux/entities/playerActions';
 
+import leaderboard from '../Images/hello.jpg';
+
 const Login = (props) => {
   const  { user, loading } = useSelector(s => s.auth);
 	const reduxAction = useDispatch();
@@ -54,7 +56,7 @@ const Login = (props) => {
     <div className="styleCenter">
       <Card maxW='lg'>
       <img
-        src={'/images/Locations/Silicon District.jpg'}
+        src={'/images/banner.png'}
         width={800}
         alt="Failed to load img"
       />

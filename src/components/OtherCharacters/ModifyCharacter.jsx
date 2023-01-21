@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Modal, ModalHeader, ModalContent, ModalBody, ButtonGroup, Button } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Modal, ModalHeader, ModalContent, ModalBody, ButtonGroup, Button, ModalFooter } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import { cloudinaryUploadMedium } from '../../services/uploads';
@@ -158,7 +158,7 @@ const ModifyCharacter = (props) => {
 		<Modal
 			overflow
 			full
-			size="lg"
+			size="3x2"
 			isOpen={props.show}
 			onClose={() => {
 				handleExit();
@@ -184,6 +184,7 @@ const ModifyCharacter = (props) => {
                       <Input type="text" size="md" variant="outline" {...register('pronouns')}></Input>
                     </FormControl>
                   </HStack>
+
                   <HStack w="100%">
                     <FormControl>
                       <FormLabel>Player Name </FormLabel>
@@ -214,6 +215,7 @@ const ModifyCharacter = (props) => {
                       <Input type="text" size="md" variant="outline" {...register('timeZone')}></Input>
                     </FormControl>
                   </HStack>
+
                   <HStack w="100%">
                     <FormControl>
                       <FormLabel>Character Title </FormLabel>
@@ -227,6 +229,7 @@ const ModifyCharacter = (props) => {
                       </Text>
                     </FormControl>
                   </HStack>
+
                   <FormControl>
                     <FormLabel>Bio </FormLabel>
                     <Input type="text" size="md" variant="outline" {...register('bio', validation.bio)}></Input>
@@ -234,6 +237,7 @@ const ModifyCharacter = (props) => {
                       {errors.bio && errors.bio.message}
                     </Text>
                   </FormControl>
+                  
                   <HStack w="100%">
                     {effortFields.map((item, i) => (
                       <div key={i}>
@@ -247,6 +251,7 @@ const ModifyCharacter = (props) => {
                       </div>
                     ))}
                   </HStack>
+
                   <HStack w="100%">
                     <FormLabel>Tags</FormLabel>
                     {tagFields.map((item, i) => (
@@ -276,6 +281,7 @@ const ModifyCharacter = (props) => {
                     ))}
                     <Button onClick={() => appendControl('')}>+</Button>
                   </HStack>
+
                   <Box w="100%">
                     <div style={{ margin: 10 }}>
                       <label style={{ margin: 10 }}>Character Image:</label>
@@ -286,7 +292,7 @@ const ModifyCharacter = (props) => {
                 </VStack>
               </Flex>
             </Box>
-            <Modal.Footer>
+            <ModalFooter>
               <ButtonGroup>
                 <Button type="submit" color="red" className="btn btn-primary mr-1">
                   Modify Character
@@ -295,7 +301,7 @@ const ModifyCharacter = (props) => {
                   Reset Form
                 </Button>
               </ButtonGroup>
-            </Modal.Footer>
+            </ModalFooter>
           </form>          
         </ModalBody>
 			</ModalContent>

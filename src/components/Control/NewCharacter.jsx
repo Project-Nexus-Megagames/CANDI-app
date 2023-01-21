@@ -155,7 +155,7 @@ const NewCharacter = (props) => {
 	};
 
 	return (
-		<CandiModal>
+		<CandiModal title="New Character!" open={props.show} onClose={props.closeModal}>
 			<form onSubmit={handleSubmit(onSubmit, handleError)}>
 					<Flex w="100%">
 						<VStack spacing="24px" w="100%">

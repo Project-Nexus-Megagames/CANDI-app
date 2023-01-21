@@ -57,7 +57,7 @@ const Navigation = (props) => {
                 borderRadius: 0,
                 borderColor: '#d4af37',
             }}
-            maxW={'1200px'}
+            maxW={'100vw'}
             minW={'350px'}
             paddingTop={'1rem'}
             paddingBottom={'1rem'}

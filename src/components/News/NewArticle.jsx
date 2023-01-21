@@ -30,7 +30,7 @@ export const NewArticle = ({ drawer }) => {
 
 	return (
 		<>
-			<Button style={{ color: 'black', borderRadius: '0px 5px 5px 0px' }} onClick={() => handleOpen()} color={isOpen ? 'red' : 'green'}>
+			<Button colorScheme={"green"} style={{ color: 'black', borderRadius: '0px 5px 5px 0px' }} onClick={() => handleOpen()} color={isOpen ? 'red' : 'green'}>
 				<PlusSquareIcon icon="plus" />
 			</Button>
 			{drawer ? <ArticleDrawer title="Submit Article" open={isOpen} onClose={handleClose} /> : <ArticleModal title="Submit Article" open={isOpen} onClose={handleClose} />}

@@ -150,7 +150,6 @@ const News = (props) => {
 
 	return (
 		<React.Fragment>
-			<NavigationBar />
       <Grid
       templateAreas={`"nav main"`}
       gridTemplateColumns={ '20% 80%'}

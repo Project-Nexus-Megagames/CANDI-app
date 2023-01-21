@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import socket from '../../socket';
 import Registration from './Registration';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import ActionTable from './ActionTable';
+import GameConfig from '../GameConfig/GameConfig';
 
 const ControlTerminal = (props) => {		
 	const { login, team, character, loading } = useSelector(s => s.auth);
@@ -39,11 +41,11 @@ const ControlTerminal = (props) => {
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
 		<TabList>
 			<Tab>DashBoard</Tab>
-			<Tab>Gamestate</Tab>
-			<Tab>production</Tab>
-			<Tab>Agents</Tab>
-			<Tab>logs</Tab>
-			<Tab>contracts</Tab>
+      <Tab>Actions</Tab>
+			<Tab>Characters</Tab>
+			<Tab>Resources (Assets)</Tab>
+			<Tab>GameState</Tab>
+			<Tab>Configuration</Tab>
 			<Tab>Register</Tab>
 		</TabList>
 
@@ -55,11 +57,9 @@ const ControlTerminal = (props) => {
 				</div>
 			</TabPanel>
 
-			<TabPanel>
-				<div style={{ width: '90%', height: '95vh'}}>
-					{/* <MarketHistory logs={logs} /> */}
-				</div>
-			</TabPanel>		
+      <TabPanel>
+        <ActionTable />
+			</TabPanel>
 
 			<TabPanel>
 				BBBBB
@@ -73,9 +73,11 @@ const ControlTerminal = (props) => {
 				DDDDD			
 			</TabPanel>
 
-			<TabPanel>
-				EEEEE
-			</TabPanel>
+      <TabPanel>
+				<div style={{ width: '90%', height: '95vh'}}>
+					<GameConfig />
+				</div>
+			</TabPanel>		
 
 			<TabPanel>
 				<Registration />

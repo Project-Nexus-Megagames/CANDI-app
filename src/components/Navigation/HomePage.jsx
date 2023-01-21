@@ -10,7 +10,7 @@ import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
 import actions from '../Images/actions.jpg';
 import agendas from '../Images/agendas.webp';
-import hello from '../Images/hello.jpg';
+import leaderboard from '../Images/hello.jpg';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -154,13 +154,13 @@ const HomePage = (props) => {
         <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
         </GridItem>
 
-        <GridItem>
+        <GridItem colSpan={2} >
             <ImgPanel img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
         </GridItem>
 
-        <GridItem>
-          <ImgPanel img={hello} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
-        </GridItem>
+        {/* <GridItem>
+          <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
+        </GridItem> */}
 
       </Grid>
 		</React.Fragment>

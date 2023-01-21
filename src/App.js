@@ -12,7 +12,7 @@ import Agendas from "./components/Agendas/Agendas";
 import HomePage from "./components/Navigation/HomePage";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
-import GameConfig from "./components/GameConfig/GameConfigStep1";
+import GameConfigStep1 from "./components/GameConfig/GameConfigStep1";
 import GameConfig2 from "./components/GameConfig/GameConfigStep2";
 import Log from "./components/Control/Log";
 
@@ -154,9 +154,9 @@ const App = (props) => {
               <Route path='/agendas' element={<Agendas {...props} />} />
               <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
               <Route exact path='/home/actions' element={<Actions {...props} />} />
-              <Route exact path='/gameConfig' element={<GameConfig {...props} />} />
+              <Route exact path='/gameConfig' element={<GameConfigStep1 {...props} />} />
               <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />
-              <Route exact path='/control' element={<ControlTerminal {...props} />} />
+              <Route exact path='/home/control' element={<ControlTerminal {...props} />} />
               <Route exact path='/log' element={<Log {...props} />} />
               <Route exact path='/404' element={<NotFound {...props} />} />
               <Route exact path='/no-character' element={<NoCharacter {...props} />} />

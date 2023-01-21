@@ -39,7 +39,15 @@ const slice = createSlice({
 		effortTypesAdded: (state, action) => {
       console.log(`${action.type} Dispatched`)
       state.effortTypes = action.payload.effortTypes;
-    }
+    },
+    globalStatsAdded: (state, action) => {
+      console.log(`${action.type} Dispatched`)
+      state.globalStats = action.payload.globalStats;
+    },
+    characterStatsAdded: (state, action) => {
+      console.log(`${action.type} Dispatched`)
+      state.characterStats = action.payload.characterStats;
+    },
   }
 });
 
@@ -50,6 +58,8 @@ export const {
   gameConfigReceived,
   gameConfigRequested,
   gameConfigRequestFailed,
+  globalStatsAdded,
+  characterStatsAdded,
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export
