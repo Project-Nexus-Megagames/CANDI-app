@@ -32,6 +32,7 @@ const Registration = (props) => {
 		const data = {
 			character: character,
 			username: selected.username,
+      playerName: selected.name.first
 		}
 		try{
 			socket.emit('request', { route: 'character', action: 'register', data });
@@ -74,6 +75,7 @@ const Registration = (props) => {
 
 				<GridItem area={'main'}>
 						{selected && <div className='styleCenterTop'>
+              {selected.name.first}
 						Username: {selected.username}
 							<Card>
 								<CardHeader>
