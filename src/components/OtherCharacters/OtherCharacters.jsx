@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux"; // Redux store provider
+import { useDispatch, useSelector } from "react-redux"; // Redux store provider
 import NewCharacter from "../Control/NewCharacter";
-import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters } from "./../../redux/entities/characters";
+import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters, characterSelected } from "./../../redux/entities/characters";
 import { Accordion, Box, Button, ButtonGroup, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Spinner, Tag, VStack } from "@chakra-ui/react";
 import { getFadedColor, getTextColor } from "../../scripts/frontend";
-import { ChevronLeftIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, DeleteIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import CharactersDrawer from "./CharactersDrawer";
 import SelectedCharacter from "./SelectedCharacter";
 import { useNavigate } from "react-router";
 import ModifyCharacter from "./ModifyCharacter";
+import { CandiWarning } from "../Common/CandiWarning";
+import socket from "../../socket";
 
 const OtherCharacters = (props) => {
-  const myCharacter = useSelector((state) => state.auth.myCharacter);
 	const navigate = useNavigate();
+  const reduxAction = useDispatch();
+
   const loggedInUser = useSelector((state) => state.auth.user);
   const control = useSelector((state) => state.auth.control);
+  const reduxSelected = useSelector((state) => state.characters.selected);
+
 
   const publicCharacters = useSelector(getPublicCharacters);
   const privateCharacters = useSelector(getPrivateCharacters);
   const knownContacts = useSelector(getMyUnlockedCharacters);
-  const [selected, setSelected] = useState(myCharacter);
+  const [selected, setSelected] = useState(props.selected ? props.selected : reduxSelected ? reduxSelected : false);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
@@ -33,6 +38,12 @@ const OtherCharacters = (props) => {
   characters = [...new Set(characters)];
 
   useEffect(() => {
+    if (selected !== reduxSelected)
+      setSelected(reduxSelected);
+  }, [reduxSelected]);
+
+
+  useEffect(() => {
     filterThis("");
   }, [publicCharacters, privateCharacters, knownContacts]);
 
@@ -42,6 +53,15 @@ const OtherCharacters = (props) => {
       setSelected(updated);
     }
   }, [props.characters, selected]);
+
+  const deleteCharacter = async () => {
+    socket.emit('request', {
+        route: 'character',
+        action: 'delete',
+        data: {id: selected._id}
+    });
+};
+
 
   const filterThis = (fil) => {
     const filtered = characters.filter(
@@ -82,19 +102,6 @@ const OtherCharacters = (props) => {
                           <Hide below='md'>Open Drawer</Hide>                            
                         </Button>
                     </Box>
-                    {/* <InputGroup>
-                        <InputLeftElement
-                            pointerEvents='none'
-                        >
-                            <SearchIcon/>
-                        </InputLeftElement>
-                        <Input
-                            onChange={(e) => filterThis(e.target.value)}
-                            value={props.filter}
-                            placeholder="Search"
-                            color='white'
-                        />
-                    </InputGroup> */}
                     {control && <Box
                         marginLeft='1rem'
                     >
@@ -105,15 +112,25 @@ const OtherCharacters = (props) => {
                             colorScheme='green'
                             variant='solid'
                         >
-                          <Hide below='md'>Create New Character</Hide>                           
+                          <Hide below='md'>New Character</Hide>                           
                         </Button>
+
+                        <Button
+                            onClick={() => setMode('delete')}
+                            leftIcon={<DeleteIcon/>}
+                            colorScheme='red'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Delete</Hide>                           
+                        </Button>
+
                         <Button
                             onClick={() => setMode('modify')}
                             leftIcon={<EditIcon/>}
                             colorScheme='orange'
                             variant='solid'
                         >
-                          <Hide below='md'>Edit Character</Hide>                           
+                          <Hide below='md'>Edit</Hide>                           
                         </Button>                        
                       </ButtonGroup>
 
@@ -136,10 +153,13 @@ const OtherCharacters = (props) => {
         onChange={(e) => filterThis(e.target.value)}
         value={props.filter}
         onClick={() => setMode('new')}
-        handleSelect={(char) => { setSelected(char); setMode(false); }}
+        handleSelect={(char) => { reduxAction(characterSelected(char)); setMode(false); }}
         isOpen={mode === 'drawer'}
         onClose={() => setMode(false)}
       />
+      {selected && <CandiWarning open={mode === 'delete'} title={`Delete "${selected.characterName}"?`} onClose={() => setMode(false)} handleAccept={() => deleteCharacter()}>
+        This can never be undone.
+      </CandiWarning>}
     </React.Fragment>
   );
 };

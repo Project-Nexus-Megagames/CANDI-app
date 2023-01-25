@@ -73,11 +73,10 @@ const CharacterListItem = (props) => {
 
 	return (
 
-  <Flex width={'100%'} onClick={() => handleSelect(character)}>
+  <Flex align={'center'}  width={'100%'} onClick={() => handleSelect(character)}>
     <Box flex={1}>
 			<Avatar size="lg" src={character.profilePicture} alt="?" />
 		</Box>
-    <Spacer />
 		<Box
       flex={8}
       className="styleCenter"
@@ -89,7 +88,7 @@ const CharacterListItem = (props) => {
 		>
 			<h4>{character.characterName}</h4>
       <Button
-        onClick={() => copyToClipboard(character)}
+        onClick={(e) => { e.stopPropagation(); copyToClipboard(character)}}
         leftIcon={<CopyIcon/>}
         colorScheme='blue'
         variant='outline'

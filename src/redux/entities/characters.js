@@ -46,11 +46,15 @@ const slice = createSlice({
       characters.list[index] = action.payload;
       characters.loading = false;
     },
+    characterSelected: (characters, action) => {
+      console.log(`${action.type} Dispatched`);
+      characters.selected = action.payload;
+    },
   },
 });
 
 // Action Export
-export const { characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated } = slice.actions;
+export const { characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated, characterSelected } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

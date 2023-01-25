@@ -156,7 +156,7 @@ const ModifyCharacter = (props) => {
 
 	return (
 		<Modal
-			size="2x1"
+			size="3x1"
       isCentered
 			isOpen={props.show}
 			onClose={() => {

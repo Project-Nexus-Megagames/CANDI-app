@@ -34,7 +34,7 @@ function CharactersDrawer({filteredCharacters, value, onChange, onClick, handleS
                     >
                         Character List
                     </Center>
-                    <Flex>
+                    <Flex align={'center'} >
                         <InputGroup>
                             <InputLeftElement
                                 pointerEvents='none'

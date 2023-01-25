@@ -167,6 +167,7 @@ const App = (props) => {
               <Route path='/home/news' element={<News {...props} />} />
               <Route path='/agendas' element={<Agendas {...props} />} />
               <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
+              <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
               <Route exact path='/home/actions' element={<Actions {...props} />} />
               <Route exact path='/gameConfig' element={<GameConfigStep1 {...props} />} />
               <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />
