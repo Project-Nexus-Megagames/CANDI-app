@@ -62,13 +62,21 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/characters`;
 
 // Selector
+// export const getMyCharacter = createSelector(
+//   (state) => state.characters.list,
+//   (state) => state.auth.myCharacter,
+//   (state) => state.auth.user,
+//   (characters, character, user) => {
+//     if (character) return character;
+//     return characters.find((char) => char.username === user.username);
+//   }
+// );
+
 export const getMyCharacter = createSelector(
   (state) => state.characters.list,
-  (state) => state.auth.myCharacter,
   (state) => state.auth.user,
-  (characters, character, user) => {
-    if (character) return character;
-    return characters.find((char) => char.username === user.username);
+  (characters, user) => {
+    return characters.find((char) => char.username === user.username) || {};
   }
 );
 

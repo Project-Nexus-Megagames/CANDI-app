@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { setCharacter, signOut } from '../../redux/entities/auth';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
-import { Box, Button, Container, Flex, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger } from "@chakra-ui/react";
+import { Box, Button, Container, Divider, Flex, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, VStack } from "@chakra-ui/react";
 import { ArrowBackIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import usePermissions from "../../hooks/usePermissions";
 import { useLocation, useNavigate } from 'react-router';
@@ -14,6 +14,7 @@ const Navigation = (props) => {
     const location = useLocation();
     const reduxAction = useDispatch();
 
+    const { myCharacter, } = useSelector(s => s.auth);
     const [time, setTime] = React.useState('');
     const [filter, setFilter] = React.useState('');
     const myChar = useSelector(getMyCharacter);
@@ -32,13 +33,14 @@ const Navigation = (props) => {
     }, [props.gamestate.endTime]);
 
     useEffect(() => {
-        setCharacter(currentCharacter);
+        reduxAction(setCharacter(currentCharacter));
     }, [currentCharacter]);
 
     const handleCharChange = (charId) => {
-        // console.log('charID', charId);
+        console.log('charID', charId);
         if (charId) {
             setSelectedChar(charId);
+            console.log(myChar)
         } else setSelectedChar(myChar._id);
     };
 
@@ -127,6 +129,7 @@ const Navigation = (props) => {
                     marginLeft='auto'
                     justifyContent='right'
                 >
+                  {myChar && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>Reset</Button>}
                     {isControl && (
                         <Popover>
                             <PopoverTrigger
@@ -143,21 +146,25 @@ const Navigation = (props) => {
                                 maxHeight={'50vh'}
                             >
                               <PopoverHeader >
-                                <Input onChange={(event) => setFilter(event.target.value)} />
+                                <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
                               </PopoverHeader >
-                              <PopoverBody overflow={'scroll'} >
-                                {allCharacters.map(character => (
-                                    <Box
-                                        key={character._id}
-                                        value={character._id}
-                                        _hover={{bg: 'gray.400'}}
-                                        onClick={() => {
-                                            handleCharChange(character._id);
-                                        }}
-                                    >
-                                        {character.characterName}
-                                    </Box>
-                                ))}                                
+                              <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
+                                <VStack divider={<Divider />} overflow={"auto"} >
+                                  {allCharacters.filter(el => el.characterName.toLowerCase().includes(filter)).map(character => (
+                                      <Button
+                                          variant={"unstyled"}
+                                          key={character._id}
+                                          value={character._id}
+                                          _hover={{bg: 'gray.400'}}
+                                          onClick={() => {
+                                              handleCharChange(character._id);
+                                          }}
+                                      >
+                                          {character.characterName}
+                                      </Button>
+                                  ))}                                     
+                                </VStack>
+                             
                               </PopoverBody>
 
                             </PopoverContent >
