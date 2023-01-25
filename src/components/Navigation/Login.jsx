@@ -19,23 +19,23 @@ const Login = (props) => {
 	const [remember, setRemember] = React.useState(true);
 	const navigate = useNavigate();
 
-	// useEffect(() => {
-	// 	let token = localStorage.getItem('candi-token');
-	// 	console.log('token ' + token);
-	// 	console.log(token);
+	useEffect(() => {
+		let token = localStorage.getItem('candi-token');
+		// console.log('token ' + token);
+		// console.log(token);
 
-	// 	if (token && token !== null && token !== undefined && props.login === false) {
-	// 		console.log('Attempting to login!');
-  //     reduxAction(authReceived({ token }));
-  //     reduxAction(loginRequested());
-  //     navigate('/home');
-	// 	}
-	// }, [props.login]);
+		if (token && token !== null && token !== undefined && props.login === false) {
+			console.log('Attempting to token login!');
+      reduxAction(authReceived({ token }));
+      reduxAction(loginRequested());
+      navigate('/loading');
+		}
+	}, [props.login]);
 
 	useEffect(() => {
 		if (props.login) {
 			reduxAction(loadAllActions(user));
-			navigate('/home');
+			navigate('/loading');
 		}
 	}, [props.login, user, navigate]);
 

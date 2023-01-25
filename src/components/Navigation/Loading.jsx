@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Progress, Spinner } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, Progress, Spinner } from '@chakra-ui/react';
 import { Check } from '@rsuite/icons';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,27 +14,35 @@ const Loading = (props) => {
   const reduxAction = useDispatch();
 	const navigate = useNavigate();
 
+  const gamestateLoaded = useSelector(state => state.gamestate.loaded)
+	const actionsLoaded = useSelector(state => state.actions.loaded)
+	const charactersLoaded = useSelector( state => state.characters.loaded)
+	const assetsLoaded = useSelector(state => state.assets.loaded)
+	const locationsLoaded = useSelector( state => state.locations.loaded)
+	const logsLoaded = useSelector( state => state.log.loaded)
+
 	const { loadingStart, user,  } = useSelector(s => s.auth)
 	const characters  = useSelector(s => s.characters.list)
 
   useEffect(() => {
-		console.log("Trigger B")
+		// console.log("Trigger B")
 		if (user && (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100)) {
 			console.log("Finished Loading!!!!")
-      const character = entities.characters.list.find((el) => el.username === user.username);
+      const character = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());
 
       if (user.roles.some((el) => el === 'Control')) {
-        character ? setCharacter(character) : console.log(character);
+        reduxAction(setCharacter(character));
         reduxAction(finishLoading());
         navigate('/home');
       } else if (character) {
-        character ? reduxAction(setCharacter(character)) : console.log(character);
+
+        reduxAction(setCharacter(character));
         reduxAction(finishLoading());
         navigate('/home');
       }
       else navigate('/no-character')
 		}
-	}, [user, sections]);
+	}, [user, gamestateLoaded, actionsLoaded, charactersLoaded, assetsLoaded, locationsLoaded, logsLoaded]);
 
 
 	let done = Object.keys(entities)
@@ -56,7 +64,7 @@ const Loading = (props) => {
 				value={Math.floor( Object.keys(entities).sort().filter( key => entities[key].lastFetch !== null).length / sections.length * 100)} 
 				status='active' />
 			<hr />
-			<Flex>
+			<Grid templateColumns={`repeat(${sections.length}, 1fr)`} gap={6}>
 				{sections.map(((section, index) =>
 					<Box key={index} index={index}>
 							{ entities[section].lastFetch ? 
@@ -66,7 +74,7 @@ const Loading = (props) => {
 						{section}
 					</Box>
 				))}
-			</Flex>
+			</Grid>
 			{/* <Line percent={Math.floor((done.length / sections.length) * 100)} status="active" />
 			<hr />
 			<Row>

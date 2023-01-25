@@ -48,7 +48,6 @@ const NewEffects = (props) => {
 			case 'asset':
 				let newAsset = [];
 				for (const bond of assets.filter((el) => el.type !== 'GodBond' && el.type !== 'MortalBond' && el.ownerCharacter === props.selected.creator._id)) {
-					console.log(bond.with);
 					const bondData = {
 						name: `${bond.type} '${bond.name}' - (${bond.dice})`,
 						type: bond.type,

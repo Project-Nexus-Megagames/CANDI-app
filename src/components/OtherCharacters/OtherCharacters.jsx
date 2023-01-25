@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux"; // Redux store provider
-import NavigationBar from "../Navigation/NavigationBar";
 import NewCharacter from "../Control/NewCharacter";
 import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters } from "./../../redux/entities/characters";
 import { Accordion, Box, Button, ButtonGroup, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Spinner, Tag, VStack } from "@chakra-ui/react";
 import { getFadedColor, getTextColor } from "../../scripts/frontend";
 import { ChevronLeftIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
-import CharacterListItem from "./CharacterListItem";
 import CharactersDrawer from "./CharactersDrawer";
 import SelectedCharacter from "./SelectedCharacter";
 import { useNavigate } from "react-router";
@@ -15,7 +13,6 @@ import ModifyCharacter from "./ModifyCharacter";
 const OtherCharacters = (props) => {
   const myCharacter = useSelector((state) => state.auth.myCharacter);
 	const navigate = useNavigate();
-  const [show, setShow] = useState(false);
   const loggedInUser = useSelector((state) => state.auth.user);
   const control = useSelector((state) => state.auth.control);
 
@@ -103,7 +100,7 @@ const OtherCharacters = (props) => {
                     >
                       <ButtonGroup isAttached>
                         <Button
-                            onClick={() => setShow('new')}
+                            onClick={() => setMode('new')}
                             leftIcon={<PlusSquareIcon/>}
                             colorScheme='green'
                             variant='solid'
@@ -111,7 +108,7 @@ const OtherCharacters = (props) => {
                           <Hide below='md'>Create New Character</Hide>                           
                         </Button>
                         <Button
-                            onClick={() => setShow('modify')}
+                            onClick={() => setMode('modify')}
                             leftIcon={<EditIcon/>}
                             colorScheme='orange'
                             variant='solid'
@@ -132,8 +129,8 @@ const OtherCharacters = (props) => {
       </Grid>
     </Box>
 
-      <NewCharacter show={show === 'new'} closeModal={() => setShow(false)} />
-      {selected && <ModifyCharacter show={show === 'modify'} selected={selected} closeModal={() => setShow(false)} />}
+      <NewCharacter show={mode === 'new'} closeModal={() => setMode(false)} />
+      {selected && <ModifyCharacter show={mode === 'modify'} selected={selected} closeModal={() => setMode(false)} />}
       <CharactersDrawer 
         filteredCharacters={filteredCharacters}
         onChange={(e) => filterThis(e.target.value)}

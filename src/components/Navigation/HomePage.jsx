@@ -16,53 +16,29 @@ import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 //import { Link } from 'react-router-dom';
 import UserList from './UserList';
-import LoadingNew from './Loading';
-import { getPublishedArticles } from '../../redux/entities/articles';
 import { signOut, setCharacter } from '../../redux/entities/auth';
 import Loading from './Loading';
 import { useNavigate } from 'react-router';
+import usePermissions from '../../hooks/usePermissions';
 
 const HomePage = (props) => {
 	const navigate = useNavigate();
 	const reduxAction = useDispatch();
 
-	const { loading, login, myCharacter } = useSelector(s => s.auth);
+	const { loading, login, myCharacter, } = useSelector(s => s.auth);
   const gamestate = useSelector(state => state.gamestate)
-  const gamestateLoaded = useSelector(state => state.gamestate.loaded)
-	const actionsLoaded = useSelector(state => state.actions.loaded)
-	const charactersLoaded = useSelector( state => state.characters.loaded)
-	const assetsLoaded = useSelector(state => state.assets.loaded)
-	const locationsLoaded = useSelector( state => state.locations.loaded)
-
-	const newsArticles = useSelector(getPublishedArticles);
 	const newArticles = useSelector((state) => state.articles.new);
-	const allCharacters = useSelector((state) => state.characters.list);
-	const sortedArticles = [...newsArticles].sort((a, b) => {
-		let da = new Date(a.createdAt),
-			db = new Date(b.createdAt);
-		return db - da;
-	}); 
 
 	const [loaded, setLoaded] = React.useState(false);
 	const [clock, setClock] = React.useState({ hours: 0, minutes: 0, days: 0 });
 	const [selectedChar, setSelectedChar] = React.useState('');
-	const tempCharacter = useSelector(getCharacterById(selectedChar)); 
+	const tempCharacter = useSelector(getCharacterById(selectedChar));
+  const {isControl} = usePermissions(); 
 
-
-
-	useEffect(() => {
-		if (
-			!loading &&
-			actionsLoaded &&
-			gamestateLoaded &&
-			charactersLoaded &&
-			locationsLoaded &&
-			//gameConfigLoaded &&
-			assetsLoaded
-		) {
-			setLoaded(true);
-		}
-	}, []);
+  if (!props.login) {
+    navigate("/");
+    return <div />;
+  }
 
 	useEffect(() => {
 		renderTime(gamestate.endTime);
@@ -73,28 +49,14 @@ const HomePage = (props) => {
 	}, [gamestate.endTime]);
 
 	useEffect(() => {
-		if (
-			!loading &&
-			actionsLoaded &&
-			gamestateLoaded &&
-			charactersLoaded &&
-			locationsLoaded &&
-			// gameConfigLoaded &&
-			assetsLoaded
-		) {
-			setTimeout(() => setLoaded(true), 2000);
+		if (myCharacter && !loaded) {
+			setLoaded(true);
 		}
-	}, [props]);
+	}, [myCharacter]);
 
 	useEffect(() => {
-		if (tempCharacter) setCharacter(tempCharacter);
+		if (tempCharacter) reduxAction(setCharacter(tempCharacter));
 	}, [tempCharacter]);
-
-	const handleLogOut = () => {
-		reduxAction(signOut());
-		socket.emit('logout');
-		navigate('/login');
-	};
 
 	const renderTime = (endTime) => {
 		let countDownDate = new Date(endTime).getTime();
@@ -116,29 +78,22 @@ const HomePage = (props) => {
 	const handleCharChange = (charId) => {
 		if (charId) {
 			setSelectedChar(charId);
-		} else setSelectedChar(props.myCharacter._id);
+		} else setSelectedChar(myCharacter._id);
 	};
 
-	if (!login && !loading) {
-		navigate('/');
+	if (!loaded) {
 		return <Spinner  />;
 	}
-	if (!loaded) {
-		return <Loading />;
-	} else if (login && !myCharacter) {
-		navigate('/no-character');
-		return <Spinner  />;
-	} else if (gamestate.status === 'Down') {
+  else if (gamestate.status === 'Down') {
 		navigate('/down');
 		return <Spinner  />;
 	}
 
 	return (
 		<React.Fragment>
-      Homepage
-      <Grid templateColumns='repeat(2, 1fr)' gap={4}>
+      <Grid templateColumns='repeat(2, 1fr)' gap={1}>
         <GridItem>
-          <ImgPanel new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+          <ImgPanel disabled new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
         </GridItem>
 
         <GridItem>
@@ -151,12 +106,12 @@ const HomePage = (props) => {
 
 
         <GridItem>
-        <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
+        <ImgPanel disabled img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
         </GridItem>
 
-        <GridItem colSpan={2} >
+        {isControl && <GridItem colSpan={2} >
             <ImgPanel img={control2} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
-        </GridItem>
+        </GridItem>}
 
         {/* <GridItem>
           <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />

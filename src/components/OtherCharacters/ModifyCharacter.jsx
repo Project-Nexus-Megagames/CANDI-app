@@ -156,9 +156,8 @@ const ModifyCharacter = (props) => {
 
 	return (
 		<Modal
-			overflow
-			full
-			size="3x2"
+			size="2x1"
+      isCentered
 			isOpen={props.show}
 			onClose={() => {
 				handleExit();

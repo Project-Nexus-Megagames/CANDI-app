@@ -8,11 +8,12 @@ import store from "./redux/store";
 import { HashRouter } from "react-router-dom";
 import "./fonts/BloodyTerror.ttf";
 import { ChakraProvider } from "@chakra-ui/react";
+import { myTheme } from "./theme/theme";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<>
-		<ChakraProvider>
+		<ChakraProvider theme={myTheme} >
 			<HashRouter>
 				<Provider store={store}>
 					<App />

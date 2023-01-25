@@ -12,7 +12,7 @@ const ImgPanel = (props) => {
 					borderRadius: '10px',
 					position: 'relative',
 					margin: '10px',
-					height: '45vh',
+					height: '42vh',
 					overflow: 'hidden'
 				}}
 			>

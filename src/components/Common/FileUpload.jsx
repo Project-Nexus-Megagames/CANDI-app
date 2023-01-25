@@ -17,8 +17,6 @@ export const FileUpload = ({ name, placeholder, acceptedFileTypes, control, chil
 		rules: { required: isRequired }
 	});
 
-	console.log('SIZE', size);
-
 	const handleFileUpload = async (e) => {
 		toast({
 			description: 'Uploading...',

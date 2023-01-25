@@ -36,6 +36,9 @@ import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
 import NavigationBar from "./components/Navigation/NavigationBar";
 import { loadAllActions } from "./redux/entities/playerActions";
+import { ErrorAlert } from "./components/Common/ErrorAlert";
+import { SuccessAlert } from "./components/Common/SuccessAlert";
+import Loading from "./components/Navigation/Loading";
 
 // React App Component
 initUpdates();
@@ -47,7 +50,7 @@ const App = (props) => {
   const toast = useToast();
   useEffect(() => {
     const theme = "dark";
-    console.log(`Setting Theme: ${theme}`);
+    // console.log(`Setting Theme: ${theme}`);
 
     let head = document.head;
     let link = document.createElement("link");
@@ -79,7 +82,7 @@ const App = (props) => {
     loadLog();
     loadAllActions();
     socket.onAny((event, ...args) => {
-      console.log(event);
+      // console.log(event);
       if (event === "clients") {
         props.usersRecieved(...args);
       }
@@ -88,12 +91,22 @@ const App = (props) => {
     socket.on("alert", (data) => {
       if (data) {
         switch (data.type) {
-          case "error":
-            // console.log(data.message);
-            // Alert.error(data.message, 6000);
+          case 'error': 
+          // Alert.error(data.message, 6000);
+            toast({
+              position: "top-right",
+              isClosable: true,
+              duration: 5000,
+              render: () => <ErrorAlert error={data.error} />,
+            });
             break;
-          case "success":
-            // Alert.success(data.message, 6000);
+          case 'success':
+            toast({
+              position: "top-right",
+              isClosable: true,
+              duration: 5000,
+              render: () => <SuccessAlert message={data.message} />,
+            });
             break;
           case "article":
             toast({
@@ -137,18 +150,19 @@ const App = (props) => {
         <Grid
           templateAreas={`"header header"
                           "main main"`}
-          gridTemplateRows={'80px 1fr'}
+          gridTemplateRows={'72px 1fr'}
           h='100vh'
-          gap='2'
+          gap='1'
           color={'#fff'}
         >
-          {myCharacter && <GridItem pl='2'  area={'header'} >
+          {myCharacter && <GridItem pl='1'  area={'header'} >
             <NavigationBar />
           </GridItem>}
 
-          <GridItem pl='2' area={'main'} overflow='auto' >
+          <GridItem pl='1' area={'main'} overflow='auto' >
             <Routes>
              <Route exact path='/login' element={<Login {...props} />} />
+             <Route exact path='/loading' element={<Loading {...props} />} />
               <Route exact path='/home' element={<HomePage {...props} />} />
               <Route path='/home/news' element={<News {...props} />} />
               <Route path='/agendas' element={<Agendas {...props} />} />

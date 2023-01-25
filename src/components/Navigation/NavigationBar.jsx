@@ -1,20 +1,27 @@
 import React, { useEffect } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { setCharacter, signOut } from '../../redux/entities/auth';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
-import { Box, Button, Container, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { ArrowBackIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { Box, Button, Container, Flex, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger } from "@chakra-ui/react";
+import { ArrowBackIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import usePermissions from "../../hooks/usePermissions";
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
+import socket from '../../socket';
+import { toggleDuck } from '../../redux/entities/gamestate';
 
 const Navigation = (props) => {
 	  const navigate = useNavigate();
+    const location = useLocation();
+    const reduxAction = useDispatch();
+
     const [time, setTime] = React.useState('');
+    const [filter, setFilter] = React.useState('');
     const myChar = useSelector(getMyCharacter);
     const [selectedChar, setSelectedChar] = React.useState(myChar._id);
     const currentCharacter = useSelector(getCharacterById(selectedChar));
     const allCharacters = useSelector(state => state.characters.list);
     const {isControl} = usePermissions();
+    const gamestate = useSelector(state => state.gamestate)
 
     useEffect(() => {
         renderTime();
@@ -25,18 +32,18 @@ const Navigation = (props) => {
     }, [props.gamestate.endTime]);
 
     useEffect(() => {
-        props.setCharacter(currentCharacter);
+        setCharacter(currentCharacter);
     }, [currentCharacter]);
 
     const handleCharChange = (charId) => {
-        console.log('charID', charId);
+        // console.log('charID', charId);
         if (charId) {
             setSelectedChar(charId);
         } else setSelectedChar(myChar._id);
     };
 
     const getTimeToEndOfRound = () => {
-        return new Date(props.gamestate.endTime).getTime() - new Date().getTime();
+        return new Date(gamestate.endTime).getTime() - new Date().getTime();
     }
 
     const renderTime = () => {
@@ -45,6 +52,12 @@ const Navigation = (props) => {
         const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
         const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
         setTime(`${days} Days, ${hours} Hours, ${minutes} Minutes`);
+    };
+
+    const handleLogOut = () => {
+      reduxAction(signOut());
+      socket.emit('logout');
+      navigate('/login');
     };
 
     return (
@@ -59,25 +72,38 @@ const Navigation = (props) => {
             }}
             maxW={'100vw'}
             minW={'350px'}
-            paddingTop={'1rem'}
-            paddingBottom={'1rem'}
+            paddingTop={'0.5rem'}
+            paddingBottom={'0.5rem'}
         >
             <Flex
                 alignItems={'center'}
             >
-                <Box
-                    onClick={() => navigate('/home')}
-                    justify="start"
-                    flex={1}
-                    display='flex'
-                    marginRight='auto'
+                <Box                    
+                  justify="start"
+                  flex={1}
+                  display='flex'
+                  marginRight='auto'
                 >
-                    <IconButton
-                        onClick={() => navigate('/home')}
-                        icon={<ArrowBackIcon/>}
-                        variant='outline'
-                        aria-label={'go home'}
-                    />
+                  {location.pathname !== "/home" && <IconButton
+                    onClick={() => navigate('/home')}
+                    icon={<ArrowBackIcon/>}
+                    variant='outline'
+                    aria-label={'go home'}
+                  />}
+                  {location.pathname === "/home" && 
+                  <Menu>
+                    <MenuButton >
+                      <IconButton 
+                        icon={<HamburgerIcon/>}
+                        variant='outline' />
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>Version: {gamestate.version}</MenuItem>
+						          <MenuItem onClick={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</MenuItem>
+						          <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+						          <MenuItem onClick={() => reduxAction(toggleDuck())}>Spook</MenuItem>
+                    </MenuList>
+                  </Menu>}
                 </Box>
                 <Box
                     display='flex'
@@ -102,33 +128,40 @@ const Navigation = (props) => {
                     justifyContent='right'
                 >
                     {isControl && (
-                        <Menu>
-                            <MenuButton
+                        <Popover>
+                            <PopoverTrigger
                                 as={Button}
                                 rightIcon={<ChevronDownIcon/>}
                                 colorScheme={'#0f131a'}
                                 _hover={{bg: 'gray.400'}}
                             >
-                                View As
-                            </MenuButton>
-                            <MenuList
+                              <Button>View As</Button>  
+                            </PopoverTrigger>
+                            <PopoverContent 
                                 backgroundColor={'#0f131a'}
+                                overflow="hidden"
+                                maxHeight={'50vh'}
                             >
+                              <PopoverHeader >
+                                <Input onChange={(event) => setFilter(event.target.value)} />
+                              </PopoverHeader >
+                              <PopoverBody overflow={'scroll'} >
                                 {allCharacters.map(character => (
-                                    <MenuItem
+                                    <Box
                                         key={character._id}
                                         value={character._id}
                                         _hover={{bg: 'gray.400'}}
-                                        onClick={(event) => {
-                                            console.log(event);
-                                            handleCharChange(event.target.attributes.value);
+                                        onClick={() => {
+                                            handleCharChange(character._id);
                                         }}
                                     >
                                         {character.characterName}
-                                    </MenuItem>
-                                ))}
-                            </MenuList>
-                        </Menu>
+                                    </Box>
+                                ))}                                
+                              </PopoverBody>
+
+                            </PopoverContent >
+                        </Popover>
                     )}
                 </Box>
             </Flex>

@@ -11,6 +11,7 @@ function CharactersDrawer({filteredCharacters, value, onChange, onClick, handleS
   const [renderTags] = React.useState(["Control", "PC", "NPC"]); // TODO: update with Faction tags
   const myCharacter = useSelector((state) => state.auth.myCharacter);
   const privateCharacters = useSelector(getPrivateCharacters);
+  const control = useSelector((state) => state.auth.control);
 
   return (
   <Drawer
@@ -47,7 +48,7 @@ function CharactersDrawer({filteredCharacters, value, onChange, onClick, handleS
                                 color='white'
                             />
                         </InputGroup>
-                        <Tooltip
+                        {control && <Tooltip
                             label='Add New Character'
                             aria-label='a tooltip'
                         >
@@ -60,7 +61,7 @@ function CharactersDrawer({filteredCharacters, value, onChange, onClick, handleS
                                 }}
                                 aria-label='Add New Character'
                             />
-                        </Tooltip>
+                        </Tooltip>}
                     </Flex>
                 </DrawerHeader>
                 <DrawerBody>
