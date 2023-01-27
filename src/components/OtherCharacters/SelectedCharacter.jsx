@@ -15,14 +15,8 @@ const SelectedCharacter = (props) => {
   const { selected } = props;
   const [mode, setMode] = useState(false);
   const assets = useSelector(state => state.assets.list);
-
-  const deleteAssert = async (asset) => {
-    socket.emit('request', {
-        route: 'asset',
-        action: 'delete',
-        data: {id: asset._id}
-    });
-};
+  const control = useSelector(state => state.auth.control);
+  const myCharacter = useSelector(state => state.auth.myCharacter);
 
 	return ( 
 		<Grid
@@ -55,10 +49,10 @@ const SelectedCharacter = (props) => {
         />
 			</GridItem>
 
-      <GridItem  bg='#555555' area={'body'} >
+      {(control || myCharacter._id === selected._id) && <GridItem bg='#555555' area={'body'} >
         <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
           Assets and Resources 
-          <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />
+          {control && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
         </h5>
 				<Grid templateColumns='repeat(3, 1fr)' gap={1}>
             {assets
@@ -67,7 +61,7 @@ const SelectedCharacter = (props) => {
                 <AssetCard key={asset._id} asset={asset} character={selected} />
               ))}
         </Grid>
-			</GridItem>
+			</GridItem>}
 
       <NewAsset show={mode === "new"} closeModal={() => setMode(false)} character={selected} mode={mode}/>
 		</Grid>

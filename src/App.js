@@ -193,7 +193,7 @@ const mapStateToProps = (state) => ({
   gameConfig: state.gameConfig,
   version: state.gamestate.version,
   characters: state.characters.list,
-  myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+  myCharacter: state.auth.myCharacter,
   duck: state.gamestate.duck,
 });
 

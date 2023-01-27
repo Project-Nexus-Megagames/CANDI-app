@@ -6,10 +6,12 @@ import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
 import ResourceNugget from './ResourceNugget';
 import NewAsset from './NewAsset';
+import { useSelector } from 'react-redux';
 
 const AssetCard = (props) => {
   const { asset, character } = props;
   const [mode, setMode] = useState(false);
+  const control = useSelector(state => state.auth.control);
 
   const deleteAssert = async () => {
     socket.emit('request', {
@@ -24,10 +26,10 @@ const AssetCard = (props) => {
       <Card key={asset._id} >
         <CardHeader>
                   <h5>{asset.name} 
-                  <ButtonGroup isAttached>
+                  {control && <ButtonGroup isAttached>
                    <IconButton variant={'ghost'} onClick={() => setMode("edit")} colorScheme="orange" size={'sm'} icon={<EditIcon />} />         
                    <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<DeleteIcon />} />                  
-                  </ButtonGroup>
+                  </ButtonGroup>}
                   
                   </h5>
                   <Flex align={'center'} >
