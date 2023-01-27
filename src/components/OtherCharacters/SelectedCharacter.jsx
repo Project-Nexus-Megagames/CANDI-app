@@ -24,8 +24,9 @@ const SelectedCharacter = (props) => {
                         "body body"`}
         gridTemplateColumns={ '50% 50%'}
         gridTemplateRows={ '40% 60%'}
+        gap={2}
         fontWeight='bold'>
-			<GridItem pl='2'  area={'side'} >
+			<GridItem pl='2' bg='#555555' area={'side'} >
         <CharacterListItem character={selected} />
         <Flex  >
         {selected.tags && selected.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>

@@ -81,7 +81,7 @@ const OtherCharacters = (props) => {
           templateAreas={`"header header"
             "main main"
           `}
-          gridTemplateColumns={ '50% 50%'}
+          gridTemplateColumns={ '50% 49%'}
           gridTemplateRows={'80px 1fr'}
           fontWeight='bold'>
         <GridItem pl='2' bg='#0f131a' area={'header'} >

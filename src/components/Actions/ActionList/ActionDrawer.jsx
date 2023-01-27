@@ -43,7 +43,7 @@ function ActionDrawer({actions, value, onChange, onClick, handleSelect, isOpen, 
                     >
                         Action List
                     </Center>
-                    <Flex>
+                    <Flex align={'center'}>
                         <InputGroup>
                             <InputLeftElement
                                 pointerEvents='none'
@@ -59,8 +59,7 @@ function ActionDrawer({actions, value, onChange, onClick, handleSelect, isOpen, 
                         </InputGroup>
                         <Tooltip
                             label='Add New Action'
-                            aria-label='a tooltip'
-                        >
+                            aria-label='a tooltip'>
                             <IconButton
                                 icon={<AddIcon/>}
                                 onClick={onClick}

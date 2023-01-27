@@ -21,8 +21,8 @@ const ActionHeader = (props) => {
     <div >
       {showButton && (
         <ButtonGroup>
-          <IconButton size="xs" onClick={() => console.log('Hello')} colorScheme="blue" icon={<IoPencilOutline icon="pencil" />} />
-          <IconButton size="xs" onClick={() => console.log('Hello')} colorScheme="red" icon={<IoTrash icon="trash2" />} />
+          <IconButton size="xs" onClick={() => console.log('Hello')} colorScheme="blue" icon={<IoPencilOutline  />} />
+          <IconButton size="xs" onClick={() => console.log('Hello')} colorScheme="red" icon={<IoTrash  />} />
         </ButtonGroup>
       )}
     </div>

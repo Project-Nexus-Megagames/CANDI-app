@@ -4,7 +4,7 @@ import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import {  Modal,  ModalOverlay,  ModalContent,  ModalHeader,  ModalFooter,  ModalBody,  ModalCloseButton,  Tag,  Icon,  Spinner,  Box, Flex,  Button,  ButtonGroup,  Tooltip,} from '@chakra-ui/react'
+import {  Modal,  ModalOverlay,  ModalContent,  ModalHeader,  ModalFooter,  ModalBody,  ModalCloseButton,  Tag,  Icon,  Spinner,  Box, Flex,  Button,  ButtonGroup,  Tooltip, Divider, Spacer,} from '@chakra-ui/react'
 import CheckerPick from '../../Common/CheckerPick';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import NexusSlider from '../../Common/NexusSlider';
@@ -39,9 +39,9 @@ const NewAction = (props) => {
         }
     }, [actionType]);
 
-    // useEffect(() => {
-    // 	if (effort) setMaxEffort();
-    // }, [effort]);
+    useEffect(() => {
+    	if (effort) setMaxEffort();
+    }, [effort]);
 
     const editState = (incoming, type) => {
         let thing;
@@ -95,7 +95,7 @@ const NewAction = (props) => {
     function formattedUsedAssets() {
         let temp = [];
         let assets = myAssets;
-        assets = assets.filter((el) => el.uses <= 0 || el.status.used);
+        assets = assets.filter((el) => el.uses <= 0 || el.status?.some(s => s === 'used'));
 
         for (const asset of assets) {
             temp.push(asset._id);
@@ -130,11 +130,7 @@ const NewAction = (props) => {
                   style={{border: `4px solid ${getFadedColor(actionType.type)}`, borderRadius: '5px', padding: '15px'}}
               >
                   {props.actionLoading &&
-                      <Spinner
-                          backdrop
-                          content="loading..."
-                          vertical
-                      />
+                      <Spinner />
                   }
                      <ButtonGroup isAttached>
                           {gameConfig &&
@@ -145,13 +141,14 @@ const NewAction = (props) => {
                                   placement="top"
                                   label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>}
                                 >
-                                  <Button
+                                <Button
                                   style={{}}
-                                  onClick={() => setActionType(aType)}
-                                  color={getFadedColor(`${aType.type}-rs`)}
-                                  appearance={actionType.type === aType.type ? 'default' : 'ghost'}
+                                  onClick={() => { setActionType(aType); setResource([]) }}
+                                  color={getFadedColor(`${aType.type}`)}
+                                  variant={actionType.type === aType.type ? 'solid' : 'ghost'}
+                                  leftIcon={getIcon(aType.type)}
                                   >
-                                  {getIcon(aType.type)}
+                                   {aType.type}
                                 </Button>
                               </Tooltip >
                               ))}
@@ -161,7 +158,7 @@ const NewAction = (props) => {
                        <form>
                       Name:
                       {10 - name.length > 0 && (
-                          <Tag
+                          <Tag variant='solid'
                               style={{color: 'black'}}
                               colorScheme={'orange'}
                           >
@@ -169,7 +166,7 @@ const NewAction = (props) => {
                           </Tag>
                       )}
                       {10 - name.length <= 0 && (
-                          <Tag colorScheme={'green'}>
+                          <Tag variant='solid' colorScheme={'green'}>
                               <CheckIcon/>
                           </Tag>
                       )}
@@ -179,9 +176,11 @@ const NewAction = (props) => {
                           className="textStyle"
                           onChange={(event) => setName(event.target.value)}
                       ></textarea>
+                      <Divider />
+
                       Description:
                       {10 - description.length > 0 && (
-                          <Tag
+                          <Tag variant='solid'
                               style={{color: 'black'}}
                               colorScheme={'orange'}
                           >
@@ -189,8 +188,8 @@ const NewAction = (props) => {
                           </Tag>
                       )}
                       {10 - description.length <= 0 && (
-                          <Tag colorScheme={'green'}>
-                              <Icon icon="check"/>
+                          <Tag variant='solid' colorScheme={'green'}>
+                              <CheckIcon/>
                           </Tag>
                       )}
                       <textarea
@@ -199,11 +198,12 @@ const NewAction = (props) => {
                           className="textStyle"
                           onChange={(event) => setDescription(event.target.value)}
                       />
-                      <br/>
+                      <Divider />
+
                       <Box>
                           Intent:
                           {10 - intent.length > 0 && (
-                              <Tag
+                              <Tag variant='solid'
                                   style={{color: 'black'}}
                                   colorScheme={'orange'}
                               >
@@ -211,8 +211,8 @@ const NewAction = (props) => {
                               </Tag>
                           )}
                           {10 - intent.length <= 0 && (
-                              <Tag colorScheme={'green'}>
-                                  <Icon icon="check"/>
+                              <Tag variant='solid' colorScheme={'green'}>
+                                  <CheckIcon/>
                               </Tag>
                           )}
                           <textarea
@@ -221,9 +221,10 @@ const NewAction = (props) => {
                               className="textStyle"
                               onChange={(event) => setIntent(event.target.value)}
                           />
+                           <Divider />
                       </Box>
 
-                      <Flex>
+                      <Flex >
                         <Box
                           style={{
                               paddingTop: '25px',
@@ -249,14 +250,16 @@ const NewAction = (props) => {
                                 <Button
                                   key={e}
                                   onClick={() => editState(e, 'effort')}
-                                  color={getFadedColor(`${e}-rs`)}
+                                  color={getFadedColor(e)}
                                   disabled={getThisEffort(myCharacter.effort, e) < 1}
-                                  appearance={effort.effortType == e ? 'default' : 'ghost'}
+                                  variant={effort.effortType == e ? 'solid' : 'ghost'}
                                 >
                                   {e} ~ ({getThisEffort(myCharacter.effort, e)})
                                 </Button>
                               ))}
                           </ButtonGroup>
+                          <Spacer />
+
                           <NexusSlider
                             min={0}
                             max={max}
@@ -267,24 +270,26 @@ const NewAction = (props) => {
 
                         </Box>
 
-                              <Box
-                                  style={{
-                                      paddingTop: '5px',
-                                      paddingLeft: '10px',
-                                      textAlign: 'left'
-                                  }}
-                              >
-                                  {' '}
-                                  Resources
-                                  <CheckerPick
-                                    labelKey="name"
-                                    valueKey="_id"
-                                    data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
-                                    style={{width: '100%'}}
-                                    disabledItemValues={formattedUsedAssets()}
-                                    onChange={(event) => setResource(event)}
-                                  />
-                              </Box>
+                        <Box
+                            style={{
+                                paddingTop: '5px',
+                                paddingLeft: '10px',
+                                textAlign: 'left'
+                            }}
+                        >
+                            {' '}
+                            Resources:
+                            {actionType.assetType.map(type => (<Tag key={type} textTransform='capitalize' colorScheme={'teal'} variant={'solid'} >{type}</Tag>))}
+                            <CheckerPick
+                              labelKey="name"
+                              valueKey="_id"
+                              data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
+                              style={{width: '100%'}}
+                              disabledItemValues={formattedUsedAssets}
+                              onChange={(event) => setResource(event)}
+                              value={resource}
+                            />
+                        </Box>
                       </Flex>
                   </form>
                           <div

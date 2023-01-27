@@ -24,8 +24,13 @@ const Loading = (props) => {
 	const { loadingStart, user,  } = useSelector(s => s.auth)
 	const characters  = useSelector(s => s.characters.list)
 
+  if (!props.login) {
+    navigate("/");
+    return <div />;
+  }
+
   useEffect(() => {
-		// console.log("Trigger B")
+		console.log("Trigger B")
 		if (user && (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100)) {
 			console.log("Finished Loading!!!!")
       const character = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());
