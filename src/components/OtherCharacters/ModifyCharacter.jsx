@@ -4,6 +4,8 @@ import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Modal, 
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import { cloudinaryUploadMedium } from '../../services/uploads';
+import { CandiModal } from '../Common/CandiModal';
+import { CloseIcon, RepeatClockIcon } from '@chakra-ui/icons';
 
 const ModifyCharacter = (props) => {
 	const gameConfig = useSelector((state) => state.gameConfig);
@@ -155,17 +157,7 @@ const ModifyCharacter = (props) => {
 	};
 
 	return (
-		<Modal
-			size="3x1"
-      isCentered
-			isOpen={props.show}
-			onClose={() => {
-				handleExit();
-			}}
-		>
-			<ModalContent>
-				<ModalHeader>Modify Character "{watchCharName}"</ModalHeader>
-        <ModalBody>
+    <CandiModal onClose={() => { handleExit(); }} open={props.show} title={`Modify Character "${watchCharName}"`}>
           <form onSubmit={handleSubmit(onSubmit, handleError)}>
             <Box>
               <Flex w="100%">
@@ -293,19 +285,19 @@ const ModifyCharacter = (props) => {
             </Box>
             <ModalFooter>
               <ButtonGroup>
-                <Button type="submit" color="red" className="btn btn-primary mr-1">
+                <Button type="submit" colorScheme="teal" className="btn btn-primary mr-1">
                   Modify Character
                 </Button>
-                <Button onClick={() => reset()} className="btn btn-secondary mr-1">
+                <Button colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />} >
                   Reset Form
+                </Button>
+                <Button colorScheme={'red'} onClick={() => handleExit()} leftIcon={<CloseIcon />} >
+                  Cancel
                 </Button>
               </ButtonGroup>
             </ModalFooter>
-          </form>          
-        </ModalBody>
-			</ModalContent>
-
-		</Modal>
+          </form>           
+    </CandiModal>
 	);
 };
 

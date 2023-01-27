@@ -97,8 +97,20 @@ const HomePage = (props) => {
 
       </Grid>
 
-      <CandiWarning open={rand === 13} title={"You sure about that?"} onClose={() => setRand(0)} handleAccept={() => setRand(0)}>
+      <CandiWarning open={rand === 1} title={"You sure about that?"} onClose={() => setRand(-1)} handleAccept={() => setRand(-1)}>
         Are ya sure?
+      </CandiWarning>
+
+      <CandiWarning open={rand === -1} title={"Really?"} onClose={() => setRand(-2)} handleAccept={() => setRand(-2)}>
+        Are you really, REALLY Sure?
+      </CandiWarning>
+
+      <CandiWarning open={rand === -2} title={"Really Really?"} onClose={() => setRand(-3)} handleAccept={() => setRand(-3)}>
+        Look, I haven't even told you what you need to be sure about is. How can you be sure if you are uninformed?
+      </CandiWarning>
+
+      <CandiWarning open={rand === -3} title={"AAAAAAAAAAAAA"} onClose={() => setRand(0)} handleAccept={() => setRand(0)}>
+        Wait that wasn't a yes or no question... What? 
       </CandiWarning>
 
 		</React.Fragment>

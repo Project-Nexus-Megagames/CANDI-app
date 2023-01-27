@@ -76,14 +76,13 @@ const OtherCharacters = (props) => {
   
   return (
     <React.Fragment>
-      <Box overflowY={'scroll'}>
+      <Box >
         <Grid
           templateAreas={`"header header"
             "main main"
           `}
           gridTemplateColumns={ '50% 50%'}
           gridTemplateRows={'80px 1fr'}
-          gap='1'
           fontWeight='bold'>
         <GridItem pl='2' bg='#0f131a' area={'header'} >
           <Flex

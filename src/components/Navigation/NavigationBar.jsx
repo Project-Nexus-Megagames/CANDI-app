@@ -129,7 +129,7 @@ const Navigation = (props) => {
                     marginLeft='auto'
                     justifyContent='right'
                 >
-                  {myChar && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>Reset</Button>}
+                  {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
                     {isControl && (
                         <Popover>
                             <PopoverTrigger
@@ -138,7 +138,7 @@ const Navigation = (props) => {
                                 colorScheme={'#0f131a'}
                                 _hover={{bg: 'gray.400'}}
                             >
-                              <Button>View As</Button>  
+                              <Button variant={'ghost'} >View As</Button>  
                             </PopoverTrigger>
                             <PopoverContent 
                                 backgroundColor={'#0f131a'}

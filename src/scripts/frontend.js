@@ -18,17 +18,17 @@ function getFadedColor(color, fade = 1) {
 		case 'Pig':
 			return `#e74c3c`
 
-		case 'Frog':
+		case 'Wealth':
 			return `#fbbc04`
 		case 'Dwarves':
 			return '#03fcbe'
 		case 'Spider':
 			return `#206694`
-		case 'Myconid':
+		case 'Power':
 			return `#71368a`
-		case 'Drow':
+		case 'Asset':
 			return `#1f8b4c`
-		case 'Raccoon':
+		case 'Trait':
 			return `#e91e63`
 		case 'Other':
 			return `#992d22`
@@ -68,23 +68,6 @@ function getTextColor(color, fade = 1) {
 			return `#5b26b0`;
 		case 'Normal-rs':
 			return `violet`;
-
-		case 'Control':
-			return `#ff9800`
-
-		case 'Pig':
-			return `#e74c3c`
-
-		case 'Frog':
-			return `#f1c40f`
-		case 'Spider':
-			return `#206694`
-		case 'Myconid':
-			return `#71368a`
-		case 'Drow':
-			return `#1f8b4c`
-		case 'Raccoon':
-			return `#e91e63`
 			
 		case 'Unknown-text':
 		case 'Myconid-text':
@@ -102,6 +85,7 @@ function getTextColor(color, fade = 1) {
 		case 'Dwarves-text':
 		case 'Frog-text':
 		case 'Pig-text':
+    case 'Wealth-text':
 		case 'Whitewall-text':
 			return `black`
 

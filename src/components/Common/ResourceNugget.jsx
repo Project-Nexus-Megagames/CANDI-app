@@ -6,10 +6,10 @@ const ResourceNugget = (props) => {
 	const { value, type, height, width } = props; 
 
 	return (
-		<div style={{	display: 'flex', backgroundColor: `${getFadedColor(value)}`, borderRadius: '8px', color: getTextColor(`${value}-text`), padding: '1px', margin: '3px' }}>
+		<div style={{	display: 'flex', backgroundColor: `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content'  }}>
 
 				{value && <div >
-					<p style={{ height: 'inherit', margin: '2px 8px 2px 8px',  }}>{value}</p>
+					<p style={{ height: 'inherit', margin: '2px 8px 2px 8px', color: getTextColor(`${value}-text`), textTransform: 'capitalize' }}>{value}</p>
 				</div>}
 			
 

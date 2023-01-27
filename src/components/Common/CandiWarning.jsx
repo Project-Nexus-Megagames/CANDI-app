@@ -50,7 +50,7 @@ export const CandiWarning = ({ open, title, onClose, onOpen, children, handleAcc
           <Button ref={cancelRef} onClick={onClose}>
             Nooo
           </Button>
-          <Button colorScheme='red' onClick={() => { handleAccept(); onClose(); }} ml={3}>
+          <Button colorScheme='red' onClick={() => { onClose(); handleAccept(); }} ml={3}>
             Yes!
           </Button>
         </AlertDialogFooter>

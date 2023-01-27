@@ -20,12 +20,12 @@ export const CandiModal = ({ open, title, onClose, onOpen, children }) => {
   }, [open]);
 
   return (
-    <Modal size="2xl" isOpen={isOpen} onClose={handleClose} isCentered>
+    <Modal closeOnOverlayClick={false} scrollBehavior="inside" size="3xl" isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
-      <ModalContent bgColor="#0f131a">
+      <ModalContent bgColor="#343840">
         <ModalCloseButton size="sm" top="0px" right="0px" />
         { title && <ModalHeader>{title}</ModalHeader> }
-        <ModalBody>
+        <ModalBody overflow={'auto'}>
           {children}
         </ModalBody>
       </ModalContent>

@@ -97,7 +97,7 @@ const App = (props) => {
               position: "top-right",
               isClosable: true,
               duration: 5000,
-              render: () => <ErrorAlert error={data.error} />,
+              render: () => <ErrorAlert error={data.message} />,
             });
             break;
           case 'success':

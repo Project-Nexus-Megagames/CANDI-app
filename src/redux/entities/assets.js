@@ -45,19 +45,11 @@ const slice = createSlice({
       index > -1 ? (assets.list[index] = action.payload) : assets.list.push(action.payload);
       assets.loading = false;
     },
-    assetLent: (assets, action) => {
-      console.log(`${action.type} Dispatched`);
-      const index = assets.list.findIndex((el) => el._id === action.payload._id);
-      console.log(index);
-      let asset = assets.list[index];
-      asset.status.lent = true;
-      assets.list[index] = asset;
-    },
   },
 });
 
 // Action Export
-export const { assetAdded, assetDeleted, assetsReceived, assetsRequested, assetsRequestFailed, assetUpdated, assetLent } = slice.actions;
+export const { assetAdded, assetDeleted, assetsReceived, assetsRequested, assetsRequestFailed, assetUpdated } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

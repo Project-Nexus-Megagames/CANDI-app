@@ -30,12 +30,7 @@ const Loading = (props) => {
 			console.log("Finished Loading!!!!")
       const character = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());
 
-      if (user.roles.some((el) => el === 'Control')) {
-        reduxAction(setCharacter(character));
-        reduxAction(finishLoading());
-        navigate('/home');
-      } else if (character) {
-
+       if (character) {
         reduxAction(setCharacter(character));
         reduxAction(finishLoading());
         navigate('/home');
