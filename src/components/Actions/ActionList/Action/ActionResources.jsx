@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
 import { CloseIcon } from "@chakra-ui/icons";
 import WordDivider from "../../../WordDivider";
+import AssetCard from "../../../Common/AssetCard";
 
 function ActionResources({assets, toggleAssetInfo}) {
     const assetList = useSelector(state => state.assets.list);
@@ -23,7 +24,7 @@ function ActionResources({assets, toggleAssetInfo}) {
         let inner;
         if (retrievedAsset) {
             inner = (
-                <Box>
+                <Box >
                     {isControl &&
                         <IconButton
                             size="xs"
@@ -41,7 +42,8 @@ function ActionResources({assets, toggleAssetInfo}) {
                             isRound
                         />
                     }
-                    <Box>
+                    <AssetCard marginTop={isControl ? '-2.5rem' : 0} asset={retrievedAsset} disabled />
+                    {/* <Box>
                         <Heading
                             as='h6'
                             size={'sm'}
@@ -60,7 +62,7 @@ function ActionResources({assets, toggleAssetInfo}) {
                         >
                             {retrievedAsset.status.used && <Tag colorScheme='whiteAlpha'>Used</Tag>}
                         </Box>
-                    </Box>
+                    </Box> */}
                 </Box>
             );
         } else {
@@ -74,11 +76,9 @@ function ActionResources({assets, toggleAssetInfo}) {
                 justifyContent={'center'}
                 alignItems={'center'}
                 width={breakpoints.width}
-                padding={'1rem'}
                 border={'1px solid white'}
                 borderRadius={'10'}
                 marginTop={'2rem'}
-                cursor={retrievedAsset ? 'pointer' : 'initial'}
                 onClick={() => retrievedAsset && toggleAssetInfo(retrievedAsset)}
             >
                 {inner}
@@ -98,7 +98,7 @@ function ActionResources({assets, toggleAssetInfo}) {
                         key={index}
                         justifyContent={'center'}
                     >
-                        {renderAsset(assets[index])}
+                        {renderAsset(assets[index-1])}
                     </Flex>
                 ))}
             </SimpleGrid>

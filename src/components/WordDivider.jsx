@@ -1,5 +1,6 @@
 import { Divider, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import React from "react";
+import { InfoTip } from "./Common/InfoTip";
 
 function WordDivider({word, tooltip, size = 'md'}) {
 
@@ -19,7 +20,7 @@ function WordDivider({word, tooltip, size = 'md'}) {
                     justifyContent='center'
                     minWidth={minWidth}
                 >
-                    {word}
+                    {word}                    
                 </Heading>
             </Tooltip>
         ) : (

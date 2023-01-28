@@ -91,28 +91,23 @@ const App = (props) => {
     socket.on("alert", (data) => {
       if (data) {
         switch (data.type) {
+          case 'success':
           case 'error': 
           // Alert.error(data.message, 6000);
-            toast({
+            if (!toast.isActive(data.type)) toast({
               position: "top-right",
               isClosable: true,
+              status: data.type,
               duration: 5000,
-              render: () => <ErrorAlert error={data.message} />,
-            });
-            break;
-          case 'success':
-            toast({
-              position: "top-right",
-              isClosable: true,
-              duration: 5000,
-              render: () => <SuccessAlert message={data.message} />,
+              id: data.type,
+              title: data.message,
             });
             break;
           case "article":
             toast({
               position: "top-right",
               isClosable: true,
-              duration: 9000,
+              duration: 7000,
               render: () => <ArticleAlert data={data.data} />,
             });
             break;

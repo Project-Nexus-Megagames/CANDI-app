@@ -3,6 +3,7 @@ function getFadedColor(color, fade = 1) {
 	switch (color) {
 		case 'Agenda':
 		case 'Public':
+    case 'Main':
 			return `#22a12a`;
 		case 'Agenda-rs':
 			return 'green'
@@ -15,7 +16,7 @@ function getFadedColor(color, fade = 1) {
 		case 'Control':
 			return `#ff9800`
 
-		case 'Pig':
+		case 'Defence':
 			return `#e74c3c`
 
 		case 'Wealth':
@@ -107,10 +108,10 @@ function getCountdownHours(start, end) {
 }
 
 function getThisEffort(efforts, type) {
-  console.log(efforts)
-  console.log(type)
+  // console.log(efforts)
+  // console.log(type)
 	const found = type ?  (efforts.find(el => el.type.toLowerCase() === type.toLowerCase()) ) : false;
-	return(found ? found.amount : -999)
+	return(found ? found.amount : 0)
 }
 
 const getTime = (date) => {

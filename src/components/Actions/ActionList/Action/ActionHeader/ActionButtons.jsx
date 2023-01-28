@@ -4,8 +4,11 @@ import { useSelector } from "react-redux";
 import { Box, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from "@chakra-ui/react";
 import { HiPencilAlt, HiTrash } from 'react-icons/hi';
 import socket from "../../../../../socket";
+import { CandiWarning } from "../../../../Common/CandiWarning";
 
 function ActionButtons({action, toggleEdit, creator}) {
+	const [mode, setMode] = React.useState(false);
+
     const {isControl, characterId} = usePermissions();
     const game = useSelector(state => state.gamestate);
     const buttonDirection = useBreakpointValue({base: 'column', md: 'row'});
@@ -28,8 +31,6 @@ function ActionButtons({action, toggleEdit, creator}) {
             data: {id: action._id}
         });
     };
-
-    //TODO: add logic for modal toggling when buttons are pressed
 
     return (
         <Box>
@@ -74,7 +75,7 @@ function ActionButtons({action, toggleEdit, creator}) {
                         disabled={isDisabled}
                         size="sm"
                         onClick={(e) => {
-                            deleteAction();
+                            setMode("confirm");
                             e.stopPropagation();
                         }}
                         backgroundColor="red"
@@ -84,6 +85,9 @@ function ActionButtons({action, toggleEdit, creator}) {
                     />
                 </ButtonGroup>
             )}
+        <CandiWarning open={mode === "confirm"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { deleteAction(); setMode(false); }}>
+          Are ya sure?
+        </CandiWarning>
         </Box>
     );
 }

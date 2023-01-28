@@ -16,7 +16,8 @@ import NexusSlider from '../../Common/NexusSlider';
  */
 const NewAction = (props) => {
     const {gameConfig} = useSelector((state) => state);
-    const myCharacter = useSelector(getMyCharacter);
+    const { myCharacter,  } = useSelector(s => s.auth);
+    // const myCharacter = useSelector(getMyCharacter);
     const myAssets = useSelector(getMyAssets);
 
     const [effort, setEffort] = React.useState({effortType: 'Normal', amount: 0});
@@ -114,9 +115,7 @@ const NewAction = (props) => {
 
     return (
         <Modal
-            overflow
-            style={{width: '90%'}}
-            size="xl"
+            size="5xl"
             isOpen={props.show}
             onClose={() => props.closeNew()}
         >
@@ -132,7 +131,7 @@ const NewAction = (props) => {
                   {props.actionLoading &&
                       <Spinner />
                   }
-                     <ButtonGroup isAttached>
+                     <ButtonGroup isAttached >
                           {gameConfig &&
                               gameConfig.actionTypes.map((aType) => (
                                 <Tooltip
@@ -142,10 +141,9 @@ const NewAction = (props) => {
                                   label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>}
                                 >
                                 <Button
-                                  style={{}}
+                                  style={{ backgroundColor: actionType.type === aType.type ? getFadedColor(`${aType.type}`) : '' }}
                                   onClick={() => { setActionType(aType); setResource([]) }}
-                                  color={getFadedColor(`${aType.type}`)}
-                                  variant={actionType.type === aType.type ? 'solid' : 'ghost'}
+                                  variant={'solid'}
                                   leftIcon={getIcon(aType.type)}
                                   >
                                    {aType.type}
@@ -254,7 +252,7 @@ const NewAction = (props) => {
                                   disabled={getThisEffort(myCharacter.effort, e) < 1}
                                   variant={effort.effortType == e ? 'solid' : 'ghost'}
                                 >
-                                  {e} ~ ({getThisEffort(myCharacter.effort, e)})
+                                  {e} ~ ({max})
                                 </Button>
                               ))}
                           </ButtonGroup>

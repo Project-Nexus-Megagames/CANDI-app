@@ -66,16 +66,16 @@ function EditAction({action, showEdit, handleClose}) {
         handleClose();
     };
 
-    function formattedUsedAssets(submissionAssets) {
-        let temp = [];
-        let assets = myAssets;
-        assets = assets.filter((el) => el.uses <= 0 || el.status.used);
-        assets = assets.filter((el) => !submissionAssets.some((sub) => sub === el._id));
-        for (const asset of assets) {
-            temp.push(asset._id);
-        }
-        return temp;
-    }
+    function formattedUsedAssets() {
+      let temp = [];
+      let assets = myAssets;
+      assets = assets.filter((el) => el.uses <= 0 || el.status?.some(s => s === 'used'));
+
+      for (const asset of assets) {
+          temp.push(asset._id);
+      }
+      return temp;
+  }
 
     return (
         <Modal
@@ -207,14 +207,15 @@ function EditAction({action, showEdit, handleClose}) {
                               >
                                   {' '}
                                   Resources
+
                                   <CheckerPick
-                                      labelKey="name"
-                                      valueKey="_id"
-                                      data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
-                                      style={{width: '100%'}}
-                                      defaultValue={action.submission.assets}
-                                      disabledItemValues={formattedUsedAssets(action.submission.assets)}
-                                      onChange={(event) => setResources(event)}
+                                    labelKey="name"
+                                    valueKey="_id"
+                                    data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
+                                    style={{width: '100%'}}
+                                    disabledItemValues={formattedUsedAssets}
+                                    onChange={(event) => setResources(event)}
+                                    value={resources}
                                   />
                               </Box>
                       </Flex>

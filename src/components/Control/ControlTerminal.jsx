@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import socket from '../../socket';
 import Registration from './Registration';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import ActionTable from './ActionTable';
 import GameConfig from '../GameConfig/GameConfig';
 
 const ControlTerminal = (props) => {		
-	const { login, team, character, loading } = useSelector(s => s.auth);
+	const { login, team, character, loading, user } = useSelector(s => s.auth);
 
 	let [account, setAccount] = React.useState();
 	const navigate = useNavigate();
@@ -36,6 +36,11 @@ const ControlTerminal = (props) => {
 				}});
 	} 
 
+  const handleRound = () => {
+    const data = user.username;
+		socket.emit('request', { route: 'gamestate', action: 'nextRound', data });
+  }
+
 	
 	return ( 
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
@@ -53,7 +58,7 @@ const ControlTerminal = (props) => {
 
 			<TabPanel>
 				<div>
-          Yeah yeah I'll get here
+          {/* <Button onClick={handleRound}>Hello</Button> */}
 				</div>
 			</TabPanel>
 

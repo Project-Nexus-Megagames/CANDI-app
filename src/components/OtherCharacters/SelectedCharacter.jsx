@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { CandiWarning } from '../Common/CandiWarning';
 import socket from '../../socket';
 import AssetCard from '../Common/AssetCard';
+import WordDivider from '../WordDivider';
 
 const SelectedCharacter = (props) => {
   const { selected } = props;
@@ -27,7 +28,16 @@ const SelectedCharacter = (props) => {
         gap={2}
         fontWeight='bold'>
 			<GridItem pl='2' bg='#555555' area={'side'} >
-        <CharacterListItem character={selected} />
+        <div className='styleCenter' >
+          <CharacterListItem character={selected} />
+          {(control || myCharacter._id === selected._id) && <div>
+            <WordDivider word={"Effort"} ></WordDivider>
+            {selected.effort && selected.effort.map((item) =>
+            <ResourceNugget key={item.type} value={item.type} amount={item.amount} width={'50px'} height={'30'} />
+          )}
+          </div>}
+        </div>
+        
         <Flex  >
         {selected.tags && selected.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
          <ResourceNugget key={item} value={item} width={'50px'} height={'30'} />
@@ -41,7 +51,9 @@ const SelectedCharacter = (props) => {
         </p>}
         <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
         <p>{selected.bio}</p>
+
 			</GridItem>
+
 			<GridItem pl='2'  area={'main'} >
         <img
           src={`${selected.profilePicture}`}

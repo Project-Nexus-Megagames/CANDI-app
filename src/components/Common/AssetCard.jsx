@@ -9,7 +9,7 @@ import NewAsset from './NewAsset';
 import { useSelector } from 'react-redux';
 
 const AssetCard = (props) => {
-  const { asset, character } = props;
+  const { asset, character, disabled, marginTop } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
 
@@ -23,28 +23,30 @@ const AssetCard = (props) => {
 
 	return ( 
 		<div>
-      <Card key={asset._id} >
+      <Card marginTop={marginTop} key={asset._id} >
         <CardHeader>
-                  <h5>{asset.name} 
-                  {control && <ButtonGroup isAttached>
-                   <IconButton variant={'ghost'} onClick={() => setMode("edit")} colorScheme="orange" size={'sm'} icon={<EditIcon />} />         
-                   <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<DeleteIcon />} />                  
-                  </ButtonGroup>}
-                  
-                  </h5>
-                  <Flex align={'center'} >
-                    <Spacer />
-                    <ResourceNugget value={asset.type} width={'60px'}></ResourceNugget>
-                    {asset.status?.map(el => (
-                      <ResourceNugget key={el} value={el}></ResourceNugget>
-                    ))}
-                    <Spacer />
-                  </Flex>
+          <h5>{asset.name} 
+          {control && !disabled && <ButtonGroup isAttached>
+           <IconButton variant={'ghost'} onClick={() => setMode("edit")} colorScheme="orange" size={'sm'} icon={<EditIcon />} />         
+           <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<DeleteIcon />} />                  
+          </ButtonGroup>}
+          
+          </h5>
+          <Flex align={'center'} >
+            <Spacer />
+            <ResourceNugget value={asset.type} width={'60px'}></ResourceNugget>
+            {asset.status?.map(el => (
+              <ResourceNugget key={el} value={el}></ResourceNugget>
+            ))}
+            <Spacer />
+          </Flex>
         </CardHeader>
         <CardBody>                    
           {asset.description}
+          
         </CardBody>                
       </Card>
+
       {asset && <CandiWarning open={mode === 'delete'} title={`Delete "${asset.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>
         This can never be undone.
       </CandiWarning>}

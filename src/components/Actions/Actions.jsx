@@ -76,6 +76,7 @@ const Actions = (props) => {
                 minW={'350px'}
             >
                 <Flex
+                    align={'center'}
                     marginTop='2rem'
                     width={'100%'}
                 >

@@ -96,7 +96,9 @@ const CharacterListItem = (props) => {
         {character.email}                         
       </Button>
 			
-		</Box>   
+		</Box>  
+     
+
   </Flex>
 
 	);

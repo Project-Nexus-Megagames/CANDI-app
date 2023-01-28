@@ -57,6 +57,7 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
                         <Box>
                             <ActionMarkdown
                                 header='Description'
+                                tooltip='An description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
                                 markdown={action.submission.description}
                             />
                             <ActionMarkdown
@@ -64,9 +65,9 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
                                 header='Intent'
                                 markdown={action.submission.intent}
                             />
-                            <ActionEffort
+                            {/* <ActionEffort TODO update this for multi-effort games
                                 submission={action.submission}
-                            />
+                            /> */}
                             <ActionResources
                                 assets={action.submission.assets}
                                 toggleAssetInfo={toggleAssetInfo}
