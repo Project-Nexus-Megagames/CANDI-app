@@ -5,8 +5,9 @@ import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
 import ResourceNugget from './ResourceNugget';
-import NewAsset from './NewAsset';
+import AssetForm from './AssetForm';
 import { useSelector } from 'react-redux';
+import { CandiModal } from './CandiModal';
 
 const AssetCard = (props) => {
   const { asset, character, disabled, marginTop } = props;
@@ -50,7 +51,11 @@ const AssetCard = (props) => {
       {asset && <CandiWarning open={mode === 'delete'} title={`Delete "${asset.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>
         This can never be undone.
       </CandiWarning>}
-      <NewAsset show={mode === "edit"} closeModal={() => setMode(false)} character={character} asset={asset} mode={mode}/>
+
+      <CandiModal onClose={() => { setMode(false); }} open={mode === "edit"} title={`${mode} Asset`}>
+        <AssetForm character={character} asset={asset} mode={mode}/>
+      </CandiModal>
+      
 		</div>
 	);
 }

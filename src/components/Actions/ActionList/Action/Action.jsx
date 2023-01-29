@@ -57,7 +57,7 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
                         <Box>
                             <ActionMarkdown
                                 header='Description'
-                                tooltip='An description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
+                                tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
                                 markdown={action.submission.description}
                             />
                             <ActionMarkdown

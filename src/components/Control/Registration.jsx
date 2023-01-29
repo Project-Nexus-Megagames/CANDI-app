@@ -75,7 +75,8 @@ const Registration = (props) => {
 
 				<GridItem area={'main'}>
 						{selected && <div className='styleCenterTop'>
-              {selected.name.first}
+              <p>Name: {selected.name.first}</p>
+              
 						Username: {selected.username}
 							<Card>
 								<CardHeader>

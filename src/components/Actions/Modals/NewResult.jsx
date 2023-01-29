@@ -2,16 +2,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../../../socket';
-import {
-  Modal,
-  Button,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react'
+import { Modal, Button, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, } from '@chakra-ui/react'
 import { getMyCharacter } from '../../../redux/entities/characters';
 
 const NewResult = (props) => {
@@ -26,8 +17,6 @@ const NewResult = (props) => {
  	}
 		
   const handleSubmit = async () => {
-		// 1) make a new action
-		const diceresult = diceresult ? diceresult : props.selected.diceresult;
 		const data = {
 			result: {
 				description: description,

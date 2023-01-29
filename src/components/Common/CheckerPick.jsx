@@ -28,7 +28,7 @@ function CheckerPick(props) {
         <HStack border={'1px'} borderRadius='lg'>
           {data && value && <Box width={'90%'} overflow={'hidden'}>
             {value.length === 0 && placeholder}
-            {data && value.map(el => (
+            {data && value.map((el, index) => (
               <Tag key={el._id}>{data.find(e => e._id === el)[labelKey]}</Tag>
             ))}  
           </Box>}
@@ -39,7 +39,7 @@ function CheckerPick(props) {
       <MenuList minWidth={'90%'}  >
         <VStack spacing={1} align="start" marginLeft="5px">
           {data && data.map(el => (
-            <Checkbox onChange={() => handleChange(el._id)} key={el[labelKey]} isChecked={value.some(e => e === el._id)}  >{el[labelKey]}</Checkbox>                        
+            <Checkbox onChange={() => handleChange(el._id)} key={el[labelKey]} isChecked={value?.some(e => e === el._id)}  >{el[labelKey]}</Checkbox>                        
           ))}      
         </VStack>
       </MenuList>

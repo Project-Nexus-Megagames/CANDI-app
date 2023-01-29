@@ -23,8 +23,6 @@ function getFadedColor(color, fade = 1) {
 			return `#fbbc04`
 		case 'Dwarves':
 			return '#03fcbe'
-		case 'Spider':
-			return `#206694`
 		case 'Power':
 			return `#71368a`
 		case 'Asset':
@@ -36,10 +34,10 @@ function getFadedColor(color, fade = 1) {
 			
     case 'Result': 
       return '#0d73d4'
-    case 'Comment': 
-			return `#e74c3c`
     case 'Effect': 
       return '#531ba8'
+    case 'Comment':
+      return `#6d6d6d`
 			
 		case 'The Overlord':
 			return `#6d6d6d`
@@ -124,4 +122,10 @@ const getTime = (date) => {
 	);
 };
 
-export { getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime };
+const openLink = (link) => {
+  // 'https://www.patreon.com/wcmprojectnexus'
+  const win = window.open(link, '_blank');
+  win.focus();
+};
+
+export { getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink };

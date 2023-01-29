@@ -8,7 +8,7 @@ import { CandiModal } from './CandiModal';
 import SelectPicker from './SelectPicker';
 import socket from '../../socket';
 
-const NewAsset = (props) => {
+const AssetForm = (props) => {
   const { asset, character, mode } = props;
 	const loggedInUser = useSelector((state) => state.auth.user);
 
@@ -75,14 +75,19 @@ const NewAsset = (props) => {
 	};
 
 	function onSubmit(data, e) {
-		e.preventDefault();
-    const asset = { ...data, "type": type, "status": status, ownerCharacter: props.character._id }
-    console.log('SENDING DATA', asset);
-		socket.emit('request', {
-			route: 'asset',
-			action: mode,
-			data: { asset, imageURL, loggedInUser }
-		});
+    if (props.handleSubmit) {
+      props.handleSubmit(data)
+    }
+    else {
+      e.preventDefault();
+      const asset = { ...data, "type": type, "status": status, ownerCharacter: props.character._id }
+      console.log('SENDING DATA', asset);
+      socket.emit('request', {
+        route: 'asset',
+        action: mode,
+        data: { asset, imageURL, loggedInUser }
+      });      
+    }
 		props.closeModal();
 	}
 
@@ -93,9 +98,8 @@ const NewAsset = (props) => {
   const assetTypes = [ { name: 'Asset'}, { name: 'Trait' }, { name: 'Power' } ];
 
 	return (
-    <CandiModal onClose={() => { handleExit(); }} open={props.show} title={`${mode} Asset "${watchCharName}"`}>
-          <form onSubmit={handleSubmit(onSubmit, handleError)}>
-            <Box>
+    <form onSubmit={handleSubmit(onSubmit, handleError)}>
+      <Box>
               <VStack spacing="24px" w="100%">
                   <Flex >
                   <Spacer />
@@ -138,23 +142,19 @@ const NewAsset = (props) => {
 
 
               </VStack>
-            </Box>
-            <ModalFooter>
-              <ButtonGroup>
-                <Button type="submit" colorScheme="teal" disabled={type === ''} className="btn btn-primary mr-1">
-                  Create Asset
-                </Button>
-                <Button colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />} >
-                  Reset Form
-                </Button>
-                <Button colorScheme={'red'} onClick={() => handleExit()} leftIcon={<CloseIcon />} >
-                  Cancel
-                </Button>
-              </ButtonGroup>
-            </ModalFooter>
-          </form>           
-    </CandiModal>
+      </Box>
+      
+      <ButtonGroup>
+        <Button type="submit" colorScheme="teal" disabled={type === ''} className="btn btn-primary mr-1">
+          Create Asset
+        </Button>
+        <Button colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />} >
+          Reset Form
+        </Button>
+
+      </ButtonGroup>
+    </form>   
 	);
 };
 
-export default NewAsset;
+export default AssetForm;

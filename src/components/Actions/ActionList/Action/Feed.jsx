@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Divider, IconButton } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer } from "@chakra-ui/react";
 import React, { useState } from "react";
 import WordDivider from "../../../WordDivider";
 import NewResult from "../../Modals/NewResult";
@@ -42,41 +42,46 @@ function Feed({action}) {
         >
             <WordDivider word={'Feed'}/>
             {list.map((item, index) => 
-              <ActionSubObject key={item._id} subObject={item} />
+              <div key={item._id}>
+                <Center height='20px'>
+                  <Divider orientation='vertical' />
+                </Center>
+                <ActionSubObject  subObject={item} />
+              </div>              
             )}
-            <Divider orientation='vertical'/>
-            <div style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem'}}>
+            
+            <Flex style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem'}}>
+              <Spacer />
                 {!add && (
                     <IconButton
                         onClick={() => setAdd(true)}
-                        color="blue"
+                        colorScheme="blue"
                         icon={<PlusSquareIcon icon="plus"/>}
                     ></IconButton>
                 )}
                 {add && (
-                    <ButtonGroup
-                        
+                    <ButtonGroup isAttached                       
                         style={{width: '100%', transition: '.5s'}}
                     >
                         {action && action.type === 'Agenda' &&
                             <Button
                                 disabled={myCharacter.effort.find(el => el.type === 'Agenda').amount <= 0}
                                 onClick={() => setSupport(true)}
-                                color='green'
+                                colorScheme='green'
                             >
                                 Support
                             </Button>
                         }
                         <Button
                             onClick={() => setComment(true)}
-                            color="cyan"
+                            colorScheme="cyan"
                         >
                             Comment
                         </Button>
                         {isControl && (
                             <Button
                                 onClick={() => setResult(true)}
-                                color="blue"
+                                colorScheme="blue"
                             >
                                 Result
                             </Button>
@@ -84,14 +89,15 @@ function Feed({action}) {
                         {isControl && (
                             <Button
                                 onClick={() => setEffect(true)}
-                                color="violet"
+                                colorScheme="purple"
                             >
                                 Effect
                             </Button>
                         )}
                     </ButtonGroup>
                 )}
-            </div>
+              <Spacer />
+            </Flex>
             {action.submission &&
                 <NewResult
                     show={result}

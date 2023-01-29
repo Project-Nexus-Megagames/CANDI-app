@@ -1,5 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 import buttonStyles from '../styles/buttonStyles';
+import { cardTheme } from '../styles/cardStyles';
 import colors from '../styles/colors';
 import { modalTheme } from '../styles/modalStyles';
 import { statTheme } from '../styles/statStyles';
@@ -10,7 +11,8 @@ export const myTheme = extendTheme({
 		Button: buttonStyles,
 		Tag: tagStyles,
 		Stat: statTheme,
-    Modal: modalTheme
+    Modal: modalTheme,
+    Card: cardTheme
 	},
 	styles: {
     global: {

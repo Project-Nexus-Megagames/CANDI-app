@@ -21,6 +21,7 @@ import Loading from './Loading';
 import { useNavigate } from 'react-router';
 import usePermissions from '../../hooks/usePermissions';
 import { CandiWarning } from '../Common/CandiWarning';
+import { openLink } from '../../scripts/frontend';
 
 const HomePage = (props) => {
 	const navigate = useNavigate();
@@ -59,6 +60,7 @@ const HomePage = (props) => {
 		} else setSelectedChar(myCharacter._id);
 	};
 
+  
 	if (!loaded) {
 		return <Spinner  />;
 	}
@@ -66,12 +68,14 @@ const HomePage = (props) => {
 		navigate('/down');
 		return <Spinner  />;
 	}
-
 	return (
 		<React.Fragment>
       <Grid templateColumns='repeat(2, 1fr)' gap={1}>
-        <GridItem>
-          <ImgPanel disabled new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+        {/* <GridItem>
+          <ImgPanel new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+        </GridItem> */}
+        <GridItem  onClick={() => openLink("https://docs.google.com/document/d/1OgCb85bcSL2ethht-e4CCdch5Eg2gksO8U3yGFyVs7k/edit")} >
+          <ImgPanel new={newArticles.length > 0} img={news} to="" title="~ Rules ~" />
         </GridItem>
 
         <GridItem>

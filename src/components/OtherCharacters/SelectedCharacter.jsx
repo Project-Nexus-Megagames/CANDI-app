@@ -5,12 +5,13 @@ import ResourceNugget from '../Common/ResourceNugget';
 import { useSelector } from 'react-redux';
 import { getFadedColor } from '../../scripts/frontend';
 import { DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
-import NewAsset from '../Common/NewAsset';
+import AssetForm from '../Common/AssetForm';
 import { useState } from 'react';
 import { CandiWarning } from '../Common/CandiWarning';
 import socket from '../../socket';
 import AssetCard from '../Common/AssetCard';
 import WordDivider from '../WordDivider';
+import { CandiModal } from '../Common/CandiModal';
 
 const SelectedCharacter = (props) => {
   const { selected } = props;
@@ -76,7 +77,10 @@ const SelectedCharacter = (props) => {
         </Grid>
 			</GridItem>}
 
-      <NewAsset show={mode === "new"} closeModal={() => setMode(false)} character={selected} mode={mode}/>
+      <CandiModal onClose={() => { setMode(false); }} open={mode === "new"} title={`${mode} Asset`}>
+        <AssetForm character={selected} mode={mode}/>
+      </CandiModal>
+
 		</Grid>
 	);
 }

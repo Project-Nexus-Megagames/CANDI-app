@@ -8,6 +8,7 @@ import InputNumber from '../../Common/InputNumber';
 import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, Switch, Text, VStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import SelectPicker from '../../Common/SelectPicker';
+import AssetForm from '../../Common/AssetForm';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -15,7 +16,6 @@ const NewEffects = (props) => {
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
-	const [arcane, setArcane] = useState(false);
 	const myChar = useSelector(getMyCharacter);
 
 	const assets = useSelector((state) => state.assets.list);
@@ -24,30 +24,16 @@ const NewEffects = (props) => {
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const sortedCharacters = _.sortBy(charactersToDisplay, 'characterName');
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
-	const gods = useSelector(getGods);
-	const mortals = useSelector(getNonPlayerCharacters);
 	const creatorChar = useSelector(getCharacterById(props.selected.creator._id));
 	let playerContacts = useSelector(getUnlockedCharacters(creatorChar));
 
 	useEffect(() => {
 		switch (type) {
 			case 'bond':
-				let bonds = [];
-
-				for (const bond of assets.filter((el) => (el.type === 'GodBond' || el.type === 'MortalBond') && el.ownerCharacter === props.selected.creator._id)) {
-					const bondData = {
-						name: `${bond.name} - ${bond.with.characterName} - ${bond.level}`,
-						level: bond.level,
-						type: bond.type,
-						_id: bond._id
-					};
-					bonds.push(bondData);
-				}
-				setArray(bonds);
-				break;
 			case 'asset':
 				let newAsset = [];
-				for (const bond of assets.filter((el) => el.type !== 'GodBond' && el.type !== 'MortalBond' && el.ownerCharacter === props.selected.creator._id)) {
+				for (const bond of assets.filter((el) => el.ownerCharacter === props.selected.creator._id)) {
+          
 					const bondData = {
 						name: `${bond.type} '${bond.name}' - (${bond.dice})`,
 						type: bond.type,
@@ -109,11 +95,10 @@ const NewEffects = (props) => {
 		setType('');
 		setSelected(undefined);
 		props.hide();
-		setArcane(false);
 	};
 
 	const handleSelect = (selected) => {
-		selected = assets.find((el) => el._id === selected);
+    selected = assets.find(el => el._id === selected)
 		setSelected(selected);
 	};
 
@@ -127,7 +112,8 @@ const NewEffects = (props) => {
 	};
 
 	const handleCharSelect = (selected) => {
-		setSelected(selected);
+    console.log(selected)
+		setArray(selected);
 	};
 
 	const handleAddInjury = (type, change) => {
@@ -145,18 +131,12 @@ const NewEffects = (props) => {
 	const handleType = (type) => {
 		setType(type);
 		setSelected(undefined);
-		setArcane(false);
 	};
 
 	const handleEdit = (type, change) => {
 		let temp = { ...selected };
-		if (change === 'Bond' || change === 'Power') setArcane(false);
 		temp[type] = change;
 		setSelected(temp);
-	};
-
-	const handleArcane = () => {
-		setArcane(!arcane);
 	};
 
 	const renderAspects = () => {
@@ -225,17 +205,17 @@ const NewEffects = (props) => {
 		);
 	};
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (aaaa) => {
 		try {
 			const data = {
 				type,
 				action: props.action._id,
-				document: selected,
+				document: aaaa,
 				owner: props.selected.creator._id,
 				effector: myChar._id,
-				arcane,
 				loggedInUser
 			};
+      // console.log(data)
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
 			// Alert.error(`Error: ${err.body} ${err.message}`, 5000);
@@ -244,33 +224,11 @@ const NewEffects = (props) => {
 	};
 
 	const renderAss = () => {
+    console.log(selected)
 		if (selected) {
 			return (
 				<Box>
-					Name: {selected.name}
-					<textarea
-						value={selected.name}
-						className="textStyle"
-						onChange={(event) => handleEdit('name', event.target.value)}
-					></textarea>
-					Description:
-					<textarea
-						rows="4"
-						value={selected.description}
-						className="textStyle"
-						onChange={(event) => handleEdit('description', event.target.value)}
-					></textarea>
-					Dice
-					<textarea
-						value={selected.dice}
-						className="textStyle"
-						onChange={(event) => handleEdit('dice', event.target.value)}
-					></textarea>
-					Uses
-					<InputNumber
-						value={selected.uses}
-						onChange={(value) => handleEdit('uses', value)}
-					/>
+          <AssetForm handleSubmit={handleSubmit} asset={selected} />
 				</Box>
 			);
 		} else {
@@ -280,7 +238,7 @@ const NewEffects = (props) => {
 
 	return (
 		<Modal
-			size="lg"
+			size="full"
 			placement="right"
 			isOpen={props.show}
 			onClose={handleExit}
@@ -291,43 +249,45 @@ const NewEffects = (props) => {
 					<ButtonGroup>
 						<Button
 							variant={type !== 'asset' ? 'ghost' : 'solid'}
-							color={'blue'}
+							colorScheme={'blue'}
 							onClick={type !== 'asset' ? () => handleType('asset') : undefined}
 						>
 							Edit Resource
 						</Button>
-						{/* <Button variant={type !== 'map' ? 'ghost' : 'solid'} color={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
+						{/* <Button variant={type !== 'map' ? 'ghost' : 'solid'} colorScheme={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
 							Unlock Map Tile
 						</Button> */}
 						<Button
 							variant={type !== 'character' ? 'ghost' : 'solid'}
-							color={'orange'}
+							colorScheme={'orange'}
 							onClick={type !== 'character' ? () => handleType('character') : undefined}
 						>
 							Unlock Character
 						</Button>
-						<Button variant={type !== 'addInjury' ? 'ghost' : 'solid'} color={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
+						<Button variant={type !== 'addInjury' ? 'ghost' : 'solid'} colorScheme={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
 							Add an injury
 						</Button>
-						<Button variant={type !== 'healInjuries' ? 'ghost' : 'solid'} color={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
+						<Button variant={type !== 'healInjuries' ? 'ghost' : 'solid'} colorScheme={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
 							Heal Injuries
 						</Button>
 						<Button
 							variant={type !== 'aspect' ? 'ghost' : 'solid'}
-							color={'orange'}
+							colorScheme={'orange'}
 							onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}
 						>
 							Edit an Aspect
 						</Button>
 						<Button
 							variant={type !== 'new' ? 'ghost' : 'solid'}
-							color={'green'}
+							colorScheme={'green'}
 							onClick={type !== 'new' ? () => handleType('new') : undefined}
 						>
 							New Resource
 						</Button>
 					</ButtonGroup>
+
 					<Divider/>
+
 					{type === 'new' && selected && (
 						<div>
 							Type
@@ -343,6 +303,7 @@ const NewEffects = (props) => {
 							{renderAss()}
 						</div>
 					)}
+
 					{(type === 'bond' || type === 'asset') && (
 						<div>
 							<SelectPicker
@@ -351,41 +312,36 @@ const NewEffects = (props) => {
 								onChange={(event) => handleSelect(event)}
 								data={array}
 								valueKey="_id"
-								labelKey="name"
+								label="name"
 								groupBy="type"
 							></SelectPicker>
 							{renderAss()}
+              
 						</div>
 					)}
-					{type === 'map' && (
-						<div>
-							<CheckerPick
-								placeholder="Select Location(s) to unlock..."
-								onSelect={(event) => handleLocSelect(event)}
-								data={sortedLocations}
-								valueKey="_id"
-								labelKey="name"
-							/>
-						</div>
-					)}
+
 					{type === 'aspect' && <div>{renderAspects()}</div>}
+
 					{type === 'character' && (
 						<div>
 							<CheckerPick
 								placeholder="Select character(s) to unlock..."
-								onSelect={(event) => handleCharSelect(event)}
+								onChange={(event) => handleCharSelect(event)}
 								data={sortedCharacters}
 								valueKey="_id"
 								labelKey="characterName"
+                value={array}
 							/>
 						</div>
 					)}
+
 					{type === 'healInjuries' && (
 						<div>
 							<Divider>Heal Injuries</Divider>
 							{renderInjuries()}
 						</div>
 					)}
+
 					{type === 'addInjury' && selected && (
 						<div>
 							<WordDivider word={"Add Injury"} >Add Injury</WordDivider>
