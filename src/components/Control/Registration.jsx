@@ -92,7 +92,8 @@ const Registration = (props) => {
 								</CardHeader>
 
 								<CardBody>
-									<SelectPicker data={characters} label='characterName' onChange={(e) => setCharacter(e)} />
+									<SelectPicker valueKey="_id" data={characters} label='characterName' onChange={(e) => setCharacter(e)} />
+                  {character}
 								</CardBody>
 							</Card>
 							<Button disabled={!character} onClick={handleRegistration} >Register Player</Button>									
