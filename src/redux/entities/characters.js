@@ -76,7 +76,7 @@ export const getMyCharacter = createSelector(
   (state) => state.characters.list,
   (state) => state.auth.user,
   (characters, user) => {
-    return characters.find((char) => char.username === user.username) || {};
+    return characters.find((char) => char.username === user?.username) || {};
   }
 );
 

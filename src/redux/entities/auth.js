@@ -72,6 +72,7 @@ const slice = createSlice({
       auth.login = false;
       auth.loading = false;
       auth.lastFetch = null;
+      auth.myCharacter = false;
       auth.error = null;
     },
     usersRecieved: (auth, action) => {

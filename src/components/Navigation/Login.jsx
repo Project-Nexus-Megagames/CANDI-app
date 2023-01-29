@@ -68,7 +68,7 @@ const Login = (props) => {
               variant="link"
               onClick={() => {
                 const win = window.open(
-                  'https://nexus-central-portal.herokuapp.com/get-started',
+                  'https://nexus-portal.onrender.com/registration/user',
                   '_blank'
                 );
                 win.focus();

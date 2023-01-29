@@ -28,7 +28,7 @@ const SelectedCharacter = (props) => {
         gridTemplateRows={ '40% 60%'}
         gap={2}
         fontWeight='bold'>
-			<GridItem pl='2' bg='#555555' area={'side'} >
+			<GridItem pl='2' area={'side'} >
         <div className='styleCenter' >
           <CharacterListItem character={selected} />
           {(control || myCharacter._id === selected._id) && <div>

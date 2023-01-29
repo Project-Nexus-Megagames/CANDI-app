@@ -2,6 +2,7 @@ import { extendTheme } from '@chakra-ui/react';
 import buttonStyles from '../styles/buttonStyles';
 import { cardTheme } from '../styles/cardStyles';
 import colors from '../styles/colors';
+import { menuTheme } from '../styles/menuStyles';
 import { modalTheme } from '../styles/modalStyles';
 import { statTheme } from '../styles/statStyles';
 import tagStyles from '../styles/tagStyles';
@@ -12,7 +13,8 @@ export const myTheme = extendTheme({
 		Tag: tagStyles,
 		Stat: statTheme,
     Modal: modalTheme,
-    Card: cardTheme
+    Card: cardTheme,
+    Menu: menuTheme
 	},
 	styles: {
     global: {
