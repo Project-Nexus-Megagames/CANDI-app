@@ -96,7 +96,7 @@ const Registration = (props) => {
                   {character}
 								</CardBody>
 							</Card>
-							<Button disabled={!character} onClick={handleRegistration} >Register Player</Button>									
+							<Button colorScheme={'green'} variant={'solid'} disabled={!character} onClick={handleRegistration} >Register Player</Button>									
 						</div>}
 				</GridItem>
 

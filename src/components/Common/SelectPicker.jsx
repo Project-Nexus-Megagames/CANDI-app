@@ -12,7 +12,7 @@ function SelectPicker(props) {
       {data && data
       .filter(el => el[label]?.toLowerCase().includes(filter.toLowerCase()))
       .map(el => (
-        <option onClick={() => onChange(el[valueKey])} key={el[label]} value={el[label]} >{el[label]}</option>
+        <option style={{ background: "#2d3748", color: 'white' }} onClick={() => onChange(el[valueKey])} key={el[label]} value={el[label]} >{el[label]}</option>
       ))}
     </Select>
 	);
