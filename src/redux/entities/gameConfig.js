@@ -58,7 +58,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { actionTypesAdded, effortTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
+export const { actionTypesAdded, resouceTypesAdded, effortTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 
