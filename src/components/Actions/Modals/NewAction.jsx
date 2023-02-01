@@ -146,7 +146,7 @@ const NewAction = (props) => {
 							gameConfig.actionTypes.map((aType) => (
 								<Tooltip key={aType.type} openDelay={50} placement='top' label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>}>
 									<Button
-										style={{ backgroundColor: actionType.type === aType.type ? getFadedColor(`${aType.type}`) : '' }}
+										style={{ backgroundColor: actionType.type === aType.type ? getFadedColor(`${aType.type}`) : 'purple' }}
 										onClick={() => {
 											setActionType(aType);
 											setResource([]);
