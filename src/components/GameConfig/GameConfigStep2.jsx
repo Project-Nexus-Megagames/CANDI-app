@@ -56,9 +56,9 @@ function GameConfig2() {
 			let value = {};
 			value.type = type.type;
 			value.effortAmount = type.effortAmount;
-			value.assetType = type.assetType;
 			value.maxAssets = type.maxAssets;
 			value.effortTypes = type.effortTypes;
+			value.resourceTypes = type.resourceTypes;
 			value.minEffort = type.minEffort;
 			value.maxEffort = type.maxEffort;
 			value.public = type.public;
@@ -123,23 +123,22 @@ function GameConfig2() {
 													{errors.actionTypes?.[i]?.type && errors.actionTypes[i].type.message}
 												</Text>
 											</FormControl>
-											<FormControl variant='floating'>
-												<FormLabel>Types of Resources</FormLabel>
+											<FormControl>
+												<FormLabel>Types of Resource</FormLabel>
 												<Controller
-													name={`actionTypes.${i}.assetType`}
+													name={`actionTypes.${i}.resourceTypes`}
 													control={control}
-													render={({ field: { ref, ...rest } }) => {
-														console.log(rest);
-														return (
-															<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.assetType} {...rest}>
-																<Stack spacing={[1]} direction={['column']}>
-																	<Checkbox value='asset'>Asset</Checkbox>
-																	<Checkbox value='trait'>Trait</Checkbox>
-																	<Checkbox value='title'>Title</Checkbox>
-																</Stack>
-															</CheckboxGroup>
-														);
-													}}
+													render={({ field: { ref, ...rest } }) => (
+														<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.resourceTypes} {...rest}>
+															<Stack spacing={[1]} direction={['column']}>
+																{oldConfig.resourceTypes.map((item) => (
+																	<Checkbox value={item.type} key={item.id}>
+																		{item.type}
+																	</Checkbox>
+																))}
+															</Stack>
+														</CheckboxGroup>
+													)}
 												/>
 											</FormControl>
 											<FormControl variant='floating'>
@@ -229,7 +228,7 @@ function GameConfig2() {
 									type: '',
 									minEffort: 0,
 									maxEffort: 0,
-									assetType: [],
+									resourceTypes: [],
 									effortTypes: [],
 									maxAssets: 0,
 									public: false,
