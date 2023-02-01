@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Divider, VStack } from '@chakra-ui/react';
-import { PlusSquareIcon, RepeatClockIcon, CalendarIcon } from '@chakra-ui/icons'
+import { PlusSquareIcon, RepeatClockIcon, CalendarIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 
@@ -7,6 +7,7 @@ import GameConfigStep1 from './GameConfigStep1';
 import GameConfig2 from './GameConfigStep2';
 import GameConfig3 from './GameConfigStep3';
 import GameConfigStep4 from './GameConfigStep4';
+import GameConfigStepResources from './GameConfigStepResources';
 import socket from '../../socket';
 
 function GameConfig(props) {
@@ -14,9 +15,9 @@ function GameConfig(props) {
 	const oldConfig = useSelector((state) => state.gameConfig);
 	// const dispatch = useDispatch();
 	// const history = useHistory();
-	const [step, setStep] = React.useState(1);
+	const [step, setStep] = React.useState('action');
 
-  function submitConfig() {
+	function submitConfig() {
 		console.log('DATA', config);
 		try {
 			socket.emit('request', {
@@ -27,33 +28,39 @@ function GameConfig(props) {
 		} catch (err) {
 			console.log('catch block called', err);
 		}
-  }
+	}
 
-
-
-	return (    
-
-      <div className='styleCenter' >
-        <div>				
-          <VStack divider={<Divider orientation='vertical' />} >
-            <Button colorScheme={"teal"} variant={step === 0 ? "solid" : "outline"} onClick={() =>setStep(0)}  >Effort Types</Button>
-            <Button colorScheme={"teal"} variant={step === 1 ? "solid" : "outline"} onClick={() =>setStep(1)}   >Action Types</Button>
-            <Button colorScheme={"teal"} variant={step === 2 ? "solid" : "outline"} onClick={() =>setStep(2)} > Global Stats</Button>
-            <Button colorScheme={"teal"} variant={step === 3 ? "solid" : "outline"} onClick={() =>setStep(3)}  >Character Stats</Button>
-          </VStack>		
-          <Button disabled={false} rightIcon={<CalendarIcon />} onClick={submitConfig} colorScheme={'blue'}  className="btn btn-primary mr-1">
-						Submit
+	return (
+		<div className='styleCenter'>
+			<div>
+				<VStack divider={<Divider orientation='vertical' />}>
+					<Button colorScheme={'teal'} variant={step === 0 ? 'solid' : 'outline'} onClick={() => setStep('effort')}>
+						Effort Types
 					</Button>
-        </div>
+					<Button colorScheme={'teal'} variant={step === 0 ? 'solid' : 'outline'} onClick={() => setStep('resource')}>
+						Resource Types
+					</Button>
+					<Button colorScheme={'teal'} variant={step === 1 ? 'solid' : 'outline'} onClick={() => setStep('action')}>
+						Action Types
+					</Button>
+					<Button colorScheme={'teal'} variant={step === 2 ? 'solid' : 'outline'} onClick={() => setStep('globalstat')}>
+						Global Stats
+					</Button>
+					<Button colorScheme={'teal'} variant={step === 3 ? 'solid' : 'outline'} onClick={() => setStep('charstat')}>
+						Character Stats
+					</Button>
+				</VStack>
+				<Button disabled={false} rightIcon={<CalendarIcon />} onClick={submitConfig} colorScheme={'blue'} className='btn btn-primary mr-1'>
+					Submit
+				</Button>
+			</div>
 
-          {step === 0 && <GameConfigStep1 />}
-          {step === 1 && <GameConfig2 />}
-          {step === 2 && <GameConfig3 />} 
-          {step === 3 && <GameConfigStep4 />} 
-      </div>
-   
-
-
+			{step === 'effort' && <GameConfigStep1 />}
+			{step === 'resource' && <GameConfigStepResources />}
+			{step === 'action' && <GameConfig2 />}
+			{step === 'globalstat' && <GameConfig3 />}
+			{step === 'charstat' && <GameConfigStep4 />}
+		</div>
 	);
 }
 export default GameConfig;

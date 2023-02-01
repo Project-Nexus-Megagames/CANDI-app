@@ -10,7 +10,14 @@ function GameConfig2() {
 	const oldConfig = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
 
-	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState } = useForm({
+	const {
+		formState: { isDirty, dirtyFields },
+		register,
+		control,
+		handleSubmit,
+		reset,
+		formState
+	} = useForm({
 		defaultValues: {
 			actionTypes: [oldConfig.actionTypes]
 		}
@@ -93,23 +100,30 @@ function GameConfig2() {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
-      <h4>Step 2: Create Action Types</h4>
-			<Flex padding="20px">
-				<VStack spacing="24px" align="left">
+			<h4>Step 3: Create Action Types</h4>
+			<Flex padding='20px'>
+				<VStack spacing='24px' align='left'>
 					{fields.map((item, i) => (
-						<div key={i} className="list-group list-group-flush">
-							<div className="list-group-item">
+						<div key={i} className='list-group list-group-flush'>
+							<div className='list-group-item'>
 								<div>
 									<Box>
-										<HStack spacing="24px">
-											<FormControl variant="floating">
+										<HStack spacing='24px'>
+											<FormControl variant='floating'>
 												<FormLabel>Type of Action</FormLabel>
-												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.actionTypes?.[i]?.type} {...register(`actionTypes.${i}.type`, validation.type)} />
-												<Text fontSize="sm" color="red.500">
+												<Input
+													key={item.id}
+													type='text'
+													size='md'
+													variant='outline'
+													defaultValue={oldConfig.actionTypes?.[i]?.type}
+													{...register(`actionTypes.${i}.type`, validation.type)}
+												/>
+												<Text fontSize='sm' color='red.500'>
 													{errors.actionTypes?.[i]?.type && errors.actionTypes[i].type.message}
 												</Text>
 											</FormControl>
-											<FormControl variant="floating">
+											<FormControl variant='floating'>
 												<FormLabel>Types of Resources</FormLabel>
 												<Controller
 													name={`actionTypes.${i}.assetType`}
@@ -119,26 +133,26 @@ function GameConfig2() {
 														return (
 															<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.assetType} {...rest}>
 																<Stack spacing={[1]} direction={['column']}>
-																	<Checkbox value="asset">Asset</Checkbox>
-																	<Checkbox value="trait">Trait</Checkbox>
-																	<Checkbox value="title">Title</Checkbox>
+																	<Checkbox value='asset'>Asset</Checkbox>
+																	<Checkbox value='trait'>Trait</Checkbox>
+																	<Checkbox value='title'>Title</Checkbox>
 																</Stack>
 															</CheckboxGroup>
 														);
 													}}
 												/>
 											</FormControl>
-											<FormControl variant="floating">
+											<FormControl variant='floating'>
 												<FormLabel>Max Resources</FormLabel>
 												<Input
 													key={item.id}
-													type="number"
-													size="md"
-													variant="outline"
+													type='number'
+													size='md'
+													variant='outline'
 													defaultValue={oldConfig.actionTypes?.[i]?.maxAssets}
 													{...register(`actionTypes.${i}.maxAssets`, validation.maxAssets)}
 												/>
-												<Text fontSize="sm" color="red.500">
+												<Text fontSize='sm' color='red.500'>
 													{errors.actionTypes?.[i]?.maxAssets && errors.actionTypes[i].maxAssets.message}
 												</Text>
 											</FormControl>
@@ -160,40 +174,40 @@ function GameConfig2() {
 													)}
 												/>
 											</FormControl>
-											<FormControl variant="floating">
+											<FormControl variant='floating'>
 												<FormLabel>Min Effort</FormLabel>
 												<Input
 													key={item.id}
-													type="number"
-													size="md"
-													variant="outline"
+													type='number'
+													size='md'
+													variant='outline'
 													defaultValue={oldConfig.actionTypes?.[i]?.minEffort}
 													{...register(`actionTypes.${i}.minEffort`, validation.minEffort)}
 												/>
-												<Text fontSize="sm" color="red.500">
+												<Text fontSize='sm' color='red.500'>
 													{errors.actionTypes?.[i]?.minEffort && errors.actionTypes[i].minEffort.message}
 												</Text>
 											</FormControl>
-											<FormControl variant="floating">
+											<FormControl variant='floating'>
 												<FormLabel>Max Effort</FormLabel>
 												<Input
 													key={item.id}
-													type="number"
-													size="md"
-													variant="outline"
+													type='number'
+													size='md'
+													variant='outline'
 													defaultValue={oldConfig.actionTypes?.[i]?.maxEffort}
 													{...register(`actionTypes.${i}.maxEffort`, validation.maxEffort)}
 												/>
-												<Text fontSize="sm" color="red.500">
+												<Text fontSize='sm' color='red.500'>
 													{errors.actionTypes?.[i]?.maxEffort && errors.actionTypes[i].maxEffort.message}
 												</Text>
 											</FormControl>
-											<FormControl variant="floating">
-												<Checkbox key={item.id} type="text" size="md" defaultValue={oldConfig.actionTypes?.[i]?.public} {...register(`actionTypes.${i}.public`)}>
+											<FormControl variant='floating'>
+												<Checkbox key={item.id} type='text' size='md' defaultValue={oldConfig.actionTypes?.[i]?.public} {...register(`actionTypes.${i}.public`)}>
 													Public Action
 												</Checkbox>
 											</FormControl>
-											<Button size="xs" onClick={() => remove(i)}>
+											<Button size='xs' onClick={() => remove(i)}>
 												-
 											</Button>
 										</HStack>
@@ -203,13 +217,13 @@ function GameConfig2() {
 						</div>
 					))}
 					<ButtonGroup>
-            <Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
+						<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type='submit' className='btn btn-primary mr-1'>
 							Save
 						</Button>
 
 						<Button
-            rightIcon={<PlusSquareIcon />}
-            colorScheme={'whatsapp'}
+							rightIcon={<PlusSquareIcon />}
+							colorScheme={'whatsapp'}
 							onClick={() =>
 								append({
 									type: '',
@@ -226,7 +240,7 @@ function GameConfig2() {
 							Add Type
 						</Button>
 
-						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
+						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type='button' className='btn btn-secondary mr-1'>
 							Reset
 						</Button>
 					</ButtonGroup>

@@ -38,7 +38,7 @@ const slice = createSlice({
 			console.log(`${action.type} Dispatched`);
 			state.actionTypes = action.payload.actionTypes;
 		},
-		resouceTypesAdded: (state, action) => {
+		resourceTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
 			state.resourceTypes = action.payload.resourceTypes;
 		},
@@ -58,7 +58,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { actionTypesAdded, resouceTypesAdded, effortTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
+export const { actionTypesAdded, resourceTypesAdded, effortTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

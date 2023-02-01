@@ -6,7 +6,7 @@ import socket from '../../socket';
 import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack, Button, ButtonGroup } from '@chakra-ui/react';
 import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
-function GameConfigResources() {
+function GameConfigStepResources() {
 	const oldConfig = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ function GameConfigResources() {
 
 	useEffect(() => {
 		const resetValues = [];
-		oldConfig.resourceTypes.forEach((type) => {
+		oldConfig.resourceTypes?.forEach((type) => {
 			let value = {};
 			value.type = type.type;
 			resetValues.push(value);
@@ -141,4 +141,4 @@ function GameConfigResources() {
 	);
 }
 
-export default GameConfigResources;
+export default GameConfigStepResources;
