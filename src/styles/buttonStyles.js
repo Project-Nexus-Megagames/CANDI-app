@@ -40,7 +40,6 @@ const buttonStyles = {
 	},
 	defaultProps: {
 		variant: 'solid',
-		color: 'white'
 	}
 };
 

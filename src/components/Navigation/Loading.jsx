@@ -75,18 +75,6 @@ const Loading = (props) => {
 					</Box>
 				))}
 			</Grid>
-			{/* <Line percent={Math.floor((done.length / sections.length) * 100)} status="active" />
-			<hr />
-			<Row>
-				{sections.map((section, index) => (
-					<Col key={index} md={4} sm={8}>
-						<Panel bordered key={index} index={index}>
-							<IconStack>{props.entities[section].lastFetch ? <Icon icon="check" stack="1x" style={{ color: 'green' }} /> : <Icon icon="spinner" stack="1x" pulse />}</IconStack>
-							{section}
-						</Panel>
-					</Col>
-				))}
-			</Row> */}
 		</div>
 	);
 };
@@ -94,9 +82,9 @@ const Loading = (props) => {
 export default (Loading);
 
 const gamePhotos = [
-	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif'
-	// 	'https://i.pinimg.com/originals/94/b9/35/94b9355bfb0e96619599dff04a565d19.gif',
-	// 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus',
+	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif',
+  'https://i.pinimg.com/originals/f6/2a/e4/f62ae40a9934e67486d57689ad4485d4.gif'
+
 ];
 
 const loadingMsg = [

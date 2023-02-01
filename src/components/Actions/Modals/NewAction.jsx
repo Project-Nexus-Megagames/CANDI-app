@@ -223,6 +223,7 @@ const NewAction = (props) => {
                       </Box>
 
                       <Flex >
+                      <Spacer />      
                         <Box
                           style={{
                               paddingTop: '25px',
@@ -267,7 +268,7 @@ const NewAction = (props) => {
                           ></NexusSlider>
 
                         </Box>
-
+                          <Spacer />         
                         <Box
                             style={{
                                 paddingTop: '5px',
@@ -288,6 +289,7 @@ const NewAction = (props) => {
                               value={resource}
                             />
                         </Box>
+                        <Spacer />      
                       </Flex>
                   </form>
                           <div
@@ -300,14 +302,14 @@ const NewAction = (props) => {
                               <Button
                                   onClick={() => handleSubmit()}
                                   disabled={isDisabled(effort)}
-                                  color={isDisabled(effort) ? 'red' : 'green'}
-                                  appearance="primary"
+                                  colorScheme={isDisabled(effort) ? 'red' : 'green'}
+                                  variant="solid"
                               >
                                   <b>Submit</b>
                               </Button>
                               <Button
                                   onClick={() => props.closeNew()}
-                                  appearance="subtle"
+                                  variant="solid"
                               >
                                   Cancel
                               </Button>
