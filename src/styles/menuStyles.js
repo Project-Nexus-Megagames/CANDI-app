@@ -26,6 +26,7 @@ const baseStyle = definePartsStyle({
   item: {
     // this will style the MenuItem and MenuItemOption components
     color: 'gray.200',
+    bg: '#2d3748',
     _hover: {
       bg: 'teal.600',
     },
