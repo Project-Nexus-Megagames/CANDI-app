@@ -6,11 +6,15 @@ import Registration from './Registration';
 import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import ActionTable from './ActionTable';
 import GameConfig from '../GameConfig/GameConfig';
+import { CandiWarning } from '../Common/CandiWarning';
+import EditGamestate from './EditGamestate';
 
 const ControlTerminal = (props) => {		
 	const { login, team, character, loading, user } = useSelector(s => s.auth);
 
 	let [account, setAccount] = React.useState();
+	const [mode, setMode] = React.useState(false);
+
 	const navigate = useNavigate();
 	const [target, setTarget] = React.useState();
 	const [tab, setTab] = React.useState(0);
@@ -77,8 +81,16 @@ const ControlTerminal = (props) => {
 				<div>
           {/* <Button onClick={handleEdit}>Edit Round</Button> */}
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleRound}>Next Round</Button>
+          <Button onClick={() => setMode("edit")}>Edit Round</Button>          
+          <Button onClick={() => setMode("next")}>Next Round</Button>
 				</div>
+
+        <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
+          Are ya sure?
+        </CandiWarning>
+
+        <EditGamestate show={mode === 'edit'} onClose={() => setMode(false)} />
+
 			</TabPanel>
 
       <TabPanel>

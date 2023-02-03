@@ -28,6 +28,7 @@ const Navigation = (props) => {
         renderTime();
         setInterval(() => {
             renderTime();
+            console.log('Tick!')
             //clearInterval(interval);
         }, 60000);
     }, [props.gamestate.endTime]);
@@ -53,7 +54,9 @@ const Navigation = (props) => {
         const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
         const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
         const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
-        setTime(`${days} Days, ${hours} Hours, ${minutes} Minutes`);
+        if (days > 0) setTime(`${days} Days, ${hours} Hours, ${minutes} Minutes`);
+        else if (hours > 0) setTime(`${hours} Hours, ${minutes} Minutes`);
+        else setTime(`${minutes} Minutes`);
     };
 
     const handleLogOut = () => {
