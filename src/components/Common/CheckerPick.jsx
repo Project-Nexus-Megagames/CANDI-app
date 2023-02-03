@@ -5,6 +5,8 @@ import { IoChevronDownCircleOutline } from 'react-icons/io5';
 function CheckerPick(props) {
   const { data, value, onChange, placeholder, disabledItemValues, labelKey } = props;
 
+  console.log(data)
+
   //  console.log(data)
   const handleChange = (id) => {
     if (value.some(el => el === id)) {
@@ -26,7 +28,7 @@ function CheckerPick(props) {
       
       >
         <HStack border={'1px'} borderRadius='lg'>
-          {data && value && <Box width={'90%'} overflow={'hidden'}>
+          {data && data.length > 0 && value && <Box width={'90%'} overflow={'hidden'}>
             {value.length === 0 && placeholder}
             {data && value.map((el, index) => (
               <Tag key={el._id}>{data.find(e => e._id === el)[labelKey]}</Tag>

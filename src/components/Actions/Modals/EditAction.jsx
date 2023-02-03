@@ -28,7 +28,7 @@ function EditAction({action, showEdit, handleClose}) {
     const characterEffort = getThisEffort(myCharacter.effort, actionType.type) + action.submission.effort.amount;
 
     const [max, setMax] = useState(characterEffort < actionType.maxEffort ? characterEffort : actionType.maxEffort)
-    const [resources, setResources] = React.useState([]);
+    const [resources, setResources] = React.useState( action.submission.assets ? action.submission.assets : [] );
 
     const editEffort = (incoming, type) => {
         let thing;
@@ -211,7 +211,7 @@ function EditAction({action, showEdit, handleClose}) {
                                   <CheckerPick
                                     labelKey="name"
                                     valueKey="_id"
-                                    data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
+                                    data={myAssets}
                                     style={{width: '100%'}}
                                     disabledItemValues={formattedUsedAssets}
                                     onChange={(event) => setResources(event)}
