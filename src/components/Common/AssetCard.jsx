@@ -41,11 +41,12 @@ const AssetCard = (props) => {
             ))}
             <Spacer />
           </Flex>
+
         </CardHeader>
-        <CardBody>                    
+        <div style={{ maxHeight: '20vh', overflow: 'scroll', textOverflow: 'ellipsis', }} >                    
           {asset.description}
           
-        </CardBody>                
+        </div>                
       </Card>
 
       {asset && <CandiWarning open={mode === 'delete'} title={`Delete "${asset.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>

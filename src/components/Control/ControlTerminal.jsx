@@ -41,6 +41,23 @@ const ControlTerminal = (props) => {
 		socket.emit('request', { route: 'gamestate', action: 'nextRound', data });
   }
 
+  const handleClose = () => {
+    const data = user.username;
+    socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
+  }
+
+
+
+	const editGameState = () => {
+		const data = {
+			round: this.state.formValue.round,
+			status: this.state.formValue.status,
+			endTime: this.state.endTime
+		};
+		socket.emit('request', { route: 'gamestate', action: 'modify', data });
+		this.setState({ gsModal: false });
+	};
+
 	
 	return ( 
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
@@ -58,7 +75,9 @@ const ControlTerminal = (props) => {
 
 			<TabPanel>
 				<div>
-          {/* <Button onClick={handleRound}>Hello</Button> */}
+          {/* <Button onClick={handleEdit}>Edit Round</Button> */}
+          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleRound}>Next Round</Button>
 				</div>
 			</TabPanel>
 
