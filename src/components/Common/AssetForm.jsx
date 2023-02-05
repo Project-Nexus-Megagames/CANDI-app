@@ -13,9 +13,9 @@ const AssetForm = (props) => {
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const gameConfig = useSelector((state) => state.gameConfig);
 	const [imageURL, setImageURL] = useState('');
-	const [type, setType] = useState(asset ? asset.type : 'Asset');
+	const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
 	const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
-	console.log(gameConfig.resourceTypes);
+
 	const { register, control, handleSubmit, reset, formState, watch } = useForm(
 		{
 			defaultValues: asset
@@ -104,7 +104,7 @@ const AssetForm = (props) => {
 						<FormControl>
 							<FormLabel>Type </FormLabel>
 							{/* <Input type="text" size="md" variant="outline" {...register('type', validation.type)}></Input> setValue('test', '')  */}
-							<SelectPicker label={'type'} data={gameConfig.resourceTypes} onChange={(ddd) => setType(ddd)} value={type} />
+							<SelectPicker valueKey={'type'} label={'type'} data={gameConfig.resourceTypes} onChange={(ddd) => setType(ddd)} value={type} />
 						</FormControl>
 						<Spacer />
 					</Flex>
@@ -122,6 +122,14 @@ const AssetForm = (props) => {
 						<Input type='text' size='md' variant='outline' {...register('description', validation.description)}></Input>
 						<Text fontSize='sm' color='red.500'>
 							{errors.description && errors.description.message}
+						</Text>
+					</FormControl>
+
+          <FormControl>
+						<FormLabel>Dice </FormLabel>
+						<Input type='text' size='md' variant='outline' {...register('dice', validation.dice)}></Input>
+						<Text fontSize='sm' color='red.500'>
+							{errors.dice && errors.dice.message}
 						</Text>
 					</FormControl>
 
