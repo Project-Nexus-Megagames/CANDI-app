@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import WordDivider from "../../../WordDivider";
 import NewResult from "../../Modals/NewResult";
 import NewComment from "../../Modals/NewComment";
@@ -13,11 +13,8 @@ function Feed({action}) {
     const gamestate = useSelector(state => state.gamestate);
     const myCharacter = useSelector(state => state.auth.myCharacter);
     const {isControl} = usePermissions();
-    const [add, setAdd] = useState(false);
-    const [support, setSupport] = useState(false);
-    const [result, setResult] = useState(false);
-    const [comment, setComment] = useState(false);
-    const [effect, setEffect] = useState(false);
+
+    const [mode, setMode] = React.useState(false);
 
     const list = [...action.results,
         ...action.effects,
@@ -29,11 +26,7 @@ function Feed({action}) {
     })
 
     const closeIt = () => {
-        setAdd(false);
-        setResult(false);
-        setSupport(false);
-        setComment(false);
-        setEffect(false);
+        setMode(false);
     };
 
     return (
@@ -41,46 +34,46 @@ function Feed({action}) {
             marginTop={'1rem'}
         >
             <WordDivider word={'Feed'}/>
-            {list.map((item, index) => 
+            {list.map((item) => 
               <div key={item._id}>
                 <Center height='20px'>
                   <Divider orientation='vertical' />
                 </Center>
-                <ActionSubObject  subObject={item} />
+                <ActionSubObject action={action} subObject={item} />
               </div>              
             )}
             
             <Flex style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem'}}>
               <Spacer />
-                {!add && (
+                {!mode && (
                     <IconButton
-                        onClick={() => setAdd(true)}
+                        onClick={() => setMode('add')}
                         colorScheme="blue"
                         icon={<PlusSquareIcon icon="plus"/>}
                     ></IconButton>
                 )}
-                {add && (
+                {mode === 'add' && (
                     <ButtonGroup isAttached                       
                         style={{width: '100%', transition: '.5s'}}
                     >
                         {action && action.type === 'Agenda' &&
                             <Button
                                 disabled={myCharacter.effort.find(el => el.type === 'Agenda').amount <= 0}
-                                onClick={() => setSupport(true)}
+                                onClick={() => setMode('support')}
                                 colorScheme='green'
                             >
                                 Support
                             </Button>
                         }
                         <Button
-                            onClick={() => setComment(true)}
+                            onClick={() => setMode('comment')}
                             colorScheme="cyan"
                         >
                             Comment
                         </Button>
                         {isControl && (
                             <Button
-                                onClick={() => setResult(true)}
+                                onClick={() => setMode('result')}
                                 colorScheme="blue"
                             >
                                 Result
@@ -88,7 +81,7 @@ function Feed({action}) {
                         )}
                         {isControl && (
                             <Button
-                                onClick={() => setEffect(true)}
+                                onClick={() => setMode('effect')}
                                 colorScheme="purple"
                             >
                                 Effect
@@ -98,18 +91,16 @@ function Feed({action}) {
                 )}
               <Spacer />
             </Flex>
-            {action.submission &&
-                <NewResult
-                    show={result}
-                    closeNew={() => closeIt()}
-                    gamestate={gamestate}
-                    submission={action.submission}
-                    selected={action}
-                />
-            }
+
+            <NewResult
+              show={mode === 'result'}
+              mode={mode}
+              closeNew={() => closeIt()}
+              selected={action}
+            />
 
             <NewComment
-                show={comment}
+                show={mode === 'comment'}
                 closeNew={() => closeIt()}
                 gamestate={gamestate}
                 selected={action}
@@ -117,7 +108,7 @@ function Feed({action}) {
 
             {action && action.creator &&
                 <NewEffects
-                    show={effect}
+                    show={mode === 'effect'}
                     action={action}
                     selected={action}
                     hide={() => closeIt()}

@@ -5,7 +5,7 @@ import { getFadedColor } from '../../scripts/frontend';
 
 function SelectPicker(props) {
   const { data, value, onChange, label, valueKey } = props;
-  console.log(label)
+  
   let [filter, setFilter] = React.useState('');
   return (
     <Select style={{ border: `4px solid ${getFadedColor(value)}`, minWidth: '10vw' }} icon={<IoChevronDownCircleOutline />} placeholder={value ? value : 'Select Option'}>

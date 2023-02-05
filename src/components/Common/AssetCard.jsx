@@ -28,7 +28,7 @@ const AssetCard = (props) => {
         <CardHeader>
           <h5>{asset.name} 
           {control && !disabled && <ButtonGroup isAttached>
-           <IconButton variant={'ghost'} onClick={() => setMode("edit")} colorScheme="orange" size={'sm'} icon={<EditIcon />} />         
+           <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<EditIcon />} />         
            <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<DeleteIcon />} />                  
           </ButtonGroup>}
           
@@ -39,6 +39,7 @@ const AssetCard = (props) => {
             {asset.status?.map(el => (
               <ResourceNugget key={el} value={el}></ResourceNugget>
             ))}
+            <ResourceNugget value={asset.dice}></ResourceNugget>
             <Spacer />
           </Flex>
         </CardHeader>
@@ -52,7 +53,7 @@ const AssetCard = (props) => {
         This can never be undone.
       </CandiWarning>}
 
-      <CandiModal onClose={() => { setMode(false); }} open={mode === "edit"} title={`${mode} Asset`}>
+      <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Asset`}>
         <AssetForm character={character} asset={asset} mode={mode}/>
       </CandiModal>
       

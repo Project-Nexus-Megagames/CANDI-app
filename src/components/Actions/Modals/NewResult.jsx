@@ -4,11 +4,14 @@ import { useSelector } from 'react-redux';
 import socket from '../../../socket';
 import { Modal, Button, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, } from '@chakra-ui/react'
 import { getMyCharacter } from '../../../redux/entities/characters';
+import SelectPicker from '../../Common/SelectPicker';
 
 const NewResult = (props) => {
+  const { result, mode } = props;
 	const myChar = useSelector(getMyCharacter);
-  const [description, setDescription] = React.useState('');
-  const [diceresult, setDiceresult] = React.useState('');
+  const [description, setDescription] = React.useState(result ?  result.description: '');
+  const [diceresult, setDiceresult] = React.useState(result ?  result.dice: '');
+  const [status, setStatus] = React.useState(result ?  result.status: 'Temp-Hidden');
 
  	const isDisabled =() => {
  		const boolean = diceresult.length < 1 && props.selected.diceresult?.length < 1;
@@ -20,25 +23,32 @@ const NewResult = (props) => {
 		const data = {
 			result: {
 				description: description,
-				resolver: myChar._id
+				resolver: myChar._id, 
+        status: status,
+        id: result._id
 			},
 			dice: diceresult ? diceresult : '0',
 			id: props.selected._id,
 			creator: myChar._id,
 		};
-		socket.emit('request', { route: 'action', action: 'result', data });
+		socket.emit('request', { route: 'action', action: mode, data });
 		props.closeNew();
 	};
+
+  const statusTypes = [ { name: 'Public'}, { name: 'Private' }, { name: 'Temp-Hidden' } ];
 
 	return ( 
     <>
       <Modal isOpen={props.show} onClose={() => props.closeNew()} >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>{mode}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
           <form>
+            Status
+            <SelectPicker label={'name'} valueKey={'name'} data={statusTypes} onChange={(ddd) => setStatus(ddd) } value={status}/>
+
  						Description
  						<textarea rows="6" value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)}></textarea>
              Dice Roll Result

@@ -6,7 +6,7 @@ import { HiPencilAlt, HiTrash } from 'react-icons/hi';
 import socket from "../../../../../socket";
 import { CandiWarning } from "../../../../Common/CandiWarning";
 
-function ActionButtons({action, toggleEdit, creator}) {
+function ActionButtons({action, toggleEdit, creator, handleDelete}) {
 	const [mode, setMode] = React.useState(false);
 
     const {isControl, characterId} = usePermissions();
@@ -22,14 +22,6 @@ function ActionButtons({action, toggleEdit, creator}) {
     const handlePublish = async () => {
         const id = action._id;
         socket.emit('request', {route: 'action', action: 'publish', id});
-    };
-
-    const deleteAction = async () => {
-        socket.emit('request', {
-            route: 'action',
-            action: 'delete',
-            data: {id: action._id}
-        });
     };
 
     return (
@@ -85,7 +77,7 @@ function ActionButtons({action, toggleEdit, creator}) {
                     />
                 </ButtonGroup>
             )}
-        <CandiWarning open={mode === "confirm"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { deleteAction(); setMode(false); }}>
+        <CandiWarning open={mode === "confirm"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleDelete(); setMode(false); }}>
           Are ya sure?
         </CandiWarning>
         </Box>
