@@ -6,6 +6,8 @@ import Registration from './Registration';
 import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import ActionTable from './ActionTable';
 import GameConfig from '../GameConfig/GameConfig';
+import CharacterTab from './CharacterTab';
+import AssetTab from './AssetTab';
 
 const ControlTerminal = (props) => {		
 	const { login, team, character, loading, user } = useSelector(s => s.auth);
@@ -67,11 +69,11 @@ const ControlTerminal = (props) => {
 			</TabPanel>
 
 			<TabPanel>
-				BBBBB
+				<CharacterTab />
 			</TabPanel>
 			
 			<TabPanel>
-				CCCCC			
+				<AssetTab />	
 			</TabPanel>
 
 			<TabPanel>

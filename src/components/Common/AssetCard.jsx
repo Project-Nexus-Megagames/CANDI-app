@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { CandiModal } from './CandiModal';
 
 const AssetCard = (props) => {
-  const { asset, character, disabled, marginTop } = props;
+  const { asset, character, disabled, marginTop, handleSelect } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
 
@@ -23,7 +23,7 @@ const AssetCard = (props) => {
 };
 
 	return ( 
-		<div>
+		<div onClick={() => handleSelect ? handleSelect(asset) : console.log("Peekabo!")} >
       <Card marginTop={marginTop} key={asset._id} >
         <CardHeader>
           <h5>{asset.name} 
