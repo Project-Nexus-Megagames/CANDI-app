@@ -11,12 +11,12 @@ const InputNumber = (props) => {
   const { defaultValue, onChange } = props;
   return ( 
     <NumberInput defaultValue={defaultValue} onChange={onChange} >
-     <NumberInputField />
-     <NumberInputStepper>
-       <NumberIncrementStepper />
-       <NumberDecrementStepper />
-     </NumberInputStepper>
-</NumberInput>
+      <NumberInputField />
+      <NumberInputStepper>
+        <NumberIncrementStepper />
+        <NumberDecrementStepper />
+      </NumberInputStepper>
+    </NumberInput>
    );
 }
  

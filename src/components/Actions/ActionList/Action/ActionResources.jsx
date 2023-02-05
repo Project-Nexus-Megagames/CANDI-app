@@ -79,6 +79,7 @@ function ActionResources({assets, toggleAssetInfo}) {
                 border={'1px solid white'}
                 borderRadius={'10'}
                 marginTop={'2rem'}
+                minH="10vh"
                 onClick={() => retrievedAsset && toggleAssetInfo(retrievedAsset)}
             >
                 {inner}

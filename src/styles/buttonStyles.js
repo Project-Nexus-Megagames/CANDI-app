@@ -39,7 +39,7 @@ const buttonStyles = {
 		}
 	},
 	defaultProps: {
-		variant: 'solid',
+		variant: 'primary',
 	}
 };
 

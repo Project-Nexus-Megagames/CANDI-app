@@ -9,6 +9,8 @@ import GameConfig from '../GameConfig/GameConfig';
 import CharacterTab from './CharacterTab';
 import AssetTab from './AssetTab';
 import { CandiWarning } from '../Common/CandiWarning';
+import EditGamestate from './EditGamestate';
+
 
 const ControlTerminal = (props) => {		
 	const { login, team, character, loading, user } = useSelector(s => s.auth);
@@ -50,6 +52,16 @@ const ControlTerminal = (props) => {
     const data = user.username;
     socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
   }
+  
+	const editGameState = () => {
+		const data = {
+			round: this.state.formValue.round,
+			status: this.state.formValue.status,
+			endTime: this.state.endTime
+		};
+		socket.emit('request', { route: 'gamestate', action: 'modify', data });
+		this.setState({ gsModal: false });
+	};
 	
 	return ( 
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
@@ -67,17 +79,18 @@ const ControlTerminal = (props) => {
 
 			<TabPanel>
 				<div>
+
           <Button onClick={handleClose}>Close</Button>
           <Button onClick={() => setMode("edit")}>Edit Round</Button>          
           <Button onClick={() => setMode("next")}>Next Round</Button>
 				</div>
 
-        
         <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
           Are ya sure?
         </CandiWarning>
 
-        {/* <EditGamestate show={mode === 'edit'} onClose={() => setMode(false)} /> */}
+        <EditGamestate show={mode === 'edit'} onClose={() => setMode(false)} />
+
 			</TabPanel>
 
       <TabPanel>

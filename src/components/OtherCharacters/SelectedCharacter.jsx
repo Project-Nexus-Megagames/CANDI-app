@@ -7,8 +7,6 @@ import { getFadedColor } from '../../scripts/frontend';
 import { DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import AssetForm from '../Common/AssetForm';
 import { useState } from 'react';
-import { CandiWarning } from '../Common/CandiWarning';
-import socket from '../../socket';
 import AssetCard from '../Common/AssetCard';
 import WordDivider from '../WordDivider';
 import { CandiModal } from '../Common/CandiModal';
