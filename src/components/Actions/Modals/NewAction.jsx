@@ -114,6 +114,7 @@ const NewAction = (props) => {
 	function formattedUsedAssets() {
 		let temp = [];
 		let assets = myAssets;
+    console.log(myAssets)
 		assets = assets.filter((el) => el.uses <= 0 || el.status?.some((s) => s === 'used'));
 
 		for (const asset of assets) {
@@ -248,7 +249,7 @@ const NewAction = (props) => {
 										}}
 									>
 										Resources:
-										{actionType.resourceTypes.map((type) => (
+										{actionType.resourceTypes?.map((type) => (
 											<Tag key={type} textTransform='capitalize' colorScheme={'teal'} variant={'solid'}>
 												{type}
 											</Tag>
@@ -276,7 +277,7 @@ const NewAction = (props) => {
 								<Button onClick={() => handleSubmit()} disabled={isDisabled(effort)} colorScheme={isDisabled(effort) ? 'red' : 'green'} variant='solid'>
 									<b>Submit</b>
 								</Button>
-								<Button onClick={() => props.closeNew()} variant='solid'>
+								<Button onClick={() => props.closeNew()} variant='outline'>
 									Cancel
 								</Button>
 							</div>

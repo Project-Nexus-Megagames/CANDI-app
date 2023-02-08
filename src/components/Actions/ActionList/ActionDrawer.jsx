@@ -1,26 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import ActionList from "./ActionList";
-import {
-    Center,
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    Flex,
-    IconButton,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    Tooltip,
-    useBreakpointValue,
-} from "@chakra-ui/react";
+import {    Center,    Drawer,    DrawerBody,    DrawerCloseButton,    DrawerContent,    DrawerFooter,    DrawerHeader,    DrawerOverlay,    Flex,    IconButton,    Input,    InputGroup,    InputLeftElement,    Tooltip,    useBreakpointValue,} from "@chakra-ui/react";
 import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 
-function ActionDrawer({actions, value, onChange, onClick, handleSelect, isOpen, onClose}) {
+function ActionDrawer({actions, onClick, handleSelect, isOpen, onClose}) {
     const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
+    const [filter, setFilter] = useState('');
 
     return (
         <Drawer
@@ -51,8 +36,8 @@ function ActionDrawer({actions, value, onChange, onClick, handleSelect, isOpen, 
                                 <SearchIcon/>
                             </InputLeftElement>
                             <Input
-                                onChange={onChange}
-                                value={value}
+                                onChange={(e) => setFilter(e.target.value)}
+                                value={filter}
                                 placeholder="Search"
                                 color='white'
                             />
@@ -74,7 +59,9 @@ function ActionDrawer({actions, value, onChange, onClick, handleSelect, isOpen, 
                 </DrawerHeader>
                 <DrawerBody>
                     <ActionList
-                        actions={actions}
+                        actions={actions.filter(action => action.submission.description.toLowerCase().includes(filter.toLowerCase()) ||
+                          action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  ||
+                          action.name.toLowerCase().includes(filter.toLowerCase()))}
                         handleSelect={handleSelect}
                     />
                 </DrawerBody>

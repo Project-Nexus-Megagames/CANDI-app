@@ -5,9 +5,8 @@ import { IoChevronDownCircleOutline } from 'react-icons/io5';
 function CheckerPick(props) {
   const { data, value, onChange, placeholder, disabledItemValues, labelKey } = props;
 
-  console.log(data)
-
-  //  console.log(data)
+  // console.log(data)
+  
   const handleChange = (id) => {
     if (value.some(el => el === id)) {
       onChange(value.filter((el) => el !== id))

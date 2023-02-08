@@ -20,6 +20,9 @@ const Actions = (props) => {
     const [editAction, setEditAction] = useState({show: false, action: null})
     const {isControl} = usePermissions();
     const [rounds, setRounds] = useState([]);
+    const [renderRounds, setRenderRounds] = useState([]);
+    const [number, setNumber] = useState(4);
+    const [selected, setSelected] = useState(false);
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     useEffect(() => {
@@ -47,7 +50,13 @@ const Actions = (props) => {
         }
         rounds.reverse();
         setRounds(rounds);
+        setRenderRounds(rounds.slice(0, 1))
     };
+
+    const handleRoundToggle = (round) => {
+      if (renderRounds.some(r => r === round)) setRenderRounds(renderRounds.filter((r => r !== round)))
+      else setRenderRounds([ ...renderRounds, round ])
+    }
 
     const sortedActions = (currRound, actions) => {
         return actions
@@ -61,7 +70,7 @@ const Actions = (props) => {
                     return 1;
                 }
                 return 0;
-            })
+            })            
     }
 
     const actionList = isControl ? props.filteredActions : props.myActions;
@@ -120,11 +129,10 @@ const Actions = (props) => {
                 </Flex>
 
                 <ActionDrawer
-                    onChange={(e) => props.setFilter(e.target.value)}
-                    value={props.filter}
+                    // onChange={(e) => props.setFilter(e.target.value)}
                     onClick={() => setShowNewActionModal(true)}
                     actions={actionList}
-                    handleSelect={() => console.log('something selected')}
+                    handleSelect={(action) => { setSelected(action); onClose() }}
                     isOpen={isOpen}
                     onClose={onClose}
                 />
@@ -133,36 +141,46 @@ const Actions = (props) => {
                     allowMultiple                    
                     width={'100%'}
                 >
-                    {rounds.map((round, index) => (
+                    {!selected && rounds.map((round, index) => (
                         <Box
                             key={index}
                         >
                             <Box
                                 marginTop='2rem'
                             />
-                            <h4 style={{ backgroundColor: getFadedColor('gold'), color: 'black' }} >Round {round}</h4>
-                            {/* <WordDivider
-                                word={`Round ${round}`}
-                                size={'xl'}
-                                marginTop={'1rem'}
-                            /> */}
+                            <h4 onClick={() => handleRoundToggle(round)} style={{ backgroundColor: getFadedColor('gold'), color: 'black', cursor: 'pointer' }} >Round {round}</h4>
                             <Box
                                 marginBottom='1rem'
                             />
-                            {sortedActions(round, actionList).map((action =>
-                                    <Action
-                                        action={action}
-                                        key={action._id}
-                                        toggleAssetInfo={(asset) => {
-                                            setAssetInfo({show: true, asset});
-                                        }}
-                                        toggleEdit={(action) => {
-                                            setEditAction({show: true, action})
-                                        }}
-                                    />
-                            ))}                            
+                            {renderRounds.some(r => r === round) && <div>
+                              {sortedActions(round, actionList).slice(0, number).map((action =>
+                                <Action
+                                  action={action}
+                                  key={action._id}
+                                  toggleAssetInfo={(asset) => {
+                                      setAssetInfo({show: true, asset});
+                                  }}
+                                  toggleEdit={(action) => {
+                                      setEditAction({show: true, action})
+                                  }}
+                                />
+                              ))}
+                              {sortedActions(round, actionList).length > number && <Button onClick={() => setNumber(number + 5)} >More ({sortedActions(round, actionList).length - number})</Button>}                                 
+                            </div>}
+                     
                         </Box>
                     ))}
+
+                    {selected && <Action
+                      action={selected}
+                      key={selected._id}
+                      toggleAssetInfo={(asset) => {
+                          setAssetInfo({show: true, asset});
+                      }}
+                      toggleEdit={(action) => {
+                          setEditAction({show: true, action})
+                      }}
+                    />}
                 </Accordion>
 
                 <NewAction

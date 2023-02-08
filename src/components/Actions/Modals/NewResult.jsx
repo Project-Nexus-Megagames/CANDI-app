@@ -10,11 +10,11 @@ const NewResult = (props) => {
   const { result, mode } = props;
 	const myChar = useSelector(getMyCharacter);
   const [description, setDescription] = React.useState(result ?  result.description: '');
-  const [diceresult, setDiceresult] = React.useState(result ?  result.dice: '');
+  const [diceresult, setDiceresult] = React.useState((result && result.diceresult) ?  result.diceresult: '');
   const [status, setStatus] = React.useState(result ?  result.status: 'Temp-Hidden');
 
  	const isDisabled =() => {
- 		const boolean = diceresult.length < 1 && props.selected.diceresult?.length < 1;
+ 		const boolean = diceresult?.length < 1 && diceresult?.length < 1;
  		if (description.length < 10 || boolean) return true;
  		else return false;
  	}

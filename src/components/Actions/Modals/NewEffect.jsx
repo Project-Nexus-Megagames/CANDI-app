@@ -5,10 +5,11 @@ import _ from 'lodash';
 import {	getCharacterById,	getGods,	getMyCharacter,	getNonPlayerCharacters,	getUnlockedCharacters} from '../../../redux/entities/characters';
 import WordDivider from '../../WordDivider';
 import InputNumber from '../../Common/InputNumber';
-import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, Switch, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, SimpleGrid, Switch, Text, VStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import SelectPicker from '../../Common/SelectPicker';
 import AssetForm from '../../Common/AssetForm';
+import CharacterListItem from '../../OtherCharacters/CharacterListItem';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -112,7 +113,6 @@ const NewEffects = (props) => {
 	};
 
 	const handleCharSelect = (selected) => {
-    console.log(selected)
 		setArray(selected);
 	};
 
@@ -224,7 +224,6 @@ const NewEffects = (props) => {
 	};
 
 	const renderAss = () => {
-    console.log(selected)
 		if (selected) {
 			return (
 				<Box>
@@ -238,7 +237,7 @@ const NewEffects = (props) => {
 
 	return (
 		<Modal
-			size="full"
+			size="6xl"
 			placement="right"
 			isOpen={props.show}
 			onClose={handleExit}
@@ -332,6 +331,12 @@ const NewEffects = (props) => {
 								labelKey="characterName"
                 value={array}
 							/>
+              <SimpleGrid  columns={2} minChildWidth='120px' spacing='40px'>
+                {array && array.map(el => (
+                  <CharacterListItem key={el} character={sortedCharacters.find(ch => ch._id === el)} />
+                ))}                
+              </SimpleGrid>
+
 						</div>
 					)}
 
@@ -369,46 +374,26 @@ const NewEffects = (props) => {
 						</div>
 					)}
 				</ModalBody>
-      </ModalContent>
-			
 
-			
-			<ModalFooter>
-				<Button
-					disabled={type === ''}
-					onClick={handleSubmit}
-					variant="solid"
-				>
-					Confirm
-				</Button>
-				<Button
-					onClick={handleExit}
-					variant="subtle"
-				>
-					Cancel
-				</Button>
-			</ModalFooter>
+        <ModalFooter>
+          <Button
+            disabled={type === ''}
+            onClick={handleSubmit}
+            variant="solid"
+          >
+            Confirm
+          </Button>
+          <Button
+            onClick={handleExit}
+            variant="subtle"
+          >
+            Cancel
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+
 		</Modal>
 	);
 };
-
-const pickerData = [
-	{
-		label: 'Asset',
-		value: 'Asset'
-	},
-	{
-		label: 'Trait',
-		value: 'Trait'
-	},
-	{
-		label: 'Title',
-		value: 'Title'
-	},
-	// {
-	// 	label: 'Bond',
-	// 	value: 'bond'
-	// }
-];
 
 export default NewEffects;
