@@ -56,6 +56,8 @@ const NewAction = (props) => {
 			setEffort({ effortType: actionType.type, amount: 0 });
 			setMaxEffort();
 		}
+
+		console.log(myAssets);
 	}, [actionType]);
 
 	useEffect(() => {
@@ -114,7 +116,7 @@ const NewAction = (props) => {
 	function formattedUsedAssets() {
 		let temp = [];
 		let assets = myAssets;
-    console.log(myAssets)
+		console.log(myAssets);
 		assets = assets.filter((el) => el.uses <= 0 || el.status?.some((s) => s === 'used'));
 
 		for (const asset of assets) {
@@ -257,7 +259,7 @@ const NewAction = (props) => {
 										<CheckerPick
 											labelKey='name'
 											valueKey='_id'
-											data={myAssets.filter((el) => actionType.resourceTypes.some((ty) => ty === el.type.toLowerCase()))}
+											data={myAssets.filter((el) => actionType.resourceTypes.some((ty) => ty.toLowerCase() === el.type.toLowerCase()))}
 											style={{ width: '100%' }}
 											disabledItemValues={formattedUsedAssets}
 											onChange={(event) => setResource(event)}
