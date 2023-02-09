@@ -56,8 +56,6 @@ const NewAction = (props) => {
 			setEffort({ effortType: actionType.type, amount: 0 });
 			setMaxEffort();
 		}
-
-		console.log(myAssets);
 	}, [actionType]);
 
 	useEffect(() => {
@@ -116,7 +114,6 @@ const NewAction = (props) => {
 	function formattedUsedAssets() {
 		let temp = [];
 		let assets = myAssets;
-		console.log(myAssets);
 		assets = assets.filter((el) => el.uses <= 0 || el.status?.some((s) => s === 'used'));
 
 		for (const asset of assets) {
