@@ -9,7 +9,7 @@ function SelectPicker(props) {
 	return (
 		<Select
 			style={{ border: `4px solid ${getFadedColor(value)}`, minWidth: '10vw' }}
-			onChange={() => onChange(event.target.value)}
+			onChange={(event) => onChange(event.target.value)}
 			icon={<IoChevronDownCircleOutline />}
 			placeholder={value ? value : 'Select Option'}
 		>
@@ -17,7 +17,7 @@ function SelectPicker(props) {
 				data
 					.filter((el) => el[label]?.toLowerCase().includes(filter.toLowerCase()))
 					.map((el) => (
-						<option style={{ background: '#2d3748', color: 'white' }} key={el[label]} value={el[label]}>
+						<option style={{ background: '#2d3748', color: 'white' }} key={el[label]} value={el[valueKey]}>
 							{el[label]}
 						</option>
 					))}
