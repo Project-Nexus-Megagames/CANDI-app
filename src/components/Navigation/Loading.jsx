@@ -34,8 +34,6 @@ const Loading = (props) => {
 		if (user && sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100) {
 			console.log('Finished Loading!!!!');
 			const character = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());
-			console.log('CHAR', character);
-			console.log('CHARS', entities.characters);
 
 			if (character) {
 				reduxAction(setCharacter(character));
