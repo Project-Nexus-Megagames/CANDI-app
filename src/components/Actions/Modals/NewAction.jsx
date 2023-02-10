@@ -258,7 +258,7 @@ const NewAction = (props) => {
 											valueKey='_id'
 											data={myAssets.filter((el) => actionType.resourceTypes.some((ty) => ty.toLowerCase() === el.type.toLowerCase()))}
 											style={{ width: '100%' }}
-											disabledItemValues={formattedUsedAssets}
+											// disabledItemValues={formattedUsedAssets}
 											onChange={(event) => setResource(event)}
 											value={resource}
 										/>

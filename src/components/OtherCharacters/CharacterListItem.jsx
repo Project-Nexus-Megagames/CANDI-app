@@ -1,5 +1,5 @@
 import { CopyIcon } from '@chakra-ui/icons';
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Button, Flex, Hide, Spacer } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Button, Flex, Hide, Spacer, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
@@ -8,6 +8,7 @@ const CharacterListItem = (props) => {
 	const { character, handleSelect, selected } = props;  
   const myCharacter = useSelector(state => state.auth.myCharacter);
   const characters = useSelector(state => state.characters.list);
+  const toast = useToast();
 
   const copyToClipboard = (character) => {
     if (character.characterName === "The Box") {
@@ -37,6 +38,15 @@ const CharacterListItem = (props) => {
       if (gamecontrol) board = board.concat(`; ${gamecontrol.email}`);
       navigator.clipboard.writeText(board);
       // Alert.success("Email Copied!", 6000);
+
+      if (!toast.isActive('alert')) toast({
+        position: "top-right",
+        isClosable: true,
+        status: 'info',
+        duration: 5000,
+        id: board,
+        title: `Email(s) copied! \n\n ${board}`,
+      });
     }
   };
 

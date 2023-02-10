@@ -1,14 +1,15 @@
 import React from 'react';
 import { AccordionItem, AccordionPanel, Box, Flex } from "@chakra-ui/react";
-import { getFadedColor } from "../../../../scripts/frontend";
+import { getFadedColor, getTime } from "../../../../scripts/frontend";
 import ActionHeader from "./ActionHeader/ActionHeader";
 import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
 import ActionEffort from "./ActionEffort";
 import Feed from "./Feed";
 import ActionButtons from './ActionHeader/ActionButtons';
+import socket from '../../../../socket';
 
-const Action = ({action, toggleAssetInfo, toggleEdit}) => {
+const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons}) => {
     function getBorder() {
         const isUnpublishedAgenda = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0) && action.type === 'Agenda';
         return isUnpublishedAgenda
@@ -16,10 +17,16 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
             : `4px solid ${getFadedColor(action.type)}`;
     }
 
-    const getTime = (date) => {
-        const day = new Date(date).toDateString();
-        const time = new Date(date).toLocaleTimeString();
-        return `${day} - ${time}`;
+    const handleDelete = async () => {
+      const data = {
+        id: action._id,
+        action: action._id
+      };
+      socket.emit('request', {
+        route: 'action',
+        action: 'delete',
+        data
+      });
     };
 
     return (
@@ -49,11 +56,12 @@ const Action = ({action, toggleAssetInfo, toggleEdit}) => {
                         creator={action.creator}
                     />
                     <AccordionPanel>
-                        <ActionButtons
+                        {!hidebuttons && <ActionButtons
                             action={action}
                             toggleEdit={toggleEdit}
                             creator={action.creator}
-                        />
+                            handleDelete={handleDelete}
+                        />}
                         <Box>
                             <ActionMarkdown
                                 header='Description'

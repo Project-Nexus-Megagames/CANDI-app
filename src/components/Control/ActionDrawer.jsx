@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useDisclosure, Drawer, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Text, DrawerBody } from '@chakra-ui/react';
+import { useDisclosure, Drawer, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Text, DrawerBody, Accordion } from '@chakra-ui/react';
 import { getMyCharacter } from '../../redux/entities/characters';
 import Action from '../Actions/ActionList/Action/Action';
 
@@ -36,7 +36,12 @@ const ActionDrawer = (props) => {
 				<DrawerHeader align="center">
 					<Text>{selected?.name}</Text>
 				</DrawerHeader>
-				<DrawerBody align="center">{selected && <Action handleSelect={props.closeDrawer} action={selected} />}</DrawerBody>
+				<DrawerBody align="center">
+          <Accordion defaultIndex={[0]} >
+            {selected && <Action hidebuttons handleSelect={props.closeDrawer} action={selected} />}            
+          </Accordion>
+
+        </DrawerBody>
 			</DrawerContent>
 		</Drawer>
 	);

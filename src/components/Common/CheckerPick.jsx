@@ -7,7 +7,8 @@ function CheckerPick(props) {
 
   // console.log(data)
   
-  const handleChange = (id) => {
+  const handleChange = (id, event) => {
+    event.preventDefault() 
     if (value.some(el => el === id)) {
       onChange(value.filter((el) => el !== id))
     }
@@ -30,7 +31,7 @@ function CheckerPick(props) {
           {data && data.length > 0 && value && <Box width={'90%'} overflow={'hidden'}>
             {value.length === 0 && placeholder}
             {data && value.map((el, index) => (
-              <Tag key={el._id}>{data.find(e => e._id === el)[labelKey]}</Tag>
+              <Tag key={index}>{data.find(e => e._id === el)[labelKey]}</Tag>
             ))}  
           </Box>}
           <IconButton icon={<IoChevronDownCircleOutline />} />        

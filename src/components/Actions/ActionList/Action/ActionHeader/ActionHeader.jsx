@@ -1,7 +1,6 @@
 import React from "react";
 import { AccordionButton, AccordionIcon, Avatar, background, Box, Flex, Heading } from "@chakra-ui/react";
 import ActionTags from "./ActionTags";
-import ActionButtons from "./ActionButtons";
 import { getFadedColor } from "../../../../../scripts/frontend";
 
 function ActionHeader({action, time, toggleEdit, creator}) {
