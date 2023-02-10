@@ -172,7 +172,7 @@ function EditAction({ action, showEdit, handleClose }) {
 								<CheckerPick
 									labelKey='name'
 									valueKey='_id'
-									data={myAssets.filter((el) => actionType.assetType.some((ty) => ty === el.type.toLowerCase()))}
+									data={myAssets.filter((el) => actionType.resourceTypes.some((ty) => ty.toLowerCase() === el.type.toLowerCase()))}
 									style={{ width: '100%' }}
 									disabledItemValues={formattedUsedAssets}
 									onChange={(event) => setResources(event)}

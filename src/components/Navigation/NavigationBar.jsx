@@ -28,7 +28,6 @@ const Navigation = (props) => {
         renderTime();
         setInterval(() => {
             renderTime();
-            console.log('Tick!')
             //clearInterval(interval);
         }, 60000);
     }, [props.gamestate.endTime]);
