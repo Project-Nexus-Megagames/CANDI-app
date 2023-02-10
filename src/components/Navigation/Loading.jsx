@@ -7,43 +7,43 @@ import { useNavigate } from 'react-router-dom';
 import { finishLoading, setControl, signOut, setCharacter } from '../../redux/entities/auth';
 
 const Loading = (props) => {
-	const entities  = useSelector(s => s)
- 
+	const entities = useSelector((s) => s);
+
 	const [message] = useState('Scott quip goes here...');
 	const [sections] = useState(Object.keys(entities).sort());
-  const reduxAction = useDispatch();
+	const reduxAction = useDispatch();
 	const navigate = useNavigate();
 
-  const gamestateLoaded = useSelector(state => state.gamestate.loaded)
-	const actionsLoaded = useSelector(state => state.actions.loaded)
-	const charactersLoaded = useSelector( state => state.characters.loaded)
-	const assetsLoaded = useSelector(state => state.assets.loaded)
-	const locationsLoaded = useSelector( state => state.locations.loaded)
-	const logsLoaded = useSelector( state => state.log.loaded)
+	const gamestateLoaded = useSelector((state) => state.gamestate.loaded);
+	const actionsLoaded = useSelector((state) => state.actions.loaded);
+	const charactersLoaded = useSelector((state) => state.characters.loaded);
+	const assetsLoaded = useSelector((state) => state.assets.loaded);
+	const locationsLoaded = useSelector((state) => state.locations.loaded);
+	const logsLoaded = useSelector((state) => state.log.loaded);
 
-	const { loadingStart, user,  } = useSelector(s => s.auth)
-	const characters  = useSelector(s => s.characters.list)
+	const { loadingStart, user } = useSelector((s) => s.auth);
+	const characters = useSelector((s) => s.characters.list);
 
-  if (!props.login) {
-    navigate("/");
-    return <div />;
-  }
+	if (!props.login) {
+		navigate('/');
+		return <div />;
+	}
 
-  useEffect(() => {
-		console.log("Trigger B")
-		if (user && (sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100)) {
-			console.log("Finished Loading!!!!")
-      const character = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());
+	useEffect(() => {
+		console.log('Trigger B');
+		if (user && sections.length > 0 && Math.floor((done.length / sections.length) * 100) >= 100) {
+			console.log('Finished Loading!!!!');
+			const character = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());
+			console.log('CHAR', character);
+			console.log('CHARS', entities.characters);
 
-       if (character) {
-        reduxAction(setCharacter(character));
-        reduxAction(finishLoading());
-        navigate('/home');
-      }
-      else navigate('/no-character')
+			if (character) {
+				reduxAction(setCharacter(character));
+				reduxAction(finishLoading());
+				navigate('/home');
+			} else navigate('/no-character');
 		}
 	}, [user, gamestateLoaded, actionsLoaded, charactersLoaded, assetsLoaded, locationsLoaded, logsLoaded]);
-
 
 	let done = Object.keys(entities)
 		.sort()
@@ -57,20 +57,24 @@ const Loading = (props) => {
 
 	return (
 		<div style={{ textAlign: 'center' }}>
-			<img style={{ maxHeight: '400px', height: '40vh' }} className="center-img" src={gamePhotos[rand]} alt={'Loading...'} onClick={() => boredClick()} />
+			<img style={{ maxHeight: '400px', height: '40vh' }} className='center-img' src={gamePhotos[rand]} alt={'Loading...'} onClick={() => boredClick()} />
 			{/* src={spook[rand]} */}
 			{<h5>{loadingMsg[rand1]}</h5>}
-      <Progress 
-				value={Math.floor( Object.keys(entities).sort().filter( key => entities[key].lastFetch !== null).length / sections.length * 100)} 
-				status='active' />
+			<Progress
+				value={Math.floor(
+					(Object.keys(entities)
+						.sort()
+						.filter((key) => entities[key].lastFetch !== null).length /
+						sections.length) *
+						100
+				)}
+				status='active'
+			/>
 			<hr />
 			<Grid templateColumns={`repeat(${sections.length}, 1fr)`} gap={6}>
-				{sections.map(((section, index) =>
+				{sections.map((section, index) => (
 					<Box key={index} index={index}>
-							{ entities[section].lastFetch ? 
-								<Check style={{ color: 'green' }} /> : 
-								<Spinner  />
-							}
+						{entities[section].lastFetch ? <Check style={{ color: 'green' }} /> : <Spinner />}
 						{section}
 					</Box>
 				))}
@@ -79,12 +83,11 @@ const Loading = (props) => {
 	);
 };
 
-export default (Loading);
+export default Loading;
 
 const gamePhotos = [
 	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif',
-  'https://i.pinimg.com/originals/f6/2a/e4/f62ae40a9934e67486d57689ad4485d4.gif'
-
+	'https://i.pinimg.com/originals/f6/2a/e4/f62ae40a9934e67486d57689ad4485d4.gif'
 ];
 
 const loadingMsg = [
