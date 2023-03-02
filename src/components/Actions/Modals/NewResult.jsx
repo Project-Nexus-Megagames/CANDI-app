@@ -9,7 +9,7 @@ import SelectPicker from '../../Common/SelectPicker';
 const NewResult = (props) => {
 	const { result, mode } = props;
 	const myChar = useSelector(getMyCharacter);
-	const [description, setDescription] = React.useState(result ? result.description : '');
+	const [description, setDescription] = React.useState((result && result.description) ? result.description : '');
 	const [diceresult, setDiceresult] = React.useState(result && result.diceresult ? result.diceresult : '');
 	const [status, setStatus] = React.useState(result ? result.status : 'Temp-Hidden');
 
