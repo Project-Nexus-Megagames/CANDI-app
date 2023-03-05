@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
-import {  } from 'rsuite';
 import { globalStatsAdded } from '../../redux/entities/gameConfig';
 
 import { Button, ButtonGroup,  HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Stack } from '@chakra-ui/react';
@@ -10,7 +8,6 @@ import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/ic
 
 function GameConfig3() {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const oldConfig = useSelector((state) => state.gameConfig);
 
 	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState, } = useForm({
@@ -40,7 +37,7 @@ function GameConfig3() {
 
 	useEffect(() => {
 		const resetValues = [];
-		oldConfig.globalStats.forEach((stat) => {
+		oldConfig.globalStats?.forEach((stat) => {
 			let a = {};
 			a.type = stat.type;
 			a.statAmount = stat.statAmount;
@@ -70,6 +67,7 @@ function GameConfig3() {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
+      <h4>Step 2: Create Global Stat Trackers</h4>
 			<Flex padding="20px">
 				<VStack spacing="24px" align="left">
 					<h4>Modify globalStats</h4>

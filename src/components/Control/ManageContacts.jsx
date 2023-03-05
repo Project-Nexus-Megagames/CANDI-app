@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, SelectPicker, ButtonGroup, Button, CheckboxGroup, Checkbox, Panel } from 'rsuite';
 import socket from '../../socket';
 import { getCharacterById, getPlayerCharacters } from '../../redux/entities/characters';
 import _ from 'lodash';
+import SelectPicker from '../Common/SelectPicker';
+import { Box } from '@chakra-ui/layout';
+import { Checkbox, CheckboxGroup } from '@chakra-ui/checkbox';
+import { Modal, ModalBody } from '@chakra-ui/modal';
+import { Button, ButtonGroup } from '@chakra-ui/button';
+import { CandiModal } from '../Common/CandiModal';
 
 const ManageContacts = (props) => {
 	const characters = useSelector((state) => state.characters.list);
@@ -70,30 +75,17 @@ const ManageContacts = (props) => {
 	};
 
 	return (
-		<Modal
-			overflow
-			full
-			size="lg"
-			show={props.show}
-			onHide={() => {
-				handleExit();
-			}}
-		>
-			<Modal.Header>
-				<Modal.Title>Manage a PC's Contacts</Modal.Title>
-			</Modal.Header>
-			<Panel>
-				<SelectPicker block placeholder="Choose PC" onChange={(event) => handleCharChange(event)} data={sortedCharacters} valueKey="_id" labelKey="characterName" />
-			</Panel>
-			<Panel>{renderCharacter()}</Panel>
-			<Modal.Footer>
-				<ButtonGroup>
-					<Button onClick={() => handleSubmit()} color="red">
-						Change Contacts
-					</Button>
-				</ButtonGroup>
-			</Modal.Footer>
-		</Modal>
+      <CandiModal open={props.show} title={"Manage a PC's Contacts"}>
+        <Box>
+          <SelectPicker block placeholder="Choose PC" onChange={(event) => handleCharChange(event)} data={sortedCharacters} valueKey="_id" label="characterName" />
+        </Box>
+        <Box>{renderCharacter()}</Box>
+        <ButtonGroup>
+            <Button onClick={() => handleSubmit()} color="red">
+              Change Contacts
+            </Button>
+          </ButtonGroup>        
+      </CandiModal>
 	);
 };
 

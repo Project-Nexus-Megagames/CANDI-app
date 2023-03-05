@@ -1,164 +1,67 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux"; // Redux store provider
-import { ButtonGroup, Button, Content, Container, Sidebar, Input, Panel, List, PanelGroup, FlexboxGrid, Col, Tag, Row, Loader, TagGroup, Alert, InputGroup, Icon } from "rsuite";
-import AddAsset from "./AddAsset";
-import ModifyCharacter from "./ModifyCharacter";
-import NavigationBar from "../Navigation/NavigationBar";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; // Redux store provider
 import NewCharacter from "../Control/NewCharacter";
-import MobileOtherCharacters from "./MobileOtherCharacters";
-import DynamicForm from "./DynamicForm";
-import { getGodBonds, getMortalBonds } from "../../redux/entities/assets";
-import { getMyCharacter, getPublicCharacters, getPrivateCharacters, characterUpdated, getMyUnlockedCharacters } from "./../../redux/entities/characters";
-import CharacterListItem from "./CharacterListItem";
+import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters, characterSelected } from "./../../redux/entities/characters";
+import { Accordion, Box, Button, ButtonGroup, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Spinner, Tag, VStack } from "@chakra-ui/react";
 import { getFadedColor, getTextColor } from "../../scripts/frontend";
-import ViewCharacter from "../Common/ViewCharacter";
-import ResourceNugget from "../Common/ResourceNugget";
+import { ChevronLeftIcon, DeleteIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import CharactersDrawer from "./CharactersDrawer";
+import SelectedCharacter from "./SelectedCharacter";
+import { useNavigate } from "react-router";
+import ModifyCharacter from "./ModifyCharacter";
+import { CandiWarning } from "../Common/CandiWarning";
+import socket from "../../socket";
 
 const OtherCharacters = (props) => {
+	const navigate = useNavigate();
+  const reduxAction = useDispatch();
+
+  const loggedInUser = useSelector((state) => state.auth.user);
+  const control = useSelector((state) => state.auth.control);
+  const reduxSelected = useSelector((state) => state.characters.selected);
+
+
   const publicCharacters = useSelector(getPublicCharacters);
   const privateCharacters = useSelector(getPrivateCharacters);
   const knownContacts = useSelector(getMyUnlockedCharacters);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(props.selected ? props.selected : reduxSelected ? reduxSelected : false);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
-  const [edit, setEdit] = useState(false);
-  const [add, setAdd] = useState(false);
+  const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
-  const [image, setImage] = useState("");
-
-  const [showNew, setShowNew] = useState(false);
-  const loggedInUser = useSelector((state) => state.auth.user);
 
   if (!props.login) {
-    props.history.push("/");
-    return <Loader inverse center content='doot...' />;
+    navigate("/");
+    return <div />;
   }
 
   let characters = [...publicCharacters, ...knownContacts];
   characters = [...new Set(characters)];
-  const [renderTags] = React.useState(["Frog", "Pig", "Spider", "Myconid", "Raccoon", "Drow", "Dwarves", "Whitewall", "The Overlord", "Other", "Control"]); // TODO: update with Faction tags
+
+  useEffect(() => {
+    if (selected !== reduxSelected)
+      setSelected(reduxSelected);
+  }, [reduxSelected]);
+
 
   useEffect(() => {
     filterThis("");
   }, [publicCharacters, privateCharacters, knownContacts]);
 
-  const theBox = () => {
-    const audio = new Audio("/candi1.mp3");
-    audio.loop = true;
-    audio.play();
-    setImage("https://res.cloudinary.com/df8lwfbar/image/upload/v1664447183/goblinCity/kpj2mcukweiq3edjp4ww.jpg");
-  };
-  const copyToClipboard = (character) => {
-    if (character.characterName === "The Box") {
-      theBox();
-    } else {
-			// Build a transitive closure of all control affected.
-			let board = `${character.email}`;
-
-			// First get the control of the searched character and the current character
-			let pending = [...character.control]
-			let seen = [];
-			for (const controller of props.myCharacter.control) {
-				if (!pending.some((el) => el === controller)) {
-					pending.push(controller);
-				}
-			}
-			while (pending.length != 0)  {
-				const cur = pending.shift()
-				seen.push(cur)
-				const character = props.characters.find((el) => el.characterName === cur)
-				if(character) {
-					// add their controllers to the list to be searched if we haven't already done them
-					for (const controller of character.control) {
-						if ((!seen.some((el) => el === controller)) && (!pending.some((el) => el === controller))) {
-							pending.push(controller);
-						}
-					}
-					board = board.concat(`; ${character.email}`);
-				} else {
-					console.log(`${character} could not be added to clipboard`);
-					Alert.error(`${character} could not be added to clipboard`, 6000);
-				}
-			}
-
-      navigator.clipboard.writeText(board);
-      Alert.success("Email Copied!", 6000);
-    }
-  };
-
-  const openAnvil = (character) => {
-    if (character.characterName === "The Box") {
-      const audio = new Audio("/candi1.mp3");
-      audio.loop = true;
-      audio.play();
-    } else {
-      if (character.wiki && character.wiki !== "") {
-        let url = character.wiki;
-        const win = window.open(url, "_blank");
-        win.focus();
-      } else if (character.tags.some((el) => el === "God" || el === "Gods")) {
-        let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
-        const win = window.open(url, "_blank");
-        win.focus();
-      } else {
-        let url = "https://godswars.miraheze.org/wiki/";
-        let temp = url.concat(character.characterName.split(" ").join("_"));
-        const win = window.open(temp, "_blank");
-        win.focus();
-      }
-    }
-  };
-
-  const tagStyle = (item, index) => {
-    switch (item) {
-      case "Control":
-        return (
-          <Tag index={index} style={{ color: "black" }} color='orange'>
-            {item}
-          </Tag>
-        );
-      case "God":
-        return (
-          <Tag index={index} color='green'>
-            {item}
-          </Tag>
-        );
-      case "NPC":
-        return (
-          <Tag index={index} color='blue'>
-            {item}
-          </Tag>
-        );
-      case "PC":
-        return (
-          <Tag index={index} color='cyan'>
-            {item}
-          </Tag>
-        );
-      case "Private":
-        return (
-          <Tag index={index} color='red'>
-            {item}
-          </Tag>
-        );
-      default:
-        return <Tag index={index}>{item}</Tag>;
-    }
-  };
-
-  const listStyle = (item) => {
-    if (selected && item._id === selected._id) {
-      return { cursor: "pointer", backgroundColor: "#212429" };
-    } else return { cursor: "pointer", height: "100%" };
-  };
-
   useEffect(() => {
     if (props.characters && selected) {
       const updated = props.characters.find((el) => el._id === selected._id);
       setSelected(updated);
-      setImage(selected.profilePicture);
     }
   }, [props.characters, selected]);
+
+  const deleteCharacter = async () => {
+    socket.emit('request', {
+        route: 'character',
+        action: 'delete',
+        data: {id: selected._id}
+    });
+};
+
 
   const filterThis = (fil) => {
     const filtered = characters.filter(
@@ -170,247 +73,94 @@ const OtherCharacters = (props) => {
     );
     setFilteredCharacters(filtered);
   };
-
-  // if (window.innerWidth < 768) {
-  // 	return <MobileOtherCharacters />;
-  // } else
+  
   return (
     <React.Fragment>
-      <NavigationBar />
-      <Container style={{ height: "calc(100vh - 50px)" }}>
-        <Sidebar>
-          <PanelGroup>
-            <div
-              style={{
-                height: "40px",
-                borderRadius: "0px",
-                backgroundColor: "#000101",
-                margin: "1px",
-              }}
-            >
-              <InputGroup>
-                <Input style={{ height: "39px" }} onChange={(value) => filterThis(value)} placeholder='Search by Name or Email'></Input>
-                {props.myCharacter.tags.some((el) => el === "Control") && (
-                  <Button color='green' onClick={() => setShowNew(true)}>
-                    <Icon icon='plus' />
-                  </Button>
-                )}
-              </InputGroup>
-            </div>
-            <div
-              style={{
-                height: "calc(100vh - 80px)",
-                borderRadius: "0px",
-                overflow: "auto",
-                borderRight: "1px solid rgba(255, 255, 255, 0.12)",
-              }}
-            >
-              <div>
-                {renderTags.map((tag, index) => (
-                  <List key={index} hover>
-                    {filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0 && <p style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`) }}>{tag}</p>}
-                    {filteredCharacters
-                      .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
-                      .map((character, index0) => (
-                        <List.Item key={`${character._id}-${index}-${index0}`} style={listStyle(character)}>
-                          <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
-                        </List.Item>
-                      ))}
-                  </List>
-                ))}
-
-                {props.myCharacter.tags.some((el) => el === "Control") && (
-                  <List hover>
-                    <p style={{ backgroundColor: getFadedColor("Unknown"), color: getTextColor(`${"Unknown"}-text`) }}>{"( Hidden )"}</p>
-                    {privateCharacters
-                      // .filter()
-                      .map((character) => (
-                        <List.Item key={character._id} style={listStyle(character)}>
-                          <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
-                        </List.Item>
-                      ))}
-
-                    <p style={{ backgroundColor: getFadedColor("All"), color: getTextColor(`${"Unknown"}-text`) }}>{"( All Characters )"}</p>
-                    {props.user.username === "BobtheNinjaMan" &&
-                      props.characters
-                        // .filter()
-                        .map((character) => (
-                          <List.Item key={character._id} style={listStyle(character)}>
-                            <CharacterListItem setSelected={setSelected} character={character} tagStyle={tagStyle} key={character._id} />
-                          </List.Item>
-                        ))}
-                  </List>
-                )}
-              </div>
-            </div>
-          </PanelGroup>
-        </Sidebar>
-        {selected && (
-          <Content>
-            <FlexboxGrid>
-              {/*Control Panel*/}
-              {props.myCharacter.tags.some((el) => el === "Control") && (
-                <FlexboxGrid.Item colspan={24}>
-                  <Panel
-                    style={{
-                      backgroundColor: "#61342e",
-                      border: "2px solid rgba(255, 255, 255, 0.12)",
-                      textAlign: "center",
-                      height: "auto",
-                    }}
-                  >
-                    <h4>Control Panel</h4>
-                    <h5>Effort Left: TODO DISPLAY EFFORT HERE </h5>
-                    <ButtonGroup style={{ marginTop: "5px" }}>
-                      <Button
-                        appearance={"ghost"}
-                        onClick={() => {
-                          setEdit(true);
-                        }}
-                      >
-                        Modify
-                      </Button>
-                      <Button appearance={"ghost"} onClick={() => setAdd(true)}>
-                        + Resources
-                      </Button>
-                    </ButtonGroup>
-
-                    <Panel
-                      style={{
-                        backgroundColor: "#15181e",
-                        border: "2px solid rgba(255, 255, 255, 0.12)",
-                        textAlign: "center",
-                      }}
-                    >
-                      <h5>Resources</h5>
-                      <Row style={{ display: "flex", overflow: "auto" }}>
-                        {props.assets.filter((el) => el.ownerCharacter === selected._id).length === 0 && <h5>No assets assigned</h5>}
-                        {props.assets
-                          .filter((el) => el.ownerCharacter === selected._id)
-                          .map((asset, index) => (
-                            <Col index={index} key={index} md={6} sm={12}>
-                              <Panel onClick={() => setAsset(asset)} bordered>
-                                <h5>{asset.name}</h5>
-                                <b>{asset.type}</b>
-                                {asset.status.hidden && <Tag color='blue'>Hidden</Tag>}
-                                {asset.status.lendable && <Tag color='blue'>lendable</Tag>}
-                                {asset.status.lent && <Tag color='blue'>lent</Tag>}
-                                {asset.status.used && <Tag color='blue'>used</Tag>}
-                                {asset.status.multiUse && <Tag color='blue'>multiUse</Tag>}
-                              </Panel>
-                            </Col>
-                          ))}
-                      </Row>
-                    </Panel>
-                  </Panel>
-                </FlexboxGrid.Item>
-              )}
-
-              <FlexboxGrid.Item colspan={24}>
-                <Panel
-                  style={{
-                    padding: "0px",
-                    textAlign: "left",
-                    backgroundColor: "#15181e",
-                    whiteSpace: "pre-line",
-                  }}
+      <Box >
+        <Grid
+          templateAreas={`"header header"
+            "main main"
+          `}
+          gridTemplateColumns={ '50% 49%'}
+          gridTemplateRows={'80px 1fr'}
+          fontWeight='bold'>
+        <GridItem pl='2' bg='#0f131a' area={'header'} >
+          <Flex
+                    marginTop='2rem'
+                    width={'100%'}
                 >
-                  <FlexboxGrid>
-                    <FlexboxGrid.Item colspan={14} style={{ textAlign: "center" }}>
-                      <FlexboxGrid align='middle' style={{ textAlign: "center" }}>
-                        <FlexboxGrid.Item colspan={12}>
-                          <h2>{selected.characterName}</h2>
-                          {selected.characterTitle !== "None" && <h5>{selected.characterTitle}</h5>}
-                        </FlexboxGrid.Item>
+                    <Box
+                        marginRight='1rem'
+                    >
+                        <Button
+                            onClick={() => setMode('drawer')}
+                            leftIcon={<ChevronLeftIcon/>}
+                            colorScheme='orange'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Open Drawer</Hide>                            
+                        </Button>
+                    </Box>
+                    {control && <Box
+                        marginLeft='1rem'
+                    >
+                      <ButtonGroup isAttached>
+                        <Button
+                            onClick={() => setMode('new')}
+                            leftIcon={<PlusSquareIcon/>}
+                            colorScheme='green'
+                            variant='solid'
+                        >
+                          <Hide below='md'>New Character</Hide>                           
+                        </Button>
 
-                        <FlexboxGrid.Item colspan={12}>
-                          <TagGroup>
-                            Tags:
-                            <TagGroup style={{ display: "flex", marginLeft: "0px", marginTop: "-1px" }}>{selected.tags && selected.tags.map((item, index) => <ResourceNugget index={index} value={item} width={"50px"} height={"30"} />)}</TagGroup>
-                          </TagGroup>
-                        </FlexboxGrid.Item>
-                      </FlexboxGrid>
+                        <Button
+                            onClick={() => setMode('delete')}
+                            leftIcon={<DeleteIcon/>}
+                            colorScheme='red'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Delete</Hide>                           
+                        </Button>
 
-                      <Button appearance='ghost' block onClick={() => copyToClipboard(selected)}>
-                        {selected.email}
-                      </Button>
-                      <FlexboxGrid style={{ paddingTop: "5px" }}>
-                        <FlexboxGrid.Item colspan={12}>
-                          <p>
-                            <TagGroup>
-                              Controllers:
-                              {selected.control &&
-                                selected.control.map((item, index) => (
-                                  <Tag style={{ color: "black" }} color='orange' key={index} index={index}>
-                                    {item}
-                                  </Tag>
-                                ))}
-                            </TagGroup>
-                          </p>
-                          <p>
-                            Character Pronouns: <b>{selected.pronouns}</b>
-                          </p>
-                        </FlexboxGrid.Item>
-                        <FlexboxGrid.Item colspan={12}>
-                          <p>
-                            Time Zone: <b>{selected.timeZone}</b>
-                          </p>
-                        </FlexboxGrid.Item>
-                      </FlexboxGrid>
-                      <br></br>
-                      <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
-                      <p>{selected.bio}</p>
-                    </FlexboxGrid.Item>
+                        <Button
+                            onClick={() => setMode('modify')}
+                            leftIcon={<EditIcon/>}
+                            colorScheme='orange'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Edit</Hide>                           
+                        </Button>                        
+                      </ButtonGroup>
 
-                    <FlexboxGrid.Item colspan={1} />
+                    </Box>}
+          </Flex>
+        </GridItem>
 
-                    {/*Profile Pic*/}
-                    <FlexboxGrid.Item colspan={9}>
-                      <img
-                        src={`${image}`}
-                        alt='Img could not be displayed'
-                        style={{ maxHeight: "50vh" }}
-                        onClick={() => {
-                          if (selected.characterName === "The Box") theBox();
-                        }}
-                      />
-                    </FlexboxGrid.Item>
-                  </FlexboxGrid>
-                </Panel>
-              </FlexboxGrid.Item>
-            </FlexboxGrid>
-            <ModifyCharacter
-              show={edit}
-              selected={selected}
-              closeModal={() => {
-                setEdit(false);
-              }}
-            />
-            <AddAsset show={add} character={selected} loggedInUser={loggedInUser} closeModal={() => setAdd(false)} />
-            <DynamicForm show={asset !== false} selected={asset} loggedInUser={loggedInUser} closeDrawer={() => setAsset(false)} />
-          </Content>
-        )}
-      </Container>
-      <NewCharacter show={showNew} closeModal={() => setShowNew(false)} />
+        <GridItem pl='2' bg='#0f131a' area={'main'} >
+            {!selected && <b>Nothing Selected...</b>}
+            {selected && <SelectedCharacter selected={selected} />}
+        </GridItem>
+
+      </Grid>
+    </Box>
+
+      <NewCharacter show={mode === 'new'} closeModal={() => setMode(false)} />
+      {selected && <ModifyCharacter show={mode === 'modify'} selected={selected} closeModal={() => setMode(false)} />}
+      <CharactersDrawer 
+        filteredCharacters={filteredCharacters}
+        onChange={(e) => filterThis(e.target.value)}
+        value={props.filter}
+        onClick={() => setMode('new')}
+        handleSelect={(char) => { reduxAction(characterSelected(char)); setMode(false); }}
+        isOpen={mode === 'drawer'}
+        onClose={() => setMode(false)}
+      />
+      {selected && <CandiWarning open={mode === 'delete'} title={`Delete "${selected.characterName}"?`} onClose={() => setMode(false)} handleAccept={() => deleteCharacter()}>
+        This can never be undone.
+      </CandiWarning>}
     </React.Fragment>
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  gamestate: state.gamestate,
-  control: state.auth.control,
-  assets: state.assets.list,
-  godBonds: getGodBonds(state),
-  mortalBonds: getMortalBonds(state),
-  login: state.auth.login,
-  characters: state.characters.list,
-  duck: state.gamestate.duck,
-  myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  updateCharacter: (data) => dispatch(characterUpdated(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(OtherCharacters);
+export default (OtherCharacters);

@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import {
-	Modal,
-	SelectPicker,
-	ButtonGroup,
-	Button,
-	CheckboxGroup,
-	Checkbox,
-	Panel
-} from 'rsuite';
 import socket from '../../socket';
 import _ from 'lodash';
 import { getCharacterById } from '../../redux/entities/characters';
+import { Box } from '@chakra-ui/layout';
+import { Button, ButtonGroup } from '@chakra-ui/button';
+import SelectPicker from '../Common/SelectPicker';
+import { CandiModal } from '../Common/CandiModal';
+import { Checkbox, CheckboxGroup } from '@chakra-ui/checkbox';
 
 const HealInjury = (props) => {
 	const characters = useSelector((state) => state.characters.list);
@@ -98,37 +94,26 @@ const HealInjury = (props) => {
 	};
 
 	return (
-		<Modal
-			overflow
-			full
-			size="lg"
-			show={props.show}
-			onHide={() => {
-				handleExit();
-			}}
-		>
-			<Modal.Header>
-				<Modal.Title>Play God and Heal a Character&apos;s Injuries</Modal.Title>
-			</Modal.Header>
-			<Panel>
-				<SelectPicker
-					block
-					placeholder="Heal an Injury"
-					onChange={(event) => handleCharChange(event)}
-					data={sortedCharacters}
-					valueKey="_id"
-					labelKey="characterName"
+    <CandiModal open={props.show} title={"Play God and Heal a Character's Injuries"} 
+    onHide={() => {
+      handleExit();
+    }}>
+    <Box>
+    <SelectPicker					
+				placeholder="Heal an Injury"
+				onChange={(event) => handleCharChange(event)}
+				data={sortedCharacters}
+				valueKey="_id"
+				labelKey="characterName"
 				/>
-			</Panel>
-			<Panel>{renderCharacter()}</Panel>
-			<Modal.Footer>
-				<ButtonGroup>
-					<Button onClick={() => handleSubmit()} color="red">
-						Play God and Heal
-					</Button>
-				</ButtonGroup>
-			</Modal.Footer>
-		</Modal>
+    </Box>
+    <Box>{renderCharacter()}</Box>
+    <ButtonGroup>
+        <Button onClick={() => handleSubmit()} color="red">
+        Play God and Heal
+        </Button>
+      </ButtonGroup>        
+  </CandiModal>
 	);
 };
 

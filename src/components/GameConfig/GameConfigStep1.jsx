@@ -6,7 +6,7 @@ import { effortTypesAdded } from '../../redux/entities/gameConfig';
 import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Button, ButtonGroup, Stack } from '@chakra-ui/react';
 import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
-function GameConfigStep1(props) {
+function GameConfigStep1() {
 	const dispatch = useDispatch();
 	const oldConfig = useSelector((state) => state.gameConfig);
 
@@ -67,11 +67,12 @@ function GameConfigStep1(props) {
 	const onSubmit = (data) => {
 		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
 		dispatch(effortTypesAdded(data));
-		reset({keepValues: true});
+		// history.push('./GameConfig2'); // TODO remake this so it doesn't use navigation
 	};
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
+      <h4>Step 1: Create Effort Types</h4>
 			<Flex padding="20px">
 				<VStack spacing="24px" align="left">
 					{fields.map((item, i) => (
@@ -114,8 +115,7 @@ function GameConfigStep1(props) {
 								</div>
 							</div>
 						</div>
-					))}				
-
+					))}
 					<Stack spacing={8} direction='row' align='right' justify={"center"}>
 						<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
 							Save
@@ -123,14 +123,13 @@ function GameConfigStep1(props) {
 						<Button
 							rightIcon={<PlusSquareIcon />}
 							colorScheme={'whatsapp'}
-							onClick={() => append({ type: '', effortAmount: 0 })} >
+							onClick={() => append({ type: 'Main', effortAmount: 1, tag: 'PC' })} >
 							Add Type
 						</Button>
 						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
 							Reset
 						</Button>
 					</Stack>
-
 				</VStack>
 			</Flex>
 		</form>

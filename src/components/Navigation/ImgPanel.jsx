@@ -1,6 +1,6 @@
+import { Tag } from '@chakra-ui/tag';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Tag } from 'rsuite';
 
 const ImgPanel = (props) => {
 	return (
@@ -12,7 +12,7 @@ const ImgPanel = (props) => {
 					borderRadius: '10px',
 					position: 'relative',
 					margin: '10px',
-					height: '45vh',
+					height: '42vh',
 					overflow: 'hidden'
 				}}
 			>

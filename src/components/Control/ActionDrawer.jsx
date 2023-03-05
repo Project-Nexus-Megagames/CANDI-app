@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IconButton, Icon, List } from 'rsuite';
-import { useDisclosure, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Text, StatHelpText } from '@chakra-ui/react';
-import { getDateString } from '../../scripts/dateTime';
+import { useDisclosure, Drawer, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Text, DrawerBody, Accordion } from '@chakra-ui/react';
 import { getMyCharacter } from '../../redux/entities/characters';
-import socket from '../../socket';
-import SelectedAction from '../Actions/SelectedAction';
+import Action from '../Actions/ActionList/Action/Action';
 
 const ActionDrawer = (props) => {
-	const [newComment, setNewComment] = useState('');
-	const [commentId, setCommentId] = useState('');
-
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	const cancelRef = React.useRef();
-	const myChar = useSelector(getMyCharacter);
 	const duck = useSelector((state) => state.gamestate.duck);
 
 	let selected = props.selected;
@@ -45,7 +36,12 @@ const ActionDrawer = (props) => {
 				<DrawerHeader align="center">
 					<Text>{selected?.name}</Text>
 				</DrawerHeader>
-				<DrawerBody align="center">{selected && <SelectedAction special={false} handleSelect={props.closeDrawer} selected={selected} />}</DrawerBody>
+				<DrawerBody align="center">
+          <Accordion defaultIndex={[0]} >
+            {selected && <Action hidebuttons handleSelect={props.closeDrawer} action={selected} />}            
+          </Accordion>
+
+        </DrawerBody>
 			</DrawerContent>
 		</Drawer>
 	);

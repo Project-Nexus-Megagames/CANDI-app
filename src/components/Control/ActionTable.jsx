@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
 import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, HStack, Button, Input } from '@chakra-ui/react';
-import { SelectPicker } from 'rsuite';
 import { CheckRound, WarningRound, InfoRound } from '@rsuite/icons';
+import SelectPicker from '../Common/SelectPicker';
 import ActionDrawer from './ActionDrawer';
 import socket from '../../socket';
 import _ from 'lodash';
@@ -14,6 +14,7 @@ const ActionTable = () => {
 	const gamestate = useSelector((state) => state.gamestate);
 	const assets = useSelector((state) => state.assets.list);
 	const controlChars = useSelector(getControl);
+	console.log(controlChars);
 	const [round, setRound] = useState(gamestate.round);
 	const [selected, setSelected] = useState(null);
 	const [dataToDisplay, setDataToDisplay] = useState(actions);
@@ -110,6 +111,8 @@ const ActionTable = () => {
 			id: actionId,
 			controller: event
 		};
+
+		console.log(data);
 		socket.emit('request', { route: 'action', action: 'assignController', data });
 	};
 
@@ -181,65 +184,65 @@ const ActionTable = () => {
 
 	return (
 		<Box>
-			<Box align="center" paddingBottom={4}>
+			<Box align='center' paddingBottom={4}>
 				{[...Array(gamestate.round)].map((x, i) => (
-					<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} colorScheme="teal" variant={i + 1 === round ? 'solid' : 'outline'} key={i}>
+					<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} colorScheme='teal' variant={i + 1 === round ? 'solid' : 'outline'} key={i}>
 						{i + 1}
 					</Button>
 				))}
 			</Box>
-			<Box borderWidth="3px" borderRadius="md" borderColor="teal" padding={8}>
-				<Heading size="md">Round: {round}</Heading>
+			<Box borderWidth='3px' borderRadius='md' borderColor='teal' padding={8}>
+				<Heading size='md'>Round: {round}</Heading>
 				<Divider />
-				<HStack spacing="24px">
+				<HStack spacing='24px'>
 					{controlChars.map((controller) => (
 						<div key={controller._id}>
-							<Text as="b" onClick={() => handleFilter('controller', controller._id)} cursor="pointer">
+							<Text as='b' onClick={() => handleFilter('controller', controller._id)} cursor='pointer'>
 								{controller.characterName}:
 							</Text>
-							<Text onClick={() => handleFilter('controller', controller._id)} cursor="pointer">
+							<Text onClick={() => handleFilter('controller', controller._id)} cursor='pointer'>
 								{getActionCount(controller._id)}
 							</Text>
 						</div>
 					))}
 					<div>
-						<Text as="b" onClick={() => handleFilter('unassigned')} cursor="pointer">
+						<Text as='b' onClick={() => handleFilter('unassigned')} cursor='pointer'>
 							Unassigned:
 						</Text>
-						<Text onClick={() => handleFilter('unassigned')} cursor="pointer">
+						<Text onClick={() => handleFilter('unassigned')} cursor='pointer'>
 							{getActionCount('unassigned')}
 						</Text>
 					</div>
 					<div>
-						<Text as="b" onClick={() => handleFilter('news')} cursor="pointer">
+						<Text as='b' onClick={() => handleFilter('news')} cursor='pointer'>
 							News:
 						</Text>
-						<Text onClick={() => handleFilter('news')} cursor="pointer">
+						<Text onClick={() => handleFilter('news')} cursor='pointer'>
 							{getActionCount('news')}
 						</Text>
 					</div>
 					<div>
-						<Text as="b" onClick={() => handleFilter('resolved')} cursor="pointer">
+						<Text as='b' onClick={() => handleFilter('resolved')} cursor='pointer'>
 							Resolved:
 						</Text>
-						<Text onClick={() => handleFilter('resolved')} cursor="pointer">
+						<Text onClick={() => handleFilter('resolved')} cursor='pointer'>
 							{getActionCount('resolved')}
 						</Text>
 					</div>
 					<div>
-						<Text as="b" onClick={() => handleFilter('unresolved')} cursor="pointer">
+						<Text as='b' onClick={() => handleFilter('unresolved')} cursor='pointer'>
 							Unresolved:
 						</Text>
-						<Text onClick={() => handleFilter('unresolved')} cursor="pointer">
+						<Text onClick={() => handleFilter('unresolved')} cursor='pointer'>
 							{getActionCount('unresolved')}
 						</Text>
 					</div>
-					<Button colorScheme="teal" onClick={() => setFilter('')} size="sm">
+					<Button colorScheme='teal' onClick={() => setFilter('')} size='sm'>
 						Show All
 					</Button>
 					{filter !== '' && (
 						<div>
-							<Text as="b" color="red">
+							<Text as='b' color='red'>
 								Applied Filter:
 							</Text>
 							<Text>{renderCurrentFilter()}</Text>
@@ -248,52 +251,52 @@ const ActionTable = () => {
 				</HStack>
 			</Box>
 			<Divider />
-			<Grid templateColumns={templateColumns} gap={4} paddingLeft={8} paddingRight={8} align="left">
-				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b" onClick={() => handleSort('name')} cursor="pointer"></Text>
+			<Grid templateColumns={templateColumns} gap={4} paddingLeft={8} paddingRight={8} align='left'>
+				<GridItem overflow='hidden'>
+					<Text fontSize='lg' as='b' onClick={() => handleSort('name')} cursor='pointer'></Text>
 				</GridItem>
-				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b" onClick={() => handleSort('name')} cursor="pointer">
+				<GridItem overflow='hidden'>
+					<Text fontSize='lg' as='b' onClick={() => handleSort('name')} cursor='pointer'>
 						Action Title
 					</Text>
 				</GridItem>
-				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b" onClick={() => handleSort('type')} cursor="pointer">
+				<GridItem overflow='hidden'>
+					<Text fontSize='lg' as='b' onClick={() => handleSort('type')} cursor='pointer'>
 						Type
 					</Text>
 				</GridItem>
-				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b" onClick={() => handleSort('creator.characterName')} cursor="pointer">
+				<GridItem overflow='hidden'>
+					<Text fontSize='lg' as='b' onClick={() => handleSort('creator.characterName')} cursor='pointer'>
 						Character
 					</Text>
 				</GridItem>
-				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b">
+				<GridItem overflow='hidden'>
+					<Text fontSize='lg' as='b'>
 						Assets
 					</Text>
 				</GridItem>
-				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b">
+				<GridItem overflow='hidden'>
+					<Text fontSize='lg' as='b'>
 						Dice Pool
 					</Text>
 				</GridItem>
-				<GridItem overflow="hidden">
-					<Text fontSize="lg" as="b">
+				<GridItem overflow='hidden'>
+					<Text fontSize='lg' as='b'>
 						Dice Result
 					</Text>
 				</GridItem>
 				<GridItem>
-					<Text fontSize="lg" as="b" onClick={() => handleSort('controller')} cursor="pointer">
+					<Text fontSize='lg' as='b' onClick={() => handleSort('controller')} cursor='pointer'>
 						Assigned Control
 					</Text>
 				</GridItem>
 				<GridItem>
-					<Text fontSize="lg" as="b">
+					<Text fontSize='lg' as='b'>
 						News
 					</Text>
 				</GridItem>
 				<GridItem>
-					<Text fontSize="lg" as="b">
+					<Text fontSize='lg' as='b'>
 						Ready
 					</Text>
 				</GridItem>
@@ -304,35 +307,41 @@ const ActionTable = () => {
 				.filter((el) => el.round === round)
 				.map((item) => (
 					<div key={item._id}>
-						<Grid templateColumns={templateColumns} gap={4} paddingLeft={8} paddingRight={8} align="left">
-							<GridItem overflow="hidden" onClick={() => setSelected(item)} cursor="pointer">
+						<Grid templateColumns={templateColumns} gap={4} paddingLeft={8} paddingRight={8} align='left'>
+							<GridItem overflow='hidden' onClick={() => setSelected(item)} cursor='pointer'>
 								<InfoRound style={{ color: 'cyan', fontSize: '1.5em' }} />
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow='hidden'>
 								<Text>{item.name}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow='hidden'>
 								<Text>{item.type}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow='hidden'>
 								<Text>{item.creator.characterName}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow='hidden'>
 								<Text>{renderAssets(item.submission)}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow='hidden'>
 								<Text>{renderDicePool(item.submission)}</Text>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow='hidden'>
 								<Input defaultValue={item.diceresult} onBlur={(event) => handleDiceResult(item._id, event.target.value)}></Input>
 							</GridItem>
 							<GridItem>
-								<SelectPicker value={item.controller?._id} data={controlChars} valueKey="_id" labelKey="characterName" onChange={(event) => handleController(item._id, event)}></SelectPicker>
+								<SelectPicker
+									value={item.controller?.characterName}
+									data={controlChars}
+									valueKey='_id'
+									label='characterName'
+									onChange={(event) => handleController(item._id, event)}
+								></SelectPicker>
 							</GridItem>
 							<GridItem>
 								<Checkbox defaultChecked={item.news} onChange={(event) => handleNews(item._id, event.target.checked)}></Checkbox>
 							</GridItem>
-							<GridItem overflow="hidden">
+							<GridItem overflow='hidden'>
 								<Text>{renderResReady(item.results)}</Text>
 							</GridItem>
 						</Grid>

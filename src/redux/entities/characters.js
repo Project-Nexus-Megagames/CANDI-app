@@ -9,6 +9,7 @@ const slice = createSlice({
     list: [],
     loading: false,
     loaded: false,
+    selected: false,
     lastFetch: null,
     failedAttempts: 0,
   },
@@ -45,11 +46,15 @@ const slice = createSlice({
       characters.list[index] = action.payload;
       characters.loading = false;
     },
+    characterSelected: (characters, action) => {
+      console.log(`${action.type} Dispatched`);
+      characters.selected = action.payload;
+    },
   },
 });
 
 // Action Export
-export const { characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated } = slice.actions;
+export const { characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated, characterSelected } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 
@@ -57,13 +62,21 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/characters`;
 
 // Selector
+// export const getMyCharacter = createSelector(
+//   (state) => state.characters.list,
+//   (state) => state.auth.myCharacter,
+//   (state) => state.auth.user,
+//   (characters, character, user) => {
+//     if (character) return character;
+//     return characters.find((char) => char.username === user.username);
+//   }
+// );
+
 export const getMyCharacter = createSelector(
   (state) => state.characters.list,
-  (state) => state.auth.character,
   (state) => state.auth.user,
-  (characters, character, user) => {
-    if (character) return character;
-    return characters.find((char) => char.username === user.username);
+  (characters, user) => {
+    return characters.find((char) => char.username === user?.username) || {};
   }
 );
 
@@ -105,7 +118,7 @@ export const getCharacterById = (charId) =>
 
 export const getMyUnlockedCharacters = createSelector(
   (state) => state.characters.list,
-  (state) => state.auth.character,
+  (state) => state.auth.myCharacter,
   (characters, character) => {
     if (!character) return [];
     return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id));

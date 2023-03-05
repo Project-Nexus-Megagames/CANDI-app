@@ -1,10 +1,9 @@
-import { Icon } from "rsuite";
-
 function getFadedColor(color, fade = 1) {
 	// console.log(color)
 	switch (color) {
 		case 'Agenda':
 		case 'Public':
+    case 'Main':
 			return `#22a12a`;
 		case 'Agenda-rs':
 			return 'green'
@@ -17,25 +16,28 @@ function getFadedColor(color, fade = 1) {
 		case 'Control':
 			return `#ff9800`
 
-		case 'Pig':
+		case 'Defence':
 			return `#e74c3c`
 
-		case 'Frog':
+		case 'Wealth':
 			return `#fbbc04`
 		case 'Dwarves':
 			return '#03fcbe'
-		case 'Spider':
-			return `#206694`
-		case 'Myconid':
+		case 'Power':
 			return `#71368a`
-		case 'Drow':
+		case 'Asset':
 			return `#1f8b4c`
-		case 'Raccoon':
+		case 'Trait':
 			return `#e91e63`
 		case 'Other':
 			return `#992d22`
 			
-
+    case 'Result': 
+      return '#0d73d4'
+    case 'Effect': 
+      return '#531ba8'
+    case 'Comment':
+      return `#6d6d6d`
 			
 		case 'The Overlord':
 			return `#6d6d6d`
@@ -65,23 +67,6 @@ function getTextColor(color, fade = 1) {
 			return `#5b26b0`;
 		case 'Normal-rs':
 			return `violet`;
-
-		case 'Control':
-			return `#ff9800`
-
-		case 'Pig':
-			return `#e74c3c`
-
-		case 'Frog':
-			return `#f1c40f`
-		case 'Spider':
-			return `#206694`
-		case 'Myconid':
-			return `#71368a`
-		case 'Drow':
-			return `#1f8b4c`
-		case 'Raccoon':
-			return `#e91e63`
 			
 		case 'Unknown-text':
 		case 'Myconid-text':
@@ -99,6 +84,7 @@ function getTextColor(color, fade = 1) {
 		case 'Dwarves-text':
 		case 'Frog-text':
 		case 'Pig-text':
+    case 'Wealth-text':
 		case 'Whitewall-text':
 			return `black`
 
@@ -112,16 +98,6 @@ function getTextColor(color, fade = 1) {
 	}
 }
 
-
-function getIcon (type) {
-	switch(type){
-			case 'Normal':  return(<Icon icon="plus" />)
-			case 'Agenda':  return(<Icon icon="plus" />)
-			default:
-				return(<Icon icon="plus" />)
-	}
-}
-
 function getCountdownHours(start, end) {
 	let countDownDate = new Date(end).getTime();
 	const now = new Date(start).getTime();
@@ -130,8 +106,10 @@ function getCountdownHours(start, end) {
 }
 
 function getThisEffort(efforts, type) {
+  // console.log(efforts)
+  // console.log(type)
 	const found = type ?  (efforts.find(el => el.type.toLowerCase() === type.toLowerCase()) ) : false;
-	return(found ? found.amount : -999)
+	return(found ? found.amount : 0)
 }
 
 const getTime = (date) => {
@@ -144,4 +122,10 @@ const getTime = (date) => {
 	);
 };
 
-export { getIcon, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime };
+const openLink = (link) => {
+  // 'https://www.patreon.com/wcmprojectnexus'
+  const win = window.open(link, '_blank');
+  win.focus();
+};
+
+export { getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink };

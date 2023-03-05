@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { CheckPicker, Modal, Button, SelectPicker, ButtonGroup, Panel, Divider, Placeholder } from 'rsuite';
 import { useSelector } from 'react-redux';
-import { getPlayerCharacters, getMyCharacter, getMyUnlockedCharacters } from '../../redux/entities/characters';
+import { getPlayerCharacters, getMyUnlockedCharacters } from '../../redux/entities/characters';
 import socket from '../../socket';
 import _ from 'lodash';
+import { Box, Button, ButtonGroup, Divider, Modal } from '@chakra-ui/react';
+import CheckerPick from '../Common/CheckerPick';
+import SelectPicker from '../Common/SelectPicker';
 
 // TODO REFACTOR TO KNOWNCONTACTS
 
@@ -54,10 +56,10 @@ const Contacts = (props) => {
 			unlockedCharactersToShare = _.sortBy(unlockedCharactersToShare, 'characterName');
 
 			return (
-				<Panel>
+				<Box>
 					Selected: {selected.characterName}
 					{selected && (
-						<CheckPicker
+						<CheckerPick
 							block
 							value={charsToShare}
 							placeholder="Select Contact(s) to Share"
@@ -65,18 +67,18 @@ const Contacts = (props) => {
 							data={unlockedCharactersToShare}
 							valueKey="_id"
 							labelKey="characterName"
-						></CheckPicker>
+						></CheckerPick>
 					)}
 					<Divider />
-				</Panel>
+				</Box>
 			);
 		} else {
-			return <Placeholder.Paragraph rows={5}>Awaiting Selection</Placeholder.Paragraph>;
+			return <div >Awaiting Selection</div>;
 		}
 	};
 
 	return (
-		<Modal size="sm" show={props.show} onHide={() => handleExit()}>
+		<Modal size="sm" isOpen={props.show} onClose={() => handleExit()}>
 			<SelectPicker block placeholder="Select Character to Share with" onChange={(event) => handleChange(event)} data={charactersToShareWith} valueKey="_id" labelKey="characterName"></SelectPicker>
 			{renderCharacters()}
 			<Modal.Footer>

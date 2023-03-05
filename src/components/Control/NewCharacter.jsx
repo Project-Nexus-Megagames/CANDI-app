@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { Modal, Button, Panel, ButtonGroup } from 'rsuite';
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button } from '@chakra-ui/react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import socket from '../../socket';
 import { cloudinaryUploadMedium } from '../../services/uploads';
+import { CandiModal } from '../Common/CandiModal';
 
 const NewCharacter = (props) => {
 	const gameConfig = useSelector((state) => state.gameConfig);
@@ -155,20 +155,8 @@ const NewCharacter = (props) => {
 	};
 
 	return (
-		<Modal
-			overflow
-			full
-			size="lg"
-			show={props.show}
-			onHide={() => {
-				handleExit();
-			}}
-		>
-			<Modal.Header>
-				<Modal.Title>New Character "{watchCharName}"</Modal.Title>
-			</Modal.Header>
+		<CandiModal title="New Character!" open={props.show} onClose={props.closeModal}>
 			<form onSubmit={handleSubmit(onSubmit, handleError)}>
-				<Panel>
 					<Flex w="100%">
 						<VStack spacing="24px" w="100%">
 							<HStack w="100%">
@@ -256,11 +244,11 @@ const NewCharacter = (props) => {
 											<FormControl>
 												<Input size="md" {...register(`tags.${i}`)}></Input>
 											</FormControl>{' '}
-											<Button onClick={() => removeTag(i)}>-</Button>
+											<Button variant={'solid'} onClick={() => removeTag(i)}>-</Button>
 										</HStack>
 									</div>
 								))}
-								<Button onClick={() => appendTag('')}>+</Button>
+								<Button variant={'solid'} onClick={() => appendTag('')}>+</Button>
 							</HStack>
 
 							<HStack w="100%">
@@ -271,11 +259,11 @@ const NewCharacter = (props) => {
 											<FormControl>
 												<Input size="md" {...register(`control.${i}`)}></Input>
 											</FormControl>
-											<Button onClick={() => removeControl(i)}>-</Button>
+											<Button variant={'solid'} onClick={() => removeControl(i)}>-</Button>
 										</HStack>
 									</div>
 								))}
-								<Button onClick={() => appendControl('')}>+</Button>
+								<Button variant={'solid'} onClick={() => appendControl('')}>+</Button>
 							</HStack>
 							<Box w="100%">
 								<div style={{ margin: 10 }}>
@@ -286,19 +274,17 @@ const NewCharacter = (props) => {
 							</Box>
 						</VStack>
 					</Flex>
-				</Panel>
-				<Modal.Footer>
+
 					<ButtonGroup>
-						<Button type="submit" color="green" className="btn btn-primary mr-1">
+						<Button variant={'solid'} type="submit" colorScheme="green" className="btn btn-primary mr-1">
 							Create new Character
 						</Button>
-						<Button onClick={() => reset()} className="btn btn-secondary mr-1">
+						<Button variant={'solid'} onClick={() => reset()} className="btn btn-secondary mr-1">
 							Reset Form
 						</Button>
 					</ButtonGroup>
-				</Modal.Footer>
 			</form>
-		</Modal>
+		</CandiModal>
 	);
 };
 

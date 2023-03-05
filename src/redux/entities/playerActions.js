@@ -76,19 +76,11 @@ let baseURL = `${gameServer}api/actions`;
 export const getMyActions = createSelector(
   state => state.actions.filter,
   state => state.actions.list,
-  state => state.auth.character,
+  state => state.auth.myCharacter,
   (filter, actions, myCharacter) => actions.filter(
     action => (( action.creator._id === myCharacter._id ) ))
 );
 
-export const getCurrentExplores = createSelector(
-  state => state.gamestate.round,
-  state => state.auth.character,
-  state => state.actions.list,
-  (round, user, actions) => actions.find(
-    // eslint-disable-next-line eqeqeq
-    action => (( action.creator?._id == user?._id && action.round === round && action.type === 'explore') ))
-);
 
 export const filteredActions = createSelector(
   state => state.actions.filter,
@@ -128,7 +120,6 @@ export const loadplayerActions = payload => (dispatch) => {
   if (!payload.roles.some(el => el === 'Control' )) { // does no longer work
     url = `${baseURL}/${payload.username}`
   }
-
 
   return dispatch(
     apiCallBegan({

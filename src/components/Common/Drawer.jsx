@@ -26,10 +26,14 @@ export const CandiDrawer = ({ open, title, onClose, onOpen, children }) => {
 			size="full"
 			closeOnEsc="true"
 			onClose={handleClose}
-		>
+    >
 			<DrawerOverlay />
 			<DrawerContent bgColor="#0f131a">
-				<DrawerCloseButton size="sm" top="0px" right="0px" />
+				<DrawerCloseButton
+size="sm"
+top="0px"
+right="0px"
+				/>
         { title && <DrawerHeader>{title}</DrawerHeader> }
 				<DrawerBody>
           {children}

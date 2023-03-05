@@ -1,8 +1,7 @@
 import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
-import { Alert } from "rsuite";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { ChakraProvider, useToast } from "@chakra-ui/react";
+import { Route, Routes, Navigate,} from 'react-router-dom';
+import { ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
@@ -11,10 +10,9 @@ import Actions from "./components/Actions/Actions";
 import News from "./components/News/News";
 import Agendas from "./components/Agendas/Agendas";
 import HomePage from "./components/Navigation/HomePage";
-import CharacterProfile from "./components/MyCharacters/CharacterProfile";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
-import GameConfig from "./components/GameConfig/GameConfigStep1";
+import GameConfigStep1 from "./components/GameConfig/GameConfigStep1";
 import GameConfig2 from "./components/GameConfig/GameConfigStep2";
 import Log from "./components/Control/Log";
 
@@ -30,29 +28,29 @@ import NoCharacter from "./components/Navigation/NoCharacter";
 import { initConnection } from "./socket";
 import Registration from "./components/Control/Registration";
 import NotFound from "./components/Navigation/NotFound";
-import Bitsy from "./components/Navigation/Bitsy";
 import Down from "./components/Navigation/Down";
 import { signOut, usersRecieved } from "./redux/entities/auth";
-import Quests from "./components/Control/Quests";
-import Map from "./components/Map/Map";
 import { loadGameConfig } from "./redux/entities/gameConfig";
 import { loadArticles } from "./redux/entities/articles";
 import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
-import GameConfig3 from "./components/GameConfig/GameConfigStep3";
-import CharacterStats from "./components/StatDisplays/CharacterStats";
+import NavigationBar from "./components/Navigation/NavigationBar";
+import { loadAllActions } from "./redux/entities/playerActions";
+import { ErrorAlert } from "./components/Common/ErrorAlert";
+import { SuccessAlert } from "./components/Common/SuccessAlert";
+import Loading from "./components/Navigation/Loading";
 
 // React App Component
 initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
   // console.log(localStorage)
-  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog } = props;
+  const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog, loadAllActions } = props;
 
   const toast = useToast();
   useEffect(() => {
     const theme = "dark";
-    console.log(`Setting Theme: ${theme}`);
+    // console.log(`Setting Theme: ${theme}`);
 
     let head = document.head;
     let link = document.createElement("link");
@@ -82,8 +80,9 @@ const App = (props) => {
     loadGamestate();
     loadGameConfig();
     loadLog();
+    loadAllActions();
     socket.onAny((event, ...args) => {
-      console.log(event);
+      // console.log(event);
       if (event === "clients") {
         props.usersRecieved(...args);
       }
@@ -92,18 +91,23 @@ const App = (props) => {
     socket.on("alert", (data) => {
       if (data) {
         switch (data.type) {
-          case "error":
-            // console.log(data.message);
-            Alert.error(data.message, 6000);
-            break;
-          case "success":
-            Alert.success(data.message, 6000);
+          case 'success':
+          case 'error': 
+          // Alert.error(data.message, 6000);
+            if (!toast.isActive(data.type)) toast({
+              position: "top-right",
+              isClosable: true,
+              status: data.type,
+              duration: 5000,
+              id: data.type,
+              title: data.message,
+            });
             break;
           case "article":
             toast({
               position: "top-right",
               isClosable: true,
-              duration: 9000,
+              duration: 7000,
               render: () => <ArticleAlert data={data.data} />,
             });
             break;
@@ -111,7 +115,7 @@ const App = (props) => {
             window.location.reload(false);
             break;
           default:
-            Alert.info(data.message, 6000);
+            // Alert.info(data.message, 6000);
         }
       }
     });
@@ -138,50 +142,60 @@ const App = (props) => {
           : {}
       }
     >
-      <ChakraProvider>
-        <Switch>
-          <Route exact path='/login' render={(props) => <Login {...props} />} />
-          <Route exact path='/home' render={(props) => <HomePage {...props} />} />
-          <Route exact path='/character' render={(props) => <CharacterProfile {...props} />} />
-          <Route path='/news' render={(props) => <News {...props} />} />
-          <Route path='/agendas' render={(props) => <Agendas {...props} />} />
-          <Route path='/leaderboard' render={(props) => <CharacterStats {...props} />} />
-          <Route exact path='/others' render={(props) => <OtherCharacters {...props} />} />
-          <Route exact path='/actions' render={(props) => <Actions {...props} />} />
-          <Route exact path='/gameConfig' render={(props) => <GameConfig {...props} />} />
-          <Route exact path='/control' render={(props) => <ControlTerminal {...props} />} />
-          <Route exact path='/log' render={(props) => <Log {...props} />} />
-          <Route exact path='/quests' render={(props) => <Quests {...props} />} />
-          <Route exact path='/map' render={(props) => <Map {...props} />} />
-          <Route exact path='/404' render={(props) => <NotFound {...props} />} />
-          <Route exact path='/no-character' render={(props) => <NoCharacter {...props} />} />
-          <Route exact path='/registration' render={(props) => <Registration {...props} />} />
-          <Route exact path='/down' render={(props) => <Down {...props} />} />
-          <Route exact path='/bitsy' render={(props) => <Bitsy {...props} />} />
-          <Redirect from='/' exact to='login' />
-          <Redirect to='/404' />
-        </Switch>
-      </ChakraProvider>
+        <Grid
+          templateAreas={`"header header"
+                          "main main"`}
+          gridTemplateRows={'72px 1fr'}
+          h='100vh'
+          gap='1'
+          color={'#fff'}
+        >
+          {myCharacter && <GridItem pl='1'  area={'header'} >
+            <NavigationBar />
+          </GridItem>}
+
+          <GridItem pl='1' area={'main'} overflow='auto' >
+            <Routes>
+             <Route exact path='/login' element={<Login {...props} />} />
+             <Route exact path='/loading' element={<Loading {...props} />} />
+              <Route exact path='/home' element={<HomePage {...props} />} />
+              <Route path='/home/news' element={<News {...props} />} />
+              <Route path='/agendas' element={<Agendas {...props} />} />
+              <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
+              <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
+              <Route exact path='/home/actions' element={<Actions {...props} />} />
+              <Route exact path='/gameConfig' element={<GameConfigStep1 {...props} />} />
+              <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />
+              <Route exact path='/home/control' element={<ControlTerminal {...props} />} />
+              <Route exact path='/log' element={<Log {...props} />} />
+              <Route exact path='/404' element={<NotFound {...props} />} />
+              <Route exact path='/no-character' element={<NoCharacter {...props} />} />
+              <Route exact path='/registration' element={<Registration {...props} />} />
+              <Route exact path='/down' element={<Down {...props} />} />
+              <Route path="/" element={<Navigate to="/login" />}/>   
+              <Route exact path='/404' element={<NotFound {...props} />} />      
+            </Routes>    
+          </GridItem>
+
+        </Grid>    
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
-  actions: state.actions.list,
-  loading: state.auth.loading,
-  error: state.auth.error,
   login: state.auth.login,
   gameConfig: state.gameConfig,
   version: state.gamestate.version,
   characters: state.characters.list,
-  myCharacter: state.auth.user ? getMyCharacter(state) : undefined,
+  myCharacter: state.auth.myCharacter,
   duck: state.gamestate.duck,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadChar: () => dispatch(loadCharacters()),
   loadAssets: () => dispatch(loadAssets()),
+  loadAllActions: () => dispatch(loadAllActions()),
   loadArticles: () => dispatch(loadArticles()),
   loadLocations: () => dispatch(loadLocations()),
   loadGamestate: () => dispatch(loadGamestate()),

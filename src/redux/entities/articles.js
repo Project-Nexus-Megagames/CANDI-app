@@ -1,6 +1,5 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit"; // Import from reactjs toolkit
 import { apiCallBegan } from "../api"; // Import Redux API call
-import { Alert } from "rsuite";
 import { gameServer } from "../../config";
 
 
@@ -23,14 +22,12 @@ const slice = createSlice({
     },
     articlesReceived: (articles, action) => {
       console.log(`${action.type} Dispatched...`);
-      // Alert.info('article State Loaded!', 3000);
       articles.list = action.payload;
       articles.loading = false;
       articles.lastFetch = Date.now();
     },
     articlesRequestFailed: (articles, action) => {
       console.log(`${action.type} Dispatched`)
-      Alert.error(`${action.type}: ${action.payload}`, 4000);
       articles.loading = false;
     },
     articleAdded: (articles, action) => {
@@ -90,14 +87,14 @@ export default slice.reducer; // Reducer Export
 // Selector
 export const getMyArticles = createSelector(
   state => state.articles.list,
-  state => state.characters.list.find(el => el.username === state.auth.character?.username),
+  state => state.characters.list.find(el => el.username === state.auth.myCharacter?.username),
   (articles, myCharacter) => articles.filter(
     article => (( article.creator?._id === myCharacter?._id ) ))
 );
 
 export const getPublishedArticles = createSelector(
   state => state.articles.list,
-  state => state.characters.list.find(el => el.username === state.auth.character?.username),
+  state => state.characters.list.find(el => el.username === state.auth.myCharacter?.username),
   (articles) => articles.filter(
     article => ( article.tags.some(tag => tag === 'Published')))
 );

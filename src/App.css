@@ -130,6 +130,14 @@
   scrollbar-width: none;
 }
 
+/* .titleStyle {
+	font-weight: 100;
+	padding-bottom: 0;
+	font-size: 17;
+	padding-left: 2;
+	margin: -3
+}; */
+
 .styleCenter {
   display: flex;
   justify-content: left;
@@ -237,3 +245,18 @@ button {
 ul li {
   margin-left: 1.5em;
 }
+
+
+.publicComm {
+	background-color: #00a0bd
+};
+
+.privateComm {
+	background-color: #61342e
+};
+
+.infoComm {
+	background-color: #531ba8
+};
+
+

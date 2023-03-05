@@ -1,107 +1,117 @@
+import { CopyIcon } from '@chakra-ui/icons';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Button, Flex, Hide, Spacer, useToast } from '@chakra-ui/react';
 import React from 'react';
-import { FlexboxGrid, Avatar, Tag, TagGroup } from 'rsuite';
+import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
 
 const CharacterListItem = (props) => {
-	const { character, setSelected, selected } = props;
+	const { character, handleSelect, selected } = props;  
+  const myCharacter = useSelector(state => state.auth.myCharacter);
+  const characters = useSelector(state => state.characters.list);
+  const toast = useToast();
 
-	const listStyle = (item) => {
-		if (selected && item._id === selected._id) {
-			return { cursor: 'pointer', backgroundColor: '#212429' };
-		} else return { cursor: 'pointer' };
-	};
+  const copyToClipboard = (character) => {
+    if (character.characterName === "The Box") {
+      theBox();
+    } else {
+			// Build a transitive closure of all control affected.
+			let board = `${character.email}`;
 
-	const tagStyle = (item, index) => {
-		return(
-			<ResourceNugget value={item} width={'50px'} height={'30'} />
-		)
-		// switch (item) {
-		// 	case 'Control':
-		// 		return (
-		// 			<Tag index={index} style={{ color: 'black' }} key={index} color="orange">
-		// 				{item}
-		// 			</Tag>
-		// 		);
-		// 	case 'God':
-		// 		return (
-		// 			<Tag index={index} key={index} color="green">
-		// 				{item}
-		// 			</Tag>
-		// 		);
-		// 	case 'NPC':
-		// 		return (
-		// 			<Tag index={index} key={index} color="blue">
-		// 				{item}
-		// 			</Tag>
-		// 		);
-		// 	case 'PC':
-		// 		return (
-		// 			<Tag index={index} key={index} color="cyan">
-		// 				{item}
-		// 			</Tag>
-		// 		);
-		// 	case 'Public':
-		// 		return (
-		// 			<Tag style={{ color: 'black' }} index={index} color="green">
-		// 				{item}
-		// 			</Tag>
-		// 		);
-		// 	default:
-		// 		return (
-		// 			<Tag index={index} key={index}>
-		// 				{item}
-		// 			</Tag>
-		// 		);
-		// }
-	};
+			// First get the control of the searched character and the current character
+			let pending = [...new Set([...character.control, ...myCharacter.control])]
+			let seen = [];
+
+			while (pending.length != 0)  {
+				const cur = pending.shift()
+				seen.push(cur)
+				const character = characters.find((el) => el.characterName.toLowerCase() === cur.toLowerCase())
+				if(character) {
+					// add their controllers to the list to be searched if we haven't already done them
+					board = board.concat(`; ${character.email}`);
+				} else {
+					console.log(`${cur} could not be added to clipboard`);
+					// Alert.error(`${character} could not be added to clipboard`, 6000);
+				}
+			}
+      
+      const gamecontrol = characters.find((el) => el.tags.some(tag => tag.toLowerCase() === 'game control') );
+      if (gamecontrol) board = board.concat(`; ${gamecontrol.email}`);
+      navigator.clipboard.writeText(board);
+      // Alert.success("Email Copied!", 6000);
+
+      if (!toast.isActive('alert')) toast({
+        position: "top-right",
+        isClosable: true,
+        status: 'info',
+        duration: 5000,
+        id: board,
+        title: `Email(s) copied! \n\n ${board}`,
+      });
+    }
+  };
+
+  const theBox = () => {
+    const audio = new Audio("/candi1.mp3");
+    audio.loop = true;
+    audio.play();
+    // setImage("https://res.cloudinary.com/df8lwfbar/image/upload/v1664447183/goblinCity/kpj2mcukweiq3edjp4ww.jpg");
+  };
+
+  const openAnvil = (character) => {
+    if (character.characterName === "The Box") {
+      const audio = new Audio("/candi1.mp3");
+      audio.loop = true;
+      audio.play();
+    } else {
+      if (character.wiki && character.wiki !== "") {
+        let url = character.wiki;
+        const win = window.open(url, "_blank");
+        win.focus();
+      } else if (character.tags.some((el) => el === "God" || el === "Gods")) {
+        let url = `https://godswars.miraheze.org/wiki/Gods#${character.characterName}`;
+        const win = window.open(url, "_blank");
+        win.focus();
+      } else {
+        let url = "https://godswars.miraheze.org/wiki/";
+        let temp = url.concat(character.characterName.split(" ").join("_"));
+        const win = window.open(temp, "_blank");
+        win.focus();
+      }
+    }
+  };
+
 
 	return (
-			<FlexboxGrid align="middle" onClick={() => setSelected(character)} style={{ ...listStyle(character), whiteSpace: 'nowrap',}}>
-				<FlexboxGrid.Item colspan={7}>
-					<Avatar size="lg" src={character.profilePicture} alt="?" circle />
-				</FlexboxGrid.Item>
-				<FlexboxGrid.Item
-					colspan={17}
-					style={{
-						...styleCenter,
-						flexDirection: 'column',
-						alignItems: 'flex-start',
-						overflow: 'hidden'
-					}}
-				>
-					<b style={titleStyle}>{character.characterName}</b>
-					<b style={slimText}>
-						{character.email} {'  '}						
-					</b>
-					<TagGroup style={{ display: 'flex', marginLeft: '0px', marginTop: '-1px' }}>{character.tags && character.tags.filter(el => el.toLowerCase() !== 'public').map((item, index) => tagStyle(item, index))}</TagGroup>
-					
-				</FlexboxGrid.Item>
-			</FlexboxGrid>
+
+  <Flex align={'center'}  width={'100%'} onClick={() => handleSelect(character)}>
+    <Box flex={1}>
+			<Avatar size="lg" src={character.profilePicture} alt="?" />
+		</Box>
+		<Box
+      flex={8}
+      className="styleCenter"
+			style={{
+				flexDirection: 'column',
+				overflow: 'hidden',
+        textOverflow: 'ellipsis'
+			}}
+		>
+			<h4>{character.characterName}</h4>
+      <Button
+        onClick={(e) => { e.stopPropagation(); copyToClipboard(character)}}
+        leftIcon={<CopyIcon/>}
+        colorScheme='blue'
+        variant='outline'
+      >
+        {character.email}                         
+      </Button>
+			
+		</Box>  
+     
+
+  </Flex>
+
 	);
-};
-
-const styleCenter = {
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-};
-
-const titleStyle = {
-	whiteSpace: 'nowrap',
-	fontWeight: 100,
-	paddingBottom: 0,
-	fontSize: 17,
-	paddingLeft: 2,
-	margin: -3
-};
-
-const slimText = {
-	fontSize: '0.95em',
-	color: '#97969B',
-	fontWeight: 'lighter',
-	paddingBottom: 2,
-	paddingLeft: 2,
-	whiteSpace: 'nowrap'
 };
 
 export default CharacterListItem;
