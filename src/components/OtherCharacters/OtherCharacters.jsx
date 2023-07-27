@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"; // Redux store provider
 import NewCharacter from "../Control/NewCharacter";
 import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters, characterSelected } from "./../../redux/entities/characters";
-import { Accordion, Box, Button, ButtonGroup, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Spinner, Tag, VStack } from "@chakra-ui/react";
+import { Accordion, Box, Button, ButtonGroup, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Show, Spinner, Tag, VStack } from "@chakra-ui/react";
 import { getFadedColor, getTextColor } from "../../scripts/frontend";
 import { ChevronLeftIcon, DeleteIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import CharactersDrawer from "./CharactersDrawer";
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 import ModifyCharacter from "./ModifyCharacter";
 import { CandiWarning } from "../Common/CandiWarning";
 import socket from "../../socket";
+import CharacterList from "./CharacterList";
 
 const OtherCharacters = (props) => {
 	const navigate = useNavigate();
@@ -28,6 +29,7 @@ const OtherCharacters = (props) => {
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
+  
 
   if (!props.login) {
     navigate("/");
@@ -78,12 +80,30 @@ const OtherCharacters = (props) => {
     <React.Fragment>
       <Box >
         <Grid
-          templateAreas={`"header header"
-            "main main"
+          templateAreas={`"list header header"
+            "list main main"
           `}
-          gridTemplateColumns={ '50% 49%'}
+          gridTemplateColumns={ '20% 80%'}
           gridTemplateRows={'80px 1fr'}
           fontWeight='bold'>
+
+
+          <GridItem pl='1' bg='#0f131a' area={'list'} >
+          <Hide below="md" >
+            <CharacterList 
+              filteredCharacters={filteredCharacters}
+              onChange={(e) => filterThis(e.target.value)}
+              value={props.filter}
+              onClick={() => setMode('new')}
+              handleSelect={(char) => { reduxAction(characterSelected(char)); setMode(false); }}
+              isOpen={mode === 'drawer'}
+              onClose={() => setMode(false)}
+            />
+            </Hide>
+          </GridItem>
+
+
+
         <GridItem pl='2' bg='#0f131a' area={'header'} >
           <Flex
                     marginTop='2rem'
@@ -92,6 +112,7 @@ const OtherCharacters = (props) => {
                     <Box
                         marginRight='1rem'
                     >
+                      <Show below='md'>
                         <Button
                             onClick={() => setMode('drawer')}
                             leftIcon={<ChevronLeftIcon/>}
@@ -99,7 +120,9 @@ const OtherCharacters = (props) => {
                             variant='solid'
                         >
                           <Hide below='md'>Open Drawer</Hide>                            
-                        </Button>
+                        </Button>                        
+                      </Show>   
+
                     </Box>
                     {control && <Box
                         marginLeft='1rem'

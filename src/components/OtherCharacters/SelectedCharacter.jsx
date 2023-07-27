@@ -20,6 +20,7 @@ const SelectedCharacter = (props) => {
 
 	return ( 
 		<Grid
+      width={'99%'}
         templateAreas={`"side main"
                         "body body"`}
         gridTemplateColumns={ '50% 50%'}
