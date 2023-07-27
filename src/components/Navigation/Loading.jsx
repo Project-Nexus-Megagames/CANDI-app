@@ -161,5 +161,7 @@ const bored = [
 	'https://www.youtube.com/watch?v=D4D5fZb-sEM&ab_channel=ProZD', // A Sexy RP with Walter White and Joseph Stalin
 	'https://www.youtube.com/watch?v=D6aVzIWT7oM&t=14s&ab_channel=AllyourbasicGerrard', // Global Club Soccer Rankings
 	'https://www.youtube.com/watch?v=x0WQOGVLLGw&ab_channel=weyrdmusicman', // Xenophobia
-	'https://www.youtube.com/watch?v=9klzZsVw-cQ&ab_channel=KotteAnimation'
+	'https://www.youtube.com/watch?v=9klzZsVw-cQ&ab_channel=KotteAnimation',
+  'https://www.youtube.com/watch?v=jFHH3cFzKbo&ab_channel=Evan%27sKazooCovers', // Interstellar Docking Scene but the Orchestra was Fired and Replaced by Kazoos
+  'https://www.youtube.com/watch?v=CwaD9tb1P50&t=13s&ab_channel=Tr0ubleshooter' // release the kitties
 ]; // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
