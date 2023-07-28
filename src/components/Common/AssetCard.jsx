@@ -8,9 +8,10 @@ import ResourceNugget from './ResourceNugget';
 import AssetForm from './AssetForm';
 import { useSelector } from 'react-redux';
 import { CandiModal } from './CandiModal';
+import { Close } from '@rsuite/icons';
 
 const AssetCard = (props) => {
-  const { asset, character, disabled, marginTop, handleSelect } = props;
+  const { asset, character, disabled, marginTop, handleSelect, removeAsset } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
 
@@ -23,7 +24,7 @@ const AssetCard = (props) => {
 };
 
 	return ( 
-		<div onClick={() => handleSelect ? handleSelect(asset) : console.log("Peekabo!")} >
+		<div style={{ overflow: 'clip' }} onClick={() => handleSelect ? handleSelect(asset) : console.log("Peekabo!")} >
       <Card marginTop={marginTop} key={asset._id} >
         <CardHeader>
           <h5>{asset.name} 
@@ -31,6 +32,8 @@ const AssetCard = (props) => {
            <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<EditIcon />} />         
            <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<DeleteIcon />} />                  
           </ButtonGroup>}
+
+          {removeAsset && <IconButton variant={'outline'} onClick={() => removeAsset()} colorScheme="red" size={'sm'} icon={<Close/>}  />}
           
           </h5>
           <Flex align={'center'} >
@@ -44,10 +47,13 @@ const AssetCard = (props) => {
           </Flex>
 
         </CardHeader>
-        <div style={{ maxHeight: '20vh', overflow: 'scroll', textOverflow: 'ellipsis', }} >                    
+        <CardBody style={{ maxHeight: '20vh', textOverflow: 'ellipsis', paddingTop: '0px' }} >
+        {asset.description}
+        </CardBody>
+        {/* <div style={{ maxHeight: '20vh', overflow: 'clip', textOverflow: 'ellipsis', }} >                    
           {asset.description}
           
-        </div>                
+        </div>                 */}
       </Card>
 
       {asset && <CandiWarning open={mode === 'delete'} title={`Delete "${asset.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>

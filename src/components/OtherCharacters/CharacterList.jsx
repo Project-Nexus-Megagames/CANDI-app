@@ -35,6 +35,7 @@ function CharacterList({filteredCharacters, value, onChange, onClick, handleSele
                             aria-label='a tooltip'
                         >
                             <IconButton
+                              variant={'solid'}
                                 icon={<AddIcon/>}
                                 onClick={onClick}
                                 colorScheme={'green'}

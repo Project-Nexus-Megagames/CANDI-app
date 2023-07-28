@@ -7,11 +7,12 @@ import Action from "./ActionList/Action/Action";
 import { Accordion, Box, Button, Container, Flex, Hide, Input, InputGroup, InputLeftElement, Spinner, useDisclosure } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
 import WordDivider from "../WordDivider";
-import { ChevronLeftIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, CloseIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import AssetInfo from "./AssetInfo";
 import EditAction from "./Modals/EditAction";
 import { useNavigate } from 'react-router';
 import { getFadedColor } from '../../scripts/frontend';
+import ActionForm from './Forms/ActionForm';
 
 const Actions = (props) => {
 	  const navigate = useNavigate();
@@ -51,6 +52,7 @@ const Actions = (props) => {
         rounds.reverse();
         setRounds(rounds);
         setRenderRounds(rounds.slice(0, 1))
+        if (selected) setSelected(actions.list.find(el => el._id === selected._id))
     };
 
     const handleRoundToggle = (round) => {
@@ -89,7 +91,7 @@ const Actions = (props) => {
                     marginTop='2rem'
                     width={'100%'}
                 >
-                    <Box
+                    {<Box
                         marginRight='1rem'
                     >
                         <Button
@@ -100,7 +102,7 @@ const Actions = (props) => {
                         >
                           <Hide below='md'>Open Drawer</Hide>                            
                         </Button>
-                    </Box>
+                    </Box>}
                     <InputGroup>
                         <InputLeftElement
                             pointerEvents='none'
@@ -117,14 +119,22 @@ const Actions = (props) => {
                     <Box
                         marginLeft='1rem'
                     >
-                        <Button
+                        {!showNewActionModal && <Button
                             onClick={() => setShowNewActionModal(true)}
                             leftIcon={<PlusSquareIcon/>}
                             colorScheme='green'
                             variant='solid'
                         >
                           <Hide below='md'>Create New Action</Hide>                           
-                        </Button>
+                        </Button>}
+                        {showNewActionModal && <Button
+                            onClick={() => setShowNewActionModal(false)}
+                            leftIcon={<CloseIcon/>}
+                            colorScheme='orange'
+                            variant='solid'
+                        >
+                          <Hide below='md'>Cancel New Action</Hide>                           
+                        </Button>}
                     </Box>
                 </Flex>
 
@@ -141,7 +151,7 @@ const Actions = (props) => {
                     allowMultiple                    
                     width={'100%'}
                 >
-                    {!selected && rounds.map((round, index) => (
+                    {!selected && !showNewActionModal && rounds.map((round, index) => (
                         <Box
                             key={index}
                         >
@@ -171,7 +181,7 @@ const Actions = (props) => {
                         </Box>
                     ))}
 
-                    {selected && <Action
+                    {selected && !showNewActionModal && <Action
                       action={selected}
                       key={selected._id}
                       toggleAssetInfo={(asset) => {
@@ -181,13 +191,15 @@ const Actions = (props) => {
                           setEditAction({show: true, action})
                       }}
                     />}
+
+                      {showNewActionModal && <ActionForm closeNew={() => setShowNewActionModal(false)} />}
                 </Accordion>
 
-                <NewAction
+                {/* <NewAction
                     show={showNewActionModal}
                     closeNew={() => setShowNewActionModal(false)}
                     gamestate={props.gamestate}
-                />
+                /> */}
 
                 <AssetInfo
                     asset={assetInfo.asset}
