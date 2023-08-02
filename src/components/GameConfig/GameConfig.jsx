@@ -9,6 +9,7 @@ import GameConfig3 from './GameConfigStep3';
 import GameConfigStep4 from './GameConfigStep4';
 import GameConfigStepResources from './GameConfigStepResources';
 import socket from '../../socket';
+import GameConfigLayout from './GameConfigLayout';
 
 function GameConfig(props) {
 	const config = useSelector((state) => state.gameConfig);
@@ -34,6 +35,9 @@ function GameConfig(props) {
 		<div className='styleCenter'>
 			<div>
 				<VStack divider={<Divider orientation='vertical' />}>
+          <Button colorScheme={'teal'} variant={step === 0 ? 'solid' : 'outline'} onClick={() => setStep('layout')}>
+						CANDI Layout
+					</Button>
 					<Button colorScheme={'teal'} variant={step === 0 ? 'solid' : 'outline'} onClick={() => setStep('effort')}>
 						Effort Types
 					</Button>
@@ -55,6 +59,7 @@ function GameConfig(props) {
 				</Button>
 			</div>
 
+			{step === 'layout' && <GameConfigLayout />}
 			{step === 'effort' && <GameConfigStep1 />}
 			{step === 'resource' && <GameConfigStepResources />}
 			{step === 'action' && <GameConfig2 />}

@@ -61,7 +61,7 @@ function CharacterList({filteredCharacters, value, onChange, onClick, handleSele
                         {filteredCharacters
                         .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
                           .map((character =>
-                            <CharacterListItem key={character._id} character={character} handleSelect={(character) => handleSelect(character)}  />
+                            <CharacterListItem showButton={true} key={character._id} character={character} handleSelect={(character) => handleSelect(character)}  />
                           ))}        
                       </VStack>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccordionItem, AccordionPanel, Box, Flex } from "@chakra-ui/react";
+import { AccordionItem, AccordionPanel, Box, Flex, Tag } from "@chakra-ui/react";
 import { getFadedColor, getTime } from "../../../../scripts/frontend";
 import ActionHeader from "./ActionHeader/ActionHeader";
 import ActionResources from "./ActionResources";
@@ -56,6 +56,11 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons}) => {
                         creator={action.creator}
                     />
                     <AccordionPanel>
+                      {action.collaborators.length > 0 && 
+                      <div>Collaborators <br/>
+                        {action.collaborators.map(char =>
+                          <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='teal' >{char.characterName}</Tag>)}
+                      </div>}
                         {!hidebuttons && <ActionButtons
                             action={action}
                             toggleEdit={toggleEdit}

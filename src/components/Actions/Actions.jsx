@@ -13,6 +13,7 @@ import EditAction from "./Modals/EditAction";
 import { useNavigate } from 'react-router';
 import { getFadedColor } from '../../scripts/frontend';
 import ActionForm from './Forms/ActionForm';
+import socket from '../../socket';
 
 const Actions = (props) => {
 	  const navigate = useNavigate();
@@ -61,19 +62,39 @@ const Actions = (props) => {
     }
 
     const sortedActions = (currRound, actions) => {
-        return actions
-            .filter((action) => action.round === currRound)
-            .sort((a, b) => {
-                // sort alphabetically
-                if (a.creator.characterName < b.creator.characterName) {
-                    return -1;
-                }
-                if (a.creator.characterName > b.creator.characterName) {
-                    return 1;
-                }
-                return 0;
-            })            
+      return actions
+          .filter((action) => action.round === currRound)
+          .sort((a, b) => {
+              // sort alphabetically
+              if (a.creator.characterName < b.creator.characterName) {
+                  return -1;
+              }
+              if (a.creator.characterName > b.creator.characterName) {
+                  return 1;
+              }
+              return 0;
+          })            
     }
+
+    const handleSubmit = async (incoming) => {
+      const { effort, resource, description, intent, name, actionType, myCharacter, collaborators } = incoming;
+      const data = {
+        submission: {
+          effort: effort,
+          assets: resource.filter(el => el),
+          description: description,
+          intent: intent,
+        },
+        name: name,
+        type: actionType.type,
+  
+        creator: myCharacter._id,
+        numberOfInjuries: myCharacter.injuries.length,
+        collaborators
+      };
+      // 1) make a new action 
+      socket.emit('request', { route: 'action', action: 'create', data });
+    };
 
     const actionList = isControl ? props.filteredActions : props.myActions;
     return (
@@ -192,7 +213,7 @@ const Actions = (props) => {
                       }}
                     />}
 
-                      {showNewActionModal && <ActionForm closeNew={() => setShowNewActionModal(false)} />}
+                      {showNewActionModal && <ActionForm handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setShowNewActionModal(false)} />}
                 </Accordion>
 
                 {/* <NewAction

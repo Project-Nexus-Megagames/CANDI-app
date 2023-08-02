@@ -8,17 +8,21 @@ import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
 import ActionSubObject from "./ActionSubobject";
 import { PlusSquareIcon } from "@chakra-ui/icons";
+import ActionForm from "../../Forms/ActionForm";
+import socket from "../../../../socket";
 
 function Feed({action}) {
     const gamestate = useSelector(state => state.gamestate);
     const myCharacter = useSelector(state => state.auth.myCharacter);
     const {isControl} = usePermissions();
+    const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
 
     const [mode, setMode] = React.useState(false);
 
     const list = [...action.results,
         ...action.effects,
-        ...action.comments
+        ...action.comments,
+        ...action.submissions
     ].sort((a, b) => {
       let da = new Date(a.createdAt),
         db = new Date(b.createdAt);
@@ -29,6 +33,21 @@ function Feed({action}) {
         setMode(false);
     };
 
+    const handleSubmit = async (incoming) => {
+      const { effort, assets, description, intent, name, type, creator, numberOfInjuries, collaborators } = incoming;
+      const data = {
+        name,
+        type,
+        effort: effort,
+        assets,
+        description: description,
+        intent: intent,
+        creator,
+        action: action._id
+      };
+
+      socket.emit('request', { route: 'action', action: 'collab', data });
+    };
     return (
         <Box
             marginTop={'1rem'}
@@ -47,6 +66,7 @@ function Feed({action}) {
               <Spacer />
                 {!mode && (
                     <IconButton
+                      variant={'solid'}
                         onClick={() => setMode('add')}
                         colorScheme="blue"
                         icon={<PlusSquareIcon icon="plus"/>}
@@ -57,7 +77,7 @@ function Feed({action}) {
                         style={{width: '100%', transition: '.5s'}}
                     >
                         {action && action.type === 'Agenda' &&
-                            <Button
+                            <Button variant={'solid'}
                                 disabled={myCharacter.effort.find(el => el.type === 'Agenda').amount <= 0}
                                 onClick={() => setMode('support')}
                                 colorScheme='green'
@@ -65,14 +85,14 @@ function Feed({action}) {
                                 Support
                             </Button>
                         }
-                        <Button
+                        <Button variant={'solid'}
                             onClick={() => setMode('comment')}
                             colorScheme="cyan"
                         >
                             Comment
                         </Button>
                         {isControl && (
-                            <Button
+                            <Button variant={'solid'}
                                 onClick={() => setMode('result')}
                                 colorScheme="blue"
                             >
@@ -80,17 +100,28 @@ function Feed({action}) {
                             </Button>
                         )}
                         {isControl && (
-                            <Button
+                            <Button variant={'solid'}
                                 onClick={() => setMode('effect')}
                                 colorScheme="purple"
                             >
                                 Effect
                             </Button>
                         )}
+
+                        {isCollaborator && (
+                            <Button variant={'solid'}
+                                onClick={() => setMode('collab')}
+                                colorScheme="pink"
+                            >
+                                Collaborate
+                            </Button>
+                        )}
                     </ButtonGroup>
                 )}
               <Spacer />
             </Flex>
+
+            {mode === 'collab' && <ActionForm handleSubmit={handleSubmit} actionType={action.type} collabMode closeNew={() => closeIt()} />}
 
             <NewResult
               show={mode === 'result'}

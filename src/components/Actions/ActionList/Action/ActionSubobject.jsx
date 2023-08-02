@@ -12,6 +12,7 @@ const ActionSubObject = (props) => {
   const time = getTime(subObject.createdAt);
   const creator = subObject.resolver ? subObject.resolver :
                   subObject.effector ? subObject.effector :
+                  subObject.creator ? subObject.creator :
                   subObject.commentor;
                   
   const [mode, setMode] = React.useState(false);
@@ -38,8 +39,8 @@ const ActionSubObject = (props) => {
             alignItems='center'
           >
           <Avatar
-            name={creator.characterName}
-            src={creator.profilePicture}
+            name={creator?.characterName}
+            src={creator?.profilePicture}
             marginRight='auto'
           />
           </Box>
