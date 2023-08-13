@@ -34,14 +34,12 @@ const ActionForm = (props) => {
 	const [max, setMax] = React.useState(0);
 
 	const setMaxEffort = () => {
-		let charEffort = getThisEffort(myCharacter.effort, actionType.type);
-		setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);
+    if (actionType) {
+      let charEffort = getThisEffort(myCharacter.effort, actionType.type);
+      setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);      
+    }
 	};
   
-  useEffect(() => {
-    newMap(actionType.maxAssets);
-	}, [])
-
 	useEffect(() => {
 		if (actionType && actionType.type) {
 			setEffort({ effortType: actionType.type, amount: 0 });
@@ -51,7 +49,7 @@ const ActionForm = (props) => {
 	}, [actionType?.type]);
 
   useEffect(() => {
-    newMap(actionType.maxAssets);
+    newMap(actionType?.maxAssets);
 	}, [actionType])
 
 	useEffect(() => {
@@ -94,20 +92,20 @@ const ActionForm = (props) => {
 			description: description,
 			intent: intent,
 			name: name,
-			type: actionType.type,
-			creator: myCharacter._id,
+			actionType: actionType,
+			myCharacter: myCharacter,
 			numberOfInjuries: myCharacter.injuries.length,
       collaborators
 		};
-		// setActionType(false);
-		// setDescription('');
-		// setIntent('');
-		// setName('');
-		// setResource([]);
-		// setCollaborators([]);
+		setActionType(false);
+		setDescription('');
+		setIntent('');
+		setName('');
+		setResource([]);
+		setCollaborators([]);
 
     handleSubmit(data)
-		//props.closeNew();
+		props.closeNew();
 	};
 
 	function isDisabled(effort) {
@@ -145,25 +143,25 @@ const ActionForm = (props) => {
       {!collabMode && <Center>
             <ButtonGroup isAttached>
               {gameConfig &&
-                gameConfig.actionTypes.map((aType) => (
-                  <Tooltip key={aType.type} openDelay={50} placement='top' label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType.type} Left'`}</b>}>
+                gameConfig.actionTypes.filter(el => el).map((aType) => (
+                  <Tooltip key={aType?.type} openDelay={50} placement='top' label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType?.type} Left'`}</b>}>
                     <Button
-                      style={{ backgroundColor: actionType.type === aType.type ? getFadedColor(`${aType.type}`) : '#273040' }}
+                      style={{ backgroundColor: actionType?.type === aType?.type ? getFadedColor(`${aType?.type}`) : '#273040' }}
                       onClick={() => {
                         setActionType(aType);
                         setResource([]);
                       }}
                       variant={'outline'}
-                      leftIcon={getIcon(aType.type)}
+                      leftIcon={getIcon(aType?.type)}
                     >
-                      {aType.type}
+                      {aType?.type}
                     </Button>
                   </Tooltip>
                 ))}
             </ButtonGroup>
       </Center>}
 
-			{actionType.type && (
+			{actionType && actionType.type && (
 						<div>
 							<form>
 

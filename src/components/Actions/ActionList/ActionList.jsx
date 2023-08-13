@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {    Accordion,    AccordionButton,    AccordionIcon,    AccordionItem,    AccordionPanel,    Avatar,    Box,    Container,    Flex,    Heading,    StackDivider,    Tag,    VStack} from "@chakra-ui/react";
 import ActionTag from "./ActionTag";
+import { getFadedColor } from '../../../scripts/frontend';
 
-function ActionList({actions, handleSelect}) {
+function ActionList({ actions, handleSelect, selected }) {
     const [rounds, setRounds] = useState([]);
 
     useEffect(() => {
@@ -20,7 +21,7 @@ function ActionList({actions, handleSelect}) {
                 rounds.push(action.round);
             }
         }
-        rounds.reverse();
+        //rounds.reverse();
         setRounds(rounds);
     };
 
@@ -57,7 +58,7 @@ function ActionList({actions, handleSelect}) {
     }
 
     return (
-        <Container>
+        <Container >
             <Accordion
                 allowMultiple
                 defaultIndex={[0]}                
@@ -99,6 +100,8 @@ function ActionList({actions, handleSelect}) {
                                         <Flex
                                             key={action._id}
                                             onClick={() => handleSelect(action)}
+                                            backgroundColor={selected === action ? getFadedColor(action.type) : 'inherit'}
+                                            paddingLeft={'15px'}
                                             style={{
                                                 marginTop: '0',
                                                 cursor: 'pointer',

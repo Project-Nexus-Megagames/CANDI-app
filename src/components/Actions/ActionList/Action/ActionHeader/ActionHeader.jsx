@@ -1,5 +1,5 @@
 import React from "react";
-import { AccordionButton, AccordionIcon, Avatar, background, Box, Flex, Heading } from "@chakra-ui/react";
+import { AccordionButton, AccordionIcon, Avatar, background, Box, Flex, Heading, Tag } from "@chakra-ui/react";
 import ActionTags from "./ActionTags";
 import { getFadedColor } from "../../../../../scripts/frontend";
 
@@ -34,7 +34,10 @@ function ActionHeader({action, time, toggleEdit, creator}) {
                             fontSize={'.9rem'}
                             fontWeight={'normal'}
                         >
-                            {creator.playerName} - {creator.characterName}
+                          <Tag margin={'2px'} variant={'solid'} colorScheme='purple' >{creator.playerName} - {creator.characterName}</Tag>
+                            
+                            {action.collaborators.length > 0 && action.collaborators.map(char =>
+                              <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >{char.characterName}</Tag>)}
                         </Box>
                         <Box
                             fontSize={'.9rem'}
@@ -42,10 +45,6 @@ function ActionHeader({action, time, toggleEdit, creator}) {
                         >
                             {time}
                         </Box>
-                        <ActionTags
-                            tags={action.tags}
-                            actionId={action._id}
-                        />
                     </Box>
                 </Flex>
                 <Flex flex={1}>

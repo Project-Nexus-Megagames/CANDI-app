@@ -8,6 +8,7 @@ import ActionEffort from "./ActionEffort";
 import Feed from "./Feed";
 import ActionButtons from './ActionHeader/ActionButtons';
 import socket from '../../../../socket';
+import ActionTag from '../ActionTag';
 
 const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons}) => {
     function getBorder() {
@@ -56,11 +57,10 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons}) => {
                         creator={action.creator}
                     />
                     <AccordionPanel>
-                      {action.collaborators.length > 0 && 
-                      <div>Collaborators <br/>
-                        {action.collaborators.map(char =>
-                          <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='teal' >{char.characterName}</Tag>)}
-                      </div>}
+                      {/* <ActionTag
+                          tags={action.tags}
+                          actionId={action._id}
+                      /> */}
                         {!hidebuttons && <ActionButtons
                             action={action}
                             toggleEdit={toggleEdit}

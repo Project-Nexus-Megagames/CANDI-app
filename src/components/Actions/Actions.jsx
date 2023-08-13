@@ -4,19 +4,21 @@ import { filteredActions, getMyActions, setFilter } from '../../redux/entities/p
 import NewAction from './Modals/NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
-import { Accordion, Box, Button, Container, Flex, Hide, Input, InputGroup, InputLeftElement, Spinner, useDisclosure } from "@chakra-ui/react";
+import { Accordion, Box, Button, Container, Flex, Grid, GridItem, Hide, IconButton, Input, InputGroup, InputLeftElement, Spinner, Tooltip, useDisclosure, useToast } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
 import WordDivider from "../WordDivider";
-import { ChevronLeftIcon, CloseIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronLeftIcon, CloseIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import AssetInfo from "./AssetInfo";
 import EditAction from "./Modals/EditAction";
 import { useNavigate } from 'react-router';
 import { getFadedColor } from '../../scripts/frontend';
 import ActionForm from './Forms/ActionForm';
 import socket from '../../socket';
+import ActionList from './ActionList/ActionList';
 
 const Actions = (props) => {
-	  const navigate = useNavigate();
+	  const navigate = useNavigate();    
+    const toast = useToast();
     const [showNewActionModal, setShowNewActionModal] = useState(false);
     const [assetInfo, setAssetInfo] = useState({show: false, asset: ''});
     const [editAction, setEditAction] = useState({show: false, action: null})
@@ -26,6 +28,24 @@ const Actions = (props) => {
     const [number, setNumber] = useState(4);
     const [selected, setSelected] = useState(false);
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const [filter, setFilter] = useState('');
+
+    const [windowSize, setWindowSize] = useState([
+      window.innerWidth,
+      window.innerHeight,
+    ]);
+  
+    useEffect(() => {
+      const handleWindowResize = () => {
+        setWindowSize([window.innerWidth, window.innerHeight]);
+      };
+  
+      window.addEventListener('resize', handleWindowResize);
+  
+      return () => {
+        window.removeEventListener('resize', handleWindowResize);
+      };
+    }, []);
 
     useEffect(() => {
         try {
@@ -53,7 +73,7 @@ const Actions = (props) => {
         rounds.reverse();
         setRounds(rounds);
         setRenderRounds(rounds.slice(0, 1))
-        if (selected) setSelected(actions.list.find(el => el._id === selected._id))
+        if (selected) setSelected(actions.find(el => el._id === selected._id))
     };
 
     const handleRoundToggle = (round) => {
@@ -77,87 +97,129 @@ const Actions = (props) => {
     }
 
     const handleSubmit = async (incoming) => {
-      const { effort, resource, description, intent, name, actionType, myCharacter, collaborators } = incoming;
-      const data = {
-        submission: {
-          effort: effort,
-          assets: resource.filter(el => el),
-          description: description,
-          intent: intent,
-        },
-        name: name,
-        type: actionType.type,
-  
-        creator: myCharacter._id,
-        numberOfInjuries: myCharacter.injuries.length,
-        collaborators
-      };
-      // 1) make a new action 
-      socket.emit('request', { route: 'action', action: 'create', data });
+      const { effort, assets, description, intent, name, actionType, myCharacter, collaborators } = incoming;
+      try {
+        const data = {
+          submission: {
+            effort: effort,
+            assets: assets.filter(el => el),
+            description: description,
+            intent: intent,
+          },
+          name: name,
+          type: actionType.type,
+    
+          creator: myCharacter._id,
+          numberOfInjuries: myCharacter.injuries.length,
+          collaborators
+        };
+        // 1) make a new action 
+        socket.emit('request', { route: 'action', action: 'create', data });
+      }
+      catch (err) {
+        toast({
+          position: "top-right",
+          isClosable: true,
+          status: 'error',
+          duration: 5000,
+          id: err,
+          title: err,
+        });
+      }
     };
 
     const actionList = isControl ? props.filteredActions : props.myActions;
     return (
-        <Box
-            overflowY={'scroll'}
-        >
-            <Container
-                height={'calc(100vh - 90px)'}
-                centerContent
-                maxW={'1200px'}
-                minW={'350px'}
-            >
-                <Flex
-                    align={'center'}
-                    marginTop='2rem'
-                    width={'100%'}
+			<Grid
+          templateAreas={`"nav main"`}
+          gridTemplateColumns={window.innerWidth < 1000 ? '0% 100%' : '25% 75%'}
+          gap='1'
+          fontWeight='bold'>
+        <GridItem pl='2' bg='#1b2330' area={'nav'} style={{ height: 'calc(100vh - 78px)', overflow: 'auto', }} >
+          <Flex align={'center'}>
+            <InputGroup>
+                <InputLeftElement
+                    pointerEvents='none'
                 >
-                    {<Box
-                        marginRight='1rem'
-                    >
-                        <Button
-                            onClick={() => onOpen()}
-                            leftIcon={<ChevronLeftIcon/>}
-                            colorScheme='orange'
-                            variant='solid'
-                        >
-                          <Hide below='md'>Open Drawer</Hide>                            
-                        </Button>
-                    </Box>}
-                    <InputGroup>
-                        <InputLeftElement
-                            pointerEvents='none'
-                        >
-                            <SearchIcon/>
-                        </InputLeftElement>
-                        <Input
-                            onChange={(e) => props.setFilter(e.target.value)}
-                            value={props.filter}
-                            placeholder="Search"
-                            color='white'
-                        />
-                    </InputGroup>
-                    <Box
-                        marginLeft='1rem'
-                    >
-                        {!showNewActionModal && <Button
-                            onClick={() => setShowNewActionModal(true)}
-                            leftIcon={<PlusSquareIcon/>}
-                            colorScheme='green'
-                            variant='solid'
-                        >
-                          <Hide below='md'>Create New Action</Hide>                           
-                        </Button>}
-                        {showNewActionModal && <Button
-                            onClick={() => setShowNewActionModal(false)}
-                            leftIcon={<CloseIcon/>}
-                            colorScheme='orange'
-                            variant='solid'
-                        >
-                          <Hide below='md'>Cancel New Action</Hide>                           
-                        </Button>}
-                    </Box>
-                </Flex>
+                    <SearchIcon/>
+                </InputLeftElement>
+                <Input
+                    onChange={(e) => setFilter(e.target.value)}
+                    value={filter}
+                    placeholder="Search"
+                    color='white'
+                />
+            </InputGroup>
+            <Tooltip
+                label='Add New Action'
+                aria-label='a tooltip'>
+                <IconButton
+                    icon={<AddIcon/>}
+                    onClick={setShowNewActionModal}
+                    colorScheme={'green'}
+                    variant={'solid'}
+                    style={{
+                        marginLeft: '1rem'
+                    }}
+                    aria-label='Add New Action'
+                />
+            </Tooltip>
+          </Flex>
+          <ActionList selected={selected} actions={actionList} handleSelect={setSelected} />
+				</GridItem>
+
+        <GridItem overflow='auto' pl='1' bg='#1b2330' area={'main'} style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }}>
+          <Flex
+              align={'center'}
+              marginTop='2rem'
+              width={'100%'}
+          >
+              {window.innerWidth < 1000 && <Box
+                  marginRight='1rem'
+              >
+                  <Button
+                      onClick={() => onOpen()}
+                      leftIcon={<ChevronLeftIcon/>}
+                      colorScheme='orange'
+                      variant='solid'
+                  >
+                    <Hide below='md'>Open Drawer</Hide>                            
+                  </Button>
+              </Box>}
+              <InputGroup>
+                  <InputLeftElement
+                      pointerEvents='none'
+                  >
+                      <SearchIcon/>
+                  </InputLeftElement>
+                  <Input
+                      onChange={(e) => props.setFilter(e.target.value)}
+                      value={props.filter}
+                      placeholder="Search"
+                      color='white'
+                  />
+              </InputGroup>
+              <Box
+                  marginLeft='1rem'
+              >
+                  {!showNewActionModal && <Button
+                      onClick={() => setShowNewActionModal(true)}
+                      leftIcon={<PlusSquareIcon/>}
+                      colorScheme='green'
+                      variant='solid'
+                  >
+                    <Hide below='md'>Create New Action</Hide>                           
+                  </Button>}
+                  {showNewActionModal && <Button
+                      onClick={() => setShowNewActionModal(false)}
+                      leftIcon={<CloseIcon/>}
+                      colorScheme='orange'
+                      variant='solid'
+                  >
+                    <Hide below='md'>Cancel New Action</Hide>                           
+                  </Button>}
+              </Box>
+          </Flex>
 
                 <ActionDrawer
                     // onChange={(e) => props.setFilter(e.target.value)}
@@ -216,11 +278,11 @@ const Actions = (props) => {
                       {showNewActionModal && <ActionForm handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setShowNewActionModal(false)} />}
                 </Accordion>
 
-                {/* <NewAction
+                <NewAction
                     show={showNewActionModal}
                     closeNew={() => setShowNewActionModal(false)}
                     gamestate={props.gamestate}
-                /> */}
+                /> 
 
                 <AssetInfo
                     asset={assetInfo.asset}
@@ -233,8 +295,9 @@ const Actions = (props) => {
                     showEdit={editAction.show}
                     handleClose={() => setEditAction({action: null, show: false})}
                 />
-            </Container>
-        </Box>
+        </GridItem> 
+       
+      </Grid>
     );
 };
 
