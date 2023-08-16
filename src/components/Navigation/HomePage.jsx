@@ -6,11 +6,11 @@ import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
 import nexus from '../Images/Project_Nexus.jpg';
-import other from '../Images/other.jpg';
-import news from '../Images/News.jpg';
+import other from '../Images/ook.jpg';
+import news from '../Images/news.png';
 import actions from '../Images/actions.jpg';
-import agendas from '../Images/agendas.webp';
-import leaderboard from '../Images/hello.jpg';
+import map from '../Images/AM.png';
+import leaderboard from '../Images/leaderboard.png';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -35,7 +35,7 @@ const HomePage = (props) => {
 	const [selectedChar, setSelectedChar] = React.useState('');
 	const tempCharacter = useSelector(getCharacterById(selectedChar));
   const {isControl} = usePermissions(); 
-	const [rand, setRand] = React.useState(Math.floor(Math.random() * 1000));
+	const [rand, setRand] = React.useState(Math.floor(Math.random() * 100));
 
   if (!props.login) {
     navigate("/");
@@ -71,11 +71,11 @@ const HomePage = (props) => {
 	return (
 		<React.Fragment>
       <Grid templateColumns='repeat(2, 1fr)' gap={1}>
-        {/* <GridItem>
-          <ImgPanel new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-        </GridItem> */}
-        <GridItem  onClick={() => openLink("https://docs.google.com/document/d/1OgCb85bcSL2ethht-e4CCdch5Eg2gksO8U3yGFyVs7k/edit")} >
-          <ImgPanel new={newArticles.length > 0} img={news} to="" title="~ Rules ~" />
+        <GridItem>
+          <ImgPanel disabled new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+        </GridItem>
+        <GridItem  onClick={() => openLink("https://docs.google.com/document/d/1l8zn1OuyI1HUeOkc7heXlaWqLLl7Fy7JSpwpnzl0xOw/edit")} >
+          <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Rules ~" />
         </GridItem>
 
         <GridItem>
@@ -91,13 +91,15 @@ const HomePage = (props) => {
           <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
         </GridItem>
 
+        <GridItem>
+          <ImgPanel disabled img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
+        </GridItem>
+
         {isControl && <GridItem colSpan={2} >
             <ImgPanel img={leaderboard} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
         </GridItem>}
 
-        {/* <GridItem>
-          <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
-        </GridItem> */}
+
 
       </Grid>
 
