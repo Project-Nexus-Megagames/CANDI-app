@@ -12,7 +12,7 @@ const initUpdates = () => {
     socket.on('updateClients', (data) => {
         console.log('updateClients');
         for (const el of data) {
-            switch(el.model) {
+            switch(el?.model) {
                 case 'Character':
                     store.dispatch(characterUpdated(el));
                     break;
@@ -35,7 +35,8 @@ const initUpdates = () => {
                     store.dispatch(articleUpdated(el));
                     break;
                 default:
-                    console.log(`Unable to update Redux for ${el.model}: ${el._id}`);
+                    console.log(el)
+                    console.log(`Unable to update Redux for ${el?.model}: ${el._id}`);
                     break;
             }
         }
