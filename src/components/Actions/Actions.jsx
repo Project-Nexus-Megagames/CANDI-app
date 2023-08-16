@@ -278,12 +278,6 @@ const Actions = (props) => {
                       {showNewActionModal && <ActionForm handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setShowNewActionModal(false)} />}
                 </Accordion>
 
-                <NewAction
-                    show={showNewActionModal}
-                    closeNew={() => setShowNewActionModal(false)}
-                    gamestate={props.gamestate}
-                /> 
-
                 <AssetInfo
                     asset={assetInfo.asset}
                     showInfo={assetInfo.show}

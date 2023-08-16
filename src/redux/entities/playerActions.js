@@ -78,7 +78,7 @@ export const getMyActions = createSelector(
   state => state.actions.list,
   state => state.auth.myCharacter,
   (filter, actions, myCharacter) => actions.filter(
-    action => (( action.creator._id === myCharacter._id ) ))
+    action => (( action.creator._id === myCharacter._id ) || action.collaborators.some(el => el._id === myCharacter._id) ))
 );
 
 

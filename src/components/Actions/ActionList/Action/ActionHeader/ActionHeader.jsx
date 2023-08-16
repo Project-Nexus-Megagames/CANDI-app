@@ -35,7 +35,7 @@ function ActionHeader({action, time, toggleEdit, creator}) {
                             fontWeight={'normal'}
                         >
                           <Tag margin={'2px'} variant={'solid'} colorScheme='purple' >{creator.playerName} - {creator.characterName}</Tag>
-                            
+                            {action.collaborators.length > 0 && <p>Collaborators</p> }
                             {action.collaborators.length > 0 && action.collaborators.map(char =>
                               <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >{char.characterName}</Tag>)}
                         </Box>

@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { getMyCharacter } from '../../../redux/entities/characters';
-import socket from '../../../socket';
-import { Modal,	ModalOverlay,	ModalContent,	ModalHeader,	ModalFooter,	ModalBody,	ModalCloseButton,	Tag,	Icon,	Spinner,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer,  Center, TagLabel, TagCloseButton} from '@chakra-ui/react';
+import { Tag,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer,  Center, TagLabel, TagCloseButton} from '@chakra-ui/react';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import NexusSlider from '../../Common/NexusSlider';
 import AssetCard from '../../Common/AssetCard';
@@ -17,20 +15,20 @@ import { AddCharacter } from '../../Common/AddCharacter';
  * @returns Component
  */
 const ActionForm = (props) => {
-  const { collabMode, handleSubmit } = props;
+  const { collabMode, handleSubmit, defaultValue } = props;
 	const { gameConfig } = useSelector((state) => state);
 	const { myCharacter } = useSelector((s) => s.auth);
 	// const myCharacter = useSelector(getMyCharacter);
 	const myAssets = useSelector(getMyAssets);
 	const myContacts = useSelector(s => s.characters.list);
 
-	const [effort, setEffort] = React.useState({ effortType: 'Normal', amount: 0 });
-	const [resource, setResource] = React.useState([]);
+	const [effort, setEffort] = React.useState(defaultValue?.effort ? defaultValue.effort : { effortType: 'Normal', amount: 0 });
+	const [resource, setResource] = React.useState(defaultValue?.assets ? defaultValue.assets : []);
   const [collaborators, setCollaborators] = React.useState([]);
 	const [actionType, setActionType] = React.useState(gameConfig.actionTypes.find(el => el.type === props.actionType));
-	const [description, setDescription] = React.useState('');
-	const [intent, setIntent] = React.useState('');
-	const [name, setName] = React.useState('');
+	const [description, setDescription] = React.useState(defaultValue?.description ? defaultValue.description : '');
+	const [intent, setIntent] = React.useState(defaultValue?.intent ? defaultValue.intent : '');
+	const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
 	const [max, setMax] = React.useState(0);
 
 	const setMaxEffort = () => {
@@ -94,6 +92,7 @@ const ActionForm = (props) => {
 			name: name,
 			actionType: actionType,
 			myCharacter: myCharacter,
+			creator: myCharacter,      
 			numberOfInjuries: myCharacter.injuries.length,
       collaborators
 		};
@@ -109,8 +108,8 @@ const ActionForm = (props) => {
 	};
 
 	function isDisabled(effort) {
-		if (description.length < 10 || intent.length < 10 || name.length < 10) return true;
-		if (effort.amount === 0 || effort <= 0) return true;
+		if (description.length < 10 || intent.length < 10 || (name.length < 10 && !collabMode)) return true;
+		if ((effort.amount === 0 || effort <= 0) && !collabMode) return true;
 		else return false;
 	}
 
@@ -142,6 +141,7 @@ const ActionForm = (props) => {
   }}>
       {!collabMode && <Center>
             <ButtonGroup isAttached>
+              {props.actionType}
               {gameConfig &&
                 gameConfig.actionTypes.filter(el => el).map((aType) => (
                   <Tooltip key={aType?.type} openDelay={50} placement='top' label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType?.type} Left'`}</b>}>
@@ -181,9 +181,9 @@ const ActionForm = (props) => {
               </div>}
 
 
-              <Flex width={"100%"} align={"end"} >
+              {!collabMode && <Flex width={"100%"} align={"end"} >
                 <Spacer />
-                <Box width={"49%"}>
+                {<Box width={"49%"}>
                   Name:
                   {10 - name.length > 0 && (
                     <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -196,7 +196,7 @@ const ActionForm = (props) => {
                     </Tag>
                   )}
                   <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
-                </Box>
+                </Box>}
 
                 <Spacer />
 
@@ -228,7 +228,7 @@ const ActionForm = (props) => {
 										<NexusSlider min={0} max={max} defaultValue={0} value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></NexusSlider>
                 </Box>
                 <Spacer />
-              </Flex>
+              </Flex>}
 
 								<Divider />
                 

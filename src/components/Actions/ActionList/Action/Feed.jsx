@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer, StatDownArrow } from "@chakra-ui/react";
 import React from "react";
 import WordDivider from "../../../WordDivider";
 import NewResult from "../../Modals/NewResult";
@@ -52,9 +52,22 @@ function Feed({action}) {
         <Box
             marginTop={'1rem'}
         >
-            <WordDivider word={'Feed'}/>
+            <WordDivider word={
+              <div>
+                {list.length > 0 && <Button 
+                leftIcon={<StatDownArrow />}
+                rightIcon={<StatDownArrow />}
+                variant='ghost'
+                onClick={() => 
+                {
+                  const element = document.getElementById(list[list.length - 1]._id);
+                  element.scrollTop = element.scrollIntoView(true);
+                }
+              } >Feed</Button>}
+              </div>
+            }/>
             {list.map((item) => 
-              <div key={item._id}>
+              <div autoFocus key={item._id} id={item._id}>
                 <Center height='20px'>
                   <Divider orientation='vertical' />
                 </Center>

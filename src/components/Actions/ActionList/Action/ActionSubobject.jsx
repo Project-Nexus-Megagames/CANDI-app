@@ -5,6 +5,8 @@ import socket from "../../../../socket";
 import NewResult from "../../Modals/NewResult";
 import ActionButtons from "./ActionHeader/ActionButtons";
 import ActionMarkdown from "./ActionMarkdown";
+import CharacterNugget from "../../../Common/CharacterNugget";
+import ActionForm from "../../Forms/ActionForm";
 
 
 const ActionSubObject = (props) => {
@@ -29,6 +31,39 @@ const ActionSubObject = (props) => {
 		});
   };
 
+  const handleSubmit = async (incoming) => {
+    const { effort, assets, description, intent, name, actionType, myCharacter, collaborators } = incoming;
+    try {
+      const data = {
+        submission: {
+          effort: effort,
+          assets: assets.filter(el => el),
+          description: description,
+          intent: intent,
+          id: subObject._id,
+        },
+        name: name,
+        type: actionType.type,
+        id: action._id,
+        creator: myCharacter._id,
+        numberOfInjuries: myCharacter.injuries.length,
+      };
+      // 1) make a new action 
+      socket.emit('request', { route: 'action', action: 'updateSubObject', data });
+    }
+    catch (err) {
+      // toast({
+      //   position: "top-right",
+      //   isClosable: true,
+      //   status: 'error',
+      //   duration: 5000,
+      //   id: err,
+      //   title: err,
+      // });
+    }
+  };
+
+
   return ( 
     <div>
       <div key={subObject._id} style={{ border: `3px solid ${getFadedColor(subObject.model)}`, borderRadius: '5px', padding: '5px' }}>
@@ -38,11 +73,12 @@ const ActionSubObject = (props) => {
             flex={1}
             alignItems='center'
           >
-          <Avatar
+          {/* <Avatar
             name={creator?.characterName}
             src={creator?.profilePicture}
             marginRight='auto'
-          />
+          /> */}
+          <CharacterNugget character={creator} />
           </Box>
           <Flex flex={3}>
             <Box
@@ -54,13 +90,12 @@ const ActionSubObject = (props) => {
                   size={'md'}
                   textAlign={'center'}
               >
-                  {subObject.status} - {subObject.model}
+                  {creator?.playerName}'s {subObject.model}
               </Heading>
               <Box
                   fontSize={'.9rem'}
                   fontWeight={'normal'}
               >
-                  {creator.playerName} - {creator.characterName}
               </Box>
               <Box
                   fontSize={'.9rem'}
@@ -74,7 +109,7 @@ const ActionSubObject = (props) => {
             <Box marginLeft='auto'>
               <ActionButtons
                 action={subObject}
-                toggleEdit={() => setMode('edit_result')}
+                toggleEdit={() => setMode(subObject.model)}
                 creator={creator}
                 handleDelete={handleDelete}
               />
@@ -82,16 +117,25 @@ const ActionSubObject = (props) => {
           </Flex>          
         </Flex>
 
-        <Box>
+        {mode !== 'Submission' && <Box>
           <ActionMarkdown
-              markdown={subObject.description ? subObject.description : subObject.body}
+            header={subObject.description ? 'Description' : 'Body'}
+            markdown={subObject.description ? subObject.description : subObject.body}
           />
-        </Box>
+        </Box>}
+        {mode !== 'Submission' && subObject.intent && <Box>
+          <ActionMarkdown
+            header={'Intent'}
+            markdown={subObject.intent}
+          />
+        </Box>}
+
+        {mode === 'Submission' && <ActionForm collabMode defaultValue={subObject} actionType={action.type} handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setMode(false)} />}
       </div>    
       <Divider orientation='vertical' />   
 
       <NewResult
-        show={mode === 'edit_result'}
+        show={mode === 'Result'}
         mode={"updateSubObject"}
         result={subObject}
         closeNew={() => setMode(false)}
