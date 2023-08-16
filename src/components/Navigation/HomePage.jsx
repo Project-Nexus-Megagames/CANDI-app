@@ -11,6 +11,7 @@ import news from '../Images/news.png';
 import actions from '../Images/actions.jpg';
 import map from '../Images/AM.png';
 import leaderboard from '../Images/leaderboard.png';
+import control from '../Images/control.jpg';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -96,7 +97,7 @@ const HomePage = (props) => {
         </GridItem>
 
         {isControl && <GridItem colSpan={2} >
-            <ImgPanel img={leaderboard} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
+            <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
         </GridItem>}
 
 
