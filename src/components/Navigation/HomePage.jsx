@@ -72,15 +72,18 @@ const HomePage = (props) => {
 	return (
 		<React.Fragment>
       <Grid templateColumns='repeat(2, 1fr)' gap={1}>
-        <GridItem>
-          <ImgPanel disabled new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-        </GridItem>
+
+
         <GridItem  onClick={() => openLink("https://docs.google.com/document/d/1l8zn1OuyI1HUeOkc7heXlaWqLLl7Fy7JSpwpnzl0xOw/edit")} >
           <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Rules ~" />
         </GridItem>
 
         <GridItem>
           <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
+        </GridItem>
+
+        <GridItem>
+          <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
         </GridItem>
 
         <GridItem>

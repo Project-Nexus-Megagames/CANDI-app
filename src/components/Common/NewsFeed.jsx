@@ -84,7 +84,7 @@ const NewsFeed = (props) => {
 	return (
 		<Center maxW="960px" mx="auto">
 			<Box bg="bg-surface" py="4">
-        <WordDivider word={`Round: ${props.round}`}/>
+        
 				<Stack divider={<StackDivider />} spacing="4">
 					{data.filter((el) => el.round === props.round).length === 0 && <b>Nothing here yet...</b>}
 					{data
