@@ -25,7 +25,9 @@ const ActionForm = (props) => {
 	const [effort, setEffort] = React.useState(defaultValue?.effort ? defaultValue.effort : { effortType: 'Normal', amount: 0 });
 	const [resource, setResource] = React.useState(defaultValue?.assets ? defaultValue.assets : []);
   const [collaborators, setCollaborators] = React.useState([]);
-	const [actionType, setActionType] = React.useState(gameConfig.actionTypes.find(el => el.type === props.actionType));
+	const [actionType, setActionType] = React.useState(
+    props.actionType ? gameConfig.actionTypes.find(el => el.type === props.actionType) :
+    gameConfig.actionTypes[0]);
 	const [description, setDescription] = React.useState(defaultValue?.description ? defaultValue.description : '');
 	const [intent, setIntent] = React.useState(defaultValue?.intent ? defaultValue.intent : '');
 	const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
@@ -296,7 +298,13 @@ const ActionForm = (props) => {
                             <AddAsset 
                               key={index} 
                               handleSelect={(ass) =>editState(ass, ass.model, index)} 
-                              assets={myAssets.filter(el => actionType.resourceTypes.some(a => a === el.type) && !resource.some(ass => ass?._id === el._id ) )}/>}
+                              assets={
+                                myAssets.filter(el => 
+                                  actionType.resourceTypes.some(a => a === el.type) && 
+                                  !resource.some(ass => ass?._id === el._id ) &&
+                                  !el.status?.some(el => el === 'used')
+                                )} 
+                            />}
                           {ass && <AssetCard disabled removeAsset={()=> editState(false, ass.model, index)} compact type={'blueprint'} asset={ass} /> }   
                         </Box>
                       ))}

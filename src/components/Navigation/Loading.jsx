@@ -20,6 +20,8 @@ const Loading = (props) => {
 	const assetsLoaded = useSelector((state) => state.assets.loaded);
 	const locationsLoaded = useSelector((state) => state.locations.loaded);
 	const logsLoaded = useSelector((state) => state.log.loaded);
+	const articlesLoaded = useSelector((state) => state.articles.loaded);
+	const gameConfigLoaded = useSelector((state) => state.gameConfig.loaded);
 
 	const { loadingStart, user } = useSelector((s) => s.auth);
 	const characters = useSelector((s) => s.characters.list);
@@ -41,7 +43,7 @@ const Loading = (props) => {
 				navigate('/home');
 			} else navigate('/no-character');
 		}
-	}, [user, gamestateLoaded, actionsLoaded, charactersLoaded, assetsLoaded, locationsLoaded, logsLoaded]);
+	}, [user, gamestateLoaded, actionsLoaded, charactersLoaded, assetsLoaded, locationsLoaded, logsLoaded, articlesLoaded, gameConfigLoaded]);
 
 	let done = Object.keys(entities)
 		.sort()
@@ -85,7 +87,6 @@ export default Loading;
 
 const gamePhotos = [
 	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif',
-	'https://i.pinimg.com/originals/f6/2a/e4/f62ae40a9934e67486d57689ad4485d4.gif'
 ];
 
 const loadingMsg = [

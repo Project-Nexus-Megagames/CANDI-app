@@ -244,11 +244,11 @@ const NewCharacter = (props) => {
 											<FormControl>
 												<Input size="md" {...register(`tags.${i}`)}></Input>
 											</FormControl>{' '}
-											<Button variant={'solid'} onClick={() => removeTag(i)}>-</Button>
+											<Button  onClick={() => removeTag(i)}>-</Button>
 										</HStack>
 									</div>
 								))}
-								<Button variant={'solid'} onClick={() => appendTag('')}>+</Button>
+								<Button variant={'solid'} colorScheme='teal' onClick={() => appendTag('')}>+</Button>
 							</HStack>
 
 							<HStack w="100%">
@@ -259,11 +259,11 @@ const NewCharacter = (props) => {
 											<FormControl>
 												<Input size="md" {...register(`control.${i}`)}></Input>
 											</FormControl>
-											<Button variant={'solid'} onClick={() => removeControl(i)}>-</Button>
+											<Button variant={'solid'} colorScheme='teal' onClick={() => removeControl(i)}>-</Button>
 										</HStack>
 									</div>
 								))}
-								<Button variant={'solid'} onClick={() => appendControl('')}>+</Button>
+								<Button variant={'solid'} colorScheme='teal' onClick={() => appendControl('')}>+</Button>
 							</HStack>
 							<Box w="100%">
 								<div style={{ margin: 10 }}>
@@ -276,10 +276,10 @@ const NewCharacter = (props) => {
 					</Flex>
 
 					<ButtonGroup>
-						<Button variant={'solid'} type="submit" colorScheme="green" className="btn btn-primary mr-1">
+						<Button variant={'solid'}  type="submit" colorScheme="green" className="btn btn-primary mr-1">
 							Create new Character
 						</Button>
-						<Button variant={'solid'} onClick={() => reset()} className="btn btn-secondary mr-1">
+						<Button variant={'solid'} colorScheme='yellow' onClick={() => reset()} className="btn btn-secondary mr-1">
 							Reset Form
 						</Button>
 					</ButtonGroup>
