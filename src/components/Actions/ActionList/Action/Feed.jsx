@@ -26,7 +26,7 @@ function Feed({action}) {
     ].sort((a, b) => {
       let da = new Date(a.createdAt),
         db = new Date(b.createdAt);
-      return db - da;
+      return db + da;
     })
 
     const closeIt = () => {

@@ -90,7 +90,7 @@ const ActionSubObject = (props) => {
                   size={'md'}
                   textAlign={'center'}
               >
-                  {creator?.playerName}'s {subObject.model}
+                  {creator?.characterName}'s {subObject.model}
               </Heading>
               <Box
                   fontSize={'.9rem'}
