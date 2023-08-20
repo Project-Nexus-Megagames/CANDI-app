@@ -294,7 +294,6 @@ const ActionForm = (props) => {
                             textAlign: 'left'
                           }}
                         >
-                          {index}
                           {!ass && 
                             <AddAsset 
                               key={index} 
