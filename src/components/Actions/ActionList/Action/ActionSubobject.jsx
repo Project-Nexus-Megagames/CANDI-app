@@ -7,6 +7,7 @@ import ActionButtons from "./ActionHeader/ActionButtons";
 import ActionMarkdown from "./ActionMarkdown";
 import CharacterNugget from "../../../Common/CharacterNugget";
 import ActionForm from "../../Forms/ActionForm";
+import ActionResources from "./ActionResources";
 
 
 const ActionSubObject = (props) => {
@@ -117,16 +118,17 @@ const ActionSubObject = (props) => {
           </Flex>          
         </Flex>
 
-        {mode !== 'Submission' && <Box>
-          <ActionMarkdown
+        {mode !== 'Submission' && subObject.intent && <Box>
+        <ActionMarkdown
             header={subObject.description ? 'Description' : 'Body'}
             markdown={subObject.description ? subObject.description : subObject.body}
           />
-        </Box>}
-        {mode !== 'Submission' && subObject.intent && <Box>
           <ActionMarkdown
             header={'Intent'}
             markdown={subObject.intent}
+          />
+          <ActionResources
+            assets={subObject.assets}
           />
         </Box>}
 

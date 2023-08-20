@@ -57,7 +57,7 @@ const ActionForm = (props) => {
 	}, [effort]);
 
 	const editState = (incoming, type, index) => {
-    console.log(incoming, type, index)
+    // console.log(incoming, type, index)
 		let thing;
 		switch (type) {
 			case 'effort':
@@ -80,7 +80,7 @@ const ActionForm = (props) => {
         setCollaborators(collaborators.filter(c => c._id !== incoming._id));
         break;
 			default:
-				console.log('UwU Scott made an oopsie doodle!');
+				console.log(`uWu Scott made an oopsie doodle! ${type} `);
 		}
 	};
 
@@ -118,7 +118,7 @@ const ActionForm = (props) => {
   function newMap(number) {
     let arr = [];
     for (let i = 0; i < number; i++) {
-      arr.push(undefined);
+      arr.push(defaultValue.assets[i]);
     }
     setResource(arr);
   }
@@ -294,6 +294,7 @@ const ActionForm = (props) => {
                             textAlign: 'left'
                           }}
                         >
+                          {index}
                           {!ass && 
                             <AddAsset 
                               key={index} 
@@ -305,7 +306,7 @@ const ActionForm = (props) => {
                                   !el.status?.some(el => el === 'used')
                                 )} 
                             />}
-                          {ass && <AssetCard disabled removeAsset={()=> editState(false, ass.model, index)} compact type={'blueprint'} asset={ass} /> }   
+                          {ass && <AssetCard disabled removeAsset={(data)=> editState(false, data.model, index)} compact type={'blueprint'} asset={ass} /> }   
                         </Box>
                       ))}
 
