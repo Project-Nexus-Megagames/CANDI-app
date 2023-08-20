@@ -118,7 +118,7 @@ const ActionForm = (props) => {
   function newMap(number) {
     let arr = [];
     for (let i = 0; i < number; i++) {
-      arr.push(defaultValue.assets[i]);
+      arr.push(defaultValue?.assets[i]);
     }
     setResource(arr);
   }
