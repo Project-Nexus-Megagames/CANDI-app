@@ -65,7 +65,7 @@ function GameConfigStep1() {
 	}
 
 	const onSubmit = (data) => {
-		if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
+		// if (hasDuplicates(data.effortTypes)) return alert('Effort Types have to be unique');
 		dispatch(effortTypesAdded(data));
 		// history.push('./GameConfig2'); // TODO remake this so it doesn't use navigation
 	};

@@ -73,30 +73,28 @@ const HomePage = (props) => {
 		<React.Fragment>
       <Grid templateColumns='repeat(2, 1fr)' gap={1}>
 
-
-        <GridItem  onClick={() => openLink("https://docs.google.com/document/d/1l8zn1OuyI1HUeOkc7heXlaWqLLl7Fy7JSpwpnzl0xOw/edit")} >
-          <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Rules ~" />
-        </GridItem>
-
-        <GridItem>
-          <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
-        </GridItem>
-
-        <GridItem>
-          <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-        </GridItem>
-
-        <GridItem>
-          <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
-        </GridItem>
-
-
         <GridItem>
           <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
         </GridItem>
 
         <GridItem>
+          <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
+        </GridItem>   
+
+        <GridItem>
+          <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
+        </GridItem>    
+
+        <GridItem>
           <ImgPanel disabled img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
+        </GridItem>      
+
+        <GridItem>
+          <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+        </GridItem>                   
+
+        <GridItem  onClick={() => openLink("https://drive.google.com/drive/u/0/folders/1NIkteuS1ePFySPpUcbPF-JAJA36zV-t3")} >
+          <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Wiki ~" />
         </GridItem>
 
         {isControl && <GridItem colSpan={2} >

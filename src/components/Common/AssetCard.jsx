@@ -11,9 +11,11 @@ import { CandiModal } from './CandiModal';
 import { Close } from '@rsuite/icons';
 
 const AssetCard = (props) => {
-  const { asset, character, disabled, marginTop, handleSelect, removeAsset } = props;
+  const { character, disabled, marginTop, handleSelect, removeAsset } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
+  const assets = useSelector(state => state.assets.list);
+  let asset = props.asset._id ? props.asset : assets.find(el => el._id === props.asset)
 
   const deleteAssert = async () => {
     socket.emit('request', {
@@ -23,7 +25,7 @@ const AssetCard = (props) => {
     });
 };
 
-	return ( 
+	if (asset) return ( 
 		<div style={{ overflow: 'clip' }} onClick={() => handleSelect ? handleSelect(asset) : console.log("Peekabo!")} >
       <Card marginTop={marginTop} key={asset._id} >
         <CardHeader>
@@ -33,7 +35,7 @@ const AssetCard = (props) => {
            <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<DeleteIcon />} />                  
           </ButtonGroup>}
 
-          {removeAsset && <IconButton variant={'outline'} onClick={() => removeAsset()} colorScheme="red" size={'sm'} icon={<Close/>}  />}
+          {removeAsset && <IconButton variant={'outline'} onClick={() => removeAsset({model: asset.model, })} colorScheme="red" size={'sm'} icon={<Close/>}  />}
           
           </h5>
           <Flex align={'center'} >
@@ -66,6 +68,9 @@ const AssetCard = (props) => {
       
 		</div>
 	);
+  return(
+    <b>oops</b>
+  )
 }
 
 export default (AssetCard);
