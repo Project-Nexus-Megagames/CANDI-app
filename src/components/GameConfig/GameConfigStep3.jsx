@@ -60,7 +60,6 @@ function GameConfig3() {
 	}
 
 	const onSubmit = (data) => {
-		if (hasDuplicates(data.globalStats)) return alert('Effort Types have to be unique');
 		dispatch(globalStatsAdded(data));
 		reset({keepValues: true});
 	};
