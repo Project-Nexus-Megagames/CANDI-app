@@ -87,6 +87,8 @@ export default Loading;
 
 const gamePhotos = [
 	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif',
+  'https://media.tenor.com/BE6_4wn5JoYAAAAC/discworld-pratchett.gif',
+  'https://media.tenor.com/L2b_MVOVIxkAAAAC/the-earth-is-a-plate-itsrucka.gif'
 ];
 
 const loadingMsg = [

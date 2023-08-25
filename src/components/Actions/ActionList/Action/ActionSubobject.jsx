@@ -76,11 +76,6 @@ const ActionSubObject = (props) => {
             flex={1}
             alignItems='center'
           >
-          {/* <Avatar
-            name={creator?.characterName}
-            src={creator?.profilePicture}
-            marginRight='auto'
-          /> */}
           <CharacterNugget character={creator} />
           </Box>
           <Flex flex={3}>
