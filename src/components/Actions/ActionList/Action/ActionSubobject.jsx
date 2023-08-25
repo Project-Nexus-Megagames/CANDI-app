@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, Flex, Heading } from "@chakra-ui/react";
+import { Avatar, Box, Divider, Flex, Heading, Tag } from "@chakra-ui/react";
 import React from "react";
 import { getFadedColor, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
@@ -67,7 +67,9 @@ const ActionSubObject = (props) => {
 
   return ( 
     <div>
-      <div key={subObject._id} style={{ border: `3px solid ${getFadedColor(subObject.model)}`, borderRadius: '5px', padding: '5px' }}>
+      <div key={subObject._id} style={{ 
+        border: subObject.status === 'Public' ? `3px solid ${getFadedColor(subObject.model)}` : `3px dotted ${getFadedColor(subObject.model)}`, 
+        borderRadius: '5px', padding: '5px' }}>
         <Flex style={{ backgroundColor: getFadedColor(subObject.model), padding: '10px' }} >
           <Box
             display='flex'
@@ -91,7 +93,8 @@ const ActionSubObject = (props) => {
                   size={'md'}
                   textAlign={'center'}
               >
-                  {creator?.characterName}'s {subObject.model}
+                  {creator?.characterName}'s {subObject.model}                
+                  
               </Heading>
               <Box
                   fontSize={'.9rem'}
@@ -104,6 +107,7 @@ const ActionSubObject = (props) => {
               >
                   {time}
               </Box>
+              <Tag variant={'solid'} colorScheme="teal" >{subObject.status}</Tag>
             </Box>
           </Flex>
           <Flex flex={1}>
@@ -117,19 +121,24 @@ const ActionSubObject = (props) => {
             </Box>
           </Flex>          
         </Flex>
+        {mode}
 
-        {mode !== 'Submission' && subObject.intent && <Box>
-        <ActionMarkdown
-            header={subObject.description ? 'Description' : 'Body'}
-            markdown={subObject.description ? subObject.description : subObject.body}
-          />
-          <ActionMarkdown
+        {mode !== 'Submission' && <Box>
+          {subObject.description && <ActionMarkdown
+            header={'Description'}
+            markdown={subObject.description}
+          />}
+          {subObject.intent && <ActionMarkdown
             header={'Intent'}
             markdown={subObject.intent}
-          />
-          <ActionResources
+          />}
+          {subObject.body && <ActionMarkdown
+            header={'Body'}
+            markdown={subObject.body}
+          />}
+          {subObject.assets && <ActionResources
             assets={subObject.assets}
-          />
+          />}
         </Box>}
 
         {mode === 'Submission' && <ActionForm collabMode defaultValue={subObject} actionType={action.type} handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setMode(false)} />}
