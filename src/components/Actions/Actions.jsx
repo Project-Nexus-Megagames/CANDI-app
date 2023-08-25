@@ -55,6 +55,39 @@ const Actions = (props) => {
         }
     }, [isControl, props.myActions, props.filteredActions])
 
+    const handleEditSubmit = async (incoming) => {
+      const { effort, assets, description, intent, name, actionType, myCharacter, collaborators } = incoming;
+      try {
+        const data = {
+          submission: {
+            effort: effort,
+            assets: assets.filter(el => el),
+            description: description,
+            intent: intent,
+          },
+          name: name,
+          type: actionType.type,
+          id: incoming.actionID,
+          creator: myCharacter._id,
+          numberOfInjuries: myCharacter.injuries.length,
+        };
+        // 1) make a new action 
+		    socket.emit('request', { route: 'action', action: 'update', data });
+        setEditAction({action: null, show: false})
+      }
+      catch (err) {
+        // toast({
+        //   position: "top-right",
+        //   isClosable: true,
+        //   status: 'error',
+        //   duration: 5000,
+        //   id: err,
+        //   title: err,
+        // });
+      }
+    };
+  
+
     if (!props.login) {
       navigate('/');
       return (
@@ -254,8 +287,11 @@ const Actions = (props) => {
                                       setAssetInfo({show: true, asset});
                                   }}
                                   toggleEdit={(action) => {
+                                      editAction.show ? setEditAction({action: null, show: false}) :
                                       setEditAction({show: true, action})
                                   }}
+                                  handleEditSubmit={handleEditSubmit}
+                                  editAction={editAction}
                                 />
                               ))}
                               {sortedActions(round, actionList).length > number && <Button onClick={() => setNumber(number + 5)} >More ({sortedActions(round, actionList).length - number})</Button>}                                 
@@ -267,12 +303,15 @@ const Actions = (props) => {
                     {selected && !showNewActionModal && <Action
                       action={selected}
                       key={selected._id}
+                      editAction={editAction}
+                      handleEditSubmit={handleEditSubmit}
                       toggleAssetInfo={(asset) => {
                           setAssetInfo({show: true, asset});
                       }}
                       toggleEdit={(action) => {
-                          setEditAction({show: true, action})
-                      }}
+                        editAction.show ? setEditAction({action: null, show: false}) :
+                        setEditAction({show: true, action})
+                    }}
                     />}
 
                       {showNewActionModal && <ActionForm handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setShowNewActionModal(false)} />}
@@ -284,11 +323,11 @@ const Actions = (props) => {
                     closeInfo={() => setAssetInfo({asset: '', show: false})}
                 />
 
-                <EditAction
+                {/* <EditAction
                     action={editAction.action}
                     showEdit={editAction.show}
                     handleClose={() => setEditAction({action: null, show: false})}
-                />
+                /> */}
         </GridItem> 
        
       </Grid>

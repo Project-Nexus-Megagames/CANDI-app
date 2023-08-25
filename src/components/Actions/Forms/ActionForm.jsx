@@ -15,7 +15,7 @@ import { AddCharacter } from '../../Common/AddCharacter';
  * @returns Component
  */
 const ActionForm = (props) => {
-  const { collabMode, handleSubmit, defaultValue } = props;
+  const { collabMode, handleSubmit, defaultValue, actionID } = props;
 	const { gameConfig } = useSelector((state) => state);
 	const { myCharacter } = useSelector((s) => s.auth);
 	// const myCharacter = useSelector(getMyCharacter);
@@ -96,7 +96,8 @@ const ActionForm = (props) => {
 			myCharacter: myCharacter,
 			creator: myCharacter,      
 			numberOfInjuries: myCharacter.injuries.length,
-      collaborators
+      collaborators,
+      actionID: actionID
 		};
 		setActionType(false);
 		setDescription('');
@@ -183,7 +184,7 @@ const ActionForm = (props) => {
               </div>}
 
 
-              {!collabMode && <Flex width={"100%"} align={"end"} >
+              {<Flex width={"100%"} align={"end"} >
                 <Spacer />
                 {<Box width={"49%"}>
                   Name:

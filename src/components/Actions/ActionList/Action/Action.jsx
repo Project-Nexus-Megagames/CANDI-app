@@ -9,8 +9,9 @@ import Feed from "./Feed";
 import ActionButtons from './ActionHeader/ActionButtons';
 import socket from '../../../../socket';
 import ActionTag from '../ActionTag';
+import ActionForm from '../../Forms/ActionForm';
 
-const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons}) => {
+const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, handleEditSubmit}) => {
     function getBorder() {
         const isUnpublishedAgenda = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0) && action.type === 'Agenda';
         return isUnpublishedAgenda
@@ -67,7 +68,7 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons}) => {
                             creator={action.creator}
                             handleDelete={handleDelete}
                         />}
-                        <Box>
+                        {!editAction.show && <Box>
                             <ActionMarkdown
                                 header='Description'
                                 tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
@@ -78,14 +79,21 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons}) => {
                                 header='Intent'
                                 markdown={action.submission.intent}
                             />
-                            {/* <ActionEffort TODO update this for multi-effort games
+                            <ActionEffort 
                                 submission={action.submission}
-                            /> */}
+                            />
                             <ActionResources
                                 assets={action.submission.assets}
                                 toggleAssetInfo={toggleAssetInfo}
                             />
-                        </Box>
+                        </Box>}
+                        {editAction.show && <ActionForm 
+                          actionID={action._id} 
+                          collabMode 
+                          defaultValue={{ ...action.submission, name: action.name }} 
+                          actionType={action.type} 
+                          handleSubmit={(data) =>handleEditSubmit(data)} 
+                          closeNew={() => toggleEdit()} />}
                         <Feed
                             action={action}
                         />
