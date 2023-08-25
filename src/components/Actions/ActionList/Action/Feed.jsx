@@ -19,7 +19,7 @@ function Feed({action}) {
 
     const [mode, setMode] = React.useState(false);
 
-    const list = [...action.results,
+    let list = [...action.results,
         ...action.effects,
         ...action.comments,
         ...action.submissions
@@ -28,6 +28,10 @@ function Feed({action}) {
         db = new Date(b.createdAt);
       return db + da;
     })
+
+    if (!isControl) {
+      list = list.filter(el => el.status === 'Public' || el.commentor._id === myCharacter._id)
+    }
 
     const closeIt = () => {
         setMode(false);
