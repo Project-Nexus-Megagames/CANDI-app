@@ -86,7 +86,7 @@ const HomePage = (props) => {
         </GridItem>    
 
         <GridItem>
-          <ImgPanel disabled img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who is winning?" />
+          <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
         </GridItem>      
 
         <GridItem>
@@ -94,7 +94,7 @@ const HomePage = (props) => {
         </GridItem>                   
 
         <GridItem  onClick={() => openLink("https://drive.google.com/drive/u/0/folders/1NIkteuS1ePFySPpUcbPF-JAJA36zV-t3")} >
-          <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Wiki ~" />
+          <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
         </GridItem>
 
         {isControl && <GridItem colSpan={2} >
