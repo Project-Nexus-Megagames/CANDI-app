@@ -13,6 +13,7 @@ const slice = createSlice({
 		actionTypes: [],
 		effortTypes: [],
 		resourceTypes: [],
+		characterStats: [],
 		layout: []
 	},
 	// Reducers - Events
@@ -27,6 +28,7 @@ const slice = createSlice({
 			gameConfig.actionTypes = action.payload.actionTypes;
 			gameConfig.effortTypes = action.payload.effortTypes;
 			gameConfig.resourceTypes = action.payload.resourceTypes;
+			gameConfig.characterStats = action.payload.characterStats;
 			gameConfig.loading = false;
 			gameConfig.lastFetch = Date.now();
 			gameConfig.loaded = true;

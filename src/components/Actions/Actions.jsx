@@ -119,10 +119,10 @@ const Actions = (props) => {
           .filter((action) => action.round === currRound)
           .sort((a, b) => {
               // sort alphabetically
-              if (a.creator.characterName < b.creator.characterName) {
+              if (a?.creator?.characterName < b?.creator?.characterName) {
                   return -1;
               }
-              if (a.creator.characterName > b.creator.characterName) {
+              if (a?.creator?.characterName > b?.creator?.characterName) {
                   return 1;
               }
               return 0;

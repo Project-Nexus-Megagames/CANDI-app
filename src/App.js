@@ -39,6 +39,7 @@ import { loadAllActions } from "./redux/entities/playerActions";
 import { ErrorAlert } from "./components/Common/ErrorAlert";
 import { SuccessAlert } from "./components/Common/SuccessAlert";
 import Loading from "./components/Navigation/Loading";
+import CharacterStats from "./components/StatDisplays/CharacterStats";
 
 // React App Component
 initUpdates();
@@ -162,6 +163,7 @@ const App = (props) => {
               <Route path='/home/news' element={<News {...props} />} />
               <Route path='/agendas' element={<Agendas {...props} />} />
               <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
+              <Route exact path='/home/leaderboard' element={<CharacterStats {...props} />} />
               <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
               <Route exact path='/home/actions' element={<Actions {...props} />} />
               <Route exact path='/gameConfig' element={<GameConfigStep1 {...props} />} />
