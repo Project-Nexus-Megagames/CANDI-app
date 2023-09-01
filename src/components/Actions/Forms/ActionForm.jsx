@@ -38,7 +38,8 @@ const ActionForm = (props) => {
 	const setMaxEffort = () => {
     if (actionType) {
       let charEffort = getThisEffort(myCharacter.effort, actionType.type);
-      setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);      
+      if (defaultValue?.effort) setMax(charEffort + defaultValue.effort.amount < actionType.maxEffort ? charEffort + defaultValue.effort.amount : actionType.maxEffort);           
+      else setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);      
     }
 	};
   
