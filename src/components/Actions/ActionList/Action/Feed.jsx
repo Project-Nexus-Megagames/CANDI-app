@@ -30,7 +30,7 @@ function Feed({action}) {
     })
 
     if (!isControl) {
-      list = list.filter(el => el.status === 'Public' || el.commentor._id === myCharacter._id)
+      list = list.filter(el => el.status === 'Public' || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
     }
 
     const closeIt = () => {
