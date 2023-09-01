@@ -43,7 +43,7 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets }) => {
   }, [open]);
 
   return (
-      <Popover placement='left-start' isLazy>
+      <Popover placement='auto' isLazy>
         <PopoverTrigger>
           <Center className="styleCenter" style={{ minWidth: '100px', minHeight: '100px', border: '3px dotted', margin: '5px' }} >
             <IconButton variant="solid"  colorScheme='green' size="md" icon={<BsPlus/>} /> 
