@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer,  Center, TagLabel, TagCloseButton} from '@chakra-ui/react';
+import { Tag,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer,  Center, TagLabel, TagCloseButton, Wrap, useBreakpointValue, SimpleGrid} from '@chakra-ui/react';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import NexusSlider from '../../Common/NexusSlider';
 import AssetCard from '../../Common/AssetCard';
@@ -33,6 +33,12 @@ const ActionForm = (props) => {
 	const [intent, setIntent] = React.useState(defaultValue?.intent ? defaultValue.intent : '');
 	const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
 	const [max, setMax] = React.useState(0);
+
+  const breakpoints = useBreakpointValue({
+    base: {columns: 0, rows: 3, width: '15rem', bottom: '1.75rem', left: '7.5rem'},
+    md: {columns: 3, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'},
+    lg: {columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
+})
 
 
 	const setMaxEffort = () => {
@@ -275,7 +281,6 @@ const ActionForm = (props) => {
 								<Box
 										style={{
 											paddingTop: '5px',
-											paddingLeft: '10px',
 											textAlign: 'left',
 										}}
 									>
@@ -286,7 +291,9 @@ const ActionForm = (props) => {
 											</Tag>
 										))}
 
-                    <Flex style={{ width: '100%' }} 
+                <SimpleGrid
+                      columns={breakpoints.columns}
+                      rows={breakpoints.rows}
                       textAlign={'center'}
                       justifyContent={'space-around'}
                       alignItems={'center'} >                      
@@ -297,7 +304,7 @@ const ActionForm = (props) => {
                             paddingTop: '5px',
                             paddingLeft: '10px',
                             textAlign: 'left',
-                            maxWidth: '20vw'
+                            maxWidth: '100%'
                           }}
                         >
                           {!ass && 
@@ -315,7 +322,7 @@ const ActionForm = (props) => {
                         </Box>
                       ))}
 
-                    </Flex>                    
+                    </SimpleGrid>                    
 								</Box>
 
 
