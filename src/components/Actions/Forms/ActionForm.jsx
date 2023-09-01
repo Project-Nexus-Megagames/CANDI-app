@@ -16,13 +16,14 @@ import { AddCharacter } from '../../Common/AddCharacter';
  */
 const ActionForm = (props) => {
   const { collabMode, handleSubmit, defaultValue, actionID } = props;
+
 	const { gameConfig } = useSelector((state) => state);
 	const { myCharacter } = useSelector((s) => s.auth);
 	// const myCharacter = useSelector(getMyCharacter);
 	const myAssets = useSelector(getMyAssets);
 	const myContacts = useSelector(s => s.characters.list);
 
-	const [effort, setEffort] = React.useState(defaultValue?.effort ? defaultValue.effort : { effortType: 'Normal', amount: 0 });
+	const [effort, setEffort] = React.useState(defaultValue?.effort ? { effortType: defaultValue.effort.effortType, amount: defaultValue.effort.amount } : { effortType: 'Normal', amount: 0 });
 	const [resource, setResource] = React.useState(defaultValue?.assets ? defaultValue.assets : []);
   const [collaborators, setCollaborators] = React.useState([]);
 	const [actionType, setActionType] = React.useState(
@@ -33,6 +34,7 @@ const ActionForm = (props) => {
 	const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
 	const [max, setMax] = React.useState(0);
 
+
 	const setMaxEffort = () => {
     if (actionType) {
       let charEffort = getThisEffort(myCharacter.effort, actionType.type);
@@ -41,7 +43,7 @@ const ActionForm = (props) => {
 	};
   
 	useEffect(() => {
-		if (actionType && actionType.type) {
+		if (actionType && actionType.type && !defaultValue) {
 			setEffort({ effortType: actionType.type, amount: 0 });
 			setMaxEffort();
       newMap(actionType.maxAssets);
@@ -228,7 +230,7 @@ const ActionForm = (props) => {
 										</ButtonGroup>
 										<Spacer />
 
-										<NexusSlider min={0} max={max} defaultValue={0} value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></NexusSlider>
+										<NexusSlider min={0} max={max} defaultValue={effort.amount} value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></NexusSlider>
                 </Box>
                 <Spacer />
               </Flex>}
@@ -283,16 +285,18 @@ const ActionForm = (props) => {
 											</Tag>
 										))}
 
-                    <Flex style={{ width: '100%' }}                 textAlign={'center'}
-                justifyContent={'space-around'}
-                alignItems={'center'} >                      
+                    <Flex style={{ width: '100%' }} 
+                      textAlign={'center'}
+                      justifyContent={'space-around'}
+                      alignItems={'center'} >                      
                       {resource.map((ass, index) => (
                         <Box
                           key={index}
                           style={{
                             paddingTop: '5px',
                             paddingLeft: '10px',
-                            textAlign: 'left'
+                            textAlign: 'left',
+                            maxWidth: '20vw'
                           }}
                         >
                           {!ass && 

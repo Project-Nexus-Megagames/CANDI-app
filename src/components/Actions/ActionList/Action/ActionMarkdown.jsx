@@ -6,7 +6,7 @@ import WordDivider from "../../../WordDivider";
 
 function ActionMarkdown({header, markdown, tooltip}) {
     return (
-        <Box>
+        <Box backgroundColor={'#202124'} >
             <WordDivider
                 word={header}
                 tooltip={tooltip}

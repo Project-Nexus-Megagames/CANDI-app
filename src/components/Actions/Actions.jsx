@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { filteredActions, getMyActions, setFilter } from '../../redux/entities/playerActions';
-import NewAction from './Modals/NewAction';
 import ActionDrawer from "./ActionList/ActionDrawer";
 import Action from "./ActionList/Action/Action";
-import { Accordion, Box, Button, Container, Flex, Grid, GridItem, Hide, IconButton, Input, InputGroup, InputLeftElement, Spinner, Tooltip, useDisclosure, useToast } from "@chakra-ui/react";
+import { Accordion, Box, Button, Flex, Grid, GridItem, Hide, IconButton, Input, InputGroup, InputLeftElement, Spinner, Tooltip, useDisclosure, useToast } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
-import WordDivider from "../WordDivider";
 import { AddIcon, ChevronLeftIcon, CloseIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import AssetInfo from "./AssetInfo";
-import EditAction from "./Modals/EditAction";
 import { useNavigate } from 'react-router';
 import { getFadedColor } from '../../scripts/frontend';
 import ActionForm from './Forms/ActionForm';
@@ -162,6 +159,7 @@ const Actions = (props) => {
     };
 
     const actionList = isControl ? props.filteredActions : props.myActions;
+    const smallScreen = window.innerWidth < 1000;
     return (
 			<Grid
           templateAreas={`"nav main"`}
@@ -202,7 +200,7 @@ const Actions = (props) => {
 				</GridItem>
 
         <GridItem overflow='auto' pl='1' bg='#1b2330' area={'main'} style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }}>
-          <Flex
+          {smallScreen && <Flex
               align={'center'}
               marginTop='2rem'
               width={'100%'}
@@ -252,7 +250,7 @@ const Actions = (props) => {
                     <Hide below='md'>Cancel New Action</Hide>                           
                   </Button>}
               </Box>
-          </Flex>
+          </Flex>}
 
                 <ActionDrawer
                     // onChange={(e) => props.setFilter(e.target.value)}
@@ -263,7 +261,7 @@ const Actions = (props) => {
                     onClose={onClose}
                 />
 
-                <Accordion
+                <Box
                     allowMultiple                    
                     width={'100%'}
                 >
@@ -315,7 +313,7 @@ const Actions = (props) => {
                     />}
 
                       {showNewActionModal && <ActionForm handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setShowNewActionModal(false)} />}
-                </Accordion>
+                </Box>
 
                 <AssetInfo
                     asset={assetInfo.asset}

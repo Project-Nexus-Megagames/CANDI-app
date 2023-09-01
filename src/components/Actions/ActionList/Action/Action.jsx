@@ -11,7 +11,8 @@ import socket from '../../../../socket';
 import ActionTag from '../ActionTag';
 import ActionForm from '../../Forms/ActionForm';
 
-const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, handleEditSubmit}) => {
+const Action = (props) => {
+  const {action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, handleEditSubmit} = props;
     function getBorder() {
         const isUnpublishedAgenda = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0) && action.type === 'Agenda';
         return isUnpublishedAgenda
@@ -43,7 +44,7 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, h
                 justifyContent="space-around"
                 width='100%'
             >
-                <AccordionItem
+                <Box
                     style={{
                         border: getBorder(),
                         borderRadius: '5px',
@@ -56,19 +57,21 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, h
                         time={getTime(action.submission.createdAt)}
                         toggleEdit={toggleEdit}
                         creator={action.creator}
+                        {...props}
+                        handleDelete={handleDelete}
                     />
-                    <AccordionPanel>
+                    <Box>
                       {/* <ActionTag
                           tags={action.tags}
                           actionId={action._id}
                       /> */}
-                        {!hidebuttons && <ActionButtons
+                        {/* {!hidebuttons && <ActionButtons
                             action={action}
                             toggleEdit={toggleEdit}
                             creator={action.creator}
                             handleDelete={handleDelete}
-                        />}
-                        {!editAction.show && <Box>
+                        />} */}
+                        {editAction && !editAction.show && <Box>
                             <ActionMarkdown
                                 header='Description'
                                 tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
@@ -87,7 +90,7 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, h
                                 toggleAssetInfo={toggleAssetInfo}
                             />
                         </Box>}
-                        {editAction.show && <ActionForm 
+                        {editAction && editAction.show && <ActionForm 
                           actionID={action._id} 
                           collabMode 
                           defaultValue={{ ...action.submission, name: action.name }} 
@@ -97,8 +100,8 @@ const Action = ({action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, h
                         <Feed
                             action={action}
                         />
-                    </AccordionPanel>
-                </AccordionItem>
+                    </Box>
+                </Box>
             </Box>
         </Flex>
     );

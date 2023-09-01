@@ -23,7 +23,7 @@ function ActionButtons({action, toggleEdit, creator, handleDelete}) {
         const id = action._id;
         socket.emit('request', {route: 'action', action: 'publish', id});
     };
-
+        
     return (
         <Box>
             {isAccessible && (
@@ -38,7 +38,7 @@ function ActionButtons({action, toggleEdit, creator, handleDelete}) {
                             aria-label='Publish tooltip'
                         >
                             <IconButton
-                                disabled={isDisabled}
+                                isDisabled={isDisabled}
                                 size="sm"
                                 onClick={(e) => {
                                     handlePublish();
@@ -52,7 +52,7 @@ function ActionButtons({action, toggleEdit, creator, handleDelete}) {
                         </Tooltip>
                     )}
                     <IconButton
-                        disabled={isDisabled}
+                        isDisabled={isDisabled}
                         size="sm"
                         onClick={(e) => {
                             toggleEdit(action)
@@ -64,7 +64,7 @@ function ActionButtons({action, toggleEdit, creator, handleDelete}) {
                         aria-label={'Edit Action'}
                     />
                     <IconButton
-                        disabled={isDisabled}
+                        isDisabled={isDisabled || action.submissions?.length > 0}
                         size="sm"
                         onClick={(e) => {
                             setMode("confirm");
