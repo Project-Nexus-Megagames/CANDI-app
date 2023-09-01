@@ -14,7 +14,6 @@ const ActionTable = () => {
 	const gamestate = useSelector((state) => state.gamestate);
 	const assets = useSelector((state) => state.assets.list);
 	const controlChars = useSelector(getControl);
-	console.log(controlChars);
 	const [round, setRound] = useState(gamestate.round);
 	const [selected, setSelected] = useState(null);
 	const [dataToDisplay, setDataToDisplay] = useState(actions);
@@ -112,7 +111,6 @@ const ActionTable = () => {
 			controller: event
 		};
 
-		console.log(data);
 		socket.emit('request', { route: 'action', action: 'assignController', data });
 	};
 

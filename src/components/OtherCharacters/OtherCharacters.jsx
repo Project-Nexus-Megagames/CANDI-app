@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"; // Redux store provider
 import NewCharacter from "../Control/NewCharacter";
 import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters, characterSelected } from "./../../redux/entities/characters";
-import { Accordion, Box, Button, ButtonGroup, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Show, Spinner, Tag, VStack } from "@chakra-ui/react";
+import { Accordion, Box, Button, ButtonGroup, Center, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Show, Spinner, Tag, VStack } from "@chakra-ui/react";
 import { getFadedColor, getTextColor } from "../../scripts/frontend";
 import { ChevronLeftIcon, DeleteIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import CharactersDrawer from "./CharactersDrawer";
@@ -83,12 +83,12 @@ const OtherCharacters = (props) => {
           templateAreas={`"list header header"
             "list main main"
           `}
-          gridTemplateColumns={ '20% 80%'}
+          gridTemplateColumns={window.innerWidth < 1000 ? '0% 100%' : '25% 75%'}
           gridTemplateRows={'80px 1fr'}
           fontWeight='bold'>
 
 
-          <GridItem pl='1' bg='#0f131a' area={'list'} >
+          <GridItem pl='1' bg='#0f131a' area={'list'} style={{ height: 'calc(100vh - 78px)', overflow: 'auto', }}>
           <Hide below="md" >
             <CharacterList 
               filteredCharacters={filteredCharacters}
@@ -104,12 +104,12 @@ const OtherCharacters = (props) => {
 
 
 
-        <GridItem pl='2' bg='#0f131a' area={'header'} >
-          <Flex
-                    marginTop='2rem'
-                    width={'100%'}
-                >
-                    <Box
+        <GridItem  bg='#232c3b' area={'header'} >
+          <Center
+            marginTop='0.75rem'
+            width={'100%'}
+          >
+            <Box
                         marginRight='1rem'
                     >
                       <Show below='md'>
@@ -123,8 +123,8 @@ const OtherCharacters = (props) => {
                         </Button>                        
                       </Show>   
 
-                    </Box>
-                    {control && <Box
+            </Box>
+            {control && <Box
                         marginLeft='1rem'
                     >
                       <ButtonGroup isAttached>
@@ -156,11 +156,11 @@ const OtherCharacters = (props) => {
                         </Button>                        
                       </ButtonGroup>
 
-                    </Box>}
-          </Flex>
+            </Box>}
+          </Center>
         </GridItem>
 
-        <GridItem pl='2' bg='#0f131a' area={'main'} >
+        <GridItem pl='2' bg='#0f131a' area={'main'}  style={{ height: 'calc(100vh - 157px)', overflow: 'auto', }} >
             {!selected && <b>Nothing Selected...</b>}
             {selected && <SelectedCharacter selected={selected} />}
         </GridItem>

@@ -24,9 +24,9 @@ const SelectedCharacter = (props) => {
         templateAreas={`"side main"
                         "body body"`}
         gridTemplateColumns={ '50% 50%'}
-        gridTemplateRows={ '40% 60%'}
         gap={2}
         fontWeight='bold'>
+          
 			<GridItem pl='2' area={'side'} >
         <div className='styleCenter' >
           <CharacterListItem character={selected} />

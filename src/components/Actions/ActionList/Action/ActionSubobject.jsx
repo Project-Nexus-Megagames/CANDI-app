@@ -8,6 +8,7 @@ import ActionMarkdown from "./ActionMarkdown";
 import CharacterNugget from "../../../Common/CharacterNugget";
 import ActionForm from "../../Forms/ActionForm";
 import ActionResources from "./ActionResources";
+import ActionEffort from "./ActionEffort";
 
 
 const ActionSubObject = (props) => {
@@ -130,6 +131,9 @@ const ActionSubObject = (props) => {
           {subObject.body && <ActionMarkdown
             header={'Body'}
             markdown={subObject.body}
+          />}
+          {subObject.effort && <ActionEffort 
+            submission={subObject}
           />}
           {subObject.assets && <ActionResources
             assets={subObject.assets}

@@ -47,7 +47,7 @@ function CharacterList({filteredCharacters, value, onChange, onClick, handleSele
                         </Tooltip>}
                     </Flex>
                 </Box>
-                <Box style={{ height: 'calc(100vh - 155px)', overflow: 'auto' }} >
+                <Box  >
                 {renderTags.map((tag, index) => (
                   <Box key={index}>
                       <Box
