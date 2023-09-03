@@ -37,10 +37,7 @@ const ActionDrawer = (props) => {
 					<Text>{selected?.name}</Text>
 				</DrawerHeader>
 				<DrawerBody align="center">
-          <Accordion defaultIndex={[0]} >
-            {selected && <Action hidebuttons handleSelect={props.closeDrawer} action={selected} />}            
-          </Accordion>
-
+          {selected && <Action handleSelect={props.closeDrawer} action={selected} editAction />}       
         </DrawerBody>
 			</DrawerContent>
 		</Drawer>
