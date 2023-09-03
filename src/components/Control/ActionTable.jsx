@@ -7,6 +7,7 @@ import SelectPicker from '../Common/SelectPicker';
 import ActionDrawer from './ActionDrawer';
 import socket from '../../socket';
 import _ from 'lodash';
+import CharacterNugget from '../Common/CharacterNugget';
 //import
 
 const ActionTable = () => {
@@ -303,9 +304,8 @@ const ActionTable = () => {
 			{dataToDisplay.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
 			{dataToDisplay
 				.filter((el) => el.round === round)
-				.map((item) => (
-					<div key={item._id}>
-						<Grid templateColumns={templateColumns} gap={4} paddingLeft={8} paddingRight={8} align='left'>
+				.map((item, index) => (
+					<Grid style={{ backgroundColor: index % 2 === 1 ? '#0f131a' : '#222936', padding: '8px 0 8px 0' }} justify={'center'} key={item._id} templateColumns={templateColumns} gap={2} paddingLeft={8} paddingRight={8} align='left' >
 							<GridItem overflow='hidden' onClick={() => setSelected(item)} cursor='pointer'>
 								<InfoRound style={{ color: 'cyan', fontSize: '1.5em' }} />
 							</GridItem>
@@ -316,7 +316,11 @@ const ActionTable = () => {
 								<Text>{item.type}</Text>
 							</GridItem>
 							<GridItem overflow='hidden'>
-								<Text>{item.creator.characterName}</Text>
+                <div>
+                  <CharacterNugget size='sm' character={item.creator} />
+                  <Text>{item.creator.characterName}</Text>                  
+                </div>
+
 							</GridItem>
 							<GridItem overflow='hidden'>
 								<Text>{renderAssets(item.submission)}</Text>
@@ -342,9 +346,7 @@ const ActionTable = () => {
 							<GridItem overflow='hidden'>
 								<Text>{renderResReady(item.results)}</Text>
 							</GridItem>
-						</Grid>
-						<Divider />
-					</div>
+					</Grid>
 				))}
 			<ActionDrawer isOpen={selected} show={selected} selected={selected} closeDrawer={() => setSelected(false)} />
 		</Box>
