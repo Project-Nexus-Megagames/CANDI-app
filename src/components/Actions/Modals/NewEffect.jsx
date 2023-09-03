@@ -206,6 +206,7 @@ const NewEffects = (props) => {
 	};
 
 	const handleSubmit = async (aaaa) => {
+    console.log(aaaa)
 		try {
 			const data = {
 				type,
@@ -215,12 +216,13 @@ const NewEffects = (props) => {
 				effector: myChar._id,
 				loggedInUser
 			};
-      // console.log(data)
+      console.log(data)
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
+      console.log(err)
 			// Alert.error(`Error: ${err.body} ${err.message}`, 5000);
 		}
-		handleExit();
+		// handleExit();
 	};
 
 	const renderAss = () => {
@@ -289,7 +291,7 @@ const NewEffects = (props) => {
 
 					{type === 'new' && selected && (
 						<div>
-							Type
+							Type {type}
 							{/* <InputPicker
 								labelKey="label"
 								valueKey="value"
@@ -376,13 +378,13 @@ const NewEffects = (props) => {
 				</ModalBody>
 
         <ModalFooter>
-          <Button
+          {/* <Button
             disabled={type === ''}
             onClick={handleSubmit}
             variant="solid"
           >
             Confirm
-          </Button>
+          </Button> */}
           <Button
             onClick={handleExit}
             variant="subtle"

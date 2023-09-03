@@ -75,7 +75,7 @@ const AssetForm = (props) => {
 
 	function onSubmit(data, e) {
 		if (props.handleSubmit) {
-			props.handleSubmit(data);
+			props.handleSubmit({ ...data, type: type, status: status, });
 		} else {
 			e.preventDefault();
 			const asset = { ...data, type: type, status: status, ownerCharacter: props.character._id };
