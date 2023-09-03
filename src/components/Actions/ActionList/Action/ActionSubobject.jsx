@@ -24,7 +24,8 @@ const ActionSubObject = (props) => {
   const handleDelete = async () => {
     const data = {
 			id: action._id,
-			result: subObject._id
+			result: subObject._id,
+      model: subObject.model
 		};
 		socket.emit('request', {
 			route: 'action',
