@@ -36,7 +36,7 @@ const HomePage = (props) => {
 	const [selectedChar, setSelectedChar] = React.useState('');
 	const tempCharacter = useSelector(getCharacterById(selectedChar));
   const {isControl} = usePermissions(); 
-	const [rand, setRand] = React.useState(Math.floor(Math.random() * 100));
+	const [rand, setRand] = React.useState(Math.floor(Math.random() * 10000));
 
   if (!props.login) {
     navigate("/");
@@ -106,19 +106,19 @@ const HomePage = (props) => {
       </Grid>
 
       <CandiWarning open={rand === 1} title={"You sure about that?"} onClose={() => setRand(-1)} handleAccept={() => setRand(-1)}>
-        Are ya sure?
+        Looks like you are about to delete the entire database. Are ya sure?
       </CandiWarning>
 
       <CandiWarning open={rand === -1} title={"Really?"} onClose={() => setRand(-2)} handleAccept={() => setRand(-2)}>
         Are you really, REALLY Sure?
       </CandiWarning>
 
-      <CandiWarning open={rand === -2} title={"Really Really?"} onClose={() => setRand(-3)} handleAccept={() => setRand(-3)}>
-        Look, I haven't even told you what you need to be sure about is. How can you be sure if you are uninformed?
+      <CandiWarning open={rand === -2} title={"Really Really?"} onClose={() => setRand(-3)} handleAccept={() => setRand(-3)} rejectText={'UNDO'} confirmText={'UNDO'}>
+        Ok the database has been deleted. 
       </CandiWarning>
 
-      <CandiWarning open={rand === -3} title={"AAAAAAAAAAAAA"} onClose={() => setRand(0)} handleAccept={() => setRand(0)}>
-        Wait that wasn't a yes or no question... What? 
+      <CandiWarning open={rand === -3} title={"AAAAAAAAAAAAA"} onClose={() => setRand(0)} handleAccept={() => setRand(0)} rejectText={'UNDO UNDO UNDO'} confirmText={'UNDO UNDO UNDO'}>
+        I also took the liberty of deleting all the source code for CANDI everywhere
       </CandiWarning>
 
 		</React.Fragment>
