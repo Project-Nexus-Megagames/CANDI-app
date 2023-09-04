@@ -49,6 +49,12 @@ const SelectedCharacter = (props) => {
         {selected.timeZone && <p>
           Time Zone: <b>{selected.timeZone}</b>
         </p>}
+        {(control || myCharacter._id === selected._id) && <div>
+            <WordDivider word={"Stats"} ></WordDivider>
+            {selected.characterStats && selected.characterStats.map((item) =>
+            <ResourceNugget key={item.type} value={item.type} amount={item.statAmount} width={'50px'} height={'30'} />
+          )}
+        </div>}
         <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
         <p>{selected.bio}</p>
 

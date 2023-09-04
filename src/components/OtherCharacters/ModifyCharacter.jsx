@@ -12,6 +12,7 @@ const ModifyCharacter = (props) => {
 	const loggedInUser = useSelector((state) => state.auth.user);
 
 	const effortTypes = gameConfig.effortTypes;
+	const characterStats = gameConfig.characterStats;
 	const [imageURL, setImageURL] = useState('');
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm(
@@ -107,6 +108,11 @@ const ModifyCharacter = (props) => {
 
 	const { fields: effortFields } = useFieldArray({
 		name: 'effort',
+		control
+	});
+
+  const { fields: characterStatsFields } = useFieldArray({
+		name: 'characterStats',
 		control
 	});
 
@@ -244,6 +250,20 @@ const ModifyCharacter = (props) => {
                   </HStack>
 
                   <HStack w="100%">
+                    {characterStats.map((item, i) => (
+                      <div key={i}>
+                        <FormControl>
+                          <FormLabel>Stat {characterStats?.[i]?.type}</FormLabel>
+                          <Input key={item.id} type="number" size="md" variant="outline" defaultValue={characterStats?.[i]?.statAmount} {...register(`characterStats.${i}.statAmount`, validation.statAmount)}></Input>
+                          <Text fontSize="sm" color="red.500">
+                            {errors.effort?.[i]?.amount && errors.effort[i].amount.message}
+                          </Text>
+                        </FormControl>
+                      </div>
+                    ))}
+                  </HStack>
+
+                  <HStack w="100%">
                     <FormLabel>Tags</FormLabel>
                     {tagFields.map((item, i) => (
                       <div key={i}>
@@ -251,11 +271,11 @@ const ModifyCharacter = (props) => {
                           <FormControl>
                             <Input size="md" {...register(`tags.${i}`)}></Input>
                           </FormControl>{' '}
-                          <Button onClick={() => removeTag(i)}>-</Button>
+                          <Button colorScheme='red' variant={'solid'} onClick={() => removeTag(i)}>-</Button>
                         </HStack>
                       </div>
                     ))}
-                    <Button onClick={() => appendTag('')}>+</Button>
+                    <Button colorScheme='green' variant={'solid'} onClick={() => appendTag('')}>+</Button>
                   </HStack>
 
                   <HStack w="100%">
@@ -266,11 +286,11 @@ const ModifyCharacter = (props) => {
                           <FormControl>
                             <Input size="md" {...register(`control.${i}`)}></Input>
                           </FormControl>
-                          <Button onClick={() => removeControl(i)}>-</Button>
+                          <Button colorScheme='red' variant={'solid'} onClick={() => removeControl(i)}>-</Button>
                         </HStack>
                       </div>
                     ))}
-                    <Button onClick={() => appendControl('')}>+</Button>
+                    <Button colorScheme='green' variant={'solid'} onClick={() => appendControl('')}>+</Button>
                   </HStack>
 
                   <Box w="100%">
@@ -285,13 +305,13 @@ const ModifyCharacter = (props) => {
             </Box>
             <ModalFooter>
               <ButtonGroup>
-                <Button type="submit" colorScheme="teal" className="btn btn-primary mr-1">
+                <Button  variant={'solid'} type="submit" colorScheme="teal" className="btn btn-primary mr-1">
                   Modify Character
                 </Button>
-                <Button colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />} >
+                <Button  variant={'solid'} colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />} >
                   Reset Form
                 </Button>
-                <Button colorScheme={'red'} onClick={() => handleExit()} leftIcon={<CloseIcon />} >
+                <Button  variant={'solid'} colorScheme={'red'} onClick={() => handleExit()} leftIcon={<CloseIcon />} >
                   Cancel
                 </Button>
               </ButtonGroup>

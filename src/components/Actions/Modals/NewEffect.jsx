@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {	getCharacterById,	getGods,	getMyCharacter,	getNonPlayerCharacters,	getUnlockedCharacters} from '../../../redux/entities/characters';
 import WordDivider from '../../WordDivider';
 import InputNumber from '../../Common/InputNumber';
-import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, SimpleGrid, Switch, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Center, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, SimpleGrid, Switch, Text, VStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import SelectPicker from '../../Common/SelectPicker';
 import AssetForm from '../../Common/AssetForm';
@@ -23,6 +23,7 @@ const NewEffects = (props) => {
 	const locations = useSelector((state) => state.locations.list);
 	const characters = useSelector((state) => state.characters.list);
 	const loggedInUser = useSelector((state) => state.auth.user);
+	const gameConfig = useSelector((state) => state.gameConfig);
 	const sortedCharacters = _.sortBy(charactersToDisplay, 'characterName');
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
 	const creatorChar = useSelector(getCharacterById(props.selected.creator._id));
@@ -144,38 +145,43 @@ const NewEffects = (props) => {
 			<div>
 				<WordDivider word="Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
 					or more aspects" />
-				<label>Happiness: </label>
-				<InputNumber
-					defaultValue="0"
-					onChange={(value) => handleEdit('gcHappiness', value)}
-				/>
-				<label>Health: </label>
-				<InputNumber
-					defaultValue="0"
-					onChange={(value) => handleEdit('gcHealth', value)}
-				/>
-				<label>Security: </label>
-				<InputNumber
-					defaultValue="0"
-					onChange={(value) => handleEdit('gcSecurity', value)}
-				/>
-				<label>Diplomacy: </label>
-				<InputNumber
-					defaultValue="0"
-					onChange={(value) => handleEdit('gcDiplomacy', value)}
-				/>
-				<label>Politics: </label>
-				<InputNumber
-					defaultValue="0"
-					onChange={(value) => handleEdit('gcPolitics', value)}
-				/>
+
+          {gameConfig.globalStats.map(stat => (
+            <div key={stat._id}>
+              <label>{stat.type}: ({stat.statAmount}) </label>
+              <InputNumber
+                defaultValue="0"
+                onChange={(value) => handleEdit(stat.type, value)}
+              />
+            </div>
+          ))}
+			</div>
+		);
+	};
+
+  const renderCharacterStats = () => {
+		const char = characters.find((el) => el._id === props.selected.creator._id);
+		return (
+			<div>
+				<WordDivider word="Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
+					or more aspects" />
+
+          {char?.characterStats.map(stat => (
+            <div key={stat._id}>
+              <label>{stat.type}: ({stat.statAmount}) </label>
+              <InputNumber
+                defaultValue="0"
+                onChange={(value) => handleEdit(stat.type, value)}
+              />
+            </div>
+          ))}
 			</div>
 		);
 	};
 
 	const renderInjuries = () => {
 		const char = characters.find((el) => el._id === props.selected.creator._id);
-		if (char.injuries.length === 0) return <div>{char.characterName} currently does not have any injuries</div>;
+		if (!char || char?.injuries?.length === 0) return <div>{char?.characterName} currently does not have any injuries</div>;
 		return (
 			<div>
 				<VStack
@@ -265,18 +271,25 @@ const NewEffects = (props) => {
 						>
 							Unlock Character
 						</Button>
-						<Button variant={type !== 'addInjury' ? 'ghost' : 'solid'} colorScheme={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
+						{/* <Button variant={type !== 'addInjury' ? 'ghost' : 'solid'} colorScheme={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
 							Add an injury
 						</Button>
-						<Button variant={type !== 'healInjuries' ? 'ghost' : 'solid'} colorScheme={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
+						<Button variant={type !== 'healInjuries' ? 'ghost' : 'solid'} colorScheme={'orange'} onClick={type !== 'healInjuries' ? () => { setSelected(props.action.creator); handleType('healInjuries')} : undefined}>
 							Heal Injuries
-						</Button>
+						</Button> */}
 						<Button
 							variant={type !== 'aspect' ? 'ghost' : 'solid'}
 							colorScheme={'orange'}
 							onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}
 						>
-							Edit an Aspect
+							Edit Global Stat(s)
+						</Button>
+            <Button
+							variant={type !== 'characterStats' ? 'ghost' : 'solid'}
+							colorScheme={'orange'}
+							onClick={type !== 'characterStats' ? () => handleType('characterStats') : undefined}
+						>
+							Edit Character Stat(s)
 						</Button>
 						<Button
 							variant={type !== 'new' ? 'ghost' : 'solid'}
@@ -323,6 +336,21 @@ const NewEffects = (props) => {
 
 					{type === 'aspect' && <div>{renderAspects()}</div>}
 
+          {type === 'characterStats' && <div>
+            {renderCharacterStats()}
+            <Center>
+              <Button
+                  disabled={type === ''}
+                  onClick={() => handleSubmit(selected)}
+                  variant="solid"
+                  colorScheme='green'
+                >
+                  Confirm
+                </Button> 
+            </Center>
+
+            </div>}
+
 					{type === 'character' && (
 						<div>
 							<CheckerPick
@@ -333,12 +361,21 @@ const NewEffects = (props) => {
 								labelKey="characterName"
                 value={array}
 							/>
-              <SimpleGrid  columns={2} minChildWidth='120px' spacing='40px'>
+              <SimpleGrid  columns={2} minChildWidth='520px' spacing='40px'>
                 {array && array.map(el => (
-                  <CharacterListItem key={el} character={sortedCharacters.find(ch => ch._id === el)} />
+                  <Box key={el}>
+                    <CharacterListItem key={el} character={sortedCharacters.find(ch => ch._id === el)} />
+
+                  </Box>
                 ))}                
               </SimpleGrid>
-
+              <Button
+                disabled={type === ''}
+                onClick={() => handleSubmit(array)}
+                variant="solid"
+              >
+                Confirm
+              </Button> 
 						</div>
 					)}
 
@@ -356,6 +393,7 @@ const NewEffects = (props) => {
 							<Input
 								onChange={(value) => handleAddInjury('name', value)}
 								style={{marginBottom: ' 10px'}}
+                value={selected.name}
 							></Input>
 							{!selected.permanent && (
 								<div>
@@ -364,6 +402,7 @@ const NewEffects = (props) => {
 										min={0}
 										onChange={(value) => handleAddInjury('duration', value)}
 										style={{marginBottom: ' 10px'}}
+                    value={selected.duration}
 									/>
 								</div>
 							)}
@@ -373,6 +412,13 @@ const NewEffects = (props) => {
 								// checkedChildren="Permanent Injury"
 								// unCheckedChildren="Not Permanent"
 							></Switch>
+              <Button
+                disabled={type === ''}
+                onClick={() => handleSubmit(selected)}
+                variant="solid"
+              >
+                Confirm
+              </Button> 
 						</div>
 					)}
 				</ModalBody>

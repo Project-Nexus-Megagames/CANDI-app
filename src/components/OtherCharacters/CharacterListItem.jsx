@@ -3,12 +3,14 @@ import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, 
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
+import { getFadedColor } from '../../scripts/frontend';
 
 const CharacterListItem = (props) => {
 	const { character, handleSelect, selected } = props;  
   const myCharacter = useSelector(state => state.auth.myCharacter);
   const characters = useSelector(state => state.characters.list);
   const toast = useToast();
+  const reduxSelected = useSelector((state) => state.characters.selected);
 
   const copyToClipboard = (character) => {
     if (character.characterName === "The Box") {
@@ -83,9 +85,9 @@ const CharacterListItem = (props) => {
 
 	return (
 
-  <Flex align={'center'}  width={'100%'} onClick={() => handleSelect(character)}>
+  <Flex style={{ backgroundColor: reduxSelected == character ? getFadedColor('default', 0.5) : 'inherit' }} align={'center'}  width={'100%'} onClick={() => handleSelect(character)}>
     <Box flex={1}>
-			<Avatar size="lg" src={character.profilePicture} alt="?" />
+			<Avatar size="lg" src={character?.profilePicture} alt="?" />
 		</Box>
 		<Box
       flex={8}
