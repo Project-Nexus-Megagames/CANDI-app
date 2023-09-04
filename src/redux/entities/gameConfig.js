@@ -14,6 +14,7 @@ const slice = createSlice({
 		effortTypes: [],
 		resourceTypes: [],
 		characterStats: [],
+		globalStats: [],
 		layout: []
 	},
 	// Reducers - Events

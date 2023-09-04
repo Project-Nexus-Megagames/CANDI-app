@@ -21,7 +21,7 @@ function ActionList({ actions, handleSelect, selected }) {
                 rounds.push(action.round);
             }
         }
-        //rounds.reverse();
+        rounds.reverse();
         setRounds(rounds);
     };
 

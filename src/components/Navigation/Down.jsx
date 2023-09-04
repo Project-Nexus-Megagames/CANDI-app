@@ -20,9 +20,9 @@ const Down = (props) => {
       <p>CANDI is offline for maintenence. Please check in Discord for annoncements regarding this down time.</p>
 			{control && <div>
 				<p>... unless you are control. Which if you can read this, you are. Go right in but shit might break yo</p>
-				<Button onClick={()=> navigate('/control')}>Take me to Control Terminal</Button>
-				<Button onClick={()=> navigate('/actions')}>Take me to Actions</Button>
-				<Button onClick={()=> navigate('/others')}>Take me to Other Characters</Button>
+				<Button onClick={()=> navigate('/home/control')}>Take me to Control Terminal</Button>
+				<Button onClick={()=> navigate('/home/actions')}>Take me to Actions</Button>
+				<Button onClick={()=> navigate('/home/others')}>Take me to Other Characters</Button>
 			</div>}
     </React.Fragment>
   );    

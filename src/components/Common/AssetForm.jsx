@@ -146,7 +146,7 @@ const AssetForm = (props) => {
 
 			<ButtonGroup>
 				<Button type='submit' colorScheme='teal' disabled={type === ''} className='btn btn-primary mr-1'>
-					Create Asset
+					{asset ? "Edit" : "Create"} Asset
 				</Button>
 				<Button colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />}>
 					Reset Form
