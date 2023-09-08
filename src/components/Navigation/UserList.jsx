@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { ChevronLeftIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, PlusSquareIcon, ChatIcon } from "@chakra-ui/icons";
 import {
   Popover,
   PopoverTrigger,
@@ -12,6 +12,8 @@ import {
   PopoverCloseButton,
   PopoverAnchor,
   IconButton,
+  Badge,
+  Button,
 } from '@chakra-ui/react'
 
 
@@ -32,12 +34,12 @@ const UserList = () => {
 		<div>
       <Popover>
         <PopoverTrigger>
-          <IconButton icon={<SearchIcon />} circle size="md" />
+          <Button variant={'outline'}  leftIcon={<ChatIcon />} circle size="md"><Badge>{userList.length}</Badge></Button>
         </PopoverTrigger>
         <PopoverContent>
           <PopoverArrow />
           <PopoverCloseButton />
-          <PopoverHeader>Confirmation!</PopoverHeader>
+          <PopoverHeader>Online Users:</PopoverHeader>
           <PopoverBody>
             {uncredentialed > 0 ? (
                 <span>{uncredentialed} not signed in</span>

@@ -8,6 +8,7 @@ import usePermissions from "../../hooks/usePermissions";
 import { useLocation, useNavigate } from 'react-router';
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
+import UserList from './UserList';
 
 const Navigation = (props) => {
 	  const navigate = useNavigate();
@@ -131,6 +132,7 @@ const Navigation = (props) => {
                     marginLeft='auto'
                     justifyContent='right'
                 >
+                  {isControl && <UserList />}
                   {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
                     {isControl && (
                         <Popover>
