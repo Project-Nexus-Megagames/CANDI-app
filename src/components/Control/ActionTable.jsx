@@ -71,7 +71,8 @@ const ActionTable = () => {
 		diceToRender.push(effortDice);
 		submission.assets.slice(0, 3).forEach((ass) => {
 			const asset = assets.find((el) => el._id === ass);
-			diceToRender.push(asset.dice);
+      if (asset) diceToRender.push(asset.dice);
+			else diceToRender.push(`ERROR cannot find asset ${ass}`)
 		});
 		return diceToRender.join(', ');
 	};
@@ -80,7 +81,8 @@ const ActionTable = () => {
 		const assetsToRender = [];
 		submission.assets.slice(0, 3).forEach((ass) => {
 			const asset = assets.find((el) => el._id === ass);
-			assetsToRender.push(asset.name);
+			if (asset) assetsToRender.push(asset?.name);
+			else assetsToRender.push(`ERROR cannot find asset ${ass}`)
 		});
 		return assetsToRender.join(', ');
 	};
