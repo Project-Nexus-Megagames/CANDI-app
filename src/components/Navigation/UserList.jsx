@@ -32,15 +32,15 @@ const UserList = () => {
 
 	return (
 		<div>
-      <Popover>
+      <Popover >
         <PopoverTrigger>
           <Button variant={'outline'}  leftIcon={<ChatIcon />} circle size="md"><Badge>{userList.length}</Badge></Button>
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent style={{ backgroundColor: '#0f131a' }}>
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverHeader>Online Users:</PopoverHeader>
-          <PopoverBody>
+          <PopoverBody  >
             {uncredentialed > 0 ? (
                 <span>{uncredentialed} not signed in</span>
               ) : null}

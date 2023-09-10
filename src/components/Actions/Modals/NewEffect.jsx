@@ -14,6 +14,7 @@ import CharacterListItem from '../../OtherCharacters/CharacterListItem';
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
 	const [selected, setSelected] = useState(undefined);
+	const [character, setCharacter] = useState(undefined);
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
@@ -53,6 +54,7 @@ const NewEffects = (props) => {
 					level: '',
 					ownerCharacter: props.selected.creator._id
 				});
+        setArray(props.selected.collaborators);
 				break;
 			case 'aspect':
 				setSelected({
@@ -92,6 +94,7 @@ const NewEffects = (props) => {
 				break;
 		}
 	}, [type]);
+
 
 	const handleExit = () => {
 		setType('');
@@ -212,7 +215,8 @@ const NewEffects = (props) => {
 	};
 
 	const handleSubmit = async (aaaa) => {
-    console.log(aaaa)
+    if (character) aaaa.ownerCharacter = character
+
 		try {
 			const data = {
 				type,
@@ -222,7 +226,7 @@ const NewEffects = (props) => {
 				effector: myChar._id,
 				loggedInUser
 			};
-      console.log(data)
+      // console.log(data)
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
       console.log(err)
@@ -304,15 +308,16 @@ const NewEffects = (props) => {
 
 					{type === 'new' && selected && (
 						<div>
-							Type {type}
-							{/* <InputPicker
-								labelKey="label"
-								valueKey="value"
-								data={pickerData}
-								defaultValue={selected.level}
-								style={{width: '100%'}}
-								onChange={(event) => handleEdit('type', event)}
-							/> */}
+							Type {type}?
+							<SelectPicker
+								block
+								placeholder={`Select Character`}
+								onChange={(event) => setCharacter(event)}
+								data={array}
+                value={character}
+								valueKey="_id"
+								label="characterName"
+							></SelectPicker>
 
 							{renderAss()}
 						</div>
