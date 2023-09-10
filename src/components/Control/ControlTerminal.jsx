@@ -14,6 +14,7 @@ import EditGamestate from './EditGamestate';
 
 const ControlTerminal = (props) => {		
 	const { login, team, character, loading, user } = useSelector(s => s.auth);
+  const assets = useSelector(s => s.assets.list);
 
 	let [account, setAccount] = React.useState();
 	const [mode, setMode] = React.useState(false);
@@ -67,12 +68,11 @@ const ControlTerminal = (props) => {
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
 		<TabList>
 			<Tab>DashBoard</Tab>
-      <Tab>Actions</Tab>
-			<Tab>Characters</Tab>
-			<Tab>Resources (Assets)</Tab>
-			<Tab>GameState</Tab>
+      <Tab>Actions</Tab>			
 			<Tab>Configuration</Tab>
 			<Tab>Register</Tab>
+      {user.username.toLowerCase() === 'bobtheninjaman' &&<Tab>Characters</Tab>}
+      {user.username.toLowerCase() === 'bobtheninjaman' && <Tab>Assets</Tab>}
 		</TabList>
 
 		<TabPanels>
@@ -80,10 +80,15 @@ const ControlTerminal = (props) => {
 			<TabPanel>
 				<div>
 
-          <Button onClick={handleClose}>Close</Button>
-          <Button onClick={() => setMode("edit")}>Edit Round</Button>          
-          <Button onClick={() => setMode("next")}>Next Round</Button>
+          <Button variant={'solid'} onClick={handleClose}>Close</Button>
+          <Button variant={'solid'} onClick={() => setMode("edit")}>Edit Round</Button>          
+          <Button variant={'solid'} onClick={() => setMode("next")}>Next Round</Button>
 				</div>
+
+        <div>
+          {assets.filter(el => el.status.some(s => s=== 'used')).length}
+          <Button>Reset Assets</Button>
+        </div>
 
         <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
           Are ya sure?
@@ -97,18 +102,6 @@ const ControlTerminal = (props) => {
         <ActionTable />
 			</TabPanel>
 
-			<TabPanel>
-				<CharacterTab />
-			</TabPanel>
-			
-			<TabPanel>
-				<AssetTab />	
-			</TabPanel>
-
-			<TabPanel>
-				DDDDD			
-			</TabPanel>
-
       <TabPanel>
 				<div style={{ width: '90%', height: '95vh'}}>
 					<GameConfig />
@@ -118,6 +111,15 @@ const ControlTerminal = (props) => {
 			<TabPanel>
 				<Registration />
 			</TabPanel>			
+
+      <TabPanel>
+				<CharacterTab />
+			</TabPanel>
+
+      <TabPanel>
+				<AssetTab />	
+			</TabPanel>
+
 
 		</TabPanels>
 	</Tabs>
