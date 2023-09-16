@@ -133,6 +133,14 @@ const AssetForm = (props) => {
 						</Text>
 					</FormControl>
 
+          <FormControl>
+						<FormLabel>Uses </FormLabel>
+						<Input type='text' size='md' variant='outline' {...register('uses', validation.uses)}></Input>
+						<Text fontSize='sm' color='red.500'>
+							{errors.uses && errors.uses.message}
+						</Text>
+					</FormControl>
+
 					<Grid templateColumns={`repeat(2, 1fr)`} width={'100%'}>
 						{['hidden', 'lent', 'lendable', 'used'].map((stat) => (
 							<FormControl key={stat} display='flex' alignItems='center'>

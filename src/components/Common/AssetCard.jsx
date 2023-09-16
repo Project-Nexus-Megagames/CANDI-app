@@ -54,7 +54,7 @@ const AssetCard = (props) => {
 		<div style={{ overflow: 'clip' }} onClick={() => handleSelect ? handleSelect(asset) : console.log("Peekabo!")} >
       <Card marginTop={marginTop} key={asset._id} style={{ border: `4px solid ${getFadedColor(asset.type)}` }} >
         <CardHeader>
-          <h5>{asset.name} 
+          <h5>{asset.name}
           {control && !disabled && <ButtonGroup isAttached>
            <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<EditIcon />} />         
            <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<DeleteIcon />} />                  
@@ -74,10 +74,11 @@ const AssetCard = (props) => {
           <Flex align={'center'} >
             <Spacer />
             <ResourceNugget value={asset.type} width={'60px'}></ResourceNugget>
+            {asset.uses !== 999 && <ResourceNugget value={"Uses"} amount={asset.uses}></ResourceNugget>}
             {asset.status?.map(el => (
               <ResourceNugget key={el} value={el}></ResourceNugget>
             ))}
-            <ResourceNugget value={asset.dice}></ResourceNugget>
+            <ResourceNugget value={"Dice"} amount={asset.dice}></ResourceNugget>
             <Spacer />
           </Flex>
 
