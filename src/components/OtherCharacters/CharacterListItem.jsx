@@ -98,14 +98,14 @@ const CharacterListItem = (props) => {
         textOverflow: 'ellipsis'
 			}}
 		>
-			<h4>{character.characterName}</h4>
+			<h4>{character?.characterName}</h4>
       <Button
         onClick={(e) => { e.stopPropagation(); copyToClipboard(character)}}
         leftIcon={<CopyIcon/>}
-        colorScheme='blue'
+        colorScheme='white'
         variant='outline'
       >
-        {character.email}                         
+        {character?.email}                         
       </Button>
 			
 		</Box>  
