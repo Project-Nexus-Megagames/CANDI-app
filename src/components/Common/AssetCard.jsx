@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Text, Wrap } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import socket from '../../socket';
@@ -71,16 +71,14 @@ const AssetCard = (props) => {
             {characters.find(el => el._id === asset.currentHolder)?.characterName}
             <Button onClick={() => unLendAsset()} variant={'solid'} colorScheme='red' >Take asset back</Button>
             </Center>}
-          <Flex align={'center'} >
-            <Spacer />
+          <Wrap align={'center'} justify='center' >
             <ResourceNugget value={asset.type} width={'60px'}></ResourceNugget>
             {asset.uses !== 999 && <ResourceNugget value={"Uses"} amount={asset.uses}></ResourceNugget>}
             {asset.status?.map(el => (
               <ResourceNugget key={el} value={el}></ResourceNugget>
             ))}
             <ResourceNugget value={"Dice"} amount={asset.dice}></ResourceNugget>
-            <Spacer />
-          </Flex>
+          </Wrap>
 
         </CardHeader>
         <CardBody style={{ maxHeight: '20vh', textOverflow: 'ellipsis', paddingTop: '0px' }} >

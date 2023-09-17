@@ -12,7 +12,7 @@ function ActionResources({assets, toggleAssetInfo}) {
     const breakpoints = useBreakpointValue({
         base: {columns: 0, rows: 3, width: '15rem', bottom: '1.75rem', left: '7.5rem'},
         md: {columns: 3, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'},
-        lg: {columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
+        lg: {columns: 3, rows: 0, width: '20rem', bottom: '1.75rem', left: '7.5rem'}
     })
 
     function getAsset(assetID) {
@@ -43,26 +43,6 @@ function ActionResources({assets, toggleAssetInfo}) {
                         />
                     }
                     <AssetCard marginTop={isControl ? '-2.5rem' : 0} asset={retrievedAsset} disabled />
-                    {/* <Box>
-                        <Heading
-                            as='h6'
-                            size={'sm'}
-                            marginTop={isControl ? '-1.5rem' : 0}
-                            marginBottom={'1rem'}
-                            wordBreak={'break-word'}
-                        >
-                            {retrievedAsset.type}
-                        </Heading>
-                        <Box
-                            wordBreak={'break-word'}
-                        >{retrievedAsset.name}</Box>
-                        <Box
-                            height={'1.5rem'}
-                            marginTop={'1rem'}
-                        >
-                            {retrievedAsset.status.used && <Tag colorScheme='whiteAlpha'>Used</Tag>}
-                        </Box>
-                    </Box> */}
                 </Box>
             );
         } else {
@@ -78,7 +58,7 @@ function ActionResources({assets, toggleAssetInfo}) {
                 width={breakpoints.width}
                 border={'1px solid white'}
                 borderRadius={'10'}
-                marginTop={'2rem'}
+                marginTop={'1rem'}
                 minH="10vh"
                 onClick={() => retrievedAsset && toggleAssetInfo(retrievedAsset)}
             >

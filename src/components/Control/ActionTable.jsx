@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getControl } from '../../redux/entities/characters';
-import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, HStack, Button, Input } from '@chakra-ui/react';
+import { Divider, Box, Text, Grid, GridItem, Heading, Checkbox, HStack, Button, Input, Stack } from '@chakra-ui/react';
 import { CheckRound, WarningRound, InfoRound } from '@rsuite/icons';
 import SelectPicker from '../Common/SelectPicker';
 import ActionDrawer from './ActionDrawer';
@@ -325,10 +325,11 @@ const ActionTable = () => {
 								<Text>{item.type}</Text>
 							</GridItem>
 							<GridItem overflow='hidden'>
-                <div>
+                <Stack align={'center'} style={{ border: item.collaborators?.length > 0 ? `4px solid ${getFadedColor()}` : '' }} >
                   <CharacterNugget size='sm' character={item.creator} />
-                  <Text>{item.creator.characterName}</Text>                  
-                </div>
+                  <Text>{item.creator.characterName}</Text>
+                  {item.collaborators?.length > 0 && <b>+{item.collaborators?.length} Collaborators</b>}               
+                </Stack>
 
 							</GridItem>
 							<GridItem overflow='hidden'>
