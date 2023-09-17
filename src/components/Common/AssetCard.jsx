@@ -78,7 +78,17 @@ const AssetCard = (props) => {
             {asset.status?.map(el => (
               <ResourceNugget key={el} value={el}></ResourceNugget>
             ))}
-            <ResourceNugget value={"Dice"} amount={asset.dice}></ResourceNugget>
+            <Spacer />
+          </Flex>
+
+          <Flex align={'center'} overflow='hidden' width='100%' >
+          <Spacer />
+            {asset.dice?.map(die => (
+                <div key={die._id} style={{  textAlign: 'center' }} >
+                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
+                  <b>D{die.amount}</b>
+                </div>
+            ))}
             <Spacer />
           </Flex>
 

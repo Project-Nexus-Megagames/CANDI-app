@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, Flex, Heading, Tag } from "@chakra-ui/react";
+import { Avatar, Box, Divider, Flex, Heading, Tag, Wrap } from "@chakra-ui/react";
 import React from "react";
 import { getFadedColor, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
@@ -66,11 +66,12 @@ const ActionSubObject = (props) => {
     }
   };
 
+  const borderColor = subObject.diceResult ? subObject?.description : subObject.model;
 
   return ( 
     <div>
       <div key={subObject._id} style={{ 
-        border: subObject.status === 'Public' ? `3px solid ${getFadedColor(subObject.model)}` : `3px dotted ${getFadedColor(subObject.model)}`, 
+        border: subObject.status === 'Public' ? `3px solid ${getFadedColor(borderColor)}` : `3px dotted ${getFadedColor(borderColor)}`, 
         borderRadius: '5px', padding: '5px' }}>
         <Flex style={{ backgroundColor: getFadedColor(subObject.model), padding: '10px' }} >
           <Box
@@ -90,7 +91,7 @@ const ActionSubObject = (props) => {
                   size={'md'}
                   textAlign={'center'}
               >
-                  {creator?.characterName}'s {subObject.model}                
+                  {subObject.model}                
                   
               </Heading>
               <Box
@@ -139,6 +140,16 @@ const ActionSubObject = (props) => {
           {subObject.assets && <ActionResources
             assets={subObject.assets}
           />}
+
+          {subObject.diceResult && <Wrap justify='center'>
+            {subObject.diceResult.map(die => (
+                <div key={die._id} style={{  textAlign: 'center', padding: '5px', border: die.amount< action.submission.difficulty ? '' :`2px solid ${getFadedColor(action.type)}` }} >
+                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.sides}.png` : '/images/unknown.png'} alt={die.sides} />}
+                  <b>{die.amount}</b>
+                </div>
+            ))}
+          </Wrap>}
+
         </Box>}
 
         {mode === 'Submission' && <ActionForm collabMode defaultValue={subObject} actionType={action.type} handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setMode(false)} />}

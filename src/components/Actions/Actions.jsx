@@ -261,8 +261,7 @@ const Actions = (props) => {
                     onClose={onClose}
                 />
 
-                <Box
-                    allowMultiple                    
+                <Box                                       
                     width={'100%'}
                 >
                     {!selected && !showNewActionModal && rounds.map((round, index) => (

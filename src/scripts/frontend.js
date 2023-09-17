@@ -16,7 +16,7 @@ function getFadedColor(color, fade = 1) {
 		case 'Control':
 			return `#ff9800`
 
-		case 'Defence':
+		case 'Fail':
 			return `#e74c3c`
 
 		case 'Wealth':
@@ -25,7 +25,8 @@ function getFadedColor(color, fade = 1) {
 			return '#03fcbe'
 		case 'Power':
 			return `#71368a`
-		case 'Asset':
+    case 'Success':
+    case 'Asset':
 			return `#1f8b4c`
 		case 'Trait':
 			return `#e91e63`

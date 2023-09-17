@@ -1,15 +1,14 @@
-import React from 'react';
-import { AccordionItem, AccordionPanel, Box, Flex, Tag } from "@chakra-ui/react";
+import React, { useState } from 'react';
+import { Box, Flex } from "@chakra-ui/react";
 import { getFadedColor, getTime } from "../../../../scripts/frontend";
 import ActionHeader from "./ActionHeader/ActionHeader";
 import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
-import ActionEffort from "./ActionEffort";
 import Feed from "./Feed";
-import ActionButtons from './ActionHeader/ActionButtons';
 import socket from '../../../../socket';
-import ActionTag from '../ActionTag';
 import ActionForm from '../../Forms/ActionForm';
+import { useSelector } from 'react-redux';
+import ActionDifficulty from './ActionDifficulty';
 
 const Action = (props) => {
   const {action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, handleEditSubmit} = props;
@@ -82,9 +81,12 @@ const Action = (props) => {
                                 header='Intent'
                                 markdown={action.submission.intent}
                             />
-                            <ActionEffort 
+                            {/* <ActionEffort 
                                 submission={action.submission}
-                            />
+                            /> */}
+                            <ActionDifficulty action={action} submission={action.submission}/>
+
+
                             <ActionResources
                                 assets={action.submission.assets}
                                 toggleAssetInfo={toggleAssetInfo}
