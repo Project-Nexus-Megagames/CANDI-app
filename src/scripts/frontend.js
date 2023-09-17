@@ -3,11 +3,11 @@ function getFadedColor(color, fade = 1) {
 	switch (color) {
 		case 'Agenda':
 		case 'Public':
-    case 'Main':
 			return `#22a12a`;
 		case 'Agenda-rs':
 			return 'green'
 
+    case 'Main':
 		case 'Normal':
 			return `#5b26b0`;
 		case 'Normal-rs':

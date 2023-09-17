@@ -135,7 +135,7 @@ function ActionList({ actions, handleSelect, selected }) {
                                                     {action.results.length > 0 && action.results[0].ready &&
                                                         <ActionTag
                                                             color='green'
-                                                            text='R Ready'
+                                                            text='Resolved'
                                                         />
                                                     }
                                                     {action.effects.length > 0 &&
