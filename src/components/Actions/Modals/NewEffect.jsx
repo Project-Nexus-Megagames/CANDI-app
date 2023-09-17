@@ -54,7 +54,8 @@ const NewEffects = (props) => {
 					level: '',
 					ownerCharacter: props.selected.creator._id
 				});
-        setArray(props.selected.collaborators);
+        setCharacter(props.selected.creator._id)
+        setArray([ props.selected.creator, ...props.selected.collaborators]);
 				break;
 			case 'aspect':
 				setSelected({

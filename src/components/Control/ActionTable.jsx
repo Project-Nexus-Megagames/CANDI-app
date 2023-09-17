@@ -8,6 +8,7 @@ import ActionDrawer from './ActionDrawer';
 import socket from '../../socket';
 import _ from 'lodash';
 import CharacterNugget from '../Common/CharacterNugget';
+import { getFadedColor } from '../../scripts/frontend';
 //import
 
 const ActionTable = () => {
@@ -192,14 +193,20 @@ const ActionTable = () => {
 					</Button>
 				))}
 			</Box>
+
 			<Box borderWidth='3px' borderRadius='md' borderColor='teal' padding={8}>
 				<Heading size='md'>Round: {round}</Heading>
 				<Divider />
 				<HStack spacing='24px'>
 					{controlChars.map((controller) => (
-						<div key={controller._id}>
+						<div key={controller._id} 
+              style={{ 
+                backgroundColor:  getFadedColor(controller._id == filter ? 'Other' : 'The Overlord'),
+                padding: '3px', 
+                borderRadius: '5px'        
+              }} > 
 							<Text as='b' onClick={() => handleFilter('controller', controller._id)} cursor='pointer'>
-								{controller.characterName}:
+								{controller.characterName}: 
 							</Text>
 							<Text onClick={() => handleFilter('controller', controller._id)} cursor='pointer'>
 								{getActionCount(controller._id)}

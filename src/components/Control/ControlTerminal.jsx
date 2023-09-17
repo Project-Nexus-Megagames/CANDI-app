@@ -49,6 +49,11 @@ const ControlTerminal = (props) => {
 		socket.emit('request', { route: 'gamestate', action: 'nextRound', data });
   }
 
+  const handleUnUseAll = () => {
+    const data = user.username;
+		socket.emit('request', { route: 'asset', action: 'unuseAll', data });
+  }
+
   const handleClose = () => {
     const data = user.username;
     socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
@@ -80,14 +85,14 @@ const ControlTerminal = (props) => {
 			<TabPanel>
 				<div>
 
-          <Button variant={'solid'} onClick={handleClose}>Close</Button>
-          <Button variant={'solid'} onClick={() => setMode("edit")}>Edit Round</Button>          
-          <Button variant={'solid'} onClick={() => setMode("next")}>Next Round</Button>
+          <Button variant={'solid'} colorScheme='teal' onClick={handleClose}>Close</Button>
+          <Button variant={'solid'} colorScheme='teal' onClick={() => setMode("edit")}>Edit Round</Button>          
+          <Button variant={'solid'} colorScheme='teal' onClick={() => setMode("next")}>Next Round</Button>
 				</div>
 
         <div>
           {assets.filter(el => el.status.some(s => s=== 'used')).length}
-          <Button>Reset Assets</Button>
+          <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>
         </div>
 
         <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
