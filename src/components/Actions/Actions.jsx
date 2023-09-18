@@ -102,7 +102,7 @@ const Actions = (props) => {
         }
         rounds.reverse();
         setRounds(rounds);
-        setRenderRounds(rounds.slice(0, 1))
+        if (renderRounds.length === 0) setRenderRounds(rounds.slice(0, 1))
         if (selected) setSelected(actions.find(el => el._id === selected._id))
     };
 
