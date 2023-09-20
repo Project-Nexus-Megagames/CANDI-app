@@ -29,6 +29,7 @@ function Feed({action}) {
       return db + da;
     })
 
+
     if (!isControl) {
       list = list.filter(el => el.status === 'Public' || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
     }
@@ -75,6 +76,7 @@ function Feed({action}) {
                 <Center height='20px'>
                   <Divider orientation='vertical' />
                 </Center>
+                {item._id}
                 <ActionSubObject action={action} subObject={item} />
               </div>              
             )}

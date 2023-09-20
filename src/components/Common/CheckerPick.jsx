@@ -23,7 +23,7 @@ function CheckerPick(props) {
 					{data && data.length > 0 && value && (
 						<Box width={'90%'} overflow={'hidden'}>
 							{value.length === 0 && placeholder}
-							{data && data.find(el => el) !== undefined && value.map((el, index) => <Tag key={index}>{data.find(e => e._id === el)[labelKey]}</Tag>)}
+							{data && data.find(el => el !== undefined) && value.map((el, index) => <Tag key={index}>{data.find(e => e._id === el)[labelKey]}</Tag>)}
 						</Box>
 					)}
 					<IconButton icon={<IoChevronDownCircleOutline />} />

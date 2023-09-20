@@ -43,7 +43,8 @@ const ActionForm = (props) => {
 
 	const setMaxEffort = () => {
     if (actionType) {
-      let charEffort = getThisEffort(myCharacter.effort, actionType.type);
+      let charEffort = getThisEffort(myCharacter.effort, effort.effortType);
+
       if (defaultValue?.effort) setMax(charEffort + defaultValue.effort.amount < actionType.maxEffort ? charEffort + defaultValue.effort.amount : actionType.maxEffort);           
       else setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);      
     }
@@ -51,7 +52,7 @@ const ActionForm = (props) => {
   
 	useEffect(() => {
 		if (actionType && actionType.type && !defaultValue) {
-			setEffort({ effortType: actionType.type, amount: 0 });
+			setEffort({ effortType: actionType.effortTypes[0], amount: 0 });
 			setMaxEffort();
       newMap(actionType.maxAssets);
 		}
