@@ -12,6 +12,8 @@ import ActionDifficulty from './ActionDifficulty';
 
 const Action = (props) => {
   const {action, toggleAssetInfo, toggleEdit, hidebuttons, editAction, handleEditSubmit} = props;
+  const control = useSelector(state => state.auth.control);
+
     function getBorder() {
         const isUnpublishedAgenda = (action.tags.some((tag) => tag !== 'Published') || !action.tags.length > 0) && action.type === 'Agenda';
         return isUnpublishedAgenda
@@ -84,7 +86,7 @@ const Action = (props) => {
                             {/* <ActionEffort 
                                 submission={action.submission}
                             /> */}
-                            <ActionDifficulty action={action} submission={action.submission}/>
+                            {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}
 
 
                             <ActionResources

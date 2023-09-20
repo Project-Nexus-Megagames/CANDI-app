@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Modal, ModalHeader, ModalContent, ModalBody, ButtonGroup, Button, ModalFooter, Spacer, Switch, Grid } from '@chakra-ui/react';
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Modal, ModalHeader, ModalContent, ModalBody, ButtonGroup, Button, ModalFooter, Spacer, Switch, Grid, InputGroup, IconButton, CloseButton } from '@chakra-ui/react';
 import { useForm, useFieldArray, useController } from 'react-hook-form';
 
 import { CloseIcon, RepeatClockIcon } from '@chakra-ui/icons';
 import { CandiModal } from './CandiModal';
 import SelectPicker from './SelectPicker';
 import socket from '../../socket';
+import InputNumber from './InputNumber';
+import { Plus } from '@rsuite/icons';
 
 const AssetForm = (props) => {
 	const { asset, character, mode } = props;
@@ -15,6 +17,7 @@ const AssetForm = (props) => {
 	const [imageURL, setImageURL] = useState('');
 	const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
 	const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
+	const [dice, setDice] = React.useState([]);
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm(
 		{
@@ -64,6 +67,20 @@ const AssetForm = (props) => {
 		props.closeModal();
 	};
 
+  const removeElement = (index, type) => {
+		let temp;
+		switch (type) {
+			case 'dice':
+				temp = [...dice];
+				temp.splice(index, 1)
+				setDice(temp);
+				break;
+			default:
+				console.log('UwU Scott made an oopsie doodle!')
+				
+		}
+	}
+
 	const handleStatus = (stuff) => {
 		const stat = stuff.target.id;
 
@@ -75,7 +92,7 @@ const AssetForm = (props) => {
 
 	function onSubmit(data, e) {
 		if (props.handleSubmit) {
-			props.handleSubmit({ ...data, type: type, status: status, });
+			props.handleSubmit({ ...data, dice, type: type, status: status, });
 		} else {
 			e.preventDefault();
 			const asset = { ...data, type: type, status: status, ownerCharacter: props.character._id };
@@ -92,6 +109,26 @@ const AssetForm = (props) => {
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
 	};
+
+  const editState = (incoming, index, type) => {
+		let thing;
+		let temp;
+    console.log(type)
+		switch (type) {
+			case 'die':
+			case 'dice':
+				thing = dice[index];
+				temp = [...dice];
+				typeof(incoming) === 'number' ? thing.amount = parseInt(incoming) : thing.type = (incoming);
+				temp[index] = thing;
+				setDice(temp);
+
+        console.log(temp)
+				break;
+			default:
+				console.log('UwU Scott made an oopsie doodle!')
+		}
+	}
 
 	//const assetTypes = [ { name: 'Asset'}, { name: 'Trait' }, { name: 'Power' } ];
 
@@ -127,10 +164,14 @@ const AssetForm = (props) => {
 
           <FormControl>
 						<FormLabel>Dice </FormLabel>
-						<Input type='text' size='md' variant='outline' {...register('dice', validation.dice)}></Input>
-						<Text fontSize='sm' color='red.500'>
-							{errors.dice && errors.dice.message}
-						</Text>
+            {dice.map((die, index) => (
+								<InputGroup key={die._id} index={index}>
+                  <SelectPicker label='type' valueKey='type' data={gameConfig.resourceTypes} value={die.type} onChange={(event)=> {editState(event, index, 'dice'); }} />
+									<InputNumber prefix='value' style={{ width: 200 }} value={die.value} min={0} onChange={(event)=> editState(parseInt(event), index, 'die')}></InputNumber>
+									<IconButton variant={'outline'} onClick={() => removeElement(index, 'dice')} colorScheme='red' size="sm" icon={<CloseButton />} />   
+								</InputGroup>
+							))}		
+              <IconButton variant={'solid'}  onClick={() => setDice([...dice, { amount: 1, type: type} ])} colorScheme='green' size="sm" icon={<Plus/>} />   
 					</FormControl>
 
           <FormControl>
