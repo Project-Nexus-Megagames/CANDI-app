@@ -38,7 +38,7 @@ const NewEffects = (props) => {
 				for (const bond of assets.filter((el) => el.ownerCharacter === props.selected.creator._id)) {
           
 					const bondData = {
-						name: `${bond.type} '${bond.name}' - (${bond.dice})`,
+						name: `${bond.type} '${bond.name}'`,
 						type: bond.type,
 						_id: bond._id
 					};

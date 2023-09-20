@@ -17,7 +17,7 @@ const AssetForm = (props) => {
 	const [imageURL, setImageURL] = useState('');
 	const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
 	const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
-	const [dice, setDice] = React.useState([]);
+	const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm(
 		{
@@ -28,6 +28,13 @@ const AssetForm = (props) => {
 
 	useEffect(() => {
 		reset(asset);
+
+    let temp = []
+    for (const ass of asset.dice) {
+      temp.push({ amount: ass.amount, type: ass.type })
+    }
+    setDice(temp);
+    console.log(temp)
 	}, [asset]);
 
 	const validation = {
@@ -95,7 +102,7 @@ const AssetForm = (props) => {
 			props.handleSubmit({ ...data, dice, type: type, status: status, });
 		} else {
 			e.preventDefault();
-			const asset = { ...data, type: type, status: status, ownerCharacter: props.character._id };
+			const asset = { ...data, dice, type: type, status: status, ownerCharacter: props.character._id };
 			console.log('SENDING DATA', asset);
 			socket.emit('request', {
 				route: 'asset',
@@ -113,7 +120,7 @@ const AssetForm = (props) => {
   const editState = (incoming, index, type) => {
 		let thing;
 		let temp;
-    console.log(type)
+    console.log(dice[index].amount.readOnly)
 		switch (type) {
 			case 'die':
 			case 'dice':
@@ -165,9 +172,11 @@ const AssetForm = (props) => {
           <FormControl>
 						<FormLabel>Dice </FormLabel>
             {dice.map((die, index) => (
+              
 								<InputGroup key={die._id} index={index}>
+                  {die.amount}?
                   <SelectPicker label='type' valueKey='type' data={gameConfig.resourceTypes} value={die.type} onChange={(event)=> {editState(event, index, 'dice'); }} />
-									<InputNumber prefix='value' style={{ width: 200 }} value={die.value} min={0} onChange={(event)=> editState(parseInt(event), index, 'die')}></InputNumber>
+									<InputNumber prefix='value' style={{ width: 200 }} defaultValue={die.amount.toString()} value={die.amount} min={0} onChange={(event)=> editState(parseInt(event), index, 'die')}></InputNumber>
 									<IconButton variant={'outline'} onClick={() => removeElement(index, 'dice')} colorScheme='red' size="sm" icon={<CloseButton />} />   
 								</InputGroup>
 							))}		
