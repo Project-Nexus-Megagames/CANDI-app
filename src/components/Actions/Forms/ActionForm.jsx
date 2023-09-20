@@ -315,7 +315,8 @@ const ActionForm = (props) => {
                                 myAssets.filter(el => 
                                   actionType.resourceTypes.some(a => a === el.type) && 
                                   !resource.some(ass => ass?._id === el._id ) &&
-                                  !el.status?.some(el => el === 'used')
+                                  !el.status?.some(el => el === 'used') && 
+                                  el.uses > 0
                                 )} 
                             />}
                           {ass && <AssetCard disabled removeAsset={(data)=> editState(false, data.model, index)} compact type={'blueprint'} asset={ass} /> }   
