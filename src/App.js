@@ -40,6 +40,7 @@ import { ErrorAlert } from "./components/Common/ErrorAlert";
 import { SuccessAlert } from "./components/Common/SuccessAlert";
 import Loading from "./components/Navigation/Loading";
 import CharacterStats from "./components/StatDisplays/CharacterStats";
+import LocationDashboard from "./components/Locations/LocationDashboard";
 
 // React App Component
 initUpdates();
@@ -166,6 +167,7 @@ const App = (props) => {
               <Route exact path='/home/leaderboard' element={<CharacterStats {...props} />} />
               <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
               <Route exact path='/home/actions' element={<Actions {...props} />} />
+              <Route exact path='/home/locations' element={<LocationDashboard {...props} />} />
               <Route exact path='/gameConfig' element={<GameConfigStep1 {...props} />} />
               <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />
               <Route exact path='/home/control' element={<ControlTerminal {...props} />} />

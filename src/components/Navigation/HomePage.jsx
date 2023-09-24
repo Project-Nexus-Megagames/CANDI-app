@@ -97,6 +97,10 @@ const HomePage = (props) => {
           <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
         </GridItem>
 
+        <GridItem colSpan={2}>
+          <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
+        </GridItem>     
+
         {isControl && <GridItem colSpan={2} >
             <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
         </GridItem>}
