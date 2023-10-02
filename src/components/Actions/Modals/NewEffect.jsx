@@ -371,7 +371,6 @@ const NewEffects = (props) => {
                 {array && array.map(el => (
                   <Box key={el}>
                     <CharacterListItem key={el} character={sortedCharacters.find(ch => ch._id === el)} />
-
                   </Box>
                 ))}                
               </SimpleGrid>

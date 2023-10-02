@@ -63,13 +63,13 @@ const url = `${gameServer}api/assets`;
 export const getMyUsedAssets = createSelector(
   (state) => state.assets.list,
   state => state.auth.myCharacter,
-  (assets, char) => assets.filter((asset) => (asset.owner === char.characterName || asset.currentHolder === char.characterName) && asset.some(s => s === 'used') && asset.uses <= 0)
+  (assets, char) => assets.filter((asset) => (asset.owner === char.characterName || asset.sharedWith.some(char => char._id === char._id)) && asset.some(s => s === 'used') && asset.uses <= 0)
 );
 
 export const getMyAssets = createSelector(
   (state) => state.assets.list,
   state => state.auth.myCharacter,
-  (assets, char) => assets.filter((asset) => asset.ownerCharacter === char._id || asset.currentHolder === char._id)
+  (assets, char) => assets.filter((asset) => asset.ownerCharacter === char._id || asset.sharedWith.some(c => c._id === char._id))
 );
 
 export const getGodBonds = createSelector(

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Text } from '@chakra-ui/react';
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import socket from '../../socket';
@@ -15,6 +15,7 @@ import { getPlayerCharacters } from '../../redux/entities/characters';
 import CharacterNugget from './CharacterNugget';
 import CharacterListItem from '../OtherCharacters/CharacterListItem';
 import { getFadedColor } from '../../scripts/frontend';
+import { AddCharacter } from './AddCharacter';
 
 const AssetCard = (props) => {
   const { character, disabled, marginTop, handleSelect, removeAsset } = props;
@@ -33,23 +34,6 @@ const AssetCard = (props) => {
     });
   };
 
-  const lendAsset = async () => {
-    socket.emit('request', {
-        route: 'asset',
-        action: 'lend',
-        data: {id: asset._id, target: selectedCharacter, lendingBoolean: true}
-    });
-  };
-
-  const unLendAsset = async () => {
-    socket.emit('request', {
-        route: 'asset',
-        action: 'lend',
-        data: {id: asset._id, target: selectedCharacter, lendingBoolean: false}
-    });
-  };
-
-
 	if (asset) return ( 
 		<div style={{ overflow: 'clip' }} onClick={() => handleSelect ? handleSelect(asset) : console.log("Peekabo!")} >
       <Card marginTop={marginTop} key={asset._id} style={{ border: `4px solid ${getFadedColor(asset.type)}` }} >
@@ -65,12 +49,46 @@ const AssetCard = (props) => {
           {removeAsset && <IconButton variant={'outline'} onClick={() => removeAsset({model: asset.model, })} colorScheme="red" size={'sm'} icon={<Close/>}  />}
           
           </h5>
-          {asset.currentHolder && asset.currentHolder !== 'None' && <Center>
-            Lent to:
-            {characters.find(el => el._id === asset.currentHolder) && <CharacterNugget character={characters.find(el => el._id === asset.currentHolder)} />}
-            {characters.find(el => el._id === asset.currentHolder)?.characterName}
-            <Button onClick={() => unLendAsset()} variant={'solid'} colorScheme='red' >Take asset back</Button>
-            </Center>}
+          {asset.sharedWith.length > 0 && <b>Shared with:</b>}
+          {asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
+            <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
+              <Avatar
+                size={'xs'}
+                name={char?.characterName}
+                src={char?.profilePicture}
+                margin='1'
+              />
+              <TagLabel>{char.characterName}</TagLabel>
+              {<TagCloseButton onClick={() => {
+                const data = {
+                  id: asset._id,
+                  charId: char._id
+                };
+                socket.emit('request', {
+                  route: 'asset',
+                  action: 'removeShared',
+                  data
+                });
+              }}
+              />}
+            </Tag>
+          )}
+
+          {!disabled && <AddCharacter 
+            characters={characters.filter(el => !asset.sharedWith.some(ass => ass?._id === el._id ) )} 
+            handleSelect={(character) => {
+              const data = {
+                id: asset._id,
+                charId: character._id
+              };
+              socket.emit('request', {
+                route: 'asset',
+                action: 'addShared',
+                data
+              });
+            }} 
+          />}
+
           <Flex align={'center'} >
             <Spacer />
             <ResourceNugget value={asset.type} width={'60px'}></ResourceNugget>
@@ -108,24 +126,6 @@ const AssetCard = (props) => {
 
       <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Asset`}>
         <AssetForm character={character} asset={asset} mode={mode}/>
-      </CandiModal>
-
-      <CandiModal onClose={() => { setMode(false); }} open={mode === "lend"} title={`Lend Asset ''${asset.name}'' to:`}>
-        <SelectPicker
-					block
-					placeholder={`Select Character`}
-					onChange={(event) => setCharacter(event)}
-					data={characters}
-          value={selectedCharacter}
-					valueKey="_id"
-					label="characterName"
-				></SelectPicker>
-        {selectedCharacter && <Box style={{ textAlign: 'center' }} >
-          Lend This Asset to 
-          <CharacterListItem character={characters.find(el => el._id === selectedCharacter)} />
-          <Text>You will get it back at the start of next round</Text>
-          <Button onClick={() => lendAsset()} >Lend Away!</Button>
-        </Box>}
       </CandiModal>
       
 		</div>

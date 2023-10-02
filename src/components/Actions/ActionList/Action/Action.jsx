@@ -85,8 +85,8 @@ const Action = (props) => {
                             />
                             {/* <ActionEffort 
                                 submission={action.submission}
-                            /> */}
-                            {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}
+                            /> */}{(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}
+                            
 
 
                             <ActionResources
