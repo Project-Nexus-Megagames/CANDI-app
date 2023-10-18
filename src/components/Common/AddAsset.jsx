@@ -57,7 +57,7 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets }) => {
             <PopoverCloseButton />
             <PopoverBody>
             
-              <VStack divider={<Divider />} style={{ maxHeight: '40vh', overflow: 'auto', paddingTop: assets.length < 3 ? '0vh' : '20vh' }} justify="space-around" align={'center'}  >
+              <VStack divider={<Divider />} style={{ maxHeight: '40vh', overflow: 'auto', paddingTop: assets.length < 3 ? '0vh' : '45vh' }} justify="space-around" align={'center'}  >
                 {assets.filter(a => a.name.toLowerCase().includes(fill.toLowerCase())).map((ass) => (
                   <Box key={ass._id} style={{ width: '100%' }}>
                     <AssetCard disabled  handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass}  />
