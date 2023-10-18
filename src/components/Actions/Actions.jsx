@@ -19,7 +19,8 @@ const Actions = (props) => {
     const [showNewActionModal, setShowNewActionModal] = useState(false);
     const [assetInfo, setAssetInfo] = useState({show: false, asset: ''});
     const [editAction, setEditAction] = useState({show: false, action: null})
-    const {isControl} = usePermissions();
+    // const {isControl} = usePermissions();
+    const isControl = true;
     const [rounds, setRounds] = useState([]);
     const [renderRounds, setRenderRounds] = useState([]);
     const [number, setNumber] = useState(4);
