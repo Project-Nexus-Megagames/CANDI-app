@@ -21,8 +21,6 @@ function getFadedColor(color, fade = 1) {
 
 		case 'Wealth':
 			return `#fbbc04`
-		case 'Dwarves':
-			return '#03fcbe'
 		case 'Power':
 			return `#71368a`
     case 'Success':
@@ -40,11 +38,26 @@ function getFadedColor(color, fade = 1) {
     case 'Comment':
       return `#6d6d6d`
 			
-		case 'The Overlord':
-			return `#6d6d6d`
-
-		case 'Whitewall':
-			return `#e0fffd`
+      case 'Frog':
+        return `#fbbc04`
+      case 'Dwarves':
+        return '#03fcbe'
+      case 'Spider':
+        return `#206694`
+      case 'Myconid':
+        return `#71368a`
+      case 'Drow':
+        return `#1f8b4c`
+      case 'Raccoon':
+        return `#e91e63`
+        
+  
+        
+      case 'The Overlord':
+        return `#6d6d6d`
+  
+      case 'Whitewall':
+        return `#e0fffd`
 			
 		case 'gold':
 			return `rgb(212, 175, 55, ${fade})`

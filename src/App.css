@@ -151,7 +151,7 @@
 }
 
 .row {
-  margin-bottom: -30px;
+  margin-bottom: -35px;
 }
 
 /* .row:hover {
@@ -163,8 +163,8 @@
   color: #fff;
   text-shadow: -1px 1px #000000;
   background-color: #e3c33a;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   /* background: grey; */
   background-size: cover; /* Resize the background image to cover the entire container */
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
@@ -204,6 +204,16 @@
   top: 40%;
   right: 40%;
   font-size: 18px;
+}
+
+.centerHex {
+  top: 40%;
+  right: 40%;
+  font-size: 18px;
+}
+
+.level-css {
+  margin-top: 50px;
 }
 
 .center-img {

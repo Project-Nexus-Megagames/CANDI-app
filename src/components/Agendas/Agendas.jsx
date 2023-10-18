@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'; // React import
 import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
-import { Box, Heading, Spinner } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Grid, GridItem, Heading, Input, Spinner } from '@chakra-ui/react';
 import { getAgendaActions, getPublishedAgendas } from '../../redux/entities/playerActions';
 import { Stack } from '@chakra-ui/react';
 import { getMyCharacter } from '../../redux/entities/characters';
@@ -73,28 +73,36 @@ const Agendas = (props) => {
 
 	return (
 		<React.Fragment>
-			<NavigationBar />
-			{/* <Header>
-				<Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
-					<tbody>
-						{[...Array(gamestate.round)].map((x, i) => (
-							<Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle>
-								{i + 1}
-							</Button>
-						))}
-					</tbody>
+      <Grid
+        templateAreas={`"nav main"`}
+        gridTemplateRows={ '20% 80%'}
+        gap='1'
+        fontWeight='bold'>
 
-					<Input style={{ width: '20%' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
-				</Stack>
-			</Header> */}
-			{/* <Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto', display: 'flex', alignItems: 'center' }}>
-				<h5>Round {round}</h5>
+			<GridItem pl='2'  area={'nav'} >
+        Stuff Here too
+        <Box>
+          <Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
+            <tbody>
+              {[...Array(gamestate.round)].map((x, i) => (
+                <Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle>
+                  {i + 1}
+                </Button>
+              ))}
+            </tbody>
+
+            <Input style={{ width: '20%' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
+          </Stack>
+        </Box>
+			</GridItem>
+
+			<GridItem pl='2' style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }} area={'main'} >
+      <h5>Round {round}</h5>
 				{filteredData.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
 				{filteredData
 					.filter((el) => el.round === round)
 					.map((agenda, index) => (
 						<div index={index} key={index}>
-							<Divider vertical />
 							<div
 								onClick={() => setSelected(agenda)}
 								style={{
@@ -108,25 +116,31 @@ const Agendas = (props) => {
 									width: '800px'
 								}}
 							>
-								<FlexboxGrid align="middle" style={{}} justify="center">
-									<FlexboxGrid.Item style={{ margin: '5px' }} colspan={4}>
+								<Flex align="middle" style={{}} justify="center">
+									<Box style={{ margin: '5px' }} colspan={4}>
 										<Avatar circle size="md" src={agenda.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
-									</FlexboxGrid.Item>
+									</Box>
 
-									<FlexboxGrid.Item colspan={15}>
+									<Box colspan={15}>
 										<h5>{agenda.name}</h5>
 										{agenda.creator.playerName} - {agenda.creator.characterName}
 										<p className="slim-text">{getTime(agenda.submission.createdAt)}</p>
-									</FlexboxGrid.Item>
+									</Box>
 
-									<FlexboxGrid.Item colspan={4}>
+									<Box colspan={4}>
 										<b>Comments {agenda.comments.length}</b>
-									</FlexboxGrid.Item>
-								</FlexboxGrid>
+									</Box>
+								</Flex>
 							</div>
 						</div>
 					))}
 				<AgendaDrawer isOpen={selected} show={selected} selected={selected} closeDrawer={() => setSelected(false)} />
+			</GridItem>
+		</Grid>
+
+
+			{/* <Container style={{ height: 'calc(100vh - 100px)', overflow: 'auto', display: 'flex', alignItems: 'center' }}>
+
 			</Container> */}
 		</React.Fragment>
 	);

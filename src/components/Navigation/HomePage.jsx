@@ -12,6 +12,7 @@ import actions from '../Images/actions.jpg';
 import map from '../Images/AM.png';
 import leaderboard from '../Images/leaderboard.png';
 import control from '../Images/control.jpg';
+import agendas from '../Images/agendas.webp';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -74,16 +75,22 @@ const HomePage = (props) => {
       <Grid templateColumns='repeat(2, 1fr)' gap={1}>
 
         <GridItem>
-          <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
-        </GridItem>
-
-        <GridItem>
           <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
         </GridItem>   
 
         <GridItem>
+          <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Do the things" />
+        </GridItem>   
+
+
+        <GridItem>
+          <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
+        </GridItem>
+
+        <GridItem>
           <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
         </GridItem>    
+
 
         <GridItem>
           <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />

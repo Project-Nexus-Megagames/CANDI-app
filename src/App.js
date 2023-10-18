@@ -162,7 +162,7 @@ const App = (props) => {
              <Route exact path='/loading' element={<Loading {...props} />} />
               <Route exact path='/home' element={<HomePage {...props} />} />
               <Route path='/home/news' element={<News {...props} />} />
-              <Route path='/agendas' element={<Agendas {...props} />} />
+              <Route path='home/agendas' element={<Agendas {...props} />} />
               <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
               <Route exact path='/home/leaderboard' element={<CharacterStats {...props} />} />
               <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
