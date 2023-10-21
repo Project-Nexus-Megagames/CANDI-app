@@ -16,18 +16,23 @@ function getFadedColor(color, fade = 1) {
 		case 'Control':
 			return `#ff9800`
 
+    case 'Pig':
 		case 'Fail':
 			return `#e74c3c`
 
+    case 'Refined Item':
 		case 'Wealth':
 			return `#fbbc04`
+    case 'Workshop':
 		case 'Power':
 			return `#71368a`
     case 'Success':
     case 'Asset':
 			return `#1f8b4c`
+    case 'Labor':
 		case 'Trait':
 			return `#e91e63`
+    case 'Production':
 		case 'Other':
 			return `#992d22`
 			
@@ -53,9 +58,11 @@ function getFadedColor(color, fade = 1) {
         
   
         
+      case 'Undead':
       case 'The Overlord':
         return `#6d6d6d`
   
+      case 'Surface':
       case 'Whitewall':
         return `#e0fffd`
 			

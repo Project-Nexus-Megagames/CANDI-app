@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { Grid, GridItem, Select, Spinner } from '@chakra-ui/react';
+import { Grid, GridItem, Select, Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
 import nexus from '../Images/Project_Nexus.jpg';
-import other from '../Images/ook.jpg';
-import news from '../Images/news.png';
+import other from '../Images/other.jpg';
+import news from '../Images/news.jpg';
 import actions from '../Images/actions.jpg';
-import map from '../Images/AM.png';
+import map from '../Images/science.jpg';
 import leaderboard from '../Images/leaderboard.png';
-import control from '../Images/control.jpg';
-import agendas from '../Images/agendas.webp';
+import control from '../Images/control.png';
+import agendas from '../Images/agenda.jpg';
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -38,6 +38,7 @@ const HomePage = (props) => {
 	const tempCharacter = useSelector(getCharacterById(selectedChar));
   const {isControl} = usePermissions(); 
 	const [rand, setRand] = React.useState(Math.floor(Math.random() * 10000));
+  const columns = useBreakpointValue({base: 1, lg: 3, md: 2, sm: 1});
 
   if (!props.login) {
     navigate("/");
@@ -72,43 +73,45 @@ const HomePage = (props) => {
 	}
 	return (
 		<React.Fragment>
-      <Grid templateColumns='repeat(2, 1fr)' gap={1}>
+      <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        
 
-        <GridItem>
+        <GridItem colSpan={columns == 1 ? 2 : 1} >
+          <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+        </GridItem>
+
+        <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
+          <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
+        </GridItem>
+        
+
+        <GridItem colSpan={columns == 1 ? 2 : 1}>
           <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
         </GridItem>   
 
-        <GridItem>
+        <GridItem colSpan={columns == 1 ? 2 : 1}>
           <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Do the things" />
         </GridItem>   
 
 
-        <GridItem>
+        <GridItem colSpan={columns == 1 ? 1 : 2}>
+          <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
+        </GridItem>   
+
+
+        <GridItem colSpan={columns == 1 ? 2 : 1}>
           <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
         </GridItem>
 
-        <GridItem>
+        <GridItem colSpan={columns == 1 ? 2 : 1}>
           <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
         </GridItem>    
 
 
-        <GridItem>
+        <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
           <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
-        </GridItem>      
+        </GridItem>                        
 
-        <GridItem>
-          <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-        </GridItem>                   
-
-        <GridItem  onClick={() => openLink("https://drive.google.com/drive/u/0/folders/1NIkteuS1ePFySPpUcbPF-JAJA36zV-t3")} >
-          <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
-        </GridItem>
-
-        <GridItem colSpan={2}>
-          <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
-        </GridItem>     
-
-        {isControl && <GridItem colSpan={2} >
+        {isControl && <GridItem colSpan={columns} >
             <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
         </GridItem>}
 

@@ -54,7 +54,7 @@ const News = (props) => {
 
 	const mapArticlesToData = (articles) => {
 		return articles.map((el) => ({
-			authorProfilePicture: el.anon ? 'undefined' : el.creator.profilePicture,
+			authorProfilePicture: el.anon ? 'undefined' : el.creator?.profilePicture,
 			imageURL: el.image,
 			author: el.anon ? 'anonymous' : el.creator?.characterName,
 			authorId: el.creator?._id,

@@ -106,7 +106,11 @@ const ModifyCharacter = (props) => {
 		control
 	});
 
-	const { fields: effortFields } = useFieldArray({
+	const { 
+    fields: effortFields,
+    append: appendEffort,
+		remove: removeEffort
+   } = useFieldArray({
 		name: 'effort',
 		control
 	});
@@ -244,9 +248,11 @@ const ModifyCharacter = (props) => {
                           <Text fontSize="sm" color="red.500">
                             {errors.effort?.[i]?.amount && errors.effort[i].amount.message}
                           </Text>
+                          <Button colorScheme='red' variant={'solid'} onClick={() => removeEffort(i)}>-</Button>
                         </FormControl>
                       </div>
                     ))}
+                    <Button isDisabled={effortFields.length == effortTypes.length} colorScheme='green' variant={'solid'} onClick={() => appendEffort({ type: effortTypes[effortFields.length + 1]?.type, amount: effortTypes[effortFields.length + 1]?.effortAmount })}>+</Button>
                   </HStack>
 
                   <HStack w="100%">
@@ -270,8 +276,8 @@ const ModifyCharacter = (props) => {
                         <HStack>
                           <FormControl>
                             <Input size="md" {...register(`tags.${i}`)}></Input>
+                            <Button colorScheme='red' variant={'solid'} onClick={() => removeTag(i)}>-</Button>
                           </FormControl>{' '}
-                          <Button colorScheme='red' variant={'solid'} onClick={() => removeTag(i)}>-</Button>
                         </HStack>
                       </div>
                     ))}
@@ -285,8 +291,9 @@ const ModifyCharacter = (props) => {
                         <HStack>
                           <FormControl>
                             <Input size="md" {...register(`control.${i}`)}></Input>
+                            <Button colorScheme='red' variant={'solid'} onClick={() => removeControl(i)}>-</Button>
                           </FormControl>
-                          <Button colorScheme='red' variant={'solid'} onClick={() => removeControl(i)}>-</Button>
+                          
                         </HStack>
                       </div>
                     ))}

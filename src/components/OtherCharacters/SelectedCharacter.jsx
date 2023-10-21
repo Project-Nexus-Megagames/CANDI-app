@@ -38,11 +38,12 @@ const SelectedCharacter = (props) => {
           </div>}
         </div>
         
-        <Flex  >
+        {/* <Flex  >
         {selected.tags && selected.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
          <ResourceNugget key={item} value={item} width={'50px'} height={'30'} />
          )}
-        </Flex>		
+        </Flex>		 */}
+        
         {selected.pronouns && <p>
           Character Pronouns: <b>{selected.pronouns}</b>
         </p>}

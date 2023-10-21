@@ -99,14 +99,20 @@ const CharacterListItem = (props) => {
 			}}
 		>
 			<h4>{character?.characterName}</h4>
-      <Button
+      <Flex  >
+        {character.tags && character.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
+          <ResourceNugget key={item} value={item} width={'50px'} height={'30'} />
+          )}        
+      </Flex>
+
+      {/* <Button
         onClick={(e) => { e.stopPropagation(); copyToClipboard(character)}}
         leftIcon={<CopyIcon/>}
         colorScheme='white'
         variant='outline'
       >
         {character?.email}                         
-      </Button>
+      </Button> */}
 			
 		</Box>  
      
