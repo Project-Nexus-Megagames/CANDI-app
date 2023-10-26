@@ -128,7 +128,7 @@ function ActionList({ actions, handleSelect, selected }) {
                                                 <div style={titleStyle}>{action.name}</div>
                                                 <Flex>
                                                     <ActionTag
-                                                        color='black'
+                                                        color='white'
                                                         action={action}
                                                         text={action.type}
                                                     />

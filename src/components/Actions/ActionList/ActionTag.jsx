@@ -8,7 +8,8 @@ const ActionTag = ({color, action, text}) => (
             marginLeft: '0.25rem',
             color: color,
             textTransform: 'capitalize',
-            backgroundColor: action ? getFadedColor(action.type) : 'white',
+            backgroundColor: action ? getFadedColor(action.type) : 'inherit',
+            border: `1px solid ${getFadedColor('gold', 0.8)}`
         }}
         variant='solid'
     >

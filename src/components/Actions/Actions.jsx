@@ -175,8 +175,8 @@ const Actions = (props) => {
                     <SearchIcon/>
                 </InputLeftElement>
                 <Input
-                    onChange={(e) => setFilter(e.target.value)}
-                    value={filter}
+                    onChange={(e) => props.setFilter(e.target.value)}
+                    value={props.filter}
                     placeholder="Search"
                     color='white'
                 />

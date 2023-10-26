@@ -1,3 +1,6 @@
+/* eslint-disable react/react-in-jsx-scope */
+import { Tag, Tooltip } from "@chakra-ui/react";
+
 function getFadedColor(color, fade = 1) {
 	// console.log(color)
 	switch (color) {
@@ -9,10 +12,15 @@ function getFadedColor(color, fade = 1) {
 
     case 'Main':
 		case 'Normal':
+    case 'Misc':
 			return `#5b26b0`;
-		case 'Normal-rs':
-			return `violet`;
 
+    case 'Craft':
+      return `rgba(66,133,244, ${fade})`; // #4285f4
+    case 'Form Bond':
+			return `rgba(204,0,0, ${fade})`; // #cc0000
+    case 'A':
+			return `rgba(52,168,83, ${fade})`; // #34a853
 		case 'Control':
 			return `#ff9800`
 
@@ -22,6 +30,7 @@ function getFadedColor(color, fade = 1) {
 
     case 'Refined Item':
 		case 'Wealth':
+
 			return `#fbbc04`
     case 'Workshop':
 		case 'Power':
@@ -136,10 +145,31 @@ function getThisEffort(efforts, type) {
 const getTime = (date) => {
 	let day = new Date(date).toDateString();
 	let time = new Date(date).toLocaleTimeString();
+
+  var date1 = new Date(date);
+  var date2 = new Date();
+  let text = '';
+
+  const distance =  date2.getTime() - date1.getTime(); 
+  const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
+  const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+  if (days > 0) text = (`${days} Days, ${hours} Hours, ${minutes} Minutes`);
+  else if (hours > 0) text = (`${hours} Hours, ${minutes} Minutes`);
+  else text = (`${minutes} Minutes`);
+              
 	return (
-		<b>
-			{day} - {time}
-		</b>
+    <Tooltip
+    label={`${day} - ${time}`}
+    aria-label='Publish tooltip'
+>
+    <Tag
+        size="sm"
+        backgroundColor={getFadedColor('Power', hours * 0.2)}
+        marginTop='0.25rem'
+        aria-label={'Publish Action'}
+    >{text} Ago</Tag>
+</Tooltip>
 	);
 };
 
