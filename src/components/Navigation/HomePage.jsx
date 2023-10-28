@@ -6,11 +6,11 @@ import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
 import nexus from '../Images/Project_Nexus.jpg';
-import other from '../Images/ook.jpg';
-import news from '../Images/news.png';
+import other from '../Images/other.png';
+import news from '../Images/news.jpg';
 import actions from '../Images/actions.jpg';
-import map from '../Images/AM.png';
-import leaderboard from '../Images/leaderboard.png';
+import map from '../Images/map.jpg';
+import leaderboard from '../Images/leaderboard.jpg';
 import control from '../Images/control.jpg';
 
 import socket from '../../socket';
@@ -85,16 +85,16 @@ const HomePage = (props) => {
           <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
         </GridItem>    
 
-        <GridItem>
+        {/* <GridItem>
           <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
         </GridItem>      
 
         <GridItem>
           <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-        </GridItem>                   
+        </GridItem>                    */}
 
         <GridItem  onClick={() => openLink("https://drive.google.com/drive/u/0/folders/1NIkteuS1ePFySPpUcbPF-JAJA36zV-t3")} >
-          <ImgPanel new={newArticles.length > 0} img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
+          <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
         </GridItem>
 
         {isControl && <GridItem colSpan={2} >
