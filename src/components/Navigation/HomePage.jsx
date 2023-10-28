@@ -5,12 +5,9 @@ import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../red
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
-import nexus from '../Images/Project_Nexus.jpg';
 import other from '../Images/other.png';
-import news from '../Images/news.jpg';
 import actions from '../Images/actions.jpg';
 import map from '../Images/map.jpg';
-import leaderboard from '../Images/leaderboard.jpg';
 import control from '../Images/control.jpg';
 
 import socket from '../../socket';
