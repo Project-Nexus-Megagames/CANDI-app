@@ -15,34 +15,16 @@ import EditGamestate from './EditGamestate';
 const ControlTerminal = (props) => {		
 	const { login, team, character, loading, user } = useSelector(s => s.auth);
   const assets = useSelector(s => s.assets.list);
-
-	let [account, setAccount] = React.useState();
 	const [mode, setMode] = React.useState(false);
 
 	const navigate = useNavigate();
-	const [target, setTarget] = React.useState();
 	const [tab, setTab] = React.useState(0);
 	
-	const tags = ['dice', 'contract', 'ice']
 
 	useEffect(() => {
 		if(!login)
 			navigate('/');
 	}, [login, navigate])
-
-	const handleCreate = (code, amount=false) => {
-		if (amount) {
-			socket.emit('request', { route: 'transaction', action: 'deposit', data: {resource: code, amount, to: target } });
-		}
-		else
-			socket.emit('request', { route: 'asset', action: 'create', 
-				data: { 
-					owner: target,
-					account: target,
-					amount: amount,
-					code,
-				}});
-	} 
 
   const handleRound = () => {
     const data = user.username;
@@ -76,8 +58,8 @@ const ControlTerminal = (props) => {
       <Tab>Actions</Tab>			
 			<Tab>Configuration</Tab>
 			<Tab>Register</Tab>
-      {user.username.toLowerCase() === 'bobtheninjaman' &&<Tab>Characters</Tab>}
-      {user.username.toLowerCase() === 'bobtheninjaman' && <Tab>Assets</Tab>}
+      {user?.username.toLowerCase() === 'bobtheninjaman' &&<Tab>Characters</Tab>}
+      {user?.username.toLowerCase() === 'bobtheninjaman' && <Tab>Assets</Tab>}
 		</TabList>
 
 		<TabPanels>

@@ -56,7 +56,7 @@ const Login = (props) => {
     <div className="styleCenter">
       <Card maxW='lg'>
       <img
-        src={'/images/banner.png'}
+        src={'/images/banner.jpg'}
         width={800}
         alt="Failed to load img"
       />
@@ -78,7 +78,7 @@ const Login = (props) => {
             </Button>
           </p>
           <FormControl>
-            <FormLabel>Email / Username</FormLabel>
+            <FormLabel>Email</FormLabel>
             <Input value={login} onKeyPress={handleKeyPress} onChange={(e)=> setLogin(e.target.value)}  />
           </FormControl>
 
@@ -91,7 +91,7 @@ const Login = (props) => {
             disabled={!login || !password}
             // isLoading={loading.toString()}
             onClick={() => onSubmit()}
-            variant="solid"
+            variant="outline"
           >
             {buttonText}
           </Button>				

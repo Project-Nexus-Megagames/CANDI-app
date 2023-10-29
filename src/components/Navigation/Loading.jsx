@@ -87,11 +87,8 @@ export default Loading;
 
 const gamePhotos = [
 	'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif',
-  'https://media.tenor.com/BE6_4wn5JoYAAAAC/discworld-pratchett.gif',
-  'https://media.tenor.com/L2b_MVOVIxkAAAAC/the-earth-is-a-plate-itsrucka.gif',
-  'https://media.tenor.com/yV41DoMYPwwAAAAC/shark-puppet-pie.gif',
-  'https://media.tenor.com/jeIEibFKwEMAAAAC/pi-day-pie.gif',
-  'https://media.tenor.com/z-09fsOAKgsAAAAd/pie-pumpkin.gif'
+  'https://media.tenor.com/OX68RH53xP8AAAAd/rous-princess.gif',
+  'https://media.tenor.com/MIZ3XCRq7J0AAAAd/princess-rous.gif'
 ];
 
 const loadingMsg = [
