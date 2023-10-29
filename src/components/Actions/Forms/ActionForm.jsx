@@ -177,7 +177,7 @@ const ActionForm = (props) => {
 						<div>
 							<form>
 
-              {!collabMode && <div>
+              {false && <div>
                 <Center>
                   <AddCharacter characters={myContacts.filter(el => !collaborators.some(ass => ass?._id === el._id ) )} handleSelect={(character) => setCollaborators([...collaborators, character]) } />
                 </Center>

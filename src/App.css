@@ -140,8 +140,9 @@
 
 .styleCenter {
   display: flex;
-  justify-content: left;
-  align-items: top;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
 }
 
 .container {
