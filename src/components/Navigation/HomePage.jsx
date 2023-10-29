@@ -90,8 +90,8 @@ const HomePage = (props) => {
           <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
         </GridItem>                    */}
 
-        <GridItem  onClick={() => openLink("https://drive.google.com/drive/u/0/folders/1NIkteuS1ePFySPpUcbPF-JAJA36zV-t3")} >
-          <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
+        <GridItem  onClick={() => openLink("https://docs.google.com/document/d/1EJvBe5nx9K__TrJydr-GBE0B57rcUjO_E7M0JYnUIKw/edit")} >
+          <ImgPanel img={map} to="" title="~ Rules ~" body="How do I play this game?"/>
         </GridItem>
 
         {isControl && <GridItem colSpan={2} >
