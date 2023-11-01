@@ -15,6 +15,14 @@ const slice = createSlice({
     lastFetch: false,
     users: [],
     error: null,
+
+    loadingStart: false,
+    loadComplete: false,
+    lastLogin: null,
+    corp: false,
+    runner: false,
+    character: undefined,
+    team: false,
   },
   // Reducers - Events
   reducers: {
@@ -23,12 +31,19 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched...`);
       auth.loading = true;
     },
+    loadingState: (auth, action) => {
+      console.log(`${action.type} Dispatched...`);
+      auth.loadingStart = true;      
+    },
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
       localStorage.setItem('candi-token', jwt);
       const user = jwtDecode(jwt);
+      
+      console.log("user");
+
       console.log(user);
 
       //if (user.roles.some(el => el === "Control")) auth.control = true;
@@ -52,8 +67,15 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       auth.loadComplete = true;
     },
+    setTeam: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      auth.team = action.payload;
+      // initConnection(auth.user, auth.team, auth.version);
+    },
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);
+      console.log(action.payload);
+
       auth.myCharacter = action.payload;
       if (action.payload.tags.some((el) => el.toLowerCase() === 'control')) auth.control = true;
       // initConnection(auth.user, auth.team, auth.version);
@@ -87,7 +109,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { authReceived, loginRequested, authRequestFailed, loginSocket, clearAuthError, signOut, updateUser, usersRecieved, finishLoading, setCharacter, setControl } = slice.actions;
+export const { authReceived, loginRequested, authRequestFailed, loginSocket, clearAuthError, signOut, updateUser, usersRecieved, finishLoading, setCharacter, setControl, setTeam, loadingState } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import socket from '../../../socket';
 import _ from 'lodash';
-import {	getCharacterById,	getGods,	getMyCharacter,	getNonPlayerCharacters,	getUnlockedCharacters} from '../../../redux/entities/characters';
-import WordDivider from '../../WordDivider';
+import {	getCharacterById,	getMyCharacter,	getUnlockedCharacters} from '../../../redux/entities/characters';
+import WordDivider from '../../Common/WordDivider';
 import InputNumber from '../../Common/InputNumber';
-import { Box, Button, ButtonGroup, Center, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, SimpleGrid, Switch, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Checkbox, Divider, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, SimpleGrid, Switch, Text, VStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import SelectPicker from '../../Common/SelectPicker';
 import AssetForm from '../../Common/AssetForm';
-import CharacterListItem from '../../OtherCharacters/CharacterListItem';
+import CharacterListItem from '../../Common/CharacterListItem';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
 	const [selected, setSelected] = useState(undefined);
-	const [character, setCharacter] = useState(undefined);
 	const [array, setArray] = useState([]);
 	const [locationsToDisplay, setLocationsToDisplay] = useState([]);
 	const [charactersToDisplay, setCharactersToDisplay] = useState([]);
@@ -24,7 +23,6 @@ const NewEffects = (props) => {
 	const locations = useSelector((state) => state.locations.list);
 	const characters = useSelector((state) => state.characters.list);
 	const loggedInUser = useSelector((state) => state.auth.user);
-	const gameConfig = useSelector((state) => state.gameConfig);
 	const sortedCharacters = _.sortBy(charactersToDisplay, 'characterName');
 	const sortedLocations = _.sortBy(locationsToDisplay, 'name');
 	const creatorChar = useSelector(getCharacterById(props.selected.creator._id));
@@ -35,10 +33,9 @@ const NewEffects = (props) => {
 			case 'bond':
 			case 'asset':
 				let newAsset = [];
-				for (const bond of assets.filter((el) => el.ownerCharacter === props.selected.creator._id)) {
-          
+				for (const bond of assets.filter((el) => el.ownerCharacter === props.selected.creator._id)) {    
 					const bondData = {
-						name: `${bond.type} '${bond.name}'`,
+						name: `${bond.type} '${bond.name}' - (${bond.dice})`,
 						type: bond.type,
 						_id: bond._id
 					};
@@ -54,8 +51,6 @@ const NewEffects = (props) => {
 					level: '',
 					ownerCharacter: props.selected.creator._id
 				});
-        setCharacter(props.selected.creator._id)
-        setArray([ props.selected.creator, ...props.selected.collaborators]);
 				break;
 			case 'aspect':
 				setSelected({
@@ -95,7 +90,6 @@ const NewEffects = (props) => {
 				break;
 		}
 	}, [type]);
-
 
 	const handleExit = () => {
 		setType('');
@@ -149,75 +143,36 @@ const NewEffects = (props) => {
 			<div>
 				<WordDivider word="Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
 					or more aspects" />
-
-          {gameConfig.globalStats.map(stat => (
-            <div key={stat._id}>
-              <label>{stat.type}: ({stat.statAmount}) </label>
-              <InputNumber
-                defaultValue="0"
-                onChange={(value) => handleEdit(stat.type, value)}
-              />
-            </div>
-          ))}
-			</div>
-		);
-	};
-
-  const renderCharacterStats = () => {
-		const char = characters.find((el) => el._id === props.selected.creator._id);
-		return (
-			<div>
-				<WordDivider word="Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
-					or more aspects" />
-
-          {char?.characterStats.map(stat => (
-            <div key={stat._id}>
-              <label>{stat.type}: ({stat.statAmount}) </label>
-              <InputNumber
-                defaultValue="0"
-                onChange={(value) => handleEdit(stat.type, value)}
-              />
-            </div>
-          ))}
-			</div>
-		);
-	};
-
-	const renderInjuries = () => {
-		const char = characters.find((el) => el._id === props.selected.creator._id);
-		if (!char || char?.injuries?.length === 0) return <div>{char?.characterName} currently does not have any injuries</div>;
-		return (
-			<div>
-				<VStack
-					onChange={(value) => {
-						handleHealInjuries(value);
-					}}
-				>
-					{char.injuries.map((injury, index) => {
-						let autoheal = '';
-						if (injury.permanent) {
-							autoheal = 'Permanent injury';
-						} else {
-							const expires = injury.duration + injury.received;
-							autoheal = `Autoheal at the end of round ${expires}`;
-						}
-						return (
-							<Checkbox
-								value={injury._id}
-								key={index}
-							>
-								{injury.name} ({autoheal}).
-							</Checkbox>
-						);
-					})}
-				</VStack>
+				<label>Happiness: </label>
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcHappiness', value)}
+				/>
+				<label>Health: </label>
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcHealth', value)}
+				/>
+				<label>Security: </label>
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcSecurity', value)}
+				/>
+				<label>Diplomacy: </label>
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcDiplomacy', value)}
+				/>
+				<label>Politics: </label>
+				<InputNumber
+					defaultValue="0"
+					onChange={(value) => handleEdit('gcPolitics', value)}
+				/>
 			</div>
 		);
 	};
 
 	const handleSubmit = async (aaaa) => {
-    if (character) aaaa.ownerCharacter = character
-
 		try {
 			const data = {
 				type,
@@ -230,10 +185,9 @@ const NewEffects = (props) => {
       // console.log(data)
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
-      console.log(err)
 			// Alert.error(`Error: ${err.body} ${err.message}`, 5000);
 		}
-		// handleExit();
+		handleExit();
 	};
 
 	const renderAss = () => {
@@ -269,33 +223,26 @@ const NewEffects = (props) => {
 						{/* <Button variant={type !== 'map' ? 'ghost' : 'solid'} colorScheme={'orange'} onClick={type !== 'map' ? () => handleType('map') : undefined}>
 							Unlock Map Tile
 						</Button> */}
-						<Button
+						{/* <Button
 							variant={type !== 'character' ? 'ghost' : 'solid'}
 							colorScheme={'orange'}
 							onClick={type !== 'character' ? () => handleType('character') : undefined}
 						>
 							Unlock Character
-						</Button>
+						</Button> */}
 						{/* <Button variant={type !== 'addInjury' ? 'ghost' : 'solid'} colorScheme={'red'} onClick={type !== 'addInjury' ? () => handleType('addInjury') : undefined}>
 							Add an injury
 						</Button>
-						<Button variant={type !== 'healInjuries' ? 'ghost' : 'solid'} colorScheme={'orange'} onClick={type !== 'healInjuries' ? () => { setSelected(props.action.creator); handleType('healInjuries')} : undefined}>
+						<Button variant={type !== 'healInjuries' ? 'ghost' : 'solid'} colorScheme={'orange'} onClick={type !== 'healInjuries' ? () => handleType('healInjuries') : undefined}>
 							Heal Injuries
 						</Button> */}
-						<Button
+						{/* <Button
 							variant={type !== 'aspect' ? 'ghost' : 'solid'}
 							colorScheme={'orange'}
 							onClick={type !== 'aspect' ? () => handleType('aspect') : undefined}
 						>
-							Edit Global Stat(s)
-						</Button>
-            <Button
-							variant={type !== 'characterStats' ? 'ghost' : 'solid'}
-							colorScheme={'orange'}
-							onClick={type !== 'characterStats' ? () => handleType('characterStats') : undefined}
-						>
-							Edit Character Stat(s)
-						</Button>
+							Edit an Aspect
+						</Button> */}
 						<Button
 							variant={type !== 'new' ? 'ghost' : 'solid'}
 							colorScheme={'green'}
@@ -309,17 +256,6 @@ const NewEffects = (props) => {
 
 					{type === 'new' && selected && (
 						<div>
-							Type {type}?
-							<SelectPicker
-								block
-								placeholder={`Select Character`}
-								onChange={(event) => setCharacter(event)}
-								data={array}
-                value={character}
-								valueKey="_id"
-								label="characterName"
-							></SelectPicker>
-
 							{renderAss()}
 						</div>
 					)}
@@ -342,21 +278,6 @@ const NewEffects = (props) => {
 
 					{type === 'aspect' && <div>{renderAspects()}</div>}
 
-          {type === 'characterStats' && <div>
-            {renderCharacterStats()}
-            <Center>
-              <Button
-                  disabled={type === ''}
-                  onClick={() => handleSubmit(selected)}
-                  variant="solid"
-                  colorScheme='green'
-                >
-                  Confirm
-                </Button> 
-            </Center>
-
-            </div>}
-
 					{type === 'character' && (
 						<div>
 							<CheckerPick
@@ -367,75 +288,25 @@ const NewEffects = (props) => {
 								labelKey="characterName"
                 value={array}
 							/>
-              <SimpleGrid  columns={2} minChildWidth='520px' spacing='40px'>
+              <SimpleGrid  columns={2} minChildWidth='120px' spacing='40px'>
                 {array && array.map(el => (
-                  <Box key={el}>
-                    <CharacterListItem key={el} character={sortedCharacters.find(ch => ch._id === el)} />
-                  </Box>
+                  <CharacterListItem key={el} character={sortedCharacters.find(ch => ch._id === el)} />
                 ))}                
               </SimpleGrid>
-              <Button
-                disabled={type === ''}
-                onClick={() => handleSubmit(array)}
-                variant="solid"
-              >
-                Confirm
-              </Button> 
+
 						</div>
 					)}
 
-					{type === 'healInjuries' && (
-						<div>
-							<Divider>Heal Injuries</Divider>
-							{renderInjuries()}
-						</div>
-					)}
-
-					{type === 'addInjury' && selected && (
-						<div>
-							<WordDivider word={"Add Injury"} >Add Injury</WordDivider>
-							<div>Title:</div>
-							<Input
-								onChange={(value) => handleAddInjury('name', value)}
-								style={{marginBottom: ' 10px'}}
-                value={selected.name}
-							></Input>
-							{!selected.permanent && (
-								<div>
-									Duration:
-									<InputNumber
-										min={0}
-										onChange={(value) => handleAddInjury('duration', value)}
-										style={{marginBottom: ' 10px'}}
-                    value={selected.duration}
-									/>
-								</div>
-							)}
-							<Switch
-								onChange={(checked) => handleAddInjury('permanent', checked)}
-								isChecked={selected.permanent}
-								// checkedChildren="Permanent Injury"
-								// unCheckedChildren="Not Permanent"
-							></Switch>
-              <Button
-                disabled={type === ''}
-                onClick={() => handleSubmit(selected)}
-                variant="solid"
-              >
-                Confirm
-              </Button> 
-						</div>
-					)}
 				</ModalBody>
 
         <ModalFooter>
-          {/* <Button
+          <Button
             disabled={type === ''}
             onClick={handleSubmit}
             variant="solid"
           >
             Confirm
-          </Button> */}
+          </Button>
           <Button
             onClick={handleExit}
             variant="subtle"

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
+import { getFadedColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { Tag,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer,  Center, TagLabel, TagCloseButton, Wrap, useBreakpointValue, SimpleGrid} from '@chakra-ui/react';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
-import NexusSlider from '../../Common/NexusSlider';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
 import { AddCharacter } from '../../Common/AddCharacter';
@@ -40,20 +39,10 @@ const ActionForm = (props) => {
     lg: {columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
 })
 
-
-	const setMaxEffort = () => {
-    if (actionType) {
-      let charEffort = getThisEffort(myCharacter.effort, effort.effortType);
-
-      if (defaultValue?.effort) setMax(charEffort + defaultValue.effort.amount < actionType.maxEffort ? charEffort + defaultValue.effort.amount : actionType.maxEffort);           
-      else setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);      
-    }
-	};
   
 	useEffect(() => {
 		if (actionType && actionType.type && !defaultValue) {
 			setEffort({ effortType: actionType.effortTypes[0], amount: 0 });
-			setMaxEffort();
       newMap(actionType.maxAssets);
 		}
 	}, [actionType?.type]);
@@ -62,25 +51,11 @@ const ActionForm = (props) => {
     newMap(actionType?.maxAssets);
 	}, [actionType])
 
-	useEffect(() => {
-		if (effort) setMaxEffort();
-	}, [effort]);
 
-	const editState = (incoming, type, index) => {
+  const editState = (incoming, type, index) => {
     // console.log(incoming, type, index)
 		let thing;
 		switch (type) {
-			case 'effort':
-				thing = { ...effort };
-				if (typeof incoming === 'number') {
-					thing.amount = parseInt(incoming);
-				} else {
-					thing.effortType = incoming;
-					thing.amount = 0;
-					setMax(getThisEffort(myCharacter.effort, incoming));
-				}
-				setEffort(thing);
-				break;
       case 'Asset':
         let temp = [ ...resource ];
         temp[index] = incoming;
@@ -229,7 +204,6 @@ const ActionForm = (props) => {
 														key={e}
 														onClick={() => editState(e, 'effort')}
 														color={getFadedColor(e)}
-														disabled={getThisEffort(myCharacter.effort, e) < 1}
 														variant={effort.effortType == e ? 'solid' : 'ghost'}
 													>
 														{e} ~ ({max})
@@ -238,7 +212,6 @@ const ActionForm = (props) => {
 										</ButtonGroup>
 										<Spacer />
 
-										<NexusSlider min={0} max={max} defaultValue={effort.amount} value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></NexusSlider>
                 </Box>
                 <Spacer />
               </Flex>}

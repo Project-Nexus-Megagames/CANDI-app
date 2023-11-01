@@ -140,8 +140,30 @@
 
 .styleCenter {
   display: flex;
-  justify-content: left;
-  align-items: top;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+
+.styleDeadCenter {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+
+.styleCenterTop {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  text-align: center;
+}
+
+.styleCenterLeft {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
 }
 
 .container {

@@ -26,7 +26,7 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
       <Popover placement='right-start' isLazy>
         <PopoverTrigger>
           <Center className="styleCenter"  >
-            <Button variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Character</Button>
+            <Button variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Collaborators</Button>
           </Center>
           
         </PopoverTrigger>

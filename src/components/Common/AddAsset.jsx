@@ -17,9 +17,9 @@ import {
   Box,
   VStack,
   Divider,
-  Portal,
-  Center
+  Portal
 } from '@chakra-ui/react'
+import Worker from "../Team/Worker";
 import { BsPlus } from "react-icons/bs";
 import AssetCard from "./AssetCard";
 
@@ -43,11 +43,11 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets }) => {
   }, [open]);
 
   return (
-      <Popover placement='auto' isLazy>
+      <Popover placement='left-start' isLazy>
         <PopoverTrigger>
-          <Center className="styleCenter" style={{ minWidth: '100px', minHeight: '100px', border: '3px dotted', margin: '5px' }} >
+          <Box className="styleCenter" style={{ minWidth: '100px', minHeight: '100px', border: '3px dotted', margin: '5px' }} >
             <IconButton variant="solid"  colorScheme='green' size="md" icon={<BsPlus/>} /> 
-          </Center>
+          </Box>
           
         </PopoverTrigger>
         <Portal>
@@ -59,8 +59,8 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets }) => {
             
               <VStack divider={<Divider />} style={{ maxHeight: '40vh', overflow: 'auto', paddingTop: assets.length < 3 ? '0vh' : '20vh' }} justify="space-around" align={'center'}  >
                 {assets.filter(a => a.name.toLowerCase().includes(fill.toLowerCase())).map((ass) => (
-                  <Box key={ass._id} style={{ width: '100%' }}>
-                    <AssetCard disabled  handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass}  />
+                  <Box  style={{ width: '100%' }}>
+                    <AssetCard  handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass}  />
                   </Box>                
                 ))}
                 </VStack>

@@ -4,7 +4,7 @@ import { apiCallBegan } from "../api"; // Import Redux API call
 
 // Create entity slice of the store
 const slice = createSlice({
-  name: "log",
+  name: "actionLogs",
 	initialState: {
     loading: false,
     loaded: false,
@@ -48,12 +48,12 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/log`;
 
 export const getGameStateLog = createSelector(
-  (state) => state.log.list,
+  (state) => state.actionLogs.list,
   (log) =>
     log.filter((el) => el.submodel === "NextRoundLog"));
 
 export const getControlLog = createSelector(
-	(state) => state.log.list,
+	(state) => state.actionLogs.list,
 	(log) =>
 		log.filter((el) => el.submodel === "ControlLog"));
 

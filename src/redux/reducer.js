@@ -1,25 +1,40 @@
 import { combineReducers } from "redux";
 import auth from "./entities/auth";
-import assets from "./entities/assets";
+import accounts from "./entities/accounts";
 import articles from "./entities/articles";
+import assets from "./entities/assets";
 import characters from "./entities/characters";
-import playerActions from "./entities/playerActions";
+import clock from "./entities/clock";
 import gamestate from "./entities/gamestate";
-import locations from "./entities/locations";
 import gameConfig from "./entities/gameConfig";
-import log from "./entities/log";
+import locations from './entities/locations';
+import trades from './entities/trades';
+import blueprints from './entities/blueprints';
+import teams from './entities/teams';
+import actionLogs from './entities/actionLogs';
+import ice from './entities/ice';
+import facilities from './entities/facilities';
+import actions from './entities/playerActions';
+
 
 
 // Main Store reducer
 export default combineReducers({
-  // auth/playerCharacter, actions, players(aka characters),
+  // auth/playerCharacter, actions, players(aka characters), 
+  actionLogs,
   auth,
-  actions: playerActions,
+  accounts,
+  actions,
   articles,
   assets,
-  characters,
+  blueprints,
+  characters, 
+  clock,
+  facilities,
   gamestate,
+  gameConfig,
+  ice,
   locations,
-	gameConfig,
-	log
+  teams,
+  trades,
 });

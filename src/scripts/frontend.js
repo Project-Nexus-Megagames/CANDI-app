@@ -179,4 +179,25 @@ const openLink = (link) => {
   win.focus();
 };
 
-export { getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink };
+function getThisTeam(teams, character) {
+	// console.log(teams)
+	// console.log(character)
+	const found = teams.find((el) => el.characters.some((char) => char._id === character));
+	return found ? found.name : 'No Team Found';
+}
+
+function getThisAccount(accounts, account) {
+	// console.log(teams)
+	// console.log(character)
+	const found = accounts.find((el) => el._id === account);
+	return found ? found.name : 'No Account found';
+}
+
+function getThisTeamFromAccount(accounts, account) {
+	// console.log(teams)
+	// console.log(character)
+	const found = accounts.find(el => el._id === account)?.team;
+	return found ? found.name : 'No team found';
+}
+
+export { getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink };

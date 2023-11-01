@@ -1,24 +1,28 @@
 import { Select, Input } from '@chakra-ui/react';
 import React from 'react';
 import { IoChevronDownCircleOutline } from 'react-icons/io5';
-import { getFadedColor } from '../../scripts/frontend';
+import { getFadedColor, getThisTeamFromAccount } from '../../scripts/frontend';
+import { useSelector } from 'react-redux';
 
 function SelectPicker(props) {
-	const { data, value, onChange, label, valueKey } = props;
+	const { data, value, onChange, label, placeholder } = props;
+  let valueKey = props.valueKey ? props.valueKey : '_id';
 	let [filter, setFilter] = React.useState('');
+	const accounts = useSelector(s => s.accounts.list);  
+
 	return (
-		<Select
-			style={{ border: `4px solid ${getFadedColor(value)}`, minWidth: '10vw' }}
-			onChange={(event) => onChange(event.target.value)}
-			icon={<IoChevronDownCircleOutline />}
-			placeholder={value ? value : 'Select Option'}
-		>
+		<Select 
+      style={{ border: `4px solid ${getFadedColor(value)}`, backgroundColor: "#343840",  }} 
+      icon={<IoChevronDownCircleOutline />} 
+
+      placeholder={value ? value : placeholder? placeholder : `Select Option (${data?.length})`} onChange={(event) => onChange(event.target.value)}>
 			{data &&
 				data
-					.filter((el) => el[label]?.toLowerCase().includes(filter.toLowerCase()))
+					//.filter((el) => el[label]?.toLowerCase().includes(filter.toLowerCase()))
 					.map((el) => (
-						<option style={{ background: '#2d3748', color: 'white' }} key={el[label]} value={el[valueKey]}>
-							{el[label]}
+						<option style={{ backgroundColor: "#343840" }} key={el[label]} value={el[valueKey]}>
+              {el.account && getThisTeamFromAccount(accounts, el.account)} 
+							{el[label]?.toUpperCase()}
 						</option>
 					))}
 		</Select>

@@ -99,6 +99,15 @@ export const filteredActions = createSelector(
   )
 );
 
+
+export const getMyCovertActions = createSelector(
+  state => state.actions.filter,
+  state => state.actions.list,
+  state => state.auth.myCharacter,
+  (filter, actions, myCharacter) => actions.filter(
+    action => (( action.creator._id === myCharacter._id && action.type.toLowerCase() === 'covert') ))
+);
+
 export const getAgendaActions = createSelector(
   state => state.actions.list,
 	(actions) => actions.filter(el => el.type === 'Agenda'),

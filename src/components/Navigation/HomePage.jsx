@@ -5,14 +5,14 @@ import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../red
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
-import nexus from '../Images/Project_Nexus.jpg';
 import other from '../Images/other.jpg';
-import news from '../Images/news.jpg';
+import news from '../Images/News.jpg';
 import actions from '../Images/actions.jpg';
 import map from '../Images/science.jpg';
 import leaderboard from '../Images/leaderboard.png';
 import control from '../Images/control.png';
 import agendas from '../Images/agenda.jpg';
+
 
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
@@ -24,12 +24,13 @@ import { useNavigate } from 'react-router';
 import usePermissions from '../../hooks/usePermissions';
 import { CandiWarning } from '../Common/CandiWarning';
 import { openLink } from '../../scripts/frontend';
+import NoCharacter from './NoCharacter';
 
 const HomePage = (props) => {
 	const navigate = useNavigate();
 	const reduxAction = useDispatch();
 
-	const { loading, login, myCharacter, } = useSelector(s => s.auth);
+	const { login, loadComplete, myCharacter, team } = useSelector(s => s.auth)
   const gamestate = useSelector(state => state.gamestate)
 	const newArticles = useSelector((state) => state.articles.new);
 
@@ -40,16 +41,11 @@ const HomePage = (props) => {
 	const [rand, setRand] = React.useState(Math.floor(Math.random() * 10000));
   const columns = useBreakpointValue({base: 1, lg: 3, md: 2, sm: 1});
 
+
   if (!props.login) {
     navigate("/");
     return <div />;
   }
-
-	useEffect(() => {
-		if (myCharacter && !loaded) {
-			setLoaded(true);
-		}
-	}, [myCharacter]);
 
 	useEffect(() => {
 		if (tempCharacter) reduxAction(setCharacter(tempCharacter));
@@ -64,60 +60,62 @@ const HomePage = (props) => {
 	};
 
   
-	if (!loaded) {
-		return <Spinner  />;
-	}
-  else if (gamestate.status === 'Down') {
+ if (gamestate.status === 'Down') {
 		navigate('/down');
 		return <Spinner  />;
 	}
 	return (
 		<React.Fragment>
+      {!loadComplete && <Loading />}      
+			{loadComplete && (!myCharacter || !team) && <NoCharacter />}
+
+      {loadComplete && myCharacter && team && 
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        
 
-        <GridItem colSpan={columns == 1 ? 2 : 1} >
-          <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-        </GridItem>
+      <GridItem colSpan={columns == 1 ? 2 : 1} >
+        <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+      </GridItem>
 
-        <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
-          <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
-        </GridItem>
-        
+      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
+        <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
+      </GridItem>
+      
 
-        <GridItem colSpan={columns == 1 ? 2 : 1}>
-          <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
-        </GridItem>   
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
+      </GridItem>   
 
-        <GridItem colSpan={columns == 1 ? 2 : 1}>
-          <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Do the things" />
-        </GridItem>   
-
-
-        <GridItem colSpan={columns == 1 ? 1 : 2}>
-          <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
-        </GridItem>   
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Do the things" />
+      </GridItem>   
 
 
-        <GridItem colSpan={columns == 1 ? 2 : 1}>
-          <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
-        </GridItem>
-
-        <GridItem colSpan={columns == 1 ? 2 : 1}>
-          <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
-        </GridItem>    
+      <GridItem colSpan={columns == 1 ? 1 : 2}>
+        <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
+      </GridItem>   
 
 
-        <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
-          <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
-        </GridItem>                        
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
+      </GridItem>
 
-        {isControl && <GridItem colSpan={columns} >
-            <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
-        </GridItem>}
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
+      </GridItem>    
+
+
+      <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
+        <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
+      </GridItem>                        
+
+      {isControl && <GridItem colSpan={columns} >
+          <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
+      </GridItem>}
 
 
 
-      </Grid>
+    </Grid>
+      }
 
       <CandiWarning open={rand === 1} title={"You sure about that?"} onClose={() => setRand(-1)} handleAccept={() => setRand(-1)}>
         Looks like you are about to delete the entire database. Are ya sure?

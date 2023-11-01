@@ -239,7 +239,7 @@ const ModifyCharacter = (props) => {
                     </Text>
                   </FormControl>
                   
-                  <HStack w="100%">
+                  {/* <HStack w="100%">
                     {effortFields.map((item, i) => (
                       <div key={i}>
                         <FormControl>
@@ -253,7 +253,7 @@ const ModifyCharacter = (props) => {
                       </div>
                     ))}
                     <Button isDisabled={effortFields.length == effortTypes.length} colorScheme='green' variant={'solid'} onClick={() => appendEffort({ type: effortTypes[effortFields.length + 1]?.type, amount: effortTypes[effortFields.length + 1]?.effortAmount })}>+</Button>
-                  </HStack>
+                  </HStack> */}
 
                   <HStack w="100%">
                     {characterStats.map((item, i) => (

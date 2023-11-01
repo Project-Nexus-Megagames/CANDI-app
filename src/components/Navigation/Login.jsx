@@ -1,63 +1,83 @@
-import React, { useEffect } from 'react'; // React imports
-import { useNavigate } from 'react-router-dom';
-import { Card } from '@chakra-ui/card';
-import { FormControl, FormLabel } from '@chakra-ui/form-control';
-import { Input } from '@chakra-ui/input';
-import { Button } from '@chakra-ui/button';
-import { useDispatch, useSelector } from 'react-redux';
-import { authReceived, authRequestFailed, loginRequested, loginUser } from '../../redux/entities/auth';
+import { Button, Card, FormControl, FormLabel, Input, useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { loadAllActions, loadplayerActions } from '../../redux/entities/playerActions';
-
-import leaderboard from '../Images/hello.jpg';
+import React, { useEffect } from "react"; // React imports
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { authReceived, loginRequested, authRequestFailed, loginUser } from "../../redux/entities/auth";
+import { ErrorAlert } from "../Common/ErrorAlert";
 
 const Login = (props) => {
-  const  { user, loading } = useSelector(s => s.auth);
 	const reduxAction = useDispatch();
+	const { loading, error } = useSelector(s => s.auth);
 	const [login, setLogin] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [remember, setRemember] = React.useState(true);
 	const navigate = useNavigate();
+  const toast = useToast();
 
-	useEffect(() => {
-		let token = localStorage.getItem('candi-token');
-		// console.log('token ' + token);
-		// console.log(token);
+	const loginToken = localStorage.getItem("cult-token");
 
-		if (token && token !== null && token !== undefined && props.login === false) {
-			console.log('Attempting to token login!');
-      reduxAction(authReceived({ token }));
+	useEffect(() => {	 
+	  console.log("LoginToken " + loginToken);
+	  if (loginToken !== null && props.login === false) {
+	    console.log("Attempting to login!");
+			reduxAction(loginRequested());
+	    const fetchData = async () => {
+	      try {
+	        const { data } = await axios.request({
+	          url: "https://nexus-central-server.herokuapp.com/auth/tokenLogin",
+	          method: "post",
+	          data: { token: loginToken },
+	        });
+	        console.log(data.token);
+	        reduxAction(authReceived({ token: data.token }));
+	      } catch (err) {
+	        console.log(err);
+          reduxAction(authRequestFailed());
+	      }
+	    };
+	    fetchData();
       reduxAction(loginRequested());
-      navigate('/loading');
-		}
+	    // make sure to catch any error
+	  }
 	}, [props.login]);
 
 	useEffect(() => {
 		if (props.login) {
-			reduxAction(loadAllActions(user));
-			navigate('/loading');
+			navigate('/home');
 		}
-	}, [props.login, user, navigate]);
+	}, [props.login, navigate]);
+
+  useEffect(() => {
+    console.log(error);
+		if (error) {
+      toast({
+        position: "top-right",
+        isClosable: true,
+        duration: 5000,
+        render: () => <ErrorAlert error={error} />,
+      });
+		}
+	}, [error]);
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') reduxAction(loginUser({ user: login, password }));
 	};
 
 	const onSubmit = async () => {
-		remember
-			? localStorage.setItem('candi-token', login)
-			: localStorage.removeItem('candi-token');
+		remember ? localStorage.setItem('cult-token', login) : localStorage.removeItem('cult-token');
+
 		reduxAction(loginUser({ user: login, password }));
 	};
 
-	let buttonText = loading ? 'Loading' : 'Login';
+	let buttonText = props.loading ? 'Loading' : 'Login';
 
-	return (
+  return (
     <div className="styleCenter">
       <Card maxW='lg'>
       <img
-        src={'/images/banner.png'}
-        width={800}
+        src={'/images/goblin.png'}
+        width={600}
         alt="Failed to load img"
       />
       <h5>Login with your Nexus account</h5>
@@ -77,28 +97,34 @@ const Login = (props) => {
               Sign up
             </Button>
           </p>
-          <FormControl>
+
+          {error && <ErrorAlert error={error}></ErrorAlert>}
+
+          <FormControl style={{ color: '#d4af37', marginBottom: '10px' }}>
             <FormLabel>Email / Username</FormLabel>
             <Input value={login} onKeyPress={handleKeyPress} onChange={(e)=> setLogin(e.target.value)}  />
           </FormControl>
 
-          <FormControl>
+          <FormControl style={{  color: "#8a0674"}}>
             <FormLabel>Password</FormLabel>
             <Input type='password' onKeyPress={handleKeyPress} value={password} onChange={(e)=> setPassword(e.target.value)} />
           </FormControl>
+          
 
           <Button
+            style={{ marginLeft: '0px', marginRight: '0px', marginTop: '35px' }}
             disabled={!login || !password}
-            // isLoading={loading.toString()}
+            isLoading={loading}
             onClick={() => onSubmit()}
             variant="solid"
+            colorScheme={'blue'}
           >
             {buttonText}
           </Button>				
       </Card>      
     </div>
-	);
-};
 
+  );
+};
 
 export default (Login);

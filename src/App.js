@@ -38,6 +38,7 @@ import NavigationBar from "./components/Navigation/NavigationBar";
 import { loadAllActions } from "./redux/entities/playerActions";
 import { ErrorAlert } from "./components/Common/ErrorAlert";
 import { SuccessAlert } from "./components/Common/SuccessAlert";
+import loadState from './scripts/initState';
 import Loading from "./components/Navigation/Loading";
 import CharacterStats from "./components/StatDisplays/CharacterStats";
 import LocationDashboard from "./components/Locations/LocationDashboard";
@@ -75,14 +76,7 @@ const App = (props) => {
 
   useEffect(() => {
     console.log("App Loaded");
-    loadChar();
-    loadAssets();
-    loadArticles();
-    loadLocations();
-    loadGamestate();
-    loadGameConfig();
-    loadLog();
-    loadAllActions();
+    loadState();
     socket.onAny((event, ...args) => {
       // console.log(event);
       if (event === "clients") {

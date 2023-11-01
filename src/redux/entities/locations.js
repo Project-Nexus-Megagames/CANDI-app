@@ -78,7 +78,15 @@ export const getLocationsByCharacterId = (characterId) => createSelector(
 	(state) => state.locations.list,
 	(locations) =>
 	locations.filter((loc) => loc.unlockedBy.some(el => el._id === characterId))
-)
+);
+
+export const getTeamHQ = createSelector(
+  state => state.locations.list,
+  state => state.auth.team,
+  (locations, team) => locations.find(
+    loc => (loc._id === team.hq)
+  )
+);
 
 export const getLocationById = (locationId) =>
   createSelector(

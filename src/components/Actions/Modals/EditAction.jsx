@@ -1,18 +1,13 @@
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button } from '@chakra-ui/react';
-import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
+import { getFadedColor, } from '../../../scripts/frontend';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../../../socket';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { CheckIcon } from '@chakra-ui/icons';
 import CheckerPick from '../../Common/CheckerPick';
-import NexusSlider from '../../Common/NexusSlider';
 
 function EditAction({ action, showEdit, handleClose }) {
-	if (!showEdit) {
-		return <></>;
-	}
-
 	const actionLoading = useSelector((state) => state.actions.loading);
 	const myCharacter = useSelector((state) => state.auth.myCharacter);
 	const actionType = useSelector((state) => {
@@ -25,10 +20,9 @@ function EditAction({ action, showEdit, handleClose }) {
 	const [name, setName] = useState(action.name);
 	const [effort, setEffort] = useState(action.submission.effort);
 
-	const characterEffort = getThisEffort(myCharacter.effort, actionType.type) + action.submission.effort.amount;
 
-	const [max, setMax] = useState(characterEffort < actionType.maxEffort ? characterEffort : actionType.maxEffort);
-	const [resources, setResources] = React.useState(action.submission.assets);
+	const [max, setMax] = useState(69);
+	const [resources, setResources] = React.useState([]);
 
 	const editEffort = (incoming, type) => {
 		let thing;
@@ -41,7 +35,7 @@ function EditAction({ action, showEdit, handleClose }) {
 					thing.effortType = incoming;
 					thing.amount = 0;
 
-					setMax(characterEffort < actionType.maxEffort ? characterEffort : actionType.maxEffort);
+					// setMax(characterEffort < actionType.maxEffort ? characterEffort : actionType.maxEffort);
 				}
 				setEffort(thing);
 				break;
@@ -151,13 +145,13 @@ function EditAction({ action, showEdit, handleClose }) {
 									)}
 								</h5>
 
-								<NexusSlider
+								{/* <NexusSlider
 									min={0}
 									max={max}
 									defaultValue={action.submission.effort.amount}
 									value={effort.amount}
 									onChange={(event) => editEffort(parseInt(event), 'effort')}
-								></NexusSlider>
+								></NexusSlider> */}
 							</Box>
 
 							<Box
@@ -168,11 +162,11 @@ function EditAction({ action, showEdit, handleClose }) {
 								}}
 							>
 								{' '}
-								Resources
+								Assets
 								<CheckerPick
 									labelKey='name'
 									valueKey='_id'
-									data={myAssets.filter((el) => actionType.resourceTypes.some((ty) => ty.toLowerCase() === el.type.toLowerCase()))}
+									data={myAssets.filter((el) => actionType.assetTypes.some((ty) => ty.toLowerCase() === el.type.toLowerCase()))}
 									style={{ width: '100%' }}
 									disabledItemValues={formattedUsedAssets}
 									onChange={(event) => setResources(event)}

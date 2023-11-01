@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {    Accordion,    AccordionButton,    AccordionIcon,    AccordionItem,    AccordionPanel,    Avatar,    Box,    Container,    Flex,    Heading,    StackDivider,    Tag,    VStack} from "@chakra-ui/react";
+import { Box, Flex, StackDivider,    Tag,    VStack} from "@chakra-ui/react";
 import ActionTag from "./ActionTag";
-import { getFadedColor } from '../../../scripts/frontend';
+import CharacterNugget from '../../Common/CharacterNugget';
 
-function ActionList({ actions, handleSelect, selected }) {
+function ActionList({actions, handleSelect}) {
     const [rounds, setRounds] = useState([]);
 
     useEffect(() => {
@@ -42,9 +42,8 @@ function ActionList({ actions, handleSelect, selected }) {
         }
     };
 
-    const sortedActions = (currRound) => {
+    const sortedActions = () => {
         return actions
-            .filter((action) => action.round === currRound)
             .sort((a, b) => {
                 // sort the catagories alphabetically
                 if (a.creator.characterName < b.creator.characterName) {
@@ -58,104 +57,62 @@ function ActionList({ actions, handleSelect, selected }) {
     }
 
     return (
-        <Container >
-            <Accordion
-                allowMultiple
-                defaultIndex={[0]}                
-            >
-                {rounds.map((round, index) => (
-                    <AccordionItem
-                        key={round}
+      <VStack
+        divider={<StackDivider/>}
+        align='stretch'
+        maxWidth={'20vw'}
+    >
+      {sortedActions().length <= 0 && <b>No Actions</b>}
+        {sortedActions().map((action) => (
+                <Flex
+                    key={action._id}
+                    onClick={() => handleSelect(action)}
+                    style={{
+                        marginTop: '0',
+                        cursor: 'pointer',
+                    }}
+                >
+                    <Box
+                        mr={'1rem'}
+                        alignItems={'center'}
+                        display={'flex'}
+                    >
+                      <CharacterNugget character={action.creator} />
+                    </Box>
+                    <Box
                         style={{
-                            borderTop: 0,
-                            borderBottom: 0,
+                            ...styleCenter,
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                            overflow: 'hidden'
                         }}
                     >
-                        <h5>
-                            <AccordionButton
-                                style={{
-                                    paddingLeft: 0
-                                }}
-                            >
-                                <Box
-                                    flex='1'
-                                    textAlign='left'
-                                >
-                                    <Heading
-                                        as='h5'
-                                        textAlign='left'
-                                    >
-                                        Round {round}
-                                    </Heading>
-                                </Box>
-                                <AccordionIcon/>
-                            </AccordionButton>
-                        </h5>
-                        <AccordionPanel>
-                            <VStack
-                                divider={<StackDivider/>}
-                                align='stretch'
-                            >
-                                {sortedActions(round).map((action) => (
-                                        <Flex
-                                            key={action._id}
-                                            onClick={() => handleSelect(action)}
-                                            backgroundColor={selected === action ? getFadedColor(action.type) : 'inherit'}
-                                            paddingLeft={'15px'}
-                                            style={{
-                                                marginTop: '0',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <Box
-                                                mr={'1rem'}
-                                                alignItems={'center'}
-                                                display={'flex'}
-                                            >
-                                                <Avatar
-                                                    
-                                                    src={action.creator.profilePicture}
-                                                />
-                                            </Box>
-                                            <Box
-                                                style={{
-                                                    ...styleCenter,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'flex-start',
-                                                    overflow: 'hidden'
-                                                }}
-                                            >
-                                                <div style={titleStyle}>{action.name}</div>
-                                                <Flex>
-                                                    <ActionTag
-                                                        color='white'
-                                                        action={action}
-                                                        text={action.type}
-                                                    />
-                                                    {action.results.length > 0 && action.results[0].ready &&
-                                                        <ActionTag
-                                                            color='green'
-                                                            text='Resolved'
-                                                        />
-                                                    }
-                                                    {action.effects.length > 0 &&
-                                                        <ActionTag
-                                                            color='violet'
-                                                            text={`${action.effects.length} Effects`}
-                                                        />
-                                                    }
-                                                    {action.tags.map((tag) => tagStyle(tag))}
-                                                </Flex>
-                                            </Box>
-                                        </Flex>
-                                    )
-                                )}
-                            </VStack>
-                        </AccordionPanel>
-                    </AccordionItem>
-                ))}
-            </Accordion>
-        </Container>
+                        <div style={titleStyle}>{action.name}</div>
+                        <Flex>
+                            <ActionTag
+                                color='black'
+                                action={action}
+                                text={action.type}
+                            />
+                            {action.results.length > 0 && action.results[0].ready &&
+                                <ActionTag
+                                    color='green'
+                                    text='R Ready'
+                                />
+                            }
+                            {action.effects.length > 0 &&
+                                <ActionTag
+                                    color='violet'
+                                    text={`${action.effects.length} Effects`}
+                                />
+                            }
+                            {action.tags.map((tag) => tagStyle(tag))}
+                        </Flex>
+                    </Box>
+                </Flex>
+            )
+        )}
+    </VStack>
     );
 }
 

@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, Flex, Heading, Tag, Wrap } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Divider, Flex, Heading, Spacer, Wrap, WrapItem } from "@chakra-ui/react";
 import React from "react";
 import { getFadedColor, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
@@ -6,9 +6,12 @@ import NewResult from "../../Modals/NewResult";
 import ActionButtons from "./ActionHeader/ActionButtons";
 import ActionMarkdown from "./ActionMarkdown";
 import CharacterNugget from "../../../Common/CharacterNugget";
-import ActionForm from "../../Forms/ActionForm";
-import ActionResources from "./ActionResources";
-import ActionEffort from "./ActionEffort";
+import Contract from "../../../Common/Contract";
+import Ice from "../../../Team/Ice";
+import { RaidIce } from "../../../Hacking/RaidIce";
+import { ActionIce } from "./ActionIce";
+import { useSelector } from "react-redux";
+import { getTeamDice,  } from "../../../../redux/entities/assets";
 
 
 const ActionSubObject = (props) => {
@@ -16,16 +19,16 @@ const ActionSubObject = (props) => {
   const time = getTime(subObject.createdAt);
   const creator = subObject.resolver ? subObject.resolver :
                   subObject.effector ? subObject.effector :
-                  subObject.creator ? subObject.creator :
-                  subObject.commentor;
+                  subObject.commentor ? subObject.commentor : 
+                  { playerName: "UNKNOWN!?!", characterName: "UNKNOWN!?!"  };
                   
   const [mode, setMode] = React.useState(false);
+  const assets = useSelector(getTeamDice);
 
   const handleDelete = async () => {
     const data = {
 			id: action._id,
-			result: subObject._id,
-      model: subObject.model
+			result: subObject._id
 		};
 		socket.emit('request', {
 			route: 'action',
@@ -33,71 +36,32 @@ const ActionSubObject = (props) => {
 			data
 		});
   };
-
-  const handleSubmit = async (incoming) => {
-    const { effort, assets, description, intent, name, actionType, myCharacter, collaborators } = incoming;
-    try {
-      const data = {
-        submission: {
-          effort: effort,
-          assets: assets.filter(el => el),
-          description: description,
-          intent: intent,
-          id: subObject._id,
-        },
-        name: name,
-        type: actionType.type,
-        id: action._id,
-        creator: myCharacter._id,
-        numberOfInjuries: myCharacter.injuries.length,
-      };
-      // 1) make a new action 
-      socket.emit('request', { route: 'action', action: 'updateSubObject', data });
-    }
-    catch (err) {
-      // toast({
-      //   position: "top-right",
-      //   isClosable: true,
-      //   status: 'error',
-      //   duration: 5000,
-      //   id: err,
-      //   title: err,
-      // });
-    }
-  };
-
-  const borderColor = subObject.diceResult ? subObject?.description : subObject.model;
-
+  if (!creator) return <b>???</b>
   return ( 
     <div>
-      <div key={subObject._id} style={{ 
-        border: subObject.status === 'Public' ? `3px solid ${getFadedColor(borderColor)}` : `3px dotted ${getFadedColor(borderColor)}`, 
-        borderRadius: '5px', padding: '5px' }}>
-        <Flex style={{ backgroundColor: getFadedColor(subObject.model), padding: '10px' }} >
-          <Box
-            display='flex'
-            flex={1}
-            alignItems='center'
-          >
+      <div key={subObject._id} style={{ border: `3px solid ${getFadedColor(subObject.model)}`, borderRadius: '5px', padding: '5px' }}>
+        <Flex justify={'center'} style={{ backgroundColor: getFadedColor(subObject.model), padding: '10px' }} >
+
           <CharacterNugget character={creator} />
-          </Box>
-          <Flex flex={3}>
-            <Box
+
+          <Spacer />
+
+          <Box
               alignItems='center'
               justifyContent='center'
-              width='100%'
             >
               <Heading
                   size={'md'}
                   textAlign={'center'}
               >
-                  {subObject.model}                
-                  
+                  {subObject.__t}
+                  {subObject.model}
               </Heading>
               <Box
                   fontSize={'.9rem'}
                   fontWeight={'normal'}
               >
+                  {creator.playerName} - {creator.characterName}
               </Box>
               <Box
                   fontSize={'.9rem'}
@@ -105,59 +69,78 @@ const ActionSubObject = (props) => {
               >
                   {time}
               </Box>
-              <Tag variant={'solid'} colorScheme="teal" >{subObject.status}</Tag>
-            </Box>
-          </Flex>
-          <Flex flex={1}>
-            <Box marginLeft='auto'>
-              <ActionButtons
-                action={subObject}
-                toggleEdit={() => setMode(subObject.model)}
-                creator={creator}
-                handleDelete={handleDelete}
-              />
-            </Box>
-          </Flex>          
+          </Box>
+
+          <Spacer />
+            
+          <Box marginLeft='auto'>
+            <ActionButtons
+              action={subObject}
+              toggleEdit={() => setMode('edit_result')}
+              creator={creator}
+              handleDelete={handleDelete}
+            />
+          </Box>    
+
         </Flex>
-        {mode}
 
-        {mode !== 'Submission' && <Box>
-          {subObject.description && <ActionMarkdown
-            header={'Description'}
-            markdown={subObject.description}
+        <Box>
+          {subObject.__t !== "Contract" && <ActionMarkdown
+              markdown={subObject.description ? subObject.description : subObject.body}
           />}
-          {subObject.intent && <ActionMarkdown
-            header={'Intent'}
-            markdown={subObject.intent}
-          />}
-          {subObject.body && <ActionMarkdown
-            header={'Body'}
-            markdown={subObject.body}
-          />}
-          {subObject.effort && <ActionEffort 
-            submission={subObject}
-          />}
-          {subObject.assets && <ActionResources
-            assets={subObject.assets}
-          />}
+          {subObject.__t === "Contract" && 
+            <Contract show contract={subObject} />
+          }
+          {subObject.model === "Ice" && 
+            <div>                                 
+              <Wrap justify="space-around">
+               <Ice ice={subObject} width={500} />
+               
+               <WrapItem  >
+                {subObject.options &&
+                  subObject.options.map((subRotuine, index) => (
+                    <Box
+                      index={subRotuine._id}
+                      colSpan={18 / subObject.options.length}
+                    >
+                      <Divider vertical />
+                      {subRotuine.description && (
+                        <p>{subRotuine.description}</p>
+                      )}
+                      <Divider vertical />
+                      <ActionIce
+                        show={mode === 'addDice'}
+                        action={action}
+                        ice={subObject}
+                        assets={assets}
+                        loading={props.loading}
+                        subRotuine={subRotuine}
+                        index={index}
+                      />
+                    </Box>
+                  ))}                
+               </WrapItem>
 
-          {subObject.diceResult && <Wrap justify='center'>
-            {subObject.diceResult.map(die => (
-                <div key={die._id} style={{  textAlign: 'center', padding: '5px', border: die.amount< action.submission.difficulty ? '' :`2px solid ${getFadedColor(action.type)}` }} >
-                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.sides}.png` : '/images/unknown.png'} alt={die.sides} />}
-                  <b>{die.amount}</b>
-                </div>
-            ))}
-          </Wrap>}
-
-        </Box>}
-
-        {mode === 'Submission' && <ActionForm collabMode defaultValue={subObject} actionType={action.type} handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setMode(false)} />}
+              </Wrap>
+                     
+              <Center>
+                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green" onClick={() => setMode('addDice')} >Add Dice</Button>}
+                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green" 
+                                onClick={() =>     socket.emit("request", {
+                                  route: "action",
+                                  action: "roll",
+                                  data: { id: action._id, ice: subObject._id },
+                                })}>Roll</Button>}
+                {mode === 'addDice' && <Button variant={'solid'} colorScheme="green" onClick={() => setMode(false)} >Finish</Button>}
+              </Center>
+            </div>
+          }
+        </Box>
       </div>    
       <Divider orientation='vertical' />   
 
       <NewResult
-        show={mode === 'Result'}
+        show={mode === 'edit_result'}
         mode={"updateSubObject"}
         result={subObject}
         closeNew={() => setMode(false)}

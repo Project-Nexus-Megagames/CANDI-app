@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { AccordionItem, AccordionPanel, Box, Button, Center, Code, Editable, EditableInput, EditablePreview, Flex, HStack, Tag } from "@chakra-ui/react";
+import { AccordionItem, Box, Button, Center, Code, Editable, EditableInput, EditablePreview, Flex, HStack, Tag } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
 import { CloseIcon } from "@chakra-ui/icons";
-import WordDivider from "../../../WordDivider";
 import AssetCard from "../../../Common/AssetCard";
 import InputNumber from "../../../Common/InputNumber";
 import socket from "../../../../socket";
+import WordDivider from "../../../Common/WordDivider";
 
 function ActionDifficulty({action, submission}) {
     const assetList = useSelector(state => state.assets.list);
@@ -77,7 +77,7 @@ function ActionDifficulty({action, submission}) {
     const prob = stats(submission.assets, submission.difficulty);
 
     return (
-    <Box>
+    <Box justifyItems={'center'} >
       <WordDivider word={`Difficulty: ${submission.difficulty}`}/>
       <Code colorScheme={prob > 80 ? 'green' : prob > 40 ? 'yellow' : 'red'} children={`${prob}% Chance of success`} />
       {isControl && <Button onClick={() => setMode(!mode)} >{mode ? "Cancel" : "Edit"}</Button> }  
