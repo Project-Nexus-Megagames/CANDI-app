@@ -8,7 +8,7 @@ import usePermissions from "../../hooks/usePermissions";
 import { AddIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import { useNavigate } from 'react-router';
 import ActionList from './ActionList/ActionList';
-import { getFadedColor } from '../../scripts/frontend';
+import { getFadedColor, getIcon } from '../../scripts/frontend';
 
 const Actions = (props) => {
 	const actions = useSelector(s => s.actions.list);
@@ -76,17 +76,6 @@ const Actions = (props) => {
                 }
                 return 0;
             })            
-    }
-
-    function getIcon(type) {
-      switch (type) {
-        case 'Normal':
-          return <PlusSquareIcon />;
-        case 'Agenda':
-          return <PlusSquareIcon />;
-        default:
-          return <PlusSquareIcon />;
-      }
     }
 
     const actionList = isControl ? fActions : myActions;

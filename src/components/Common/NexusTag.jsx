@@ -164,7 +164,18 @@ const NexusTag = (props) => {
           </Tooltip>
         )
       default:
-        return
+        return (          
+        <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+          label={(
+          <div>
+            <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+            <h5>{icon}</h5>
+          </div>)}>
+            <div style={{	display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content' }}>
+              <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />
+            </div>              
+        </Tooltip>
+      )
     }
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFadedColor } from '../../../scripts/frontend';
+import { getFadedColor, getIcon } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
 import { Tag,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer,  Center, TagLabel, TagCloseButton, Wrap, useBreakpointValue, SimpleGrid} from '@chakra-ui/react';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
@@ -108,17 +108,6 @@ const ActionForm = (props) => {
     }
     setResource(arr);
   }
-
-	function getIcon(type) {
-		switch (type) {
-			case 'Normal':
-				return <PlusSquareIcon />;
-			case 'Agenda':
-				return <PlusSquareIcon />;
-			default:
-				return <PlusSquareIcon />;
-		}
-	}
 
 	return (
 		<Box style={{

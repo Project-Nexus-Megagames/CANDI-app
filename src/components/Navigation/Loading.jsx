@@ -26,6 +26,7 @@ const Loading = (props) => {
 	useEffect(() => {
 		if (loadingStart === false) {
 			reduxAction(loadingState());
+      loadState();
 		}
     const interval = setInterval(() => {
       setMessage(Math.floor(Math.random() * corps.length))
@@ -36,23 +37,18 @@ const Loading = (props) => {
 	useEffect(() => {
 		console.log('Trigger A');
 		console.log(user);
-		if (characters.length > 0 && user !== undefined) {
+		if (characters.length > 0 && user && user !== undefined) {
 			console.log('Finished Loading????');
-			const controlTeam = entities.teams.list.find((el) => el.tags.some((tag) => tag === 'control'));
 
-			const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());
-      
+			const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
 			console.log(character0);
 
       if (character0) {
         reduxAction(setCharacter(character0));
-		  	if (character0 && controlTeam) reduxAction(setControl(controlTeam.characters.some((el) => el._id === character0._id)));
       }
       else {
         navigate('/no-character');
       }
-
-
 		}
 	}, [characters]);
 
@@ -65,7 +61,7 @@ const Loading = (props) => {
 
 			reduxAction(finishLoading());
 		}
-	}, [myCharacter]);
+	}, [myCharacter, message]);
 
   const handleLogOut = async () => {
 		reduxAction(signOut())
@@ -73,14 +69,13 @@ const Loading = (props) => {
 	}
 
 	return (
-		<div  >
-      {done.length} {sections.length}
+		<div>
       <Center>
         <Text fontSize={"x-large"} >{corps[message]?.name}</Text> 
       </Center>
 
       <Center>
-        <img width={"350px"} src={`/images/Icons/teams/${corps[message]?.name}.png`} alt='Loading...' />
+        <img width={"350px"} src={`/images/team/${corps[message]?.name}.png`} alt='Loading...' />
       </Center>
 
       <Center>
@@ -110,42 +105,41 @@ const Loading = (props) => {
 				))}
 			</Flex>
       <Button onClick={()=> handleLogOut()}>Log Out</Button>
+
+      {myCharacter && <p>{myCharacter.characterName}</p>}
+      {team && <p>{team.name}</p>}
 		</div>
 	);
 };
 
 const corps = [
   {
-    name: "Alpha Androids",
-    slogan: "Almost human.",
+    name: "Frog Goblins",
+    slogan: "Frog goblins originally hail from the swamps on the surface where they honed their scouting and botanical skills",
   },
   {
-    name: "Crowe Corp",
-    slogan: 'Conflict is our business',
+    name: "Spider Goblins",
+    slogan: 'After generations of underground living around the mines, Spider goblins are easily identified by their trademark Magiuranium piercings and gray colored skin',
   },
   {
-    name: "Cybertronics Industries",
-    slogan: 'The future is mechanical',
+    name: "Pig Goblins",
+    slogan: 'Hailing from the sewers underneath various surface cities, Sewer goblins known for being highly collaborative, maternally oriented, and strongly loyal to one another. ',
   },
   {
-    name: "Falcon Pharma",
-    slogan: 'Your health is our world',
+    name: "Rat Goblins",
+    slogan: 'As the first generation born in Stockpot City, these goblins adopted the Rat as their newly formed faction’s symbol to reflect their urban upbringings.',
   },
   {
-    name: "GenTec",
-    slogan: 'Faster. Stronger. Better',
+    name: "Raccoon Party",
+    slogan: 'Originally a band of sentient raccoon refugees, the Racoon Party has turned into a diverse coalition of races and ideologies.',
   },
   {
-    name: "Makoto-Tyson Shipping",
-    slogan: 'Seize the stars',
+    name: "Surface Delegation",
+    slogan: 'Recently, a delegation of surface dwellers have come to the city, composed of Humans, Dwarves, and even some Elves.',
   },
   {
-    name: "McMann Corp",
-    slogan: 'We put the food on your table',
-  },
-  {
-    name: "WaiFu Corp",
-    slogan: 'Building the world of tomorrow',
+    name: "Underworld Faction",
+    slogan: 'After the defeat of The Underlord, their vast evil empire shattered into a diaspora of competing factions. Many of those eventually migrated to the city, forming a large conglomerate of loosely aligned monsters with one unifying goal: resist the influence of the surface in the matters of the underground.',
   },
 ]
 

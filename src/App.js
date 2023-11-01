@@ -76,7 +76,7 @@ const App = (props) => {
 
   useEffect(() => {
     console.log("App Loaded");
-    loadState();
+    
     socket.onAny((event, ...args) => {
       // console.log(event);
       if (event === "clients") {

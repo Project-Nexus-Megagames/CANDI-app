@@ -19,8 +19,7 @@ const slice = createSlice({
     loadingStart: false,
     loadComplete: false,
     lastLogin: null,
-    corp: false,
-    runner: false,
+
     character: undefined,
     team: false,
   },
@@ -39,14 +38,17 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      localStorage.setItem('candi-token', jwt);
-      const user = jwtDecode(jwt);
       
-      console.log("user");
+      console.log("jwt:")
+      console.log(jwt)
 
-      console.log(user);
+      localStorage.setItem('goblin-token', jwt);
+      const user = jwtDecode(jwt);
 
-      //if (user.roles.some(el => el === "Control")) auth.control = true;
+      console.log('hello user:')
+      console.log(user)
+    
+      if (user?.roles.some(el => el === "Control")) auth.control = true;
 
       auth.error = null;
       auth.user = user;
@@ -76,6 +78,11 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       console.log(action.payload);
 
+      if (!action.payload) {
+        console.log("CHARACTER IS UNDEFINED");
+        return;
+      }
+
       auth.myCharacter = action.payload;
       if (action.payload.tags.some((el) => el.toLowerCase() === 'control')) auth.control = true;
       // initConnection(auth.user, auth.team, auth.version);
@@ -89,7 +96,7 @@ const slice = createSlice({
     },
     signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('candi-token');
+      localStorage.removeItem('goblin-token');
       auth.user = null;
       auth.login = false;
       auth.loading = false;

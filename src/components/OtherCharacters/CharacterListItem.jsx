@@ -4,6 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
 import { getFadedColor } from '../../scripts/frontend';
+import NexusTag from '../Common/NexusTag';
 
 const CharacterListItem = (props) => {
 	const { character, handleSelect, selected } = props;  
@@ -101,7 +102,7 @@ const CharacterListItem = (props) => {
 			<h4>{character?.characterName}</h4>
       <Flex  >
         {character.tags && character.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
-          <ResourceNugget key={item} value={item} width={'50px'} height={'30'} />
+          <NexusTag key={item} value={item} width={'50px'} height={'30'} />
           )}        
       </Flex>
 

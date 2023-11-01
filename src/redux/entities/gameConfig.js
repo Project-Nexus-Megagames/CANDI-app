@@ -27,9 +27,10 @@ const slice = createSlice({
 			console.log(`${action.type} Dispatched...`);
 			gameConfig.name = action.payload.name;
 			gameConfig.actionTypes = action.payload.actionTypes;
-			gameConfig.effortTypes = action.payload.effortTypes;
+			gameConfig.assetTypes = action.payload.assetTypes;
 			gameConfig.resourceTypes = action.payload.resourceTypes;
 			gameConfig.characterStats = action.payload.characterStats;
+			gameConfig.globalStats = action.payload.globalStats;
 			gameConfig.loading = false;
 			gameConfig.lastFetch = Date.now();
 			gameConfig.loaded = true;

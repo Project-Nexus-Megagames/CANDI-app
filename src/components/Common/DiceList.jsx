@@ -16,7 +16,7 @@ export const DiceList = (props) => {
     let pool = [];
     for (const ass of assets) {
       if (ass) {
-        let temp = ass?.dice.filter(die => die.type === type);
+        let temp = type === 'all' ? ass?.dice : ass?.dice.filter(die => die.type === type);
         pool = [ ...pool, ...temp];        
       }
     }

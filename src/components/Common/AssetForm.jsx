@@ -45,7 +45,6 @@ const AssetForm = (props) => {
 		}
 	}
 
-
 	const removeElement = (index, type) => {
 		let temp;
 		switch (type) {
@@ -135,7 +134,7 @@ const AssetForm = (props) => {
 					<Flex>
 						<Spacer />
 						<FormControl>
-							<FormLabel>Type </FormLabel>
+							<FormLabel>Type</FormLabel>
 							{/* <Input type="text" size="md" variant="outline" {...register('type', validation.type)}></Input> setValue('test', '')  */}
 							<SelectPicker valueKey={'type'} label={'type'} data={gameConfig?.assetTypes} onChange={(ddd) => setType(ddd)} value={type} />
 						</FormControl>

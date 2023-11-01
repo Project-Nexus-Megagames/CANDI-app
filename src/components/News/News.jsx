@@ -9,8 +9,10 @@ import { getMyArticles, getPublishedArticles } from './../../redux/entities/arti
 import socket from '../../socket';
 import { maxBy } from 'lodash';
 import WordDivider from '../WordDivider';
+import { useNavigate } from 'react-router-dom';
 
 const News = (props) => {
+	const navigate = useNavigate();
 	const articles = useSelector(getPublishedArticles);
 	const allArticles = useSelector((state) => state.articles.list);
 	const gamestate = useSelector((state) => state.gamestate);
@@ -29,10 +31,10 @@ const News = (props) => {
 	const [maxRound, setMaxRound] = useState(gamestate.round);
 
 
-	if (!login) {
-		props.history.push('/');
-		return <Spinner />;
-	}
+  if (!login) {
+    navigate("/");
+    return <div />;
+  }
 
 	const myArticleEffort = myChar.effort?.find((el) => el.type === 'Article')?.amount;
 

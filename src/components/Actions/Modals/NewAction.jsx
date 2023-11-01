@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFadedColor,  } from '../../../scripts/frontend';
+import { getFadedColor, getTextColor,  } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import socket from '../../../socket';
@@ -203,35 +203,31 @@ const NewAction = (props) => {
       </Flex>        
       <br/>
       
-      <DiceList assets={assets} type={"hack"} />
+      <DiceList assets={assets} type={"all"} />
 
-      <Divider />
-
-      <DiceList assets={assets} type={"brawn"} />
-
-      <Divider />
-
-      <DiceList assets={assets} type={"stealth"} />
 
       <br/>
 
 
         Assets:
+        <br/>
 				  {actionType.assetTypes?.map((type) => (
-				  	<Tag key={type} textTransform='capitalize' colorScheme={'teal'} variant={'solid'}>
+				  	<Tag margin={'3px'} key={type} textTransform='capitalize'  backgroundColor={getFadedColor(type)} color={getTextColor(type)} variant={'solid'}>
 				  		{type}
 				  	</Tag>
 				  ))}
-          {!assets.some(el => el && el.type === 'agent') && (
+
+
+          {/* {!assets.some(el => el && el.type === 'agent') && (
             <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
               Missing Covert Agent
             </Tag>
-          )}
-          {assets.some(el => el && el.type === 'agent') && (
+          )} */}
+          {/* {assets.some(el => el && el.type === 'agent') && (
             <Tag variant='solid' colorScheme={'green'}>
               <CheckIcon />
             </Tag>
-          )}
+          )} */}
 				<Flex>
           {assets.map((ass, index) => (
           <>

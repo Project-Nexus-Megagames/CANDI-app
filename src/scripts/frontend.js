@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+import { PlusSquareIcon } from "@chakra-ui/icons";
 import { Tag, Tooltip } from "@chakra-ui/react";
 
 function getFadedColor(color, fade = 1) {
@@ -116,14 +117,17 @@ function getTextColor(color, fade = 1) {
 		case 'Pig-text':
     case 'Wealth-text':
 		case 'Whitewall-text':
+    case 'Refined Item':
+    case 'Surface-text':
 			return `black`
 
+      
 		case 'gold':
 			return `rgb(212, 175, 55, ${fade})`
 
 
 		default:
-			return `black`;
+			return `white`;
 
 	}
 }
@@ -200,4 +204,21 @@ function getThisTeamFromAccount(accounts, account) {
 	return found ? found.name : 'No team found';
 }
 
-export { getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink };
+function getIcon(type) {
+  switch (type) {
+    case 'Normal':
+      return <PlusSquareIcon />;
+    case 'Agenda':
+      return <img style={{ margin: '4px', }} src={`/images/gavel.png`} width={'20px'} alt={`gavel???`} />;
+    case 'Craft':
+      return <img style={{ margin: '4px', }} src={`/images/stone-crafting.png`} width={'22px'} alt={`gavel???`} />;
+    case 'Form Bond':
+      return <img style={{ margin: '4px', }} src={`/images/shaking-hands.png`} width={'22px'} alt={`gavel???`} />;
+    default:
+      return <PlusSquareIcon />;
+  }
+}
+
+
+
+export { getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon };

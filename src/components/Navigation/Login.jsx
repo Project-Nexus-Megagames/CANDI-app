@@ -15,31 +15,17 @@ const Login = (props) => {
 	const navigate = useNavigate();
   const toast = useToast();
 
-	const loginToken = localStorage.getItem("cult-token");
+	const loginToken = localStorage.getItem("goblin-token");
+  useEffect(() => {
+		console.log('token ' + loginToken);
+		// console.log(token);
 
-	useEffect(() => {	 
-	  console.log("LoginToken " + loginToken);
-	  if (loginToken !== null && props.login === false) {
-	    console.log("Attempting to login!");
-			reduxAction(loginRequested());
-	    const fetchData = async () => {
-	      try {
-	        const { data } = await axios.request({
-	          url: "https://nexus-central-server.herokuapp.com/auth/tokenLogin",
-	          method: "post",
-	          data: { token: loginToken },
-	        });
-	        console.log(data.token);
-	        reduxAction(authReceived({ token: data.token }));
-	      } catch (err) {
-	        console.log(err);
-          reduxAction(authRequestFailed());
-	      }
-	    };
-	    fetchData();
+		if (loginToken && loginToken !== null && loginToken !== undefined && loginToken !== 'undefined' && props.login === false) {
+			console.log('Attempting to token login!');
+      reduxAction(authReceived({ token: loginToken }));
       reduxAction(loginRequested());
-	    // make sure to catch any error
-	  }
+      navigate('/loading');
+		}
 	}, [props.login]);
 
 	useEffect(() => {
@@ -49,8 +35,8 @@ const Login = (props) => {
 	}, [props.login, navigate]);
 
   useEffect(() => {
-    console.log(error);
 		if (error) {
+      console.log(error);
       toast({
         position: "top-right",
         isClosable: true,
@@ -65,7 +51,7 @@ const Login = (props) => {
 	};
 
 	const onSubmit = async () => {
-		remember ? localStorage.setItem('cult-token', login) : localStorage.removeItem('cult-token');
+		remember ? localStorage.setItem('goblin-token', login) : localStorage.removeItem('goblin-token');
 
 		reduxAction(loginUser({ user: login, password }));
 	};
