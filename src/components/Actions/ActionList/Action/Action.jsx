@@ -133,7 +133,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                                 edit={mode === 'edit'}
                             /> */}
 
-                            {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}??
+                            {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}
 
                             {actionType.type !== 'Agenda' && <ActionResources
                               actionType={actionType}
