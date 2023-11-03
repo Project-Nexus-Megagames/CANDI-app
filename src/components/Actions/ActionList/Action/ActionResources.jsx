@@ -12,9 +12,9 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
     const [slots, setSlots] = React.useState([]);
 
     const breakpoints = useBreakpointValue({
-        base: {columns: 0, rows: 4, width: '15rem', bottom: '1.75rem', left: '7.5rem'},
-        md: {columns: 4, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'},
-        lg: {columns: 4, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
+        base: {columns: 0, rows: actionType.maxAssets, width: '15rem', bottom: '1.75rem', left: '7.5rem'},
+        md: {columns: actionType.maxAssets, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'},
+        lg: {columns: actionType.maxAssets, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
     })
 
     useEffect(() => {
@@ -83,10 +83,11 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
 
     return (
         <Box>
-            <WordDivider word='Resources'/>
+            <WordDivider word='Assets'/>
             <SimpleGrid
-                columns={breakpoints.columns}
-                rows={breakpoints.rows}
+
+              columns={breakpoints.columns}
+              rows={breakpoints.rows}
             >
                 {slots.map((slot, index) => (
                     <Flex

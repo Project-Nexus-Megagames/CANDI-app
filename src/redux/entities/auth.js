@@ -76,7 +76,6 @@ const slice = createSlice({
     },
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      console.log(action.payload);
 
       if (!action.payload) {
         console.log("CHARACTER IS UNDEFINED");
@@ -84,6 +83,7 @@ const slice = createSlice({
       }
 
       auth.myCharacter = action.payload;
+      auth.character = action.payload;
       if (action.payload.tags.some((el) => el.toLowerCase() === 'control')) auth.control = true;
       // initConnection(auth.user, auth.team, auth.version);
     },
@@ -102,6 +102,7 @@ const slice = createSlice({
       auth.loading = false;
       auth.lastFetch = null;
       auth.myCharacter = false;
+      auth.character = false;
       auth.error = null;
     },
     usersRecieved: (auth, action) => {

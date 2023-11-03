@@ -25,13 +25,17 @@ export const DiceList = (props) => {
 
 
   return (
-    <Grid templateColumns='repeat(5, 1fr)' gap={2}>
-    <h4>{type.toUpperCase()} Dice</h4>
-    {getThisDicePool().map(die => (
-      <div key={die._id} style={{  textAlign: 'center' }} >
-        {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/Icons/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
-      </div>  
-    ))}
-    </Grid>
+    <>    
+      <h4>{type.toUpperCase()} Dice</h4>
+        {getThisDicePool().length == 0 && <b>No Dice</b>}
+      <Grid templateColumns='repeat(5, 1fr)'gap={2}>
+        {getThisDicePool().map(die => (
+        <div key={die._id} style={{  textAlign: 'center' }} >
+          {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/Icons/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
+        </div>  
+        ))}
+      </Grid>
+    </>
+
   );
 };

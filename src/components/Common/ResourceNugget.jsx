@@ -23,7 +23,7 @@ const ResourceNugget = (props) => {
   let altP = altIconPath ? altIconPath : "";
 
 	return (
-    <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+    <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover' color={'white'}
     label={label ? label :(
       <div style={{ textTransform: 'capitalize', }}>
         {lookup ? <h5>{lookup.name} {value}</h5> :<h5>{type} {value}</h5>} 
@@ -39,8 +39,8 @@ const ResourceNugget = (props) => {
           backgroundColor: props.selected ? getFadedColor(type, 0.7) : backgroundColor,
         }}
       >
-        {type !== 'blueprint' && <img src={`/images/Icons/${type}${altP}.png`} width={'50%'} alt={`${type}${altP}`} />}
-        {type === 'blueprint' && lookup && <img src={`/images/Icons/${lookup.model}/${lookup.code}${altP}.png`} width={'50%'} alt={`${lookup.model} / ${lookup.code}`} />}
+        {type !== 'blueprint' && <img src={`/images/${type}${altP}.png`} width={'50%'} alt={`${type}${altP}!`} />}
+        {type === 'blueprint' && lookup && <img src={`/images/${lookup.model}/${lookup.code}${altP}.png`} width={'50%'} alt={`${lookup.model} / ${lookup.code}`} />}
 
         {value && !compact && <h5  style={{ fontSize: fontSize }}>{value}</h5>}
       </div>

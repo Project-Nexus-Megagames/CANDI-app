@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from 'react-router';
 import socket from '../../socket';
 import { toggleDuck } from '../../redux/entities/gamestate';
 import UserList from './UserList';
+import { getCharAccount } from '../../redux/entities/accounts';
+import ResourceNugget from '../Common/ResourceNugget';
 
 const Navigation = (props) => {
 	  const navigate = useNavigate();
@@ -24,6 +26,7 @@ const Navigation = (props) => {
     const allCharacters = useSelector(state => state.characters.list);
     const {isControl} = usePermissions();
     const gamestate = useSelector(state => state.gamestate)
+    const myAccout = useSelector(getCharAccount);
 
     useEffect(() => {
         renderTime();
@@ -41,7 +44,6 @@ const Navigation = (props) => {
         console.log('charID', charId);
         if (charId) {
             setSelectedChar(charId);
-            console.log(myChar)
         } else setSelectedChar(myChar._id);
     };
 
@@ -126,6 +128,14 @@ const Navigation = (props) => {
                         {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
                     </Box>
                 </Box>
+
+                <div style={{ borderRadius: '5px', display: 'flex', width: '40%' }}>
+				{myAccout  && 
+        <div className='styleCenter'>
+          {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"}/>))}
+        </div>}
+			</div>
+
                 <Box
                     flex={1}
                     display='flex'

@@ -79,6 +79,11 @@ function getFadedColor(color, fade = 1) {
 		case 'gold':
 			return `rgb(212, 175, 55, ${fade})`
 
+    case 'background':
+      return `rgba( 15, 19, 26, ${fade} )`;
+
+    case 'card':
+      return '#1a1d24'
 
 		default:
 			return `rgba( 0, 160, 189, ${fade} )`;

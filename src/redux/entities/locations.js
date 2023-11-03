@@ -84,7 +84,7 @@ export const getTeamHQ = createSelector(
   state => state.locations.list,
   state => state.auth.team,
   (locations, team) => locations.find(
-    loc => (loc._id === team.hq)
+    loc => (loc._id === team?.hq)
   )
 );
 

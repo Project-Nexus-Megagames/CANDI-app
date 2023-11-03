@@ -41,7 +41,6 @@ const HomePage = (props) => {
 	const [rand, setRand] = React.useState(Math.floor(Math.random() * 10000));
   const columns = useBreakpointValue({base: 1, lg: 3, md: 2, sm: 1});
 
-
   if (!props.login) {
     navigate("/");
     return <div />;
@@ -50,15 +49,6 @@ const HomePage = (props) => {
 	useEffect(() => {
 		if (tempCharacter) reduxAction(setCharacter(tempCharacter));
 	}, [tempCharacter]);
-
-
-
-	const handleCharChange = (charId) => {
-		if (charId) {
-			setSelectedChar(charId);
-		} else setSelectedChar(myCharacter._id);
-	};
-
   
  if (gamestate.status === 'Down') {
 		navigate('/down');
@@ -75,10 +65,6 @@ const HomePage = (props) => {
       <GridItem colSpan={columns == 1 ? 2 : 1} >
         <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
       </GridItem>
-
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
-        <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
-      </GridItem>
       
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
@@ -94,10 +80,14 @@ const HomePage = (props) => {
         <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
       </GridItem>   
 
-
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
       </GridItem>
+
+      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
+        <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
+      </GridItem>
+
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />

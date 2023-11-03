@@ -34,11 +34,15 @@ const Actions = (props) => {
     props.actionType ? gameConfig.actionTypes.find(el => el.type === props.actionType) :
     gameConfig.actionTypes[0]);
 
+    if (!props.login) {
+      navigate("/");
+      return <div />;
+    }
+  
+
     useEffect(() => {
-      console.log('aaaa')
         try {
            if (selected) {
-            console.log('weee')
             setSelected(myActions.find(el => el._id === selected._id));
            } 
         } catch (err) {
@@ -116,7 +120,7 @@ const Actions = (props) => {
                 />
             </Tooltip>
           </Flex>
-          <ActionList actions={myCovertActions} handleSelect={setSelected} />
+          <ActionList actions={actionList} handleSelect={setSelected} />
 				</GridItem>
 
         <GridItem overflow='auto' pl='2' bg='#0f131a' area={'main'} style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }} >

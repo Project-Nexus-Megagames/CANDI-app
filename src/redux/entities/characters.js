@@ -50,11 +50,16 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       characters.selected = action.payload;
     },
+    characterSubLocationUpdated: (characters, action) => {
+			console.log(`${action.type} Dispatched`);
+			const index = characters.list.findIndex((el) => el._id === action.payload._id);
+			if (index > -1) characters.list[index].subLocation = action.payload.subLocation;
+		},
   },
 });
 
 // Action Export
-export const { characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated, characterSelected } = slice.actions;
+export const { characterSubLocationUpdated, characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated, characterSelected } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

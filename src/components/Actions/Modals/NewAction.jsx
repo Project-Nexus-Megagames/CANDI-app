@@ -4,7 +4,7 @@ import { getFadedColor, getTextColor,  } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
 import { getMyCharacter } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import {	Modal,	ModalOverlay,	ModalContent,	ModalHeader,	ModalFooter,	ModalBody,	ModalCloseButton,	Tag, Spinner,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer, Grid} from '@chakra-ui/react';
+import {	Modal,	ModalOverlay,	ModalContent,	ModalHeader,	ModalFooter,	ModalBody,	ModalCloseButton,	Tag, Spinner,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer, Grid, Center} from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import { AddAsset } from '../../Common/AddAsset';
 import { CheckIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
@@ -13,7 +13,7 @@ import AssetCard from '../../Common/AssetCard';
 import SelectPicker from '../../Common/SelectPicker';
 import { getTeamHQ } from '../../../redux/entities/locations';
 import ResourceNugget from '../../Common/ResourceNugget';
-import { getTeamAccount } from '../../../redux/entities/accounts';
+import { getCharAccount, getTeamAccount } from '../../../redux/entities/accounts';
 import { DiceList } from '../../Common/DiceList';
 
 /**
@@ -31,9 +31,9 @@ const NewAction = (props) => {
 	const { character } = useSelector((s) => s.auth);
 	// const character = useSelector(getMyCharacter);
 	const myAssets = useSelector(getMyAssets);
-  const hq = useSelector(getTeamHQ);
+  // const hq = useSelector(getTeamHQ);
 	const teamAssets = useSelector(getTeamAssets);
-	const teamAccount = useSelector(getTeamAccount);
+  const myAccout = useSelector(getCharAccount);
 
 	const [assets, setAssets] = React.useState([]);
 	const [description, setDescription] = React.useState('');
@@ -46,7 +46,7 @@ const NewAction = (props) => {
 
   useEffect(() => {
     newMap(actionType.maxAssets);
-	}, [])
+	}, [actionType])
 
 
 
@@ -77,8 +77,7 @@ const NewAction = (props) => {
 			name: name,
 			type: actionType.type,
 			creator: character._id,
-      account: teamAccount._id,
-      distance: getDistance(destination.coords)
+      account: myAccout._id,
 		};
 		setDescription('');
 		setIntent('');
@@ -90,21 +89,26 @@ const NewAction = (props) => {
 	};
 
   const isDisabled = () => {
-		const boolean = !assets.some(el => el && el.type === 'agent');
-		if (description.intent < 10 || description.length < 10 || boolean || !destination ) return true;
+		let boolean = true;
+    for (const resource of actionType.resourceTypes) {
+      boolean = myAccout.resources.find(e => e.type === resource.type) ?
+       myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min :
+       true;
+    }
+		if (description.length < 10 || boolean ) return true;
 		else return false;
 	};
   
 
-  const getDistance = (coords) => {
-    if (coords) {
-        var deltaX = coords.x - hq.coords.x;
-        var deltaY = coords.y - hq.coords.y;
-        return ((Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaX - deltaY)) / 2);       
-    }
-    else return -1
+  // const getDistance = (coords) => {
+  //   if (coords) {
+  //       var deltaX = coords.x - hq.coords.x;
+  //       var deltaY = coords.y - hq.coords.y;
+  //       return ((Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaX - deltaY)) / 2);       
+  //   }
+  //   else return -1
 
-	}
+	// }
 
   function newMap(number) {
     let arr = [];
@@ -114,8 +118,7 @@ const NewAction = (props) => {
     setAssets(arr);
   }
 
-  const transportation = teamAccount.resources.find(el => el.type === "transport")?.balance	
-  let inRange =  locations.filter(el => getDistance(el.coords) <= transportation);
+  let inRange =  locations;
   // console.log(transportation, inRange)
 
 	return (
@@ -141,17 +144,12 @@ const NewAction = (props) => {
       </Box>
       <Spacer />
       <Box width={"49%"}>
-        Destination {destination && <b>distance: {getDistance(locations.find(loc => loc._id == destination)?.coords )} </b>}
-        {!destination && (
+        Destination
+        {!destination && actionType.requiresDestination && (
           <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
             Select Destination
           </Tag>
         )}
-
-        {destination && teamAccount.resources.find(el => el.type === "transport")?.balance < getDistance(locations.find(loc => loc._id == destination)?.coords ) && 
-          <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-          Missing {getDistance(locations.find(loc => loc._id == destination)?.coords ) - teamAccount.resources.find(el => el.type === "transport")?.balance} Transportation
-        </Tag>}
 
         {destination && (
           <Tag variant='solid' colorScheme={'green'}>
@@ -160,7 +158,7 @@ const NewAction = (props) => {
         )}
         <Flex>
           <SelectPicker data={inRange} label="name" onChange={setDestination} placeholder={"Select a Destination (" + inRange.length + ") in range"} value={destination} /> 
-          {destination && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination )} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination ).length + ") present"} /> }
+          {destination && facilities.filter(el => el.location._id === destination ).length > 0 &&  <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination )} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination ).length + ") present"} /> }
         </Flex>
         
       </Box>
@@ -186,28 +184,33 @@ const NewAction = (props) => {
           </Box>
           <Spacer />
           <Box width={"49%"}>
-            Intent:
-            {10 - intent.length > 0 && (
-              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                {10 - intent.length} more characters...
-              </Tag>
-            )}
-            {10 - intent.length <= 0 && (
-              <Tag variant='solid' colorScheme={'green'}>
-                <CheckIcon />
-              </Tag>
-            )}
-            <textarea rows='6' value={intent} className='textStyle' onChange={(event) => setIntent(event.target.value)} />
+            Needed Resources:
+            <Center>
+              {actionType.resourceTypes.map(el => (
+                <Box key={el._id}>
+                  {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
+                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                      Lacking Resources
+                    </Tag>
+                  )}
+                  {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
+                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                      <CheckIcon />
+                    </Tag>
+                  )}
+                  <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
+                </Box>
+              ))}        
+            </Center>
+
+            <DiceList assets={assets} type={"all"} />
           </Box>
           <Spacer />
       </Flex>        
       <br/>
       
-      <DiceList assets={assets} type={"all"} />
-
 
       <br/>
-
 
         Assets:
         <br/>
@@ -236,7 +239,7 @@ const NewAction = (props) => {
             style={{
               paddingTop: '5px',
               paddingLeft: '10px',
-              textAlign: 'left'
+              textAlign: 'left',
             }}
           >
             {!ass && 
@@ -260,10 +263,6 @@ const NewAction = (props) => {
           textAlign: 'center'
 				}}
 			>
-        <Spacer />
-        Total Cost:
-        {getDistance(locations.find(loc => loc._id == destination)?.coords) > 0 && <ResourceNugget type="transport" value={getDistance(locations.find(loc => loc._id == destination)?.coords)} />}
-        {assets.filter(el => el).length > 0 && <ResourceNugget type="credit" value={assets.filter(el => el).length * 5} />}
         <Spacer />
 				<Button colorScheme="green" onClick={() => handleSubmit()} variant='solid' disabled={isDisabled()} >
 					<b>Submit</b>
