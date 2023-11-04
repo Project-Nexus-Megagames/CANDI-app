@@ -102,7 +102,7 @@ const CharacterListItem = (props) => {
 			<h4>{character?.characterName}</h4>
       <Flex  >
         {character.tags && character.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
-          <NexusTag key={item} value={item} width={'50px'} height={'30'} />
+          <NexusTag key={item} value={item} width={'150px'} height={'30'} />
           )}        
       </Flex>
 

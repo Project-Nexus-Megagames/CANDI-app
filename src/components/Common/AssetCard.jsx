@@ -11,13 +11,14 @@ import { BsPencil } from 'react-icons/bs';
 import { Close, Trash } from '@rsuite/icons';
 import ResourceNugget from './ResourceNugget';
 import CountDownTag from './CountDownTag';
-import { getFadedColor, getThisTeamFromAccount } from '../../scripts/frontend';
+import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import TeamAvatar from './TeamAvatar';
 
 const AssetCard = (props) => {
   const { asset, character, showButtons, handleSelect, compact, removeAsset, showRemove } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
+  const teams = useSelector(state => state.teams.list);
   const accounts = useSelector(state => state.accounts.list);
 
   const deleteAssert = async () => {
@@ -29,6 +30,10 @@ const AssetCard = (props) => {
 };
 
   const disabled= asset.status?.some(el => el === 'working') || undefined;
+  const account = populateThisAccount(accounts, asset.account)
+  const team = getThisTeam(teams, account.manager);
+
+  console.log(team)
 
 	return ( 
 		<div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log("Peekabo!")} >
@@ -37,7 +42,7 @@ const AssetCard = (props) => {
           
           <Flex align={'center'} overflow='hidden' width='100%'>
           <Spacer />
-          <TeamAvatar size='md' account={asset.account} />
+          <TeamAvatar size='md' team={team} />
           <Spacer />
           <Box>
             <div display="flex">
@@ -62,7 +67,6 @@ const AssetCard = (props) => {
             
             <Spacer />    
                  
-            <ResourceNugget type={'blueprint'} blueprint={asset.code ? asset.code : asset.type} />
           <Spacer />
           </Flex>
 
@@ -70,7 +74,7 @@ const AssetCard = (props) => {
           <Spacer />
             {asset.dice?.map(die => (
                 <div key={die._id} style={{  textAlign: 'center' }} >
-                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/Icons/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
+                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
                 </div>
             ))}
             <Spacer />
@@ -79,10 +83,10 @@ const AssetCard = (props) => {
 
           
           <Flex align={'center'} overflow='hidden' width='100%' >
-            <Spacer />
-            <NexusTag value={asset.type} ></NexusTag>
-            <NexusTag value={`d${asset.level}`}></NexusTag>
-            <Spacer />
+              {asset.tags?.map(el => (
+                <NexusTag key={el} value={el}></NexusTag>
+              ))}     
+
           </Flex>
 
         </CardHeader>

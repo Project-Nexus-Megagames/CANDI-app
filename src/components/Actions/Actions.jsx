@@ -50,38 +50,6 @@ const Actions = (props) => {
         }
     }, [myActions])
 
-    const createListCategories = (actions) => {
-        const rounds = [];
-        for (const action of actions) {
-            if (!rounds.some((item) => item === action.round)) {
-                rounds.push(action.round);
-            }
-        }
-        rounds.reverse();
-        setRounds(rounds);
-        setRenderRounds(rounds.slice(0, 1))
-    };
-
-    const handleRoundToggle = (round) => {
-      if (renderRounds.some(r => r === round)) setRenderRounds(renderRounds.filter((r => r !== round)))
-      else setRenderRounds([ ...renderRounds, round ])
-    }
-
-    const sortedActions = (currRound, actions) => {
-        return actions
-            .filter((action) => action.round === currRound)
-            .sort((a, b) => {
-                // sort alphabetically
-                if (a.creator.characterName < b.creator.characterName) {
-                    return -1;
-                }
-                if (a.creator.characterName > b.creator.characterName) {
-                    return 1;
-                }
-                return 0;
-            })            
-    }
-
     const actionList = isControl ? fActions : myActions;
     return (
 			<Grid
@@ -91,7 +59,7 @@ const Actions = (props) => {
           bg='#d4af37'
           fontWeight='bold'>
 
-        <GridItem pl='2' bg='#212936' area={'nav'} style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}>
+        <GridItem pl='2' bg='#212936' area={'nav'} style={{ height: 'calc(100vh - 99px)', overflow: 'auto', }}>
           <Flex align={'center'}>
             <InputGroup>
                 <InputLeftElement
@@ -117,13 +85,14 @@ const Actions = (props) => {
                         marginLeft: '1rem'
                     }}
                     aria-label='Add New Action'
+                    variant={'solid'}
                 />
             </Tooltip>
           </Flex>
           <ActionList actions={actionList} handleSelect={setSelected} />
 				</GridItem>
 
-        <GridItem overflow='auto' pl='2' bg='#0f131a' area={'main'} style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }} >
+        <GridItem overflow='auto' pl='2' bg='#0f131a' area={'main'} style={{ height: 'calc(100vh - 95px)', overflow: 'auto', }} >
           {showNewActionModal && 
             <Box>
               <Center>

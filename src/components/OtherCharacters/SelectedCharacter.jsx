@@ -30,12 +30,7 @@ const SelectedCharacter = (props) => {
 			<GridItem pl='2' area={'side'} >
         <div className='styleCenter' >
           <CharacterListItem character={selected} />
-          {(control || myCharacter._id === selected._id) && <div>
-            <WordDivider word={"Effort"} ></WordDivider>
-            {selected.effort && selected.effort.map((item) =>
-            <ResourceNugget key={item.type} value={item.type} amount={item.amount} width={'50px'} height={'30'} />
-          )}
-          </div>}
+
         </div>
         
         {/* <Flex  >
@@ -53,7 +48,7 @@ const SelectedCharacter = (props) => {
         {(control || myCharacter._id === selected._id) && <div>
             <WordDivider word={"Stats"} ></WordDivider>
             {selected.characterStats && selected.characterStats.map((item) =>
-            <ResourceNugget key={item.type} value={item.type} amount={item.statAmount} width={'50px'} height={'30'} />
+            <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
           )}
         </div>}
         <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
@@ -76,7 +71,7 @@ const SelectedCharacter = (props) => {
         </h5>
 				<Grid templateColumns='repeat(3, 1fr)' gap={1}>
             {assets
-              .filter((el) => el.ownerCharacter === selected._id)
+              .filter((el) => el.account === selected.account)
               .map((asset) => (
                 <AssetCard key={asset._id} asset={asset} character={selected} />
               ))}

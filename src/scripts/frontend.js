@@ -192,7 +192,7 @@ function getThisTeam(teams, character) {
 	// console.log(teams)
 	// console.log(character)
 	const found = teams.find((el) => el.characters.some((char) => char._id === character));
-	return found ? found.name : 'No Team Found';
+	return found ? found : { name: 'No Team found'};
 }
 
 function getThisAccount(accounts, account) {
@@ -201,6 +201,14 @@ function getThisAccount(accounts, account) {
 	const found = accounts.find((el) => el._id === account);
 	return found ? found.name : 'No Account found';
 }
+
+function populateThisAccount(accounts, account) {
+	// console.log(teams)
+	// console.log(character)
+	const found = accounts.find((el) => el._id === account);
+	return found ? found : { name: 'No Account found'};
+}
+
 
 function getThisTeamFromAccount(accounts, account) {
 	// console.log(teams)
@@ -226,4 +234,4 @@ function getIcon(type) {
 
 
 
-export { getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon };
+export { getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon, populateThisAccount };

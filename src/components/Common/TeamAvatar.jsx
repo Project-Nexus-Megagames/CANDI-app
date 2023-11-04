@@ -15,6 +15,8 @@ const TeamAvatar = (props) => {
     team = acc?.team;
   }
 
+  console.log(team)
+
 
   if (team)
 	return (

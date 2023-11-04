@@ -253,7 +253,7 @@ const ActionForm = (props) => {
 												{type}
 											</Tag>
 										))}
-
+sxxsax
                 <SimpleGrid
                       columns={breakpoints.columns}
                       rows={breakpoints.rows}
@@ -270,6 +270,7 @@ const ActionForm = (props) => {
                             maxWidth: '100%'
                           }}
                         >
+                          {myAssets.length}!!!!!
                           {!ass && 
                             <AddAsset 
                               key={index} 

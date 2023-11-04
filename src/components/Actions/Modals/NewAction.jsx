@@ -79,13 +79,14 @@ const NewAction = (props) => {
 			creator: character._id,
       account: myAccout._id,
 		};
-		setDescription('');
-		setIntent('');
-		setName('');
-		setAssets([]);
-
+    
 		socket.emit('request', { route: 'action', action: 'create', data });
-		props.closeNew();
+
+		// setDescription('');
+		// setIntent('');
+		// setName('');
+		// setAssets([]);
+		// props.closeNew();
 	};
 
   const isDisabled = () => {
@@ -203,7 +204,7 @@ const NewAction = (props) => {
               ))}        
             </Center>
 
-            <DiceList assets={assets} type={"all"} />
+            {/* <DiceList assets={assets} type={"all"} /> */}
           </Box>
           <Spacer />
       </Flex>        
@@ -246,7 +247,7 @@ const NewAction = (props) => {
               <AddAsset 
                 key={index} 
                 handleSelect={(ass) =>editState(ass, ass.model, index)} 
-                assets={teamAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id ) )}/>}
+                assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id ) )}/>}
             {ass && <AssetCard showRemove removeAsset={()=> editState(false, ass.model, index)} compact type={'blueprint'} asset={ass} /> }   
           </Box>
           <Spacer />

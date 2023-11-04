@@ -91,9 +91,6 @@ const initUpdates = () => {
                 case 'Trade':
                     store.dispatch(tradeAdded(el));
                     break;
-                case 'Asset':
-                    store.dispatch(assetAdded(el));
-                    break;
                 default:
                     console.log(`Unable to createClients Redux for ${el.model}: ${el._id}`);
                     break;
