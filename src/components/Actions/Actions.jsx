@@ -65,7 +65,6 @@ const Actions = (props) => {
           name: name,
           type: actionType.type,
           id: incoming.actionID,
-          creator: myCharacter._id,
           numberOfInjuries: myCharacter.injuries.length,
         };
         // 1) make a new action 
