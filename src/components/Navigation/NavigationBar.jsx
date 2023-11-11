@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { setCharacter, signOut } from '../../redux/entities/auth';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
-import { Box, Button, Container, Divider, Flex, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Container, Divider, Flex, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Tag, VStack } from "@chakra-ui/react";
 import { ArrowBackIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import usePermissions from "../../hooks/usePermissions";
 import { useLocation, useNavigate } from 'react-router';
@@ -154,18 +154,22 @@ const Navigation = (props) => {
                               </PopoverHeader >
                               <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
                                 <VStack divider={<Divider />} overflow={"auto"} >
-                                  {allCharacters.filter(el => el.characterName.toLowerCase().includes(filter)).map(character => (
-                                      <Button
-                                          variant={"unstyled"}
-                                          key={character._id}
-                                          value={character._id}
-                                          _hover={{bg: 'gray.400'}}
-                                          onClick={() => {
-                                              handleCharChange(character._id);
-                                          }}
-                                      >
-                                          {character.characterName}
-                                      </Button>
+                                  {allCharacters.filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter)).map(character => (
+                                    <Flex
+                                      align={'center'}
+                                      alignContent={'space-around'}
+                                      key={character._id}                                         
+                                      onClick={() => {
+                                        handleCharChange(character._id);
+                                    }}>
+                                      <Avatar size="md" src={character?.profilePicture} alt="?" />
+                                      <div>                                   
+                                        ({character.playerName}) {character.characterName} <br/>     
+                                        {character.tags.map(tag => 
+                                          <Tag size={'sm'} variant={'solid'} colorScheme='cyan' key={tag} >{tag}</Tag>
+                                          )}                                           
+                                      </div>                             
+                                    </Flex>
                                   ))}                                     
                                 </VStack>
                              
