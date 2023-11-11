@@ -13,8 +13,8 @@ function ActionHeader({action, time, toggleEdit, creator, handleDelete, hidebutt
 	const myContacts = useSelector(s => s.characters.list);
   const game = useSelector(state => state.gamestate);
   const myCharacter = useSelector(s => s.auth.myCharacter)
-  const isDisabled = (game.status !== 'Active' || game.round > action.round);
-  const isAccessible = myCharacter._id === creator?._id || isControl && false;
+  const isDisabled = (game.status !== 'Active' || game.round > action.round) && !isControl;
+  const isAccessible = myCharacter._id === creator?._id || isControl;
     return (
         <Flex align={'center'} justify={'space-between'} style={{ backgroundColor: getFadedColor(action.type) }} >
 

@@ -6,9 +6,9 @@ const ActionTag = ({color, action, text}) => (
     <Tag
         style={{
             marginLeft: '0.25rem',
-            color: color,
+            color: 'white',
             textTransform: 'capitalize',
-            backgroundColor: action ? getFadedColor(action.type) : 'white',
+            backgroundColor: action ? getFadedColor(action.type) : color,
         }}
         variant='solid'
     >

@@ -63,7 +63,7 @@ function ActionList({ actions, handleSelect, selected }) {
                 allowMultiple
                 defaultIndex={[0]}                
             >
-                {rounds.map((round, index) => (
+                {rounds.map((round) => (
                     <AccordionItem
                         key={round}
                         style={{
@@ -134,15 +134,21 @@ function ActionList({ actions, handleSelect, selected }) {
                                                     />
                                                     {action.results.length > 0 && action.results[0].ready &&
                                                         <ActionTag
-                                                            color='green'
+                                                            color='#0d73d4'
                                                             text='R Ready'
                                                         />
                                                     }
                                                     {action.effects.length > 0 &&
-                                                        <ActionTag
-                                                            color='violet'
-                                                            text={`${action.effects.length} Effects`}
-                                                        />
+                                                      <ActionTag
+                                                        color='#531ba8'
+                                                        text={`${action.effects.length} Effects`}
+                                                      />
+                                                    }
+                                                    {action.collaborators.length > 0 &&
+                                                      <ActionTag
+                                                        color='black'
+                                                        text={`${action.collaborators.length} collaborators`}
+                                                      />
                                                     }
                                                     {action.tags.map((tag) => tagStyle(tag))}
                                                 </Flex>
