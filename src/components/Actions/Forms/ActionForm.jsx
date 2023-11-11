@@ -103,7 +103,7 @@ const ActionForm = (props) => {
 			name: name,
 			actionType: actionType,
 			myCharacter: myCharacter,
-			creator: myCharacter,      
+			creator: myCharacter,
 			numberOfInjuries: myCharacter.injuries.length,
       collaborators,
       actionID: actionID
