@@ -2,16 +2,18 @@ import { Box, Divider, Flex, IconButton,  Button, InputGroup, NumberDecrementSte
 import { Check, CheckOutline, Close, CloseOutline, Plus } from '@rsuite/icons';
 import React, { useEffect, useState } from 'react'; // React import
 import { BsPencilFill, BsSave } from 'react-icons/bs';
-import SelectPicker from './SelectPicker';
-import ResourceNugget from './ResourceNugget';
-import { useDrop } from 'react-dnd';
+
+import SelectPicker from '../Common/SelectPicker';
+import ResourceNugget from '../Common/ResourceNugget';
+import { AddAsset } from '../Common/AddAsset';
+import AssetCard from '../Common/AssetCard';
+import WordDivider from '../Common/WordDivider';
+import TeamAvatar from '../Common/TeamAvatar';
+
+
 import { useSelector } from 'react-redux';
-import { AddAsset } from './AddAsset';
 import { getTeamAssets } from '../../redux/entities/assets';
-import AssetCard from './AssetCard';
-import WordDivider from './WordDivider';
 import { getFadedColor } from '../../scripts/frontend';
-import TeamAvatar from './TeamAvatar';
 
 const TradeOffer = (props) => { //trade object
 	const [resources, setResources] = React.useState((props.offer && props.offer.resources) ? props.offer?.resources : []);
@@ -90,16 +92,9 @@ useEffect(() => {
 		return props.myAccount.resources.find(el => el.type === res)?.balance;
 	}
 
-  const [{ isOver }, drop] = useDrop(() => ({
-		accept: "asset",
-		drop: (item) => item ? editState(item.id, 0, 'add-asset' ) : console.log('nope'),
-		collect: (monitor) => ({
-			isOver: !!monitor.isOver(),
-		}),
-	}));
 
 	return(
-		<div className='trade' style={{padding: '8px', height: 'calc(100vh - 190px)', overflow: 'auto', borderColor: getFadedColor(props.account.name), border: '2px solid', textAlign: 'center'}}>
+		<div className='trade' style={{padding: '8px', height: 'calc(100vh - 190px)', overflow: 'auto', borderColor: getFadedColor(props.team?.name), border: '2px solid', textAlign: 'center'}}>
 			{props.account && <TeamAvatar online={props.ratified} badge account={props.account._id} />}
       <h3>{props.account.name}</h3>
 			{props.status.some(t=> t === 'completed') && <h4 style={{ textAlign: 'center' }}>Traded away these items</h4>}
@@ -137,7 +132,7 @@ useEffect(() => {
 				{disabled && <Flex style={{ minHeight: '20vh' }} justify="space-around" align={'center'} >
 					{resources.length === 0 && <h5>No Resources Offered</h5>}
 					{disabled && resources.map((resource, index) => (
-            <Box>
+            <Box key={resource._id}>
               <ResourceNugget fontSize={'2em'} height="150px" index={index} value={`${resource.value}`} type={resource.type} />	
             </Box>												
 					))}	
@@ -150,7 +145,7 @@ useEffect(() => {
         {<SimpleGrid style={{ minHeight: '20vh' }} minChildWidth='200px' spacing='20px'  align={'center'}>
           {assets && disabled && assets.length === 0 && <h5>No Assets Offered</h5>}
           {assets && assets.map((asset, index) => (
-            <Box >
+            <Box key={assets._id}>
               <AssetCard showRemove={!disabled} removeAsset={() => removeElement(index, 'asset')} height="150px" index={index} asset={asset} />
             </Box>												
 					))}	

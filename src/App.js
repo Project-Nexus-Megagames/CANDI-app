@@ -42,6 +42,7 @@ import loadState from './scripts/initState';
 import Loading from "./components/Navigation/Loading";
 import CharacterStats from "./components/StatDisplays/CharacterStats";
 import LocationDashboard from "./components/Locations/LocationDashboard";
+import Trade from "./components/Trade/Trade";
 
 // React App Component
 initUpdates();
@@ -154,7 +155,9 @@ const App = (props) => {
             <Routes>
              <Route exact path='/login' element={<Login {...props} />} />
              <Route exact path='/loading' element={<Loading {...props} />} />
+             
               <Route exact path='/home' element={<HomePage {...props} />} />
+
               <Route path='/home/news' element={<News {...props} />} />
               <Route path='home/agendas' element={<Agendas {...props} />} />
               <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
@@ -165,6 +168,9 @@ const App = (props) => {
               <Route exact path='/gameConfig' element={<GameConfigStep1 {...props} />} />
               <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />
               <Route exact path='/home/control' element={<ControlTerminal {...props} />} />
+              <Route exact path='/home/trading' element={<Trade {...props} />} />
+
+
               <Route exact path='/log' element={<Log {...props} />} />
               <Route exact path='/404' element={<NotFound {...props} />} />
               <Route exact path='/no-character' element={<NoCharacter {...props} />} />

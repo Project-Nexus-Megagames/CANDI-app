@@ -190,7 +190,7 @@
   /* background: grey; */
   background-size: cover; /* Resize the background image to cover the entire container */
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  margin: 1px;
+  margin: 3px;
   -webkit-transition: background-image 0.2s ease-in-out;
   transition: background-image 0.2s ease-in-out;
 }
@@ -229,9 +229,10 @@
 }
 
 .centerHex {
-  top: 40%;
+  top: 20%;
   right: 40%;
   font-size: 18px;
+  margin-top: 40px;
 }
 
 .level-css {

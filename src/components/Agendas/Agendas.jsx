@@ -85,7 +85,7 @@ const Agendas = (props) => {
           <Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
             <tbody>
               {[...Array(gamestate.round)].map((x, i) => (
-                <Button style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle>
+                <Button key={i} style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle>
                   {i + 1}
                 </Button>
               ))}
@@ -98,11 +98,12 @@ const Agendas = (props) => {
 
 			<GridItem pl='2' style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }} area={'main'} >
       <h5>Round {round}</h5>
+      {filteredData.length}
 				{filteredData.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
 				{filteredData
 					.filter((el) => el.round === round)
 					.map((agenda, index) => (
-						<div index={index} key={index}>
+						<div key={agenda._id}>
 							<div
 								onClick={() => setSelected(agenda)}
 								style={{

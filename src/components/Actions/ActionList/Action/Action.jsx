@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AccordionItem, AccordionPanel, Box, Center, Flex } from "@chakra-ui/react";
+import { AccordionItem, AccordionPanel, Box, Button, ButtonGroup, Center, Flex } from "@chakra-ui/react";
 import ActionHeader from "./ActionHeader/ActionHeader";
 import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
@@ -18,6 +18,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
 	const [name, setName] = useState(action.name);
   const [description, setDescription] = useState(action.submission.description);
 	const [intent, setIntent] = useState(action.submission.intent);
+	const [choiceType, setChoiceType] = React.useState('binary');
 
   const isUnpublishedAgenda = (action.tags.some((tag) => tag.toLowerCase() !== 'published') || !action.tags.length > 0) && action.type.toLowerCase() === 'agenda';
   
@@ -140,6 +141,18 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                               assets={action.submission.assets}
                               toggleAssetInfo={toggleAssetInfo}
                             />}
+
+                            {control && actionType.type !== 'Agenda' && action.options.length == 0 && 
+                              <Box>
+                                Choice Type: {choiceType} <br/>
+                                <ButtonGroup>
+                                  {['binary', 'multiple'].map(choice => (
+                                    <Button key={choice} onClick={() => setChoiceType(choice)} isDisabled={choiceType=== choice} >{choice}</Button>
+                                  ))}
+                                </ButtonGroup>
+                              </Box>
+                          
+                            }
 
                             {action.options && action.options.length > 1 && <ActionOptions 
                               action={action}

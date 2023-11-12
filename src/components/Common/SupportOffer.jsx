@@ -14,7 +14,7 @@ import TeamAvatar from './TeamAvatar';
 import { CloseIcon, InfoIcon } from '@chakra-ui/icons';
 
 const SupportOffer = (props) => { //trade object
-  const { actionType, onClose, onSubmit } = props;
+  const { actionType, onClose, onSubmit, option } = props;
 	const [resources, setResources] = React.useState([]);
 	const [assets, setAssets] = React.useState([]);
 	const [comments, setComments] = useState('');
@@ -88,8 +88,8 @@ useEffect(() => {
 	}
 
 	const getMax = (res) => {
-    console.log(props.myAccount)
-    console.log(res)
+    // console.log(props.myAccount)
+    // console.log(res)
 		return props.myAccount.resources.find(el => el.type === res)?.balance;
 	}
 	return(
@@ -98,8 +98,8 @@ useEffect(() => {
         Resources {" "}
         <Tooltip openDelay={200} hasArrow placement='top' background={"gray.500"} label={<div>
             Allowed Resources
-            {actionType.resourceTypes.map(rt => (
-              <ResourceNugget fontSize={'1em'} height="25px" key={rt._id} value={rt.max} type={rt.type} />
+            {option.acceptedResources.map(rt => (
+              <ResourceNugget fontSize={'1em'} height="25px" key={rt._id} value={rt.rewards} type={rt.type} />
             ))}
           </div>}>
           <Icon icon={<InfoIcon />}/>
@@ -118,7 +118,7 @@ useEffect(() => {
                 label={'type'} 
                 valueKey={'type'} 
                 placeholder='Select Resource' 
-                data={props.myAccount.resources.filter(el => el.balance > 0 && actionType.resourceTypes.some(rt => rt === el.type) )} 
+                data={props.myAccount.resources.filter(el => el.balance > 0 && option.acceptedResources.some(rt => rt.type == el.type) )} 
                 onChange={(event)=> { editState(event, index, 'resource'); }}/> 
               
               <NumberInput 
@@ -143,7 +143,7 @@ useEffect(() => {
         </VStack>
         
 	
-        {!disabled && <IconButton onClick={() => setResources([...resources, { value: 1, type: 'credit'} ])} variant="solid"  colorScheme='green' size="sm" icon={<Plus/>} />  }		
+        {!disabled && <IconButton onClick={() => setResources([...resources, { value: 1, type: 'agenda_effort'} ])} variant="solid"  colorScheme='green' size="sm" icon={<Plus/>} />  }		
 				{disabled && <Flex style={{ minHeight: '20vh' }} justify="space-around" align={'center'} >
 
 					{disabled && resources.map((resource, index) => (

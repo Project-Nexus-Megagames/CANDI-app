@@ -2,32 +2,27 @@ import { Box, Button, ButtonGroup, Divider, Flex, Grid, GridItem, IconButton, Se
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getThisTeam, getThisTeamFromAccount } from '../../scripts/frontend';
-import TeamAvatar from './TeamAvatar';
-import NexusTag from './NexusTag';
-import ResourceNugget from './ResourceNugget';
+import TeamAvatar from '../Common/TeamAvatar';
+import NexusTag from '../Common/NexusTag';
+import ResourceNugget from '../Common/ResourceNugget';
 
 const TradeCard = (props) => {
-	const { selectTrade, trade, isMine, size } = props;
-	const teams = useSelector(s => s.teams.list);  
-	const accounts = useSelector(s => s.accounts.list);
+	const { selectTrade, trade, isMine, } = props;
 
 	return (
-    <div key={trade._id} index={trade._id} className='trade-item' 
+    <div key={trade._id}  className='trade-item' 
       style={{ borderColor: isMine ? 
-        getFadedColor(trade.initiator.name) : 
-        getFadedColor(trade.tradePartner.name)
-        }} onClick={()=> selectTrade(trade)} >
+        getFadedColor(trade.initiator?.name) : 
+        getFadedColor(trade.tradePartner?.name)
+        }} 
+        onClick={()=> selectTrade(trade)} >
     <Flex justify='space-around' >
 
     <div style={{ justifyContent: 'center', }} >
-      <Text fontSize='sm'>{getThisTeamFromAccount(accounts, trade.initiator.account)}</Text>
+      <Text fontSize='sm'>{trade.initiator?.name}</Text>
 
       <TeamAvatar badge online={trade.initiator.ratified} account={trade.initiator.account} />
-      <Flex justify={'space-between'} marginTop='2' >
-        {trade.initiator.offer.assets.length >0 && <Tooltip placement="top" trigger="hover" label={<b>Assets Offered</b>}>
-          <Tag variant={'outline'} colorScheme={'pink'} >Assets {trade.initiator.offer.assets.length} </Tag>
-        </Tooltip>}
-      </Flex>
+
     </div>
 
     {<div>status
@@ -37,7 +32,7 @@ const TradeCard = (props) => {
     </div>}
       
     <div >
-      <Text fontSize='sm'>{getThisTeamFromAccount(accounts, trade.tradePartner.account)}</Text>
+      <Text fontSize='sm'>{trade.tradePartner.name}</Text>
       
       <TeamAvatar badge online={trade.tradePartner.ratified} account={trade.tradePartner.account} />
       <Flex marginTop='2' justify={'space-between'} >

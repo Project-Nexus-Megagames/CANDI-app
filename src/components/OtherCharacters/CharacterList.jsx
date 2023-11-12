@@ -8,10 +8,10 @@ import { getPrivateCharacters } from "../../redux/entities/characters";
 
 function CharacterList({filteredCharacters, value, onChange, onClick, handleSelect, isOpen, onClose}) {
   const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
-  const [renderTags] = React.useState(["Pig", "Spider", "Frog", "Rat", "Raccoon", "Surface", "Undead"  ]); // TODO: update with Faction tags
+  const [renderTags] = React.useState(["Pig", "Spider", "Frog", "Rat", "Mimic", "Surface", "Underkin"  ]); // TODO: update with Faction tags
   const myCharacter = useSelector((state) => state.auth.myCharacter);
-  const privateCharacters = useSelector(getPrivateCharacters);
   const control = useSelector((state) => state.auth.control);
+  const characters = useSelector((state) => state.characters.list);
 
   return (
     <div>
@@ -67,17 +67,17 @@ function CharacterList({filteredCharacters, value, onChange, onClick, handleSele
 
                   </Box>
                 ))}
-
+{/* 
                 {myCharacter.tags.some((el) => el.toLowerCase() === "control") && (
                   <VStack divider={<Divider/>} >
                     <p style={{ backgroundColor: getFadedColor("Unknown"), color: getTextColor(`${"Unknown"}-text`) }}>{"( Hidden )"}</p>
-                    {privateCharacters
+                    {characters
                       // .filter()
                       .map((character) => (
                         <CharacterListItem  key={character._id} character={character} handleSelect={(character) => handleSelect(character)}  />
                       ))}
                   </VStack>
-                )}
+                )} */}
 
                 </Box>      
     </div>

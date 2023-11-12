@@ -26,7 +26,7 @@ const ControlTerminal = (props) => {
 	const tags = ['dice', 'contract', 'ice']
 
 	useEffect(() => {
-		if(!login)
+		if(!login || !user)
 			navigate('/');
 	}, [login, navigate])
 
@@ -59,16 +59,7 @@ const ControlTerminal = (props) => {
     socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
   }
   
-	const editGameState = () => {
-		const data = {
-			round: this.state.formValue.round,
-			status: this.state.formValue.status,
-			endTime: this.state.endTime
-		};
-		socket.emit('request', { route: 'gamestate', action: 'modify', data });
-		this.setState({ gsModal: false });
-	};
-	
+
 	return ( 
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
 		<TabList>
@@ -76,8 +67,8 @@ const ControlTerminal = (props) => {
       <Tab>Actions</Tab>			
 			<Tab>Configuration</Tab>
 			<Tab>Register</Tab>
-      {user.username.toLowerCase() === 'bobtheninjaman' &&<Tab>Characters</Tab>}
-      {user.username.toLowerCase() === 'bobtheninjaman' && <Tab>Assets</Tab>}
+      {user?.username.toLowerCase() === 'bobtheninjaman' &&<Tab>Characters</Tab>}
+      {user?.username.toLowerCase() === 'bobtheninjaman' && <Tab>Assets</Tab>}
 		</TabList>
 
 		<TabPanels>

@@ -12,6 +12,7 @@ const AgendaDrawer = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const myChar = useSelector(getMyCharacter);
+  const actionTypes = useSelector((state) => state.gameConfig.actionTypes);
   const duck = useSelector((state) => state.gamestate.duck);
 
   let selected = props.selected;
@@ -51,6 +52,7 @@ const AgendaDrawer = (props) => {
               toggleAssetInfo={(asset) => {
                   console.log({show: true, asset});
               }}
+              actionType={actionTypes.find(el => el.type === 'Agenda')}
               toggleEdit={(action) => {
                   console.log({show: true, action})
               }}

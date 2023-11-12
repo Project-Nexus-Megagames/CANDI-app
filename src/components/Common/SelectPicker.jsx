@@ -9,6 +9,7 @@ function SelectPicker(props) {
   let valueKey = props.valueKey ? props.valueKey : '_id';
 	let [filter, setFilter] = React.useState('');
 	const accounts = useSelector(s => s.accounts.list);  
+  const teams = useSelector(s => s.teams.list);
 
 	return (
 		<Select 
@@ -21,7 +22,7 @@ function SelectPicker(props) {
 					//.filter((el) => el[label]?.toLowerCase().includes(filter.toLowerCase()))
 					.map((el) => (
 						<option style={{ backgroundColor: "#343840" }} key={el[label]} value={el[valueKey]}>
-              {el.account && getThisTeamFromAccount(accounts, el.account)} 
+              {el.account && getThisTeamFromAccount(accounts, teams, el.account).name} 
 							{el[label]?.toUpperCase()}
 						</option>
 					))}

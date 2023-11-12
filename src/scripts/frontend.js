@@ -26,6 +26,7 @@ function getFadedColor(color, fade = 1) {
 			return `#ff9800`
 
     case 'Pig':
+    case 'Pig Goblins':
 		case 'Fail':
 			return `#e74c3c`
 
@@ -54,21 +55,26 @@ function getFadedColor(color, fade = 1) {
       return `#6d6d6d`
 			
       case 'Frog':
-        return `#fbbc04`
+      case 'Frog Goblins':
+      return `#fbbc04`
       case 'Dwarves':
         return '#03fcbe'
       case 'Spider':
+      case 'Spider Goblins':
         return `#206694`
       case 'Myconid':
         return `#71368a`
-      case 'Drow':
+      case 'Rat':
+      case 'Rat Goblins':
         return `#1f8b4c`
-      case 'Raccoon':
+      case 'Mimic':
+      case 'Mimic Party':
         return `#e91e63`
         
   
         
-      case 'Undead':
+      case 'Underkin':
+      case 'Underkin Faction':
       case 'The Overlord':
         return `#6d6d6d`
   
@@ -210,11 +216,24 @@ function populateThisAccount(accounts, account) {
 }
 
 
-function getThisTeamFromAccount(accounts, account) {
+function getThisTeamFromAccount(accounts, teams, account) {
 	// console.log(teams)
 	// console.log(character)
-	const found = accounts.find(el => el._id === account)?.team;
-	return found ? found.name : 'No team found';
+	// const found = accounts.find(el => el._id === account)?.team;
+	// return found ? found.name : 'No team found';
+  let team;
+  let acc = accounts.find(el => el._id === account);
+
+  if (account) {
+    team = acc?.team;
+  }
+
+  if (account && !team) {
+    team = teams.find(el => el.characters.some(c => c?._id === acc.manager || c === acc.manager))    
+  }
+
+  if (team) return team;
+  return { name: 'no team found lol' }
 }
 
 function getIcon(type) {

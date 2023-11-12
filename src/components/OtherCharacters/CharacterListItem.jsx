@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
 import { getFadedColor } from '../../scripts/frontend';
 import NexusTag from '../Common/NexusTag';
+import TeamAvatar from '../Common/TeamAvatar';
 
 const CharacterListItem = (props) => {
 	const { character, handleSelect, selected } = props;  
@@ -88,7 +89,8 @@ const CharacterListItem = (props) => {
 
   <Flex style={{ backgroundColor: reduxSelected == character ? getFadedColor('default', 0.5) : 'inherit' }} align={'center'}  width={'100%'} onClick={() => handleSelect(character)}>
     <Box flex={1}>
-			<Avatar size="lg" src={character?.profilePicture} alt="?" />
+			{character.profilePicture && <Avatar size="lg" src={character.profilePicture} alt="?" />}
+      {!character.profilePicture  && <TeamAvatar account={character.account} />}
 		</Box>
 		<Box
       flex={8}

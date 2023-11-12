@@ -10,7 +10,7 @@ import { getFadedColor, getThisTeamFromAccount } from "../../../../scripts/front
 import SupportOffer from "../../../Common/SupportOffer";
 import socket from "../../../../socket";
 import ResourceNugget from "../../../Common/ResourceNugget";
-import { getTeamAccount } from "../../../../redux/entities/accounts";
+import { getCharAccount, getTeamAccount } from "../../../../redux/entities/accounts";
 import TeamAvatar from "../../../Common/TeamAvatar";
 
 function ActionOptions({ options, actionType, action }) {
@@ -21,8 +21,11 @@ function ActionOptions({ options, actionType, action }) {
     const [mode, setMode] = React.useState(false);
     const [slots, setSlots] = React.useState([]);
     const teamAccount = useSelector(getTeamAccount);
+    const charAccount = useSelector(getCharAccount);
+    const myTeam = useSelector(s=> s.auth.team);
     const account = useSelector(s => s.accounts.list[0]);
     const accounts = useSelector(s => s.accounts.list);
+    const teams = useSelector(s => s.teams.list);
     const myCharacter = useSelector(state => state.auth.myCharacter);
 
     const breakpoints = useBreakpointValue({
@@ -62,7 +65,7 @@ function ActionOptions({ options, actionType, action }) {
 
     const submitSupport = async (data) => {
       socket.emit('request', {route: 'action', action: 'support', 
-        data: { ...data, optionId: mode, actionId: action._id, contributor: teamAccount._id, commentor: myCharacter._id }}
+        data: { ...data, optionId: mode, actionId: action._id, contributor: charAccount._id, commentor: myCharacter._id }}
       );
       setMode(false)
     }
@@ -70,7 +73,8 @@ function ActionOptions({ options, actionType, action }) {
     // change this to add value to resources on an Agenda
     const agendaValue = (resource, value) => {
       switch(resource) {
-        default: return 1 * value;
+        case 'agenda_effort': return 20 * value;
+        default: return 5 * value;
       }
     }
 
@@ -122,7 +126,7 @@ function ActionOptions({ options, actionType, action }) {
                 {slots.map((slot, index) => (
                     <Box key={index} style={{ border: `2px solid ${getFadedColor(options[index]?.name)}`, width: '100%', margin: '3px', padding: '5px' }} >
                       <ActionMarkdown
-                        header={`${options[index]?.name} (${getResourceValue(options[index].resources) + (20 * options[index]?.assets.length)})`}
+                        header={`${options[index]?.name} (${getResourceValue(options[index]?.resources) + (20 * options[index]?.assets.length)})`}
                         tooltip={`You are '${options[index]?.name}' this agemda passing`}
                         markdown={options[index]?.description}
                         data={description}
@@ -130,33 +134,34 @@ function ActionOptions({ options, actionType, action }) {
                         edit={false}
                       />
                       {!mode && <div style={{ textAlign: 'center' }} >
-                        {options[index].resources?.length === 0 && <h5>No Resources Supporting</h5>}
-                        {options[index].resources?.length > 0 && <h5>Resources Supporting: +{getResourceValue(options[index].resources)} </h5>}
+                        {options[index]?.resources?.length === 0 && <h5>No Resources Supporting</h5>}
+                        {options[index]?.resources?.length > 0 && <h5>Resources Supporting: +{getResourceValue(options[index]?.resources)} </h5>}
                         <Wrap justify="space-around" align={'center'} >
-                          {options[index].resources?.map((resource, index) => (
+                          {options[index]?.resources?.map((resource, index) => (
                             <Box key={resource._id} >
                               <ResourceNugget 
-                                label={resource.contributor && <div style={{ padding: '5px', border: `2px solid ${getFadedColor(getThisTeamFromAccount(accounts, resource.contributor))}`}} ><h5><TeamAvatar account={resource.contributor} /> {getThisTeamFromAccount(accounts, resource.contributor)}</h5></div>} 
+                                label={resource.contributor && <div style={{ padding: '5px', border: `2px solid ${getFadedColor(getThisTeamFromAccount(accounts, teams, resource.contributor)).name}`}} ><h5><TeamAvatar account={resource.contributor} /> {getThisTeamFromAccount(accounts, teams, resource.contributor).name}</h5></div>} 
                                 fontSize={'2em'} 
                                 height="150px" 
                                 index={index} 
                                 value={`${resource.amount}`} 
                                 type={resource.type} />	
-                            </Box>												
+                                + {options[index]?.acceptedResources.find(rt => rt.type == resource.type).rewards * resource.amount}
+                            </Box>						                            						
                           ))}	
                         </Wrap>
 
-                        {options[index].assets?.length === 0 && <h5>No Assets Supporting</h5>}
-                        {options[index].assets?.length > 0 && <h5>Assets Supporting: +{20 * options[index]?.assets.length}</h5>}
+                        {options[index]?.assets?.length === 0 && <h5>No Assets Supporting</h5>}
+                        {options[index]?.assets?.length > 0 && <h5>Assets Supporting: +{20 * options[index]?.assets.length}</h5>}
                         {/* <Flex justify="space-around" align={'center'} >
-                          {options[index].assets?.map((asset, index) => (
+                          {options[index]?.assets?.map((asset, index) => (
                             <Box key={asset._id}>
                               <AssetCard asset={asset} />
                             </Box>												
                           ))}	
                         </Flex> */}
                         <SimpleGrid columns={[2]} spacing='40px'>
-                          {options[index].assets?.map((asset, index) => (
+                          {options[index]?.assets?.map((asset, index) => (
                             <Box key={asset._id}>
                               <AssetCard asset={asset} />
                             </Box>												
@@ -175,9 +180,10 @@ function ActionOptions({ options, actionType, action }) {
                         </Button>}
 
                         {mode === options[index]?._id && <SupportOffer
-                           myAccount={teamAccount}
+                           myAccount={charAccount}
                            account={account} 
                            actionType={actionType}
+                           option={options[index]}
                            status={[]}
                            offer={{ resources: [], assets: []}}
                            onClose={() => setMode(false)}                           
@@ -189,7 +195,7 @@ function ActionOptions({ options, actionType, action }) {
                     </Box>
 
                 ))}
-                </Flex>
+              </Flex>
         </Box>
     );
 }

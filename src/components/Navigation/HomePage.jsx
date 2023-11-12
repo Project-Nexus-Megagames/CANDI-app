@@ -11,6 +11,7 @@ import actions from '../Images/actions.jpg';
 import map from '../Images/science.jpg';
 import leaderboard from '../Images/leaderboard.png';
 import control from '../Images/control.png';
+import trade from '../Images/trade.png';
 import agendas from '../Images/agenda.jpg';
 
 
@@ -62,10 +63,10 @@ const HomePage = (props) => {
       {loadComplete && myCharacter && team && 
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        
 
-      <GridItem colSpan={columns == 1 ? 2 : 1} >
-        <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-      </GridItem>
       
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={trade} to="trading" title={'~ Exchange resources and Assets with other players ~'} body="Trading" />
+      </GridItem>  
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
@@ -80,6 +81,10 @@ const HomePage = (props) => {
         <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
       </GridItem>   
 
+      <GridItem colSpan={columns == 1 ? 2 : 1} >
+        <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+      </GridItem>
+
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
       </GridItem>
@@ -92,7 +97,6 @@ const HomePage = (props) => {
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
       </GridItem>    
-
 
       <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
         <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />

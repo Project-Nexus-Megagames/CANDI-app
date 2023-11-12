@@ -3,27 +3,36 @@ import { Funnel, Trash } from '@rsuite/icons';
 import React, { useEffect } from 'react'; // React import
 import { BsPlus, BsX, BsXCircle } from 'react-icons/bs';
 import { useSelector } from 'react-redux'; // Redux store provider
+import { useNavigate } from "react-router";
+
 import socket from '../../socket';
-import TradeOffer from './TradeOffer';
-import SelectPicker from './SelectPicker';
-import { CandiWarning } from './CandiWarning';
-import NexusTag from './NexusTag';
-import TeamAvatar from './TeamAvatar';
+import SelectPicker from '../Common/SelectPicker';
+import { CandiWarning } from '../Common/CandiWarning';
+import NexusTag from '../Common/NexusTag';
+import TeamAvatar from '../Common/TeamAvatar';
+import CheckerPick from '../Common/CheckerPick';
+
 import TradeCard from './TradeCard';
-import CheckerPick from './CheckerPick';
-import { getFadedColor } from '../../scripts/frontend';
+import TradeOffer from './TradeOffer';
+
+import { getFadedColor, getThisTeamFromAccount } from '../../scripts/frontend';
 import { getTeamTrades } from '../../redux/entities/trades';
+
+
 import { FaHandshake } from 'react-icons/fa';
+import { getCharAccount } from '../../redux/entities/accounts';
 
 const Trade = (props) => {
-	const { account, } = props;
 	const tradeLoading = useSelector(s => s.trades.loading);
 	const gameLoading = useSelector(s => s.gamestate.loading);
 	const  trades = useSelector(s => s.trades.list);
 	const  accounts = useSelector(s => s.accounts.list);
 	const  assets = useSelector(s => s.assets.list);
+  const teams = useSelector(s => s.teams.list);  
+
 	const { login } = useSelector(s => s.auth);
 	const myTrades = useSelector(getTeamTrades);
+  const account = useSelector(getCharAccount);
 
 	const [selectedTrade, setSelectedTrade] = React.useState(null);
 	const [mode, setMode] = React.useState(false);
@@ -31,6 +40,15 @@ const Trade = (props) => {
 	const [partner, setPartner] = React.useState(false);
   const [tags, setTags] = React.useState(['draft', 'completed']);
 	const [tradeState, setTradeState] = React.useState([]);
+
+  
+	const navigate = useNavigate();
+  useEffect(() => {
+    if (!props.login) {
+      navigate("/");
+    }
+}, []);
+
 
 	useEffect(() => {
 			if (selectedTrade) {
@@ -66,7 +84,7 @@ const Trade = (props) => {
 			setPartner(false);
 		} catch (err) {
 			// Alert.error(`${err.data} - ${err.message}`)
-		};
+		}
 	}
 
 	const selectTrade = async (selected) => {
@@ -84,7 +102,7 @@ const Trade = (props) => {
 			socket.emit('request', { route: 'trade', action: 'modifyTrade', data});
 		} catch (err) {
 			// Alert.error(`${err.data} - ${err.message}`)
-		};
+		}
 	}
 
 	const submitApproval = async () => {
@@ -97,7 +115,7 @@ const Trade = (props) => {
 			socket.emit('request', { route: 'trade', action: 'ratifyTrade', data});
 		} catch (err) {
 			// Alert.error(`${err.data} - ${err.message}`)
-		};
+		}
 	}
 
 	const rejectProposal = async () => {
@@ -110,7 +128,7 @@ const Trade = (props) => {
 			socket.emit('request', { route: 'trade', action: 'ratifyTrade', data});
 		} catch (err) {
 			// Alert.error(`${err.data} - ${err.message}`)
-		};
+		}
 	}
 
 	const trashProposal = async () => {
@@ -124,6 +142,10 @@ const Trade = (props) => {
 	if (!login) return (<div />);	
 	const initiatorAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade.initiator.account) : {};
 	const partnerAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade.tradePartner.account) : {};
+
+  const initiatorTeam = getThisTeamFromAccount(accounts, teams, selectedTrade?.initiator.account);
+  const partnerTeam = getThisTeamFromAccount(accounts, teams, selectedTrade?.tradePartner.account);
+
 	return (
 		<div>
         <Grid
@@ -140,6 +162,7 @@ const Trade = (props) => {
 								rejectProposal={rejectProposal}
 								myAccount={account}
 								account={selectedTrade.initiator.account === account._id ? partnerAccount : initiatorAccount} 
+								team={selectedTrade.initiator.account === account._id ? partnerTeam : initiatorTeam} 
 								offer={selectedTrade.initiator.account === account._id ? selectedTrade.tradePartner.offer : selectedTrade.initiator.offer} 
 								ratified={selectedTrade.initiator.account === account._id ? selectedTrade.tradePartner.ratified : selectedTrade.initiator.ratified} 
 								status={selectedTrade.status}
@@ -190,7 +213,7 @@ const Trade = (props) => {
               </div>}
 
               {mode === 'new' && <div className='styleCenter'>
-                  <SelectPicker label={'name'} placeholder='Select Trade Partner' data={accounts.filter(el => el._id !== account._id && el.type === 'team' )} onChange={setPartner}/> 
+                  <SelectPicker label={'name'} placeholder='Select Trade Partner' data={accounts.filter(el => el._id !== account._id && el.type === 'individual' )} onChange={setPartner}/> 
                   <Button size={'sm'} variant={"solid"} colorScheme='green' disabled={!partner} loading={tradeLoading} onClick={() => createTrade()}>Create</Button>
                   <IconButton size={'sm'} variant={'solid'} colorScheme='red' onClick={() => setMode(false)} icon={<BsX />}/>
                   
@@ -199,8 +222,8 @@ const Trade = (props) => {
 						<hr/>
 						<div >
             <VStack divider={<Divider />} style={{ height: 'calc(100vh - 195px)', overflow: 'auto', textAlign: 'center', }}>
-							{tradeState.map((trade, index) => (
-                  <TradeCard trade={trade} selectTrade={selectTrade} isMine={trade.initiator.account === account._id} ></TradeCard>
+							{tradeState.map((trade) => (
+                  <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} key={trade._id} trade={trade} selectTrade={selectTrade} isMine={trade.initiator.account === account._id} ></TradeCard>
 								))}
             </VStack>
 
@@ -217,7 +240,7 @@ const Trade = (props) => {
 									
 								<p style={{ size: '11px' }} ><b>Last Updated:</b> {`${new Date(selectedTrade.updatedAt).toLocaleTimeString()} - ${new Date(selectedTrade.updatedAt).toDateString()}`}</p>
                 {selectedTrade.status.map((tag, index) => (<NexusTag key={tag} variant='solid' colorScheme="blue">{tag}</NexusTag> ))}
-                <TradeCard trade={selectedTrade} isMine={selectedTrade.tradePartner.account === account._id || selectedTrade.initiator.account === account._id} ></TradeCard>
+                <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} trade={selectedTrade} isMine={selectedTrade.tradePartner.account === account._id || selectedTrade.initiator.account === account._id} ></TradeCard>
 							</Box>
 
 						</div> }	
