@@ -1,24 +1,31 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Button, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Button, Grid, GridItem, VStack, Wrap } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import socket from '../../socket';
 import { getFadedColor } from '../../scripts/frontend';
 import HexMap from './HexMap';
+import ResourceNugget from '../Common/ResourceNugget';
+import { getLocationContracts } from '../../redux/entities/assets';
+import Contract from '../Common/Contract';
 
 const LocationDashboard = (props) => {
 	const navigate = useNavigate();
 	const locations = useSelector(s => s.locations.list);
 	const { login, team, myCharacter} = useSelector(s => s.auth);
 	const loading =  useSelector(s => s.gamestate.loading);
+  const locationContracts = useSelector(getLocationContracts);
 
 
 	const [levels, setLevels] = React.useState([]);
 	const [selected, setSelected] = React.useState(false);
+	const [selectedStat, setSelectedStat] = React.useState(false);
 
-  // useEffect(() => {
-  //   createHex()
-	// }, []);
+  useEffect(() => {
+    if (selected) {
+      setSelected(locations.find(el => el._id === selected._id))
+    }
+	}, [locations]);
 
 	useEffect(() => {
 		if(!props.login)
@@ -62,7 +69,7 @@ const LocationDashboard = (props) => {
 	return ( 
 		<Grid
         templateAreas={`"nav main"`}
-        gridTemplateColumns={ '20% 80%'}
+        gridTemplateColumns={ '30% 70%'}
         gap='1'
         fontWeight='bold'>
 
@@ -72,7 +79,24 @@ const LocationDashboard = (props) => {
             {selected.name}
             <br/>
             {selected.description}
-            <Button onClick={handleScavenge} >Scavenge Here</Button>
+            {/* <Button onClick={handleScavenge} >Scavenge Here</Button> */}
+
+            Stats
+            <Wrap>
+              {selected.locationStats.map(stat => (
+                <div key={stat._id} onClick={() => setSelectedStat(stat)} >
+                  <ResourceNugget value={stat.statAmount} type={`${stat.type}-stat`} selected={selectedStat == stat} />
+                </div>
+              ))}              
+            </Wrap>
+
+            <h5>Actions </h5>
+            <VStack overflow={'auto'} >
+              {locationContracts.filter(el => el.location === selected._id).map(contract => (
+                <Contract key={contract._id} contract={contract} show/>
+              ))}                
+            </VStack>
+
         </Box>}
 			</GridItem>
 

@@ -28,7 +28,7 @@ const slice = createSlice({
 			gameConfig.name = action.payload.name;
 			gameConfig.actionTypes = action.payload.actionTypes;
 			gameConfig.assetTypes = action.payload.assetTypes;
-			gameConfig.resourceTypes = action.payload.resourceTypes;
+			gameConfig.assetTypes = action.payload.assetTypes;
 			gameConfig.characterStats = action.payload.characterStats;
 			gameConfig.globalStats = action.payload.globalStats;
 			gameConfig.loading = false;
@@ -49,7 +49,7 @@ const slice = createSlice({
 		},
 		resourceTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
-			state.resourceTypes = action.payload.resourceTypes;
+			state.assetTypes = action.payload.assetTypes;
 		},
 		effortTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);

@@ -65,7 +65,7 @@ const HomePage = (props) => {
 
       
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={trade} to="trading" title={'~ Exchange resources and Assets with other players ~'} body="Trading" />
+        <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
       </GridItem>  
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>

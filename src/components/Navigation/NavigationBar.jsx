@@ -13,191 +13,188 @@ import { getCharAccount } from '../../redux/entities/accounts';
 import ResourceNugget from '../Common/ResourceNugget';
 
 const Navigation = (props) => {
-	  const navigate = useNavigate();
-    const location = useLocation();
-    const reduxAction = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const reduxAction = useDispatch();
 
-    const { myCharacter, } = useSelector(s => s.auth);
-    const [time, setTime] = React.useState('');
-    const [filter, setFilter] = React.useState('');
-    const myChar = useSelector(getMyCharacter);
-    const [selectedChar, setSelectedChar] = React.useState(myChar._id);
-    const currentCharacter = useSelector(getCharacterById(selectedChar));
-    const allCharacters = useSelector(state => state.characters.list);
-    const {isControl} = usePermissions();
-    const gamestate = useSelector(state => state.gamestate)
-    const myAccout = useSelector(getCharAccount);
+  const { myCharacter, } = useSelector(s => s.auth);
+  const [time, setTime] = React.useState('');
+  const [filter, setFilter] = React.useState('');
+  const myChar = useSelector(getMyCharacter);
+  const [selectedChar, setSelectedChar] = React.useState(myChar._id);
+  const currentCharacter = useSelector(getCharacterById(selectedChar));
+  const allCharacters = useSelector(state => state.characters.list);
+  const { isControl } = usePermissions();
+  const gamestate = useSelector(state => state.gamestate)
+  const myAccout = useSelector(getCharAccount);
 
-    useEffect(() => {
-        renderTime();
-        setInterval(() => {
-            renderTime();
-            //clearInterval(interval);
-        }, 60000);
-    }, [props.gamestate.endTime]);
+  useEffect(() => {
+    renderTime();
+    setInterval(() => {
+      renderTime();
+      //clearInterval(interval);
+    }, 60000);
+  }, [props.gamestate.endTime]);
 
-    useEffect(() => {
-        reduxAction(setCharacter(currentCharacter));
-    }, [currentCharacter]);
+  useEffect(() => {
+    reduxAction(setCharacter(currentCharacter));
+  }, [currentCharacter]);
 
-    const handleCharChange = (charId) => {
-        console.log('charID', charId);
-        if (charId) {
-            setSelectedChar(charId);
-        } else setSelectedChar(myChar._id);
-    };
+  const handleCharChange = (charId) => {
+    console.log('charID', charId);
+    if (charId) {
+      setSelectedChar(charId);
+    } else setSelectedChar(myChar._id);
+  };
 
-    const getTimeToEndOfRound = () => {
-        return new Date(gamestate.endTime).getTime() - new Date().getTime();
-    }
+  const getTimeToEndOfRound = () => {
+    return new Date(gamestate.endTime).getTime() - new Date().getTime();
+  }
 
-    const renderTime = () => {
-        const distance = getTimeToEndOfRound();
-        const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
-        const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-        const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
-        if (days > 0) setTime(`${days} Days, ${hours} Hours, ${minutes} Minutes`);
-        else if (hours > 0) setTime(`${hours} Hours, ${minutes} Minutes`);
-        else setTime(`${minutes} Minutes`);
-    };
+  const renderTime = () => {
+    const distance = getTimeToEndOfRound();
+    const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
+    const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+    const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+    if (days > 0) setTime(`${days} Days, ${hours} Hours, ${minutes} Minutes`);
+    else if (hours > 0) setTime(`${hours} Hours, ${minutes} Minutes`);
+    else setTime(`${minutes} Minutes`);
+  };
 
-    const handleLogOut = () => {
-      reduxAction(signOut());
-      socket.emit('logout');
-      navigate('/login');
-    };
+  const handleLogOut = () => {
+    reduxAction(signOut());
+    socket.emit('logout');
+    navigate('/login');
+  };
 
-    return (
-        <Container
-            style={{
-                backgroundColor: '#746d75',
-                width: '100%',
-                fontSize: '0.966em',
-                borderBottom: '3px solid',
-                borderRadius: 0,
-                borderColor: '#d4af37',
-            }}
-            maxW={'100vw'}
-            minW={'350px'}
-            paddingTop={'0.5rem'}
-            paddingBottom={'0.5rem'}
+  return (
+    <Container
+      style={{
+        backgroundColor: '#746d75',
+        width: '100%',
+        fontSize: '0.966em',
+        borderBottom: '3px solid',
+        borderRadius: 0,
+        borderColor: '#d4af37',
+      }}
+      maxW={'100vw'}
+      minW={'350px'}
+      paddingTop={'0.5rem'}
+      paddingBottom={'0.5rem'}
+    >
+      <Flex
+        alignItems={'center'}
+      >
+        <Box
+          justify="start"
+          flex={1}
+          display='flex'
+          marginRight='auto'
         >
-            <Flex
-                alignItems={'center'}
-            >
-                <Box                    
-                  justify="start"
-                  flex={1}
-                  display='flex'
-                  marginRight='auto'
-                >
-                  {location.pathname !== "/home" && <IconButton
-                    onClick={() => navigate('/home')}
-                    icon={<ArrowBackIcon/>}
-                    variant='outline'
-                    aria-label={'go home'}
-                  />}
-                  {location.pathname === "/home" && 
-                  <Menu>
-                    <MenuButton >
-                      <IconButton 
-                        icon={<HamburgerIcon/>}
-                        variant='outline' />
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem>Version: {gamestate.version}</MenuItem>
-						          <MenuItem onClick={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</MenuItem>
-						          <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
-						          <MenuItem onClick={() => reduxAction(toggleDuck())}>Spook</MenuItem>
-                    </MenuList>
-                  </Menu>}
-                </Box>
-                <Box
-                    display='flex'
-                    flex={3}
-                >
-                    <Box
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                        display='flex'
-                        flexDir={'column'}
-                        width={'100%'}
-                    >
-                        <p>Round: {props.gamestate.round} </p>
-                        {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
-                        {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
-                    </Box>
-                </Box>
+          {location.pathname !== "/home" && <IconButton
+            onClick={() => navigate('/home')}
+            icon={<ArrowBackIcon />}
+            variant='outline'
+            aria-label={'go home'}
+          />}
+          {location.pathname === "/home" &&
+            <Menu>
+              <MenuButton >
+                <IconButton
+                  icon={<HamburgerIcon />}
+                  variant='outline' />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Version: {gamestate.version}</MenuItem>
+                <MenuItem onClick={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</MenuItem>
+                <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+                <MenuItem onClick={() => reduxAction(toggleDuck())}>Spook</MenuItem>
+              </MenuList>
+            </Menu>}
+        </Box>
+        <Box
+          display='flex'
+          flex={3}
+        >
+          <Box
+            justifyContent={'center'}
+            alignItems={'center'}
+            display='flex'
+            flexDir={'column'}
+            width={'100%'}
+          >
+            <p>Round: {props.gamestate.round} </p>
+            {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
+            {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
+            {myAccout &&
+              <div className='styleCenter'>
+                {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"} />))}
+              </div>}
+          </Box>
+        </Box>
 
-                <div style={{ borderRadius: '5px', display: 'flex', width: '40%' }}>
-				{myAccout  && 
-        <div className='styleCenter'>
-          {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"}/>))}
-        </div>}
-			</div>
+        <Box
+          flex={1}
+          display='flex'
+          marginLeft='auto'
+          justifyContent='right'
+        >
+          {isControl && <UserList />}
+          {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
+          {isControl && (
+            <Popover>
+              <PopoverTrigger
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                colorScheme={'#0f131a'}
+                _hover={{ bg: 'gray.400' }}
+              >
+                <Button variant={'ghost'} >View As</Button>
+              </PopoverTrigger>
+              <PopoverContent
+                backgroundColor={'#0f131a'}
+                overflow="hidden"
+                maxHeight={'50vh'}
+              >
+                <PopoverHeader >
+                  <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
+                </PopoverHeader >
+                <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
+                  <VStack divider={<Divider />} overflow={"auto"} >
+                    {allCharacters.filter(el => el.characterName.toLowerCase().includes(filter)).map(character => (
+                      <Button
+                        variant={"unstyled"}
+                        key={character._id}
+                        value={character._id}
+                        _hover={{ bg: 'gray.400' }}
+                        onClick={() => {
+                          handleCharChange(character._id);
+                        }}
+                      >
+                        {character.characterName}
+                      </Button>
+                    ))}
+                  </VStack>
 
-                <Box
-                    flex={1}
-                    display='flex'
-                    marginLeft='auto'
-                    justifyContent='right'
-                >
-                  {isControl && <UserList />}
-                  {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
-                    {isControl && (
-                        <Popover>
-                            <PopoverTrigger
-                                as={Button}
-                                rightIcon={<ChevronDownIcon/>}
-                                colorScheme={'#0f131a'}
-                                _hover={{bg: 'gray.400'}}
-                            >
-                              <Button variant={'ghost'} >View As</Button>  
-                            </PopoverTrigger>
-                            <PopoverContent 
-                                backgroundColor={'#0f131a'}
-                                overflow="hidden"
-                                maxHeight={'50vh'}
-                            >
-                              <PopoverHeader >
-                                <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
-                              </PopoverHeader >
-                              <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
-                                <VStack divider={<Divider />} overflow={"auto"} >
-                                  {allCharacters.filter(el => el.characterName.toLowerCase().includes(filter)).map(character => (
-                                      <Button
-                                          variant={"unstyled"}
-                                          key={character._id}
-                                          value={character._id}
-                                          _hover={{bg: 'gray.400'}}
-                                          onClick={() => {
-                                              handleCharChange(character._id);
-                                          }}
-                                      >
-                                          {character.characterName}
-                                      </Button>
-                                  ))}                                     
-                                </VStack>
-                             
-                              </PopoverBody>
+                </PopoverBody>
 
-                            </PopoverContent >
-                        </Popover>
-                    )}
-                </Box>
-            </Flex>
-        </Container>
-    );
+              </PopoverContent >
+            </Popover>
+          )}
+        </Box>
+      </Flex>
+    </Container>
+  );
 };
 
 const mapStateToProps = (state) => ({
-    user: state.auth.user,
-    gamestate: state.gamestate
+  user: state.auth.user,
+  gamestate: state.gamestate
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    logOut: () => dispatch(signOut()),
-    setCharacter: (payload) => dispatch(setCharacter(payload))
+  logOut: () => dispatch(signOut()),
+  setCharacter: (payload) => dispatch(setCharacter(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

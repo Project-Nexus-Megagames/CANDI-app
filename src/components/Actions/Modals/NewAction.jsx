@@ -91,7 +91,7 @@ const NewAction = (props) => {
 
   const isDisabled = () => {
 		let boolean = true;
-    for (const resource of actionType.resourceTypes) {
+    for (const resource of actionType.assetTypes) {
       boolean = myAccout.resources.find(e => e.type === resource.type) ?
        myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min :
        true;
@@ -187,7 +187,7 @@ const NewAction = (props) => {
           <Box width={"49%"}>
             Needed Resources:
             <Center>
-              {actionType.resourceTypes.map(el => (
+              {actionType.assetTypes.map(el => (
                 <Box key={el._id}>
                   {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
                     <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>

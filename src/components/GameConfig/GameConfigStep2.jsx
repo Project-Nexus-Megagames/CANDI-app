@@ -58,7 +58,7 @@ function GameConfig2() {
 			value.effortAmount = type.effortAmount;
 			value.maxAssets = type.maxAssets;
 			value.effortTypes = type.effortTypes;
-			value.resourceTypes = type.resourceTypes;
+			value.assetTypes = type.assetTypes;
 			value.minEffort = type.minEffort;
 			value.maxEffort = type.maxEffort;
 			value.public = type.public;
@@ -114,12 +114,12 @@ function GameConfig2() {
 											<FormControl>
 												<FormLabel>Types of Resource</FormLabel>
 												<Controller
-													name={`actionTypes.${i}.resourceTypes`}
+													name={`actionTypes.${i}.assetTypes`}
 													control={control}
 													render={({ field: { ref, ...rest } }) => (
-														<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.resourceTypes} {...rest}>
+														<CheckboxGroup key={item.id} defaultValue={oldConfig.actionTypes?.[i]?.assetTypes} {...rest}>
 															<Stack spacing={[1]} direction={['column']}>
-																{oldConfig.resourceTypes.map((item) => (
+																{oldConfig?.assetTypes.map((item) => (
 																	<Checkbox value={item.type} key={item.id}>
 																		{item.type}
 																	</Checkbox>

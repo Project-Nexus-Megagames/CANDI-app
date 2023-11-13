@@ -248,7 +248,7 @@ const ActionForm = (props) => {
 										}}
 									>
 										Resources (Max: {actionType.maxAssets})
-										{actionType.resourceTypes?.map((type) => (
+										{actionType.assetTypes?.map((type) => (
 											<Tag key={type} textTransform='capitalize' colorScheme={'teal'} variant={'solid'}>
 												{type}
 											</Tag>
@@ -277,7 +277,7 @@ sxxsax
                               handleSelect={(ass) =>editState(ass, ass.model, index)} 
                               assets={
                                 myAssets.filter(el => 
-                                  actionType.resourceTypes.some(a => a === el.type) && 
+                                  actionType.assetTypes.some(a => a === el.type) && 
                                   !resource.some(ass => ass?._id === el._id ) &&
                                   !el.status?.some(el => el === 'used')
                                 )} 

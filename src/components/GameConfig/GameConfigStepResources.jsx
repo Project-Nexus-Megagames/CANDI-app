@@ -19,7 +19,7 @@ function GameConfigStepResources() {
 		formState
 	} = useForm({
 		defaultValues: {
-			resouceTypes: [oldConfig.resourceTypes]
+			resouceTypes: [oldConfig.assetTypes]
 		}
 	});
 	const { errors } = formState;
@@ -40,7 +40,7 @@ function GameConfigStepResources() {
 
 	useEffect(() => {
 		const resetValues = [];
-		oldConfig.resourceTypes?.forEach((type) => {
+		oldConfig.assetTypes?.forEach((type) => {
 			let value = {};
 			value.type = type.type;
 			resetValues.push(value);
@@ -62,11 +62,11 @@ function GameConfigStepResources() {
 	}
 
 	function onSubmit(data) {
-		if (hasDuplicates(data.resourceTypes)) return alert('Resource Types have to be unique');
+		if (hasDuplicates(data.assetTypes)) return alert('Resource Types have to be unique');
 		dispatch(resourceTypesAdded(data));
 
 		let configToBeSent = { ...oldConfig };
-		configToBeSent.resourceTypes = data.resourceTypes;
+		configToBeSent.assetTypes = data.assetTypes;
 		console.log('DATA', configToBeSent);
 		try {
 			socket.emit('request', {
@@ -97,11 +97,11 @@ function GameConfigStepResources() {
 													type='text'
 													size='md'
 													variant='outline'
-													defaultValue={oldConfig.resourceTypes?.[i]?.type}
+													defaultValue={oldConfig.assetTypes?.[i]?.type}
 													{...register(`resourceTypes.${i}.type`, validation.type)}
 												/>
 												<Text fontSize='sm' color='red.500'>
-													{errors.resourceTypes?.[i]?.type && errors.resourceTypes[i].type.message}
+													{errors.assetTypes?.[i]?.type && errors.assetTypes[i].type.message}
 												</Text>
 											</FormControl>
 

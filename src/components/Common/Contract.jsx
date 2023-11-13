@@ -4,7 +4,7 @@ import { getMyCharacter, getMyTeamMembers, } from '../../redux/entities/characte
 import socket from '../../socket';
 import { getMyAssets, getTeamContracts } from '../../redux/entities/assets';
 import { getCountdownHours, getFadedColor } from '../../scripts/frontend';
-import { getTeamAccount } from '../../redux/entities/accounts';
+import { getCharAccount, getTeamAccount } from '../../redux/entities/accounts';
 import ResourceNugget from '../Common/ResourceNugget';
 import { Check, Close } from '@rsuite/icons';
 import { Button, ButtonGroup, HStack, Tag, Tooltip, VStack, Flex, Spacer, Wrap  } from '@chakra-ui/react';
@@ -14,7 +14,7 @@ const Contract = (props) => {
 	const { contract, show } = props;
 	const { control, character, login } = useSelector(s => s.auth);
 	const clock = useSelector(s=> s.clock);
-	const account = useSelector(getTeamAccount);
+	const account = useSelector(getCharAccount);
   const isCompleted = contract.status.some(el => el === 'completed')
 	
 	const submit = (goal) => {
