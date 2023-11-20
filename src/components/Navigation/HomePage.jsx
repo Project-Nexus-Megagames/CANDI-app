@@ -7,7 +7,7 @@ import ImgPanel from './ImgPanel';
 // import aang from '../Images/aang.jpg'
 import nexus from '../Images/Project_Nexus.jpg';
 import other from '../Images/other.jpg';
-import news from '../Images/news.jpg';
+import news from '../Images/News.jpg';
 import actions from '../Images/actions.jpg';
 import map from '../Images/science.jpg';
 import leaderboard from '../Images/leaderboard.png';
