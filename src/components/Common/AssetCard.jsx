@@ -33,8 +33,6 @@ const AssetCard = (props) => {
   const account = populateThisAccount(accounts, asset.account)
   const team = getThisTeam(teams, account.manager);
 
-  console.log(team)
-
 	return ( 
 		<div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log("Peekabo!")} >
       <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id}  >
@@ -42,7 +40,7 @@ const AssetCard = (props) => {
           
           <Flex align={'center'} overflow='hidden' width='100%'>
           <Spacer />
-          <TeamAvatar size='md' team={team} />
+          {/* <TeamAvatar size='md' team={team} /> */}
           <Spacer />
           <Box>
             <div display="flex">

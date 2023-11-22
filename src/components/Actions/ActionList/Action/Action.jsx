@@ -134,13 +134,13 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                                 edit={mode === 'edit'}
                             /> */}
 
-                            {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}
+                            {(action.submission.difficulty > 0 || false) && <ActionDifficulty action={action} submission={action.submission}/>}
 
-                            {actionType.type !== 'Agenda' && <ActionResources
+                            {/* {actionType.type !== 'Agenda' && <ActionResources
                               actionType={actionType}
                               assets={action.submission.assets}
                               toggleAssetInfo={toggleAssetInfo}
-                            />}
+                            />} */}
 
                             {control && actionType.type !== 'Agenda' && action.options.length == 0 && 
                               <Box>

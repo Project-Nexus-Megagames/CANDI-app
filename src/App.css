@@ -177,28 +177,29 @@
 } */
 
 
-/* .container {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
-} */
+}
 
 .hexagon {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   color: #fff;
   text-shadow: -1px 1px #000000;
   background-color: #36343f;
-  width: 170px;
-  height: 170px;
+  width: 180px;
+  height: 180px;
   /* background: grey; */
   background-size: cover; /* Resize the background image to cover the entire container */
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  margin: 3px;
+  margin-left: 3px;
   -webkit-transition: background-image 0.2s ease-in-out;
   transition: background-image 0.2s ease-in-out;
-  white-space: nowrap;
-  
+  white-space: nowrap;  
 }
+
 .hexagon:hover {
   opacity: 0.9;
   cursor: pointer;

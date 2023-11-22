@@ -8,103 +8,123 @@ import HexMap from './HexMap';
 import ResourceNugget from '../Common/ResourceNugget';
 import { getLocationContracts } from '../../redux/entities/assets';
 import Contract from '../Common/Contract';
+import StatBar from './StatBar';
+import { CandiModal } from '../Common/CandiModal';
+import FacilityForm from '../Common/FacilityForm';
+import FacilityCard from '../Common/FacilityCard';
+import LocationForm from './LocationForm';
+import { getPlayersPresent } from '../../redux/entities/characters';
+import { getMyLocation } from '../../redux/entities/locations';
 
 const LocationDashboard = (props) => {
-	const navigate = useNavigate();
-	const locations = useSelector(s => s.locations.list);
-	const { login, team, myCharacter} = useSelector(s => s.auth);
-	const loading =  useSelector(s => s.gamestate.loading);
+  const navigate = useNavigate();
+  const locations = useSelector(s => s.locations.list);
+  const facilities = useSelector(s => s.facilities.list);
+  const characters = useSelector(s => s.characters.list);
+  const { login, control, myCharacter } = useSelector(s => s.auth);
+  const loading = useSelector(s => s.gamestate.loading);
+
   const locationContracts = useSelector(getLocationContracts);
+  const playersPresent = useSelector(getPlayersPresent);
+	let myLocation = useSelector(getMyLocation);
 
 
-	const [levels, setLevels] = React.useState([]);
-	const [selected, setSelected] = React.useState(false);
-	const [selectedStat, setSelectedStat] = React.useState(false);
+  const [levels, setLevels] = React.useState([]);
+  const [mode, setMode] = React.useState(false);
+  const [selected, setSelected] = React.useState(false);
+  const [selectedStat, setSelectedStat] = React.useState(false);
 
   useEffect(() => {
-    if (selected) {
+    if (selected && typeof selected === "string") {
       setSelected(locations.find(el => el._id === selected._id))
     }
-	}, [locations]);
+  }, [locations]);
 
-	useEffect(() => {
-		if(!props.login)
-			navigate('/');
-	}, [props.login, navigate])
+
+  useEffect(() => {
+    if (!props.login)
+      navigate('/');
+  }, [props.login, navigate])
 
   const handleScavenge = () => {
     socket.emit('request', { route: 'location', action: 'scavenge', data: { character: myCharacter._id, location: selected._id } })
-	};
-
-  const getHexId = (row, col) => {
-    const Letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    var letterIndex = row;
-    var letters = "";
-    while(letterIndex > 25)
-    {
-      letters = [letterIndex%26] + letters;
-      letterIndex -= 26;
-    }
-    return `${Letters[letterIndex] + letters + (col + 1)}`;
   };
 
-  const blob = <svg viewBox="0 0 1006 1174" version="1.1" xmlns="http://www.w3.org/2000/svg">
-  <g id="#605e5ec2">
-  <path fill="#605e5e" opacity="0.76" d=" M 598.89 314.96 C 600.40 313.18 602.52 312.09 604.28 310.58 C 604.90 310.62 606.14 310.70 606.76 310.74 C 608.35 313.56 610.17 316.35 613.06 318.01 C 615.73 319.26 613.90 324.17 617.71 323.78 C 617.32 320.35 616.80 315.95 620.87 314.56 C 622.84 315.48 624.74 316.58 626.45 317.96 C 626.09 319.37 625.74 320.80 625.39 322.22 C 625.94 322.47 627.05 322.97 627.60 323.22 C 628.36 326.23 628.54 329.84 631.45 331.67 C 631.32 334.85 630.98 338.53 634.59 339.95 C 635.02 338.73 635.45 337.52 635.88 336.30 C 638.66 336.92 641.63 337.47 644.00 339.14 C 644.27 344.00 645.33 348.96 647.63 353.36 C 651.10 353.66 654.11 355.42 657.25 356.75 C 661.14 357.38 665.13 356.84 669.07 357.02 C 670.43 359.19 672.34 361.06 673.39 363.42 C 673.63 365.53 673.52 367.68 673.58 369.81 C 670.97 371.80 667.62 370.32 664.69 370.18 C 664.60 372.42 663.85 374.52 662.73 376.45 C 664.07 376.43 665.41 376.42 666.77 376.40 C 668.24 378.10 668.27 380.39 668.77 382.48 C 669.59 384.14 670.93 385.49 672.02 386.99 C 671.19 391.37 676.66 394.13 674.59 398.64 C 673.46 399.42 672.32 400.21 671.22 401.01 C 671.85 402.16 672.49 403.31 673.14 404.47 C 676.31 404.08 680.43 405.81 682.74 402.90 C 684.82 407.26 689.96 406.91 693.97 408.02 C 694.06 408.50 694.26 409.47 694.35 409.95 C 691.07 412.47 687.24 414.69 683.00 414.78 C 680.56 414.50 678.39 413.18 675.99 412.73 C 673.86 413.83 672.70 416.13 671.16 417.88 C 671.77 419.35 672.39 420.83 673.02 422.32 C 672.24 424.31 671.44 426.30 670.61 428.28 C 665.74 428.97 661.46 431.28 657.96 434.68 C 655.48 433.31 652.92 431.53 650.01 431.52 C 645.46 432.13 641.01 433.30 636.48 434.00 C 633.90 429.84 630.43 426.36 627.41 422.55 C 621.22 413.87 613.41 406.55 606.42 398.55 C 596.72 387.93 587.05 377.29 577.33 366.69 C 576.06 365.24 574.61 363.83 573.91 362.00 C 572.45 355.86 575.15 349.84 577.12 344.15 C 583.80 334.02 591.34 324.46 598.89 314.96 M 600.68 316.58 C 593.27 325.64 586.24 335.01 579.55 344.61 C 577.31 350.05 575.30 355.85 576.05 361.82 C 592.23 379.31 608.15 397.06 624.32 414.56 C 628.65 420.30 633.19 425.90 637.89 431.35 C 642.31 430.65 646.64 429.38 651.10 428.98 C 653.46 429.66 655.67 430.74 657.95 431.63 C 660.79 428.82 664.35 427.21 668.20 426.35 C 671.47 424.16 669.72 419.96 668.43 417.09 C 670.67 414.92 672.32 412.09 674.95 410.37 C 677.83 410.18 680.46 411.57 683.04 412.66 C 685.28 412.10 687.57 411.48 689.40 409.98 C 687.58 408.86 685.51 408.32 683.39 408.65 C 679.99 406.32 675.82 406.93 671.96 407.04 C 670.61 404.98 669.35 402.87 668.26 400.67 C 669.92 399.21 671.53 397.71 673.01 396.07 C 671.98 394.36 670.92 392.69 669.80 391.06 C 670.61 386.28 664.60 384.03 665.90 379.11 C 663.29 379.16 660.60 378.42 660.04 375.54 C 661.77 373.68 662.30 371.27 662.06 368.80 C 664.83 367.21 668.09 368.25 671.07 368.52 C 671.82 364.87 670.08 361.81 667.59 359.34 C 663.08 359.04 658.16 360.35 654.06 357.92 C 651.36 356.23 648.14 355.98 645.21 354.90 C 645.06 352.97 644.24 351.26 643.07 349.76 C 642.99 348.54 642.92 347.31 642.87 346.10 C 642.49 345.67 641.72 344.82 641.33 344.40 C 641.57 343.11 641.80 341.82 642.03 340.53 C 640.53 340.03 639.04 339.53 637.56 339.02 C 637.38 339.81 637.02 341.39 636.85 342.18 C 636.17 342.19 634.83 342.20 634.15 342.21 C 632.72 341.24 631.17 340.43 629.93 339.22 C 628.56 337.45 629.16 335.06 629.01 333.00 C 625.53 330.68 627.39 324.88 622.95 323.56 C 622.76 321.92 623.36 320.42 623.95 318.94 C 622.91 317.84 621.36 317.68 619.95 317.58 C 619.98 319.67 620.01 321.76 620.05 323.85 C 619.71 324.38 619.04 325.46 618.70 326.00 C 617.22 325.97 615.74 326.01 614.29 325.86 C 612.54 324.59 612.86 322.10 612.29 320.24 C 609.06 318.73 607.06 315.78 605.17 312.91 C 603.71 314.19 602.03 315.20 600.68 316.58 Z" />
-  </g>
-  <g id="#ffffffff">
-  <path fill="#ffffff" opacity="1.00" d=" M 600.68 316.58 C 602.03 315.20 603.71 314.19 605.17 312.91 C 607.06 315.78 609.06 318.73 612.29 320.24 C 612.86 322.10 612.54 324.59 614.29 325.86 C 615.74 326.01 617.22 325.97 618.70 326.00 C 619.04 325.46 619.71 324.38 620.05 323.85 C 620.01 321.76 619.98 319.67 619.95 317.58 C 621.36 317.68 622.91 317.84 623.95 318.94 C 623.36 320.42 622.76 321.92 622.95 323.56 C 627.39 324.88 625.53 330.68 629.01 333.00 C 629.16 335.06 628.56 337.45 629.93 339.22 C 631.17 340.43 632.72 341.24 634.15 342.21 C 634.83 342.20 636.17 342.19 636.85 342.18 C 637.02 341.39 637.38 339.81 637.56 339.02 C 639.04 339.53 640.53 340.03 642.03 340.53 C 641.80 341.82 641.57 343.11 641.33 344.40 C 641.72 344.82 642.49 345.67 642.87 346.10 C 642.92 347.31 642.99 348.54 643.07 349.76 C 644.24 351.26 645.06 352.97 645.21 354.90 C 648.14 355.98 651.36 356.23 654.06 357.92 C 658.16 360.35 663.08 359.04 667.59 359.34 C 670.08 361.81 671.82 364.87 671.07 368.52 C 668.09 368.25 664.83 367.21 662.06 368.80 C 662.30 371.27 661.77 373.68 660.04 375.54 C 660.60 378.42 663.29 379.16 665.90 379.11 C 664.60 384.03 670.61 386.28 669.80 391.06 C 670.92 392.69 671.98 394.36 673.01 396.07 C 671.53 397.71 669.92 399.21 668.26 400.67 C 669.35 402.87 670.61 404.98 671.96 407.04 C 675.82 406.93 679.99 406.32 683.39 408.65 C 685.51 408.32 687.58 408.86 689.40 409.98 C 687.57 411.48 685.28 412.10 683.04 412.66 C 680.46 411.57 677.83 410.18 674.95 410.37 C 672.32 412.09 670.67 414.92 668.43 417.09 C 669.72 419.96 671.47 424.16 668.20 426.35 C 664.35 427.21 660.79 428.82 657.95 431.63 C 655.67 430.74 653.46 429.66 651.10 428.98 C 646.64 429.38 642.31 430.65 637.89 431.35 C 633.19 425.90 628.65 420.30 624.32 414.56 C 608.15 397.06 592.23 379.31 576.05 361.82 C 575.30 355.85 577.31 350.05 579.55 344.61 C 586.24 335.01 593.27 325.64 600.68 316.58 Z" />
-  </g>
-  </svg>
-		
-	// const [{ isOver }, drop] = useDrop(() => ({
-	// 	accept: "asset",
-	// 	drop: (item) => item.facility ? socket.emit('request', { route: 'asset', action: 'remove', data: { worker: item.id, facility: item.facility } }) : console.log('nope'),
-	// 	collect: (monitor) => ({
-	// 		isOver: !!monitor.isOver(),
-	// 	}),
-	// }));
-	
-	//if (!login || !character) return (<div />);	
-	return ( 
-		<Grid
-        templateAreas={`"nav main"`}
-        gridTemplateColumns={ '30% 70%'}
-        gap='1'
-        fontWeight='bold'>
+  return (
+    <Grid
+      templateAreas={`"nav main"`}
+      gridTemplateColumns={'30% 70%'}
+      gap='1'
+      fontWeight='bold'>
 
-			<GridItem pl='2'  area={'nav'} >
-        Stuff Here too
-        {selected && <Box>
-            {selected.name}
-            <br/>
-            {selected.description}
-            {/* <Button onClick={handleScavenge} >Scavenge Here</Button> */}
+      <GridItem pl='2' area={'nav'} >
+        {selected && selected._id && <Box>
+          <h4>{selected.name}</h4>
+          <p>X: {selected.coords.x}, Y: {selected.coords.y}</p>
 
-            Stats
-            <Wrap>
-              {selected.locationStats.map(stat => (
-                <div key={stat._id} onClick={() => setSelectedStat(stat)} >
-                  <ResourceNugget value={stat.statAmount} type={`${stat.type}-stat`} selected={selectedStat == stat} />
-                </div>
-              ))}              
-            </Wrap>
+          {selected.description}
 
-            <h5>Actions </h5>
-            <VStack overflow={'auto'} >
-              {locationContracts.filter(el => el.location === selected._id).map(contract => (
-                <Contract key={contract._id} contract={contract} show/>
-              ))}                
-            </VStack>
+          <Button onClick={() => setMode('newFacility')} >New Building</Button>
+          <br />
+
+          {selected.name}' Stats
+          <br />
+
+          <StatBar selectedStat={selectedStat} setSelectedStat={setSelectedStat} globalStats={selected.locationStats} />
+
+          <h5>Actions </h5>
+          <VStack overflow={'auto'} >
+            {locationContracts.filter(el => el.location === selected._id).map(contract => (
+              <Contract key={contract._id} contract={contract} show />
+            ))}
+          </VStack>
+
+          <h5>Buildings</h5>
+          <VStack overflow={'auto'} >
+            {facilities.filter(el => el.location._id == selected._id).map(facility => (
+              <FacilityCard key={facility._id} facility={facility} />
+            ))}
+          </VStack>
+
+          <Box>
+				 	{myLocation && myLocation.subLocations && myLocation.subLocations.map(sub => 
+						<div key={sub._id}>
+							{sub.name}
+							{playersPresent.filter(el => el.subLocation === sub.name).map(player => 
+							<div key={player._id}>{player.characterName}</div>								
+								)}
+ 						</div>)}
+				</Box>
+
+
 
         </Box>}
-			</GridItem>
 
-			<GridItem pl='2' style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }} area={'main'} >
-        <HexMap locations={locations} onClick={(location) => setSelected(location)} handleHover={(location) => (!selected) ? setSelected(location) : undefined }/>         
-			</GridItem>
-		</Grid>
-	);
+        {selected && selected.x && <Box>
+          Here be dragons...
+          <br/>
+          X: {selected.x} Y: {selected.y}
+          {control && <Button onClick={() => setMode('newLocation')} >
+            New Location  
+          </Button>}
+        </Box>}
+
+      </GridItem>
+
+      <GridItem pl='2' style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }} area={'main'} >
+        {!mode && <HexMap
+          locations={locations}
+          selected={selected}
+          selectedStat={selectedStat}
+          setSelectedStat={setSelectedStat}
+          onClick={(location) => setSelected(location)}
+          handleHover={(location) => (!selected) ? setSelected(location) : undefined}
+        />}
+        {mode === 'newFacility' && <FacilityForm mode='new' location={selected} closeModal={() => { setMode(false); }} />}
+        {mode === 'newLocation' && <LocationForm mode='new' coords={selected} closeModal={() => { setMode(false); }} />}
+      </GridItem>
+    </Grid>
+  );
 }
 
 export default (LocationDashboard);

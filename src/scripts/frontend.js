@@ -251,6 +251,30 @@ function getIcon(type) {
   }
 }
 
+const calculateProgress = (options) => {
+  let forProg = 0;
+  for (let resource of options[0].resources) {
+    forProg += agendaValue(resource.type, resource.amount)
+  }
+
+  forProg += (20 * options[0]?.assets.length);
+
+  let agProg = 0;
+  for (let resource of options[1].resources) {
+    agProg += agendaValue(resource.type, resource.amount)
+  }
+
+  agProg += (20 * options[1].assets.length);
+  return forProg - agProg;
+}
+
+const agendaValue = (resource, value) => {
+  switch(resource) {
+    case 'agenda_effort': return 20 * value;
+    default: return 5 * value;
+  }
+}
 
 
-export { getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon, populateThisAccount };
+
+export { calculateProgress, getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon, populateThisAccount };

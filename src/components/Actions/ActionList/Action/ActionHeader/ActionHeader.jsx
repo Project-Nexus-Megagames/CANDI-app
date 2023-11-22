@@ -14,7 +14,7 @@ function ActionHeader({action, time, toggleEdit, creator, handleDelete, hidebutt
   const game = useSelector(state => state.gamestate);
   const myCharacter = useSelector(s => s.auth.character)
   const isDisabled = false;
-  const isAccessible = myCharacter._id === creator?._id || isControl;
+  const isAccessible = (myCharacter._id === creator?._id || isControl) && action.type !== 'Agenda';
     return (
         <Flex gap={5} align={'center'} justify={'center'} style={{ backgroundColor: getFadedColor(action.type) }} >
           <Box

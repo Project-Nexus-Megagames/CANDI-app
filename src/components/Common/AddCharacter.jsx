@@ -26,12 +26,12 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
       <Popover placement='right-start' isLazy>
         <PopoverTrigger>
           <Center className="styleCenter"  >
-            <Button variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Collaborators</Button>
+            <Button variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Character</Button>
           </Center>
           
         </PopoverTrigger>
         <Portal>
-          <PopoverContent bg='#343a40' minWidth={'30vw'}>
+          <PopoverContent bg='#343a40' minWidth={'30vw'} style={{ zIndex: 99989 }}>
             <PopoverArrow />
             <PopoverHeader><Input style={{ width: '94%' }} value={fill} onChange={(e)=> setFilter(e.target.value)} placeholder={`${characters.length} characters`} /></PopoverHeader>
             <PopoverCloseButton />

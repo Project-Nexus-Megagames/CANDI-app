@@ -53,6 +53,7 @@ const slice = createSlice({
     characterSubLocationUpdated: (characters, action) => {
 			console.log(`${action.type} Dispatched`);
 			const index = characters.list.findIndex((el) => el._id === action.payload._id);
+      console.log(characters.list[index].subLocation)
 			if (index > -1) characters.list[index].subLocation = action.payload.subLocation;
 		},
   },
@@ -95,11 +96,6 @@ export const getNonPlayerCharacters = createSelector(
   (characters) => characters.filter((char) => char.tags.some((el) => el === "NPC"))
 );
 
-export const getGods = createSelector(
-  (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "God"))
-);
-
 export const getControl = createSelector(
   (state) => state.characters.list,
   (characters) => characters.filter((char) => char.tags.some((el) => el === "Control"))
@@ -113,6 +109,12 @@ export const getPublicCharacters = createSelector(
 export const getPrivateCharacters = createSelector(
   (state) => state.characters.list,
   (characters) => characters.filter((char) => !char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
+export const getPlayersPresent = createSelector(
+	(state) => state.characters.list,
+	(state) => state.auth.character,
+	(characters, myCharacter) => characters.filter((char) => char.location?._id === myCharacter.location?._id)
 );
 
 export const getCharacterById = (charId) =>

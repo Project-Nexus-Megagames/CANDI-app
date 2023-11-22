@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { setCharacter, signOut } from '../../redux/entities/auth';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
-import { Box, Button, Container, Divider, Flex, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, VStack } from "@chakra-ui/react";
-import { ArrowBackIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { Box, Button, ButtonGroup, Container, Divider, Flex, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Progress, VStack } from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import usePermissions from "../../hooks/usePermissions";
 import { useLocation, useNavigate } from 'react-router';
 import socket from '../../socket';
@@ -11,6 +11,11 @@ import { toggleDuck } from '../../redux/entities/gamestate';
 import UserList from './UserList';
 import { getCharAccount } from '../../redux/entities/accounts';
 import ResourceNugget from '../Common/ResourceNugget';
+import { BsGearFill } from 'react-icons/bs';
+import { clockRequested } from '../../redux/entities/clock';
+import { FaEmpire } from 'react-icons/fa';
+import { PauseOutline, PlayOutline } from '@rsuite/icons';
+import { getFadedColor } from '../../scripts/frontend';
 
 const Navigation = (props) => {
   const navigate = useNavigate();
@@ -24,9 +29,17 @@ const Navigation = (props) => {
   const [selectedChar, setSelectedChar] = React.useState(myChar._id);
   const currentCharacter = useSelector(getCharacterById(selectedChar));
   const allCharacters = useSelector(state => state.characters.list);
+  const loading = useSelector(s => s.gamestate.loading)
   const { isControl } = usePermissions();
   const gamestate = useSelector(state => state.gamestate)
+  const clock = useSelector(s => s.clock)
   const myAccout = useSelector(getCharAccount);
+
+
+  const [seconds, setSeconds] = React.useState(0);
+  const [minutes, setMinutes] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
+  const max = 900;
 
   useEffect(() => {
     renderTime();
@@ -39,6 +52,29 @@ const Navigation = (props) => {
   useEffect(() => {
     reduxAction(setCharacter(currentCharacter));
   }, [currentCharacter]);
+
+  useEffect(() => { //equivalent of comonentDidMount
+    if (clock) {
+      const interval = setInterval(() => {
+        let countDownDate = new Date(clock.nextTick).getTime();
+        const now = new Date().getTime();
+
+        let distance = countDownDate - now;
+        const second = Math.floor((distance % (1000 * 120)) / 1000);
+        const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+
+
+        if (second <= 0 || clock.paused) {
+          clearInterval(interval);
+        }
+        else {
+          setSeconds(second);
+          setMinutes(minutes);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [clock,])
 
   const handleCharChange = (charId) => {
     console.log('charID', charId);
@@ -67,6 +103,36 @@ const Navigation = (props) => {
     navigate('/login');
   };
 
+
+  const speaker = (
+    <div >
+      {true &&
+        <ButtonGroup>
+          <IconButton disabled icon={<ArrowLeftIcon />} onClick={() => socket.emit('request', { route: 'clock', action: 'revert' })} />
+          <IconButton
+            disabled={clock.paused}
+            icon={<PauseOutline />}
+            onClick={() => {
+              socket.emit('request', { route: 'clock', action: 'pause' });
+              setOpen(false);
+            }}
+          />
+          <IconButton
+            disabled={!clock.paused}
+            icon={<PlayOutline />}
+            onClick={() => {
+              socket.emit('request', { route: 'clock', action: 'play' });
+              setOpen(false);
+            }}
+          />
+          <IconButton icon={<ArrowRightIcon />} onClick={() => socket.emit('request', { route: 'clock', action: 'skip' })} />
+          <Button onClick={() => setOpen(false) }>
+            Close
+          </Button>
+        </ButtonGroup>}
+    </div>
+  );
+
   return (
     <Container
       style={{
@@ -87,7 +153,6 @@ const Navigation = (props) => {
       >
         <Box
           justify="start"
-          flex={1}
           display='flex'
           marginRight='auto'
         >
@@ -112,9 +177,52 @@ const Navigation = (props) => {
               </MenuList>
             </Menu>}
         </Box>
+
+        <Box 
+          flex={2}
+        style={{ width: '70%', margin: '8px', }}
+        >
+          {<div className='styleCenterLeft'>
+            {minutes}:{seconds <= 9 && <t>0</t>}{seconds} ~
+            {/* {new Date(clock.gametime).toDateString()} {new Date(clock.gametime).getHours()}:00  */}
+            Tick {clock.tickNum}
+            <BsGearFill
+              spin={clock.loading.toString()}
+              onClick={() => { reduxAction(clockRequested()); socket.emit('request', { route: 'clock', action: 'getState' }); }}
+              style={{ cursor: 'pointer', marginLeft: "5px" }}
+            />
+
+            <Popover 
+            isOpen={open}
+            closeOnBlur
+            openDelay={200} 
+            hasArrow  
+            placement='right'>
+              <PopoverTrigger>
+                <FaEmpire
+                  spin={clock.loading.toString()}
+                  onClick={() => { setOpen(true); socket.emit('request', { route: 'clock', action: 'getState' }); }}
+                  style={{ cursor: 'pointer', marginLeft: "5px" }}
+                />
+              </PopoverTrigger>
+              <PopoverContent backgroundColor={getFadedColor('background')} >
+              {minutes}:{seconds} ~
+                {speaker}
+              </PopoverContent>
+            </Popover>
+
+          </div>}
+          {<Progress
+            isIndeterminate={loading}
+            value={loading ? 100 : (seconds + (minutes * 60)) * 100 / max}
+            colorScheme={clock.paused ? 'whiteAlpha' : loading ? 'gray' : ((seconds + (minutes * 60)) * 100 / max >= 66) ? "cyan" : ((seconds + (minutes * 60)) * 100 / max >= 33 ? "yellow" : "red")}
+            style={{ width: '30%', }} />}
+
+        </Box>
+
         <Box
           display='flex'
-          flex={3}
+          flex={2}
         >
           <Box
             justifyContent={'center'}
@@ -124,8 +232,9 @@ const Navigation = (props) => {
             width={'100%'}
           >
             <p>Round: {props.gamestate.round} </p>
+            {/* <p>Round: {props.gamestate.round} </p>
             {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
-            {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
+            {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>} */}
             {myAccout &&
               <div className='styleCenter'>
                 {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"} />))}
@@ -134,7 +243,7 @@ const Navigation = (props) => {
         </Box>
 
         <Box
-          flex={1}
+          flex={2}
           display='flex'
           marginLeft='auto'
           justifyContent='right'

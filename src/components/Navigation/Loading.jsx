@@ -130,15 +130,15 @@ const corps = [
     slogan: 'As the first generation born in Stockpot City, these goblins adopted the Rat as their newly formed faction’s symbol to reflect their urban upbringings.',
   },
   {
-    name: "Raccoon Party",
-    slogan: 'Originally a band of sentient raccoon refugees, the Racoon Party has turned into a diverse coalition of races and ideologies.',
+    name: "Mimic Party",
+    slogan: 'Originally a band of sentient raccoon refugees, the Mimic Party has turned into a diverse coalition of races and ideologies.',
   },
   {
     name: "Surface Delegation",
     slogan: 'Recently, a delegation of surface dwellers have come to the city, composed of Humans, Dwarves, and even some Elves.',
   },
   {
-    name: "Underworld Faction",
+    name: "Underkin Faction",
     slogan: 'After the defeat of The Underlord, their vast evil empire shattered into a diaspora of competing factions. Many of those eventually migrated to the city, forming a large conglomerate of loosely aligned monsters with one unifying goal: resist the influence of the surface in the matters of the underground.',
   },
 ]

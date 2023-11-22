@@ -79,7 +79,6 @@ function ActionDifficulty({action, submission}) {
     return (
     <Box justifyItems={'center'} >
       <WordDivider word={`Difficulty: ${submission.difficulty}`}/>
-      <Code colorScheme={prob > 80 ? 'green' : prob > 40 ? 'yellow' : 'red'} children={`${prob}% Chance of success`} />
       {isControl && <Button onClick={() => setMode(!mode)} >{mode ? "Cancel" : "Edit"}</Button> }  
 
       {mode && <Center>
@@ -87,8 +86,9 @@ function ActionDifficulty({action, submission}) {
         <Button onClick={handleDifficulty} >Submit {stats(submission.assets, number)}% </Button>           
       </Center>}
       
-      {myCharacter?._id === action.creator._id && action.results.length === 0 && <Center>
-          <Button onClick={handleRoll} variant={'solid'} color={'green'} >ROLL THEM DICE</Button>
+      {action.type !== 'Agenda' && myCharacter?._id === action.creator._id && action.results.length === 0 && <Center>        
+        <Code colorScheme={prob > 80 ? 'green' : prob > 40 ? 'yellow' : 'red'} children={`${prob}% Chance of success`} />
+        <Button onClick={handleRoll} variant={'solid'} color={'green'} >ROLL THEM DICE</Button>
       </Center>}
     </Box>
     );

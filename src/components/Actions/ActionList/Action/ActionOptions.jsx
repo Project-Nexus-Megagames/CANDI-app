@@ -17,11 +17,12 @@ function ActionOptions({ options, actionType, action }) {
     const assetList = useSelector(state => state.assets.list);
     const {isControl} = usePermissions();
     const [description, setDescription] = useState(options.description);
-    const [name, setName] = useState(options.name);
     const [mode, setMode] = React.useState(false);
     const [slots, setSlots] = React.useState([]);
+
     const teamAccount = useSelector(getTeamAccount);
     const charAccount = useSelector(getCharAccount);
+
     const myTeam = useSelector(s=> s.auth.team);
     const account = useSelector(s => s.accounts.list[0]);
     const accounts = useSelector(s => s.accounts.list);
@@ -49,19 +50,6 @@ function ActionOptions({ options, actionType, action }) {
       }
       setSlots(arr);
     }
-
-    const handleEdit = (incoming, type) => {
-      switch (type) {
-        case 'name':
-          setName(incoming)
-          break;
-        case 'description':
-          setDescription(incoming)
-          break;
-        default:
-          console.log('UwU Scott made an oopsie doodle!');
-      }
-    };
 
     const submitSupport = async (data) => {
       socket.emit('request', {route: 'action', action: 'support', 
@@ -130,7 +118,6 @@ function ActionOptions({ options, actionType, action }) {
                         tooltip={`You are '${options[index]?.name}' this agemda passing`}
                         markdown={options[index]?.description}
                         data={description}
-                        handleEdit={handleEdit}
                         edit={false}
                       />
                       {!mode && <div style={{ textAlign: 'center' }} >
