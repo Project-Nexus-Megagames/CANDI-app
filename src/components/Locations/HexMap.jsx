@@ -1,4 +1,4 @@
-import { Button, Center, Divider, Wrap } from '@chakra-ui/react';
+import { Button, ButtonGroup, Center, Divider, Wrap } from '@chakra-ui/react';
 import { MapInteractionCSS } from 'react-map-interaction';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import StatBar from './StatBar';
 import { Minus, Plus } from '@rsuite/icons';
 
 const HexMap = (props) => {
+  const { mode, setMode } = props;
   const [gStats, setGStats] = React.useState([]);
   const locations = useSelector(s => s.locations.list);
   const globalStats = useSelector(s => s.gameConfig.globalStats);
@@ -80,14 +81,22 @@ const HexMap = (props) => {
   return (
     <div style={{}}>
       <h2>Stockpot City</h2>
-      <b>Global Stats</b>
-      <StatBar selectedStat={props.selectedStat} setSelectedStat={props.setSelectedStat} globalStats={gStats} />
-      <hr />
-      <div className="container">
-      </div>
+      <ButtonGroup>
+        {['Stats', 'Actions', 'Characters'].map(el => (
+          <Button colorScheme='blue' key={el} variant={mode !== el ? 'ghost' : 'solid'} onClick={() => setMode(el)} >{el}</Button>
+        ))}
+        
+      </ButtonGroup>
 
-      <MapInteractionCSS
-        minScale={1}
+      {mode && mode === 'Stats' && <div>
+        <b>Global Stats</b>
+        <StatBar selectedStat={props.selectedStat} setSelectedStat={props.setSelectedStat} globalStats={gStats} />        
+      </div>}
+
+      <hr />
+
+      {mode !== 'newFacility' && mode !== 'newLocation' && <MapInteractionCSS
+        minScale={0.5}
         maxScale={4}
         value={value}
         onChange={(value) => setValue(value)}
@@ -95,7 +104,7 @@ const HexMap = (props) => {
         showControls={true}
         plusBtnContents={<Plus />}
         minusBtnContents={<Minus />}>
-        <div className='container' >
+        <div >
           {([4, 5, 6, 7, 6, 5, 4]).map((rowLength, y) => (
             <div className='row' key={y}>
               {[...Array(rowLength)].map((_thing, x) => {
@@ -114,9 +123,9 @@ const HexMap = (props) => {
                     id={loc?._id}
                     style={{
                       // opacity: (loc && loc._id === props.selected?._id) ? 0.7 : 'inherit',
-                      backgroundImage: loc ?
-                        "url(" + tiles[y+x % 7] + ")" :
-                        "inherit"
+                      backgroundImage: true ?
+                        "url(" + tiles[hash] + ")" :
+                        "inherit",
                     }} >♦
                     <div className='container' >
                       <t>{loc?.name}</t>
@@ -131,10 +140,7 @@ const HexMap = (props) => {
           ))}
 
         </div>
-      </MapInteractionCSS>
-
-
-
+      </MapInteractionCSS>}
     </div>
   );
 }

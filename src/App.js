@@ -43,6 +43,8 @@ import Loading from "./components/Navigation/Loading";
 import CharacterStats from "./components/StatDisplays/CharacterStats";
 import LocationDashboard from "./components/Locations/LocationDashboard";
 import Trade from "./components/Trade/Trade";
+import { alertAdded } from "./redux/entities/alerts";
+import store from "./redux/store";
 
 // React App Component
 initUpdates();
@@ -99,6 +101,7 @@ const App = (props) => {
               id: data.type,
               title: data.message,
             });
+            store.dispatch(alertAdded(data));
             break;
           case "article":
             toast({

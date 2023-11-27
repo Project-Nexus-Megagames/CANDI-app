@@ -16,6 +16,7 @@ import { clockRequested } from '../../redux/entities/clock';
 import { FaEmpire } from 'react-icons/fa';
 import { PauseOutline, PlayOutline } from '@rsuite/icons';
 import { getFadedColor } from '../../scripts/frontend';
+import { AlertList } from './AlertList';
 
 const Navigation = (props) => {
   const navigate = useNavigate();
@@ -248,7 +249,8 @@ const Navigation = (props) => {
           marginLeft='auto'
           justifyContent='right'
         >
-          {isControl && <UserList />}
+          {/* {isControl && <UserList />} */}
+          <AlertList />
           {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
           {isControl && (
             <Popover>

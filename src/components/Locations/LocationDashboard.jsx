@@ -31,12 +31,12 @@ const LocationDashboard = (props) => {
 
   const [levels, setLevels] = React.useState([]);
   const [mode, setMode] = React.useState(false);
-  const [selected, setSelected] = React.useState(false);
+  const [selectedLocation, setSelectedLocation] = React.useState(false);
   const [selectedStat, setSelectedStat] = React.useState(false);
 
   useEffect(() => {
-    if (selected && typeof selected === "string") {
-      setSelected(locations.find(el => el._id === selected._id))
+    if (selectedLocation && typeof selectedLocation === "string") {
+      selectedLocation(locations.find(el => el._id === selectedLocation._id))
     }
   }, [locations]);
 
@@ -47,7 +47,7 @@ const LocationDashboard = (props) => {
   }, [props.login, navigate])
 
   const handleScavenge = () => {
-    socket.emit('request', { route: 'location', action: 'scavenge', data: { character: myCharacter._id, location: selected._id } })
+    socket.emit('request', { route: 'location', action: 'scavenge', data: { character: myCharacter._id, location: selectedLocation._id } })
   };
 
   return (
@@ -58,35 +58,39 @@ const LocationDashboard = (props) => {
       fontWeight='bold'>
 
       <GridItem pl='2' area={'nav'} >
-        {selected && selected._id && <Box>
-          <h4>{selected.name}</h4>
-          <p>X: {selected.coords.x}, Y: {selected.coords.y}</p>
+        {selectedLocation && selectedLocation._id && <Box>
+          <h4>{selectedLocation.name}</h4>
+          <p>X: {selectedLocation.coords.x}, Y: {selectedLocation.coords.y}</p>
 
-          {selected.description}
+          {selectedLocation.description}
 
           <Button onClick={() => setMode('newFacility')} >New Building</Button>
           <br />
 
-          {selected.name}' Stats
+          {mode === 'Stats' && <Box>          
+            {selectedLocation.name}' Stats
           <br />
+          <StatBar selectedStat={selectedStat} setSelectedStat={setSelectedStat} globalStats={selectedLocation.locationStats} />
+          </Box>}
 
-          <StatBar selectedStat={selectedStat} setSelectedStat={setSelectedStat} globalStats={selected.locationStats} />
+          {mode === 'Actions' &&<Box>
+            <h5>Actions </h5>
+            <VStack overflow={'auto'} >
+              {locationContracts.filter(el => el.location === selectedLocation._id).map(contract => (
+                <Contract key={contract._id} contract={contract} show />
+              ))}
+            </VStack>
+          </Box>}
 
-          <h5>Actions </h5>
-          <VStack overflow={'auto'} >
-            {locationContracts.filter(el => el.location === selected._id).map(contract => (
-              <Contract key={contract._id} contract={contract} show />
-            ))}
-          </VStack>
 
           <h5>Buildings</h5>
           <VStack overflow={'auto'} >
-            {facilities.filter(el => el.location._id == selected._id).map(facility => (
+            {facilities.filter(el => el.location._id == selectedLocation._id).map(facility => (
               <FacilityCard key={facility._id} facility={facility} />
             ))}
           </VStack>
 
-          <Box>
+          {mode === 'Characters' && <Box>
 				 	{myLocation && myLocation.subLocations && myLocation.subLocations.map(sub => 
 						<div key={sub._id}>
 							{sub.name}
@@ -94,16 +98,16 @@ const LocationDashboard = (props) => {
 							<div key={player._id}>{player.characterName}</div>								
 								)}
  						</div>)}
-				</Box>
+				</Box>}
 
 
 
         </Box>}
 
-        {selected && selected.x && <Box>
+        {selectedLocation && selectedLocation.x && <Box>
           Here be dragons...
           <br/>
-          X: {selected.x} Y: {selected.y}
+          X: {selectedLocation.x} Y: {selectedLocation.y}
           {control && <Button onClick={() => setMode('newLocation')} >
             New Location  
           </Button>}
@@ -111,17 +115,19 @@ const LocationDashboard = (props) => {
 
       </GridItem>
 
-      <GridItem pl='2' style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }} area={'main'} >
-        {!mode && <HexMap
+      <GridItem pl='2' style={{ height: 'calc(100vh - 78px)', overflow: 'clip', width: '99%' }} area={'main'} >
+        {<HexMap
           locations={locations}
-          selected={selected}
+          selectedLocation={selectedLocation}
           selectedStat={selectedStat}
           setSelectedStat={setSelectedStat}
-          onClick={(location) => setSelected(location)}
-          handleHover={(location) => (!selected) ? setSelected(location) : undefined}
+          onClick={(location) => setSelectedLocation(location)}
+          mode={mode}
+          setMode={setMode}
+          handleHover={(location) => (!selectedLocation) ? setSelectedLocation(location) : undefined}
         />}
-        {mode === 'newFacility' && <FacilityForm mode='new' location={selected} closeModal={() => { setMode(false); }} />}
-        {mode === 'newLocation' && <LocationForm mode='new' coords={selected} closeModal={() => { setMode(false); }} />}
+        {mode === 'newFacility' && <FacilityForm mode='new' location={selectedLocation} closeModal={() => { setMode(false); }} />}
+        {mode === 'newLocation' && <LocationForm mode='new' coords={selectedLocation} closeModal={() => { setMode(false); }} />}
       </GridItem>
     </Grid>
   );

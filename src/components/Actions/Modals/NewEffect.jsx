@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import socket from '../../../socket';
 import _ from 'lodash';
 import {	getCharacterById,	getMyCharacter,	getUnlockedCharacters} from '../../../redux/entities/characters';
 import WordDivider from '../../Common/WordDivider';
@@ -10,6 +9,7 @@ import CheckerPick from '../../Common/CheckerPick';
 import SelectPicker from '../../Common/SelectPicker';
 import AssetForm from '../../Common/AssetForm';
 import CharacterListItem from '../../Common/CharacterListItem';
+import socket from '../../../socket';
 
 const NewEffects = (props) => {
 	const [type, setType] = useState('');
@@ -182,7 +182,6 @@ const NewEffects = (props) => {
 				effector: myChar._id,
 				loggedInUser
 			};
-      // console.log(data)
 			socket.emit('request', { route: 'action', action: 'effect', data });
 		} catch (err) {
 			// Alert.error(`Error: ${err.body} ${err.message}`, 5000);
@@ -300,13 +299,13 @@ const NewEffects = (props) => {
 				</ModalBody>
 
         <ModalFooter>
-          <Button
+          {type !== 'new' && <Button
             disabled={type === ''}
             onClick={handleSubmit}
             variant="solid"
           >
             Confirm
-          </Button>
+          </Button>}
           <Button
             onClick={handleExit}
             variant="subtle"

@@ -10,6 +10,7 @@ import socket from '../../socket';
 import { maxBy } from 'lodash';
 import WordDivider from '../WordDivider';
 import { useNavigate } from 'react-router-dom';
+import { getCharAccount } from '../../redux/entities/accounts';
 
 const News = (props) => {
 	const navigate = useNavigate();
@@ -30,13 +31,15 @@ const News = (props) => {
 	const [round, setRound] = useState(gamestate.round);
 	const [maxRound, setMaxRound] = useState(gamestate.round);
 
+  const myAccout = useSelector(getCharAccount);
+
 
   if (!login) {
     navigate("/");
     return <div />;
   }
 
-	const myArticleEffort = myChar.effort?.find((el) => el.type === 'Article')?.amount;
+	const myArticleEffort = myAccout?.resources.find((el) => el.type === 'article_effort')?.amount;
 
 	const getSortedArticles = () => {
 		if (myChar.tags.some((tag) => tag.toLowerCase() === 'control')) {

@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import auth from "./entities/auth";
 import accounts from "./entities/accounts";
 import articles from "./entities/articles";
+import alerts from "./entities/alerts";
 import assets from "./entities/assets";
 import characters from "./entities/characters";
 import clock from "./entities/clock";
@@ -26,6 +27,7 @@ export default combineReducers({
   accounts,
   actions,
   articles,
+  alerts,
   assets,
   blueprints,
   characters, 
