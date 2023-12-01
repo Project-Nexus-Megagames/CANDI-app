@@ -20,7 +20,7 @@ const Login = (props) => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		let token = localStorage.getItem('candi-token');
+		let token = localStorage.getItem('candi-token-new');
 		// console.log('token ' + token);
 		// console.log(token);
 
@@ -45,8 +45,8 @@ const Login = (props) => {
 
 	const onSubmit = async () => {
 		remember
-			? localStorage.setItem('candi-token', login)
-			: localStorage.removeItem('candi-token');
+			? localStorage.setItem('candi-token-new', login)
+			: localStorage.removeItem('candi-token-new');
 		reduxAction(loginUser({ user: login, password }));
 	};
 
