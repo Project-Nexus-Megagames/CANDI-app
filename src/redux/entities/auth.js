@@ -27,7 +27,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      localStorage.setItem('candi-token', jwt);
+      localStorage.setItem('candi-token-new', jwt);
       const user = jwtDecode(jwt);
       console.log(user);
 
@@ -67,7 +67,7 @@ const slice = createSlice({
     },
     signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('candi-token');
+      localStorage.removeItem('candi-token-new');
       auth.user = null;
       auth.login = false;
       auth.loading = false;
