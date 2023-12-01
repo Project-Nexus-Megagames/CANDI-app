@@ -92,7 +92,7 @@ export const { authReceived, loginRequested, authRequestFailed, loginSocket, cle
 export default slice.reducer; // Reducer Export
 
 // Action Creators (Commands)
-const url = 'https://nexus-central-server.herokuapp.com/auth';
+const url = 'https://nexus-server.onrender.com/auth';
 
 // aircraft Loader into state
 export const loginUser = (payload) => (dispatch, getState) => {
