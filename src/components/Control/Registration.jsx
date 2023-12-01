@@ -16,7 +16,7 @@ const Registration = (props) => {
 	useEffect(() => {
 		try{
 			const fetchData = async () => {
-				const {data} = await axios.get(`https://nexus-central-server.herokuapp.com/api/users/`);
+				const {data} = await axios.get(`https://nexus-server.onrender.com/api/users/`);
 				setUsers(data);
 			}
 
