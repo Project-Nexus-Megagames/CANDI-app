@@ -84,15 +84,16 @@ const ActionForm = (props) => {
       collaborators,
       actionID: actionID
 		};
-		setActionType(false);
-		setDescription('');
-		setIntent('');
-		setName('');
-		setResource([]);
-		setCollaborators([]);
-
-    handleSubmit(data)
 		props.closeNew();
+    //handleSubmit(data)
+
+		// setActionType(false);
+		// setDescription('');
+		// setIntent('');
+		// setName('');
+		// setResource([]);
+		// setCollaborators([]);
+
 	};
 
 	function isDisabled(effort) {
@@ -123,7 +124,7 @@ const ActionForm = (props) => {
                 gameConfig.actionTypes.filter(el => el).map((aType) => (
                   <Tooltip key={aType?.type} openDelay={50} placement='top' label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType?.type} Left'`}</b>}>
                     <Button
-                      style={{ backgroundColor: actionType?.type === aType?.type ? getFadedColor(`${aType?.type}`) : '#273040' }}
+                      style={{ backgroundColor: actionType?.type === aType?.type ? getFadedColor(`${aType?.type}`) : '#273040', }}
                       onClick={() => {
                         setActionType(aType);
                         setResource([]);

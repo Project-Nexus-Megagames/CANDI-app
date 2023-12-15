@@ -26,6 +26,7 @@ import usePermissions from '../../hooks/usePermissions';
 import { CandiWarning } from '../Common/CandiWarning';
 import { openLink } from '../../scripts/frontend';
 import NoCharacter from './NoCharacter';
+import CharacterCreation from '../MyCharacters/CharacterCreation';
 
 const HomePage = (props) => {
 	const navigate = useNavigate();
@@ -38,7 +39,7 @@ const HomePage = (props) => {
 	const [loaded, setLoaded] = React.useState(false);
 	const [selectedChar, setSelectedChar] = React.useState('');
 	const tempCharacter = useSelector(getCharacterById(selectedChar));
-  const {isControl} = usePermissions(); 
+  const {isControl} = usePermissions();
 	const [rand, setRand] = React.useState(Math.floor(Math.random() * 10000));
   const columns = useBreakpointValue({base: 1, lg: 3, md: 2, sm: 1});
 
@@ -59,6 +60,8 @@ const HomePage = (props) => {
 		<React.Fragment>
       {!loadComplete && <Loading />}      
 			{loadComplete && (!myCharacter || !team) && <NoCharacter />}
+
+      {myCharacter && <CharacterCreation />}
 
       {loadComplete && myCharacter && team && 
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        

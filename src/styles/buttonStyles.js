@@ -23,7 +23,7 @@ const buttonStyles = {
 		outline: {
 			_hover: {
 				bg: 'gray.500',
-				color: 'gray.200'
+				color: 'white'
 			}
 		},
 		secondary: {

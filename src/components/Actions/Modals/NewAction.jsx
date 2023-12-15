@@ -82,11 +82,11 @@ const NewAction = (props) => {
     
 		socket.emit('request', { route: 'action', action: 'create', data });
 
-		// setDescription('');
-		// setIntent('');
-		// setName('');
-		// setAssets([]);
-		// props.closeNew();
+		setDescription('');
+		setIntent('');
+		setName('');
+		setAssets([]);
+		props.closeNew();
 	};
 
   const isDisabled = () => {
