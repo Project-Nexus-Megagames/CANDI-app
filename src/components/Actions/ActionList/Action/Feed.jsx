@@ -1,5 +1,5 @@
-import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer } from "@chakra-ui/react";
-import React from "react";
+import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer, StatDownArrow } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import WordDivider from "../../../Common/WordDivider";
 import NewResult from "../../Modals/NewResult";
 import NewComment from "../../Modals/NewComment";
@@ -20,17 +20,45 @@ function Feed({action}) {
     const {isControl} = usePermissions();
 
     const [mode, setMode] = React.useState(false);
+    const [feed, setFeed] = React.useState([]);
 
-    const list = [...action.results,
-        ...action.effects,
-        ...action.comments, 
-        ...action.ice, 
-        ...action.contracts, 
-    ].sort((a, b) => {
-      let da = new Date(a.createdAt),
-        db = new Date(b.createdAt);
-      return db - da;
-    })
+    useEffect(() => {
+      let list = [];
+      for (const comment of action.comments) {
+        sortThisIn(comment, list)
+      }
+
+      for (const comment of action.results) {
+        sortThisIn(comment, list)
+      }
+
+      for (const comment of action.effects) {
+        sortThisIn(comment, list)
+      }
+
+
+      for (const comment of action.submissions) {
+        sortThisIn(comment, list)
+      }
+
+      if (!isControl) {
+        list = list.filter(el => el.status === 'Public' || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
+      }
+
+      setFeed(list)
+    }, [ action.comments, action.results, action.effects, action.submissions, ]);
+
+    function sortThisIn(incoming, targetArray) {
+      let index = 0
+      for(const item of targetArray) {
+        if (item.createdAt > incoming.createdAt) {
+          break;
+        }
+        index++;
+      }
+      targetArray.splice(index, 0, incoming);
+      return;      
+    }
 
     const closeIt = () => {
         setMode(false);
@@ -45,9 +73,24 @@ function Feed({action}) {
         <Box
             marginTop={'1rem'}
         >
-            <WordDivider word={'Feed'}/>
-            {list.map((item) => 
-              <div key={item._id}>
+          <WordDivider word={
+              <div>
+                {feed.length > 0 && <Button 
+                leftIcon={<StatDownArrow />}
+                rightIcon={<StatDownArrow />}
+                variant='ghost'
+                onClick={() => 
+                {
+                  const element = document.getElementById(feed[feed.length - 1]._id);
+                  element.scrollTop = element.scrollIntoView(true);
+                }
+              } >Feed</Button>}
+              </div>
+            }/>
+            
+
+            {feed.map((item) => 
+              <div key={item._id} id={item._id}>
                 <Center height='20px'>
                   <Divider orientation='vertical' style={{ color: 'red', margin: '100px' }} />
                 </Center>

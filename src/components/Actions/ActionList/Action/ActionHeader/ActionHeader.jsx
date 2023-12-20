@@ -6,6 +6,7 @@ import { AddCharacter } from "../../../../Common/AddCharacter";
 import { useSelector } from "react-redux";
 import socket from "../../../../../socket";
 import usePermissions from "../../../../../hooks/usePermissions";
+import HexLocation from "../../../../Locations/HexLocation";
 
 function ActionHeader({action, time, toggleEdit, creator, handleDelete, hidebuttons}) {
   const {isControl, characterId} = usePermissions();
@@ -82,7 +83,6 @@ function ActionHeader({action, time, toggleEdit, creator, handleDelete, hidebutt
                   {time}
               </Box>
           </Box>
-
         </Flex>
     );
 }

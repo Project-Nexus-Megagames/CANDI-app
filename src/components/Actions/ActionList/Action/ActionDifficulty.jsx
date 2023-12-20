@@ -77,7 +77,7 @@ function ActionDifficulty({action, submission}) {
     const prob = stats(submission.assets, submission.difficulty);
 
     return (
-    <Box justifyItems={'center'} >
+    <Box justifyItems={'center'} width={"fit-content"} >
       <WordDivider word={`Difficulty: ${submission.difficulty}`}/>
       {isControl && <Button onClick={() => setMode(!mode)} >{mode ? "Cancel" : "Edit"}</Button> }  
 

@@ -7,7 +7,7 @@ import { getFadedColor } from "../../../../scripts/frontend";
 
 function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data }) {
     return (
-        <Box style={{ backgroundColor: getFadedColor('card', 0.5) }} >
+        <Box style={{ backgroundColor: getFadedColor('card', 0.5), width: '100%' }} >
             <WordDivider
                 word={header}
                 tooltip={tooltip}

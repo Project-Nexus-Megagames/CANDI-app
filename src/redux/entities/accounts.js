@@ -79,7 +79,7 @@ export const loadAccounts = () => (dispatch, getState) => {
 export const getTeamAccount = createSelector(
     state => state.accounts.list.filter(el => el.team),
     state => state.auth.team,
-    (accounts, team) => accounts.find(account => account.team._id === team?._id) || undefined
+    (accounts, team) => accounts.find(account => account.team?._id === team?._id) || undefined
 );
 
 export const getCharAccount = createSelector(

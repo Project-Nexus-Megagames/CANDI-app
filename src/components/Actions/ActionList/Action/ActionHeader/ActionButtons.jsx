@@ -1,7 +1,7 @@
 import React from "react";
 import usePermissions from "../../../../../hooks/usePermissions";
 import { useSelector } from "react-redux";
-import { Box, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from "@chakra-ui/react";
 import { HiPencilAlt, HiSave, HiTrash } from 'react-icons/hi';
 import socket from "../../../../../socket";
 import { CandiWarning } from "../../../../Common/CandiWarning";
@@ -66,7 +66,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
                         marginTop='0.25rem'
                         aria-label={'Edit Action'}
                     />}
-                    {edit && <IconButton
+                    {edit && <Button
                         disabled={isDisabled}
                         size="sm"
                         onClick={(e) => {
@@ -75,10 +75,11 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
                         }}
                         colorScheme="green"
                         variant={'solid'}
-                        icon={<Icon as={HiSave}/>}
+                        leftIcon={<Icon as={HiSave}/>}
                         marginTop='0.25rem'
                         aria-label={'Edit Action'}
-                    />}
+
+                    >Submit</Button>}
                     {!edit && <IconButton
                         disabled={isDisabled || edit}
                         size="sm"
@@ -97,7 +98,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
                         label='Cancel'
                         aria-label='Cancel tooltip'
                       >
-                        <IconButton
+                        <Button
                           size="sm"
                           onClick={(e) => {
                             toggleEdit(action)
@@ -105,10 +106,10 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
                           }}
                           backgroundColor="red"
                           variant={'solid'}
-                          icon={<Icon as={CloseIcon}/>}
+                          rightIcon={<Icon as={CloseIcon}/>}
                           marginTop='0.25rem'
                           aria-label={'Delete Action'}
-                        />                        
+                        >Cancel</Button>                        
                       </Tooltip>}
                 </ButtonGroup>
             )}

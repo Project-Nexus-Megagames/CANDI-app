@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AccordionItem, AccordionPanel, Box, Button, ButtonGroup, Center, Flex } from "@chakra-ui/react";
+import { AccordionItem, AccordionPanel, Box, Button, ButtonGroup, Center, Flex, HStack, Stack, Wrap } from "@chakra-ui/react";
 import ActionHeader from "./ActionHeader/ActionHeader";
 import ActionResources from "./ActionResources";
 import ActionMarkdown from "./ActionMarkdown";
@@ -11,6 +11,9 @@ import { getFadedColor, getTime } from '../../../../scripts/frontend';
 import ActionOptions from './ActionOptions';
 import { useSelector } from 'react-redux';
 import ActionDifficulty from './ActionDifficulty';
+import HexLocation from '../../../Locations/HexLocation';
+import ActionForm from '../../Forms/ActionForm';
+import WordDivider from '../../../Common/WordDivider';
 
 const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
   const control = useSelector(state => state.auth.control);
@@ -41,17 +44,18 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = (data0) => {
     const data = {
-      id: action._id,
-      name: name,
-      tags: action.tags,
-      submission: {
-        assets: action.assets,
-        description,
-        intent
-      }
-    };
+			submission: {
+				assets: data0.assets,
+				description: data0.description,
+				intent: intent,
+        facility: data0.facility,
+        //location: data0.destination ? data0.destination : undefined,
+			},
+      ...data0
+		};
+    console.log(data)
     socket.emit('request', { route: 'action', action: 'update', data });
     setMode(false);
   };
@@ -116,25 +120,24 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                 edit={mode === 'edit'}
                 name={name}
               />}</Center>
-            <Box>
+            {mode !== 'edit' && <Box>
+
+              <Wrap align={'center'} justify={'space-evenly'} >
+                {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission} />}
+                {action.location && action.location._id && action.location.name !== "No Where" && <Box>
+                  <WordDivider word={`Location: ${action.location.name}`}/>
+                  <HexLocation location={action.location} />
+                </Box>}
+              </Wrap>
+
               <ActionMarkdown
                 header='Description'
                 tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
                 markdown={action.submission.description}
                 data={description}
                 handleEdit={handleEdit}
-                edit={mode === 'edit'}
+                edit={false}
               />
-              {/* <ActionMarkdown
-                                tooltip='An out of character explanation of what you, the player, want to happen as a result.'
-                                header='Intent'
-                                markdown={action.submission.intent}
-                                data={intent}
-                                handleEdit={handleEdit}
-                                edit={mode === 'edit'}
-                            /> */}
-
-              {(action.submission.difficulty > 0 || false) && <ActionDifficulty action={action} submission={action.submission} />}
 
               {actionType.type !== 'Agenda' && <ActionResources
                 actionType={actionType}
@@ -144,23 +147,29 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
 
               {control && actionType.type === 'Agenda' && action.options.length == 0 &&
                 <Box>
-
                   Choice Type: {choiceType} (Control Only)<br />
                   <ButtonGroup>
                     {['binary', 'multiple'].map(choice => (
                       <Button key={choice} onClick={() => setChoiceType(choice)} isDisabled={choiceType === choice} >{choice}</Button>
                     ))}
                   </ButtonGroup>
-                </Box>
-
-              }
+                </Box>}
 
               {action.options && action.options.length > 1 && <ActionOptions
                 action={action}
                 options={action.options}
                 actionType={actionType}
               />}
-            </Box>
+            </Box>}
+
+            {mode === 'edit' && <Box> 
+              <ActionForm 
+              defaultValue={{ ...action.submission, name: action.name }} 
+              handleSubmit={(action) =>handleSubmit(action)} 
+              actionType={action.type}
+              actionID={action._id} 
+              closeNew={() => setMode(false)} />
+            </Box>}
 
 
 

@@ -66,17 +66,17 @@ const ActionTable = () => {
 		}
 	}, [actions, selected]);
 
-	const renderDicePool = (submission) => {
-		const diceToRender = [];
-		const effortDice = submission.effort.amount + 'd10';
-		diceToRender.push(effortDice);
-		submission.assets.slice(0, 3).forEach((ass) => {
-			const asset = assets.find((el) => el._id === ass);
-      if (asset) diceToRender.push(asset.dice);
-			else diceToRender.push(`ERROR cannot find asset ${ass}`)
-		});
-		return diceToRender.join(', ');
-	};
+	// const renderDicePool = (submission) => {
+	// 	const diceToRender = [];
+	// 	const effortDice = submission.effort.amount + 'd10';
+	// 	diceToRender.push(effortDice);
+	// 	submission.assets.slice(0, 3).forEach((ass) => {
+	// 		const asset = assets.find((el) => el._id === ass);
+  //     if (asset) diceToRender.push(asset.dice);
+	// 		else diceToRender.push(`ERROR cannot find asset ${ass}`)
+	// 	});
+	// 	return diceToRender.join(', ');
+	// };
 
 	const renderAssets = (submission) => {
 		const assetsToRender = [];
@@ -334,9 +334,9 @@ const ActionTable = () => {
 							<GridItem overflow='hidden'>
 								<Text>{renderAssets(item.submission)}</Text>
 							</GridItem>
-							<GridItem overflow='hidden'>
+							{/* <GridItem overflow='hidden'>
 								<Text>{renderDicePool(item.submission)}</Text>
-							</GridItem>
+							</GridItem> */}
 							<GridItem overflow='hidden'>
 								<Input defaultValue={item.diceresult} onBlur={(event) => handleDiceResult(item._id, event.target.value)}></Input>
 							</GridItem>

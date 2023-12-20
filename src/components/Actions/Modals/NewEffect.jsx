@@ -33,9 +33,9 @@ const NewEffects = (props) => {
 			case 'bond':
 			case 'asset':
 				let newAsset = [];
-				for (const bond of assets.filter((el) => el.ownerCharacter === props.selected.creator._id)) {    
+				for (const bond of assets.filter((el) => el.account == props.selected.account)) {   
 					const bondData = {
-						name: `${bond.type} '${bond.name}' - (${bond.dice})`,
+						name: `${bond.type} '${bond.name}'`,
 						type: bond.type,
 						_id: bond._id
 					};
@@ -193,7 +193,7 @@ const NewEffects = (props) => {
 		if (selected) {
 			return (
 				<Box>
-          <AssetForm handleSubmit={handleSubmit} asset={selected} />
+          <AssetForm handleSubmit={handleSubmit} asset={selected} closeModal={handleExit} />
 				</Box>
 			);
 		} else {
