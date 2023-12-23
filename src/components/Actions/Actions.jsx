@@ -157,7 +157,7 @@ const Actions = (props) => {
       }
     };
 
-    const actionList = isControl ? props.filteredActions : props.myActions;
+    const actionList = true ? props.filteredActions : props.myActions;
     const smallScreen = window.innerWidth < 1000;
     return (
 			<Grid
