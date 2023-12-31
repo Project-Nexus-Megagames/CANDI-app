@@ -9,9 +9,10 @@ import { AddAsset } from './AddAsset';
 import { getTeamAssets } from '../../redux/entities/assets';
 import AssetCard from './AssetCard';
 import WordDivider from './WordDivider';
-import { getFadedColor } from '../../scripts/frontend';
+import { getFadedColor, getTextColor } from '../../scripts/frontend';
 import TeamAvatar from './TeamAvatar';
 import { CloseIcon, InfoIcon } from '@chakra-ui/icons';
+import NexusTag from './NexusTag';
 
 const SupportOffer = (props) => { //trade object
   const { actionType, onClose, onSubmit, option } = props;
@@ -92,6 +93,8 @@ useEffect(() => {
     // console.log(res)
 		return props.myAccount.resources.find(el => el.type === res)?.balance;
 	}
+
+  console.log(option)
 	return(
 		<div className='trade' style={{ width: "100%", padding: '8px', height: 'calc(100vh - 190px)', overflow: 'auto', borderColor: 'inherit', border: '2px solid', textAlign: 'center'}}>
       <h3>
@@ -147,7 +150,7 @@ useEffect(() => {
 				{disabled && <Flex style={{ minHeight: '20vh' }} justify="space-around" align={'center'} >
 
 					{disabled && resources.map((resource, index) => (
-            <Box>
+            <Box key={resource._id}>
               <ResourceNugget width='20px' fontSize={'2em'} height="150px" index={index} value={`${resource.value}`} type={resource.type} />	
             </Box>												
 					))}	
@@ -157,10 +160,18 @@ useEffect(() => {
 
 				<WordDivider word={'Assets'}></WordDivider>
 
+        Allowed:
+        <br/>
+        {option.acceptedAssets.map(tag => (
+				  	<Tag margin={'3px'} key={tag} textTransform='capitalize'  backgroundColor={getFadedColor(tag)} color={getTextColor(tag)} variant={'solid'}>
+            {tag}
+          </Tag>
+        ))}
+
         {<SimpleGrid style={{ minHeight: '20vh' }} minChildWidth='200px' spacing='20px'  align={'center'}>
           {assets && disabled && assets.length === 0 && <h5>No Assets Offered</h5>}
           {assets && assets.map((asset, index) => (
-            <Box >
+            <Box key={assets._id} >
               <AssetCard showRemove={!disabled} removeAsset={() => removeElement(index, 'asset')} height="150px" index={index} asset={asset} />
             </Box>												
 					))}	

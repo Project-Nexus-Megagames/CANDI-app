@@ -1,11 +1,9 @@
-import { Checkbox, Menu, Tag, MenuButton, MenuList, Button, MenuItem, Input, Box, VStack, IconButton, HStack } from '@chakra-ui/react';
+import { Checkbox, Menu, Tag, MenuButton, MenuList, Box, VStack, IconButton, HStack } from '@chakra-ui/react';
 import React from 'react';
 import { IoChevronDownCircleOutline } from 'react-icons/io5';
 
-function CheckerPick(props) {
-  const { data, value, onChange, placeholder, button, label } = props;
-
-  // console.log(data);
+function CheckerPick({ data, onChange, placeholder, button, label, value }) {
+  value = value || [];
 
   const handleChange = (id) => {
     if (value.some(el => el === id)) {

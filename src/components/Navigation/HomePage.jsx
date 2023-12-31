@@ -59,11 +59,11 @@ const HomePage = (props) => {
 	return (
 		<React.Fragment>
       {!loadComplete && <Loading />}      
-			{loadComplete && (!myCharacter || !team) && <NoCharacter />}
+			{loadComplete && (!myCharacter ) && <NoCharacter />}
 
       {myCharacter && <CharacterCreation />}
 
-      {loadComplete && myCharacter && team && 
+      {loadComplete && myCharacter && 
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        
 
       

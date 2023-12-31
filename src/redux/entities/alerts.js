@@ -9,13 +9,14 @@ const slice = createSlice({
   initialState: {
     list: [],
     loading: false,
-    lastFetch: null,
+    lastFetch: Date.now(),
     newalerts: 0
   },
   // Reducers - Events
   reducers: {
     alertsRequested: (alerts, action) => {
       console.log(`${action.type} Dispatched...`);
+      alerts.lastFetch = Date.now();
       alerts.loading = true;
     },
     alertsReceived: (alerts, action) => {

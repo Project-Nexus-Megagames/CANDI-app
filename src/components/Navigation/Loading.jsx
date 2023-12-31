@@ -37,7 +37,7 @@ const Loading = (props) => {
 	useEffect(() => {
 		console.log('Trigger A');
 		console.log(user);
-		if (characters.length > 0 && user && user !== undefined) {
+		if (entities.characters.list.length > 0 && user && user !== undefined) {
 			console.log('Finished Loading????');
 
 			const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
@@ -49,19 +49,20 @@ const Loading = (props) => {
       else {
         navigate('/no-character');
       }
+      reduxAction(finishLoading());
 		}
-	}, [characters]);
+	}, [characters, message]);
 
-	useEffect(() => {
-		console.log('Trigger B');
-		if (teams.length > 0 && !team && myCharacter) {
-			console.log('Finished Loading!!!!');
-			const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
-			reduxAction(setTeam(myTeam));
+	// useEffect(() => {
+	// 	console.log('Trigger B');
+	// 	if (teams.length > 0 && !team && myCharacter) {
+	// 		console.log('Finished Loading!!!!');
+	// 		const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
+	// 		reduxAction(setTeam(myTeam));
 
-			reduxAction(finishLoading());
-		}
-	}, [myCharacter, message]);
+	// 		reduxAction(finishLoading());
+	// 	}
+	// }, [myCharacter, message]);
 
   const handleLogOut = async () => {
 		reduxAction(signOut())

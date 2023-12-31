@@ -5,11 +5,13 @@ import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
 import StatBar from './StatBar';
 import { Minus, Plus } from '@rsuite/icons';
+import { getMyLocations } from '../../redux/entities/locations';
 
 const HexMap = (props) => {
   const { mode, setMode } = props;
   const [gStats, setGStats] = React.useState([]);
-  const locations = useSelector(s => s.locations.list);
+  const locations = useSelector(getMyLocations);
+  
   const globalStats = useSelector(s => s.gameConfig.globalStats);
   const [value, setValue] = React.useState({ scale: 1, translation: { x: 0, y: 0 } });
 
@@ -73,8 +75,6 @@ const HexMap = (props) => {
   }
 
   useEffect(() => {
-    // destroyHex()
-    // createHex()
     compileStats()
   }, [props.selectedStat]);
 
@@ -123,10 +123,10 @@ const HexMap = (props) => {
                     id={loc?._id}
                     style={{
                       // opacity: (loc && loc._id === props.selected?._id) ? 0.7 : 'inherit',
-                      backgroundImage: true ?
+                      backgroundImage: loc ?
                         "url(" + tiles[hash] + ")" :
                         "inherit",
-                    }} >♦
+                    }} >♦ 
                     <div className='container' >
                       <t>{loc?.name}</t>
 
