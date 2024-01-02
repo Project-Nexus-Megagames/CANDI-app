@@ -7,9 +7,9 @@ export const ArticleAlert = (props) => {
 
 
   useEffect(() => {
-    const audio = new Audio("/skullsound2.mp3");
+    const audio = new Audio("/alert.mp3");
     audio.loop = false;
-    audio.volume = 0.15;
+    audio.volume = 0.40;
     audio.play();
   }, []);
 
