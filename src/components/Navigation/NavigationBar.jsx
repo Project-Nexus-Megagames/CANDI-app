@@ -183,9 +183,8 @@ const Navigation = (props) => {
           flex={2}
         style={{ width: '70%', margin: '8px', }}
         >
-          {<div className='styleCenterLeft'>
+          {/* <div className='styleCenterLeft'>
             {minutes}:{seconds <= 9 && <t>0</t>}{seconds} ~
-            {/* {new Date(clock.gametime).toDateString()} {new Date(clock.gametime).getHours()}:00  */}
             Tick {clock.tickNum}
             <BsGearFill
               spin={clock.loading.toString()}
@@ -212,13 +211,12 @@ const Navigation = (props) => {
               </PopoverContent>
             </Popover>
 
-          </div>}
-          {<Progress
+          </div>
+          <Progress
             isIndeterminate={loading}
             value={loading ? 100 : (seconds + (minutes * 60)) * 100 / max}
             colorScheme={clock.paused ? 'whiteAlpha' : loading ? 'gray' : ((seconds + (minutes * 60)) * 100 / max >= 66) ? "cyan" : ((seconds + (minutes * 60)) * 100 / max >= 33 ? "yellow" : "red")}
-            style={{ width: '30%', }} />}
-
+            style={{ width: '30%', }} /> */}
         </Box>
 
         <Box
@@ -233,10 +231,9 @@ const Navigation = (props) => {
             width={'100%'}
           >
             <p>Round: {props.gamestate.round} </p>
-            {/* <p>Round: {props.gamestate.round} </p>
             {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
-            {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>} */}
-            {myAccout &&
+            {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
+            {false &&
               <div className='styleCenter'>
                 {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"} />))}
               </div>}

@@ -138,6 +138,8 @@ const ModifyCharacter = (props) => {
 		const uploadData = new FormData();
 		uploadData.append('file', e.target.files[0], 'file');
 		const img = await cloudinaryUploadMedium(uploadData);
+
+    console.log(img)
 		setImageURL(img.secure_url);
 	};
 
