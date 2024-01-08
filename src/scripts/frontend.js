@@ -85,6 +85,13 @@ function getFadedColor(color, fade = 1) {
 		case 'gold':
 			return `rgb(212, 175, 55, ${fade})`
 
+    case 'Mars Mining Corporation': return `#df812e`
+    case 'The Nova Union': return `#3198dd`
+    case 'Kepler Vanguard': return `#2dcc70`
+    case 'Exploratory Society': return `#1cbb9b`
+    case 'Nomadum Negotiation': return `#71368a`
+    case 'Factionless': return `#2dcc70`
+
     case 'background':
       return `rgba( 15, 19, 26, ${fade} )`;
 

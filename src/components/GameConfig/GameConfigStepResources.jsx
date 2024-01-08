@@ -1,27 +1,21 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'; // Redux store provider
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
+import { useForm, useFieldArray } from 'react-hook-form';
 import { resourceTypesAdded } from '../../redux/entities/gameConfig';
-import socket from '../../socket';
-import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Checkbox, CheckboxGroup, Stack, Button, ButtonGroup } from '@chakra-ui/react';
+
+import { HStack, VStack, Flex, FormControl, Box, FormLabel, Input, Text, Button, ButtonGroup, Stack } from '@chakra-ui/react';
 import { PlusSquareIcon, RepeatClockIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 function GameConfigStepResources() {
-	const oldConfig = useSelector((state) => state.gameConfig);
 	const dispatch = useDispatch();
+	const oldConfig = useSelector((state) => state.gameConfig);
 
-	const {
-		formState: { isDirty, dirtyFields },
-		register,
-		control,
-		handleSubmit,
-		reset,
-		formState
-	} = useForm({
+	const { formState: { isDirty, dirtyFields }, register, control, handleSubmit, reset, formState } = useForm({
 		defaultValues: {
-			resouceTypes: [oldConfig.assetTypes]
+			resourceTypes: [oldConfig.resourceTypes]
 		}
 	});
+
 	const { errors } = formState;
 	const { fields, append, remove } = useFieldArray({
 		name: 'resourceTypes',
@@ -35,77 +29,85 @@ function GameConfigStepResources() {
 				value: 300,
 				message: "That's way too long, try again"
 			}
+		},
+		effortAmount: {
+			required: 'Effort Amount is required',
+			min: { value: 0, message: 'Must be larger than 0' }
 		}
 	};
 
 	useEffect(() => {
 		const resetValues = [];
-		oldConfig.assetTypes?.forEach((type) => {
-			let value = {};
-			value.type = type.type;
-			resetValues.push(value);
+		oldConfig.resourceTypes.forEach((type) => {
+			let a = {};
+			a.type = type.type;
+			a.effortAmount = type.effortAmount;
+			resetValues.push(a);
 		});
 		reset({
 			resourceTypes: resetValues
 		});
 	}, [reset]);
 
+	useEffect(() => {
+		console.log(isDirty)
+	}, [isDirty]);
+
 	const handleError = (errors) => {
 		console.log('ERROR', errors);
 	};
 
 	function hasDuplicates(a) {
-		let resourceNames = [];
-		for (const el of a) resourceNames.push(el.type);
-		const noDups = new Set(resourceNames);
-		return resourceNames.length !== noDups.size;
+		let effortNames = [];
+		for (const el of a) effortNames.push(el.type);
+		const noDups = new Set(effortNames);
+		return effortNames.length !== noDups.size;
 	}
 
-	function onSubmit(data) {
-		if (hasDuplicates(data.assetTypes)) return alert('Resource Types have to be unique');
+	const onSubmit = (data) => {
+		// if (hasDuplicates(data.resourceTypes)) return alert('Effort Types have to be unique');
 		dispatch(resourceTypesAdded(data));
-
-		let configToBeSent = { ...oldConfig };
-		configToBeSent.assetTypes = data.assetTypes;
-		console.log('DATA', configToBeSent);
-		try {
-			socket.emit('request', {
-				route: 'gameConfig',
-				action: 'create',
-				data: configToBeSent
-			});
-		} catch (err) {
-			console.log('catch block called', err);
-		}
-	}
+		// history.push('./GameConfigStepActions'); // TODO remake this so it doesn't use navigation
+	};
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
-			<h4>Step 2: Create Resource Types</h4>
-			<Flex padding='20px'>
-				<VStack spacing='24px' align='left'>
+      <h4>Step 1: Create Effort Types</h4>
+			<Flex padding="20px">
+				<VStack spacing="24px" align="left">
 					{fields.map((item, i) => (
-						<div key={i} className='list-group list-group-flush'>
-							<div className='list-group-item'>
+						<div key={i} className="list-group list-group-flush">
+							<div className="list-group-item">
 								<div>
 									<Box>
-										<HStack spacing='24px'>
-											<FormControl variant='floating'>
-												<FormLabel>Type of Resource</FormLabel>
-												<Input
-													key={item.id}
-													type='text'
-													size='md'
-													variant='outline'
-													defaultValue={oldConfig.assetTypes?.[i]?.type}
-													{...register(`resourceTypes.${i}.type`, validation.type)}
-												/>
-												<Text fontSize='sm' color='red.500'>
-													{errors.assetTypes?.[i]?.type && errors.assetTypes[i].type.message}
+										<HStack spacing="24px">
+											<FormControl variant="floating">
+												<FormLabel>Type of Effort</FormLabel>
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.resourceTypes?.[i]?.type} {...register(`resourceTypes.${i}.type`, validation.type)} />
+
+												<Text fontSize="sm" color="red.500">
+													{errors.resourceTypes?.[i]?.type && errors.resourceTypes[i].type.message}
 												</Text>
 											</FormControl>
-
-											<Button size='xs' onClick={() => remove(i)}>
+											<FormControl variant="floating">
+												<FormLabel>Amount of Effort</FormLabel>
+												<Input
+													key={item.id}
+													type="number"
+													size="md"
+													variant="outline"
+													defaultValue={oldConfig.resourceTypes?.[i]?.effortAmount}
+													{...register(`resourceTypes.${i}.effortAmount`, validation.effortAmount)}
+												/>
+												<Text fontSize="sm" color="red.500">
+													{errors.resourceTypes?.[i]?.effortAmount && errors.resourceTypes[i].effortAmount.message}
+												</Text>
+											</FormControl>
+											<FormControl variant="floating">
+												<FormLabel>Effort Tag</FormLabel>
+												<Input key={item.id} type="text" size="md" variant="outline" defaultValue={oldConfig.resourceTypes?.[i]?.tag} {...register(`resourceTypes.${i}.tag`)} />
+											</FormControl>
+											<Button size="xs" onClick={() => remove(i)}>
 												-
 											</Button>
 										</HStack>
@@ -114,31 +116,23 @@ function GameConfigStepResources() {
 							</div>
 						</div>
 					))}
-					<ButtonGroup>
-						<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type='submit' className='btn btn-primary mr-1'>
+					<Stack spacing={8} direction='row' align='right' justify={"center"}>
+						<Button disabled={!isDirty} rightIcon={<TriangleDownIcon />} colorScheme={'blue'} type="submit" className="btn btn-primary mr-1">
 							Save
 						</Button>
-
 						<Button
 							rightIcon={<PlusSquareIcon />}
 							colorScheme={'whatsapp'}
-							onClick={() =>
-								append({
-									type: ''
-								})
-							}
-						>
-							Add Resource
+							onClick={() => append({ type: 'Main', effortAmount: 1, tag: 'PC' })} >
+							Add Type
 						</Button>
-
-						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type='button' className='btn btn-secondary mr-1'>
+						<Button disabled={!isDirty} rightIcon={<RepeatClockIcon />} colorScheme={'yellow'} onClick={() => reset()} type="button" className="btn btn-secondary mr-1"> 
 							Reset
 						</Button>
-					</ButtonGroup>
+					</Stack>
 				</VStack>
 			</Flex>
 		</form>
 	);
 }
-
 export default GameConfigStepResources;

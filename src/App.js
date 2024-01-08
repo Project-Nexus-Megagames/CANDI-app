@@ -12,8 +12,6 @@ import Agendas from "./components/Agendas/Agendas";
 import HomePage from "./components/Navigation/HomePage";
 import OtherCharacters from "./components/OtherCharacters/OtherCharacters";
 import ControlTerminal from "./components/Control/ControlTerminal";
-import GameConfigStep1 from "./components/GameConfig/GameConfigStep1";
-import GameConfig2 from "./components/GameConfig/GameConfigStep2";
 import Log from "./components/Control/Log";
 
 import Login from "./components/Navigation/Login";
@@ -168,8 +166,7 @@ const App = (props) => {
               <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
               <Route exact path='/home/actions' element={<Actions {...props} />} />
               <Route exact path='/home/locations' element={<LocationDashboard {...props} />} />
-              <Route exact path='/gameConfig' element={<GameConfigStep1 {...props} />} />
-              <Route exact path='/gameConfig2' element={<GameConfig2 {...props} />} />
+
               <Route exact path='/home/control' element={<ControlTerminal {...props} />} />
               <Route exact path='/home/trading' element={<Trade {...props} />} />
 

@@ -3,11 +3,11 @@ import { PlusSquareIcon, RepeatClockIcon, CalendarIcon } from '@chakra-ui/icons'
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 
-import GameConfigStep1 from './GameConfigStep1';
-import GameConfig2 from './GameConfigStep2';
+import GameConfigStepResources from './GameConfigStepResources';
+import GameConfigStepActions from './GameConfigStepActions';
 import GameConfig3 from './GameConfigStep3';
 import GameConfigStep4 from './GameConfigStep4';
-import GameConfigStepResources from './GameConfigStepResources';
+import GameConfigStepAssets from './GameConfigStepAssets';
 import socket from '../../socket';
 import GameConfigLayout from './GameConfigLayout';
 
@@ -35,22 +35,22 @@ function GameConfig(props) {
 		<div className='styleCenter'>
 			<div>
 				<VStack divider={<Divider orientation='vertical' />}>
-          <Button colorScheme={'teal'} variant={step === 0 ? 'solid' : 'outline'} onClick={() => setStep('layout')}>
+          <Button colorScheme={'teal'} variant={step === 'layout' ? 'solid' : 'outline'} onClick={() => setStep('layout')}>
 						CANDI Layout
 					</Button>
-					<Button colorScheme={'teal'} variant={step === 0 ? 'solid' : 'outline'} onClick={() => setStep('effort')}>
-						Effort Types
-					</Button>
-					<Button colorScheme={'teal'} variant={step === 0 ? 'solid' : 'outline'} onClick={() => setStep('resource')}>
+					<Button colorScheme={'teal'} variant={step === 'effort' ? 'solid' : 'outline'} onClick={() => setStep('effort')}>
 						Resource Types
 					</Button>
-					<Button colorScheme={'teal'} variant={step === 1 ? 'solid' : 'outline'} onClick={() => setStep('action')}>
+					<Button colorScheme={'teal'} variant={step === 'resource' ? 'solid' : 'outline'} onClick={() => setStep('resource')}>
+						Asset Types
+					</Button>
+					<Button colorScheme={'teal'} variant={step === 'action' ? 'solid' : 'outline'} onClick={() => setStep('action')}>
 						Action Types
 					</Button>
-					<Button colorScheme={'teal'} variant={step === 2 ? 'solid' : 'outline'} onClick={() => setStep('globalstat')}>
+					<Button colorScheme={'teal'} variant={step === 'globalstat' ? 'solid' : 'outline'} onClick={() => setStep('globalstat')}>
 						Global Stats
 					</Button>
-					<Button colorScheme={'teal'} variant={step === 3 ? 'solid' : 'outline'} onClick={() => setStep('charstat')}>
+					<Button colorScheme={'teal'} variant={step === 'charstat' ? 'solid' : 'outline'} onClick={() => setStep('charstat')}>
 						Character Stats
 					</Button>
 				</VStack>
@@ -60,9 +60,9 @@ function GameConfig(props) {
 			</div>
 
 			{step === 'layout' && <GameConfigLayout />}
-			{step === 'effort' && <GameConfigStep1 />}
-			{step === 'resource' && <GameConfigStepResources />}
-			{step === 'action' && <GameConfig2 />}
+			{step === 'effort' && <GameConfigStepResources />}
+			{step === 'resource' && <GameConfigStepAssets />}
+			{step === 'action' && <GameConfigStepActions />}
 			{step === 'globalstat' && <GameConfig3 />}
 			{step === 'charstat' && <GameConfigStep4 />}
 		</div>

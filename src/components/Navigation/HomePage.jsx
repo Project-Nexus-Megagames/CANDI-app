@@ -8,7 +8,7 @@ import ImgPanel from './ImgPanel';
 import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
 import actions from '../Images/actions.jpg';
-import map from '../Images/science.jpg';
+import map from '../Images/location.png';
 import leaderboard from '../Images/leaderboard.png';
 import control from '../Images/control.png';
 import trade from '../Images/trade.png';
@@ -67,9 +67,9 @@ const HomePage = (props) => {
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        
 
       
-      <GridItem colSpan={columns == 1 ? 2 : 1}>
+      {/* <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
-      </GridItem>  
+      </GridItem>   */}
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Do the things" />
@@ -80,30 +80,31 @@ const HomePage = (props) => {
       </GridItem>   
 
 
-      <GridItem colSpan={columns == 1 ? 1 : 2}>
-        <ImgPanel img={news} to="locations" title="~ Locations ~" body="Where am I" />
-      </GridItem>   
-
       <GridItem colSpan={columns == 1 ? 2 : 1} >
         <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
       </GridItem>
 
+      
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={map} to="locations" title="~ Locations ~" body="Where am I" />
+      </GridItem>   
+
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
       </GridItem>
-
+{/* 
       <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
         <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
-      </GridItem>
+      </GridItem> */}
 
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
       </GridItem>    
 
-      <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
+      {/* <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
         <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
-      </GridItem>                        
+      </GridItem>                         */}
 
       {isControl && <GridItem colSpan={columns} >
           <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />

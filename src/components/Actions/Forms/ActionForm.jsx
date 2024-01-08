@@ -58,6 +58,7 @@ const ActionForm = (props) => {
 
   useEffect(() => {
     newMap(actionType?.maxAssets);
+    console.log(actionType)
   }, [actionType])
 
   useEffect(() => {

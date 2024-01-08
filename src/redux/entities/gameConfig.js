@@ -11,7 +11,7 @@ const slice = createSlice({
 		loaded: false,
 		lastFetch: null,
 		actionTypes: [],
-		effortTypes: [],
+		assetTypes: [],
 		resourceTypes: [],
 		characterStats: [],
 		globalStats: [],
@@ -45,15 +45,16 @@ const slice = createSlice({
 		},
 		actionTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
+			console.log(action.payload.actionTypes);
 			state.actionTypes = action.payload.actionTypes;
 		},
-		resourceTypesAdded: (state, action) => {
+		assetTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
 			state.assetTypes = action.payload.assetTypes;
 		},
-		effortTypesAdded: (state, action) => {
+		resourceTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
-			state.effortTypes = action.payload.effortTypes;
+			state.resourceTypes = action.payload.resourceTypes;
 		},
 		globalStatsAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
@@ -67,7 +68,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { actionTypesAdded, layoutAdded, resourceTypesAdded, effortTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
+export const { actionTypesAdded, layoutAdded, assetTypesAdded, resourceTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

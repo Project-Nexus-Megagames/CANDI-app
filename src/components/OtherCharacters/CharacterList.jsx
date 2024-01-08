@@ -8,7 +8,16 @@ import { getPrivateCharacters } from "../../redux/entities/characters";
 
 function CharacterList({filteredCharacters, value, onChange, onClick, handleSelect, isOpen, onClose}) {
   const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
-  const [renderTags] = React.useState(["Pig", "Spider", "Frog", "Rat", "Mimic", "Surface", "Underkin"  ]); // TODO: update with Faction tags
+  const [renderTags] = React.useState([
+      'Mars Mining Corporation',
+    'The Nova Union',
+    'Kepler Vanguard',
+    'Exploratory Society',
+    'Nomadum Negotiation',
+    'Factionless',
+    'Control'
+    ]); // TODO: update with Faction tags
+
   const myCharacter = useSelector((state) => state.auth.myCharacter);
   const control = useSelector((state) => state.auth.control);
   const characters = useSelector((state) => state.characters.list);
