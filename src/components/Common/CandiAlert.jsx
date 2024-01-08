@@ -15,7 +15,7 @@ export const CandiAlert = (props) => {
 
 
   return (
-    <Alert status={alert.type} style={{ margin: '5px'}} variant='left-accent'>
+    <Alert status={alert.type} style={{ margin: '5px', color: 'black' }} variant='left-accent'>
     <AlertIcon />
     {alert.message}
   </Alert>
