@@ -6,12 +6,12 @@ export const CandiAlert = (props) => {
 	const [show, setShow] = useState(true);
 
 
-  useEffect(() => {
-    const audio = new Audio("/alert.mp3");
-    audio.loop = false;
-    audio.volume = 0.40;
-    audio.play();
-  }, []);
+  // useEffect(() => {
+  //   const audio = new Audio("/alert.mp3");
+  //   audio.loop = false;
+  //   audio.volume = 0.40;
+  //   audio.play();
+  // }, []);
 
 
   return (

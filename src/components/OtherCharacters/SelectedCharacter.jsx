@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, ButtonGroup, Card, CardBody, CardHeader, Flex, Grid, GridItem, IconButton, Spacer, Tag } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Flex, Grid, GridItem, IconButton, Spacer, Tag } from '@chakra-ui/react';
 import CharacterListItem from './CharacterListItem';
 import ResourceNugget from '../Common/ResourceNugget';
 import { useSelector } from 'react-redux';
 import { getFadedColor } from '../../scripts/frontend';
-import { DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import { CopyIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import AssetForm from '../Common/AssetForm';
 import { useState } from 'react';
 import AssetCard from '../Common/AssetCard';
@@ -15,8 +15,37 @@ const SelectedCharacter = (props) => {
   const { selected } = props;
   const [mode, setMode] = useState(false);
   const assets = useSelector(state => state.assets.list);
+  const characters = useSelector(state => state.characters.list);
   const control = useSelector(state => state.auth.control);
   const myCharacter = useSelector(state => state.auth.myCharacter);
+
+  const copyToClipboard = (character) => {
+		if (character.characterName === 'The Box') {
+			const audio = new Audio('/candi1.mp3');
+			audio.loop = true;
+			audio.play();
+		} else {
+			let board = `${character.email}`;
+			let array = [...character.control];
+
+			for (const controller of myCharacter.control) {
+				if (!array.some((el) => el === controller)) {
+					array.push(controller);
+				}
+			}
+
+			for (const controller of array) {
+				const character = characters.find((el) => el.characterName === controller);
+				if (character) {
+					board = board.concat(`; ${character.email}`);
+				} else console.log(`${controller} could not be added to clipboard`);
+				// Alert.error(`${controller} could not be added to clipboard`, 6000);
+			}
+
+			navigator.clipboard.writeText(board);
+			// Alert.success('Email Copied!', 6000);
+		}
+	};
 
 	return ( 
 		<Grid
@@ -33,11 +62,20 @@ const SelectedCharacter = (props) => {
 
         </div>
         
-        {/* <Flex  >
+        <Flex justify={'center'} >
         {selected.tags && selected.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
-         <ResourceNugget key={item} value={item} width={'50px'} height={'30'} />
+         <Tag key={item} variant={'solid'} style={{ backgroundColor: getFadedColor(item), textTransform: 'capitalize', margin: '4px' }} >{item}</Tag>
          )}
-        </Flex>		 */}
+        </Flex>		
+
+      < Button
+        onClick={(e) => { e.stopPropagation(); copyToClipboard(selected)}}
+        leftIcon={<CopyIcon/>}
+        colorScheme='white'
+        variant='outline'
+      >
+        {selected?.email}                         
+      </Button> 
         
         {selected.pronouns && <p>
           Character Pronouns: <b>{selected.pronouns}</b>
@@ -45,7 +83,8 @@ const SelectedCharacter = (props) => {
         {selected.timeZone && <p>
           Time Zone: <b>{selected.timeZone}</b>
         </p>}
-        {(control || myCharacter._id === selected._id) && <div>
+
+        {(control || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
             <WordDivider word={"Stats"} ></WordDivider>
             {selected.characterStats && selected.characterStats.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
@@ -71,7 +110,7 @@ const SelectedCharacter = (props) => {
         </h5>
 				<Grid templateColumns='repeat(3, 1fr)' gap={1}>
             {assets
-              .filter((el) => el.account === selected.account)
+              .filter((el) => el.account && el.account === selected.account)
               .map((asset) => (
                 <AssetCard key={asset._id} asset={asset} character={selected} />
               ))}
