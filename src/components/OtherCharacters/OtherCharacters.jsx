@@ -14,7 +14,7 @@ import socket from "../../socket";
 import CharacterList from "./CharacterList";
 
 const OtherCharacters = (props) => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
   const reduxAction = useDispatch();
 
   const loggedInUser = useSelector((state) => state.auth.user);
@@ -30,7 +30,7 @@ const OtherCharacters = (props) => {
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
-  
+
 
   if (!props.login) {
     navigate("/");
@@ -59,11 +59,11 @@ const OtherCharacters = (props) => {
 
   const deleteCharacter = async () => {
     socket.emit('request', {
-        route: 'character',
-        action: 'delete',
-        data: {id: selected._id}
+      route: 'character',
+      action: 'delete',
+      data: { id: selected._id }
     });
-};
+  };
 
 
   const filterThis = (fil) => {
@@ -75,7 +75,7 @@ const OtherCharacters = (props) => {
     );
     setFilteredCharacters(filtered);
   };
-  
+
   return (
     <React.Fragment>
       <Box >
@@ -89,88 +89,88 @@ const OtherCharacters = (props) => {
 
 
           <GridItem pl='1' bg='#0f131a' area={'list'} style={{ height: 'calc(100vh - 78px)', overflow: 'auto', }}>
-          <Hide below="md" >
-            <CharacterList 
-              filteredCharacters={filteredCharacters}
-              onChange={(e) => filterThis(e.target.value)}
-              value={props.filter}
-              onClick={() => setMode('new')}
-              handleSelect={(char) => { reduxAction(characterSelected(char)); setMode(false); }}
-              isOpen={mode === 'drawer'}
-              onClose={() => setMode(false)}
-            />
+            <Hide below="md" >
+              <CharacterList
+                filteredCharacters={filteredCharacters}
+                onChange={(e) => filterThis(e.target.value)}
+                value={props.filter}
+                onClick={() => setMode('new')}
+                handleSelect={(char) => { reduxAction(characterSelected(char)); setMode(false); }}
+                isOpen={mode === 'drawer'}
+                onClose={() => setMode(false)}
+              />
             </Hide>
           </GridItem>
 
 
 
-        <GridItem  bg='#232c3b' area={'header'} >
-          <Center
-            marginTop='0.75rem'
-            width={'100%'}
-          >
-            <Box
-                        marginRight='1rem'
-                    >
-                      <Show below='md'>
-                        <Button
-                            onClick={() => setMode('drawer')}
-                            leftIcon={<ChevronLeftIcon/>}
-                            colorScheme='orange'
-                            variant='solid'
-                        >
-                          <Hide below='md'>Open Drawer</Hide>                            
-                        </Button>                        
-                      </Show>   
+          <GridItem bg='#232c3b' area={'header'} >
+            <Center
+              marginTop='0.75rem'
+              width={'100%'}
+            >
+              <Box
+                marginRight='1rem'
+              >
+                <Show below='md'>
+                  <Button
+                    onClick={() => setMode('drawer')}
+                    leftIcon={<ChevronLeftIcon />}
+                    colorScheme='orange'
+                    variant='solid'
+                  >
+                    <Hide below='md'>Open Drawer</Hide>
+                  </Button>
+                </Show>
 
-            </Box>
-            {control && <Box
-                        marginLeft='1rem'
-                    >
-                      <ButtonGroup isAttached>
-                        <Button
-                            onClick={() => setMode('new')}
-                            leftIcon={<PlusSquareIcon/>}
-                            colorScheme='green'
-                            variant='solid'
-                        >
-                          <Hide below='md'>New Character</Hide>                           
-                        </Button>
+              </Box>
+              {control && <Box
+                marginLeft='1rem'
+              >
+                <ButtonGroup isAttached>
+                  <Button
+                    onClick={() => setMode('new')}
+                    leftIcon={<PlusSquareIcon />}
+                    colorScheme='green'
+                    variant='solid'
+                  >
+                    <Hide below='md'>New Character</Hide>
+                  </Button>
 
-                        <Button
-                            onClick={() => setMode('delete')}
-                            leftIcon={<DeleteIcon/>}
-                            colorScheme='red'
-                            variant='solid'
-                        >
-                          <Hide below='md'>Delete</Hide>                           
-                        </Button>
+                  <Button
+                    onClick={() => setMode('delete')}
+                    leftIcon={<DeleteIcon />}
+                    colorScheme='red'
+                    variant='solid'
+                  >
+                    <Hide below='md'>Delete</Hide>
+                  </Button>
 
-                        <Button
-                            onClick={() => setMode('modify')}
-                            leftIcon={<EditIcon/>}
-                            colorScheme='orange'
-                            variant='solid'
-                        >
-                          <Hide below='md'>Edit</Hide>                           
-                        </Button>                        
-                      </ButtonGroup>
+                  <Button
+                    onClick={() => setMode('modify')}
+                    leftIcon={<EditIcon />}
+                    colorScheme='orange'
+                    variant='solid'
+                  >
+                    <Hide below='md'>Edit</Hide>
+                  </Button>
+                </ButtonGroup>
 
-            </Box>}
-          </Center>
-        </GridItem>
+              </Box>}
+            </Center>
+          </GridItem>
 
-        <GridItem pl='2' bg='#0f131a' area={'main'}  style={{ height: 'calc(100vh - 157px)', overflow: 'auto', }} >
+          <GridItem pl='2' bg='#0f131a' area={'main'} style={{ height: 'calc(100vh - 157px)', overflow: 'auto', }} >
             {!selected && <b>Nothing Selected...</b>}
             {selected && <SelectedCharacter selected={selected} />}
-        </GridItem>
+          </GridItem>
 
-      </Grid>
-    </Box>
+        </Grid>
+      </Box>
 
       <NewCharacter show={mode === 'new'} closeModal={() => setMode(false)} />
       {selected && <ModifyCharacter show={mode === 'modify'} selected={selected} closeModal={() => setMode(false)} />}
-      <CharactersDrawer 
+      <CharactersDrawer
         filteredCharacters={filteredCharacters}
         onChange={(e) => filterThis(e.target.value)}
         value={props.filter}

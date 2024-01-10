@@ -101,7 +101,7 @@ const AssetCard = (props) => {
       </CandiWarning>}
 
       <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Asset`}>
-        <AssetForm character={character} asset={asset} mode={mode}/>
+        <AssetForm closeModal={() => { setMode(false); }} character={character} asset={asset} mode={mode}/>
       </CandiModal>
       
 		</div>

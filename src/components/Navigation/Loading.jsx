@@ -14,7 +14,7 @@ const Loading = (props) => {
 	const { loadingStart, user, myCharacter, team } = useSelector((s) => s.auth);
 	const characters = useSelector((s) => s.characters.list);
 	const teams = useSelector((s) => s.teams.list);
-	const entities = useSelector((s) => s);
+	const entities = useSelector((s) => s)
 
 	const [message, setMessage] = React.useState( Math.floor(Math.random() * corps.length));
 	const [sections, setSections] = React.useState(Object.keys(entities).sort());
@@ -36,12 +36,11 @@ const Loading = (props) => {
 
 	useEffect(() => {
 		console.log('Trigger A');
-		console.log(user);
+    console.log(entities)
 		if (entities.characters.list.length > 0 && user && user !== undefined) {
 			console.log('Finished Loading????');
 
 			const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
-			console.log(character0);
 
       if (character0) {
         reduxAction(setCharacter(character0));

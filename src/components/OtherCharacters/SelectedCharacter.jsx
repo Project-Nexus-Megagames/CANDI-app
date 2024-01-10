@@ -58,7 +58,7 @@ const SelectedCharacter = (props) => {
           
 			<GridItem pl='2' area={'side'} >
         <div className='styleCenter' >
-          <CharacterListItem character={selected} />
+          <CharacterListItem handleSelect={() => console.log("Hello Player! Hope you are having fun!")}  character={selected} />
 
         </div>
         
@@ -112,7 +112,7 @@ const SelectedCharacter = (props) => {
             {assets
               .filter((el) => el.account && el.account === selected.account)
               .map((asset) => (
-                <AssetCard key={asset._id} asset={asset} character={selected} />
+                <AssetCard key={asset._id} asset={asset} character={selected} showButtons />
               ))}
         </Grid>
 			</GridItem>}
