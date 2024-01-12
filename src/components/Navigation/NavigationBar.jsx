@@ -246,7 +246,7 @@ const Navigation = (props) => {
           marginLeft='auto'
           justifyContent='right'
         >
-          {/* {isControl && <UserList />} */}
+
           <AlertList />
           {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
           {isControl && (
@@ -289,6 +289,8 @@ const Navigation = (props) => {
               </PopoverContent >
             </Popover>
           )}
+
+          {isControl && <UserList />}
         </Box>
       </Flex>
     </Container>
