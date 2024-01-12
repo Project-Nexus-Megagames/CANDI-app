@@ -146,7 +146,7 @@ function Feed({action}) {
                                 Effect
                             </Button>
                         )}
-                        {isControl && (
+                        {/* {isControl && (
                             <Button
                               variant={'solid'}
                                 onClick={() => socket.emit('request', { route: 'action', action: 'ice', data: { id: action._id} })}
@@ -163,7 +163,7 @@ function Feed({action}) {
                           >
                               Get Specific Ice
                           </Button>
-                        )}
+                        )} */}
                             <Button
                               variant={'outline'}
                                 onClick={() => setMode(false)}

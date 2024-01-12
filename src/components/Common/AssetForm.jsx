@@ -70,10 +70,6 @@ const AssetForm = (props) => {
 		return () => subscription.unsubscribe;
 	}, [watch]);
 
-	const handleExit = () => {
-		props.closeModal();
-	};
-
   const removeElement = (index, type) => {
 		let temp;
 		switch (type) {
@@ -102,7 +98,7 @@ const AssetForm = (props) => {
 			props.handleSubmit({ ...data, dice, type: type, status: status, });
 		} else {
 			e.preventDefault();
-			const asset = { ...data, dice, type: type, status: status, account };
+			const asset = { ...data, dice, type: type, status: status, account: character.account };
 			console.log('SENDING DATA', asset);
 			socket.emit('request', {
 				route: 'asset',

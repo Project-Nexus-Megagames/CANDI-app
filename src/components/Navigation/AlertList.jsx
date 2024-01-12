@@ -53,7 +53,7 @@ export const AlertList = () => {
           </PopoverHeader>
           <PopoverBody  >
               {alerts.length > 0 && (
-                <div>
+                <div style={{ maxHeight: '80vh', msOverflowY: 'scroll' }} >
                     {alerts.map((alert, index) => (
                       <CandiAlert key={index} alert={alert} />
                     ))}

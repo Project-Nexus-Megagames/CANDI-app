@@ -118,7 +118,7 @@ const SelectedCharacter = (props) => {
 			</GridItem>}
 
       <CandiModal onClose={() => { setMode(false); }} open={mode === "new"} title={`${mode} Asset`}>
-        <AssetForm character={selected} mode={mode}/>
+        <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode}/>
       </CandiModal>
 
 		</Grid>

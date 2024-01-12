@@ -42,13 +42,10 @@ const NewAction = (props) => {
 	const [destination, setDestination] = React.useState(false);
 	const [facility, setFacility] = React.useState(undefined);
   
-  
 
   useEffect(() => {
     newMap(actionType.maxAssets);
-	}, [actionType])
-
-
+	}, [actionType]);
 
 	const editState = (incoming, type, index) => {
     console.log(type)
@@ -120,7 +117,6 @@ const NewAction = (props) => {
   }
 
   let inRange =  locations;
-  // console.log(transportation, inRange)
 
 	return (
 		<div>
@@ -189,6 +185,7 @@ const NewAction = (props) => {
             <Center>
               {actionType.resourceTypes.map(el => (
                 <Box key={el._id}>
+                  {el.type}
                   {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
                     <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
                       Lacking Resources
@@ -221,17 +218,6 @@ const NewAction = (props) => {
 				  	</Tag>
 				  ))}
 
-
-          {/* {!assets.some(el => el && el.type === 'agent') && (
-            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-              Missing Covert Agent
-            </Tag>
-          )} */}
-          {/* {assets.some(el => el && el.type === 'agent') && (
-            <Tag variant='solid' colorScheme={'green'}>
-              <CheckIcon />
-            </Tag>
-          )} */}
 				<Flex>
           {assets.map((ass, index) => (
           <>
@@ -248,7 +234,7 @@ const NewAction = (props) => {
                 key={index} 
                 handleSelect={(ass) =>editState(ass, ass.model, index)} 
                 assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id ) )}/>}
-            {ass && <AssetCard showRemove removeAsset={()=> editState(false, ass.model, index)} compact type={'blueprint'} asset={ass} /> }   
+            {ass && <AssetCard showRemove removeAsset={()=> editState(false, ass.model, index)}  type={'blueprint'} asset={ass} /> }   
           </Box>
           <Spacer />
           </>

@@ -26,7 +26,7 @@ const News = (props) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [filteredData, setFilteredData] = useState([]);
 	const [showMyArticles, setShowMyArticles] = useState(false);
-	const myChar = useSelector(getMyCharacter);
+	const myChar = useSelector(s => s.auth.myCharacter);
 	const [filterButtonText, setFilterButtonText] = useState('Show My Articles');
 	const [round, setRound] = useState(gamestate.round);
 	const [maxRound, setMaxRound] = useState(gamestate.round);
@@ -39,7 +39,7 @@ const News = (props) => {
     return <div />;
   }
 
-	const myArticleEffort = myAccout?.resources.find((el) => el.type === 'article_effort')?.amount;
+	const myArticleEffort = myAccout?.resources.find((el) => el.type == 'article_effort')?.balance;
 
 	const getSortedArticles = () => {
 		if (myChar.tags.some((tag) => tag.toLowerCase() === 'control')) {
@@ -161,7 +161,9 @@ const News = (props) => {
       <Box bg='#1b2330' style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
       <Flex width={'100%'} alignItems='center' >
             <Input  placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e.target.value)} />
-            {myArticleEffort > 0 && <NewArticle drawer={true} />}
+            {myAccout.naqme}
+            
+            {myArticleEffort > 0 && <NewArticle drawer={true} myArticleEffort={myArticleEffort} />}
             
           {myArticles && myArticles.length > 0 && (
             <Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} colorScheme="cyan" onClick={() => handleFilter()}>
@@ -170,6 +172,7 @@ const News = (props) => {
           )}
         </Flex>
         <Text fontSize={'xl'} >Round: </Text>
+
         <Center>
         {getRoundMap()}
         

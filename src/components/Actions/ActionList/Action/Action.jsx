@@ -122,13 +122,13 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
               />}</Center>
             {mode !== 'edit' && <Box>
 
-              <Wrap align={'center'} justify={'space-evenly'} >
+              {/* <Wrap align={'center'} justify={'space-evenly'} >
                 {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission} />}
                 {action.location && action.location._id && action.location.name !== "No Where" && <Box>
                   <WordDivider word={`Location: ${action.location.name}`}/>
                   <HexLocation location={action.location} />
                 </Box>}
-              </Wrap>
+              </Wrap> */}
 
               <ActionMarkdown
                 header='Description'
