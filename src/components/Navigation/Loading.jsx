@@ -30,7 +30,7 @@ const Loading = (props) => {
 		}
     const interval = setInterval(() => {
       setMessage(Math.floor(Math.random() * corps.length))
-    }, 2000);
+    }, 2500);
     return () => clearInterval(interval);
 	}, []);
 
@@ -52,16 +52,16 @@ const Loading = (props) => {
 		}
 	}, [characters, message]);
 
-	// useEffect(() => {
-	// 	console.log('Trigger B');
-	// 	if (teams.length > 0 && !team && myCharacter) {
-	// 		console.log('Finished Loading!!!!');
-	// 		const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
-	// 		reduxAction(setTeam(myTeam));
+	useEffect(() => {
+		console.log('Trigger B');
+		if (teams.length > 0 && !team && myCharacter) {
+			console.log('Finished Loading!!!!');
+			const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
+			reduxAction(setTeam(myTeam));
 
-	// 		reduxAction(finishLoading());
-	// 	}
-	// }, [myCharacter, message]);
+			reduxAction(finishLoading());
+		}
+	}, [myCharacter, message]);
 
   const handleLogOut = async () => {
 		reduxAction(signOut())
@@ -75,7 +75,7 @@ const Loading = (props) => {
       </Center>
 
       <Center>
-        <img width={"350px"} src={`/images/team/${corps[message]?.name}.png`} alt='Loading...' />
+        <img width={"350px"} src={`${corps[message]?.gifLink}`} alt='Loading...' />
       </Center>
 
       <Center>
@@ -114,32 +114,44 @@ const Loading = (props) => {
 
 const corps = [
   {
-    name: "Frog Goblins",
-    slogan: "Frog goblins originally hail from the swamps on the surface where they honed their scouting and botanical skills",
+    name: "Space Fact #1",
+    slogan: "Space is actually pretty big.",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
   },
   {
-    name: "Spider Goblins",
-    slogan: 'After generations of underground living around the mines, Spider goblins are easily identified by their trademark Magiuranium piercings and gray colored skin',
+    name: "Space Fact #108",
+    slogan: "The Sun is large enough to contain 12 basketballs inside of it!",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
   },
   {
-    name: "Pig Goblins",
-    slogan: 'Hailing from the sewers underneath various surface cities, Sewer goblins known for being highly collaborative, maternally oriented, and strongly loyal to one another. ',
+    name: "Space Fact #79",
+    slogan: "The Universe is at least 29 years old.",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
   },
   {
-    name: "Rat Goblins",
-    slogan: 'As the first generation born in Stockpot City, these goblins adopted the Rat as their newly formed faction’s symbol to reflect their urban upbringings.',
+    name: "Space Fact #5",
+    slogan: "There is no sound in space, because sound cannot afford a rocket to exit the atmosphere.",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
   },
   {
-    name: "Mimic Party",
-    slogan: 'Originally a band of sentient raccoon refugees, the Mimic Party has turned into a diverse coalition of races and ideologies.',
+    name: "Space Fact #221",
+    slogan: "Aliens exist! They just don't want to talk to us boring humans. Jerks.",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
   },
   {
-    name: "Surface Delegation",
-    slogan: 'Recently, a delegation of surface dwellers have come to the city, composed of Humans, Dwarves, and even some Elves.',
+    name: "Space Fact #101",
+    slogan: "The rest of the galaxy already has McDonalds, we were the last planet to get it.",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
   },
   {
-    name: "Underkin Faction",
-    slogan: 'After the defeat of The Underlord, their vast evil empire shattered into a diaspora of competing factions. Many of those eventually migrated to the city, forming a large conglomerate of loosely aligned monsters with one unifying goal: resist the influence of the surface in the matters of the underground.',
+    name: "Space Fact #123",
+    slogan: "Spacecraft have visited all the known planets in our solar system. Including that one that no one is supposed to know about. Wait, forget you read that.",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
+  },
+  {
+    name: "Space Fact #34",
+    slogan: "In 1 trillion years, you will be dead. Sorry.",
+    gifLink: 'https://media1.tenor.com/m/D5tiGIdJ9-IAAAAC/space-saturn.gif'
   },
 ]
 
