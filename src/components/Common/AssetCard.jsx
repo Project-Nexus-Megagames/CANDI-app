@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, ButtonGroup, Card, CardBody, CardHeader, Flex, IconButton, Spacer } from '@chakra-ui/react';
+import { Box, ButtonGroup, Card, CardBody, CardHeader, Flex, IconButton, Spacer, Tag } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
@@ -23,77 +23,73 @@ const AssetCard = (props) => {
 
   const deleteAssert = async () => {
     socket.emit('request', {
-        route: 'asset',
-        action: 'delete',
-        data: {id: asset._id}
+      route: 'asset',
+      action: 'delete',
+      data: { id: asset._id }
     });
-};
+  };
 
-  const disabled= asset.status?.some(el => el === 'working') || undefined;
+  const disabled = asset.status?.some(el => el === 'working') || undefined;
   const account = populateThisAccount(accounts, asset.account)
   const team = getThisTeam(teams, account.manager);
 
-	return ( 
-		<div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log("Peekabo!")} >
-      <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id}  >
+  return (
+    <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log("Peekabo!")} >
+      <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`,  }} >
         <CardHeader>
-          
-          <Flex align={'center'} overflow='hidden' width='100%'>
-          <Spacer />
-          {/* <TeamAvatar size='md' team={team} /> */}
-          <Spacer />
-          <Box>
-            <div display="flex">
 
-              {!compact && <h5 style={{ marginLeft: '5px' }}>{asset.name}
-                {<CountDownTag timeout={asset.timeout} />}
-                </h5>}  
+          <Flex align={'center'} overflow='hidden' width='100%'>
+            <Spacer />
+            {/* <TeamAvatar size='md' team={team} /> */}
+            <Spacer />
+            <Box>
+              <div display="flex">
+                {!compact && <h5 style={{ marginLeft: '5px' }}>{asset.name}
+                  {<CountDownTag timeout={asset.timeout} />}
+                </h5>}
+                <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
                 {asset.status?.map(el => (
-                <NexusTag key={el} value={el}></NexusTag>
-              ))}                                
-            </div>
+                  <NexusTag key={el} value={el}></NexusTag>
+                ))}
+              </div>
 
               {control && showButtons && <ButtonGroup isAttached>
-                <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={ <BsPencil/>} />         
-                <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash/>} />                  
-              </ButtonGroup>}   
+                <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
+                <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
+              </ButtonGroup>}
+            </Box>
 
-          </Box>
-         
 
-            {removeAsset && showRemove && <IconButton variant={'outline'} onClick={() => removeAsset()} colorScheme="red" size={'sm'} icon={<Close/>}  />}
-            
-            <Spacer />    
-                 
-          <Spacer />
+            {removeAsset && showRemove && <IconButton variant={'outline'} onClick={() => removeAsset()} colorScheme="red" size={'sm'} icon={<Close />} />}
+
+            <Spacer />
+
+            <Spacer />
           </Flex>
 
           <Flex align={'center'} overflow='hidden' width='100%' >
-          <Spacer />
+            <Spacer />
             {asset.dice?.map(die => (
-                <div key={die._id} style={{  textAlign: 'center' }} >
-                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
-                </div>
+              <div key={die._id} style={{ textAlign: 'center' }} >
+                {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
+              </div>
             ))}
             <Spacer />
           </Flex>
 
-
-          
           <Flex align={'center'} overflow='hidden' width='100%' >
-              {asset.tags?.map(el => (
-                <NexusTag key={el} value={el}></NexusTag>
-              ))}     
-
+            {asset.tags?.map(el => (
+              <NexusTag key={el} value={el}></NexusTag>
+            ))}
           </Flex>
 
         </CardHeader>
         <CardBody style={{ paddingTop: '0px' }} >
-          {!compact && <div style={{ maxHeight: '20vh', overflow: 'auto', textOverflow: 'ellipsis', }} >                    
-            {asset.description}          
-          </div>}   
+          {!compact && <div style={{ maxHeight: '20vh', overflow: 'auto', textOverflow: 'ellipsis', }} >
+            {asset.description}
+          </div>}
         </CardBody>
-       
+
       </Card>
 
       {asset && <CandiWarning open={mode === 'delete'} title={`Delete "${asset.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>
@@ -101,11 +97,11 @@ const AssetCard = (props) => {
       </CandiWarning>}
 
       <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Asset`}>
-        <AssetForm closeModal={() => { setMode(false); }} character={character} asset={asset} mode={mode}/>
+        <AssetForm closeModal={() => { setMode(false); }} character={character} asset={asset} mode={mode} />
       </CandiModal>
-      
-		</div>
-	);
+
+    </div>
+  );
 }
 
 export default (AssetCard);
