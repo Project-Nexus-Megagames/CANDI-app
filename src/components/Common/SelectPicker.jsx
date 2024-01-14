@@ -5,7 +5,7 @@ import { getFadedColor, getThisTeamFromAccount } from '../../scripts/frontend';
 import { useSelector } from 'react-redux';
 
 function SelectPicker(props) {
-	const { data, value, onChange, label, placeholder } = props;
+	const { data, value, onChange, label, altLabel, placeholder } = props;
   let valueKey = props.valueKey ? props.valueKey : '_id';
 	let [filter, setFilter] = React.useState('');
 	const accounts = useSelector(s => s.accounts.list);  
@@ -22,8 +22,9 @@ function SelectPicker(props) {
 					//.filter((el) => el[label]?.toLowerCase().includes(filter.toLowerCase()))
 					.map((el) => (
 						<option style={{ backgroundColor: "#343840" }} key={el[label]} value={el[valueKey]}>
-              {el.account && getThisTeamFromAccount(accounts, teams, el.account).name} 
-							{el[label]?.toUpperCase()}
+              {/* {el.account && getThisTeamFromAccount(accounts, teams, el.account).name}  */}
+							{el[label]?.toUpperCase()} 
+              {altLabel && <b> - ({el[altLabel]?.toUpperCase()})</b>}
 						</option>
 					))}
 		</Select>

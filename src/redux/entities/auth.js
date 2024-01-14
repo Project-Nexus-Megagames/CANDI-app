@@ -42,7 +42,7 @@ const slice = createSlice({
       console.log("jwt:")
       console.log(jwt)
 
-      localStorage.setItem('goblin-token', jwt);
+      localStorage.setItem('kepler-token', jwt);
       const user = jwtDecode(jwt);
 
       console.log('hello user:')
@@ -96,7 +96,7 @@ const slice = createSlice({
     },
     signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('goblin-token');
+      localStorage.removeItem('kepler-token');
       auth.user = null;
       auth.login = false;
       auth.loading = false;

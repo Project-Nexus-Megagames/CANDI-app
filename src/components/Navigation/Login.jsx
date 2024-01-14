@@ -15,7 +15,7 @@ const Login = (props) => {
 	const navigate = useNavigate();
   const toast = useToast();
 
-	const loginToken = localStorage.getItem("goblin-token");
+	const loginToken = localStorage.getItem("kepler-token");
   useEffect(() => {
 		console.log('token ' + loginToken);
 		// console.log(token);
@@ -51,7 +51,7 @@ const Login = (props) => {
 	};
 
 	const onSubmit = async () => {
-		remember ? localStorage.setItem('goblin-token', login) : localStorage.removeItem('goblin-token');
+		remember ? localStorage.setItem('kepler-token', login) : localStorage.removeItem('kepler-token');
 
 		reduxAction(loginUser({ user: login, password }));
 	};

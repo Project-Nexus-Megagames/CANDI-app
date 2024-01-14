@@ -51,6 +51,7 @@ const Registration = (props) => {
 
 				<GridItem area={'nav'} style={{ height: 'calc(100vh - 170px)', overflow: 'auto', }}>
 					<Input onChange={(e) => setFilter(e.target.value)} />
+          {users.length <= 0 && <p>Loading Users, sit tight. This'll take a sec</p>}
 					<VStack  divider={<StackDivider borderColor='gray.200' />}>
 						{users
 							.filter(user => user.name.first.toLowerCase().includes(filter.toLowerCase()) ||
@@ -92,7 +93,7 @@ const Registration = (props) => {
 								</CardHeader>
 
 								<CardBody>
-									<SelectPicker valueKey="_id" data={characters} label='characterName' onChange={(e) => setCharacter(e)} />
+									<SelectPicker valueKey="_id" data={characters} label='characterName' altLabel='characterTitle' onChange={(e) => setCharacter(e)} />
                   {character}
 								</CardBody>
 							</Card>
