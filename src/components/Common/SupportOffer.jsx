@@ -6,7 +6,7 @@ import SelectPicker from './SelectPicker';
 import ResourceNugget from './ResourceNugget';
 import { useSelector } from 'react-redux';
 import { AddAsset } from './AddAsset';
-import { getTeamAssets } from '../../redux/entities/assets';
+import { getMyAssets, getTeamAssets } from '../../redux/entities/assets';
 import AssetCard from './AssetCard';
 import WordDivider from './WordDivider';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
@@ -20,7 +20,7 @@ const SupportOffer = (props) => { //trade object
 	const [assets, setAssets] = React.useState([]);
 	const [comments, setComments] = useState('');
 	const [mode, setMode] = useState('edit');
-	const  teamAssets = useSelector(getTeamAssets);
+	const  myAssets = useSelector(getMyAssets);
 	const disabled = mode === 'disabled';
 	const readOnly = mode === 'readonly';
 
@@ -80,7 +80,7 @@ useEffect(() => {
 				setResources(temp);
 				break;
       case 'add-asset':
-        // thing = teamAssets.find(el => el._id === incoming);
+        // thing = myAssets.find(el => el._id === incoming);
         setAssets([...assets, incoming]);
       break;
 			default:
@@ -177,7 +177,7 @@ useEffect(() => {
 					))}	
 
           {!disabled && 
-            <AddAsset assets={teamAssets.filter(el => el.tags.some(s => actionType.assetTypes.some(at => at === s))   )} handleSelect={(asset) => editState(asset, 0, 'add-asset' )}/>}		
+            <AddAsset assets={myAssets.filter(el => el.tags.some(s => actionType.assetTypes.some(at => at === s)) || actionType.assetTypes.some(at => at === el.type) )} handleSelect={(asset) => editState(asset, 0, 'add-asset' )}/>}		
 				</SimpleGrid >}
 
         <Divider/>
