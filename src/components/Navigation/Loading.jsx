@@ -30,7 +30,7 @@ const Loading = (props) => {
 		}
     const interval = setInterval(() => {
       setMessage(Math.floor(Math.random() * corps.length))
-    }, 2500);
+    }, 4500);
     return () => clearInterval(interval);
 	}, []);
 
