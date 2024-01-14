@@ -61,8 +61,8 @@ function ActionOptions({ options, actionType, action }) {
     // change this to add value to resources on an Agenda
     const agendaValue = (resource, value) => {
       switch(resource) {
-        case 'agenda_effort': return 20 * value;
-        default: return 5 * value;
+        // case 'agenda_effort': return 20 * value;
+        default: return 1 * value;
       }
     }
 
@@ -80,16 +80,36 @@ function ActionOptions({ options, actionType, action }) {
       for (let resource of options[0].resources) {
         forProg += agendaValue(resource.type, resource.amount)
       }
-
-      forProg += (20 * options[0]?.assets.length);
-
+      
+      for (let asset of options[0].assets) {
+        for (const die of asset.dice) {          
+          forProg += die.amount;
+        }
+      }
+      
       let agProg = 0;
       for (let resource of options[1].resources) {
         agProg += agendaValue(resource.type, resource.amount)
       }
 
-      agProg += (20 * options[1].assets.length);
+      for (let asset of options[1].assets) {
+        for (const die of asset.dice) {
+          agProg += die.amount;
+        }
+      }
+
       return forProg - agProg;
+    }
+
+    const assetProgress = (option) => {
+      let agProg = 0;
+
+      for (let asset of option.assets) {
+        for (const die of asset.dice) {
+          agProg += die.amount;
+        }
+      }
+      return agProg;
     }
   
 
@@ -114,7 +134,7 @@ function ActionOptions({ options, actionType, action }) {
                 {slots.map((slot, index) => (
                     <Box key={index} style={{ border: `2px solid ${getFadedColor(options[index]?.name)}`, width: '100%', margin: '3px', padding: '5px' }} >
                       <ActionMarkdown
-                        header={`${options[index]?.name} (${getResourceValue(options[index]?.resources) + (20 * options[index]?.assets.length)})`}
+                        header={`${options[index]?.name} (${getResourceValue(options[index]?.resources) + assetProgress(options[index])})`}
                         tooltip={`You are '${options[index]?.name}' this agemda passing`}
                         markdown={options[index]?.description}
                         data={description}
@@ -133,13 +153,13 @@ function ActionOptions({ options, actionType, action }) {
                                 index={index} 
                                 value={`${resource.amount}`} 
                                 type={resource.type} />	
-                                + {options[index]?.acceptedResources.find(rt => rt.type == resource.type).rewards * resource.amount}
+                                
                             </Box>						                            						
                           ))}	
                         </Wrap>
 
                         {options[index]?.assets?.length === 0 && <h5>No Assets Supporting</h5>}
-                        {options[index]?.assets?.length > 0 && <h5>Assets Supporting: +{20 * options[index]?.assets.length}</h5>}
+                        {options[index]?.assets?.length > 0 && <h5>Assets Supporting: + {assetProgress(options[index])}</h5>}
                         {/* <Flex justify="space-around" align={'center'} >
                           {options[index]?.assets?.map((asset, index) => (
                             <Box key={asset._id}>

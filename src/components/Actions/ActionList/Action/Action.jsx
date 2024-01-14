@@ -139,7 +139,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                 edit={false}
               />
 
-              {actionType.type !== 'Agenda' && <ActionResources
+              {actionType.type !== 'Agenda' && actionType.maxAssets > 0 && <ActionResources
                 actionType={actionType}
                 assets={action.submission.assets}
                 toggleAssetInfo={toggleAssetInfo}

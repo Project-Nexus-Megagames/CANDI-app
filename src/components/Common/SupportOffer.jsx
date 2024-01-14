@@ -93,8 +93,7 @@ useEffect(() => {
     // console.log(res)
 		return props.myAccount.resources.find(el => el.type === res)?.balance;
 	}
-
-  console.log(option)
+  
 	return(
 		<div className='trade' style={{ width: "100%", padding: '8px', height: 'calc(100vh - 190px)', overflow: 'auto', borderColor: 'inherit', border: '2px solid', textAlign: 'center'}}>
       <h3>

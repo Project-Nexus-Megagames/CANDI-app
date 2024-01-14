@@ -6,7 +6,7 @@ const NexusTag = (props) => {
 	const { value, variant, children, width } = props; 
 
   const renderIcon = (icon) => {
-    switch(icon) {  
+    switch(icon.toLowerCase()) {  
       case 'draft':
         return(
           <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
@@ -26,7 +26,7 @@ const NexusTag = (props) => {
             label={(
             <div>
               <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
-              <h5>{icon}</h5>
+              <h5>This Asset is on cooldown and cannot be used for other Actions</h5>
             </div>)}>
               <div style={{	display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content' }}>
                 <img style={{ fill: 'red', margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />

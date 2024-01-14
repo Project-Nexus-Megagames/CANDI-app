@@ -121,7 +121,7 @@ const Actions = (props) => {
           {selected && !showNewActionModal &&
               <Action
                 action={selected}
-                actionType={gameConfig.actionTypes[0]}
+                actionType={gameConfig.actionTypes.find(el => el.type === selected.type)}
                 key={selected._id}
                 toggleAssetInfo={(asset) => {
                     setAssetInfo({show: true, asset});
