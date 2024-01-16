@@ -26,10 +26,30 @@ const ActionSubObject = (props) => {
   const assets = useSelector(getTeamDice);
 
   const handleDelete = async () => {
-    const data = {
-			id: action._id,
-			result: subObject._id
-		};
+    let data;
+    switch(subObject.model) {
+      case 'Comment':
+        data = {
+          id: action._id,
+          comment: subObject._id
+        };
+      break;
+      case 'Result':
+        data = {
+          id: action._id,
+          result: subObject._id
+        };
+      break;
+      case 'Effect':
+        data = {
+          id: action._id,
+          effect: subObject._id
+        };
+      break;
+    }
+
+    
+
 		socket.emit('request', {
 			route: 'action',
 			action: 'deleteSubObject',
