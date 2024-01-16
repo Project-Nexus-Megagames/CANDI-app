@@ -5,7 +5,7 @@ import React from "react";
 import WordDivider from "../../../Common/WordDivider";
 import { getFadedColor } from "../../../../scripts/frontend";
 
-function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data }) {
+function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data, textAlign }) {
     return (
         <Box style={{ backgroundColor: getFadedColor('card', 0.5), width: '100%' }} >
             <WordDivider
@@ -14,7 +14,7 @@ function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data }) {
             />
             <Box
               maxHeight={'20vh'}
-                textAlign='left'
+                textAlign={textAlign ? textAlign : 'left'}
                 whiteSpace='pre-line'
                 wordBreak='breakword'
                 marginTop='0.5rem'
