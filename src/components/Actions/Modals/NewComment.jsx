@@ -9,7 +9,7 @@ import { playerActionsRequested } from '../../../redux/entities/playerActions';
 
 const NewComment = (props) => {
   const reduxAction = useDispatch();
-	const myChar = useSelector(getMyCharacter);
+	const {myCharacter} = useSelector(s => s.auth);
 	const [body, setBody] = React.useState('');
 	const [isPrivate, setIsPrivate] = React.useState(false);
 
@@ -21,7 +21,7 @@ const NewComment = (props) => {
 			comment: {
 				body,
 				status: isPrivate ? 'Private' : 'Public',
-				commentor: myChar._id
+				commentor: myCharacter._id
 			},
 		};
 		socket.emit('request', { route: 'action', action: 'comment', data });
@@ -49,7 +49,7 @@ const NewComment = (props) => {
             <form>
       				Comment Text
       				<br></br>
-      				{myChar.tags.some((el) => el === 'Control') && (
+      				{myCharacter.tags.some((el) => el === 'Control') && (
       					<Switch defaultChecked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} >
                   {isPrivate ? "Hidden" : "Revealed"}
                 </Switch>
