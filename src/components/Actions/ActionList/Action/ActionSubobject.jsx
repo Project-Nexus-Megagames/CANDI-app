@@ -21,6 +21,7 @@ const ActionSubObject = (props) => {
   const creator = subObject.resolver ? subObject.resolver :
                   subObject.effector ? subObject.effector :
                   subObject.commentor ? subObject.commentor : 
+                  subObject.creator ? subObject.creator : 
                   { playerName: "UNKNOWN!?!", characterName: "UNKNOWN!?!"  };
                   
   const [mode, setMode] = React.useState(false);
