@@ -81,7 +81,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
 
           >Submit</Button>}
           {!edit && <IconButton
-            isDisabled={isDisabled || edit || (action.tags.includes('Published') && !isControl)}
+            isDisabled={isDisabled || edit || (action.tags?.includes('Published') && !isControl)}
             size="sm"
             onClick={(e) => {
               setMode("confirm");
