@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getIcon, getTextColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Center, TagLabel, TagCloseButton, Wrap, useBreakpointValue, SimpleGrid } from '@chakra-ui/react';
+import { Tag, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Center, TagLabel, TagCloseButton, Wrap, useBreakpointValue, SimpleGrid, Icon } from '@chakra-ui/react';
 import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
@@ -10,6 +10,7 @@ import { AddCharacter } from '../../Common/AddCharacter';
 import SelectPicker from '../../Common/SelectPicker';
 import { getCharAccount } from '../../../redux/entities/accounts';
 import ResourceNugget from '../../Common/ResourceNugget';
+import { HiSave } from 'react-icons/hi';
 
 /**
  * Form for a new ACTION
@@ -39,7 +40,7 @@ const ActionForm = (props) => {
 
   const [intent, setIntent] = React.useState(defaultValue?.intent ? defaultValue.intent : '');
   const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
-  const [destination, setDestination] = React.useState(false);
+  const [destination, setDestination] = React.useState(defaultValue?.location ? defaultValue.location : false);
   const [facility, setFacility] = React.useState(undefined);
 
   const breakpoints = useBreakpointValue({
@@ -60,9 +61,9 @@ const ActionForm = (props) => {
     newMap(actionType?.maxAssets);
   }, [actionType])
 
-  // useEffect(() => {
-  //   console.log(destination);
-  // }, [destination])
+  useEffect(() => {
+    console.log(destination);
+  }, [destination])
 
   const editState = (incoming, type, index) => {
     console.log(incoming, type, index)
@@ -124,7 +125,7 @@ const ActionForm = (props) => {
 
   return (
     <div>
-      <h4>New {actionType.type} Action</h4>
+      <h4>Edit {actionType.type} Action</h4>
       <br />
       <form>
         <Flex width={"100%"} align={"end"} >
@@ -160,8 +161,16 @@ const ActionForm = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <Flex>
-              <SelectPicker data={locations} label="name" onChange={setDestination} placeholder={"Select a Destination (" + locations.length + ") in range"} value={destination} />
+            <h5>{locations.find(el => el._id === destination)?.name}</h5>
+            <Flex>              
+              <SelectPicker 
+              data={locations} 
+              label="name" 
+              onChange={setDestination} 
+              placeholder={destination ? locations.find(el => el._id === destination)?.name : "Select a Destination (" + locations.length + ") in range"} 
+              value={destination} 
+              />
+
               {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
             </Flex>
 
@@ -261,7 +270,7 @@ const ActionForm = (props) => {
         }}
       >
         <Spacer />
-        <Button colorScheme="green" onClick={() => passSubmit()} variant='solid' disabled={isDisabled()} >
+        <Button leftIcon={<Icon as={HiSave} />} colorScheme="green" onClick={() => passSubmit()} variant='solid' disabled={isDisabled()} >
           <b>Submit</b>
         </Button>
         <Button colorScheme="red" onClick={() => closeNew()} variant='outline'>

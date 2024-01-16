@@ -66,7 +66,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
             marginTop='0.25rem'
             aria-label={'Edit Action'}
           />}
-          {edit && <Button
+          {/* {edit && <Button
             isDisabled={isDisabled}
             size="sm"
             onClick={(e) => {
@@ -79,7 +79,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
             marginTop='0.25rem'
             aria-label={'Edit Action'}
 
-          >Submit</Button>}
+          >Submit</Button>} */}
           {!edit && <IconButton
             isDisabled={isDisabled || edit || (action.tags?.includes('Published') && !isControl)}
             size="sm"

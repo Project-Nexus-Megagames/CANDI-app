@@ -44,7 +44,7 @@ const AssetCard = (props) => {
             <Spacer />
             <Box>
               <div display="flex">
-                {!compact && <h5 style={{ marginLeft: '5px' }}>{asset.name}
+                { <h5 style={{ marginLeft: '5px' }}>{asset.name}
                   {<CountDownTag timeout={asset.timeout} />}
                 </h5>}
                 <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>

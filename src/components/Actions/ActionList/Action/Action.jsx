@@ -55,7 +55,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
 			},
       ...data0
 		};
-    console.log(data)
+    //console.log(data0)
     socket.emit('request', { route: 'action', action: 'update', data });
     setMode(false);
   };
@@ -171,7 +171,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
 
             {mode === 'edit' && <Box> 
               <ActionForm 
-              defaultValue={{ ...action.submission, name: action.name }} 
+              defaultValue={{ ...action.submission, name: action.name, location: action.location._id }} 
               handleSubmit={(action) =>handleSubmit(action)} 
               actionType={action.type}
               actionID={action._id} 
