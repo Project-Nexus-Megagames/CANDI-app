@@ -97,15 +97,15 @@ const ActionForm = (props) => {
       id: actionID
     };
     console.log(data)
-    // closeNew();
+    closeNew();
      handleSubmit(data)
 
-    // setActionType(false);
-    // setDescription('');
-    // setIntent('');
-    // setName('');
-    // setResources([]);
-    // setCollaborators([]);
+    setActionType(false);
+    setDescription('');
+    setIntent('');
+    setName('');
+    setResources([]);
+    setCollaborators([]);
 
   };
 
@@ -134,7 +134,7 @@ const ActionForm = (props) => {
             Collaborators:   
           </Box>}
           <Spacer />
-          <Box width={"49%"}>
+          {!collabMode && <Box width={"49%"}>
             Name:
             {10 - name.length > 0 && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -147,9 +147,9 @@ const ActionForm = (props) => {
               </Tag>
             )}
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
-          </Box>
+          </Box>}
           <Spacer />
-          <Box width={"49%"}>
+          {!collabMode && <Box width={"49%"}>
             Destination
             {!destination && actionType.requiresDestination && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -175,7 +175,7 @@ const ActionForm = (props) => {
               {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
             </Flex>
 
-          </Box>
+          </Box>}
           <Spacer />
         </Flex>
         <br />
