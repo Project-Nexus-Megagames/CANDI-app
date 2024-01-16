@@ -141,6 +141,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
               {action.location && <ActionMarkdown
                 header='Location'
                 tooltip='Where this action takes place'
+                textAlign='center'
                 markdown={action.location.name}
                 edit={false}
               />}
