@@ -86,12 +86,11 @@ const ControlTerminal = (props) => {
           <Button variant={'solid'} colorScheme='teal' onClick={() => setMode("next")}>Next Round</Button>
 				</div>
 
-        <div>
+        {user?.username.toLowerCase() === 'bobtheninjaman' && <div>
           Used Assets: {assets.filter(el => el.status.some(s => s=== 'used')).length}
-          <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>
-          
+          <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>          
           <Button onClick={() => handleResetEfferot()} >Reset Effort</Button>
-        </div>
+        </div>}
 
         <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
           Are ya sure?
