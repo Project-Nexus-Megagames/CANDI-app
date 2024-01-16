@@ -183,7 +183,13 @@ const NewAction = (props) => {
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {10 - description.length <= 0 && (
+            {description.length >= 500 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                Description is too long. 
+              </Tag>
+            )}
+
+            {10 - description.length <= 0 && description.length < 500 && (
               <Tag variant='solid' colorScheme={'green'}>
                 <CheckIcon />
               </Tag>
