@@ -83,9 +83,8 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
 
     return (
         <Box>
-            <WordDivider word='Assets'/>
+            <WordDivider word={`Assets(${assets.length})` }/>
             <SimpleGrid
-
               columns={breakpoints.columns}
               rows={breakpoints.rows}
             >

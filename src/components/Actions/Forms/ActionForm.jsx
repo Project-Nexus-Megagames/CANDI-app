@@ -18,7 +18,7 @@ import { HiSave } from 'react-icons/hi';
  * @returns Component
  */
 const ActionForm = (props) => {
-  const { collabMode, handleSubmit, defaultValue, actionID, closeNew } = props;
+  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header } = props;
 
   const { gameConfig } = useSelector((state) => state);
   const { myCharacter } = useSelector((s) => s.auth);
@@ -97,15 +97,15 @@ const ActionForm = (props) => {
       id: actionID
     };
     console.log(data)
-    closeNew();
-    handleSubmit(data)
+    // closeNew();
+     handleSubmit(data)
 
-    setActionType(false);
-    setDescription('');
-    setIntent('');
-    setName('');
-    setResources([]);
-    setCollaborators([]);
+    // setActionType(false);
+    // setDescription('');
+    // setIntent('');
+    // setName('');
+    // setResources([]);
+    // setCollaborators([]);
 
   };
 
@@ -125,11 +125,12 @@ const ActionForm = (props) => {
 
   return (
     <div>
-      <h4>Edit {actionType.type} Action</h4>
+      {header && <h4>{header}</h4>}
+      {!header && <h4>Edit {actionType.type} Action</h4>}
       <br />
       <form>
         <Flex width={"100%"} align={"end"} >
-          {actionType.collab && <Box>
+          {actionType.collab && !collabMode && <Box>
             Collaborators:   
           </Box>}
           <Spacer />

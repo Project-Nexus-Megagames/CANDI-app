@@ -12,6 +12,7 @@ import { RaidIce } from "../../../Hacking/RaidIce";
 import { ActionIce } from "./ActionIce";
 import { useSelector } from "react-redux";
 import { getTeamDice,  } from "../../../../redux/entities/assets";
+import ActionResources from "./ActionResources";
 
 
 const ActionSubObject = (props) => {
@@ -24,6 +25,7 @@ const ActionSubObject = (props) => {
                   
   const [mode, setMode] = React.useState(false);
   const assets = useSelector(getTeamDice);
+  const { gameConfig } = useSelector((state) => state);
 
   const handleDelete = async () => {
     let data;
@@ -96,7 +98,7 @@ const ActionSubObject = (props) => {
           <Box marginLeft='auto'>
             <ActionButtons
               action={subObject}
-              toggleEdit={() => setMode('edit_result')}
+              toggleEdit={() => setMode('edit'+subObject.model)}
               creator={creator}
               handleDelete={handleDelete}
             />
@@ -120,7 +122,7 @@ const ActionSubObject = (props) => {
                 {subObject.options &&
                   subObject.options.map((subRotuine, index) => (
                     <Box
-                      index={subRotuine._id}
+                      key={subRotuine._id}
                       colSpan={18 / subObject.options.length}
                     >
                       <Divider vertical />
@@ -155,7 +157,16 @@ const ActionSubObject = (props) => {
               </Center>
             </div>
           }
+          
+          {subObject.assets && subObject.assets.length > 0 &&
+              <ActionResources
+              actionType={gameConfig.actionTypes.find(el => el.type === action.type )}
+              assets={subObject.assets}
+              toggleAssetInfo={(data) => console.log(data)}
+            />
+          }
         </Box>
+
       </div>    
       <Divider orientation='vertical' />   
 

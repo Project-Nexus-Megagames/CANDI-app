@@ -12,12 +12,14 @@ import { CandiModal } from "../../../Common/CandiModal";
 import NewContractForm from "../../../Common/NewContractForm";
 import socket from "../../../../socket";
 import Server from "../../../Team/Server";
+import ActionForm from "../../Forms/ActionForm";
 
 function Feed({action}) {
     const gamestate = useSelector(state => state.gamestate);
     const facilities = useSelector(state => state.facilities.list);
     const myCharacter = useSelector(state => state.auth.myCharacter);
     const {isControl} = usePermissions();
+    const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
 
     const [mode, setMode] = React.useState(false);
     const [feed, setFeed] = React.useState([]);
@@ -65,9 +67,25 @@ function Feed({action}) {
     };
 
     const handleCreate = (data) => {
-      console.log(data)
       socket.emit('request', { route: 'action', action: 'addContract', data:  { ...data, id: action._id }})
     }
+
+    const handleSubmit = async (incoming) => {
+      const { effort, assets, description, intent, name, type, creator, numberOfInjuries, collaborators } = incoming;
+      const data = {
+        name,
+        type,
+        effort: effort,
+        assets,
+        description: description,
+        intent: intent,
+        creator,
+        action: action
+      };
+      console.log(data)
+      console.log(incoming)
+      socket.emit('request', { route: 'action', action: 'collab', data });
+    };
 
     return (
         <Box
@@ -164,6 +182,14 @@ function Feed({action}) {
                               Get Specific Ice
                           </Button>
                         )} */}
+                        {isCollaborator && (
+                            <Button variant={'solid'}
+                                onClick={() => setMode('collab')}
+                                colorScheme="pink"
+                            >
+                                Collaborate
+                            </Button>
+                        )}
                             <Button
                               variant={'outline'}
                                 onClick={() => setMode(false)}
@@ -175,6 +201,8 @@ function Feed({action}) {
                 )}
               <Spacer />
             </Center>
+
+            {mode === 'collab' && <ActionForm header="Submit new collab on Action" handleSubmit={handleSubmit} actionType={action.type} collabMode closeNew={() => closeIt()} />}
 
             <NewResult
               show={mode === 'result'}
