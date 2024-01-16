@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Flex, Grid, GridItem, IconButton, Spacer, Tag } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, IconButton, Spacer, Tag } from '@chakra-ui/react';
 import CharacterListItem from './CharacterListItem';
 import ResourceNugget from '../Common/ResourceNugget';
 import { useSelector } from 'react-redux';
@@ -10,10 +10,12 @@ import { useState } from 'react';
 import AssetCard from '../Common/AssetCard';
 import WordDivider from '../WordDivider';
 import { CandiModal } from '../Common/CandiModal';
+import { AddResource } from '../Common/AddResource';
 
 const SelectedCharacter = (props) => {
   const { selected } = props;
   const [mode, setMode] = useState(false);
+  const accounts = useSelector(state => state.accounts.list);
   const assets = useSelector(state => state.assets.list);
   const characters = useSelector(state => state.characters.list);
   const control = useSelector(state => state.auth.control);
@@ -47,6 +49,7 @@ const SelectedCharacter = (props) => {
 		}
 	};
 
+  const selectedResource = accounts.find(el => el._id === selected.account).resources.filter(r => r.balance !== 0)
 	return ( 
 		<Grid
       width={'99%'}
@@ -59,14 +62,8 @@ const SelectedCharacter = (props) => {
 			<GridItem pl='2' area={'side'} >
         <div className='styleCenter' >
           <CharacterListItem handleSelect={() => console.log("Hello Player! Hope you are having fun!")}  character={selected} />
-
         </div>
         
-        <Flex justify={'center'} >
-        {selected.tags && selected.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
-         <Tag key={item} variant={'solid'} style={{ backgroundColor: getFadedColor(item), textTransform: 'capitalize', margin: '4px' }} >{item}</Tag>
-         )}
-        </Flex>		
 
       < Button
         onClick={(e) => { e.stopPropagation(); copyToClipboard(selected)}}
@@ -83,6 +80,17 @@ const SelectedCharacter = (props) => {
         {selected.timeZone && <p>
           Time Zone: <b>{selected.timeZone}</b>
         </p>}
+
+        {(control || myCharacter._id === selected._id) && selected.account && selectedResource.length > 0 && <div>
+            <WordDivider word={"Effort"} ></WordDivider>
+            <Center>
+              {selectedResource.map((item) =>
+              <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
+            )}              
+            {/* {control && <AddResource />} */}
+            </Center>
+
+        </div>}
 
         {(control || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
             <WordDivider word={"Stats"} ></WordDivider>
@@ -105,7 +113,7 @@ const SelectedCharacter = (props) => {
 
       {(control || myCharacter._id === selected._id) && <GridItem bg='#555555' area={'body'} >
         <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
-          Assets and Resources 
+          Assets 
           {control && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
         </h5>
 				<Grid templateColumns='repeat(3, 1fr)' gap={1}>

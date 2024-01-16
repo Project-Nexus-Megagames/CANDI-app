@@ -16,7 +16,7 @@ import NewAction from '../Actions/Modals/NewAction';
 
 const Agendas = (props) => {
   const navigate = useNavigate();
-  const login = useSelector((state) => state.auth.login);
+  const { login, myCharacter } = useSelector((state) => state.auth);
   const gamestate = useSelector((state) => state.gamestate);
   const myChar = useSelector(getMyCharacter);
   const gameConfig = useSelector(s => s.gameConfig);
@@ -55,7 +55,7 @@ const Agendas = (props) => {
     if (filter) {
       let filtered = [];
       let agendasToFilter = [];
-      myChar.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter = publishedAgendas);
+      myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter = publishedAgendas);
 
       filtered = agendasToFilter.filter(
         (agenda) =>
@@ -64,8 +64,8 @@ const Agendas = (props) => {
           agenda.creator.characterName?.toLowerCase().includes(filter.toLowerCase())
       );
       setFilteredData(filtered);
-    } else myChar.tags.some((el) => el.toLowerCase() === 'control') ? setFilteredData(agendas) : setFilteredData(publishedAgendas);
-  }, [agendas, filter, publishedAgendas, myChar]);
+    } else myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? setFilteredData(agendas) : setFilteredData(publishedAgendas);
+  }, [agendas, filter, publishedAgendas, myCharacter]);
 
   const handleSearch = (e) => {
     setFilter(e);
@@ -79,13 +79,14 @@ const Agendas = (props) => {
   return (
     <React.Fragment>
       <Grid
-        templateAreas={`"nav main"`}
-        gridTemplateColumns={'20% 80%'}
+        templateAreas={`"nav"`}
+        gridTemplateColumns={'100%'}
         gap='1'
         fontWeight='bold'>
 
         <GridItem pl='2' area={'nav'} >
-          <Box>
+
+        <Box>
           <Input style={{ width: '80%', margin: '5px' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
           {!selected && <IconButton variant={'solid'} onClick={() => setMode('new')}  colorScheme='green' size="sm" icon={<Plus/>} />}
           {selected && <IconButton variant={'outline'} onClick={() => setSelected(false)} colorScheme='red' size="sm" icon={<CloseButton />} /> }
@@ -93,8 +94,9 @@ const Agendas = (props) => {
           <Box>
             <Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
               <tbody>
-                {[1, 2, 3, 4, 5, 6, 7, 8].filter(el => el < gamestate.round).map((x, i) => (
-                  <Button key={i} style={{ margin: '4px' }} onClick={() => setRound(i + 1)} color="blue" appearance={i + 1 === round ? 'primary' : 'ghost'} circle>
+              {<h5>Round {round}</h5>}         
+                {[1, 2, 3, 4, 5, 6, 7, 8].filter(el => el <= gamestate.round).map((x, i) => (
+                  <Button key={i} style={{ margin: '4px' }} onClick={() => setRound(i + 1)}  variant={x === round ? 'solid' : 'outline'} circle>
                     {i + 1}
                   </Button>
                 ))}
@@ -102,14 +104,12 @@ const Agendas = (props) => {
             </Stack>
             
           </Box>
-        </GridItem>
-
-        <GridItem pl='2' style={{ height: 'calc(100vh - 78px)', overflow: 'auto', width: '99%' }} area={'main'} >
-          {<h5>Round {round}</h5>}
+          
           {!selected && mode !== 'new' && <Wrap justify="space-around" align={'center'} >
             {filteredData.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
             {filteredData
-              .filter((el) => el.round === round)
+              // .filter((el) => el.round === round)
+              //.filter(el => !el.tags.includes('published'))
               .map((agenda) => (
                 <div key={agenda._id}
                   onClick={() => setSelected(agenda)}

@@ -107,7 +107,6 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
             handleEdit={handleEdit}
             edit={mode === 'edit'}
             isUnpublishedAgenda={isUnpublishedAgenda}
-            hidebuttons
           />
           <Box>
             <Center>
@@ -138,6 +137,13 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                 handleEdit={handleEdit}
                 edit={false}
               />
+
+              {action.location && <ActionMarkdown
+                header='Location'
+                tooltip='Where this action takes place'
+                markdown={action.location.name}
+                edit={false}
+              />}
 
               {actionType.type !== 'Agenda' && actionType.maxAssets > 0 && <ActionResources
                 actionType={actionType}

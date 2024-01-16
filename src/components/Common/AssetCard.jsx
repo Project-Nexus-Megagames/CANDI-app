@@ -48,6 +48,7 @@ const AssetCard = (props) => {
                   {<CountDownTag timeout={asset.timeout} />}
                 </h5>}
                 <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
+                <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
                 {asset.status?.map(el => (
                   <NexusTag key={el} value={el}></NexusTag>
                 ))}
@@ -71,7 +72,8 @@ const AssetCard = (props) => {
             <Spacer />
             {asset.dice?.map(die => (
               <div key={die._id} style={{ textAlign: 'center' }} >
-                {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
+                {/* {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />} */}
+                + {die.amount}
               </div>
             ))}
             <Spacer />

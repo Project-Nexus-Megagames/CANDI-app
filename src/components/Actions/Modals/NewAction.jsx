@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFadedColor, getTextColor,  } from '../../../scripts/frontend';
+import { getFadedColor, getTextColor, } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
-import { getMyCharacter } from '../../../redux/entities/characters';
+import { getMyCharacter, getPlayerCharacters } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import {	Modal,	ModalOverlay,	ModalContent,	ModalHeader,	ModalFooter,	ModalBody,	ModalCloseButton,	Tag, Spinner,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer, Grid, Center} from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import { AddAsset } from '../../Common/AddAsset';
 import { CheckIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
@@ -15,6 +15,7 @@ import { getTeamHQ } from '../../../redux/entities/locations';
 import ResourceNugget from '../../Common/ResourceNugget';
 import { getCharAccount, getTeamAccount } from '../../../redux/entities/accounts';
 import { DiceList } from '../../Common/DiceList';
+import { AddCharacter } from '../../Common/AddCharacter';
 
 /**
  * Form for a new ACTION
@@ -23,90 +24,90 @@ import { DiceList } from '../../Common/DiceList';
  */
 const NewAction = (props) => {
   const { actionType } = props;
-	const gameConfig = useSelector((state) => state.gameConfig);
+  const gameConfig = useSelector((state) => state.gameConfig);
   const locations = useSelector((state) => state.locations.list)
   const facilities = useSelector((state) => state.facilities.list)
-  
+  const playerCharacters = useSelector(getPlayerCharacters);
 
-	const { character } = useSelector((s) => s.auth);
-	// const character = useSelector(getMyCharacter);
-	const myAssets = useSelector(getMyAssets);
+
+  const { character } = useSelector((s) => s.auth);
+  // const character = useSelector(getMyCharacter);
+  const myAssets = useSelector(getMyAssets);
   // const hq = useSelector(getTeamHQ);
-	const teamAssets = useSelector(getTeamAssets);
+  const teamAssets = useSelector(getTeamAssets);
   const myAccout = useSelector(getCharAccount);
 
-	const [assets, setAssets] = React.useState([]);
-	const [description, setDescription] = React.useState('');
-	const [intent, setIntent] = React.useState('');
-	const [name, setName] = React.useState('');
-	const [destination, setDestination] = React.useState(false);
-	const [facility, setFacility] = React.useState(undefined);
-  
+  const [assets, setAssets] = React.useState([]);
+  const [description, setDescription] = React.useState('');
+  const [intent, setIntent] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [destination, setDestination] = React.useState(false);
+  const [facility, setFacility] = React.useState(undefined);
+  const [collaborators, setCollaborators] = React.useState([]);
+
 
   useEffect(() => {
     newMap(actionType.maxAssets);
-	}, [actionType]);
+  }, [actionType]);
 
-	const editState = (incoming, type, index) => {
+
+  const editState = (incoming, type, index) => {
     console.log(type)
-		let thing;
-		switch (type) {
+    let thing;
+    switch (type) {
       case 'Asset':
-        let temp = [ ...assets ];
+        let temp = [...assets];
         temp[index] = incoming;
         setAssets(temp);
         break;
-			default:
-				console.log('UwU Scott made an oopsie doodle!');
-		}
-	};
+      case 'collab':
+        setCollaborators(collaborators.filter(c => c._id !== incoming._id));
+        break;
+      case 'addCollab':
+        setCollaborators([...collaborators, incoming]);
+        break;
+      default:
+        console.log('UwU Scott made an oopsie doodle!');
+    }
+  };
 
-	const handleSubmit = async () => {
-		// 1) make a new action
-		const data = {
-			submission: {
-				assets: assets.filter(el => el),
-				description: description,
-				intent: intent,
+  const handleSubmit = async () => {
+    // 1) make a new action
+    const data = {
+      submission: {
+        assets: assets.filter(el => el),
+        description: description,
+        intent: intent,
         facility: facility,
-        location: destination,
-			},
-			name: name,
-			type: actionType.type,
-			creator: character._id,
+      },
+      name: name,
+      type: actionType.type,
+      creator: character._id,
+      collaborators,
       account: myAccout._id,
-		};
-    
-		socket.emit('request', { route: 'action', action: 'create', data });
+      location: destination,        
+    };
 
-		setDescription('');
-		setIntent('');
-		setName('');
-		setAssets([]);
-		props.closeNew();
-	};
+    socket.emit('request', { route: 'action', action: 'create', data });
+
+    setDescription('');
+    setIntent('');
+    setName('');
+    setAssets([]);
+    props.closeNew();
+  };
 
   const isDisabled = () => {
-		let boolean = false;
-    for (const resource of actionType.resourceTypes) {
+    let boolean = false;
+    for (const resource of actionType.resourceTypes) {      
       boolean = myAccout.resources.find(e => e.type === resource.type) ?
-       myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min :
-       true;
+        myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min :
+        true;
     }
-		if (description.length < 10 || boolean ) return true;
-		else return false;
-	};
-  
+    if (description.length < 10 || boolean) return true;
 
-  // const getDistance = (coords) => {
-  //   if (coords) {
-  //       var deltaX = coords.x - hq.coords.x;
-  //       var deltaY = coords.y - hq.coords.y;
-  //       return ((Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaX - deltaY)) / 2);       
-  //   }
-  //   else return -1
-
-	// }
+    return false;
+  };
 
   function newMap(number) {
     let arr = [];
@@ -116,55 +117,65 @@ const NewAction = (props) => {
     setAssets(arr);
   }
 
-  let inRange =  locations;
+  let inRange = locations;
 
-	return (
-		<div>
+  return (
+    <div>
       <h4>New {actionType.type} Action</h4>
-      <br/>
-			<form>
-      <Flex width={"100%"} align={"end"} >
-      <Spacer />
-      <Box width={"49%"}>
-				Name:
-				{10 - name.length > 0 && (
-					<Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-						{10 - name.length} more characters...
-					</Tag>
-				)}
-				{10 - name.length <= 0 && (
-					<Tag variant='solid' colorScheme={'green'}>
-						<CheckIcon />
-					</Tag>
-				)}
-				<textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
-      </Box>
-      <Spacer />
-      <Box width={"49%"}>
-        Destination
-        {!destination && actionType.requiresDestination && (
-          <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-            Select Destination
-          </Tag>
-        )}
+      <br />
+      <form>
+        {actionType.collab && <Box>
+          Collaborators:
+          <AddCharacter characters={playerCharacters.filter(el => !collaborators.some(ass => ass?._id === el._id ) )} handleSelect={(char) => editState(char, 'addCollab')} />
+          {collaborators.length > 0 && collaborators.map(char =>
+            <Tag margin={'2px'} key={char._id} variant={'solid'} >
+              <TagLabel>{char.characterName}</TagLabel>
+              <TagCloseButton onClick={() => editState(char, 'collab') }/>
+            </Tag>
+          )}
+        </Box>}
+        <Flex width={"100%"} align={"end"} >
+          <Spacer />
+          <Box width={"49%"}>
+            Name:
+            {10 - name.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - name.length} more characters...
+              </Tag>
+            )}
+            {10 - name.length <= 0 && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
+          </Box>
+          <Spacer />
+          <Box width={"49%"}>
+            Destination
+            {!destination && actionType.requiresDestination && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                Select Destination
+              </Tag>
+            )}
 
-        {destination && (
-          <Tag variant='solid' colorScheme={'green'}>
-            <CheckIcon />            
-          </Tag>
-        )}
-        <Flex>
-          <SelectPicker data={inRange} label="name" onChange={setDestination} placeholder={"Select a Destination (" + inRange.length + ") in range"} value={destination} /> 
-          {destination && facilities.filter(el => el.location._id === destination ).length > 0 &&  <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination )} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination ).length + ") present"} /> }
+            {destination && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <Flex>
+              <SelectPicker data={inRange} label="name" onChange={setDestination} placeholder={"Select a Destination (" + inRange.length + ") in range"} value={destination} />
+              {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
+            </Flex>
+
+          </Box>
+          <Spacer />
         </Flex>
-        
-      </Box>
-      <Spacer />
-      </Flex>
-      <br/>
-			<Divider />
-      <Flex width={"100%"} >
-        <Spacer />
+        <br />
+        <Divider />
+        <Flex width={"100%"} >
+          <Spacer />
           <Box width={"49%"} >
             Description:
             {10 - description.length > 0 && (
@@ -198,68 +209,68 @@ const NewAction = (props) => {
                   )}
                   <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
                 </Box>
-              ))}        
+              ))}
             </Center>
 
             {/* <DiceList assets={assets} type={"all"} /> */}
           </Box>
           <Spacer />
-      </Flex>        
-      <br/>
-      
+        </Flex>
+        <br />
 
-      <br/>
+
+        <br />
 
         Assets:
-        <br/>
-				  {actionType.assetTypes?.map((type) => (
-				  	<Tag margin={'3px'} key={type} textTransform='capitalize'  backgroundColor={getFadedColor(type)} color={getTextColor(type)} variant={'solid'}>
-				  		{type}
-				  	</Tag>
-				  ))}
+        <br />
+        {actionType.assetTypes?.map((type) => (
+          <Tag margin={'3px'} key={type} textTransform='capitalize' backgroundColor={getFadedColor(type)} color={getTextColor(type)} variant={'solid'}>
+            {type}
+          </Tag>
+        ))}
 
-				<Flex>
+        <Flex>
           {assets.map((ass, index) => (
-          <>
-          <Spacer />
-					<Box
-            style={{
-              paddingTop: '5px',
-              paddingLeft: '10px',
-              textAlign: 'left',
-            }}
-          >
-            {!ass && 
-              <AddAsset 
-                key={index} 
-                handleSelect={(ass) =>editState(ass, ass.model, index)} 
-                assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id ) )}/>}
-            {ass && <AssetCard showRemove removeAsset={()=> editState(false, ass.model, index)}  type={'blueprint'} asset={ass} /> }   
-          </Box>
-          <Spacer />
-          </>
+            <>
+              <Spacer />
+              <Box
+                style={{
+                  paddingTop: '5px',
+                  paddingLeft: '10px',
+                  textAlign: 'left',
+                }}
+              >
+                {!ass &&
+                  <AddAsset
+                    key={index}
+                    handleSelect={(ass) => editState(ass, ass.model, index)}
+                    assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id))} />}
+                {ass && <AssetCard showRemove removeAsset={() => editState(false, ass.model, index)} type={'blueprint'} asset={ass} />}
+              </Box>
+              <Spacer />
+            </>
           ))}
-					<Spacer />
-				</Flex>
-			</form>
-			<div
-				style={{
-					justifyContent: 'end',
-					display: 'flex',
-					marginTop: '15px',
+          <Spacer />
+        </Flex>
+      </form>
+      <div
+        style={{
+          justifyContent: 'end',
+          display: 'flex',
+          marginTop: '15px',
           textAlign: 'center'
-				}}
-			>
+        }}
+      >
         <Spacer />
-				<Button colorScheme="green" onClick={() => handleSubmit()} variant='solid' disabled={isDisabled()} >
-					<b>Submit</b>
-				</Button>
-				<Button colorScheme="red" onClick={() => props.closeNew()} variant='outline'>
-					Cancel
-				</Button>
-			</div>
-		</div>
-	);
+        <Button colorScheme="green" onClick={() => handleSubmit()} variant='solid' isDisabled={isDisabled()} >
+          <b>Submit</b>
+        </Button>
+        <Button colorScheme="red" onClick={() => props.closeNew()} variant='outline'>
+          Cancel
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default NewAction;

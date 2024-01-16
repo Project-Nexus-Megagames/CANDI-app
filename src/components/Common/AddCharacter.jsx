@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {  Popover,  PopoverTrigger,  PopoverContent,  PopoverHeader,  PopoverBody,  PopoverFooter,  PopoverArrow,  PopoverCloseButton,  PopoverAnchor,  useDisclosure,  Button,  IconButton,  Input,  Grid,  Box,  VStack,  Divider,  Portal,  Center, Avatar} from '@chakra-ui/react'
 import { BsPlus } from "react-icons/bs";
 import AssetCard from "./AssetCard";
+import CharacterListItem from "../OtherCharacters/CharacterListItem";
 
 export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
@@ -23,7 +24,7 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
   }, [open]);
 
   return (
-      <Popover placement='right-start' isLazy>
+      <Popover  >
         <PopoverTrigger>
           <Center className="styleCenter"  >
             <Button variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Character</Button>
@@ -37,14 +38,14 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
             <PopoverCloseButton />
             <PopoverBody>
             
-              <VStack divider={<Divider />} style={{ maxHeight: '40vh', overflow: 'auto', }} justify="space-around" align={'center'}  >
+              <div style={{ maxHeight: '40vh', overflow: 'auto',  }} >
                 {characters.filter(a => a.characterName.toLowerCase().includes(fill.toLowerCase())).map((character) => (
-                  <Box onClick={() => handleSelect(character)} key={character._id} className="styleCenter" >
-                    <Avatar size="lg" src={character.profilePicture} alt="?" />
-                    {character.characterName}
-                  </Box>                
+                  <div  key={character._id}>
+                    <CharacterListItem character={character} handleSelect={handleSelect} />
+                    <Divider />              
+                  </div>             
                 ))}
-                </VStack>
+                </div>
             </PopoverBody>
           </PopoverContent>
         </Portal>

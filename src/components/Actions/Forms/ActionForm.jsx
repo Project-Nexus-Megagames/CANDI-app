@@ -58,12 +58,11 @@ const ActionForm = (props) => {
 
   useEffect(() => {
     newMap(actionType?.maxAssets);
-    console.log(actionType)
   }, [actionType])
 
-  useEffect(() => {
-    console.log(destination);
-  }, [destination])
+  // useEffect(() => {
+  //   console.log(destination);
+  // }, [destination])
 
   const editState = (incoming, type, index) => {
     console.log(incoming, type, index)
@@ -129,6 +128,9 @@ const ActionForm = (props) => {
       <br />
       <form>
         <Flex width={"100%"} align={"end"} >
+          {actionType.collab && <Box>
+            Collaborators:   
+          </Box>}
           <Spacer />
           <Box width={"49%"}>
             Name:

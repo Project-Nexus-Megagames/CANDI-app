@@ -134,9 +134,10 @@ function getTextColor(color, fade = 1) {
 		case 'Frog-text':
 		case 'Pig-text':
     case 'Wealth-text':
-		case 'Whitewall-text':
-    case 'Refined Item':
-    case 'Surface-text':
+    case 'Exploratory Society':
+		case 'Exploratory society':
+    case 'Kepler Vanguard':
+    case 'Mars Mining Corporation':
 			return `black`
 
       

@@ -77,14 +77,11 @@ export const getMyActions = createSelector(
   state => state.actions.filter,
   state => state.actions.list,
   state => state.auth.myCharacter,
-  (filter, actions, myCharacter) => actions.filter(
-    
+  (filter, actions, myCharacter) => actions.filter(    
     action => (( 
-      action.submission.description.toLowerCase().includes(filter.toLowerCase()) ||
-      action.creator?.characterName.toLowerCase().includes(filter.toLowerCase())  ||
-      action.name.toLowerCase().includes(filter.toLowerCase()) ||
-      action.tags.some(el => el.toLowerCase().includes(filter.toLowerCase())) ||
-      action.creator?._id === myCharacter._id ) || action.collaborators.some(el => el._id === myCharacter._id) ))
+      action.creator?._id === myCharacter._id ) || action.collaborators.some(el => el._id === myCharacter._id)
+
+    ))
 );
 
 

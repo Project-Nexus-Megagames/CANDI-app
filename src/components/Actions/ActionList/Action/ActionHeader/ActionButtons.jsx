@@ -54,7 +54,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
             </Tooltip>
           )}
           {!edit && <IconButton
-            disabled={isDisabled}
+            isDisabled={isDisabled}
             size="sm"
             onClick={(e) => {
               toggleEdit(action)
@@ -67,7 +67,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
             aria-label={'Edit Action'}
           />}
           {edit && <Button
-            disabled={isDisabled}
+            isDisabled={isDisabled}
             size="sm"
             onClick={(e) => {
               handleEdit(false, 'submit')
@@ -81,7 +81,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
 
           >Submit</Button>}
           {!edit && <IconButton
-            disabled={isDisabled || edit}
+            isDisabled={isDisabled || edit || (action.tags.includes('Published') && !isControl)}
             size="sm"
             onClick={(e) => {
               setMode("confirm");

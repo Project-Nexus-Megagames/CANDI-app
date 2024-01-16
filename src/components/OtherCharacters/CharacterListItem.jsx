@@ -1,9 +1,9 @@
 import { CopyIcon } from '@chakra-ui/icons';
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Button, Flex, Hide, Spacer, useToast } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Button, Flex, Hide, Spacer, Tag, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
-import { getFadedColor } from '../../scripts/frontend';
+import { getFadedColor, getTextColor } from '../../scripts/frontend';
 import NexusTag from '../Common/NexusTag';
 import TeamAvatar from '../Common/TeamAvatar';
 
@@ -32,7 +32,7 @@ const CharacterListItem = (props) => {
         <h4>{character?.characterName}</h4>
         <Flex  >
           {character.tags && character.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
-            <NexusTag key={item} value={item} width={'150px'} height={'30'} />
+            <Tag key={item} variant={'solid'} style={{ backgroundColor: getFadedColor(item), color: getTextColor(item), textTransform: 'capitalize', margin: '4px' }} >{item}</Tag>
           )}
         </Flex>
 

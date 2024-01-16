@@ -72,11 +72,11 @@ const HomePage = (props) => {
       </GridItem>   */}
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel disabled img={actions} to="actions" title="~ Actions ~" body="Private Actions" />
+        <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Private Actions" />
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel disabled img={agendas} to="agendas" title="~ Agendas ~" body="Public Actions" />
+        <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Public Actions" />
       </GridItem>   
 
 

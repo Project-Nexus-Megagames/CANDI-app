@@ -54,6 +54,11 @@ const ControlTerminal = (props) => {
 		socket.emit('request', { route: 'asset', action: 'unuseAll', data });
   }
 
+  const handleResetEfferot = () => {
+    const data = user.username;
+		socket.emit('request', { route: 'character', action: 'resetEffort', data });
+  }
+
   const handleClose = () => {
     const data = user.username;
     socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
@@ -82,8 +87,10 @@ const ControlTerminal = (props) => {
 				</div>
 
         <div>
-          {assets.filter(el => el.status.some(s => s=== 'used')).length}
+          Used Assets: {assets.filter(el => el.status.some(s => s=== 'used')).length}
           <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>
+          
+          <Button onClick={() => handleResetEfferot()} >Reset Effort</Button>
         </div>
 
         <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
