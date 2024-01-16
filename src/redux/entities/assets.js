@@ -72,9 +72,9 @@ export const getMyUsedAssets = createSelector(
 
 export const getMyAssets = createSelector(
   state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.myCharacter.characterName}'s Account` || state.auth.myCharacter.account === el._id),
+  state => state.auth.myCharacter.account,
   (assets, account) => assets.filter(
-    asset => (asset.account === account?._id )
+    asset => (asset.account === account )
   )
 );
 
