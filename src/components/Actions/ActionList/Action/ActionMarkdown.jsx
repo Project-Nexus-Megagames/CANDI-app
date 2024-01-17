@@ -8,10 +8,10 @@ import { getFadedColor } from "../../../../scripts/frontend";
 function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data, textAlign }) {
     return (
         <Box style={{ backgroundColor: getFadedColor('card', 0.5), width: '100%' }} >
-            <WordDivider
+            {header && <WordDivider
                 word={header}
                 tooltip={tooltip}
-            />
+            />}
             <Box
               maxHeight={'20vh'}
                 textAlign={textAlign ? textAlign : 'left'}
