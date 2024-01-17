@@ -18,14 +18,16 @@ const Agendas = (props) => {
   const navigate = useNavigate();
   const { login, myCharacter } = useSelector((state) => state.auth);
   const gamestate = useSelector((state) => state.gamestate);
-  const myChar = useSelector(getMyCharacter);
   const gameConfig = useSelector(s => s.gameConfig);
-
+  
   const agendas = useSelector(getAgendaActions).sort((a, b) => {
     let da = new Date(a.createdAt),
       db = new Date(b.createdAt);
     return da - db;
   });
+  
+  const myDrafts = agendas.filter(el => el.creator._id === myCharacter._id && !el.tags.some(tag => tag.toLowerCase() === 'published'))
+  console.log(myDrafts)
 
   const publishedAgendas = useSelector(getPublishedAgendas).sort((a, b) => {
     let da = new Date(a.publishDate),
@@ -106,10 +108,9 @@ const Agendas = (props) => {
           </Box>
           
           {!selected && mode !== 'new' && <Wrap justify="space-around" align={'center'} >
-            {filteredData.filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
-            {filteredData
-              // .filter((el) => el.round === round)
-              //.filter(el => !el.tags.includes('published'))
+            {[...filteredData, ...myDrafts].filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
+            {[...filteredData, ...myDrafts]
+              .filter((el) => el.round === round)
               .map((agenda) => (
                 <div key={agenda._id}
                   onClick={() => setSelected(agenda)}
