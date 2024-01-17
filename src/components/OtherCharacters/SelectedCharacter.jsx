@@ -10,7 +10,8 @@ import { useState } from 'react';
 import AssetCard from '../Common/AssetCard';
 import WordDivider from '../WordDivider';
 import { CandiModal } from '../Common/CandiModal';
-import { AddResource } from '../Common/AddResource';
+import { AddResource, EditAccount } from '../Common/EditAccount';
+import usePermissions from '../../hooks/usePermissions';
 
 const SelectedCharacter = (props) => {
   const { selected } = props;
@@ -19,6 +20,7 @@ const SelectedCharacter = (props) => {
   const assets = useSelector(state => state.assets.list);
   const characters = useSelector(state => state.characters.list);
   const control = useSelector(state => state.auth.control);
+  const { isControl } = usePermissions();
   const myCharacter = useSelector(state => state.auth.myCharacter);
 
   const copyToClipboard = (character) => {
@@ -81,18 +83,18 @@ const SelectedCharacter = (props) => {
           Time Zone: <b>{selected.timeZone}</b>
         </p>}
 
-        {(control || myCharacter._id === selected._id) && selected.account && selectedResource.length > 0 && <div>
+        {(isControl || myCharacter._id === selected._id) && selected.account && selectedResource.length > 0 && <div>
             <WordDivider word={"Effort"} ></WordDivider>
             <Center>
               {selectedResource.map((item) =>
               <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
             )}              
-            {/* {control && <AddResource />} */}
+            {isControl && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
             </Center>
 
         </div>}
 
-        {(control || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
+        {(isControl || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
             <WordDivider word={"Stats"} ></WordDivider>
             {selected.characterStats && selected.characterStats.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
@@ -111,10 +113,10 @@ const SelectedCharacter = (props) => {
         />
 			</GridItem>
 
-      {(control || myCharacter._id === selected._id) && <GridItem bg='#555555' area={'body'} >
+      {(isControl || myCharacter._id === selected._id) && <GridItem bg='#555555' area={'body'} >
         <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
           Assets 
-          {control && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
+          {isControl && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
         </h5>
 				<Grid templateColumns='repeat(3, 1fr)' gap={1}>
             {assets
