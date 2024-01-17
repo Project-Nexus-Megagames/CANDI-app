@@ -8,10 +8,11 @@ import socket from "../../../../../socket";
 import usePermissions from "../../../../../hooks/usePermissions";
 import HexLocation from "../../../../Locations/HexLocation";
 import CharacterTag from "../../../../Common/CharacterTag";
+import { getPublicCharacters } from "../../../../../redux/entities/characters";
 
 function ActionHeader({ action, time, toggleEdit, creator, handleDelete, hidebuttons }) {
   const { isControl, characterId } = usePermissions();
-  const myContacts = useSelector(s => s.characters.list);
+  const myContacts = useSelector(getPublicCharacters);
   const teams = useSelector(s => s.teams.list);
   const game = useSelector(state => state.gamestate);
   const myCharacter = useSelector(s => s.auth.character)

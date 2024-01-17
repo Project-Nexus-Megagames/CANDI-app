@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getTextColor, } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
-import { getMyCharacter, getPlayerCharacters } from '../../../redux/entities/characters';
+import { getMyCharacter, getPlayerCharacters, getPublicPlayerCharacters } from '../../../redux/entities/characters';
 import socket from '../../../socket';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
@@ -27,7 +27,7 @@ const NewAction = (props) => {
   const gameConfig = useSelector((state) => state.gameConfig);
   const locations = useSelector((state) => state.locations.list)
   const facilities = useSelector((state) => state.facilities.list)
-  const playerCharacters = useSelector(getPlayerCharacters);
+  const playerCharacters = useSelector(getPublicPlayerCharacters);
 
 
   const { character } = useSelector((s) => s.auth);

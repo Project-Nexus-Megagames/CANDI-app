@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFadedColor, getIcon, getTextColor } from '../../../scripts/frontend';
+import { getFadedColor, getTextColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Center, TagLabel, TagCloseButton, Wrap, useBreakpointValue, SimpleGrid, Icon } from '@chakra-ui/react';
-import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
-import { AddCharacter } from '../../Common/AddCharacter';
 import SelectPicker from '../../Common/SelectPicker';
 import { getCharAccount } from '../../../redux/entities/accounts';
 import ResourceNugget from '../../Common/ResourceNugget';

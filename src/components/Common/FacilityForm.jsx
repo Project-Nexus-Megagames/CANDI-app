@@ -10,7 +10,6 @@ import socket from '../../socket';
 import InputNumber from './InputNumber';
 import { Plus } from '@rsuite/icons';
 import { getCharAccount } from '../../redux/entities/accounts';
-import { AddCharacter } from './AddCharacter';
 
 const FacilityForm = (props) => {
 	const { facility, mode } = props;
