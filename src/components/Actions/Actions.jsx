@@ -124,6 +124,7 @@ const Actions = (props) => {
           </Box>
         }
         {selected && !showNewActionModal &&
+        <Center>
           <Action
             action={selected}
             actionType={gameConfig.actionTypes.find(el => el.type === selected.type)}
@@ -131,7 +132,9 @@ const Actions = (props) => {
             toggleAssetInfo={(asset) => {
               setAssetInfo({ show: true, asset });
             }}
-          />
+          />          
+        </Center>
+
         }
       </GridItem>
 
