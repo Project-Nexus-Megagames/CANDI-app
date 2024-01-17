@@ -159,10 +159,13 @@ const Agendas = (props) => {
           {mode === 'new' && <NewAction closeNew={() => setMode(false)} actionType={gameConfig.actionTypes.find(el => el.type === 'Agenda')} />}
 
           {selected && 
+          <Center>
             <Action
               actionType={gameConfig.actionTypes[1]}
               action={selected}
-            />}
+            />
+            </Center>}            
+
 
         </GridItem>
       </Grid>

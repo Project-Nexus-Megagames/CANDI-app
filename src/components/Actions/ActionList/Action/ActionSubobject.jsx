@@ -61,8 +61,8 @@ const ActionSubObject = (props) => {
   };
   if (!creator) return <b>???</b>
   return ( 
-    <div>
-      <div key={subObject._id} style={{ border: `3px solid ${getFadedColor(subObject.model)}`, borderRadius: '5px', padding: '5px' }}>
+    <Center>
+      <div key={subObject._id} style={{ border: `3px solid ${getFadedColor(subObject.model)}`, borderRadius: '5px', padding: '5px', width: '85%' }}>
         <Flex justify={'center'} style={{ backgroundColor: getFadedColor(subObject.model), padding: '10px' }} >
 
           <CharacterNugget character={creator} />
@@ -178,7 +178,7 @@ const ActionSubObject = (props) => {
         closeNew={() => setMode(false)}
         selected={action}
       />
-    </div>
+    </Center>
 
    );
 }

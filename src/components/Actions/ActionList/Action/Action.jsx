@@ -84,7 +84,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
     <Flex
       style={{
         justifyContent: 'center',
-        width: '100%',
+        width: '70%',
       }}
     >
       <Box
