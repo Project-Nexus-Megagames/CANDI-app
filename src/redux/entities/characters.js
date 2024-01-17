@@ -98,7 +98,7 @@ export const getNonPlayerCharacters = createSelector(
 
 export const getControl = createSelector(
   (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "Control"))
+  (characters) => characters.filter((char) => char.tags.some((el) => el === "Control") || char.tags.some((el) => el === "control"))
 );
 
 export const getPublicCharacters = createSelector(

@@ -15,7 +15,7 @@ function SelectPicker(props) {
 		<Select 
       style={{ border: `4px solid ${getFadedColor(value)}`, backgroundColor: "#343840",  }} 
       icon={<IoChevronDownCircleOutline />} 
-      placeholder={value ? value : placeholder? placeholder : `Select Option (${data?.length})`} 
+      placeholder={value ? value : placeholder ? placeholder : `Select Option (${data?.length})`} 
       onChange={(event) => onChange(event.target.value)}>
 			{data &&
 				data

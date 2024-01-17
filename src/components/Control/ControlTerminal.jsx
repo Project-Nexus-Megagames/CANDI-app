@@ -72,8 +72,8 @@ const ControlTerminal = (props) => {
       <Tab>Actions</Tab>			
 			<Tab>Configuration</Tab>
 			<Tab>Register</Tab>
-      {user?.username.toLowerCase() === 'bobtheninjaman' &&<Tab>Characters</Tab>}
-      {user?.username.toLowerCase() === 'bobtheninjaman' && <Tab>Assets</Tab>}
+      {user?.username.toLowerCase() === 'bobtheninjaman' &&<Tab> * Characters</Tab>}
+      {user?.username.toLowerCase() === 'bobtheninjaman' && <Tab> * Assets</Tab>}
 		</TabList>
 
 		<TabPanels>

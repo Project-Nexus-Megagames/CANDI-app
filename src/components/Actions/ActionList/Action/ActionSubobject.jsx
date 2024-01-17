@@ -169,7 +169,7 @@ const ActionSubObject = (props) => {
         </Box>
 
       </div>    
-      <Divider orientation='vertical' />   
+      {/* <Divider orientation='vertical' />    */}
 
       <NewResult
         show={mode === 'edit_result'}
