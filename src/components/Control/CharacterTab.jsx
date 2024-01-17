@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
 import CharacterListItem from '../OtherCharacters/CharacterListItem';
 import DynamicForm from './DynamicForm';
+import SelectedCharacter from "../OtherCharacters/SelectedCharacter";
 
 const CharacterTab = (props) => {
 	const navigate = useNavigate();
@@ -64,7 +65,7 @@ const CharacterTab = (props) => {
 			<GridItem pl='2' bg='#0f131a' area={'main'} >
 				
 				<Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
-          {selected && <DynamicForm selected={selected} background={111} /> }
+          {selected && <SelectedCharacter selected={selected} background={111} /> }
 				</Box>
 			</GridItem>
 		</Grid>

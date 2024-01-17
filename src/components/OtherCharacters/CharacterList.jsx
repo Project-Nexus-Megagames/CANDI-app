@@ -76,17 +76,6 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
 
           </Box>
         ))}
-
-        {myCharacter.tags.some((el) => el.toLowerCase() === "control") && (
-          <VStack divider={<Divider />} >
-            <p style={{ backgroundColor: getFadedColor("Unknown"), color: getTextColor(`${"Unknown"}-text`) }}>{"( Below is all characters in game. This is visible only to control )"}</p>
-            {characters
-              .map((character) => (
-                <CharacterListItem key={character._id} character={character} handleSelect={(character) => handleSelect(character)} />
-              ))}
-          </VStack>
-        )}
-
       </Box>
     </div>
 

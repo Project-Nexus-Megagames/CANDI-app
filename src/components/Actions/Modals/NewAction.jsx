@@ -106,7 +106,7 @@ const NewAction = (props) => {
     }
     if (description.length < 10 || boolean) return true;
     
-    if (description.length >= 500) return true;
+    if (description.length >= 1000) return true;
 
     return false;
   };
