@@ -39,7 +39,9 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
             <PopoverBody>
             
               <div style={{ maxHeight: '40vh', overflow: 'auto',  }} >
-                {characters.filter(a => a.characterName.toLowerCase().includes(fill.toLowerCase())).map((character) => (
+                {characters
+                .filter(a => a.characterName.toLowerCase().includes(fill.toLowerCase()) || a.playerName.toLowerCase().includes(fill.toLowerCase()))
+                .map((character) => (
                   <div  key={character._id}>
                     <CharacterListItem character={character} handleSelect={() => { handleSelect(character); setFilter('') }} />
                     <Divider />              
