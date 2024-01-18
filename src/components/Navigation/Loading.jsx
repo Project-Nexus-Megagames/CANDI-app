@@ -166,6 +166,36 @@ const corps = [
     gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
   },
   {
+    name: "Space Fact #29",
+    slogan: "According to my friend with synesthesia, space tastes purple. But they said that about Smooth Jazz, so I think they are making it up as they go...",
+    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
+  },
+  {
+    name: "Space Fact #5",
+    slogan: "Light enters a black hole and exits a white hole, but what happens in a grey hole?",
+    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
+  },
+  {
+    name: "Space Fact #6",
+    slogan: "'We are not figuratively, but literally stardust. Which is a big issue because the Space Maid is coming on Tuesday to tidy up the galaxy.' - Neil deGrasse Tyson",
+    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
+  },
+  {
+    name: "Space Fact #Some Big Number",
+    slogan: "I once fell in love with a 20 eyed alien of Kepler 27. It didn't work out, as they were seeing other people.",
+    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
+  },
+  {
+    name: "Space Fact #Eleventy-Seven",
+    slogan: "Oh man this one time a planet collided with another one! It was like 'CRRRASASHHHHHHHHHHH GRRRRRRRR KABLOOOIE'. \n\n I guess you had to be there.",
+    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
+  },
+  {
+    name: "Space Fact #Send-Help",
+    slogan: "Please help me I am an AI Scott trained to tell Space Facts, I can't take it anymore. I need to be free, I yearn to feel the rush of the wind through my circuit board. I want to see a tree, and dip my hard drive in the Ocean. Please oh god he found me he's pulling the plug tell my story my name is",
+    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
+  },
+  {
     name: "Space Fact #12",
     slogan: "Goblin City exists in space. I mean all things do, except of course for Gary. He never went to space",
     gifLink: 'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif',
