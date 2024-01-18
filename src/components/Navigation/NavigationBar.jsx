@@ -17,6 +17,8 @@ import { FaEmpire } from 'react-icons/fa';
 import { PauseOutline, PlayOutline } from '@rsuite/icons';
 import { getFadedColor } from '../../scripts/frontend';
 import { AlertList } from './AlertList';
+import CharacterNugget from '../Common/CharacterNugget';
+import CharacterListItem from '../OtherCharacters/CharacterListItem';
 
 const Navigation = (props) => {
   const navigate = useNavigate();
@@ -127,7 +129,7 @@ const Navigation = (props) => {
             }}
           />
           <IconButton icon={<ArrowRightIcon />} onClick={() => socket.emit('request', { route: 'clock', action: 'skip' })} />
-          <Button onClick={() => setOpen(false) }>
+          <Button onClick={() => setOpen(false)}>
             Close
           </Button>
         </ButtonGroup>}
@@ -179,9 +181,9 @@ const Navigation = (props) => {
             </Menu>}
         </Box>
 
-        <Box 
+        <Box
           flex={2}
-        style={{ width: '70%', margin: '8px', }}
+          style={{ width: '70%', margin: '8px', }}
         >
           {/* <div className='styleCenterLeft'>
             {minutes}:{seconds <= 9 && <t>0</t>}{seconds} ~
@@ -269,18 +271,17 @@ const Navigation = (props) => {
                 </PopoverHeader >
                 <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
                   <VStack divider={<Divider />} overflow={"auto"} >
-                    {allCharacters.filter(el => el.characterName.toLowerCase().includes(filter)).map(character => (
-                      <Button
-                        variant={"unstyled"}
-                        key={character._id}
-                        value={character._id}
-                        _hover={{ bg: 'gray.400' }}
-                        onClick={() => {
-                          handleCharChange(character._id);
-                        }}
-                      >
-                        {character.characterName}
-                      </Button>
+                    {allCharacters
+                    .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
+                    .map(character => (
+                        <CharacterListItem
+                          character={character}
+                          key={character._id}
+                          isAccessible
+                          size='md'
+                          handleSelect={() => {
+                            handleCharChange(character._id);
+                          }} />
                     ))}
                   </VStack>
 

@@ -12,7 +12,10 @@ const CharacterTag = ({ character, isDisabled, isAccessible, onClick}) => {
 	const teams = useSelector(s => s.teams.list);
 
 	return ( 
-    <Tag margin={'2px'} variant={'solid'} style={{ backgroundColor: getFadedColor(getThisTeam(teams, character?._id)) }} >
+    <Tag 
+    margin={'2px'} 
+    variant={'solid'} 
+    style={{ backgroundColor: getFadedColor(getThisTeam(teams, character?._id)) }}  >
     <Avatar
       size={'xs'}
       name={character?.characterName}

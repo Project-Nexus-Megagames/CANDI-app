@@ -83,7 +83,7 @@ const SelectedCharacter = (props) => {
           Time Zone: <b>{selected.timeZone}</b>
         </p>}
 
-        {(isControl || myCharacter._id === selected._id) && selected.account && selectedResource.length > 0 && <div>
+        {(isControl || myCharacter._id === selected._id) && selected.account &&  <div>
             <WordDivider word={"Effort"} ></WordDivider>
             <Center>
               {selectedResource.map((item) =>

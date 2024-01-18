@@ -8,16 +8,36 @@ import NexusTag from '../Common/NexusTag';
 import TeamAvatar from '../Common/TeamAvatar';
 
 const CharacterListItem = (props) => {
-  const { character, handleSelect, selected } = props;
+  const { character, handleSelect, selected, size } = props;
   const myCharacter = useSelector(state => state.auth.myCharacter);
   const characters = useSelector(state => state.characters.list);
   const toast = useToast();
   const reduxSelected = useSelector((state) => state.characters.selected);
 
   return (
-    <Flex style={{ backgroundColor: reduxSelected == character ? getFadedColor('default', 0.5) : 'inherit' }} align={'center'} width={'100%'} onClick={() => handleSelect(character)}>
+    <Button
+    width={'100%'}
+    height={'100%'} 
+    variant={"unstyled"}
+    key={character._id}
+    value={character._id}
+    _hover={{ bg: 'gray.700' }}
+    // onClick={() => {
+    //   handleSelect(character);
+    // }}
+  >
+
+    <Flex 
+    style={{ 
+      backgroundColor: reduxSelected == character ? getFadedColor('default', 0.5) : 'inherit' 
+      }} 
+      align={'center'} 
+      width={'100%'} 
+
+      
+      onClick={() => handleSelect(character)}>
       <Box flex={1}>
-        {character.profilePicture && <Avatar size="lg" src={character.profilePicture} alt="?" />}
+        {character.profilePicture && <Avatar size={size || 'lg'} src={character.profilePicture} alt="?" />}
         {false && !character.profilePicture && <TeamAvatar account={character.account} />}
       </Box>
       <Box
@@ -49,7 +69,7 @@ const CharacterListItem = (props) => {
 
 
     </Flex>
-
+    </Button>
   );
 };
 
