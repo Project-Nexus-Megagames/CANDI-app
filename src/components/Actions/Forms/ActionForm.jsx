@@ -65,7 +65,7 @@ const ActionForm = (props) => {
   // }, [destination])
 
   const editState = (incoming, type, index) => {
-    // console.log(incoming, type, index)
+    console.log(incoming, type, index)
     let thing;
     switch (type) {
       case 'Asset':
@@ -252,7 +252,7 @@ const ActionForm = (props) => {
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id))} />}
-                {ass && <AssetCard showRemove removeAsset={() => editState(false, ass.model, index)} compact type={'blueprint'} asset={ass} />}
+                {ass && <AssetCard showRemove removeAsset={() => editState(false, 'Asset', index)} compact type={'blueprint'} asset={ass} />}
               </Box>
               <Spacer />
             </>

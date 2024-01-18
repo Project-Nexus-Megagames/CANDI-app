@@ -13,12 +13,14 @@ import ResourceNugget from './ResourceNugget';
 import CountDownTag from './CountDownTag';
 import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import TeamAvatar from './TeamAvatar';
+import assets from '../../redux/entities/assets';
 
 const AssetCard = (props) => {
-  const { asset, character, showButtons, handleSelect, compact, removeAsset, showRemove } = props;
+  const { character, showButtons, handleSelect, compact, removeAsset, showRemove } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
   const teams = useSelector(state => state.teams.list);
+  const assets = useSelector(state => state.assets.list);
   const accounts = useSelector(state => state.accounts.list);
 
   const deleteAssert = async () => {
@@ -29,10 +31,13 @@ const AssetCard = (props) => {
     });
   };
 
+  const asset = props.asset._id? props.asset : assets.find(el => el._id === props.asset)
+
   const disabled = asset.status?.some(el => el === 'working') || undefined;
   const account = populateThisAccount(accounts, asset.account)
   const team = getThisTeam(teams, account.manager);
 
+  if (asset)
   return (
     <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log("Peekabo!")} >
       <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`,  }} >
@@ -61,7 +66,7 @@ const AssetCard = (props) => {
             </Box>
 
 
-            {removeAsset && showRemove && <IconButton variant={'outline'} onClick={() => removeAsset()} colorScheme="red" size={'sm'} icon={<Close />} />}
+            {removeAsset && showRemove && <IconButton variant={'outline'} onClick={removeAsset} colorScheme="red" size={'sm'} icon={<Close />} />}
 
             <Spacer />
 
@@ -104,6 +109,9 @@ const AssetCard = (props) => {
 
     </div>
   );
+  return (
+    <b>{props.asset}</b>
+  )
 }
 
 export default (AssetCard);

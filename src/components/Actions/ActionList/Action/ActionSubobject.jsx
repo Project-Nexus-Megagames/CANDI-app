@@ -13,6 +13,7 @@ import { ActionIce } from "./ActionIce";
 import { useSelector } from "react-redux";
 import { getTeamDice, } from "../../../../redux/entities/assets";
 import ActionResources from "./ActionResources";
+import ActionForm from "../../Forms/ActionForm";
 
 
 const ActionSubObject = (props) => {
@@ -50,6 +51,12 @@ const ActionSubObject = (props) => {
           effect: subObject._id
         };
         break;
+        case 'Submission':
+          data = {
+            id: action._id,
+            submission: subObject._id
+          };
+          break;
     }
 
 
@@ -60,6 +67,37 @@ const ActionSubObject = (props) => {
       data
     });
   };
+
+  const handleSubmit = async (incoming) => {
+    const { effort, assets, description, intent, name, actionType, myCharacter } = incoming;
+    try {
+        const data = {
+          submission: {
+            assets: assets.filter(el => el),
+            description: description,
+            intent: intent,
+            id: subObject._id,
+          },
+          id: action._id,
+          creator: myCharacter._id,
+        };
+      // 1) make a new action 
+      console.log(data)
+      socket.emit('request', { route: 'action', action: 'updateSubObject', data });
+    }
+    catch (err) {
+      console.log(err)
+      // toast({
+      //   position: "top-right",
+      //   isClosable: true,
+      //   status: 'error',
+      //   duration: 5000,
+      //   id: err,
+      //   title: err,
+      // });
+    }
+  };
+
   if (!creator) return <b>???</b>
 
   const team = getThisTeam(teams, creator._id);
@@ -73,10 +111,11 @@ const ActionSubObject = (props) => {
           padding: '5px',
           width: '85%'
         }}>
-        <Flex justify={'center'} 
-        style={{ 
-          backgroundColor: (subObject.model == "Comment" && team.color) ? `${team?.color}` : `${getFadedColor(subObject.model)}`,
-          padding: '10px' }} >
+        <Flex justify={'center'}
+          style={{
+            backgroundColor: (subObject.model == "Comment" && team.color) ? `${team?.color}` : `${getFadedColor(subObject.model)}`,
+            padding: '10px'
+          }} >
 
           <CharacterNugget character={creator} />
 
@@ -98,6 +137,7 @@ const ActionSubObject = (props) => {
               fontWeight={'normal'}
             >
               {creator.playerName} - {creator.characterName}
+              
             </Box>
             <Box
               fontSize={'.9rem'}
@@ -120,7 +160,7 @@ const ActionSubObject = (props) => {
 
         </Flex>
 
-        <Box>
+        {mode !== 'editSubmission' &&<Box>
           {subObject.__t !== "Contract" && <ActionMarkdown
             markdown={subObject.description ? subObject.description : subObject.body}
           />}
@@ -179,10 +219,20 @@ const ActionSubObject = (props) => {
               toggleAssetInfo={(data) => console.log(data)}
             />
           }
-        </Box>
+        </Box>}
 
+        {mode === 'editSubmission' && action.type &&      
+        <ActionForm
+          collabMode
+          defaultValue={subObject}
+          actionType={action.type}
+          handleSubmit={(data) => handleSubmit(data)}
+          closeNew={() => setMode(false)}
+          actionID={subObject._id}
+        />}
       </div>
       {/* <Divider orientation='vertical' />    */}
+
 
       <NewResult
         show={mode === 'edit_result'}
