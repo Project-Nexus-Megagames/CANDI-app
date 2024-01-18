@@ -88,12 +88,17 @@ export const getMyCharacter = createSelector(
 
 export const getPlayerCharacters = createSelector(
   (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "PC"))
+  (characters) => characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "pc") && char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
+export const getPublicPlayerCharacters = createSelector(
+  (state) => state.characters.list,
+  (characters) => characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "pc"))
 );
 
 export const getNonPlayerCharacters = createSelector(
   (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "NPC"))
+  (characters) => characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "npc"))
 );
 
 export const getControl = createSelector(

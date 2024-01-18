@@ -12,7 +12,6 @@ const socket = io(URL, { autoConnect: false });
 
 export function initConnection(user, character, version) {
   console.log('Socket Connecting....')
-  console.log(character)
   socket.auth = { username: user.username, character: character ? character.characterName : "Unassigned" , version }
     
   //console.log(socket);

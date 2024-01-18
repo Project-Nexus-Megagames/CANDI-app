@@ -51,7 +51,6 @@ const NewAgenda = (props) => {
       let theseAssets = [...teamAssets];
       let test = [];
       for (const tag of actionType.assetTypes) {
-        console.log(tag)
         test = [...theseAssets.filter((el) => el.tags.some((t) => t === tag))];
       }
       setEligible(test)
@@ -64,7 +63,6 @@ const NewAgenda = (props) => {
 
 
 	const editState = (incoming, type, index) => {
-    console.log(type)
 		let thing;
 		switch (type) {
       case 'Asset':

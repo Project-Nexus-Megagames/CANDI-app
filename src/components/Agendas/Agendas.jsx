@@ -27,7 +27,6 @@ const Agendas = (props) => {
   });
   
   const myDrafts = agendas.filter(el => el.creator._id === myCharacter._id && !el.tags.some(tag => tag.toLowerCase() === 'published'))
-  console.log(myDrafts)
 
   const publishedAgendas = useSelector(getPublishedAgendas).sort((a, b) => {
     let da = new Date(a.publishDate),

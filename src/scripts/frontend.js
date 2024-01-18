@@ -7,6 +7,7 @@ function getFadedColor(color, fade = 1) {
 	switch (color) {
 		case 'Agenda':
 		case 'Public':
+    case 'For':
 			return `#22a12a`;
 		case 'Agenda-rs':
 			return 'green'
@@ -25,6 +26,7 @@ function getFadedColor(color, fade = 1) {
 		case 'Control':
 			return `#ff9800`
 
+    case 'Against':
     case 'Pig':
     case 'Pig Goblins':
 		case 'Fail':
@@ -264,22 +266,31 @@ const calculateProgress = (options) => {
   for (let resource of options[0].resources) {
     forProg += agendaValue(resource.type, resource.amount)
   }
-
-  forProg += (20 * options[0]?.assets.length);
-
+  
+  for (let asset of options[0].assets) {
+    for (const die of asset.dice) {          
+      forProg += die.amount;
+    }
+  }
+  
   let agProg = 0;
   for (let resource of options[1].resources) {
     agProg += agendaValue(resource.type, resource.amount)
   }
 
-  agProg += (20 * options[1].assets.length);
+  for (let asset of options[1].assets) {
+    for (const die of asset.dice) {
+      agProg += die.amount;
+    }
+  }
+
   return forProg - agProg;
 }
 
+
 const agendaValue = (resource, value) => {
   switch(resource) {
-    case 'agenda_effort': return 20 * value;
-    default: return 5 * value;
+    default: return 1 * value;
   }
 }
 

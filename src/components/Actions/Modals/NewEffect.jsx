@@ -57,7 +57,6 @@ const NewEffects = (props) => {
       case 'locationStats':
         let asdasd = locations.find(el => el._id == props.selected?.location?._id);
         if (!asdasd) break;
-        console.log(asdasd)
         setSelected(asdasd.locationStats);
         setSelectedLocation(props.selected?.location?._id)
         break;
@@ -90,11 +89,6 @@ const NewEffects = (props) => {
         break;
     }
   }, [type]);
-
-  useEffect(() => {
-    console.log(array)
-    console.log(props.selected.account)
-}, [array])
 
   const handleExit = () => {
     setType('');
@@ -144,7 +138,6 @@ const NewEffects = (props) => {
     temp0['statAmount'] = parseInt(change);
 
     temp[statIndex] = temp0;
-    console.log(temp0, temp, type)
     setSelected(temp);
   };
 
@@ -183,7 +176,6 @@ const NewEffects = (props) => {
   };
 
   const handleSubmit = async (aaaa) => {
-    console.log(aaaa)
     try {
       const data = {
         type,

@@ -39,7 +39,7 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
   }
 
   const editState = (incoming, type, index ) => {
-    console.log(incoming, type, index)
+    // console.log(incoming, type, index)
 		let thing;
 		let temp;
 		switch (type) {
@@ -70,7 +70,6 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
       account: account._id,
       resources
     }
-    console.log(data)
 		socket.emit('request', { route: 'character', action: 'resetAccount', data });
   }
 

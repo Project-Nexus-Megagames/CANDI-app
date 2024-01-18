@@ -60,12 +60,12 @@ const ActionForm = (props) => {
     newMap(actionType?.maxAssets);
   }, [actionType])
 
-  useEffect(() => {
-    console.log(destination);
-  }, [destination])
+  // useEffect(() => {
+  //   console.log(destination);
+  // }, [destination])
 
   const editState = (incoming, type, index) => {
-    console.log(incoming, type, index)
+    // console.log(incoming, type, index)
     let thing;
     switch (type) {
       case 'Asset':
@@ -95,7 +95,6 @@ const ActionForm = (props) => {
       collaborators,
       id: actionID
     };
-    console.log(data)
     closeNew();
      handleSubmit(data)
 

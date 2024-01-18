@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, IconButton,  Button, InputGroup, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputStepper, Select, Tag, NumberInputField, Card, Grid, VStack, SimpleGrid, Icon, Tooltip } from '@chakra-ui/react';
+import { Box, Divider, Flex, IconButton,  Button, InputGroup, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputStepper, Select, Tag, NumberInputField, Card, Grid, VStack, SimpleGrid, Icon, Tooltip, Text } from '@chakra-ui/react';
 import { Check, CheckOutline, Close, CloseOutline, Plus } from '@rsuite/icons';
 import React, { useEffect, useState } from 'react'; // React import
 import { BsPencilFill, BsSave } from 'react-icons/bs';
@@ -93,6 +93,18 @@ useEffect(() => {
     // console.log(res)
 		return props.myAccount.resources.find(el => el.type === res)?.balance;
 	}
+
+  const disabledConditions = [
+    {
+      text: "Cannot contribute less than 1 resource",
+      disabled: resources.some(el => el.value <= 0)
+    },
+    {
+      text: "Must give SOMETHING",
+      disabled: resources.length == 0 && assets.length == 0
+    }
+  ];
+  const isDisabled = disabledConditions.some(el => el.disabled);
   
 	return(
 		<div className='trade' style={{ width: "100%", padding: '8px', height: 'calc(100vh - 190px)', overflow: 'auto', borderColor: 'inherit', border: '2px solid', textAlign: 'center'}}>
@@ -145,7 +157,7 @@ useEffect(() => {
         </VStack>
         
 	
-        {!disabled && <IconButton onClick={() => setResources([...resources, { value: 1, type: 'agenda_effort'} ])} variant="solid"  colorScheme='green' size="sm" icon={<Plus/>} />  }		
+        {!disabled && <IconButton onClick={() => setResources([...resources, { value: 0, type: option.acceptedResources[0]?.type} ])} variant="solid"  colorScheme='green' size="sm" icon={<Plus/>} />  }		
 				{disabled && <Flex style={{ minHeight: '20vh' }} justify="space-around" align={'center'} >
 
 					{disabled && resources.map((resource, index) => (
@@ -184,12 +196,18 @@ useEffect(() => {
 				<textarea disabled={disabled}	readOnly={readOnly} className='textStyle' rows='5' value={comments} onChange={(event)=> setComments(event.target.value)}></textarea>	
 
 				{<Flex >
-					<Box  >
+					<Box>
+          <VStack>
+            {disabledConditions.filter(el=> el.disabled).map((opt, index) => 
+              <Text color='red' key={index}>{opt.text}</Text>  
+            )}            
+          </VStack>
+
 							{<Button 
               isLoading={props.loading} 
               colorScheme={'green'}  
               variant="solid" 
-              isDisabled={mode === 'normal' || props.loading}  
+              isDisabled={mode === 'normal' || props.loading || isDisabled}  
               size='sm' leftIcon={<BsSave/>} 
               onClick={() => handleSubmit()}>Submit</Button>}
               <IconButton size='sm' variant="solid" colorScheme={"red"}  icon={<CloseIcon/>} onClick={() => onClose()}>Cancel</IconButton>

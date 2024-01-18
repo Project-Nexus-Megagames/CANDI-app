@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
 import { Route, Routes, Navigate,} from 'react-router-dom';
-import { ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
+import { Alert, ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
@@ -43,6 +43,7 @@ import LocationDashboard from "./components/Locations/LocationDashboard";
 import Trade from "./components/Trade/Trade";
 import { alertAdded } from "./redux/entities/alerts";
 import store from "./redux/store";
+import { CandiAlert } from "./components/Common/CandiAlert";
 
 // React App Component
 initUpdates();
@@ -51,7 +52,11 @@ const App = (props) => {
   // console.log(localStorage)
   const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog, loadAllActions } = props;
 
+  const [seconds, setSeconds] = React.useState(60);
+  const [flag, setFlag] = React.useState(false);
   const toast = useToast();
+  const toastIdRef = React.useRef()
+
   useEffect(() => {
     const theme = "dark";
     // console.log(`Setting Theme: ${theme}`);
@@ -68,6 +73,34 @@ const App = (props) => {
       setTimeout(() => head.removeChild(link), 2000);
     };
   }, []);
+
+  useEffect(() => {
+    if (flag) {
+      const interval = setTimeout(() => {  
+        let temp = seconds - 1; 
+        quack() 
+        if (seconds < 46) error() 
+        if (seconds < 31) rise();
+        if (seconds < 16) fall();
+
+        if (toastIdRef.current) {
+          toast.update(toastIdRef.current, 
+            { 
+            title: 'MANDATORY UPDATE', 
+            description: `CANDI will refresh itself in ${temp} seconds. Please wrap up what you are doing. Or don't, you have all the agency here.`, 
+            status: 'error', 
+          })
+        }
+
+        if (seconds <= 0) {
+          clearInterval(interval);
+          window.location.reload(false);
+        }
+        else setSeconds(temp);
+      }, 1000);
+      return () => clearInterval(interval);   
+    }
+  }, [flag, seconds]);
 
   useEffect(() => {
     if (login && myCharacter) {
@@ -87,6 +120,7 @@ const App = (props) => {
 
     socket.on("alert", (data) => {
       if (data) {
+        console.log(data)
         switch (data.type) {
           case 'success':
           case 'error': 
@@ -110,7 +144,15 @@ const App = (props) => {
             });
             break;
           case "refresh":
-            window.location.reload(false);
+            setSeconds(60);
+            setFlag(true)
+            toastIdRef.current = toast({
+              title: 'MANDATORY UPDATE',              
+              position: "top",
+              description: `CANDI will refresh itself in 60 seconds`,
+              duration: 70000,
+              status: 'error',
+            });
             break;
           default:
             // Alert.info(data.message, 6000);
@@ -121,6 +163,28 @@ const App = (props) => {
 
   const quack = () => {
     const audio = new Audio("/alert.mp3");
+    audio.loop = false;
+    audio.volume = 0.40;
+    audio.playbackRate = (0.8); 
+    audio.play();
+  };
+
+  const error = () => {
+    const audio = new Audio("/error.mp3");
+    audio.loop = false;
+    audio.volume = 0.40;
+    audio.play();
+  };
+
+  const fall = () => {
+    const audio = new Audio("/fall.mp3");
+    audio.loop = false;
+    audio.volume = 0.40;
+    audio.play();
+  };
+
+  const rise = () => {
+    const audio = new Audio("/rise.mp3");
     audio.loop = false;
     audio.volume = 0.40;
     audio.play();

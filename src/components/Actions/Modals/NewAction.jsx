@@ -4,7 +4,7 @@ import { getFadedColor, getTextColor, } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
 import { getMyCharacter, getPlayerCharacters, getPublicPlayerCharacters } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import { AddAsset } from '../../Common/AddAsset';
 import { CheckIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
@@ -52,7 +52,6 @@ const NewAction = (props) => {
 
 
   const editState = (incoming, type, index) => {
-    console.log(type)
     let thing;
     switch (type) {
       case 'Asset':
@@ -97,19 +96,41 @@ const NewAction = (props) => {
     props.closeNew();
   };
 
-  const isDisabled = () => {
+  const isResourceDisabled = () => {
     let boolean = false;
     for (const resource of actionType.resourceTypes) {      
-      boolean = myAccout.resources.find(e => e.type === resource.type) ?
-        myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min :
-        true;
+      boolean = myAccout.resources.some(e => e.type === resource.type) &&
+        myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min 
     }
-    if (description.length < 10 || boolean) return true;
-    
-    if (description.length >= 1000) return true;
-
-    return false;
+    return boolean;
   };
+
+
+  const disabledConditions = [
+    {
+      text: "Description is too short",
+      disabled: description.length < 10
+    },
+    {
+      text: "Description is too long!",
+      disabled: description.length >= 1000
+    },
+    {
+      text: "Name is too short",
+      disabled: name.length < 10
+    },
+    {
+      text: "Name is too long!",
+      disabled: name.length >= 1000
+    },
+    {
+      text: "Not Enough Resources for this action",
+      disabled: isResourceDisabled()
+    },
+  ];
+  const isDisabled = disabledConditions.some(el => el.disabled);
+  console.log(isDisabled)
+
 
   function newMap(number) {
     let arr = [];
@@ -229,13 +250,16 @@ const NewAction = (props) => {
 
         <br />
 
+      {assets.length > 0 && <div>
         Assets:
         <br />
         {actionType.assetTypes?.map((type) => (
           <Tag margin={'3px'} key={type} textTransform='capitalize' backgroundColor={getFadedColor(type)} color={getTextColor(type)} variant={'solid'}>
             {type}
           </Tag>
-        ))}
+        ))}        
+      </div>}
+
 
         <Flex>
           {assets.map((ass, index) => (
@@ -270,7 +294,13 @@ const NewAction = (props) => {
         }}
       >
         <Spacer />
-        <Button colorScheme="green" onClick={() => handleSubmit()} variant='solid' isDisabled={isDisabled()} >
+        <VStack>
+        {disabledConditions.filter(el=> el.disabled).map((opt, index) => 
+              <Text color='red' key={index}>{opt.text}</Text>  
+            )}          
+        </VStack>
+
+        <Button colorScheme="green" onClick={() => handleSubmit()} variant='solid' isDisabled={isDisabled} >
           <b>Submit</b>
         </Button>
         <Button colorScheme="red" onClick={() => props.closeNew()} variant='outline'>

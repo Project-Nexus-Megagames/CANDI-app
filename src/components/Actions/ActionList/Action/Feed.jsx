@@ -82,8 +82,6 @@ function Feed({action}) {
         creator,
         action: action
       };
-      console.log(data)
-      console.log(incoming)
       socket.emit('request', { route: 'action', action: 'collab', data });
     };
 
