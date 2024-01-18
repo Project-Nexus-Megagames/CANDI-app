@@ -1,5 +1,5 @@
-import React from "react";
-import { Avatar, Box, Flex, Heading, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Avatar, Box, Flex, Heading, Icon, IconButton, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
 import { getFadedColor, getThisTeam } from "../../../../../scripts/frontend";
 import ActionButtons from "./ActionButtons";
 import { AddCharacter } from "../../../../Common/AddCharacter";
@@ -9,15 +9,24 @@ import usePermissions from "../../../../../hooks/usePermissions";
 import HexLocation from "../../../../Locations/HexLocation";
 import CharacterTag from "../../../../Common/CharacterTag";
 import { getPublicCharacters } from "../../../../../redux/entities/characters";
+import { HiPencilAlt } from "react-icons/hi";
+import { Close } from "@rsuite/icons";
+import { CheckIcon } from "@chakra-ui/icons";
 
-function ActionHeader({ action, time, toggleEdit, creator, handleDelete, hidebuttons }) {
+function ActionHeader({ action, time, edit, creator, handleDelete, hidebuttons }) {
   const { isControl, characterId } = usePermissions();
   const myContacts = useSelector(getPublicCharacters);
   const teams = useSelector(s => s.teams.list);
   const game = useSelector(state => state.gamestate);
+  const [isDisabled, setIsDisabled] = useState(true)
   const myCharacter = useSelector(s => s.auth.character)
-  const isDisabled = false;
   const isAccessible = (myCharacter._id === creator?._id || isControl) && action.type !== 'Agenda';
+
+useEffect(() => {  
+  if (edit) setIsDisabled(true);
+}, [edit])
+
+
   return (
     <Flex gap={5} align={'center'} justify={'center'} style={{ backgroundColor: getFadedColor(action.type) }} >
       <Box
@@ -34,18 +43,29 @@ function ActionHeader({ action, time, toggleEdit, creator, handleDelete, hidebut
         <Box
           fontSize={'.9rem'}
           fontWeight={'normal'}
+
         >
           <CharacterTag character={action.creator} />
+          <IconButton 
+          onClick={() => setIsDisabled(!isDisabled)} 
+          variant='outline'  
+          isDisabled={edit}
+          colorScheme={!isDisabled ? 'green' : "yellow"} 
+          color={!isDisabled ? 'green' : "yellow"} 
+          size={'xs'} 
+          icon={<Icon as={!isDisabled ? CheckIcon : HiPencilAlt} />} 
+          />
           {action.collaborators.length > 0 && <p>Collaborators</p>}
           {action.collaborators.length > 0 && action.collaborators.map(char =>
             <CharacterTag key={char._id} character={char}
-              isDisabled={isDisabled}
+              isDisabled={isDisabled || edit}
               isAccessible={isAccessible}
               onClick={() => {
                 const data = {
                   id: action._id,
                   collaborator: char._id
                 };
+                console.log('FIRE')
                 socket.emit('request', {
                   route: 'action',
                   action: 'removeCollaborator',
