@@ -44,11 +44,8 @@ const slice = createSlice({
 
       localStorage.setItem('kepler-token', jwt);
       const user = jwtDecode(jwt);
-
-      console.log('hello user:')
-      console.log(user)
     
-      if (user?.roles.some(el => el === "Control")) auth.control = true;
+      // if (user?.roles.some(el => el === "Control")) auth.control = true;
 
       auth.error = null;
       auth.user = user;

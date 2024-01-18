@@ -43,8 +43,8 @@ function Feed({action}) {
         sortThisIn(comment, list)
       }
 
-      if (!isControl) {
-        list = list.filter(el => el.status === 'Public' || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
+      if (false) {
+        list = list.filter(el => (el.status && el.status === 'Public') || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
       }
 
       setFeed(list)
