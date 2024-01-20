@@ -8,21 +8,25 @@ import {
 } from '@chakra-ui/react'
 import { getFadedColor, getThisTeam } from '../../scripts/frontend';
 
-const CharacterTag = ({ character, isDisabled, isAccessible, onClick}) => {
+const CharacterTag = ({ isDisabled, isAccessible, onClick, character}) => {
 	const teams = useSelector(s => s.teams.list);
+  const characters = useSelector(state => state.characters.list);
 
+  const thisCharacter = characters.find(el => el._id === character || el._id === character._id)
+
+  if (!thisCharacter) return(<b>Error: No Character</b>)
 	return ( 
     <Tag 
     margin={'2px'} 
     variant={'solid'} 
-    style={{ backgroundColor: getFadedColor(getThisTeam(teams, character?._id)) }}  >
+    style={{ backgroundColor: getFadedColor(getThisTeam(teams, thisCharacter?._id)) }}  >
     <Avatar
       size={'xs'}
-      name={character?.characterName}
-      src={character?.profilePicture}
+      name={thisCharacter?.characterName}
+      src={thisCharacter?.profilePicture}
       margin='1'
     />
-    <TagLabel>{character?.playerName && !character?.playerName.includes("_") && character?.playerName} - {character?.characterName}</TagLabel>
+    <TagLabel>{thisCharacter?.playerName && !thisCharacter?.playerName.includes("_") && thisCharacter?.playerName} - {thisCharacter?.characterName}</TagLabel>
     {!isDisabled && isAccessible && <TagCloseButton onClick={onClick} />}
 
   </Tag>

@@ -164,13 +164,14 @@ function ActionOptions({ options, actionType, action }) {
                         <div
                           style={{
                             padding: '5px',
-                            border: `2px solid ${getFadedColor(getThisTeamFromAccount(accounts, teams, resource.contributor)).name}`
+                            border: `2px solid ${getFadedColor(getThisTeamFromAccount(accounts, teams, resource.contributor)).name}`,
+                            textAlign:'center'
                           }} >
                           <h5>
                             <TeamAvatar account={resource.contributor} />
                             {getThisTeamFromAccount(accounts, teams, resource.contributor).name}
                           </h5>
-                          {resource.character && <CharacterTag character={resource.character} />}
+                          {resource.character && isControl && <CharacterTag character={resource.character} />}
                         </div>}
                       fontSize={'2em'}
                       height="150px"
