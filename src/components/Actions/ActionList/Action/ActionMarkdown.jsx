@@ -13,7 +13,7 @@ function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data, tex
                 tooltip={tooltip}
             />}
             <Box
-              maxHeight={'20vh'}
+              //maxHeight={'20vh'}
                 textAlign={textAlign ? textAlign : 'left'}
                 whiteSpace='pre-line'
                 wordBreak='breakword'
@@ -23,7 +23,7 @@ function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data, tex
               {!edit && <Text 
                 marginLeft='0.6rem'
                 marginRight='0.6rem'
-                maxHeight={'20vh'}
+                //maxHeight={'20vh'}
 
                 overflow={'auto'}
                 fontSize='lg'>{markdown}
