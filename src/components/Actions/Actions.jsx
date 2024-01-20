@@ -39,18 +39,19 @@ const Actions = (props) => {
     return <div />;
   }
 
+  let actionList = isControl ? fActions : myActions;
 
   useEffect(() => {
     try {
       if (selected) {
-        setSelected(myActions.find(el => el._id === selected._id));
+        const found = actionList.find(el => el._id === selected._id)
+        if (found) setSelected(found);
       }
     } catch (err) {
       console.log(err);
     }
-  }, [myActions])
+  }, [actionList])
 
-  let actionList = isControl ? fActions : myActions;
   actionList = actionList.filter(action =>
     action.submission.description.toLowerCase().includes(filter.toLowerCase()) ||
     action.creator?.characterName.toLowerCase().includes(filter.toLowerCase()) ||
