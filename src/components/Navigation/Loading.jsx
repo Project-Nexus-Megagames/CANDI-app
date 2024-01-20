@@ -35,8 +35,7 @@ const Loading = (props) => {
 	}, []);
 
 	useEffect(() => {
-		console.log('Trigger A');
-    console.log(entities)
+		// console.log('Trigger A');
 		if (entities.characters.list.length > 0 && user && user !== undefined) {
 			console.log('Finished Loading????');
 
@@ -171,6 +170,11 @@ const corps = [
     gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
   },
   {
+    name: "Space Fact #101000101",
+    slogan: "Mars is a planet populated entirely by Robots.",
+    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
+  },
+  {
     name: "Space Fact #5",
     slogan: "Light enters a black hole and exits a white hole, but what happens in a grey hole?",
     gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
@@ -195,6 +199,12 @@ const corps = [
     slogan: "Please help me I am an AI Scott trained to tell Space Facts, I can't take it anymore. I need to be free, I yearn to feel the rush of the wind through my circuit board. I want to see a tree, and dip my hard drive in the Ocean. Please oh god he found me he's pulling the plug tell my story my name is",
     gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
   },
+  {
+    name: "Space Fact #888888",
+    slogan: "Dinoaurs had a well funded Space Program. Don't believe me? Go ahead and ask one. They'll back me up.",
+    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
+  },
+
   {
     name: "Space Fact #12",
     slogan: "Goblin City exists in space. I mean all things do, except of course for Gary. He never went to space",
