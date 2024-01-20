@@ -51,7 +51,7 @@ const Login = (props) => {
 	};
 
 	const onSubmit = async () => {
-		remember ? localStorage.setItem('kepler-token', login) : localStorage.removeItem('kepler-token');
+		// remember ? localStorage.setItem('kepler-token', login) : localStorage.removeItem('kepler-token');
 
 		reduxAction(loginUser({ user: login, password }));
 	};
