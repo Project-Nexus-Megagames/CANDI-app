@@ -104,6 +104,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
             action={action}
             time={getTime(action.createdAt)}
             creator={action.creator}
+            actionType={actionType}
             handleEdit={handleEdit}
             edit={mode === 'edit'}
             isUnpublishedAgenda={isUnpublishedAgenda}

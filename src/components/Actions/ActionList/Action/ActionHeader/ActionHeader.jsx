@@ -13,7 +13,7 @@ import { HiPencilAlt } from "react-icons/hi";
 import { Close } from "@rsuite/icons";
 import { CheckIcon } from "@chakra-ui/icons";
 
-function ActionHeader({ action, time, edit, creator, handleDelete, hidebuttons }) {
+function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) {
   const { isControl, characterId } = usePermissions();
   const myContacts = useSelector(getPublicCharacters);
   const teams = useSelector(s => s.teams.list);
@@ -21,11 +21,13 @@ function ActionHeader({ action, time, edit, creator, handleDelete, hidebuttons }
   const [isDisabled, setIsDisabled] = useState(true)
   const myCharacter = useSelector(s => s.auth.character)
   const isAccessible = (myCharacter._id === creator?._id || isControl) && action.type !== 'Agenda';
+  const roundActive = game.status === 'Active'
 
-useEffect(() => {  
-  if (edit) setIsDisabled(true);
-}, [edit])
+  useEffect(() => {
+    if (edit) setIsDisabled(true);
+  }, [edit])
 
+  console.log(actionType)
 
   return (
     <Flex gap={5} align={'center'} justify={'center'} style={{ backgroundColor: getFadedColor(action.type) }} >
@@ -46,15 +48,15 @@ useEffect(() => {
 
         >
           <CharacterTag character={action.creator} />
-          <IconButton 
-          onClick={() => setIsDisabled(!isDisabled)} 
-          variant='outline'  
-          isDisabled={edit}
-          colorScheme={!isDisabled ? 'green' : "yellow"} 
-          color={!isDisabled ? 'green' : "yellow"} 
-          size={'xs'} 
-          icon={<Icon as={!isDisabled ? CheckIcon : HiPencilAlt} />} 
-          />
+          {actionType.collab && <IconButton
+            onClick={() => setIsDisabled(!isDisabled)}
+            variant='outline'
+            isDisabled={edit || !roundActive}
+            colorScheme={!isDisabled ? 'green' : "yellow"}
+            color={!isDisabled ? 'green' : "yellow"}
+            size={'xs'}
+            icon={<Icon as={!isDisabled ? CheckIcon : HiPencilAlt} />}
+          />}
           {action.collaborators.length > 0 && <p>Collaborators</p>}
           {action.collaborators.length > 0 && action.collaborators.map(char =>
             <CharacterTag key={char._id} character={char}
