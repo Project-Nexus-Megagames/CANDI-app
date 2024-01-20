@@ -18,12 +18,13 @@ import { FaRecycle } from "react-icons/fa";
 
 function ActionOptions({ options, actionType, action }) {
   const assetList = useSelector(state => state.assets.list);
+  const game = useSelector(state => state.gamestate);
   const { isControl } = usePermissions();
   const [description, setDescription] = useState(options.description);
   const [mode, setMode] = React.useState(false);
   const [slots, setSlots] = React.useState([]);
 
-  const teamAccount = useSelector(getTeamAccount);
+  const roundActive = game.status === 'Active';
   const charAccount = useSelector(getCharAccount);
 
   const myTeam = useSelector(s => s.auth.team);
@@ -133,7 +134,6 @@ function ActionOptions({ options, actionType, action }) {
 
       <Progress
         hasStripe
-
         borderRadius={'20px'}
         colorScheme={calculateProgress() > 0 ? 'green' : 'red'}
         size='lg'
@@ -222,6 +222,7 @@ function ActionOptions({ options, actionType, action }) {
               {/* todo resource/asset map */}
               {mode !== options[index]?._id && <Button
                 variant={'solid'}
+                isDisabled={!roundActive}
                 onClick={() => setMode(options[index]?._id)}
                 colorScheme='green'>
                 Support

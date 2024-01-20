@@ -21,13 +21,11 @@ function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) 
   const [isDisabled, setIsDisabled] = useState(true)
   const myCharacter = useSelector(s => s.auth.character)
   const isAccessible = (myCharacter._id === creator?._id || isControl) && action.type !== 'Agenda';
-  const roundActive = game.status === 'Active'
+  const roundActive = game.status === 'Active';
 
   useEffect(() => {
     if (edit) setIsDisabled(true);
   }, [edit])
-
-  console.log(actionType)
 
   return (
     <Flex gap={5} align={'center'} justify={'center'} style={{ backgroundColor: getFadedColor(action.type) }} >
@@ -51,7 +49,7 @@ function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) 
           {actionType.collab && <IconButton
             onClick={() => setIsDisabled(!isDisabled)}
             variant='outline'
-            isDisabled={edit || !roundActive}
+            isDisabled={edit || !roundActive && !isControl}
             colorScheme={!isDisabled ? 'green' : "yellow"}
             color={!isDisabled ? 'green' : "yellow"}
             size={'xs'}

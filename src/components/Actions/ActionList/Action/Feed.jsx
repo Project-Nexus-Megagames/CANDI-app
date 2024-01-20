@@ -20,6 +20,7 @@ function Feed({action}) {
     const myCharacter = useSelector(state => state.auth.myCharacter);
     const {isControl} = usePermissions();
     const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
+    const roundActive = gamestate.status === 'Active';
 
     const [mode, setMode] = React.useState(false);
     const [feed, setFeed] = React.useState([]);
@@ -184,6 +185,7 @@ function Feed({action}) {
                             <Button variant={'solid'}
                                 onClick={() => setMode('collab')}
                                 colorScheme="pink"
+                                isDisabled={!roundActive && !isControl}
                             >
                                 Collaborate
                             </Button>
