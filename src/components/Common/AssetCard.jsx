@@ -33,7 +33,7 @@ const AssetCard = (props) => {
 
   const asset = props.asset._id? props.asset : assets.find(el => el._id === props.asset)
 
-  const disabled = asset.status?.some(el => el === 'working') || undefined;
+  const disabled = asset.status?.some(el => el === 'working' || 'used') || undefined;
   const account = populateThisAccount(accounts, asset.account)
   const team = getThisTeam(teams, account.manager);
 
