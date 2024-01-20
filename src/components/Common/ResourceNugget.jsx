@@ -23,7 +23,7 @@ const ResourceNugget = (props) => {
   let altP = altIconPath ? altIconPath : "";
 
 	return (
-    <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover' color={'white'}
+    <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover' color={'white'} closeDelay={500}
     label={label ? label :(
       <div style={{ textTransform: 'capitalize', }}>
         {lookup ? <h5>{lookup.name} {value}</h5> :<h5>{type} {value}</h5>} 
