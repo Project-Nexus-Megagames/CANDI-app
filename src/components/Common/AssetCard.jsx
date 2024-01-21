@@ -14,14 +14,16 @@ import CountDownTag from './CountDownTag';
 import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import TeamAvatar from './TeamAvatar';
 import assets from '../../redux/entities/assets';
+import CharacterNugget from './CharacterNugget';
 
 const AssetCard = (props) => {
-  const { character, showButtons, handleSelect, compact, removeAsset, showRemove } = props;
+  const { showButtons, handleSelect, compact, removeAsset, showRemove } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
   const teams = useSelector(state => state.teams.list);
   const assets = useSelector(state => state.assets.list);
   const accounts = useSelector(state => state.accounts.list);
+  const characters = useSelector(state => state.characters.list);
 
   const deleteAssert = async () => {
     socket.emit('request', {
@@ -36,6 +38,7 @@ const AssetCard = (props) => {
   const disabled = asset.status?.some(el => el === 'working' || 'used') || undefined;
   const account = populateThisAccount(accounts, asset.account)
   const team = getThisTeam(teams, account.manager);
+  const character = props.character? props.character : characters.find(el => el.account === asset.account)
 
   if (asset)
   return (
@@ -45,11 +48,10 @@ const AssetCard = (props) => {
 
           <Flex align={'center'} overflow='hidden' width='100%'>
             <Spacer />
-            {/* <TeamAvatar size='md' team={team} /> */}
-            <Spacer />
             <Box>
               <div display="flex">
-                { <h5 style={{ marginLeft: '5px' }}>{asset.name}
+
+                { <h5 style={{ marginLeft: '5px' }}>{character && <CharacterNugget character={character} />}{asset.name}
                   {<CountDownTag timeout={asset.timeout} />}
                 </h5>}
                 <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
@@ -67,8 +69,6 @@ const AssetCard = (props) => {
 
 
             {removeAsset && showRemove && <IconButton variant={'outline'} onClick={removeAsset} colorScheme="red" size={'sm'} icon={<Close />} />}
-
-            <Spacer />
 
             <Spacer />
           </Flex>
