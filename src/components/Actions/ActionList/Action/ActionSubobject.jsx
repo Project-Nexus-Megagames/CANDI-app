@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { getTeamDice, } from "../../../../redux/entities/assets";
 import ActionResources from "./ActionResources";
 import ActionForm from "../../Forms/ActionForm";
+import usePermissions from "../../../../hooks/usePermissions";
 
 
 const ActionSubObject = (props) => {
@@ -25,6 +26,7 @@ const ActionSubObject = (props) => {
         subObject.creator ? subObject.creator :
           { playerName: "UNKNOWN!?!", characterName: "UNKNOWN!?!" };
 
+          const {isControl} = usePermissions();
   const [mode, setMode] = React.useState(false);
   const assets = useSelector(getTeamDice);
   const { gameConfig } = useSelector((state) => state);
@@ -130,7 +132,7 @@ const ActionSubObject = (props) => {
               textAlign={'center'}
             >
               {subObject.__t}
-              {subObject.model}
+              {isControl && <b>({subObject.status})</b>} {subObject.model}
             </Heading>
             <Box
               fontSize={'.9rem'}
@@ -235,7 +237,7 @@ const ActionSubObject = (props) => {
 
 
       <NewResult
-        show={mode === 'edit_result'}
+        show={mode === 'editResult'}
         mode={"updateSubObject"}
         result={subObject}
         closeNew={() => setMode(false)}
