@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Center, Divider, Flex, Heading, Spacer, Wrap, WrapItem } from "@chakra-ui/react";
 import React from "react";
-import { getFadedColor, getThisTeam, getTime } from "../../../../scripts/frontend";
+import { getFadedColor, getThisTeam, getThisTeamFromAccount, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
 import NewResult from "../../Modals/NewResult";
 import ActionButtons from "./ActionHeader/ActionButtons";

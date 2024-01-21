@@ -109,7 +109,7 @@ const TeamDashboard  = (props) => {
               <Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
                 <VStack>
                   {assets.map(asset => (
-                    <AssetCard asset={asset} />
+                    <AssetCard key={asset._id} asset={asset} />
                   ))}
                 </VStack>
               </Box>
