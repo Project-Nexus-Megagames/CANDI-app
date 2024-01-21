@@ -15,6 +15,7 @@ import { getTeamDice, } from "../../../../redux/entities/assets";
 import ActionResources from "./ActionResources";
 import ActionForm from "../../Forms/ActionForm";
 import usePermissions from "../../../../hooks/usePermissions";
+import AssetCard from "../../../Common/AssetCard";
 
 
 const ActionSubObject = (props) => {
@@ -221,6 +222,8 @@ const ActionSubObject = (props) => {
               toggleAssetInfo={(data) => console.log(data)}
             />
           }
+
+          {subObject.asset && <AssetCard asset={subObject.asset} />}
         </Box>}
 
         {mode === 'editSubmission' && action.type &&      

@@ -15,10 +15,9 @@ const AssetForm = (props) => {
 	const { asset, character, mode } = props;
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const gameConfig = useSelector((state) => state.gameConfig);
-  const account = useSelector(getCharAccount);
 
 	const [imageURL, setImageURL] = useState('');
-	const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
+	const [type, setType] = useState(asset ? asset.type : gameConfig.assetTypes[0]); // TODO change to first element of resourceType
 	const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
 	const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
   
@@ -61,6 +60,14 @@ const AssetForm = (props) => {
 		}
 	};
 
+  const disabledConditions = [
+    {
+      text: "Provide a type",
+      disabled: !type
+    },
+  ];
+  const isDisabled = disabledConditions.some(el => el.disabled);
+
 	const { errors } = formState;
 	const watchCharName = watch('name', 'New Asset');
 
@@ -95,7 +102,7 @@ const AssetForm = (props) => {
 
 	function onSubmit(data, e) {
 		if (props.handleSubmit) {
-			props.handleSubmit({ ...data, dice, type: type, status: status, });
+			props.handleSubmit({ ...data, dice, type: type, status: status, account: character.account });
 		} else {
 			e.preventDefault();
 			const asset = { ...data, dice, type: type, status: status, account: character.account };
@@ -177,7 +184,7 @@ const AssetForm = (props) => {
 					</FormControl>
 
           <FormControl>
-						<FormLabel>Uses </FormLabel>
+						<FormLabel>Uses (Set to 999 for infinite uses)</FormLabel>
 						<Input type='text' size='md' variant='outline' {...register('uses', validation.uses)}></Input>
 						<Text fontSize='sm' color='red.500'>
 							{errors.uses && errors.uses.message}
@@ -195,11 +202,17 @@ const AssetForm = (props) => {
 				</VStack>
 			</Box>
 
+      <VStack>
+        {disabledConditions.filter(el=> el.disabled).map((opt, index) => 
+          <Text color='red' key={index}>{opt.text}</Text>  
+        )}          
+        </VStack>
+
 			<ButtonGroup>
-				<Button type='submit' colorScheme='teal' disabled={type === ''} className='btn btn-primary mr-1'>
-					{asset ? "Edit" : "Create"} Asset
+				<Button variant={'solid'} type='submit' colorScheme='teal' isDisabled={isDisabled} className='btn btn-primary mr-1'>
+					Submit
 				</Button>
-				<Button colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />}>
+				<Button variant={'outline'} colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />}>
 					Reset Form
 				</Button>
 			</ButtonGroup>

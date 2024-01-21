@@ -47,8 +47,8 @@ const UserList = () => {
               {userList.length > 0 && socket !== null ? (
                 <React.Fragment>
                   <ul>
-                    {userList.map((user) => (
-                      <li id={user.character} key={user.character}>
+                    {userList.map((user, index) => (
+                      <li id={user.username + index} key={user.character}>
                         {user.character} | {user.clientVersion}{' '}
                       </li>
                     ))}

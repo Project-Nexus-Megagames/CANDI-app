@@ -18,8 +18,9 @@ const NewEffects = (props) => {
   const [array, setArray] = useState([]);
   const [locationsToDisplay, setLocationsToDisplay] = useState([]);
   const [charactersToDisplay, setCharactersToDisplay] = useState([]);
-  const myChar = useSelector(getMyCharacter);
+	const [character, setCharacter] = useState(undefined);
 
+  const myChar = useSelector(getMyCharacter);
   const assets = useSelector((state) => state.assets.list);
   const locations = useSelector((state) => state.locations.list);
   const characters = useSelector((state) => state.characters.list);
@@ -52,6 +53,8 @@ const NewEffects = (props) => {
           level: '',
           ownerCharacter: props.selected.creator._id
         });
+        setCharacter(props.selected.creator._id)
+        setArray([ props.selected.creator, ...props.selected.collaborators]);
         break;
       case 'aspect':
       case 'locationStats':
@@ -177,11 +180,13 @@ const NewEffects = (props) => {
 
   const handleSubmit = async (aaaa) => {
     try {
+      const populatedCharacter = characters.find(el => el._id == character)
       const data = {
         type,
         action: props.action._id,
         document: aaaa,
-        owner: props.selected.creator._id,
+        owner: populatedCharacter._id,
+        account: populatedCharacter.account,
         effector: myChar._id,
         loggedInUser
       };
@@ -193,10 +198,10 @@ const NewEffects = (props) => {
   };
 
   const renderAss = () => {
-    if (selected) {
+    if (character) {
       return (
         <Box>
-          <AssetForm handleSubmit={handleSubmit} asset={selected} closeModal={handleExit} />
+          <AssetForm character={characters.find(el => el._id == character)} handleSubmit={handleSubmit} asset={selected} closeModal={handleExit} />
         </Box>
       );
     } else {
@@ -242,6 +247,15 @@ const NewEffects = (props) => {
 
           {type === 'new' && selected && (
             <div>
+              <SelectPicker
+								block
+								placeholder={`Select Character`}
+								onChange={(event) => setCharacter(event)}
+								data={array}
+                value={character}
+								valueKey="_id"
+								label="characterName"
+							></SelectPicker>
               {renderAss()}
             </div>
           )}

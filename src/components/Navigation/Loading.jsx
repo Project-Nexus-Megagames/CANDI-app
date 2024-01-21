@@ -204,6 +204,16 @@ const corps = [
     slogan: "Dinoaurs had a well funded Space Program. Don't believe me? Go ahead and ask one. They'll back me up.",
     gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
   },
+  {
+    name: "Space Fact #05051818",
+    slogan: "Space was the one place uncorrupted by capitalism. Thanks Bezos and Musk. Stupid nerds.",
+    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
+  },
+  {
+    name: "Space Fact #9",
+    slogan: "",
+    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
+  },
 
   {
     name: "Space Fact #12",

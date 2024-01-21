@@ -129,7 +129,6 @@ const NewAction = (props) => {
     },
   ];
   const isDisabled = disabledConditions.some(el => el.disabled);
-  console.log(isDisabled)
 
 
   function newMap(number) {
