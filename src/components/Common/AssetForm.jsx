@@ -10,16 +10,21 @@ import socket from '../../socket';
 import InputNumber from './InputNumber';
 import { Plus } from '@rsuite/icons';
 import { getCharAccount } from '../../redux/entities/accounts';
+import CharacterTag from './CharacterTag';
+import { AddCharacter } from './AddCharacter';
 
 const AssetForm = (props) => {
 	const { asset, character, mode } = props;
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const gameConfig = useSelector((state) => state.gameConfig);
+	const characters = useSelector((state) => state.characters.list);
 
 	const [imageURL, setImageURL] = useState('');
-	const [type, setType] = useState(asset ? asset.type : gameConfig.assetTypes[0]); // TODO change to first element of resourceType
+	const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
 	const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
 	const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
+	const [account, setAccount] = React.useState(asset ? asset.account : false);
+  
   
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm(
@@ -65,6 +70,10 @@ const AssetForm = (props) => {
       text: "Provide a type",
       disabled: !type
     },
+    {
+      text: "Asset needs a Character",
+      disabled: !account
+    },
   ];
   const isDisabled = disabledConditions.some(el => el.disabled);
 
@@ -102,10 +111,10 @@ const AssetForm = (props) => {
 
 	function onSubmit(data, e) {
 		if (props.handleSubmit) {
-			props.handleSubmit({ ...data, dice, type: type, status: status, account: character.account });
+			props.handleSubmit({ ...data, dice, type: type, status: status, account: account });
 		} else {
 			e.preventDefault();
-			const asset = { ...data, dice, type: type, status: status, account: character.account };
+			const asset = { ...data, dice, type: type, status: status, account: account };
 			socket.emit('request', {
 				route: 'asset',
 				action: mode,
@@ -120,6 +129,7 @@ const AssetForm = (props) => {
 	};
 
   const editState = (incoming, index, type) => {
+    console.log(incoming, index, type)
 		let thing;
 		let temp;
 		switch (type) {
@@ -131,6 +141,10 @@ const AssetForm = (props) => {
 				temp[index] = thing;
 				setDice(temp);
 				break;
+      
+			case 'selectAccount':
+        setAccount(incoming.account);
+        break;
 			default:
 				console.log('UwU Scott made an oopsie doodle!')
 		}
@@ -139,7 +153,7 @@ const AssetForm = (props) => {
 	//const assetTypes = [ { name: 'Asset'}, { name: 'Trait' }, { name: 'Power' } ];
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit, handleError)}>
+		<form onSubmit={handleSubmit(onSubmit, handleError)} style={{ width: '90%' }} >
 			<Box>
 				<VStack spacing='24px' w='100%'>
 					<Flex>
@@ -147,10 +161,20 @@ const AssetForm = (props) => {
 						<FormControl>
 							<FormLabel>Type </FormLabel>
 							{/* <Input type="text" size="md" variant="outline" {...register('type', validation.type)}></Input> setValue('test', '')  */}
-							<SelectPicker valueKey={'type'} label={'type'} data={gameConfig.assetTypes} onChange={(ddd) => setType(ddd)} value={type} />
+							<SelectPicker 
+              valueKey={'type'} 
+              label={'type'} 
+              data={gameConfig.assetTypes} 
+              onChange={(ddd) => setType(ddd)} 
+              value={type} />
 						</FormControl>
 						<Spacer />
 					</Flex>
+
+          {!account && <AddCharacter characters={characters} handleSelect={(char) => editState(char, 0, 'selectAccount')} />}
+            {account && <Box>
+              <CharacterTag isAccessible character={account} onClick={() => setAccount(false)} />
+            </Box>}
 
 					<FormControl>
 						<FormLabel>Asset Name </FormLabel>

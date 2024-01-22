@@ -201,7 +201,11 @@ const NewEffects = (props) => {
     if (character) {
       return (
         <Box>
-          <AssetForm character={characters.find(el => el._id == character)} handleSubmit={handleSubmit} asset={selected} closeModal={handleExit} />
+          <AssetForm 
+          character={characters.find(el => el._id == character)} 
+          handleSubmit={handleSubmit} 
+          asset={selected} 
+          closeModal={handleExit} />
         </Box>
       );
     } else {

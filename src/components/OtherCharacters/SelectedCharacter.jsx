@@ -4,7 +4,7 @@ import CharacterListItem from './CharacterListItem';
 import ResourceNugget from '../Common/ResourceNugget';
 import { useSelector } from 'react-redux';
 import { getFadedColor } from '../../scripts/frontend';
-import { CopyIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import { CloseIcon, CopyIcon, DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import AssetForm from '../Common/AssetForm';
 import { useState } from 'react';
 import AssetCard from '../Common/AssetCard';
@@ -24,58 +24,58 @@ const SelectedCharacter = (props) => {
   const myCharacter = useSelector(state => state.auth.myCharacter);
 
   const copyToClipboard = (character) => {
-		if (character.characterName === 'The Box') {
-			const audio = new Audio('/candi1.mp3');
-			audio.loop = true;
-			audio.play();
-		} else {
-			let board = `${character.email}`;
-			let array = [...character.control];
+    if (character.characterName === 'The Box') {
+      const audio = new Audio('/candi1.mp3');
+      audio.loop = true;
+      audio.play();
+    } else {
+      let board = `${character.email}`;
+      let array = [...character.control];
 
-			for (const controller of myCharacter.control) {
-				if (!array.some((el) => el === controller)) {
-					array.push(controller);
-				}
-			}
+      for (const controller of myCharacter.control) {
+        if (!array.some((el) => el === controller)) {
+          array.push(controller);
+        }
+      }
 
-			for (const controller of array) {
-				const character = characters.find((el) => el.characterName === controller);
-				if (character) {
-					board = board.concat(`; ${character.email}`);
-				} else console.log(`${controller} could not be added to clipboard`);
-				// Alert.error(`${controller} could not be added to clipboard`, 6000);
-			}
+      for (const controller of array) {
+        const character = characters.find((el) => el.characterName === controller);
+        if (character) {
+          board = board.concat(`; ${character.email}`);
+        } else console.log(`${controller} could not be added to clipboard`);
+        // Alert.error(`${controller} could not be added to clipboard`, 6000);
+      }
 
-			navigator.clipboard.writeText(board);
-			// Alert.success('Email Copied!', 6000);
-		}
-	};
+      navigator.clipboard.writeText(board);
+      // Alert.success('Email Copied!', 6000);
+    }
+  };
 
   const selectedResource = accounts.find(el => el._id === selected.account).resources.filter(r => r.balance !== 0)
-	return ( 
-		<Grid
+  return (
+    <Grid
       width={'99%'}
-        templateAreas={`"side main"
+      templateAreas={`"side main"
                         "body body"`}
-        gridTemplateColumns={ '50% 50%'}
-        gap={2}
-        fontWeight='bold'>
-          
-			<GridItem pl='2' area={'side'} >
-        <div className='styleCenter' >
-          <CharacterListItem handleSelect={() => console.log("Hello Player! Hope you are having fun!")}  character={selected} />
-        </div>
-        
+      gridTemplateColumns={'50% 50%'}
+      gap={2}
+      fontWeight='bold'>
 
-      < Button
-        onClick={(e) => { e.stopPropagation(); copyToClipboard(selected)}}
-        leftIcon={<CopyIcon/>}
-        colorScheme='white'
-        variant='outline'
-      >
-        {selected?.email}                         
-      </Button> 
-        
+      <GridItem pl='2' area={'side'} >
+        <div className='styleCenter' >
+          <CharacterListItem handleSelect={() => console.log("Hello Player! Hope you are having fun!")} character={selected} />
+        </div>
+
+
+        < Button
+          onClick={(e) => { e.stopPropagation(); copyToClipboard(selected) }}
+          leftIcon={<CopyIcon />}
+          colorScheme='white'
+          variant='outline'
+        >
+          {selected?.email}
+        </Button>
+
         {selected.pronouns && <p>
           Character Pronouns: <b>{selected.pronouns}</b>
         </p>}
@@ -83,56 +83,62 @@ const SelectedCharacter = (props) => {
           Time Zone: <b>{selected.timeZone}</b>
         </p>}
 
-        {(isControl || myCharacter._id === selected._id) && selected.account &&  <div>
-            <WordDivider word={"Effort"} ></WordDivider>
-            <Center>
-              {selectedResource.map((item) =>
+        {(isControl || myCharacter._id === selected._id) && selected.account && <div>
+          <WordDivider word={"Effort"} ></WordDivider>
+          <Center>
+            {selectedResource.map((item) =>
               <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
-            )}              
+            )}
             {isControl && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
-            </Center>
+          </Center>
 
         </div>}
 
         {(isControl || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
-            <WordDivider word={"Stats"} ></WordDivider>
-            {selected.characterStats && selected.characterStats.map((item) =>
+          <WordDivider word={"Stats"} ></WordDivider>
+          {selected.characterStats && selected.characterStats.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
           )}
         </div>}
         <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
         <p>{selected.bio}</p>
 
-			</GridItem>
+      </GridItem>
 
-			<GridItem pl='2'  area={'main'} >
+      <GridItem pl='2' area={'main'} >
         <img
           src={`${selected.profilePicture}`}
           alt='Img could not be displayed'
           style={{ maxHeight: "50vh", width: '90%' }}
         />
-			</GridItem>
+      </GridItem>
 
-      {(isControl || myCharacter._id === selected._id) && <GridItem bg='#555555' area={'body'} >
+      {(isControl || myCharacter._id === selected._id) && <GridItem bg={mode === "new" ? '#232c3b' :'#555555'} area={'body'} >
         <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
-          Assets 
-          {isControl && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
+          Assets
+          {isControl && mode !== "new" && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
+          {isControl && mode === "new" && <IconButton onClick={() => setMode(false)} variant={'solid'} colorScheme="red" size={'sm'} icon={<CloseIcon />} />}
         </h5>
-				<Grid templateColumns='repeat(3, 1fr)' gap={1}>
-            {assets
-              .filter((el) => el.account && el.account === selected.account)
-              .map((asset) => (
-                <AssetCard key={asset._id} asset={asset} character={selected} showButtons />
-              ))}
-        </Grid>
-			</GridItem>}
+        {mode !== "new" && <Grid templateColumns='repeat(3, 1fr)' gap={1}>
+          { assets
+            .filter((el) => el.account && el.account === selected.account)
+            .map((asset) => (
+              <AssetCard key={asset._id} asset={asset} character={selected} showButtons />
+            ))}
+        </Grid>}
+        {mode === "new" &&
+            <Center  >
+              <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode} />
+            </Center>
+          }
+      </GridItem>}
 
-      <CandiModal onClose={() => { setMode(false); }} open={mode === "new"} title={`${mode} Asset`}>
+      {/* <CandiModal onClose={() => { setMode(false); }} open={mode === "new"} title={`${mode} Asset`}>
         <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode}/>
-      </CandiModal>
+      </CandiModal> */}
 
-		</Grid>
-	);
+    </Grid>
+  );
 }
 
 export default (SelectedCharacter);

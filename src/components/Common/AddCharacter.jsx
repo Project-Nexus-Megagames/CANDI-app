@@ -24,19 +24,20 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
   }, [open]);
 
   return (
-      <Popover  >
+      <Popover style={{ zIndex: 99989 }} >
         <PopoverTrigger>
           <Center className="styleCenter"  >
             <Button variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Character</Button>
           </Center>
           
         </PopoverTrigger>
-        <Portal>
+        
           <PopoverContent bg='#343a40' minWidth={'30vw'} style={{ zIndex: 99989 }}>
             <PopoverArrow />
             <PopoverHeader><Input style={{ width: '94%' }} value={fill} onChange={(e)=> setFilter(e.target.value)} placeholder={`${characters.length} characters`} /></PopoverHeader>
             <PopoverCloseButton />
             <PopoverBody>
+
             
               <div style={{ maxHeight: '40vh', overflow: 'auto',  }} >
                 {characters
@@ -50,7 +51,6 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
                 </div>
             </PopoverBody>
           </PopoverContent>
-        </Portal>
 
       </Popover>
   );

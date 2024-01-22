@@ -3,8 +3,6 @@ import { Box, ButtonGroup, Card, CardBody, CardHeader, Flex, IconButton, Spacer 
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
-import NexusTag from './NexusTag';
-import AssetForm from './AssetForm';
 import { useSelector } from 'react-redux';
 import { CandiModal } from './CandiModal';
 import { BsPencil } from 'react-icons/bs';
