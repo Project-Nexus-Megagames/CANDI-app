@@ -35,10 +35,10 @@ const AssetCard = (props) => {
 
   const asset = props.asset._id? props.asset : assets.find(el => el._id === props.asset)
 
-  const disabled = asset.status?.some(el => el === 'working' || 'used') || undefined;
-  const account = populateThisAccount(accounts, asset.account)
+  const disabled = asset?.status?.some(el => el === 'working' || 'used') || undefined;
+  const account = populateThisAccount(accounts, asset?.account)
   const team = getThisTeam(teams, account.manager);
-  const character = props.character? props.character : characters.find(el => el.account === asset.account)
+  const character = props.character? props.character : characters.find(el => el.account === asset?.account)
 
   if (asset)
   return (
@@ -110,7 +110,7 @@ const AssetCard = (props) => {
     </div>
   );
   return (
-    <b>{props.asset}</b>
+    <b>Cannot Render Asset {props.asset}</b>
   )
 }
 
