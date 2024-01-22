@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Divider, Grid, GridItem, Input, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Divider, Grid, GridItem, Hide, Input, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
 import CharacterListItem from '../OtherCharacters/CharacterListItem';
 import DynamicForm from './DynamicForm';
 import SelectedCharacter from "../OtherCharacters/SelectedCharacter";
+import { DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import NewCharacter from './NewCharacter';
+import ModifyCharacter from '../OtherCharacters/ModifyCharacter';
 
 const CharacterTab = (props) => {
 	const navigate = useNavigate();
@@ -15,6 +18,7 @@ const CharacterTab = (props) => {
   const [renderTags, setRenderTags] = useState([]); // TODO: update with Faction tags
 	const [selected, setSelected] = useState(undefined);
 	const [fil, setFilter] = useState('');
+  const [mode, setMode] = useState(false);
 
   // dynamically creat tags based on the characters that exis
 	useEffect(() => {
@@ -65,9 +69,45 @@ const CharacterTab = (props) => {
 			<GridItem pl='2' bg='#0f131a' area={'main'} >
 				
 				<Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
+        {<Box
+                marginLeft='1rem'
+              >
+                <ButtonGroup isAttached>
+                  <Button
+                    onClick={() => setMode('new')}
+                    leftIcon={<PlusSquareIcon />}
+                    colorScheme='green'
+                    variant='solid'
+                  >
+                    <Hide below='md'>New Character</Hide>
+                  </Button>
+
+                  <Button
+                    onClick={() => setMode('delete')}
+                    leftIcon={<DeleteIcon />}
+                    colorScheme='red'
+                    variant='solid'
+                  >
+                    <Hide below='md'>Delete</Hide>
+                  </Button>
+
+                  <Button
+                    onClick={() => setMode('modify')}
+                    leftIcon={<EditIcon />}
+                    colorScheme='orange'
+                    variant='solid'
+                  >
+                    <Hide below='md'>Edit</Hide>
+                  </Button>
+                </ButtonGroup>
+
+              </Box>}
           {selected && <SelectedCharacter selected={selected} background={111} /> }
 				</Box>
 			</GridItem>
+
+      <NewCharacter show={mode === 'new'} closeModal={() => setMode(false)} />
+      {selected && <ModifyCharacter show={mode === 'modify'} selected={selected} closeModal={() => setMode(false)} />}
 		</Grid>
 	);
 }
