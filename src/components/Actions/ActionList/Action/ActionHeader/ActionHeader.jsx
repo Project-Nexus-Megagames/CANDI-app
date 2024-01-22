@@ -65,7 +65,6 @@ function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) 
                   id: action._id,
                   collaborator: char._id
                 };
-                console.log('FIRE')
                 socket.emit('request', {
                   route: 'action',
                   action: 'removeCollaborator',

@@ -17,9 +17,6 @@ const Login = (props) => {
 
 	const loginToken = localStorage.getItem("kepler-token");
   useEffect(() => {
-		console.log('token ' + loginToken);
-		// console.log(token);
-
 		if (loginToken && loginToken !== null && loginToken !== undefined && loginToken !== 'undefined' && props.login === false) {
 			console.log('Attempting to token login!');
       reduxAction(authReceived({ token: loginToken }));

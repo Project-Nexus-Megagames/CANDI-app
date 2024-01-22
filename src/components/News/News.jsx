@@ -113,7 +113,6 @@ const News = (props) => {
 		} else {
 			setFilteredData(mapArticlesToData(getSortedArticles()));
 		}
-		console.log(filteredData);
 	}, [articles, showMyArticles, myChar]);
 
 	const handleSearch = (e) => {

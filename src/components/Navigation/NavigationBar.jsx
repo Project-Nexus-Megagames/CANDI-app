@@ -80,7 +80,6 @@ const Navigation = (props) => {
   }, [clock,])
 
   const handleCharChange = (charId) => {
-    console.log('charID', charId);
     if (charId) {
       setSelectedChar(charId);
     } else setSelectedChar(myChar._id);

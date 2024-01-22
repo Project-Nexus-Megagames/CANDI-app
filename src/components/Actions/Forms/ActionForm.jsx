@@ -65,7 +65,7 @@ const ActionForm = (props) => {
   // }, [destination])
 
   const editState = (incoming, type, index) => {
-    console.log(incoming, type, index)
+    // console.log(incoming, type, index)
     let thing;
     switch (type) {
       case 'Asset':

@@ -19,7 +19,6 @@ function GameConfig(props) {
 	const [step, setStep] = React.useState('action');
 
 	function submitConfig() {
-		console.log('DATA', config);
 		try {
 			socket.emit('request', {
 				route: 'gameConfig',

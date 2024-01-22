@@ -49,7 +49,6 @@ import { CandiAlert } from "./components/Common/CandiAlert";
 initUpdates();
 const App = (props) => {
   // console.log(`App Version: ${props.version}`);
-  // console.log(localStorage)
   const { loadChar, loadAssets, loadArticles, loadGamestate, login, user, loadLocations, myCharacter, version, loadGameConfig, loadLog, loadAllActions } = props;
 
   const [seconds, setSeconds] = React.useState(60);
@@ -120,7 +119,6 @@ const App = (props) => {
 
     socket.on("alert", (data) => {
       if (data) {
-        console.log(data)
         switch (data.type) {
           case 'success':
           case 'error': 

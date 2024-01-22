@@ -85,7 +85,6 @@ const ActionSubObject = (props) => {
           creator: myCharacter._id,
         };
       // 1) make a new action 
-      console.log(data)
       socket.emit('request', { route: 'action', action: 'updateSubObject', data });
     }
     catch (err) {

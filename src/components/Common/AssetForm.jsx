@@ -106,7 +106,6 @@ const AssetForm = (props) => {
 		} else {
 			e.preventDefault();
 			const asset = { ...data, dice, type: type, status: status, account: character.account };
-			console.log('SENDING DATA', asset);
 			socket.emit('request', {
 				route: 'asset',
 				action: mode,

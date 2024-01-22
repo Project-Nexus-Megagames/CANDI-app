@@ -102,7 +102,6 @@ const FacilityForm = (props) => {
 		} else {
 			e.preventDefault();
 			const facility = { ...data, producing: resources, status: status, account: owner, location };
-			console.log('SENDING DATA', facility);
 			socket.emit('request', {
 				route: 'facility',
 				action: mode,

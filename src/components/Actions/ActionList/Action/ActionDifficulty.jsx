@@ -61,13 +61,10 @@ function ActionDifficulty({action, submission}) {
         }
   
       }
-
-      // console.log(probs)
   
       for (let prob of probs.filter(el => el > 0)) {
         sum = sum * prob
       }
-      // console.log(sum)
   
       if (probs.filter(el => el > 0).length ===0 ) return (0);
       if (sum >= 1) return (sum*100);      

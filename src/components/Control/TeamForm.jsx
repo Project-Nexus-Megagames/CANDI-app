@@ -38,13 +38,8 @@ const TeamForm = (props) => {
     lg: { columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem' }
   })
 
-
-  useEffect(() => {
-    console.log(destination);
-  }, [destination])
-
   const editState = (incoming, type, index) => {
-    console.log(incoming, type, index)
+    // console.log(incoming, type, index)
     let thing;
     switch (type) {
       case 'selectLeader':
@@ -74,7 +69,6 @@ const TeamForm = (props) => {
       characters: characters.map(c => c._id),
       id: teamID
     };
-    console.log(data)
     // closeNew();
     handleSubmit(data)
 
