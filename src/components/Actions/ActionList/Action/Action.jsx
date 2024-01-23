@@ -122,14 +122,6 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
               />}</Center>
             {mode !== 'edit' && <Box>
 
-              {/* <Wrap align={'center'} justify={'space-evenly'} >
-                {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission} />}
-                {action.location && action.location._id && action.location.name !== "No Where" && <Box>
-                  <WordDivider word={`Location: ${action.location.name}`}/>
-                  <HexLocation location={action.location} />
-                </Box>}
-              </Wrap> */}
-
               <ActionMarkdown
                 header='Description'
                 tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
@@ -172,7 +164,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
 
             {mode === 'edit' && <Box> 
               <ActionForm 
-              defaultValue={{ ...action.submission, name: action.name, location: action.location._id }} 
+              defaultValue={{ ...action.submission, name: action.name, location: action.location?._id }} 
               handleSubmit={(action) =>handleSubmit(action)} 
               actionType={action.type}
               actionID={action._id} 
