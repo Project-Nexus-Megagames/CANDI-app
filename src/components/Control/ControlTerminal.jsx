@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import socket from '../../socket';
 import Registration from './Registration';
-import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import ActionTable from './ActionTable';
 import GameConfig from '../GameConfig/GameConfig';
 import CharacterTab from './CharacterTab';
@@ -65,6 +65,15 @@ const ControlTerminal = (props) => {
     socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
   }
   
+  const handleEffect = () => {
+    const data = user.username;
+    socket.emit('request', { route: 'gamestate', action: 'unhideEffects', data });
+  }
+
+  const handleUnhideAll = () => {
+    const data = user.username;
+    socket.emit('request', { route: 'asset', action: 'unhide', data });
+  }
 
 	return ( 
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
@@ -89,9 +98,16 @@ const ControlTerminal = (props) => {
 				</div>
 
         {user?.username.toLowerCase() === 'bobtheninjaman' && <div>
-          Used Assets: {assets.filter(el => el.status.some(s => s=== 'used')).length}
+          <Box>
+            Used Assets: {assets.filter(el => el.status.some(s => s=== 'used')).length}
+            Working Assets: {assets.filter(el => el.status.some(s => s=== 'working')).length}
+            Hidden Assets: {assets.filter(el => el.status.some(s => s=== 'hidden')).length}            
+          </Box>
+
           <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>          
+          <Button onClick={() => handleUnhideAll()} >Unhide Assets</Button>
           <Button onClick={() => handleResetEfferot()} >Reset Effort</Button>
+          <Button onClick={() => handleEffect()} >Unhide Effects</Button>
         </div>}
 
         <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>

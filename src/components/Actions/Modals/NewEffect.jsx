@@ -18,7 +18,7 @@ const NewEffects = (props) => {
   const [array, setArray] = useState([]);
   const [locationsToDisplay, setLocationsToDisplay] = useState([]);
   const [charactersToDisplay, setCharactersToDisplay] = useState([]);
-	const [character, setCharacter] = useState(undefined);
+  const [character, setCharacter] = useState(undefined);
 
   const myChar = useSelector(getMyCharacter);
   const assets = useSelector((state) => state.assets.list);
@@ -54,7 +54,7 @@ const NewEffects = (props) => {
           ownerCharacter: props.selected.creator._id
         });
         setCharacter(props.selected.creator._id)
-        setArray([ props.selected.creator, ...props.selected.collaborators]);
+        setArray([props.selected.creator, ...props.selected.collaborators]);
         break;
       case 'aspect':
       case 'locationStats':
@@ -135,7 +135,7 @@ const NewEffects = (props) => {
   };
 
   const handleEditObject = (type, change) => {
-    let temp = [ ...selected ];
+    let temp = [...selected];
     let statIndex = temp.findIndex(el => el.type == type)
     let temp0 = { ...temp[statIndex] };
     temp0['statAmount'] = parseInt(change);
@@ -145,7 +145,7 @@ const NewEffects = (props) => {
   };
 
   const handleEditArray = (type, change) => {
-    let temp = [ ...selected ];
+    let temp = [...selected];
     const index = temp.findIndex(el => el.type == type)
     temp[index].type = change;
     setSelected(temp);
@@ -156,24 +156,24 @@ const NewEffects = (props) => {
       <div>
         <WordDivider word="Please enter how much you want to ADD (positive number) or SUBTRACT (negative number) from one
 					or more aspects" />
-          {selected?.name}
+        {selected?.name}
 
-          {selected &&  selected.map(stat => (
-            <div key={stat._id}>
-              <label>{stat.type}: </label>
-              <InputNumber
-                defaultValue="0"
-                onChange={(value) => handleEditObject(stat.type, value)}
-              />
-            </div>
-          ))}
-          {type !== 'new' && <Button
-            disabled={type === ''}
-            onClick={() => handleSubmit(selected)}
-            variant="solid"
-          >
-            Submit
-          </Button>}
+        {selected && selected.map(stat => (
+          <div key={stat._id}>
+            <label>{stat.type}: </label>
+            <InputNumber
+              defaultValue="0"
+              onChange={(value) => handleEditObject(stat.type, value)}
+            />
+          </div>
+        ))}
+        {type !== 'new' && <Button
+          disabled={type === ''}
+          onClick={() => handleSubmit(selected)}
+          variant="solid"
+        >
+          Submit
+        </Button>}
       </div>
     );
   };
@@ -184,9 +184,7 @@ const NewEffects = (props) => {
       const data = {
         type,
         action: props.action._id,
-        document: aaaa,
-        owner: populatedCharacter._id,
-        account: populatedCharacter.account,
+        document: { ...aaaa, },
         effector: myChar._id,
         loggedInUser
       };
@@ -198,14 +196,15 @@ const NewEffects = (props) => {
   };
 
   const renderAss = () => {
-    if (character) {
+    if (selected) {
       return (
         <Box>
-          <AssetForm 
-          character={characters.find(el => el._id == character)} 
-          handleSubmit={handleSubmit} 
-          asset={selected} 
-          closeModal={handleExit} />
+          <AssetForm
+            character={characters.find(el => el._id == character)}
+            handleSubmit={handleSubmit}
+            asset={selected}
+            characters={array}
+            closeModal={handleExit} />
         </Box>
       );
     } else {
@@ -218,8 +217,8 @@ const NewEffects = (props) => {
     { type: 'asset', color: 'green', name: 'Edit Asset' },
     { type: 'character', color: 'orange', name: 'Edit Character Contacts', disabled: true },
     { type: 'newLocation', color: 'blue', name: 'New Location' },
-    { type: 'locationStats', color: 'blue', name: 'Edit Location Stats',  },
-    { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location',  },
+    { type: 'locationStats', color: 'blue', name: 'Edit Location Stats', },
+    { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location', },
     // { type: 'addInjury', color: 'green', name: 'addInjury' },
   ]
 
@@ -247,20 +246,18 @@ const NewEffects = (props) => {
 
           <Divider />
 
-          
+
 
           {type === 'new' && selected && (
             <div>
-              <SelectPicker
-								block
-								placeholder={`Select Character`}
-								onChange={(event) => setCharacter(event)}
-								data={array}
-                value={character}
-								valueKey="_id"
-								label="characterName"
-							></SelectPicker>
-              {renderAss()}
+              <Box>
+                <AssetForm
+                  character={characters.find(el => el._id == character)}
+                  handleSubmit={handleSubmit}
+                  asset={selected}
+                  characters={array}
+                  closeModal={handleExit} />
+              </Box>
             </div>
           )}
 
@@ -282,27 +279,27 @@ const NewEffects = (props) => {
 
           {type === 'locationStats' && <div>
             <SelectPicker
-                block
-                placeholder={`Edit location's stats`}
-                onChange={(event) => setSelectedLocation(event)}
-                data={locations}
-                valueKey="_id"
-                label="name"
-                groupBy="type"
-              ></SelectPicker>
+              block
+              placeholder={`Edit location's stats`}
+              onChange={(event) => setSelectedLocation(event)}
+              data={locations}
+              valueKey="_id"
+              label="name"
+              groupBy="type"
+            ></SelectPicker>
             {renderAspects()}
-            </div>}
+          </div>}
 
           {type === 'unlockMapTile' && (
-						<div>
-							<CheckerPick
-								placeholder="Select Location(s) to unlock..."
-								onChange={(event) => handleLocSelect(event)}
-								data={sortedLocations}
+            <div>
+              <CheckerPick
+                placeholder="Select Location(s) to unlock..."
+                onChange={(event) => handleLocSelect(event)}
+                data={sortedLocations}
                 value={selected}
-								valueKey="_id"
-								label="name"
-							/>
+                valueKey="_id"
+                label="name"
+              />
               <Button
                 disabled={type === ''}
                 onClick={() => handleSubmit(selected)}
@@ -310,8 +307,8 @@ const NewEffects = (props) => {
               >
                 Submit
               </Button>
-						</div>
-					)}
+            </div>
+          )}
 
           {type === 'character' && (
             <div>

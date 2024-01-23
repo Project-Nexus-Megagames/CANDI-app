@@ -17,7 +17,7 @@ const AssetForm = (props) => {
 	const { asset, character, mode } = props;
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const gameConfig = useSelector((state) => state.gameConfig);
-	const characters = useSelector((state) => state.characters.list);
+	const characters = props.characters || useSelector((state) => state.characters.list);
 
 	const [imageURL, setImageURL] = useState('');
 	const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
@@ -130,7 +130,7 @@ const AssetForm = (props) => {
 	};
 
   const editState = (incoming, index, type) => {
-    console.log(incoming, index, type)
+    console.log(incoming.account, index, type)
 		let thing;
 		let temp;
 		switch (type) {
@@ -172,10 +172,16 @@ const AssetForm = (props) => {
 						<Spacer />
 					</Flex>
 
+          <Box>
+            <p>Owner:</p>
+          
           {!account && <AddCharacter characters={characters} handleSelect={(char) => editState(char, 0, 'selectAccount')} />}
-            {account && <Box>
+            {account && 
               <CharacterTag isAccessible character={account} onClick={() => setAccount(false)} />
-            </Box>}
+            }
+          </Box>
+
+
 
 					<FormControl>
 						<FormLabel>Asset Name </FormLabel>
@@ -194,7 +200,7 @@ const AssetForm = (props) => {
 					</FormControl>
 
           <FormControl>
-						<FormLabel>Dice </FormLabel>
+						<FormLabel>Dice! </FormLabel>
             {dice.map((die, index) => (
               
 								<InputGroup key={die._id} index={index}>

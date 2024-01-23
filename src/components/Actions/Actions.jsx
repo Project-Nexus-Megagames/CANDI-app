@@ -31,7 +31,7 @@ const Actions = (props) => {
   const [selected, setSelected] = useState(false);
 
   const [actionType, setActionType] = React.useState(
-    props.actionType ? gameConfig.actionTypes.find(el => el.type === props.actionType) :
+     gameConfig.actionTypes.find(el => el.type === props.actionType) ||
       gameConfig.actionTypes[0]);
 
   if (!props.login) {

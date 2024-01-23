@@ -43,7 +43,7 @@ function ActionList({ actions, handleSelect, selected }) {
     }
   };
 
-  const sortedActions = () => {
+  const sortedActions = (actions) => {
     return actions
       .sort((a, b) => {
         // sort the catagories alphabetically
@@ -63,57 +63,62 @@ function ActionList({ actions, handleSelect, selected }) {
       align='stretch'
       maxWidth={'20vw'}
     >
-      {sortedActions().length <= 0 && <b>No Actions</b>}
-      {sortedActions().map((action) => (
-        <Flex
-          key={action._id}
-          onClick={() => handleSelect(action)}
-          style={{
-            marginTop: '0',
-            cursor: 'pointer',
-            backgroundColor: selected == action ? getFadedColor('default', 0.5) : 'inherit'
-          }}
-        >
-          <Box
-            mr={'1rem'}
-            alignItems={'center'}
-            display={'flex'}
-          >
-            <CharacterNugget character={action.creator} />
-          </Box>
-          <Box
-            style={{
-              ...styleCenter,
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              overflow: 'hidden'
-            }}
-          >
-            <div style={titleStyle}>{action.name}</div>
-            <Flex>
-              <ActionTag
-                color='black'
-                action={action}
-                text={action.type}
-              />
-              {action.results.length > 0 && action.results[0].ready &&
-                <ActionTag
-                  color='green'
-                  text='R Ready'
-                />
-              }
-              {action.effects.length > 0 &&
-                <ActionTag
-                  color='violet'
-                  text={`${action.effects.length} Effects`}
-                />
-              }
-              {action.tags.map((tag) => tagStyle(tag))}
+      {rounds.map(round => (
+        <div key={round} >
+          <h5>{round}</h5>
+          {sortedActions(actions.filter(el => el.round === round)).length <= 0 && <b>No Actions</b>}
+          {sortedActions(actions.filter(el => el.round === round)).map((action) => (
+            <Flex
+              key={action._id}
+              onClick={() => handleSelect(action)}
+              style={{
+                marginTop: '0',
+                cursor: 'pointer',
+                backgroundColor: selected == action ? getFadedColor('default', 0.5) : 'inherit'
+              }}
+            >
+              <Box
+                mr={'1rem'}
+                alignItems={'center'}
+                display={'flex'}
+              >
+                <CharacterNugget character={action.creator} />
+              </Box>
+              <Box
+                style={{
+                  ...styleCenter,
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={titleStyle}>{action.name}</div>
+                <Flex>
+                  <ActionTag
+                    color='black'
+                    action={action}
+                    text={action.type}
+                  />
+                  {action.results.length > 0 && action.results[0].ready &&
+                    <ActionTag
+                      color='green'
+                      text='R Ready'
+                    />
+                  }
+                  {action.effects.length > 0 &&
+                    <ActionTag
+                      color='violet'
+                      text={`${action.effects.length} Effects`}
+                    />
+                  }
+                  {action.tags.map((tag) => tagStyle(tag))}
+                </Flex>
+              </Box>
             </Flex>
-          </Box>
-        </Flex>
-      )
-      )}
+          )
+          )}
+        </div>
+      ))}
     </VStack>
   );
 }
