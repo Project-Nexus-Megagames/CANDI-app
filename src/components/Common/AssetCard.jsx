@@ -35,14 +35,14 @@ const AssetCard = (props) => {
 
   const asset = props.asset._id? props.asset : assets.find(el => el._id === props.asset)
 
-  const disabled = asset?.status?.some(el => el === 'working' || 'used') || undefined;
+  const disabled = asset?.status?.some(el => el === ('working' || 'used'));
   const account = populateThisAccount(accounts, asset?.account)
   const team = getThisTeam(teams, account.manager);
   const character = props.character? props.character : characters.find(el => el.account === asset?.account)
 
   if (asset)
   return (
-    <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log("Peekabo!")} >
+    <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
       <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`,  }} >
         <CardHeader>
 

@@ -19,7 +19,11 @@ const CharacterTag = ({ isDisabled, isAccessible, onClick, character}) => {
     el.account === character
     )
 
-  if (!thisCharacter) return(<b>Error: No Character</b>)
+  if (!thisCharacter) return(
+    <Tag>
+    Error: No Character {character}  
+    {!isDisabled && isAccessible && <TagCloseButton onClick={onClick} />}
+    </Tag>)
 	return ( 
     <Tag 
     margin={'2px'} 
