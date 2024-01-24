@@ -22,6 +22,7 @@ function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) 
   const myCharacter = useSelector(s => s.auth.character)
   const isAccessible = (myCharacter._id === creator?._id || isControl) && action.type !== 'Agenda';
   const roundActive = game.status === 'Active';
+  const passed = action.results.length > 0;
 
   useEffect(() => {
     if (edit) setIsDisabled(true);
@@ -49,7 +50,7 @@ function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) 
           {actionType.collab && <IconButton
             onClick={() => setIsDisabled(!isDisabled)}
             variant='outline'
-            isDisabled={edit || !roundActive && !isControl}
+            isDisabled={edit || (!roundActive || passed && !isControl)}
             colorScheme={!isDisabled ? 'green' : "yellow"}
             color={!isDisabled ? 'green' : "yellow"}
             size={'xs'}
