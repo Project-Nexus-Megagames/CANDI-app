@@ -6,6 +6,7 @@ import { getFadedColor } from '../../../scripts/frontend';
 
 function ActionList({ actions, handleSelect, selected }) {
   const [rounds, setRounds] = useState([]);
+  const [renderRounds, setRenderRounds] = useState([]);
 
   useEffect(() => {
     try {
@@ -24,6 +25,7 @@ function ActionList({ actions, handleSelect, selected }) {
     }
     rounds.reverse();
     setRounds(rounds);
+    setRenderRounds(rounds);
   };
 
   const tagStyle = (item) => {
@@ -57,6 +59,11 @@ function ActionList({ actions, handleSelect, selected }) {
       })
   }
 
+  const handleRoundToggle = (round) => {
+    if (renderRounds.some(r => r === round)) setRenderRounds(renderRounds.filter((r => r !== round)))
+    else setRenderRounds([ ...renderRounds, round ])
+  }
+
   return (
     <VStack
       divider={<StackDivider />}
@@ -65,9 +72,9 @@ function ActionList({ actions, handleSelect, selected }) {
     >
       {rounds.map(round => (
         <div key={round} >
-          <h5>{round}</h5>
+          <h4 onClick={() => handleRoundToggle(round)} style={{ backgroundColor: getFadedColor('gold'), color: 'black', cursor: 'pointer' }} >Round {round}</h4>
           {sortedActions(actions.filter(el => el.round === round)).length <= 0 && <b>No Actions</b>}
-          {sortedActions(actions.filter(el => el.round === round)).map((action) => (
+          {renderRounds.some(r => r === round) && sortedActions(actions.filter(el => el.round === round)).map((action) => (
             <Flex
               key={action._id}
               onClick={() => handleSelect(action)}
