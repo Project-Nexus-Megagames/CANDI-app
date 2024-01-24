@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, ButtonGroup, Card, CardBody, CardHeader, Flex, IconButton, Spacer, Tag } from '@chakra-ui/react';
+import { Box, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
@@ -56,9 +56,12 @@ const AssetCard = (props) => {
                 </h5>}
                 <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
                 <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
-                {asset.status?.map(el => (
-                  <NexusTag key={el} value={el}></NexusTag>
-                ))}
+                <Center>
+                  {asset.status?.map(el => (
+                    <NexusTag key={el} value={el}></NexusTag>
+                  ))}                  
+                </Center>
+
               </div>
 
               {control && showButtons && <ButtonGroup isAttached>

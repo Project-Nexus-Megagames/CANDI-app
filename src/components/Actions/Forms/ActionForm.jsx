@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getTextColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon } from '@chakra-ui/react';
+import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
@@ -96,7 +96,7 @@ const ActionForm = (props) => {
       id: actionID
     };
     closeNew();
-     handleSubmit(data)
+    handleSubmit(data)
 
     setActionType(false);
     setDescription('');
@@ -107,11 +107,6 @@ const ActionForm = (props) => {
 
   };
 
-  function isDisabled(effort) {
-    if (description.length < 10 || (name.length < 10 && !collabMode)) return true;
-    // if ((effort.amount === 0 || effort <= 0) && !collabMode) return true;
-    else return false;
-  }
 
   function newMap(number) {
     let arr = [];
@@ -121,6 +116,35 @@ const ActionForm = (props) => {
     setAssets(arr);
   }
 
+  const disabledConditions = [
+    {
+      text: "Description is too short",
+      disabled: description.length < 10
+    },
+    {
+      text: "Description is too long!",
+      disabled: description.length >= 1000
+    },
+    {
+      text: "Name is too short",
+      disabled: name.length < 10 && !collabMode
+    },
+    {
+      text: "Name is too long!",
+      disabled: name.length >= 1000 && !collabMode
+    },
+    {
+      text: "Location required",
+      disabled: !destination
+    },
+    // {
+    //   text: "Not Enough Resources for this action",
+    //   disabled: isResourceDisabled()
+    // },
+  ];
+  const isDisabled = disabledConditions.some(el => el.disabled);
+
+
   return (
     <div>
       {header && <h4>{header}</h4>}
@@ -129,7 +153,7 @@ const ActionForm = (props) => {
       <form>
         <Flex width={"100%"} align={"end"} >
           {actionType.collab && !collabMode && <Box>
-            Collaborators:   
+            Collaborators:
           </Box>}
           <Spacer />
           {!collabMode && <Box width={"49%"}>
@@ -161,13 +185,13 @@ const ActionForm = (props) => {
               </Tag>
             )}
             <h5>{locations.find(el => el._id === destination)?.name}</h5>
-            <Flex>              
-              <SelectPicker 
-              data={locations} 
-              label="name" 
-              onChange={setDestination} 
-              placeholder={destination ? locations.find(el => el._id === destination)?.name : "Select a Destination (" + locations.length + ") in range"} 
-              value={destination} 
+            <Flex>
+              <SelectPicker
+                data={locations}
+                label="name"
+                onChange={setDestination}
+                placeholder={destination ? locations.find(el => el._id === destination)?.name : "Select a Destination (" + locations.length + ") in range"}
+                value={destination}
               />
 
               {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
@@ -201,19 +225,19 @@ const ActionForm = (props) => {
               {actionType.resourceTypes.map(el => {
                 const resources = myAccout.resources.find(e => e.type === el.type);
                 return (
-                <Box key={el._id}>
-                  {resources?.balance < el.min && (
-                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                      Lacking Resources
-                    </Tag>
-                  )}
-                  {resources == undefined || resources?.balance >= el.min && (
-                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                      <CheckIcon />
-                    </Tag>
-                  )}
-                  <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
-                </Box>)
+                  <Box key={el._id}>
+                    {resources?.balance < el.min && (
+                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                        Lacking Resources
+                      </Tag>
+                    )}
+                    {resources == undefined || resources?.balance >= el.min && (
+                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                        <CheckIcon />
+                      </Tag>
+                    )}
+                    <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
+                  </Box>)
               }
 
               )}
@@ -245,6 +269,7 @@ const ActionForm = (props) => {
                   paddingTop: '5px',
                   paddingLeft: '10px',
                   textAlign: 'left',
+                  width: '33%'
                 }}
               >
                 {!ass &&
@@ -252,7 +277,13 @@ const ActionForm = (props) => {
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id))} />}
-                {ass && <AssetCard showRemove removeAsset={() => editState(false, 'Asset', index)} compact type={'blueprint'} asset={ass} />}
+                {ass &&
+                  <AssetCard
+                    showRemove
+                    removeAsset={() => editState(false, 'Asset', index)}
+                    compact
+                    type={'blueprint'}
+                    asset={ass} />}
               </Box>
               <Spacer />
             </>
@@ -269,7 +300,14 @@ const ActionForm = (props) => {
         }}
       >
         <Spacer />
-        <Button leftIcon={<Icon as={HiSave} />} colorScheme="green" onClick={() => passSubmit()} variant='solid' disabled={isDisabled()} >
+
+        <VStack>
+          {disabledConditions.filter(el => el.disabled).map((opt, index) =>
+            <Text color='red' key={index}>{opt.text}</Text>
+          )}
+        </VStack>
+
+        <Button leftIcon={<Icon as={HiSave} />} colorScheme="green" onClick={() => passSubmit()} variant='solid' isDisabled={isDisabled} >
           <b>Submit</b>
         </Button>
         <Button colorScheme="red" onClick={() => closeNew()} variant='outline'>
