@@ -28,14 +28,14 @@ const DynamicForm = (props) => {
 	}, [selected]);
 
   const handleSubmit = () => {
-    console.log(formValue)
+    // console.log(formValue)
     socket.emit('request', { route: formValue.model.toLowerCase(), action: 'modify', data: { data: formValue, loggedInUser } });
   }
   
 	const handleInput = (value, id) => {
     let temp = Array.isArray(formValue) ? [ ...formValue ] : { ...formValue };
 		temp[id] = value;
-    console.log(temp)
+    // console.log(temp)
 
     if (title) {
       // console.log(title)

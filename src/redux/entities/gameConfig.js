@@ -11,7 +11,7 @@ const slice = createSlice({
 		loaded: false,
 		lastFetch: null,
 		actionTypes: [],
-		effortTypes: [],
+		assetTypes: [],
 		resourceTypes: [],
 		characterStats: [],
 		globalStats: [],
@@ -27,9 +27,10 @@ const slice = createSlice({
 			console.log(`${action.type} Dispatched...`);
 			gameConfig.name = action.payload.name;
 			gameConfig.actionTypes = action.payload.actionTypes;
-			gameConfig.effortTypes = action.payload.effortTypes;
+			gameConfig.assetTypes = action.payload.assetTypes;
 			gameConfig.resourceTypes = action.payload.resourceTypes;
 			gameConfig.characterStats = action.payload.characterStats;
+			gameConfig.globalStats = action.payload.globalStats;
 			gameConfig.loading = false;
 			gameConfig.lastFetch = Date.now();
 			gameConfig.loaded = true;
@@ -44,15 +45,16 @@ const slice = createSlice({
 		},
 		actionTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
+			console.log(action.payload.actionTypes);
 			state.actionTypes = action.payload.actionTypes;
+		},
+		assetTypesAdded: (state, action) => {
+			console.log(`${action.type} Dispatched`);
+			state.assetTypes = action.payload.assetTypes;
 		},
 		resourceTypesAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
 			state.resourceTypes = action.payload.resourceTypes;
-		},
-		effortTypesAdded: (state, action) => {
-			console.log(`${action.type} Dispatched`);
-			state.effortTypes = action.payload.effortTypes;
 		},
 		globalStatsAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
@@ -66,7 +68,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { actionTypesAdded, layoutAdded, resourceTypesAdded, effortTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
+export const { actionTypesAdded, layoutAdded, assetTypesAdded, resourceTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

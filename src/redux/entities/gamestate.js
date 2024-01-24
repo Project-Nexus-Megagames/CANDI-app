@@ -6,7 +6,7 @@ import { apiCallBegan } from '../api'; // Import Redux API call
 const slice = createSlice({
 	name: 'gamestate',
 	initialState: {
-		version: '4.9.7',
+		version: '5.4.4',
 		loading: false,
 		loaded: false,
 		lastFetch: null,
@@ -14,7 +14,11 @@ const slice = createSlice({
 		endTime: null,
 		status: '',
 		tag: '',
+		hunger: 0,
+		happiness: 0,
+		discovered: false,
 		duck: false,
+
 	},
 	// Reducers - Events
 	reducers: {
@@ -29,15 +33,6 @@ const slice = createSlice({
 			gamestate.status = action.payload.status;
 			gamestate.tag = action.payload.tag;
 
-			gamestate.hunger = action.payload.hunger;
-			gamestate.happiness = action.payload.happiness;
-			gamestate.discovered = action.payload.discovered;
-
-			gamestate.gcHappiness = action.payload.gcHappiness;
-			gamestate.gcDiplomacy = action.payload.gcDiplomacy;
-			gamestate.gcHealth = action.payload.gcHealth;
-			gamestate.gcPolitics = action.payload.gcPolitics;
-			gamestate.gcSecurity = action.payload.gcSecurity;
 
 			gamestate.loading = false;
 			gamestate.lastFetch = Date.now();

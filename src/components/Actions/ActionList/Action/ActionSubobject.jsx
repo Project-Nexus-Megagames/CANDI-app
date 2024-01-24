@@ -1,60 +1,94 @@
-import { Avatar, Box, Divider, Flex, Heading, Tag } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Divider, Flex, Heading, Spacer, Wrap, WrapItem } from "@chakra-ui/react";
 import React from "react";
-import { getFadedColor, getTime } from "../../../../scripts/frontend";
+import { getFadedColor, getThisTeam, getThisTeamFromAccount, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
 import NewResult from "../../Modals/NewResult";
 import ActionButtons from "./ActionHeader/ActionButtons";
 import ActionMarkdown from "./ActionMarkdown";
 import CharacterNugget from "../../../Common/CharacterNugget";
-import ActionForm from "../../Forms/ActionForm";
+import Contract from "../../../Common/Contract";
+import Ice from "../../../Team/Ice";
+import { RaidIce } from "../../../Hacking/RaidIce";
+import { ActionIce } from "./ActionIce";
+import { useSelector } from "react-redux";
+import { getTeamDice, } from "../../../../redux/entities/assets";
 import ActionResources from "./ActionResources";
-import ActionEffort from "./ActionEffort";
+import ActionForm from "../../Forms/ActionForm";
+import usePermissions from "../../../../hooks/usePermissions";
+import AssetCard from "../../../Common/AssetCard";
 
 
 const ActionSubObject = (props) => {
   const { subObject, action } = props;
   const time = getTime(subObject.createdAt);
   const creator = subObject.resolver ? subObject.resolver :
-                  subObject.effector ? subObject.effector :
-                  subObject.creator ? subObject.creator :
-                  subObject.commentor;
-                  
+    subObject.effector ? subObject.effector :
+      subObject.commentor ? subObject.commentor :
+        subObject.creator ? subObject.creator :
+          { playerName: "UNKNOWN!?!", characterName: "UNKNOWN!?!" };
+
+          const {isControl} = usePermissions();
   const [mode, setMode] = React.useState(false);
+  const assets = useSelector(getTeamDice);
+  const { gameConfig } = useSelector((state) => state);
+  const teams = useSelector(s => s.teams.list);
 
   const handleDelete = async () => {
-    const data = {
-			id: action._id,
-			result: subObject._id,
-      model: subObject.model
-		};
-		socket.emit('request', {
-			route: 'action',
-			action: 'deleteSubObject',
-			data
-		});
+    let data;
+    switch (subObject.model) {
+      case 'Comment':
+        data = {
+          id: action._id,
+          comment: subObject._id
+        };
+        break;
+      case 'Result':
+        data = {
+          id: action._id,
+          result: subObject._id
+        };
+        break;
+      case 'Effect':
+        data = {
+          id: action._id,
+          effect: subObject._id
+        };
+        break;
+        case 'Submission':
+          data = {
+            id: action._id,
+            submission: subObject._id
+          };
+          break;
+    }
+
+
+
+    socket.emit('request', {
+      route: 'action',
+      action: 'deleteSubObject',
+      data
+    });
   };
 
   const handleSubmit = async (incoming) => {
-    const { effort, assets, description, intent, name, actionType, myCharacter, collaborators } = incoming;
+    const { effort, assets, description, intent, name, actionType, myCharacter } = incoming;
     try {
-      const data = {
-        submission: {
-          effort: effort,
-          assets: assets.filter(el => el),
-          description: description,
-          intent: intent,
-          id: subObject._id,
-        },
-        name: name,
-        type: actionType.type,
-        id: action._id,
-        creator: myCharacter._id,
-        numberOfInjuries: myCharacter.injuries.length,
-      };
+        const data = {
+          submission: {
+            assets: assets.filter(el => el),
+            description: description,
+            intent: intent,
+            id: subObject._id,
+          },
+          id: action._id,
+          creator: myCharacter._id,
+        };
       // 1) make a new action 
       socket.emit('request', { route: 'action', action: 'updateSubObject', data });
     }
     catch (err) {
+      console.log(err)
       // toast({
       //   position: "top-right",
       //   isClosable: true,
@@ -66,95 +100,154 @@ const ActionSubObject = (props) => {
     }
   };
 
+  if (!creator) return <b>???</b>
 
-  return ( 
-    <div>
-      <div key={subObject._id} style={{ 
-        border: subObject.status === 'Public' ? `3px solid ${getFadedColor(subObject.model)}` : `3px dotted ${getFadedColor(subObject.model)}`, 
-        borderRadius: '5px', padding: '5px' }}>
-        <Flex style={{ backgroundColor: getFadedColor(subObject.model), padding: '10px' }} >
-          <Box
-            display='flex'
-            flex={1}
-            alignItems='center'
-          >
+  const team = getThisTeam(teams, creator._id);
+
+  return (
+    <Center>
+      <div key={subObject._id}
+        style={{
+          border: (subObject.model == "Comment" && team) ? `3px solid ${team?.color}` : `3px solid ${getFadedColor(subObject.model)}`,
+          borderRadius: '5px',
+          padding: '5px',
+          width: '85%'
+        }}>
+        <Flex justify={'center'}
+          style={{
+            backgroundColor: (subObject.model == "Comment" && team.color) ? `${team?.color}` : `${getFadedColor(subObject.model)}`,
+            padding: '10px'
+          }} >
+
           <CharacterNugget character={creator} />
-          </Box>
-          <Flex flex={3}>
-            <Box
-              alignItems='center'
-              justifyContent='center'
-              width='100%'
-            >
-              <Heading
-                  size={'md'}
-                  textAlign={'center'}
-              >
-                  {creator?.characterName}'s {subObject.model}                
-                  
-              </Heading>
-              <Box
-                  fontSize={'.9rem'}
-                  fontWeight={'normal'}
-              >
-              </Box>
-              <Box
-                  fontSize={'.9rem'}
-                  fontWeight={'normal'}
-              >
-                  {time}
-              </Box>
-              <Tag variant={'solid'} colorScheme="teal" >{subObject.status}</Tag>
-            </Box>
-          </Flex>
-          <Flex flex={1}>
-            <Box marginLeft='auto'>
-              <ActionButtons
-                action={subObject}
-                toggleEdit={() => setMode(subObject.model)}
-                creator={creator}
-                handleDelete={handleDelete}
-              />
-            </Box>
-          </Flex>          
-        </Flex>
-        {mode}
 
-        {mode !== 'Submission' && <Box>
-          {subObject.description && <ActionMarkdown
-            header={'Description'}
-            markdown={subObject.description}
+          <Spacer />
+
+          <Box
+            alignItems='center'
+            justifyContent='center'
+          >
+            <Heading
+              size={'md'}
+              textAlign={'center'}
+            >
+              {subObject.__t}
+              {isControl && <b>({subObject.status})</b>} {subObject.model}
+            </Heading>
+            <Box
+              fontSize={'.9rem'}
+              fontWeight={'normal'}
+            >
+              {creator.playerName} - {creator.characterName}
+              
+            </Box>
+            <Box
+              fontSize={'.9rem'}
+              fontWeight={'normal'}
+            >
+              {time}
+            </Box>
+          </Box>
+
+          <Spacer />
+
+          <Box marginLeft='auto'>
+            <ActionButtons
+              action={subObject}
+              toggleEdit={() => setMode('edit' + subObject.model)}
+              creator={creator}
+              handleDelete={handleDelete}
+            />
+          </Box>
+
+        </Flex>
+
+        {mode !== 'editSubmission' &&<Box>
+          {subObject.__t !== "Contract" && <ActionMarkdown
+            markdown={subObject.description ? subObject.description : subObject.body}
           />}
-          {subObject.intent && <ActionMarkdown
-            header={'Intent'}
-            markdown={subObject.intent}
-          />}
-          {subObject.body && <ActionMarkdown
-            header={'Body'}
-            markdown={subObject.body}
-          />}
-          {subObject.effort && <ActionEffort 
-            submission={subObject}
-          />}
-          {subObject.assets && <ActionResources
-            assets={subObject.assets}
-          />}
+          {subObject.__t === "Contract" &&
+            <Contract show contract={subObject} />
+          }
+          {subObject.model === "Ice" &&
+            <div>
+              <Wrap justify="space-around">
+                <Ice ice={subObject} width={500} />
+
+                <WrapItem  >
+                  {subObject.options &&
+                    subObject.options.map((subRotuine, index) => (
+                      <Box
+                        key={subRotuine._id}
+                        colSpan={18 / subObject.options.length}
+                      >
+                        <Divider vertical />
+                        {subRotuine.description && (
+                          <p>{subRotuine.description}</p>
+                        )}
+                        <Divider vertical />
+                        <ActionIce
+                          show={mode === 'addDice'}
+                          action={action}
+                          ice={subObject}
+                          assets={assets}
+                          loading={props.loading}
+                          subRotuine={subRotuine}
+                          index={index}
+                        />
+                      </Box>
+                    ))}
+                </WrapItem>
+
+              </Wrap>
+
+              <Center>
+                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green" onClick={() => setMode('addDice')} >Add Dice</Button>}
+                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green"
+                  onClick={() => socket.emit("request", {
+                    route: "action",
+                    action: "roll",
+                    data: { id: action._id, ice: subObject._id },
+                  })}>Roll</Button>}
+                {mode === 'addDice' && <Button variant={'solid'} colorScheme="green" onClick={() => setMode(false)} >Finish</Button>}
+              </Center>
+            </div>
+          }
+
+          {subObject.assets && subObject.assets.length > 0 &&
+            <ActionResources
+              actionType={gameConfig.actionTypes.find(el => el.type === action.type)}
+              assets={subObject.assets}
+              toggleAssetInfo={(data) => console.log(data)}
+            />
+          }
+
+          {subObject.asset && <AssetCard asset={subObject.asset} />}
         </Box>}
 
-        {mode === 'Submission' && <ActionForm collabMode defaultValue={subObject} actionType={action.type} handleSubmit={(data) =>handleSubmit(data)} closeNew={() => setMode(false)} />}
-      </div>    
-      <Divider orientation='vertical' />   
+        {mode === 'editSubmission' && action.type &&      
+        <ActionForm
+          collabMode
+          defaultValue={subObject}
+          actionType={action.type}
+          handleSubmit={(data) => handleSubmit(data)}
+          closeNew={() => setMode(false)}
+          actionID={subObject._id}
+        />}
+      </div>
+      {/* <Divider orientation='vertical' />    */}
+
 
       <NewResult
-        show={mode === 'Result'}
+        show={mode === 'editResult'}
         mode={"updateSubObject"}
         result={subObject}
         closeNew={() => setMode(false)}
         selected={action}
       />
-    </div>
+    </Center>
 
-   );
+  );
 }
- 
+
 export default ActionSubObject;

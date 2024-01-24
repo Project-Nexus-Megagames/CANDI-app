@@ -6,6 +6,7 @@ import Action from '../Actions/ActionList/Action/Action';
 
 const ActionDrawer = (props) => {
 	const duck = useSelector((state) => state.gamestate.duck);
+  const gameConfig = useSelector(s => s.gameConfig);
 
 	let selected = props.selected;
 
@@ -37,7 +38,7 @@ const ActionDrawer = (props) => {
 					<Text>{selected?.name}</Text>
 				</DrawerHeader>
 				<DrawerBody align="center">
-          {selected && <Action handleSelect={props.closeDrawer} action={selected} editAction />}       
+          {selected && <Action handleSelect={props.closeDrawer} action={selected} editAction actionType={gameConfig.actionTypes.find(el => el.type === selected.type)} />}       
         </DrawerBody>
 			</DrawerContent>
 		</Drawer>

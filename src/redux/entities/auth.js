@@ -15,6 +15,13 @@ const slice = createSlice({
     lastFetch: false,
     users: [],
     error: null,
+
+    loadingStart: false,
+    loadComplete: false,
+    lastLogin: null,
+
+    character: undefined,
+    team: false,
   },
   // Reducers - Events
   reducers: {
@@ -23,15 +30,22 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched...`);
       auth.loading = true;
     },
+    loadingState: (auth, action) => {
+      console.log(`${action.type} Dispatched...`);
+      auth.loadingStart = true;      
+    },
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      localStorage.setItem('candi-token-new', jwt);
-      const user = jwtDecode(jwt);
-      console.log(user);
+      
+      console.log("jwt:")
+      console.log(jwt)
 
-      //if (user.roles.some(el => el === "Control")) auth.control = true;
+      localStorage.setItem('kepler-token', jwt);
+      const user = jwtDecode(jwt);
+    
+      // if (user?.roles.some(el => el === "Control")) auth.control = true;
 
       auth.error = null;
       auth.user = user;
@@ -52,9 +66,21 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       auth.loadComplete = true;
     },
+    setTeam: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      auth.team = action.payload;
+      // initConnection(auth.user, auth.team, auth.version);
+    },
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);
+
+      if (!action.payload) {
+        console.log("CHARACTER IS UNDEFINED");
+        return;
+      }
+
       auth.myCharacter = action.payload;
+      auth.character = action.payload;
       if (action.payload.tags.some((el) => el.toLowerCase() === 'control')) auth.control = true;
       // initConnection(auth.user, auth.team, auth.version);
     },
@@ -67,12 +93,13 @@ const slice = createSlice({
     },
     signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('candi-token-new');
+      localStorage.removeItem('kepler-token');
       auth.user = null;
       auth.login = false;
       auth.loading = false;
       auth.lastFetch = null;
       auth.myCharacter = false;
+      auth.character = false;
       auth.error = null;
     },
     usersRecieved: (auth, action) => {
@@ -87,7 +114,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { authReceived, loginRequested, authRequestFailed, loginSocket, clearAuthError, signOut, updateUser, usersRecieved, finishLoading, setCharacter, setControl } = slice.actions;
+export const { authReceived, loginRequested, authRequestFailed, loginSocket, clearAuthError, signOut, updateUser, usersRecieved, finishLoading, setCharacter, setControl, setTeam, loadingState } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

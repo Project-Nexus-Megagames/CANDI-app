@@ -50,11 +50,17 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       characters.selected = action.payload;
     },
+    characterSubLocationUpdated: (characters, action) => {
+			console.log(`${action.type} Dispatched`);
+			const index = characters.list.findIndex((el) => el._id === action.payload._id);
+      console.log(characters.list[index].subLocation)
+			if (index > -1) characters.list[index].subLocation = action.payload.subLocation;
+		},
   },
 });
 
 // Action Export
-export const { characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated, characterSelected } = slice.actions;
+export const { characterSubLocationUpdated, characterAdded, characterDeleted, charactersReceived, charactersRequested, charactersRequestFailed, characterUpdated, characterSelected } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 
@@ -76,28 +82,28 @@ export const getMyCharacter = createSelector(
   (state) => state.characters.list,
   (state) => state.auth.user,
   (characters, user) => {
-    return characters.find((char) => char.username === user?.username) || {};
+    return characters.find((char) => char.username.toLowerCase() === user?.username.toLowerCase()) || {};
   }
 );
 
 export const getPlayerCharacters = createSelector(
   (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "PC"))
+  (characters) => characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "pc") && char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
+export const getPublicPlayerCharacters = createSelector(
+  (state) => state.characters.list,
+  (characters) => characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "pc"))
 );
 
 export const getNonPlayerCharacters = createSelector(
   (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "NPC"))
-);
-
-export const getGods = createSelector(
-  (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "God"))
+  (characters) => characters.filter((char) => char.tags.some((el) => el.toLowerCase() === "npc"))
 );
 
 export const getControl = createSelector(
   (state) => state.characters.list,
-  (characters) => characters.filter((char) => char.tags.some((el) => el === "Control"))
+  (characters) => characters.filter((char) => char.tags.some((el) => el === "Control") || char.tags.some((el) => el === "control"))
 );
 
 export const getPublicCharacters = createSelector(
@@ -108,6 +114,12 @@ export const getPublicCharacters = createSelector(
 export const getPrivateCharacters = createSelector(
   (state) => state.characters.list,
   (characters) => characters.filter((char) => !char.tags.some((el) => el.toLowerCase() === "public"))
+);
+
+export const getPlayersPresent = createSelector(
+	(state) => state.characters.list,
+	(state) => state.auth.character,
+	(characters, myCharacter) => characters.filter((char) => char.location?._id === myCharacter.location?._id)
 );
 
 export const getCharacterById = (charId) =>

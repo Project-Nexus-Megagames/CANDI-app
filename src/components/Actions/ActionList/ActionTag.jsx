@@ -1,6 +1,6 @@
 import { Tag } from "@chakra-ui/react";
-import { getFadedColor } from "../../../scripts/frontend";
 import React from "react";
+import { getFadedColor } from "../../../scripts/frontend";
 
 const ActionTag = ({color, action, text}) => (
     <Tag

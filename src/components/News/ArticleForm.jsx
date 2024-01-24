@@ -8,11 +8,9 @@ import { useSelector } from 'react-redux';
 import { getMyCharacter } from '../../redux/entities/characters';
 import socket from '../../socket';
 
-export const ArticleForm = ({ onSubmit, onCancel, article }) => {
+export const ArticleForm = ({ onSubmit, onCancel, article, myArticleEffort }) => {
 	const myCharacter = useSelector(getMyCharacter);
-	const myArticleEffort = myCharacter.effort.find((el) => el.type === 'Article').amount;
 	const gamestate = useSelector((state) => state.gamestate);
-	console.log(gamestate);
 
 	let defaultValues = {
 		creator: myCharacter._id,

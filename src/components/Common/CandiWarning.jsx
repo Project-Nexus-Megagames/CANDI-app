@@ -11,7 +11,7 @@ import {
   Button
 } from '@chakra-ui/react'
 
-export const CandiWarning = ({ open, title, onClose, onOpen, children, handleAccept, confirmText, rejectText }) => {
+export const CandiWarning = ({ open, title, onClose, onOpen, children, handleAccept }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
   const cancelRef = React.useRef()
 
@@ -37,21 +37,21 @@ export const CandiWarning = ({ open, title, onClose, onOpen, children, handleAcc
       onClose={onClose}
       isOpen={isOpen}
       isCentered
+      
     >
       <AlertDialogOverlay />
 
-      <AlertDialogContent>
+      <AlertDialogContent style={{ backgroundColor: "#343840", color: 'white' }}>
         <AlertDialogHeader>{title}</AlertDialogHeader>
         <AlertDialogCloseButton />
-        <AlertDialogBody>
+        <AlertDialogBody >
           {children}
         </AlertDialogBody>
         <AlertDialogFooter>
           <Button variant={'solid'} colorScheme='red' ref={cancelRef} onClick={onClose}>
-            {confirmText ? confirmText : <b>Nooo</b>}
+            Nooo
           </Button>
           <Button variant={'solid'} colorScheme='green' onClick={() => { onClose(); handleAccept(); }} ml={3}>
-            {rejectText ? rejectText : <b>Yes</b>}
             Yes!
           </Button>
         </AlertDialogFooter>

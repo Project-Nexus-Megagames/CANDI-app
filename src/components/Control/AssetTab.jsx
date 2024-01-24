@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Divider, Grid, GridItem, Input, VStack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
-import CharacterListItem from '../OtherCharacters/CharacterListItem';
-import DynamicForm from './DynamicForm';
 import AssetCard from '../Common/AssetCard';
 
 const AssetTab = (props) => {
@@ -49,13 +46,18 @@ const AssetTab = (props) => {
               />
               <VStack divider={<Divider/>} > 
                 {assets
-              	.filter(user => user.name.toLowerCase().includes(fil.toLowerCase()) ||
-                  user.description.toLowerCase().includes(fil.toLowerCase()
-                ))
-                .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase() ))
-                  .map((asset =>
-                    <AssetCard asset={asset} key={asset._id} disabled handleSelect={(asset) => setSelected(asset)}  />
-                  ))}        
+                  .filter((el) => el.type === tag )
+                  .filter(user => user.name.toLowerCase().includes(fil.toLowerCase()) ||
+                     user.description.toLowerCase().includes(fil.toLowerCase()
+                   ))
+                  .map(asset => (
+                     <Box key={asset._id} onClick={() => setSelected(asset)}>
+                        <p>{asset.name}</p>
+                        
+                        {asset._id}
+                     </Box>
+                  ))
+                }
               </VStack>
           </Box>
         ))}
@@ -63,7 +65,7 @@ const AssetTab = (props) => {
 			<GridItem pl='2' bg='#0f131a' area={'main'} >
 				
 				<Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
-          {selected && <DynamicForm selected={selected} background={111} /> }
+          {selected && <AssetCard asset={selected} showButtons handleSelect={(asset) => setSelected(asset)}  /> }
 				</Box>
 			</GridItem>
 		</Grid>

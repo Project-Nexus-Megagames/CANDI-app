@@ -35,7 +35,10 @@ const NewResult = (props) => {
 		props.closeNew();
 	};
 
-	const statusTypes = [{ name: 'Public' }, { name: 'Private' }, { name: 'Temp-Hidden' }];
+	const statusTypes = [
+    { name: 'Public', description: 'Anyone Can see this' }, 
+    { name: 'Private', description: 'Only Control can see this' }, 
+    { name: 'Temp-Hidden', description: 'Only Control can see this. Will be made public when the round is pushed' }];
 
 	return (
 		<>
@@ -45,9 +48,10 @@ const NewResult = (props) => {
 					<ModalHeader>{mode}</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
+            Scott will eventually replace this form with something better.
 						<form>
 							Status
-							<SelectPicker label={'name'} valueKey={'name'} data={statusTypes} onChange={(ddd) => setStatus(ddd)} value={status} />
+							<SelectPicker altLabel={"description"} label={'name'} valueKey={'name'} data={statusTypes} onChange={(ddd) => setStatus(ddd)} value={status} />
 							Description
 							<textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)}></textarea>
 							Dice Roll Result

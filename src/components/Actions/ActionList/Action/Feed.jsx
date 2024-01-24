@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer, StatDownArrow } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import WordDivider from "../../../WordDivider";
+import WordDivider from "../../../Common/WordDivider";
 import NewResult from "../../Modals/NewResult";
 import NewComment from "../../Modals/NewComment";
 import NewEffects from "../../Modals/NewEffect";
@@ -8,18 +8,23 @@ import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
 import ActionSubObject from "./ActionSubobject";
 import { PlusSquareIcon } from "@chakra-ui/icons";
-import ActionForm from "../../Forms/ActionForm";
+import { CandiModal } from "../../../Common/CandiModal";
+import NewContractForm from "../../../Common/NewContractForm";
 import socket from "../../../../socket";
+import Server from "../../../Team/Server";
+import ActionForm from "../../Forms/ActionForm";
 
 function Feed({action}) {
     const gamestate = useSelector(state => state.gamestate);
+    const facilities = useSelector(state => state.facilities.list);
     const myCharacter = useSelector(state => state.auth.myCharacter);
     const {isControl} = usePermissions();
     const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
+    const roundActive = gamestate.status === 'Active';
 
-    const [feed, setFeed] = React.useState([]);
     const [mode, setMode] = React.useState(false);
-    
+    const [feed, setFeed] = React.useState([]);
+
     useEffect(() => {
       let list = [];
       for (const comment of action.comments) {
@@ -40,7 +45,7 @@ function Feed({action}) {
       }
 
       if (!isControl) {
-        list = list.filter(el => el.status === 'Public' || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
+        list = list.filter(el => (el.status && el.status === 'Public') || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
       }
 
       setFeed(list)
@@ -62,6 +67,10 @@ function Feed({action}) {
         setMode(false);
     };
 
+    const handleCreate = (data) => {
+      socket.emit('request', { route: 'action', action: 'addContract', data:  { ...data, id: action._id }})
+    }
+
     const handleSubmit = async (incoming) => {
       const { effort, assets, description, intent, name, type, creator, numberOfInjuries, collaborators } = incoming;
       const data = {
@@ -72,16 +81,16 @@ function Feed({action}) {
         description: description,
         intent: intent,
         creator,
-        action: action._id
+        action: action
       };
-
       socket.emit('request', { route: 'action', action: 'collab', data });
     };
+
     return (
         <Box
             marginTop={'1rem'}
         >
-            <WordDivider word={
+          <WordDivider word={
               <div>
                 {feed.length > 0 && <Button 
                 leftIcon={<StatDownArrow />}
@@ -95,47 +104,50 @@ function Feed({action}) {
               } >Feed</Button>}
               </div>
             }/>
+            
+
             {feed.map((item) => 
-              <div autoFocus key={item._id} id={item._id}>
+              <div key={item._id} id={item._id}>
                 <Center height='20px'>
-                  <Divider orientation='vertical' />
+                  <Divider orientation='vertical' style={{ color: 'red', margin: '100px' }} />
                 </Center>
-                {new Date(item.createdAt).getTime()}
                 <ActionSubObject action={action} subObject={item} />
               </div>              
             )}
             
-            <Flex style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem'}}>
+            <Center justify="center" style={{transition: '3s ease', marginBottom: '30px', marginTop: '0.5rem',  }}>
               <Spacer />
                 {!mode && (
                     <IconButton
-                      variant={'solid'}
+                        variant={'outline'}
                         onClick={() => setMode('add')}
                         colorScheme="blue"
                         icon={<PlusSquareIcon icon="plus"/>}
                     ></IconButton>
                 )}
                 {mode === 'add' && (
-                    <ButtonGroup isAttached                       
-                        style={{width: '100%', transition: '.5s'}}
+                    <Center                       
+                        style={{width: '100%',}}
                     >
-                        {action && action.type === 'Agenda' &&
-                            <Button variant={'solid'}
-                                disabled={myCharacter.effort.find(el => el.type === 'Agenda').amount <= 0}
-                                onClick={() => setMode('support')}
-                                colorScheme='green'
-                            >
-                                Support
-                            </Button>
-                        }
-                        <Button variant={'solid'}
+                        <Button
+                          variant={'solid'}
                             onClick={() => setMode('comment')}
                             colorScheme="cyan"
                         >
                             Comment
                         </Button>
                         {isControl && (
-                            <Button variant={'solid'}
+                            <Button
+                              variant={'solid'}
+                                onClick={() => setMode('contract')}
+                                colorScheme="green"
+                            >
+                                Contract
+                            </Button>
+                        )}
+                        {isControl && (
+                            <Button
+                              variant={'solid'}
                                 onClick={() => setMode('result')}
                                 colorScheme="blue"
                             >
@@ -143,28 +155,54 @@ function Feed({action}) {
                             </Button>
                         )}
                         {isControl && (
-                            <Button variant={'solid'}
+                            <Button
+                              variant={'solid'}
                                 onClick={() => setMode('effect')}
                                 colorScheme="purple"
                             >
                                 Effect
                             </Button>
                         )}
-
+                        {/* {isControl && (
+                            <Button
+                              variant={'solid'}
+                                onClick={() => socket.emit('request', { route: 'action', action: 'ice', data: { id: action._id} })}
+                                colorScheme="red"
+                            >
+                                Get Random Ice
+                            </Button>
+                        )}
+                        {isControl && (
+                          <Button
+                            variant={'solid'}
+                            onClick={() => setMode('getIce')}
+                              colorScheme="yellow"
+                          >
+                              Get Specific Ice
+                          </Button>
+                        )} */}
                         {isCollaborator && (
                             <Button variant={'solid'}
                                 onClick={() => setMode('collab')}
                                 colorScheme="pink"
+                                isDisabled={!roundActive && !isControl}
                             >
                                 Collaborate
                             </Button>
                         )}
-                    </ButtonGroup>
+                            <Button
+                              variant={'outline'}
+                                onClick={() => setMode(false)}
+                                colorScheme="black"
+                            >
+                                Cancel
+                            </Button>
+                    </Center>
                 )}
               <Spacer />
-            </Flex>
+            </Center>
 
-            {mode === 'collab' && <ActionForm handleSubmit={handleSubmit} actionType={action.type} collabMode closeNew={() => closeIt()} />}
+            {mode === 'collab' && <ActionForm header="Submit new collab on Action" handleSubmit={handleSubmit} actionType={action.type} collabMode closeNew={() => closeIt()} />}
 
             <NewResult
               show={mode === 'result'}
@@ -172,6 +210,16 @@ function Feed({action}) {
               closeNew={() => closeIt()}
               selected={action}
             />
+            
+
+            <CandiModal open={mode==='contract'} onClose={() => closeIt() }  >
+              <NewContractForm statusDefault={["action"]} onClose={() => closeIt() } handleCreate={handleCreate} />
+            </CandiModal>
+
+            <CandiModal open={mode==='getIce'} onClose={() => closeIt() }  >
+              {action.submission.facility && <Server server={ facilities.find(el => el._id === action.submission.facility)} />}
+            </CandiModal>
+
 
             <NewComment
                 show={mode === 'comment'}

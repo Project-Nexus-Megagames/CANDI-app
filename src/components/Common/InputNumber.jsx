@@ -8,9 +8,12 @@ import {
 } from '@chakra-ui/react'
 
 const InputNumber = (props) => {
-  const { defaultValue, onChange } = props;
+  const format = (val) => `$` + val
+  const parse = (val) => val.replace(/^\$/, '')
+
+  const { defaultValue, onChange, min } = props;
   return ( 
-    <NumberInput defaultValue={defaultValue} onChange={onChange} >
+    <NumberInput min={min} onChange={(valueString) => onChange(parse(valueString))} defaultValue={format(defaultValue)} >
       <NumberInputField />
       <NumberInputStepper>
         <NumberIncrementStepper />
