@@ -210,11 +210,20 @@ const corps = [
     gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
   },
   {
-    name: "Space Fact #9",
-    slogan: "",
+    name: "CANDI Fact #1",
+    slogan: "Loading taking too long? Click on the gif to pass the time. Do it. I promise it's not a trap",
     gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
   },
-
+  {
+    name: "CANDI Fact #2",
+    slogan: "C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!",
+    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
+  },
+  {
+    name: "CANDI Fact #3",
+    slogan: '"The Box" was in Kepler long before anyone else.',
+    gifLink: 'https://cdn.discordapp.com/attachments/857862435096100884/1199787613087875133/The_Box.jpg?ex=65c3d049&is=65b15b49&hm=2874fd2ff0dcc092052af0aa0384eba991e6651aeeb2cda19fd485ae7c4a826b&'
+  },
   {
     name: "Space Fact #12",
     slogan: "Goblin City exists in space. I mean all things do, except of course for Gary. He never went to space",
@@ -288,7 +297,8 @@ const corps = [
     'https://www.youtube.com/watch?v=x0WQOGVLLGw&ab_channel=weyrdmusicman', // Xenophobia
     'https://www.youtube.com/watch?v=9klzZsVw-cQ&ab_channel=KotteAnimation',
     'https://www.youtube.com/watch?v=jFHH3cFzKbo&ab_channel=Evan%27sKazooCovers', // Interstellar Docking Scene but the Orchestra was Fired and Replaced by Kazoos
-    'https://www.youtube.com/watch?v=CwaD9tb1P50&t=13s&ab_channel=Tr0ubleshooter' // release the kitties
+    'https://www.youtube.com/watch?v=CwaD9tb1P50&t=13s&ab_channel=Tr0ubleshooter', // release the kitties
+    'https://www.youtube.com/watch?v=MGJZfmYMltM&ab_channel=MarcRebillet-Topic' // Girl's Club
   ]; // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
   
 export default Loading;
