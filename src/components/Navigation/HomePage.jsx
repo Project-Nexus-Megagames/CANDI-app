@@ -1,25 +1,20 @@
 import React, { useEffect } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { Grid, GridItem, Select, Spinner, useBreakpointValue } from '@chakra-ui/react';
-import { getMyCharacter, getCharacterById, getPlayerCharacters } from '../../redux/entities/characters';
+import { useDispatch, useSelector } from 'react-redux';
+import { Grid, GridItem, Spinner, useBreakpointValue } from '@chakra-ui/react';
+import { getCharacterById } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
 import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
 import actions from '../Images/actions.jpg';
-import map from '../Images/location.png';
-import leaderboard from '../Images/leaderboard.png';
+import map from '../Images/location.png'; 
 import control from '../Images/control.png';
-import trade from '../Images/trade.png';
 import agendas from '../Images/agenda.jpg';
 
 
-import socket from '../../socket';
-import { toggleDuck } from '../../redux/entities/gamestate';
 //import { Link } from 'react-router-dom';
-import UserList from './UserList';
-import { signOut, setCharacter } from '../../redux/entities/auth';
+import { setCharacter } from '../../redux/entities/auth';
 import Loading from './Loading';
 import { useNavigate } from 'react-router';
 import usePermissions from '../../hooks/usePermissions';
@@ -61,7 +56,7 @@ const HomePage = (props) => {
       {!loadComplete && <Loading />}      
 			{loadComplete && (!myCharacter ) && <NoCharacter />}
 
-      {false && <CharacterCreation />}
+      {myCharacter && <CharacterCreation />}
 
       {loadComplete && myCharacter && 
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        
