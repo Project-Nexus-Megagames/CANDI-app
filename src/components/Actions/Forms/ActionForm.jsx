@@ -135,7 +135,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Location required",
-      disabled: !destination
+      disabled: !destination && !collabMode
     },
     // {
     //   text: "Not Enough Resources for this action",
