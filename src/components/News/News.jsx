@@ -9,8 +9,11 @@ import { getMyArticles, getPublishedArticles } from './../../redux/entities/arti
 import socket from '../../socket';
 import { maxBy } from 'lodash';
 import WordDivider from '../WordDivider';
+import { useNavigate } from 'react-router-dom';
+import { getCharAccount } from '../../redux/entities/accounts';
 
 const News = (props) => {
+	const navigate = useNavigate();
 	const articles = useSelector(getPublishedArticles);
 	const allArticles = useSelector((state) => state.articles.list);
 	const gamestate = useSelector((state) => state.gamestate);
@@ -23,18 +26,20 @@ const News = (props) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [filteredData, setFilteredData] = useState([]);
 	const [showMyArticles, setShowMyArticles] = useState(false);
-	const myChar = useSelector(getMyCharacter);
+	const myChar = useSelector(s => s.auth.myCharacter);
 	const [filterButtonText, setFilterButtonText] = useState('Show My Articles');
 	const [round, setRound] = useState(gamestate.round);
 	const [maxRound, setMaxRound] = useState(gamestate.round);
 
+  const myAccout = useSelector(getCharAccount);
 
-	if (!login) {
-		props.history.push('/');
-		return <Spinner />;
-	}
 
-	const myArticleEffort = myChar.effort?.find((el) => el.type === 'Article')?.amount;
+  if (!login) {
+    navigate("/");
+    return <div />;
+  }
+
+	const myArticleEffort = myAccout?.resources.find((el) => el.type == 'article_effort')?.balance;
 
 	const getSortedArticles = () => {
 		if (myChar.tags.some((tag) => tag.toLowerCase() === 'control')) {
@@ -108,7 +113,6 @@ const News = (props) => {
 		} else {
 			setFilteredData(mapArticlesToData(getSortedArticles()));
 		}
-		console.log(filteredData);
 	}, [articles, showMyArticles, myChar]);
 
 	const handleSearch = (e) => {
@@ -156,7 +160,9 @@ const News = (props) => {
       <Box bg='#1b2330' style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
       <Flex width={'100%'} alignItems='center' >
             <Input  placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e.target.value)} />
-            {myArticleEffort > 0 && <NewArticle drawer={true} />}
+            {myAccout.naqme}
+            
+            {myArticleEffort > 0 && <NewArticle drawer={true} myArticleEffort={myArticleEffort} />}
             
           {myArticles && myArticles.length > 0 && (
             <Button style={{ color: 'black', borderRadius: '5px 5px 5px 5px' }} colorScheme="cyan" onClick={() => handleFilter()}>
@@ -165,6 +171,7 @@ const News = (props) => {
           )}
         </Flex>
         <Text fontSize={'xl'} >Round: </Text>
+
         <Center>
         {getRoundMap()}
         

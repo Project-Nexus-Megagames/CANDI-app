@@ -3,13 +3,14 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import socket from '../../socket';
 import Registration from './Registration';
-import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import ActionTable from './ActionTable';
 import GameConfig from '../GameConfig/GameConfig';
 import CharacterTab from './CharacterTab';
 import AssetTab from './AssetTab';
 import { CandiWarning } from '../Common/CandiWarning';
 import EditGamestate from './EditGamestate';
+import TeamTab from './TeamTab';
 
 
 const ControlTerminal = (props) => {		
@@ -26,7 +27,7 @@ const ControlTerminal = (props) => {
 	const tags = ['dice', 'contract', 'ice']
 
 	useEffect(() => {
-		if(!login)
+		if(!login || !user)
 			navigate('/');
 	}, [login, navigate])
 
@@ -54,21 +55,26 @@ const ControlTerminal = (props) => {
 		socket.emit('request', { route: 'asset', action: 'unuseAll', data });
   }
 
+  const handleResetEfferot = () => {
+    const data = user.username;
+		socket.emit('request', { route: 'character', action: 'resetEffort', data });
+  }
+
   const handleClose = () => {
     const data = user.username;
     socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
   }
   
-	const editGameState = () => {
-		const data = {
-			round: this.state.formValue.round,
-			status: this.state.formValue.status,
-			endTime: this.state.endTime
-		};
-		socket.emit('request', { route: 'gamestate', action: 'modify', data });
-		this.setState({ gsModal: false });
-	};
-	
+  const handleEffect = () => {
+    const data = user.username;
+    socket.emit('request', { route: 'gamestate', action: 'unhideEffects', data });
+  }
+
+  const handleUnhideAll = () => {
+    const data = user.username;
+    socket.emit('request', { route: 'asset', action: 'unhide', data });
+  }
+
 	return ( 
 		<Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
 		<TabList>
@@ -76,8 +82,9 @@ const ControlTerminal = (props) => {
       <Tab>Actions</Tab>			
 			<Tab>Configuration</Tab>
 			<Tab>Register</Tab>
-      {user.username.toLowerCase() === 'bobtheninjaman' &&<Tab>Characters</Tab>}
-      {user.username.toLowerCase() === 'bobtheninjaman' && <Tab>Assets</Tab>}
+      {<Tab>Characters</Tab>}
+      {<Tab>Assets</Tab>}
+      {user?.username.toLowerCase() === 'bobtheninjaman' && <Tab> * Teams</Tab>}
 		</TabList>
 
 		<TabPanels>
@@ -90,10 +97,18 @@ const ControlTerminal = (props) => {
           <Button variant={'solid'} colorScheme='teal' onClick={() => setMode("next")}>Next Round</Button>
 				</div>
 
-        <div>
-          {assets.filter(el => el.status.some(s => s=== 'used')).length}
-          <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>
-        </div>
+        {user?.username.toLowerCase() === 'bobtheninjaman' && <div>
+          <Box>
+            Used Assets: {assets.filter(el => el.status.some(s => s=== 'used')).length}
+            Working Assets: {assets.filter(el => el.status.some(s => s=== 'working')).length}
+            Hidden Assets: {assets.filter(el => el.status.some(s => s=== 'hidden')).length}            
+          </Box>
+
+          <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>          
+          <Button onClick={() => handleUnhideAll()} >Unhide Assets</Button>
+          <Button onClick={() => handleResetEfferot()} >Reset Effort</Button>
+          <Button onClick={() => handleEffect()} >Unhide Effects</Button>
+        </div>}
 
         <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
           Are ya sure?
@@ -123,6 +138,10 @@ const ControlTerminal = (props) => {
 
       <TabPanel>
 				<AssetTab />	
+			</TabPanel>
+
+      <TabPanel>
+				<TeamTab />	
 			</TabPanel>
 
 

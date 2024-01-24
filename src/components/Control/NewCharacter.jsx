@@ -20,7 +20,7 @@ const NewCharacter = (props) => {
 			wiki: '',
 			tags: ['PC', 'Public'],
 			control: [''],
-			playerName: '',
+			playerName: 'Player_Name_Here',
 			timeZone: '',
 			bio: '',
 			characterTitle: '',
@@ -207,13 +207,13 @@ const NewCharacter = (props) => {
 									<FormLabel>Character Title </FormLabel>
 									<Input type="text" size="md" variant="outline" {...register('characterTitle')}></Input>
 								</FormControl>
-								<FormControl>
+								{/* <FormControl>
 									<FormLabel>Wiki </FormLabel>
 									<Input type="text" size="md" variant="outline" {...register('wiki', validation.wiki)}></Input>
 									<Text fontSize="sm" color="red.500">
 										{errors.wiki && errors.wiki.message}
 									</Text>
-								</FormControl>
+								</FormControl> */}
 							</HStack>
 							<FormControl>
 								<FormLabel>Bio </FormLabel>

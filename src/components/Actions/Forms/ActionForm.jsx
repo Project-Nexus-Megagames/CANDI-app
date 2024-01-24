@@ -1,351 +1,321 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getFadedColor, getThisEffort } from '../../../scripts/frontend';
+import { getFadedColor, getTextColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag,	Box,	Flex,	Button,	ButtonGroup,	Tooltip,	Divider,	Spacer,  Center, TagLabel, TagCloseButton, Wrap, useBreakpointValue, SimpleGrid} from '@chakra-ui/react';
-import { CheckIcon, PlusSquareIcon } from '@chakra-ui/icons';
-import NexusSlider from '../../Common/NexusSlider';
+import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
-import { AddCharacter } from '../../Common/AddCharacter';
+import SelectPicker from '../../Common/SelectPicker';
+import { getCharAccount } from '../../../redux/entities/accounts';
+import ResourceNugget from '../../Common/ResourceNugget';
+import { HiSave } from 'react-icons/hi';
 
 /**
  * Form for a new ACTION
- * @param {*} props
+ * @param { , collabMode, handleSubmit, defaultValue, actionID, closeNew } props
  * @returns Component
  */
 const ActionForm = (props) => {
-  const { collabMode, handleSubmit, defaultValue, actionID } = props;
+  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header } = props;
 
-	const { gameConfig } = useSelector((state) => state);
-	const { myCharacter } = useSelector((s) => s.auth);
-	// const myCharacter = useSelector(getMyCharacter);
-	const myAssets = useSelector(getMyAssets);
-	const myContacts = useSelector(s => s.characters.list);
+  const { gameConfig } = useSelector((state) => state);
+  const { myCharacter } = useSelector((s) => s.auth);
+  // const myCharacter = useSelector(getMyCharacter);
+  const myAssets = useSelector(getMyAssets);
+  const myContacts = useSelector(s => s.characters.list);
+  const locations = useSelector((state) => state.locations.list)
+  const facilities = useSelector((state) => state.facilities.list)
+  const myAccout = useSelector(getCharAccount);
 
-	const [effort, setEffort] = React.useState(defaultValue?.effort ? { effortType: defaultValue.effort.effortType, amount: defaultValue.effort.amount } : { effortType: 'Normal', amount: 0 });
-	const [resource, setResource] = React.useState(defaultValue?.assets ? defaultValue.assets : []);
+  const [effort, setEffort] = React.useState(defaultValue?.effort ? { effortType: defaultValue.effort.effortType, amount: defaultValue.effort.amount } : { effortType: 'Normal', amount: 0 });
+  const [resources, setResources] = React.useState(defaultValue?.resouces ? defaultValue.resouces : []);
+  const [assets, setAssets] = React.useState(defaultValue?.assets ? defaultValue.assets : []);
   const [collaborators, setCollaborators] = React.useState([]);
-	const [actionType, setActionType] = React.useState(
+  const [actionType, setActionType] = React.useState(
     props.actionType ? gameConfig.actionTypes.find(el => el.type === props.actionType) :
-    gameConfig.actionTypes[0]);
-	const [description, setDescription] = React.useState(defaultValue?.description ? defaultValue.description : '');
-	const [intent, setIntent] = React.useState(defaultValue?.intent ? defaultValue.intent : '');
-	const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
-	const [max, setMax] = React.useState(0);
+      gameConfig.actionTypes[0]);
+  const [description, setDescription] = React.useState(defaultValue?.description ? defaultValue.description : '');
+
+  const [intent, setIntent] = React.useState(defaultValue?.intent ? defaultValue.intent : '');
+  const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
+  const [destination, setDestination] = React.useState(defaultValue?.location ? defaultValue.location : false);
+  const [facility, setFacility] = React.useState(undefined);
 
   const breakpoints = useBreakpointValue({
-    base: {columns: 0, rows: 3, width: '15rem', bottom: '1.75rem', left: '7.5rem'},
-    md: {columns: 3, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'},
-    lg: {columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
-})
+    base: { columns: 0, rows: 3, width: '15rem', bottom: '1.75rem', left: '7.5rem' },
+    md: { columns: 3, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem' },
+    lg: { columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem' }
+  })
 
 
-	const setMaxEffort = () => {
-    if (actionType) {
-      let charEffort = getThisEffort(myCharacter.effort, effort.effortType);
-
-      if (defaultValue?.effort) setMax(charEffort + defaultValue.effort.amount < actionType.maxEffort ? charEffort + defaultValue.effort.amount : actionType.maxEffort);           
-      else setMax(charEffort < actionType.maxEffort ? charEffort : actionType.maxEffort);      
-    }
-	};
-  
-	useEffect(() => {
-		if (actionType && actionType.type && !defaultValue) {
-			setEffort({ effortType: actionType.effortTypes[0], amount: 0 });
-			setMaxEffort();
+  useEffect(() => {
+    if (actionType && actionType.type && !defaultValue) {
+      // setEffort({ effortType: actionType.effortTypes[0], amount: 0 });
       newMap(actionType.maxAssets);
-		}
-	}, [actionType?.type]);
+    }
+  }, [actionType?.type]);
 
   useEffect(() => {
     newMap(actionType?.maxAssets);
-	}, [actionType])
+  }, [actionType])
 
-	useEffect(() => {
-		if (effort) setMaxEffort();
-	}, [effort]);
+  // useEffect(() => {
+  //   console.log(destination);
+  // }, [destination])
 
-	const editState = (incoming, type, index) => {
+  const editState = (incoming, type, index) => {
     // console.log(incoming, type, index)
-		let thing;
-		switch (type) {
-			case 'effort':
-				thing = { ...effort };
-				if (typeof incoming === 'number') {
-					thing.amount = parseInt(incoming);
-				} else {
-					thing.effortType = incoming;
-					thing.amount = 0;
-					setMax(getThisEffort(myCharacter.effort, incoming));
-				}
-				setEffort(thing);
-				break;
+    let thing;
+    switch (type) {
       case 'Asset':
-        let temp = [ ...resource ];
+        let temp = [...assets];
         temp[index] = incoming;
-        setResource(temp);
+        setAssets(temp);
         break;
       case 'collab':
         setCollaborators(collaborators.filter(c => c._id !== incoming._id));
         break;
-			default:
-				console.log(`uWu Scott made an oopsie doodle! ${type} `);
-		}
-	};
+      default:
+        console.log(`uWu Scott made an oopsie doodle! ${type} `);
+    }
+  };
 
-	const passSubmit = async () => {
-		// 1) make a new action
-		const data = {
-			effort: effort,
-			assets: resource.filter(el => el),
-			description: description,
-			intent: intent,
-			name: name,
-			actionType: actionType,
-			myCharacter: myCharacter,
-			creator: myCharacter,      
-			numberOfInjuries: myCharacter.injuries.length,
+  const passSubmit = async () => {
+    // 1) make a new action
+    const data = {
+      assets: assets.filter(el => el),
+      description: description,
+      intent: intent,
+      name: name,
+      type: actionType.type,
+      location: destination,
+      myCharacter: myCharacter._id,
+      creator: myCharacter._id,
       collaborators,
-      actionID: actionID
-		};
-		setActionType(false);
-		setDescription('');
-		setIntent('');
-		setName('');
-		setResource([]);
-		setCollaborators([]);
-
+      id: actionID
+    };
+    closeNew();
     handleSubmit(data)
-		props.closeNew();
-	};
 
-	function isDisabled(effort) {
-		if (description.length < 10 || intent.length < 10 || (name.length < 10 && !collabMode)) return true;
-		if ((effort.amount === 0 || effort <= 0) && !collabMode) return true;
-		else return false;
-	}
+    setActionType(false);
+    setDescription('');
+    setIntent('');
+    setName('');
+    setResources([]);
+    setCollaborators([]);
+
+  };
+
 
   function newMap(number) {
     let arr = [];
     for (let i = 0; i < number; i++) {
       arr.push(defaultValue?.assets[i]);
     }
-    setResource(arr);
+    setAssets(arr);
   }
 
-	function getIcon(type) {
-		switch (type) {
-			case 'Normal':
-				return <PlusSquareIcon />;
-			case 'Agenda':
-				return <PlusSquareIcon />;
-			default:
-				return <PlusSquareIcon />;
-		}
-	}
-
-	return (
-		<Box style={{
-      border: `4px solid ${getFadedColor(actionType?.type)}`,
-      borderRadius: '5px',
-      padding: '15px',
-      marginTop: '1rem',
-  }}>
-      {!collabMode && <Center>
-            <ButtonGroup isAttached>
-              {props.actionType}
-              {gameConfig &&
-                gameConfig.actionTypes.filter(el => el).map((aType) => (
-                  <Tooltip key={aType?.type} openDelay={50} placement='top' label={<b>{true ? `Create New "${aType.type}" Action` : `'No ${aType?.type} Left'`}</b>}>
-                    <Button
-                      style={{ backgroundColor: actionType?.type === aType?.type ? getFadedColor(`${aType?.type}`) : '#273040' }}
-                      onClick={() => {
-                        setActionType(aType);
-                        setResource([]);
-                      }}
-                      variant={'outline'}
-                      leftIcon={getIcon(aType?.type)}
-                    >
-                      {aType?.type}
-                    </Button>
-                  </Tooltip>
-                ))}
-            </ButtonGroup>
-      </Center>}
-
-			{actionType && actionType.type && (
-						<div>
-							<form>
-
-              {!collabMode && <div>
-                <Center>
-                  <AddCharacter characters={myContacts.filter(el => !collaborators.some(ass => ass?._id === el._id ) )} handleSelect={(character) => setCollaborators([...collaborators, character]) } />
-                </Center>
-                {collaborators.map((char, index) => 
-                    <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='teal' >
-                      <TagLabel>{char.characterName}</TagLabel>
-                      <TagCloseButton onClick={(e) => {
-                          editState(char, 'collab', index);
-                      }}
-                      />
-                    </Tag>
-                  )}
-              </div>}
+  const disabledConditions = [
+    {
+      text: "Description is too short",
+      disabled: description.length < 10
+    },
+    {
+      text: "Description is too long!",
+      disabled: description.length >= 1000
+    },
+    {
+      text: "Name is too short",
+      disabled: name.length < 10 && !collabMode
+    },
+    {
+      text: "Name is too long!",
+      disabled: name.length >= 1000 && !collabMode
+    },
+    {
+      text: "Location required",
+      disabled: !destination && !collabMode
+    },
+    // {
+    //   text: "Not Enough Resources for this action",
+    //   disabled: isResourceDisabled()
+    // },
+  ];
+  const isDisabled = disabledConditions.some(el => el.disabled);
 
 
-              {<Flex width={"100%"} align={"end"} >
-                <Spacer />
-                {<Box width={"49%"}>
-                  Name:
-                  {10 - name.length > 0 && (
-                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                      {10 - name.length} more characters...
-                    </Tag>
-                  )}
-                  {10 - name.length <= 0 && (
-                    <Tag variant='solid' colorScheme={'green'}>
-                      <CheckIcon />
-                    </Tag>
-                  )}
-                  <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
-                </Box>}
+  return (
+    <div>
+      {header && <h4>{header}</h4>}
+      {!header && <h4>Edit {actionType.type} Action</h4>}
+      <br />
+      <form>
+        <Flex width={"100%"} align={"end"} >
+          {actionType.collab && !collabMode && <Box>
+            Collaborators:
+          </Box>}
+          <Spacer />
+          {!collabMode && <Box width={"49%"}>
+            Name:
+            {10 - name.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - name.length} more characters...
+              </Tag>
+            )}
+            {10 - name.length <= 0 && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
+          </Box>}
+          <Spacer />
+          {!collabMode && <Box width={"49%"}>
+            Destination
+            {!destination && actionType.requiresDestination && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                Select Destination
+              </Tag>
+            )}
 
-                <Spacer />
+            {destination && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <h5>{locations.find(el => el._id === destination)?.name}</h5>
+            <Flex>
+              <SelectPicker
+                data={locations}
+                label="name"
+                onChange={setDestination}
+                placeholder={destination ? locations.find(el => el._id === destination)?.name : "Select a Destination (" + locations.length + ") in range"}
+                value={destination}
+              />
 
-                <Box width={"49%"}>
-                <h5 style={{ textAlign: 'center' }}>
-											Effort {effort.amount} / {max}
-											{effort === 0 && (
-												<Tag style={{ color: 'black' }} colorScheme={'orange'}>
-													Need Effort
-												</Tag>
-											)}
-										</h5>
-										<ButtonGroup>
-											{actionType &&
-												actionType.effortTypes.map((e) => (
-													<Button
-														key={e}
-														onClick={() => editState(e, 'effort')}
-														color={getFadedColor(e)}
-														disabled={getThisEffort(myCharacter.effort, e) < 1}
-														variant={effort.effortType == e ? 'solid' : 'ghost'}
-													>
-														{e} ~ ({max})
-													</Button>
-												))}
-										</ButtonGroup>
-										<Spacer />
+              {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
+            </Flex>
 
-										<NexusSlider min={0} max={max} defaultValue={effort.amount} value={effort.amount} onChange={(event) => editState(parseInt(event), 'effort')}></NexusSlider>
-                </Box>
-                <Spacer />
-              </Flex>}
+          </Box>}
+          <Spacer />
+        </Flex>
+        <br />
+        <Divider />
+        <Flex width={"100%"} >
+          <Spacer />
+          <Box width={"49%"} >
+            Description:
+            {10 - description.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - description.length} more characters...
+              </Tag>
+            )}
+            {10 - description.length <= 0 && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
+          </Box>
+          <Spacer />
+          <Box width={"49%"}>
+            Needed Resources:
+            <Center>
+              {actionType.resourceTypes.map(el => {
+                const resources = myAccout.resources.find(e => e.type === el.type);
+                return (
+                  <Box key={el._id}>
+                    {resources?.balance < el.min && (
+                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                        Lacking Resources
+                      </Tag>
+                    )}
+                    {resources == undefined || resources?.balance >= el.min && (
+                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                        <CheckIcon />
+                      </Tag>
+                    )}
+                    <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
+                  </Box>)
+              }
 
-								<Divider />
-                
-                <Flex width={"100%"} >
-                  <Spacer />
-                    <Box width={"49%"} >
-                      Description:
-                      {10 - description.length > 0 && (
-                        <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                          {10 - description.length} more characters...
-                        </Tag>
-                      )}
-                      {10 - description.length <= 0 && (
-                        <Tag variant='solid' colorScheme={'green'}>
-                          <CheckIcon />
-                        </Tag>
-                      )}
-                      <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
-                    </Box>
-                    <Spacer />
-                    <Box width={"49%"}>
-                      Intent:
-                      {10 - intent.length > 0 && (
-                        <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                          {10 - intent.length} more characters...
-                        </Tag>
-                      )}
-                      {10 - intent.length <= 0 && (
-                        <Tag variant='solid' colorScheme={'green'}>
-                          <CheckIcon />
-                        </Tag>
-                      )}
-                      <textarea rows='6' value={intent} className='textStyle' onChange={(event) => setIntent(event.target.value)} />
-                    </Box>
-                    <Spacer />
-                </Flex>     
-                  
-								<Box
-										style={{
-											paddingTop: '5px',
-											textAlign: 'left',
-										}}
-									>
-										Resources (Max: {actionType.maxAssets})
-										{actionType.resourceTypes?.map((type) => (
-											<Tag key={type} textTransform='capitalize' colorScheme={'teal'} variant={'solid'}>
-												{type}
-											</Tag>
-										))}
+              )}
+            </Center>
 
-                <SimpleGrid
-                      columns={breakpoints.columns}
-                      rows={breakpoints.rows}
-                      textAlign={'center'}
-                      justifyContent={'space-around'}
-                      alignItems={'center'} >                      
-                      {resource.map((ass, index) => (
-                        <Box
-                          key={index}
-                          style={{
-                            paddingTop: '5px',
-                            paddingLeft: '10px',
-                            textAlign: 'left',
-                            maxWidth: '100%'
-                          }}
-                        >
-                          {!ass && 
-                            <AddAsset 
-                              key={index} 
-                              handleSelect={(ass) =>editState(ass, ass.model, index)} 
-                              assets={
-                                myAssets.filter(el => 
-                                  actionType.resourceTypes.some(a => a === el.type) && 
-                                  !resource.some(ass => ass?._id === el._id ) &&
-                                  !el.status?.some(el => el === 'used')
-                                )} 
-                            />}
-                          {ass && <AssetCard disabled removeAsset={(data)=> editState(false, data.model, index)} compact type={'blueprint'} asset={ass} /> }   
-                        </Box>
-                      ))}
-
-                    </SimpleGrid>                    
-								</Box>
+            {/* <DiceList assets={assets} type={"all"} /> */}
+          </Box>
+          <Spacer />
+        </Flex>
+        <br />
 
 
-							</form>
-							<div
-								style={{
-									justifyContent: 'end',
-									display: 'flex',
-									marginTop: '15px'
-								}}
-							>
-								<Button onClick={() => passSubmit()} disabled={isDisabled(effort)} colorScheme={isDisabled(effort) ? 'red' : 'green'} variant='solid'>
-									<b>Submit</b>
-								</Button>
-								<Button onClick={() => props.closeNew()} variant='outline'>
-									Cancel
-								</Button>
-							</div>
-						</div>
-			)}
-		</Box>
-	);
+        <br />
+
+        Assets:
+        <br />
+        {actionType.assetTypes?.map((type) => (
+          <Tag margin={'3px'} key={type} textTransform='capitalize' backgroundColor={getFadedColor(type)} color={getTextColor(type)} variant={'solid'}>
+            {type}
+          </Tag>
+        ))}
+
+        <Flex>
+          {assets.map((ass, index) => (
+            <>
+              <Spacer />
+              <Box
+                style={{
+                  paddingTop: '5px',
+                  paddingLeft: '10px',
+                  textAlign: 'left',
+                  width: '33%'
+                }}
+              >
+                {!ass &&
+                  <AddAsset
+                    key={index}
+                    handleSelect={(ass) => editState(ass, ass.model, index)}
+                    assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id))} />}
+                {ass &&
+                  <AssetCard
+                    showRemove
+                    removeAsset={() => editState(false, 'Asset', index)}
+                    compact
+                    type={'blueprint'}
+                    asset={ass} />}
+              </Box>
+              <Spacer />
+            </>
+          ))}
+          <Spacer />
+        </Flex>
+      </form>
+      <div
+        style={{
+          justifyContent: 'end',
+          display: 'flex',
+          marginTop: '15px',
+          textAlign: 'center'
+        }}
+      >
+        <Spacer />
+
+        <VStack>
+          {disabledConditions.filter(el => el.disabled).map((opt, index) =>
+            <Text color='red' key={index}>{opt.text}</Text>
+          )}
+        </VStack>
+
+        <Button leftIcon={<Icon as={HiSave} />} colorScheme="green" onClick={() => passSubmit()} variant='solid' isDisabled={isDisabled} >
+          <b>Submit</b>
+        </Button>
+        <Button colorScheme="red" onClick={() => closeNew()} variant='outline'>
+          Cancel
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default ActionForm;

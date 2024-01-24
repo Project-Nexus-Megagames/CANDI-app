@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { AccordionItem, AccordionPanel, Box, Button, Center, Code, Editable, EditableInput, EditablePreview, Flex, HStack, Tag } from "@chakra-ui/react";
+import { AccordionItem, Box, Button, Center, Code, Editable, EditableInput, EditablePreview, Flex, HStack, Tag } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
 import { CloseIcon } from "@chakra-ui/icons";
-import WordDivider from "../../../WordDivider";
 import AssetCard from "../../../Common/AssetCard";
 import InputNumber from "../../../Common/InputNumber";
 import socket from "../../../../socket";
+import WordDivider from "../../../Common/WordDivider";
 
 function ActionDifficulty({action, submission}) {
     const assetList = useSelector(state => state.assets.list);
@@ -61,13 +61,10 @@ function ActionDifficulty({action, submission}) {
         }
   
       }
-
-      // console.log(probs)
   
       for (let prob of probs.filter(el => el > 0)) {
         sum = sum * prob
       }
-      // console.log(sum)
   
       if (probs.filter(el => el > 0).length ===0 ) return (0);
       if (sum >= 1) return (sum*100);      
@@ -77,9 +74,8 @@ function ActionDifficulty({action, submission}) {
     const prob = stats(submission.assets, submission.difficulty);
 
     return (
-    <Box>
+    <Box justifyItems={'center'} width={"fit-content"} >
       <WordDivider word={`Difficulty: ${submission.difficulty}`}/>
-      <Code colorScheme={prob > 80 ? 'green' : prob > 40 ? 'yellow' : 'red'} children={`${prob}% Chance of success`} />
       {isControl && <Button onClick={() => setMode(!mode)} >{mode ? "Cancel" : "Edit"}</Button> }  
 
       {mode && <Center>
@@ -87,8 +83,9 @@ function ActionDifficulty({action, submission}) {
         <Button onClick={handleDifficulty} >Submit {stats(submission.assets, number)}% </Button>           
       </Center>}
       
-      {myCharacter?._id === action.creator._id && action.results.length === 0 && <Center>
-          <Button onClick={handleRoll} variant={'solid'} color={'green'} >ROLL THEM DICE</Button>
+      {action.type !== 'Agenda' && myCharacter?._id === action.creator._id && action.results.length === 0 && <Center>        
+        <Code colorScheme={prob > 80 ? 'green' : prob > 40 ? 'yellow' : 'red'} children={`${prob}% Chance of success`} />
+        <Button onClick={handleRoll} variant={'solid'} color={'green'} >ROLL THEM DICE</Button>
       </Center>}
     </Box>
     );

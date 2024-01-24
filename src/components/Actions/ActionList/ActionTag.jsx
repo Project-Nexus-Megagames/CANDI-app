@@ -1,6 +1,6 @@
 import { Tag } from "@chakra-ui/react";
-import { getFadedColor } from "../../../scripts/frontend";
 import React from "react";
+import { getFadedColor } from "../../../scripts/frontend";
 
 const ActionTag = ({color, action, text}) => (
     <Tag
@@ -8,8 +8,7 @@ const ActionTag = ({color, action, text}) => (
             marginLeft: '0.25rem',
             color: color,
             textTransform: 'capitalize',
-            backgroundColor: action ? getFadedColor(action.type) : 'inherit',
-            border: `1px solid ${getFadedColor('gold', 0.8)}`
+            backgroundColor: action ? getFadedColor(action.type) : 'white',
         }}
         variant='solid'
     >

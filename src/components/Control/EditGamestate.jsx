@@ -15,8 +15,7 @@ const EditGamestate = (props) => {
 
   
 	function onSubmit() {
-    const data = { status: status, endTime: date, round: round }
-    console.log('SENDING DATA', data);
+    const data = { status: status, endTime: date, round: round };
     socket.emit('request', { route: 'gamestate', action: 'modify', data });
 	}
 

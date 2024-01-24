@@ -1,101 +1,103 @@
-import React from "react";
-import { AccordionButton, AccordionIcon, Avatar, background, Box, Flex, Heading, Spacer, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
-import ActionTags from "./ActionTags";
-import { getFadedColor } from "../../../../../scripts/frontend";
+import React, { useEffect, useState } from "react";
+import { Avatar, Box, Flex, Heading, Icon, IconButton, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
+import { getFadedColor, getThisTeam } from "../../../../../scripts/frontend";
 import ActionButtons from "./ActionButtons";
 import { AddCharacter } from "../../../../Common/AddCharacter";
 import { useSelector } from "react-redux";
 import socket from "../../../../../socket";
 import usePermissions from "../../../../../hooks/usePermissions";
+import HexLocation from "../../../../Locations/HexLocation";
+import CharacterTag from "../../../../Common/CharacterTag";
+import { getPublicCharacters } from "../../../../../redux/entities/characters";
+import { HiPencilAlt } from "react-icons/hi";
+import { Close } from "@rsuite/icons";
+import { CheckIcon } from "@chakra-ui/icons";
 
-function ActionHeader({action, time, toggleEdit, creator, handleDelete, hidebuttons}) {
-  const {isControl, characterId} = usePermissions();
-	const myContacts = useSelector(s => s.characters.list);
+function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) {
+  const { isControl, characterId } = usePermissions();
+  const myContacts = useSelector(getPublicCharacters);
+  const teams = useSelector(s => s.teams.list);
   const game = useSelector(state => state.gamestate);
-  const myCharacter = useSelector(s => s.auth.myCharacter)
-  const isDisabled = (game.status !== 'Active' || game.round > action.round);
-  const isAccessible = myCharacter._id === creator?._id || isControl;
-    return (
-        <Flex align={'center'} justify={'space-between'} style={{ backgroundColor: getFadedColor(action.type) }} >
+  const [isDisabled, setIsDisabled] = useState(true)
+  const myCharacter = useSelector(s => s.auth.character)
+  const isAccessible = (myCharacter._id === creator?._id || isControl) && action.type !== 'Agenda';
+  const roundActive = game.status === 'Active';
+  const passed = action.results.length > 0;
 
-          <Box
-            marginLeft={'3'}
-          >
-            <Avatar
-              size={'lg'}
-              name={creator.characterName}
-              src={creator.profilePicture}
-              marginRight='auto'
-            />
-          </Box>
+  useEffect(() => {
+    if (edit) setIsDisabled(true);
+  }, [edit])
 
-          <Box
-              alignItems='center'
-              justifyContent='center'
-              margin={'5px'}
-          >
-              <Heading
-                  size={'md'}
-                  textAlign={'center'}
-              >
-                  {action.name}
-              </Heading>
-              <Box
-                  fontSize={'.9rem'}
-                  fontWeight={'normal'}
-              >
-                <Tag margin={'2px'} variant={'solid'} colorScheme='purple' >{creator.playerName} - {creator.characterName}</Tag>
-                  {action.collaborators.length > 0 && <p>Collaborators</p> }
-                  {action.collaborators.length > 0 && action.collaborators.map(char =>
-                    // <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >{char.characterName}</Tag>
-                    <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
-                    <TagLabel>{char.characterName}</TagLabel>
-                    {!isDisabled && isAccessible && <TagCloseButton onClick={() => {
-                      const data = {
-                        id: action._id,
-                        collaborator: char._id
-                      };
-                      socket.emit('request', {
-                        route: 'action',
-                        action: 'removeCollaborator',
-                        data
-                      });
-                    }}
-                    />}
-                  </Tag>
-                    )}
-                    {!isDisabled && isAccessible && <AddCharacter 
-                      characters={myContacts.filter(el => !action.collaborators.some(ass => ass?._id === el._id ) )} 
-                      handleSelect={(character) => {
-                        const data = {
-                          id: action._id,
-                          collaborator: character._id
-                        };
-                        socket.emit('request', {
-                          route: 'action',
-                          action: 'addCollaborator',
-                          data
-                        });
-                      }} 
-                      />}
-              </Box>
-              <Box
-                  fontSize={'.9rem'}
-                  fontWeight={'normal'}
-              >
-                  {time}
-              </Box>
-          </Box>
+  return (
+    <Flex gap={5} align={'center'} justify={'center'} style={{ backgroundColor: getFadedColor(action.type) }} >
+      <Box
+        alignItems='center'
+        justifyContent='center'
+        margin={'5px'}
+      >
+        <Heading
+          size={'md'}
+          textAlign={'center'}
+        >
+          {action.name}
+        </Heading>
+        <Box
+          fontSize={'.9rem'}
+          fontWeight={'normal'}
 
-          {!hidebuttons && <ActionButtons
-              action={action}
-              toggleEdit={toggleEdit}
-              creator={action.creator}
-              handleDelete={handleDelete}
+        >
+          <CharacterTag character={action.creator} />
+          {actionType.collab && <IconButton
+            onClick={() => setIsDisabled(!isDisabled)}
+            variant='outline'
+            isDisabled={edit || (!roundActive || passed && !isControl)}
+            colorScheme={!isDisabled ? 'green' : "yellow"}
+            color={!isDisabled ? 'green' : "yellow"}
+            size={'xs'}
+            icon={<Icon as={!isDisabled ? CheckIcon : HiPencilAlt} />}
           />}
+          {action.collaborators.length > 0 && <p>Collaborators</p>}
+          {action.collaborators.length > 0 && action.collaborators.map(char =>
+            <CharacterTag key={char._id} character={char}
+              isDisabled={isDisabled || edit}
+              isAccessible={isAccessible}
+              onClick={() => {
+                const data = {
+                  id: action._id,
+                  collaborator: char._id
+                };
+                socket.emit('request', {
+                  route: 'action',
+                  action: 'removeCollaborator',
+                  data
+                });
+              }} />
+          )}
 
-        </Flex>
-    );
+          {!isDisabled && isAccessible && <AddCharacter
+            characters={myContacts.filter(el => !action.collaborators.some(ass => ass?._id === el._id))}
+            handleSelect={(character) => {
+              const data = {
+                id: action._id,
+                collaborator: character._id
+              };
+              socket.emit('request', {
+                route: 'action',
+                action: 'addCollaborator',
+                data
+              });
+            }}
+          />}
+        </Box>
+        <Box
+          fontSize={'.9rem'}
+          fontWeight={'normal'}
+        >
+          {time}
+        </Box>
+      </Box>
+    </Flex>
+  );
 }
 
 export default ActionHeader;

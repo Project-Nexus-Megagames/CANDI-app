@@ -9,6 +9,7 @@ import socket from '../../socket';
 import _ from 'lodash';
 import CharacterNugget from '../Common/CharacterNugget';
 import { getFadedColor } from '../../scripts/frontend';
+import CharacterTag from '../Common/CharacterTag';
 //import
 
 const ActionTable = () => {
@@ -68,11 +69,16 @@ const ActionTable = () => {
 
 	const renderDicePool = (submission) => {
 		const diceToRender = [];
-		const effortDice = submission.effort.amount + 'd10';
-		diceToRender.push(effortDice);
+		//const effortDice = submission.effort.amount + 'd10';
+		//diceToRender.push(effortDice);
 		submission.assets.slice(0, 3).forEach((ass) => {
 			const asset = assets.find((el) => el._id === ass);
-      if (asset) diceToRender.push(asset.dice);
+
+      if (asset) {
+        for (const die of asset.dice) {
+          diceToRender.push(die.amount);
+        }
+      }      
 			else diceToRender.push(`ERROR cannot find asset ${ass}`)
 		});
 		return diceToRender.join(', ');
@@ -320,16 +326,15 @@ const ActionTable = () => {
 							</GridItem>
 							<GridItem overflow='hidden'>
 								<Text>{item.name}</Text>
+                {item.submissions.length > 0 && <b>+ {item.submissions.length}</b>}
 							</GridItem>
 							<GridItem overflow='hidden'>
 								<Text>{item.type}</Text>
+                {item.collaborators.length > 0 && <b>Group Action</b>}
 							</GridItem>
-							<GridItem overflow='hidden'>
-                <div>
-                  <CharacterNugget size='sm' character={item.creator} />
-                  <Text>{item.creator.characterName}</Text>                  
-                </div>
-
+							<GridItem overflow='hidden' alignContent={'center'} >
+                <CharacterTag character={item.creator} /> 
+                {item.collaborators.length > 0 && <b>+ {item.collaborators.length} Submissions</b>}
 							</GridItem>
 							<GridItem overflow='hidden'>
 								<Text>{renderAssets(item.submission)}</Text>

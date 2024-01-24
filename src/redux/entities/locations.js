@@ -71,14 +71,30 @@ export const getMyLocations = createSelector(
   (state) => state.locations.list,
   (state) => state.auth.myCharacter,
   (locations, character) =>
-    locations.filter((loc) => loc.unlockedBy.some(el => el._id === character._id))
+    locations.filter((loc) => loc.unlockedBy.some(el => el._id === character._id || el === character._id))
+);
+
+export const getMyLocation = createSelector(
+  state => state.locations.list,
+  state => state.characters.list.find(ch => ch._id === state.auth.character?._id),
+  (locations, character) => locations.find(
+    loc => loc._id === character?.location?._id
+  )
 );
 
 export const getLocationsByCharacterId = (characterId) => createSelector(
 	(state) => state.locations.list,
 	(locations) =>
 	locations.filter((loc) => loc.unlockedBy.some(el => el._id === characterId))
-)
+);
+
+export const getTeamHQ = createSelector(
+  state => state.locations.list,
+  state => state.auth.team,
+  (locations, team) => locations.find(
+    loc => (loc._id === team?.hq)
+  )
+);
 
 export const getLocationById = (locationId) =>
   createSelector(
