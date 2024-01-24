@@ -51,7 +51,7 @@ const SelectedCharacter = (props) => {
     }
   };
 
-  const selectedResource = accounts.find(el => el._id === selected.account).resources.filter(r => r.balance !== 0)
+  const selectedResource = accounts.find(el => el._id === selected.account)?.resources.filter(r => r.balance !== 0) || [-420]
   return (
     <Grid
       width={'99%'}
@@ -89,7 +89,7 @@ const SelectedCharacter = (props) => {
             {selectedResource.map((item) =>
               <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
             )}
-            {isControl && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
+            {isControl && selected && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
           </Center>
 
         </div>}
