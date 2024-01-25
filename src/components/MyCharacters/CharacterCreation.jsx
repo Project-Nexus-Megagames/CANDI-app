@@ -27,7 +27,7 @@ const CharacterCreation = (props) => {
   const { login, team, myCharacter } = useSelector(s => s.auth);
 
   const steps = [
-    { title: 'Zero', description: 'Get Started' },
+    { title: 'Team & Goals', description: 'Get Started' },
     { title: 'Occupation', description: 'What do you do for a living?' },
     { title: 'Inheritemce', description: 'Inheritemce' },
     { title: 'Character Details', description: 'Name, Species, and Goals' },
@@ -42,7 +42,7 @@ const CharacterCreation = (props) => {
   // _Character_
 
   return (
-    <Modal size="full" isCentered isOpen={myCharacter.characterName.includes("_Character_")} closeOnOverlayClick={false}>
+    <Modal size="full" isCentered isOpen={myCharacter.characterName.includes("Character_")} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Character Creation: Step </ModalHeader>
