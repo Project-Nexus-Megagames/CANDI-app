@@ -44,6 +44,8 @@ import Trade from "./components/Trade/Trade";
 import { alertAdded } from "./redux/entities/alerts";
 import store from "./redux/store";
 import { CandiAlert } from "./components/Common/CandiAlert";
+import LandingPage from "./components/Navigation/Landing/LandingPage";
+import NavBar from "./components/Navigation/Landing/NavBar";
 
 // React App Component
 initUpdates();
@@ -214,10 +216,15 @@ const App = (props) => {
             <NavigationBar />
           </GridItem>}
 
+          {!myCharacter && <GridItem pl='1'  area={'header'} >
+            <NavBar />
+          </GridItem>}
+
           <GridItem pl='1' area={'main'} overflow='auto' >
             <Routes>
              <Route exact path='/login' element={<Login {...props} />} />
              <Route exact path='/loading' element={<Loading {...props} />} />
+              <Route exact path='/landing' element={<LandingPage {...props} />} />
              
               <Route exact path='/home' element={<HomePage {...props} />} />
 
@@ -238,7 +245,7 @@ const App = (props) => {
               <Route exact path='/no-character' element={<NoCharacter {...props} />} />
               <Route exact path='/registration' element={<Registration {...props} />} />
               <Route exact path='/down' element={<Down {...props} />} />
-              <Route path="/" element={<Navigate to="/login" />}/>   
+              <Route path="/" element={<Navigate to="/landing" />}/>   
               <Route exact path='/404' element={<NotFound {...props} />} />      
             </Routes>    
           </GridItem>
