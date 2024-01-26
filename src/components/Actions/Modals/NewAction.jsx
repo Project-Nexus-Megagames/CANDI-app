@@ -16,6 +16,8 @@ import ResourceNugget from '../../Common/ResourceNugget';
 import { getCharAccount, getTeamAccount } from '../../../redux/entities/accounts';
 import { DiceList } from '../../Common/DiceList';
 import { AddCharacter } from '../../Common/AddCharacter';
+import axios from 'axios';
+import { gameServer } from '../../../config';
 
 /**
  * Form for a new ACTION
@@ -30,7 +32,7 @@ const NewAction = (props) => {
   const playerCharacters = useSelector(getPublicPlayerCharacters);
 
 
-  const { character } = useSelector((s) => s.auth);
+  const { character, user } = useSelector((s) => s.auth);
   // const character = useSelector(getMyCharacter);
   const myAssets = useSelector(getMyAssets);
   // const hq = useSelector(getTeamHQ);
@@ -42,6 +44,7 @@ const NewAction = (props) => {
   const [intent, setIntent] = React.useState('');
   const [name, setName] = React.useState('');
   const [destination, setDestination] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [facility, setFacility] = React.useState(undefined);
   const [collaborators, setCollaborators] = React.useState([]);
 
@@ -72,28 +75,43 @@ const NewAction = (props) => {
 
   const handleSubmit = async () => {
     // 1) make a new action
-    const data = {
-      submission: {
-        assets: assets.filter(el => el),
-        description: description,
-        intent: intent,
-        facility: facility,
-      },
-      name: name,
-      type: actionType.type,
-      creator: character._id,
-      collaborators,
-      account: myAccout._id,
-      location: destination,        
-    };
+    try {
+      const data = {
+        submission: {
+          assets: assets.filter(el => el),
+          description: description,
+          intent: intent,
+          facility: facility,
+        },
+        name: name,
+        type: actionType.type,
+        creator: character._id,
+        collaborators,
+        account: myAccout._id,
+        location: destination,
+        user: user.username
+      };
+      console.log(data)
+      setLoading(true)
+      // socket.emit('request', { route: 'action', action: 'create', data });
+      const response = await axios.post(`${gameServer}api/actions/createAction`, { data });
+      console.log(response)      
+      setLoading(false)
 
-    socket.emit('request', { route: 'action', action: 'create', data });
+      if (response.type === 'success') {
+        setDescription('');
+        setIntent('');
+        setName('');
+        setAssets([]);
+        props.closeNew();      
+      }
+    }
+    catch(err) {
+      console.log(err)
+    }
 
-    setDescription('');
-    setIntent('');
-    setName('');
-    setAssets([]);
-    props.closeNew();
+
+
   };
 
   const isResourceDisabled = () => {
@@ -299,7 +317,7 @@ const NewAction = (props) => {
             )}          
         </VStack>
 
-        <Button colorScheme="green" onClick={() => handleSubmit()} variant='solid' isDisabled={isDisabled} >
+        <Button loading={loading} colorScheme="green" onClick={() => handleSubmit()} variant='solid' isDisabled={isDisabled} >
           <b>Submit</b>
         </Button>
         <Button colorScheme="red" onClick={() => props.closeNew()} variant='outline'>
