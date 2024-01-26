@@ -302,4 +302,16 @@ ul li {
 	background-color: #531ba8
 };
 
+.toggle-tag {
+	background-color: #531ba8
+};
 
+.toggle-tag:hover {
+  opacity: .75;
+  text-align: center;
+  cursor: pointer;
+}
+
+.forbidden:hover {
+  cursor: not-allowed;
+}

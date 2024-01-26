@@ -17,7 +17,7 @@ import assets from '../../redux/entities/assets';
 import CharacterNugget from './CharacterNugget';
 
 const AssetCard = (props) => {
-  const { showButtons, handleSelect, compact, removeAsset, showRemove } = props;
+  const { showButtons, handleSelect, compact, removeAsset, showRemove, selected } = props;
   const [mode, setMode] = useState(false);
   const control = useSelector(state => state.auth.control);
   const teams = useSelector(state => state.teams.list);

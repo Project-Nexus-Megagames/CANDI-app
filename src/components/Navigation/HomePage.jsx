@@ -61,7 +61,7 @@ const HomePage = (props) => {
       {!loadComplete && <Loading />}      
 			{loadComplete && (!myCharacter ) && <NoCharacter />}
 
-      {false && <CharacterCreation />}
+      {myCharacter && <CharacterCreation />}
 
       {loadComplete && myCharacter && 
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        

@@ -19,7 +19,6 @@ import {
   Divider,
   Portal
 } from '@chakra-ui/react'
-import Worker from "../Team/Worker";
 import { BsPlus } from "react-icons/bs";
 import AssetCard from "./AssetCard";
 
