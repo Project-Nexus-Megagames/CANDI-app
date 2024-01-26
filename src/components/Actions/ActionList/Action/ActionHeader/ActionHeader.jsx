@@ -10,8 +10,8 @@ import HexLocation from "../../../../Locations/HexLocation";
 import CharacterTag from "../../../../Common/CharacterTag";
 import { getPublicCharacters } from "../../../../../redux/entities/characters";
 import { HiPencilAlt } from "react-icons/hi";
-import { Close } from "@rsuite/icons";
-import { CheckIcon } from "@chakra-ui/icons";
+import { Close, Plus } from "@rsuite/icons";
+import { CheckIcon, PlusSquareIcon } from "@chakra-ui/icons";
 
 function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) {
   const { isControl, characterId } = usePermissions();
@@ -54,7 +54,7 @@ function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) 
             colorScheme={!isDisabled ? 'green' : "yellow"}
             color={!isDisabled ? 'green' : "yellow"}
             size={'xs'}
-            icon={<Icon as={!isDisabled ? CheckIcon : HiPencilAlt} />}
+            icon={<Icon as={!isDisabled ? CheckIcon : Plus} />}
           />}
           {action.collaborators.length > 0 && <p>Collaborators</p>}
           {action.collaborators.length > 0 && action.collaborators.map(char =>
