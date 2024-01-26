@@ -8,9 +8,10 @@ import { getMyCharacter } from '../../../redux/entities/characters';
 import { playerActionsRequested } from '../../../redux/entities/playerActions';
 
 const NewComment = (props) => {
+	const { comment, mode } = props;
   const reduxAction = useDispatch();
 	const {myCharacter} = useSelector(s => s.auth);
-	const [body, setBody] = React.useState('');
+	const [body, setBody] = React.useState(props.comment?.body || '');
 	const [isPrivate, setIsPrivate] = React.useState(false);
 
   const handleSubmit = async () => {
@@ -21,10 +22,11 @@ const NewComment = (props) => {
 			comment: {
 				body,
 				status: isPrivate ? 'Private' : 'Public',
-				commentor: myCharacter._id
+				commentor: myCharacter._id,
+				_id: comment?._id
 			},
 		};
-		socket.emit('request', { route: 'action', action: 'comment', data });
+		socket.emit('request', { route: 'action', action: mode, data });
 		props.closeNew();
 	};
 

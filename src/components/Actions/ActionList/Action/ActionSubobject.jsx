@@ -16,6 +16,7 @@ import ActionResources from "./ActionResources";
 import ActionForm from "../../Forms/ActionForm";
 import usePermissions from "../../../../hooks/usePermissions";
 import AssetCard from "../../../Common/AssetCard";
+import NewComment from "../../Modals/NewComment";
 
 
 const ActionSubObject = (props) => {
@@ -27,7 +28,7 @@ const ActionSubObject = (props) => {
         subObject.creator ? subObject.creator :
           { playerName: "UNKNOWN!?!", characterName: "UNKNOWN!?!" };
 
-          const {isControl} = usePermissions();
+  const { isControl } = usePermissions();
   const [mode, setMode] = React.useState(false);
   const assets = useSelector(getTeamDice);
   const { gameConfig } = useSelector((state) => state);
@@ -54,12 +55,12 @@ const ActionSubObject = (props) => {
           effect: subObject._id
         };
         break;
-        case 'Submission':
-          data = {
-            id: action._id,
-            submission: subObject._id
-          };
-          break;
+      case 'Submission':
+        data = {
+          id: action._id,
+          submission: subObject._id
+        };
+        break;
     }
 
 
@@ -74,16 +75,16 @@ const ActionSubObject = (props) => {
   const handleSubmit = async (incoming) => {
     const { effort, assets, description, intent, name, actionType, myCharacter } = incoming;
     try {
-        const data = {
-          submission: {
-            assets: assets.filter(el => el),
-            description: description,
-            intent: intent,
-            id: subObject._id,
-          },
-          id: action._id,
-          creator: myCharacter._id,
-        };
+      const data = {
+        submission: {
+          assets: assets.filter(el => el),
+          description: description,
+          intent: intent,
+          id: subObject._id,
+        },
+        id: action._id,
+        creator: myCharacter._id,
+      };
       // 1) make a new action 
       socket.emit('request', { route: 'action', action: 'updateSubObject', data });
     }
@@ -139,7 +140,7 @@ const ActionSubObject = (props) => {
               fontWeight={'normal'}
             >
               {creator.playerName} - {creator.characterName}
-              
+
             </Box>
             <Box
               fontSize={'.9rem'}
@@ -162,7 +163,7 @@ const ActionSubObject = (props) => {
 
         </Flex>
 
-        {mode !== 'editSubmission' &&<Box>
+        {mode !== 'editSubmission' && <Box>
           {subObject.__t !== "Contract" && <ActionMarkdown
             markdown={subObject.description ? subObject.description : subObject.body}
           />}
@@ -225,15 +226,15 @@ const ActionSubObject = (props) => {
           {subObject.asset && <AssetCard asset={subObject.asset} />}
         </Box>}
 
-        {mode === 'editSubmission' && action.type &&      
-        <ActionForm
-          collabMode
-          defaultValue={subObject}
-          actionType={action.type}
-          handleSubmit={(data) => handleSubmit(data)}
-          closeNew={() => setMode(false)}
-          actionID={subObject._id}
-        />}
+        {mode === 'editSubmission' && action.type &&
+          <ActionForm
+            collabMode
+            defaultValue={subObject}
+            actionType={action.type}
+            handleSubmit={(data) => handleSubmit(data)}
+            closeNew={() => setMode(false)}
+            actionID={subObject._id}
+          />}
       </div>
       {/* <Divider orientation='vertical' />    */}
 
@@ -242,6 +243,14 @@ const ActionSubObject = (props) => {
         show={mode === 'editResult'}
         mode={"updateSubObject"}
         result={subObject}
+        closeNew={() => setMode(false)}
+        selected={action}
+      />
+
+      <NewComment
+        show={mode === 'editComment'}
+        mode={"updateSubObject"}
+        comment={subObject}
         closeNew={() => setMode(false)}
         selected={action}
       />
