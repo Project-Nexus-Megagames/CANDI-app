@@ -91,14 +91,13 @@ const NewAction = (props) => {
         location: destination,
         user: user.username
       };
-      console.log(data)
+      
       setLoading(true)
       // socket.emit('request', { route: 'action', action: 'create', data });
       const response = await axios.post(`${gameServer}api/actions/createAction`, { data });
-      console.log(response)      
       setLoading(false)
 
-      if (response.type === 'success') {
+      if (response.data.type === 'success') {
         setDescription('');
         setIntent('');
         setName('');
