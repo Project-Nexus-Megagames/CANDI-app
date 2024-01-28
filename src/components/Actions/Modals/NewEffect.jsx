@@ -35,10 +35,25 @@ const NewEffects = (props) => {
       case 'bond':
       case 'asset':
         let newAsset = [];
+        const accounts = [...props.selected.collaborators ]
+        for (const account of accounts) {
+          for (const bond of assets.filter((el) => el.account && (el.account == account.account || el.account == account.account._id))) {
+            const bondData = {
+              name: `${bond.type} '${bond.name}'`,
+              type: bond.type,
+              account: bond.account,
+              _id: bond._id
+            };
+            newAsset.push(bondData);
+          }
+        }
+
+
         for (const bond of assets.filter((el) => el.account && (el.account == props.selected.account || el.account == props.selected.account._id))) {
           const bondData = {
             name: `${bond.type} '${bond.name}'`,
             type: bond.type,
+            account: bond.account,
             _id: bond._id
           };
           newAsset.push(bondData);
@@ -204,7 +219,7 @@ const NewEffects = (props) => {
             character={characters.find(el => el._id == character)}
             handleSubmit={handleSubmit}
             asset={selected}
-            characters={array}
+            characters={characters}
             closeModal={handleExit} />
         </Box>
       );

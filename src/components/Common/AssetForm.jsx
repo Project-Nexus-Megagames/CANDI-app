@@ -42,7 +42,8 @@ const AssetForm = (props) => {
       for (const ass of asset.dice) {
         temp.push({ amount: ass.amount, type: ass.type })
       }
-      setDice(temp);      
+      setDice(temp);     
+      setAccount(asset.account) 
     }
 	}, [asset]);
 
