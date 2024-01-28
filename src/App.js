@@ -245,7 +245,7 @@ const App = (props) => {
               <Route exact path='/no-character' element={<NoCharacter {...props} />} />
               <Route exact path='/registration' element={<Registration {...props} />} />
               <Route exact path='/down' element={<Down {...props} />} />
-              <Route path="/" element={<Navigate to="/landing" />}/>   
+              <Route path="/" element={<Navigate to="/login" />}/>   
               <Route exact path='/404' element={<NotFound {...props} />} />      
             </Routes>    
           </GridItem>
