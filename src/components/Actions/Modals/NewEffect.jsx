@@ -35,7 +35,7 @@ const NewEffects = (props) => {
       case 'bond':
       case 'asset':
         let newAsset = [];
-        for (const bond of assets.filter((el) => el.account == props.selected.account || el.account == props.selected.account._id)) {
+        for (const bond of assets.filter((el) => el.account && (el.account == props.selected.account || el.account == props.selected.account._id))) {
           const bondData = {
             name: `${bond.type} '${bond.name}'`,
             type: bond.type,
@@ -43,6 +43,7 @@ const NewEffects = (props) => {
           };
           newAsset.push(bondData);
         }
+
         setArray(newAsset);
         break;
       case 'new':
