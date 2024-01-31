@@ -31,6 +31,7 @@ import { setCharacter } from '../../redux/entities/auth';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { Random } from '@rsuite/icons';
 import AssetCard from '../Common/AssetCard';
+import { gameServer } from '../../config.js';
 
 const CharacterCreation = (props) => {
   const blueprints = useSelector(s => s.blueprints.list);
@@ -94,11 +95,11 @@ const CharacterCreation = (props) => {
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const { data } = await axios.post(`http://localhost:5000/api/blueprints/characterCreation/`, { occupation: myCharacter.bio });
+        const { data } = await axios.post(`${gameServer}/api/blueprints/characterCreation/`, { occupation: myCharacter.bio });
         setOccupations(data);
       }
 
-      if (occupations.length === 0) fetchData().catch(console.error);
+      // if (occupations.length === 0) fetchData().catch(console.error);
     }
     catch (err) {
       console.log(err)
