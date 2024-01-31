@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer, StatDownArrow } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer, StatDownArrow, Wrap, WrapItem } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import WordDivider from "../../../Common/WordDivider";
 import NewResult from "../../Modals/NewResult";
@@ -13,11 +13,16 @@ import NewContractForm from "../../../Common/NewContractForm";
 import socket from "../../../../socket";
 import Server from "../../../Team/Server";
 import ActionForm from "../../Forms/ActionForm";
+import { getIce } from "../../../../redux/entities/blueprints";
+import Ice from "../../../Team/Ice";
+import { ActionIce } from "./ActionIce";
+import IceForm from "../../../Common/IceForm";
 
 function Feed({action}) {
     const gamestate = useSelector(state => state.gamestate);
     const facilities = useSelector(state => state.facilities.list);
     const myCharacter = useSelector(state => state.auth.myCharacter);
+    const iceBlueprints = useSelector(getIce);
     const {isControl} = usePermissions();
     const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
     const roundActive = gamestate.status === 'Active';
@@ -42,6 +47,10 @@ function Feed({action}) {
 
       for (const comment of action.submissions) {
         sortThisIn(comment, list)
+      }
+
+      for (const ice of action.ice) {
+        sortThisIn(ice, list)
       }
 
       if (!isControl) {
@@ -171,7 +180,7 @@ function Feed({action}) {
                             >
                                 Get Random Ice
                             </Button>
-                        )}
+                        )} */}
                         {isControl && (
                           <Button
                             variant={'solid'}
@@ -180,7 +189,7 @@ function Feed({action}) {
                           >
                               Get Specific Ice
                           </Button>
-                        )} */}
+                        )}
                         {isCollaborator && (
                             <Button variant={'solid'}
                                 onClick={() => setMode('collab')}
@@ -217,7 +226,7 @@ function Feed({action}) {
             </CandiModal>
 
             <CandiModal open={mode==='getIce'} onClose={() => closeIt() }  >
-              {action.submission.facility && <Server server={ facilities.find(el => el._id === action.submission.facility)} />}
+                          <IceForm mode={mode} action={action}/>
             </CandiModal>
 
 

@@ -60,6 +60,12 @@ const ActionSubObject = (props) => {
             submission: subObject._id
           };
           break;
+          case 'Ice':
+            data = {
+              id: action._id,
+              ice: subObject._id
+            };
+            break;
     }
 
 
@@ -163,6 +169,7 @@ const ActionSubObject = (props) => {
         </Flex>
 
         {mode !== 'editSubmission' &&<Box>
+          {subObject.name && <h4>{subObject.name}</h4>}
           {subObject.__t !== "Contract" && <ActionMarkdown
             markdown={subObject.description ? subObject.description : subObject.body}
           />}
@@ -170,7 +177,7 @@ const ActionSubObject = (props) => {
             <Contract show contract={subObject} />
           }
           {subObject.model === "Ice" &&
-            <div>
+            <div>              
               <Wrap justify="space-around">
                 <Ice ice={subObject} width={500} />
 
@@ -185,6 +192,7 @@ const ActionSubObject = (props) => {
                         {subRotuine.description && (
                           <p>{subRotuine.description}</p>
                         )}
+                        {subRotuine.challengeCost.type} - {subRotuine.challengeCost.value}
                         <Divider vertical />
                         <ActionIce
                           show={mode === 'addDice'}
