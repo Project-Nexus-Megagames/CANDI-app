@@ -108,7 +108,7 @@ const IceForm = (props) => {
   }
 
   const renderImage = () => {
-		if (!imageURL) return <img src={ice?.profilePicture}></img>;
+		if (!imageURL) return <img src={ice?.imageURL}></img>;
 		return <img src={imageURL}></img>;
 	};
 

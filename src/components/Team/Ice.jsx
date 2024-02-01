@@ -22,12 +22,12 @@ const Ice = ({ ice, compact, width }) => {
 
   return (
     <div style={{ cursor: 'pointer', textAlign: 'center', }} >
-      {ice.code && ice.code !== "???" && <ResourceNugget width={width ? width : '100%'} compact={compact} fontSize={'2em'} blueprint={ice.code} type={"blueprint"} />}
-      {ice.imageUrl &&
+      {/* {ice.code && ice.code !== "???" && <ResourceNugget width={width ? width : '100%'} compact={compact} fontSize={'2em'} blueprint={ice.code} type={"blueprint"} />} */}
+      {ice.imageURL &&
         <img
-          src={`${ice.imageUrl}`}
+          src={`${ice.imageURL}`}
           alt='Img could not be displayed'
-          style={{ maxHeight: "50vh", width: '90%' }}
+          style={{ maxHeight: "20vh", width: '90%' }}
         />
       }
       {/* {ice.status && ice.status.map((tag, index) => (

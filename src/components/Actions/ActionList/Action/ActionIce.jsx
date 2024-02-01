@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Box, Flex, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Code, Flex, Wrap, WrapItem } from "@chakra-ui/react";
 import SubRoutine from "../../../Hacking/SubRoutine";
 import Dice from "../../../Hacking/Dice";
 import { AddAsset } from "../../../Common/AddAsset";
@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => {
   const assets = useSelector(state => state.assets.list);
+  console.log(subRotuine)
 
   const handleSelect = (asset) => {
     socket.emit("request", {
@@ -19,15 +20,23 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
     })
   }
 
+  function getAsset(assetID) {
+    return assetID ? assets.find((el) => el._id === assetID) : null;
+}
+
   const stats = (assets, cost) => {
+    console.log(assets, cost )
+
     const probs = [];
     
     let sum = 0;
     for (let asset of assets) {
-      const relevantDice = asset?.dice?.filter(el => el.type === subRotuine.challengeCost.type)
+      // const relevantDice = asset?.dice?.filter(el => el.type === subRotuine.challengeCost.type)
+
+      const populated = getAsset(asset)
 
       sum = 1;
-      for (const die of relevantDice) {
+      for (const die of asset.dice.filter(el => el.amount >= cost)) {
         probs.push(1 - (die.amount+1 - cost) / die.amount)
       }
 
@@ -37,18 +46,20 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
       sum = sum * prob
     }
 
-    if (sum >= 1 || sum == 0) return (sum*100);
+    if (probs.filter(el => el > 0).length ===0 ) return (0);
+    if (sum >= 1) return (sum*100);      
     return (Math.trunc((1 - sum)*100));
   };
 
   const getRelevantDice = (assets, type) => {
-    console.log(assets)
     let total = [];
     for (const ass of assets) {
       total = total.concat(ass.dice.filter(el => el.type == type))
     }
     return (total)
   }
+
+  const prob = stats(subRotuine.contributed, subRotuine.challengeCost.value);
 
   return (
     <div >
@@ -66,11 +77,13 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
           ))}
         </Wrap >}
 
+        <Code colorScheme={prob > 80 ? 'green' : prob > 40 ? 'yellow' : 'red'} >{prob}% Chance of success</Code>
+
       {show && <div
         key={subRotuine._id}
         style={{ width: "100%", border: ".75px solid white" }}
 
-      >{subRotuine.challengeCost.type} - {subRotuine.contributed.length}
+      >{subRotuine.challengeCost.type} - {subRotuine.challengeCost.amount}
         <AddAsset handleSelect={(ass) => handleSelect(ass)} assets={assets?.filter(el => el.dice.some(el => el.type === subRotuine.challengeCost.type))} />        
       </div>   }   
     </div>

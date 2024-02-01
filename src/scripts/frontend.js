@@ -17,11 +17,12 @@ function getFadedColor(color, fade = 1) {
     case 'Misc':
 			return `#5b26b0`;
 
-    case 'Craft':
+    case 'Craft':    
       return `rgba(66,133,244, ${fade})`; // #4285f4
     case 'Form Bond':
 			return `rgba(204,0,0, ${fade})`; // #cc0000
     case 'A':
+    case 'Food':
 			return `rgba(52,168,83, ${fade})`; // #34a853
 		case 'Control':
 			return `#ff9800`
@@ -30,6 +31,7 @@ function getFadedColor(color, fade = 1) {
     case 'Pig':
     case 'Pig Goblins':
 		case 'Fail':
+    case 'Security':
 			return `#e74c3c`
 
     case 'Refined Item':
