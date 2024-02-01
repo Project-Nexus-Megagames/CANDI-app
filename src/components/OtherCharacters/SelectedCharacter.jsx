@@ -121,7 +121,7 @@ const SelectedCharacter = (props) => {
         </h5>
         {mode !== "new" && <Grid templateColumns='repeat(3, 1fr)' gap={1}>
           { assets
-            .filter((el) => el.account && el.account === selected.account)
+            .filter((el) => (el.account && el.account === selected.account) || el.sharedWith.some(c => c._id === selected._id))
             .map((asset) => (
               <AssetCard key={asset._id} asset={asset} character={selected} showButtons />
             ))}
