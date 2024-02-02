@@ -16,6 +16,7 @@ import ActionResources from "./ActionResources";
 import ActionForm from "../../Forms/ActionForm";
 import usePermissions from "../../../../hooks/usePermissions";
 import AssetCard from "../../../Common/AssetCard";
+import NewComment from "../../Modals/NewComment";
 
 
 const ActionSubObject = (props) => {
@@ -249,6 +250,14 @@ const ActionSubObject = (props) => {
         show={mode === 'editResult'}
         mode={"updateSubObject"}
         result={subObject}
+        closeNew={() => setMode(false)}
+        selected={action}
+      />
+
+      <NewComment
+        show={mode === 'editComment'}
+        mode={"updateSubObject"}
+        comment={subObject}
         closeNew={() => setMode(false)}
         selected={action}
       />

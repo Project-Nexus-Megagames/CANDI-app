@@ -49,7 +49,7 @@ const CharacterCreation = (props) => {
   const reduxAction = useDispatch();
 
   const steps = [
-    { title: 'Welcome', description: 'Get Started' },
+    { title: 'Team & Goals', description: 'Get Started' },
     { title: 'Occupation', description: 'What do you do for a living?' },
     { title: 'Inheritemce', description: 'Inheritemce' },
     { title: 'Character Details', description: 'Name, Species, and Goals' },

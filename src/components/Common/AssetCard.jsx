@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag } from '@chakra-ui/react';
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
@@ -15,6 +15,9 @@ import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/f
 import TeamAvatar from './TeamAvatar';
 import assets from '../../redux/entities/assets';
 import CharacterNugget from './CharacterNugget';
+import { FaHandshake } from 'react-icons/fa';
+import { AddCharacter } from './AddCharacter';
+import { CloseIcon } from '@chakra-ui/icons';
 
 const AssetCard = (props) => {
   const { showButtons, handleSelect, compact, removeAsset, showRemove, selected } = props;
@@ -33,85 +36,139 @@ const AssetCard = (props) => {
     });
   };
 
-  const asset = props.asset._id? props.asset : assets.find(el => el._id === props.asset)
+  const asset = props.asset._id ? props.asset : assets.find(el => el._id === props.asset)
 
-  const disabled = asset?.status?.some(el => el === ('working' || 'used'));
+  const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
   const account = populateThisAccount(accounts, asset?.account)
   const team = getThisTeam(teams, account.manager);
-  const character = props.character? props.character : characters.find(el => el.account === asset?.account)
+  const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
 
   if (asset)
-  return (
-    <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
-      <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`,  }} >
-        <CardHeader>
+    return (
+      <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
+        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`, }} >
+          <CardHeader>
 
-          <Flex align={'center'} overflow='hidden' width='100%'>
-            <Spacer />
-            <Box>
-              <div display="flex">
+            <Flex align={'center'} overflow='hidden' width='100%'>
+              <Spacer />
+              <Box>
+                <div display="flex">
 
-                { <h5 style={{ marginLeft: '5px' }}>{character && <CharacterNugget character={character} />}{asset.name}
-                  {<CountDownTag timeout={asset.timeout} />}
-                </h5>}
-                <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
-                <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
-                <Center>
-                  {asset.status?.map(el => (
-                    <NexusTag key={el} value={el}></NexusTag>
-                  ))}                  
-                </Center>
-
-              </div>
-
-              {control && showButtons && <ButtonGroup isAttached>
-                <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
-                <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
-              </ButtonGroup>}
-            </Box>
+                  {<h5 style={{ marginLeft: '5px' }}>{character && <CharacterNugget character={character} />}{asset.name}
+                    {<CountDownTag timeout={asset.timeout} />}
+                  </h5>}
 
 
-            {removeAsset && showRemove && <IconButton variant={'outline'} onClick={removeAsset} colorScheme="red" size={'sm'} icon={<Close />} />}
+                  {asset.sharedWith.length > 0 && <b>Shared with:</b>}
+                  {asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
+                    <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
+                      <Avatar
+                        size={'xs'}
+                        name={char?.characterName}
+                        src={char?.profilePicture}
+                        margin='1'
+                      />
+                      <TagLabel>{char.characterName}</TagLabel>
+                      {(character?._id === asset.ownerCharacter || character.account === asset.account) &&
+                        <TagCloseButton onClick={() => {
+                          const data = {
+                            id: asset._id,
+                            charId: char._id
+                          };
+                          socket.emit('request', {
+                            route: 'asset',
+                            action: 'removeShared',
+                            data
+                          });
+                        }}
+                        />}
+                    </Tag>
+                  )}
 
-            <Spacer />
-          </Flex>
+                  {!disabled && mode === 'lend' && <AddCharacter
+                    characters={characters.filter(el => !asset.sharedWith.some(ass => ass?._id === el._id))}
+                    handleSelect={(character) => {
+                      const data = {
+                        id: asset._id,
+                        charId: character._id
+                      };
+                      socket.emit('request', {
+                        route: 'asset',
+                        action: 'addShared',
+                        data
+                      });
+                    }}
+                  />}
+                  <br />
 
-          <Flex align={'center'} overflow='hidden' width='100%' >
-            <Spacer />
-            {asset.dice?.map(die => (
-              <div key={die._id} style={{ textAlign: 'center' }} >
-                {/* {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />} */}
-                + {die.amount}
-              </div>
-            ))}
-            <Spacer />
-          </Flex>
 
-          <Flex align={'center'} overflow='hidden' width='100%' >
-            {asset.tags?.map(el => (
-              <NexusTag key={el} value={el}></NexusTag>
-            ))}
-          </Flex>
+                  <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
+                  <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
+                  <Center>
+                    {asset.status?.map(el => (
+                      <NexusTag key={el} value={el}></NexusTag>
+                    ))}
+                  </Center>
 
-        </CardHeader>
-        <CardBody style={{ paddingTop: '0px' }} >
-          {!compact && <div style={{ maxHeight: '20vh', overflow: 'auto', textOverflow: 'ellipsis', }} >
-            {asset.description}
-          </div>}
-        </CardBody>
+                </div>
 
-      </Card>
+                {control && showButtons && <ButtonGroup isAttached>
+                  <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
+                  <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
+                </ButtonGroup>}
+                {(character?._id === asset.ownerCharacter || character.account === asset.account) && showButtons && asset.status.some(el => el === 'lendable') &&
+                  <Button
+                    variant={'ghost'}
+                    onClick={() => setMode(mode === 'lend' ? false : "lend")}
+                    colorScheme={mode === 'lend' ? "red" : "blue"}
+                    size={'sm'}
+                    leftIcon={mode === 'lend' ? <CloseIcon /> : <FaHandshake />}
+                  >{mode === 'lend' ? "Finish" : "Share"}</Button>}
 
-      {asset && <CandiWarning open={mode === 'delete'} title={`Delete "${asset.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>
-        This can never be undone.
-      </CandiWarning>}
+              </Box>
 
-      <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Asset`}>
-        <AssetForm closeModal={() => { setMode(false); }} character={character} asset={asset} mode={mode} />
-      </CandiModal>
+              {removeAsset && showRemove && <IconButton variant={'outline'} onClick={removeAsset} colorScheme="red" size={'sm'} icon={<Close />} />}
 
-    </div>
-  );
+              <Spacer />
+            </Flex>
+
+
+            <Flex align={'center'} overflow='hidden' width='100%' >
+              <Spacer />
+              {asset.dice?.map(die => (
+                <div key={die._id} style={{ textAlign: 'center' }} >
+                  {/* {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />} */}
+                  + {die.amount}
+                </div>
+              ))}
+              <Spacer />
+            </Flex>
+
+            <Flex align={'center'} overflow='hidden' width='100%' >
+              {asset.tags?.map(el => (
+                <NexusTag key={el} value={el}></NexusTag>
+              ))}
+            </Flex>
+
+          </CardHeader>
+          <CardBody style={{ paddingTop: '0px' }} >
+            {!compact && <div style={{ maxHeight: '20vh', overflow: 'auto', textOverflow: 'ellipsis', }} >
+              {asset.description}
+            </div>}
+          </CardBody>
+
+        </Card>
+
+        {asset && <CandiWarning open={mode === 'delete'} title={`Delete "${asset.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>
+          This can never be undone.
+        </CandiWarning>}
+
+        <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Asset`}>
+          <AssetForm closeModal={() => { setMode(false); }} character={character} asset={asset} mode={mode} />
+        </CandiModal>
+
+      </div>
+    );
   return (
     <b>Cannot Render Asset {props.asset}</b>
   )

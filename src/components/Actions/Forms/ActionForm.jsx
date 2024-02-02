@@ -31,7 +31,7 @@ const ActionForm = (props) => {
   const [effort, setEffort] = React.useState(defaultValue?.effort ? { effortType: defaultValue.effort.effortType, amount: defaultValue.effort.amount } : { effortType: 'Normal', amount: 0 });
   const [resources, setResources] = React.useState(defaultValue?.resouces ? defaultValue.resouces : []);
   const [assets, setAssets] = React.useState(defaultValue?.assets ? defaultValue.assets : []);
-  const [collaborators, setCollaborators] = React.useState([]);
+  const [collaborators, setCollaborators] = React.useState(defaultValue?.collaborators ? defaultValue.collaborators : []);
   const [actionType, setActionType] = React.useState(
     props.actionType ? gameConfig.actionTypes.find(el => el.type === props.actionType) :
       gameConfig.actionTypes[0]);
@@ -92,7 +92,6 @@ const ActionForm = (props) => {
       location: destination,
       myCharacter: myCharacter._id,
       creator: myCharacter._id,
-      collaborators,
       id: actionID
     };
     closeNew();
@@ -283,7 +282,8 @@ const ActionForm = (props) => {
                     removeAsset={() => editState(false, 'Asset', index)}
                     compact
                     type={'blueprint'}
-                    asset={ass} />}
+                    asset={ass}
+                  />}
               </Box>
               <Spacer />
             </>

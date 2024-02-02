@@ -234,6 +234,7 @@ function Feed({action}) {
                 show={mode === 'comment'}
                 closeNew={() => closeIt()}
                 gamestate={gamestate}
+                mode={mode}
                 selected={action}
             />
 
