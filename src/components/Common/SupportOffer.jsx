@@ -188,7 +188,16 @@ useEffect(() => {
 					))}	
 
           {!disabled && 
-            <AddAsset assets={myAssets.filter(el => el.tags.some(s => actionType.assetTypes.some(at => at === s)) || actionType.assetTypes.some(at => at === el.type) )} handleSelect={(asset) => editState(asset, 0, 'add-asset' )}/>}		
+          <AddAsset
+          assets={myAssets.filter(el =>
+            !el.status.some(s => s === 'used')
+            && 
+            el.tags.some(s =>
+            actionType.assetTypes.some(at => at === s)) ||
+            actionType.assetTypes.some(at => at === el.type)
+          )}
+            handleSelect={(asset) => editState(asset, 0, 'add-asset')}
+          />}		
 				</SimpleGrid >}
 
         <Divider/>
