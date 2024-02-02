@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Center, Divider, Flex, Heading, Spacer, Wrap, WrapItem } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Divider, Flex, Heading, Spacer, VStack, Wrap, WrapItem } from "@chakra-ui/react";
 import React from "react";
 import { getFadedColor, getThisTeam, getThisTeamFromAccount, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
@@ -59,6 +59,12 @@ const ActionSubObject = (props) => {
         data = {
           id: action._id,
           submission: subObject._id
+        };
+        break;
+      case 'Ice':
+        data = {
+          id: action._id,
+          ice: subObject._id
         };
         break;
     }
@@ -164,6 +170,7 @@ const ActionSubObject = (props) => {
         </Flex>
 
         {mode !== 'editSubmission' && <Box>
+          {subObject.name && <h4>{subObject.name}</h4>}
           {subObject.__t !== "Contract" && <ActionMarkdown
             markdown={subObject.description ? subObject.description : subObject.body}
           />}
@@ -173,19 +180,19 @@ const ActionSubObject = (props) => {
           {subObject.model === "Ice" &&
             <div>
               <Wrap justify="space-around">
-                <Ice ice={subObject} width={500} />
+                <Ice ice={subObject} />
 
-                <WrapItem  >
+                <VStack style={{ width: '50%' }} >
                   {subObject.options &&
                     subObject.options.map((subRotuine, index) => (
                       <Box
                         key={subRotuine._id}
-                        colSpan={18 / subObject.options.length}
+                        style={{ width: '100%', border: `4px solid ${getFadedColor(subRotuine.challengeCost.type)}`, padding: '7px' }}
                       >
-                        <Divider vertical />
                         {subRotuine.description && (
                           <p>{subRotuine.description}</p>
                         )}
+                        {subRotuine.challengeCost.type} - {subRotuine.challengeCost.value}
                         <Divider vertical />
                         <ActionIce
                           show={mode === 'addDice'}
@@ -198,19 +205,19 @@ const ActionSubObject = (props) => {
                         />
                       </Box>
                     ))}
-                </WrapItem>
+                </VStack>
 
               </Wrap>
 
               <Center>
-                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green" onClick={() => setMode('addDice')} >Add Dice</Button>}
+                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="blue" onClick={() => setMode('addDice')} >Add Dice</Button>}
                 {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green"
                   onClick={() => socket.emit("request", {
                     route: "action",
                     action: "roll",
                     data: { id: action._id, ice: subObject._id },
                   })}>Roll</Button>}
-                {mode === 'addDice' && <Button variant={'solid'} colorScheme="green" onClick={() => setMode(false)} >Finish</Button>}
+                {mode === 'addDice' && <Button variant={'solid'} colorScheme="orange" onClick={() => setMode(false)} >Finish</Button>}
               </Center>
             </div>
           }

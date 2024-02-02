@@ -47,20 +47,19 @@ const Loading = (props) => {
       else {
         navigate('/no-character');
       }
-      reduxAction(finishLoading());
 		}
 	}, [characters, message]);
 
-	// useEffect(() => {
-	// 	console.log('Trigger B');
-	// 	if (teams.length > 0 && !team && myCharacter) {
-	// 		console.log('Finished Loading!!!!');
-	// 		const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
-	// 		reduxAction(setTeam(myTeam));
+	useEffect(() => {
+		console.log('Trigger B');
+		if (teams.length > 0 && !team && myCharacter) {
+			console.log('Finished Loading!!!!');
+			const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
+			reduxAction(setTeam(myTeam));
 
-	// 		//reduxAction(finishLoading());
-	// 	}
-	// }, [myCharacter, message]);
+			reduxAction(finishLoading());
+		}
+	}, [myCharacter, message]);
 
   const handleLogOut = async () => {
 		reduxAction(signOut())

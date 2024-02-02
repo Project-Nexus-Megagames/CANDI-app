@@ -145,6 +145,8 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                 toggleAssetInfo={toggleAssetInfo}
               />}
 
+              {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}
+
               {control && actionType.type === 'Agenda' && action.options.length == 0 &&
                 <Box>
                   Choice Type: {choiceType} (Control Only)<br />
