@@ -91,7 +91,7 @@ const NewAction = (props) => {
         location: destination,
         user: user.username
       };
-      
+
       setLoading(true)
       // socket.emit('request', { route: 'action', action: 'create', data });
       const response = await axios.post(`${gameServer}api/actions/createAction`, { data });
@@ -102,10 +102,10 @@ const NewAction = (props) => {
         setIntent('');
         setName('');
         setAssets([]);
-        props.closeNew();      
+        props.closeNew();
       }
     }
-    catch(err) {
+    catch (err) {
       console.log(err)
     }
 
@@ -115,9 +115,9 @@ const NewAction = (props) => {
 
   const isResourceDisabled = () => {
     let boolean = false;
-    for (const resource of actionType.resourceTypes) {      
+    for (const resource of actionType.resourceTypes) {
       boolean = myAccout.resources.some(e => e.type === resource.type) &&
-        myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min 
+        myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min
     }
     return boolean;
   };
@@ -165,11 +165,11 @@ const NewAction = (props) => {
       <form>
         {actionType.collab && <Box>
           Collaborators:
-          <AddCharacter characters={playerCharacters.filter(el => !collaborators.some(ass => ass?._id === el._id ) )} handleSelect={(char) => editState(char, 'addCollab')} />
+          <AddCharacter characters={playerCharacters.filter(el => !collaborators.some(ass => ass?._id === el._id))} handleSelect={(char) => editState(char, 'addCollab')} />
           {collaborators.length > 0 && collaborators.map(char =>
             <Tag margin={'2px'} key={char._id} variant={'solid'} >
               <TagLabel>{char.characterName}</TagLabel>
-              <TagCloseButton onClick={() => editState(char, 'collab') }/>
+              <TagCloseButton onClick={() => editState(char, 'collab')} />
             </Tag>
           )}
         </Box>}
@@ -224,7 +224,7 @@ const NewAction = (props) => {
             )}
             {description.length >= 1000 && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                Description is too long. 
+                Description is too long.
               </Tag>
             )}
 
@@ -266,15 +266,15 @@ const NewAction = (props) => {
 
         <br />
 
-      {assets.length > 0 && <div>
-        Assets:
-        <br />
-        {actionType.assetTypes?.map((type) => (
-          <Tag margin={'3px'} key={type} textTransform='capitalize' backgroundColor={getFadedColor(type)} color={getTextColor(type)} variant={'solid'}>
-            {type}
-          </Tag>
-        ))}        
-      </div>}
+        {assets.length > 0 && <div>
+          Assets:
+          <br />
+          {actionType.assetTypes?.map((type) => (
+            <Tag margin={'3px'} key={type} textTransform='capitalize' backgroundColor={getFadedColor(type)} color={getTextColor(type)} variant={'solid'}>
+              {type}
+            </Tag>
+          ))}
+        </div>}
 
 
         <Flex>
@@ -286,14 +286,25 @@ const NewAction = (props) => {
                   paddingTop: '5px',
                   paddingLeft: '10px',
                   textAlign: 'left',
+                  width: '33%'
                 }}
               >
                 {!ass &&
                   <AddAsset
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
-                    assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id))} />}
-                {ass && <AssetCard showRemove removeAsset={() => editState(false, ass.model, index)} type={'blueprint'} asset={ass} />}
+                    assets={myAssets.filter(el =>
+                      actionType.assetTypes.some(a => a === el.type) &&
+                      !assets.some(ass => ass?._id === el._id)
+                    )}
+                  />}
+                {ass &&
+                  <AssetCard
+                    showRemove
+                    removeAsset={() => editState(false, ass.model, index)}
+                    type={'blueprint'}
+                    asset={ass}
+                  />}
               </Box>
               <Spacer />
             </>
@@ -311,9 +322,9 @@ const NewAction = (props) => {
       >
         <Spacer />
         <VStack>
-        {disabledConditions.filter(el=> el.disabled).map((opt, index) => 
-              <Text color='red' key={index}>{opt.text}</Text>  
-            )}          
+          {disabledConditions.filter(el => el.disabled).map((opt, index) =>
+            <Text color='red' key={index}>{opt.text}</Text>
+          )}
         </VStack>
 
         <Button loading={loading} colorScheme="green" onClick={() => handleSubmit()} variant='solid' isDisabled={isDisabled} >

@@ -38,7 +38,7 @@ const AssetCard = (props) => {
 
   const asset = props.asset._id ? props.asset : assets.find(el => el._id === props.asset)
 
-  const disabled = asset?.status?.some(el => el === ('working' || 'used'));
+  const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
   const account = populateThisAccount(accounts, asset?.account)
   const team = getThisTeam(teams, account.manager);
   const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
@@ -116,7 +116,7 @@ const AssetCard = (props) => {
                   <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
                   <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
                 </ButtonGroup>}
-                {(character?._id === asset.ownerCharacter || character.account === asset.account) && asset.status.some(el => el === 'lendable') &&
+                {(character?._id === asset.ownerCharacter || character.account === asset.account) && showButtons && asset.status.some(el => el === 'lendable') &&
                   <Button
                     variant={'ghost'}
                     onClick={() => setMode(mode === 'lend' ? false : "lend")}

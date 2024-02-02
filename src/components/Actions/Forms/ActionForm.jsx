@@ -282,7 +282,8 @@ const ActionForm = (props) => {
                     removeAsset={() => editState(false, 'Asset', index)}
                     compact
                     type={'blueprint'}
-                    asset={ass} />}
+                    asset={ass}
+                  />}
               </Box>
               <Spacer />
             </>
