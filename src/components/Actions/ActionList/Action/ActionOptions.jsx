@@ -127,6 +127,15 @@ function ActionOptions({ options, actionType, action }) {
     setMode(false)
   }
 
+    const removeAsset = (asset, index) => {
+    socket.emit('request', {
+      route: 'action', action: 'removeContribution',
+      data: { asset: asset._id, action: action._id, option: options[index]?._id, index }
+    }
+    );
+    setMode(false)
+  }
+
   return (
     <Box>
       <WordDivider word='Options' />
@@ -208,9 +217,13 @@ function ActionOptions({ options, actionType, action }) {
                         </Flex> */}
                   < SimpleGrid columns = { [2]} spacing = '40px' >
                   {
-                    options[index]?.assets?.map((asset, index) => (
+                    options[index]?.assets?.map((asset) => (
                       <Box key={asset._id}>
-                        <AssetCard asset={asset} />
+                        <AssetCard
+                          asset={asset}
+                          showRemove={isControl}
+                          removeAsset={() => removeAsset(asset, index)}
+                        />
                       </Box>
                     ))
                   }
