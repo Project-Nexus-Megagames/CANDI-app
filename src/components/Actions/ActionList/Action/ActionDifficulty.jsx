@@ -52,7 +52,6 @@ function ActionDifficulty({action, submission}) {
       
       let sum = 0;
       for (let asset of assets) {
-        // const relevantDice = asset?.dice?.filter(el => el.type === subRotuine.challengeCost.type)
         const populated = getAsset(asset)
   
         sum = 1;

@@ -11,15 +11,18 @@ const SubRoutine = (props) => {
     const probs = [];
     
     let sum = 0;
-    for (let asset of assets) {
-      const relevantDice = asset?.dice?.filter(el => el.type === subRotuine.challengeCost.type)
+    for (const allowed of subRotuine.challengeCost.allowed) {
+      for (let asset of assets) {
+        const relevantDice = asset?.dice?.filter(el => el.type === allowed)
 
-      sum = 1;
-      for (const die of relevantDice) {
-        probs.push(1 - (die.amount+1 - cost) / die.amount)
-      }
+        sum = 1;
+        for (const die of relevantDice) {
+          probs.push(1 - (die.amount+1 - cost) / die.amount)
+        }
 
+      }      
     }
+
 
     for (let prob of probs.filter(el => el > 0)) {
       sum = sum * prob
@@ -36,8 +39,9 @@ const SubRoutine = (props) => {
 			<Flex >
 
 				<Box marginLeft="15px" >
-					{subRotuine.challengeCost && <div>
-            <ResourceNugget fontSize={'1em'} value={subRotuine.challengeCost.value} type={subRotuine.challengeCost.type} />
+          {subRotuine.challengeCost &&
+            <div>
+            <ResourceNugget fontSize={'1em'} value={subRotuine.challengeCost.value} type={"subRotuine.challengeCost.type"} />
 				</div>}
 				</Box>
 

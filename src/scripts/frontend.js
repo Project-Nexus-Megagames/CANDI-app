@@ -62,7 +62,9 @@ function getFadedColor(color, fade = 1) {
       case 'Frog Goblins':
       return `#fbbc04`
       case 'Dwarves':
-        return '#03fcbe'
+      return '#03fcbe'
+
+      case 'science':
       case 'Spider':
       case 'Spider Goblins':
         return `#206694`

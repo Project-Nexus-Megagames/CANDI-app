@@ -81,8 +81,8 @@ const HomePage = (props) => {
 
       
       
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://kepler.moonpath.de/")} >
-        <ImgPanel img={map} to="" title="~ Locations ~" body="Where am I" />
+      <GridItem colSpan={columns == 1 ? 2 : 1} >
+        <ImgPanel img={map} to="locations" title="~ Locations ~" body="Where am I" />
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>

@@ -31,7 +31,6 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
     
     let sum = 0;
     for (let asset of assets) {
-      // const relevantDice = asset?.dice?.filter(el => el.type === subRotuine.challengeCost.type)
 
       const populated = getAsset(asset)
 
@@ -51,10 +50,12 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
     return (Math.trunc((1 - sum)*100));
   };
 
-  const getRelevantDice = (assets, type) => {
+  const getRelevantDice = (assets, types) => {
     let total = [];
     for (const ass of assets) {
-      total = total.concat(ass.dice.filter(el => el.type == type))
+      total = total.concat(ass.dice.filter(el =>
+        types.some(t => el.type == t)        
+      ))
     }
     return (total)
   }
@@ -66,8 +67,9 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
       {/* <SubRoutine loading={loading} subRotuine={subRotuine} index={index} /> */}
       
 
-      {subRotuine.contributed && subRotuine.challengeCost.type && <Wrap justify={'space-evenly'} align='center'>
-          {getRelevantDice(subRotuine.contributed, subRotuine.challengeCost.type).map((die, index2) => (
+      {subRotuine.contributed && subRotuine.challengeCost.allowed && subRotuine.challengeCost.allowed.length > 0 &&
+        <Wrap justify={'space-evenly'} align='center'>
+          {getRelevantDice(subRotuine.contributed, subRotuine.challengeCost.allowed).map((die, index2) => (
             <WrapItem key={index2} colSpan={4}>
               {/* <Dice alt asset={die} /> */}
               <div key={die._id} >
@@ -83,8 +85,12 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
         key={subRotuine._id}
         style={{ width: "100%", border: ".75px solid white" }}
 
-      >{subRotuine.challengeCost.type} - {subRotuine.challengeCost.amount}
-        <AddAsset handleSelect={(ass) => handleSelect(ass)} assets={assets?.filter(el => el.dice.some(el => el.type === subRotuine.challengeCost.type))} />        
+      >- {subRotuine.challengeCost.amount}
+        <AddAsset
+          handleSelect={(ass) => handleSelect(ass)}
+          assets={assets}
+          //assets={assets?.filter(el => el.dice.some(el => subRotuine.challengeCost.allowed.some(t => el.type === t)))}
+        />        
       </div>   }   
     </div>
 

@@ -187,12 +187,16 @@ const ActionSubObject = (props) => {
                     subObject.options.map((subRotuine, index) => (
                       <Box
                         key={subRotuine._id}
-                        style={{ width: '100%', border: `4px solid ${getFadedColor(subRotuine.challengeCost.type)}`, padding: '7px' }}
+                        style={{
+                          width: '100%',
+                          // border: `4px solid ${getFadedColor(subRotuine.challengeCost.type)}`,
+                          padding: '7px'
+                        }}
                       >
                         {subRotuine.description && (
                           <p>{subRotuine.description}</p>
                         )}
-                        {subRotuine.challengeCost.type} - {subRotuine.challengeCost.value}
+                        {subRotuine.challengeCost.value}
                         <Divider vertical />
                         <ActionIce
                           show={mode === 'addDice'}

@@ -130,7 +130,12 @@ const IceForm = (props) => {
       case 'optionChallengeType':
       case 'optionChallengeValue':
         thing = options[index];
-        typeof(incoming) === 'number' ? thing.challengeCost.value = parseInt(incoming) : thing.challengeCost.type = (incoming);
+        if (typeof (incoming) === 'number') thing.challengeCost.value = parseInt(incoming) 
+        else {
+          // TODO: UPDATE FORM TO ALLOW ARRAY OF ALLOWED
+          //thing.challengeCost.type = (incoming);
+        }
+
         // temp[index] = thing;
         // setDice(temp);
         break;
@@ -213,7 +218,7 @@ const IceForm = (props) => {
 
                 <FormLabel>Challenge</FormLabel>
                 <InputGroup  >
-                  <SelectPicker label='type' valueKey='type' data={gameConfig.assetTypes} value={option.challengeCost.type} onChange={(event) => { editState(event, 'optionChallengeType', index); }} />
+                  <SelectPicker label='type' valueKey='type' data={gameConfig.assetTypes} onChange={(event) => { editState(event, 'optionChallengeType', index); }} />
                   <InputNumber prefix='value' style={{ width: 200 }} defaultValue={option.challengeCost.value.toString()} value={option.challengeCost.value} min={0} onChange={(event) => editState(parseInt(event), 'optionChallengeValue', index)}></InputNumber>
 
                 </InputGroup>
