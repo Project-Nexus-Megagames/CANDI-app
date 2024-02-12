@@ -17,7 +17,7 @@ import { HiSave } from 'react-icons/hi';
  * @returns Component
  */
 const ActionForm = (props) => {
-  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header } = props;
+  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header, loading } = props;
 
   const { gameConfig } = useSelector((state) => state);
   const { myCharacter } = useSelector((s) => s.auth);
@@ -42,12 +42,6 @@ const ActionForm = (props) => {
   const [destination, setDestination] = React.useState(defaultValue?.location ? defaultValue.location : false);
   const [facility, setFacility] = React.useState(undefined);
 
-  const breakpoints = useBreakpointValue({
-    base: { columns: 0, rows: 3, width: '15rem', bottom: '1.75rem', left: '7.5rem' },
-    md: { columns: 3, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem' },
-    lg: { columns: 3, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem' }
-  })
-
 
   useEffect(() => {
     if (actionType && actionType.type && !defaultValue) {
@@ -59,10 +53,6 @@ const ActionForm = (props) => {
   useEffect(() => {
     newMap(actionType?.maxAssets);
   }, [actionType])
-
-  // useEffect(() => {
-  //   console.log(destination);
-  // }, [destination])
 
   const editState = (incoming, type, index) => {
     // console.log(incoming, type, index)
@@ -97,12 +87,12 @@ const ActionForm = (props) => {
     closeNew();
     handleSubmit(data)
 
-    setActionType(false);
-    setDescription('');
-    setIntent('');
-    setName('');
-    setResources([]);
-    setCollaborators([]);
+    // setActionType(false);
+    // setDescription('');
+    // setIntent('');
+    // setName('');
+    // setResources([]);
+    // setCollaborators([]);
 
   };
 
@@ -307,7 +297,7 @@ const ActionForm = (props) => {
           )}
         </VStack>
 
-        <Button leftIcon={<Icon as={HiSave} />} colorScheme="green" onClick={() => passSubmit()} variant='solid' isDisabled={isDisabled} >
+        <Button leftIcon={<Icon as={HiSave} />} colorScheme="green" onClick={() => passSubmit()} variant='solid' loading={loading} isDisabled={isDisabled} >
           <b>Submit</b>
         </Button>
         <Button colorScheme="red" onClick={() => closeNew()} variant='outline'>

@@ -21,6 +21,7 @@ function Feed({action}) {
     const {isControl} = usePermissions();
     const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
     const roundActive = gamestate.status === 'Active';
+    const [loading, setLoading] = React.useState(false);
 
     const [mode, setMode] = React.useState(false);
     const [feed, setFeed] = React.useState([]);
@@ -68,10 +69,15 @@ function Feed({action}) {
     };
 
     const handleCreate = (data) => {
-      socket.emit('request', { route: 'action', action: 'addContract', data:  { ...data, id: action._id }})
+      setLoading(true)
+      socket.emit('request', { route: 'action', action: 'addContract', data:  { ...data, id: action._id }}, (response) => {
+        console.log(response);
+        setLoading(false)
+      })
     }
 
     const handleSubmit = async (incoming) => {
+      setLoading(true)
       const { effort, assets, description, intent, name, type, creator, numberOfInjuries, collaborators } = incoming;
       const data = {
         name,
@@ -83,7 +89,10 @@ function Feed({action}) {
         creator,
         action: action
       };
-      socket.emit('request', { route: 'action', action: 'collab', data });
+      socket.emit('request', { route: 'action', action: 'collab', data }, (response) => {
+        console.log(response);
+        setLoading(false)
+      });
     };
 
     return (
@@ -202,7 +211,15 @@ function Feed({action}) {
               <Spacer />
             </Center>
 
-            {mode === 'collab' && <ActionForm header="Submit new collab on Action" handleSubmit={handleSubmit} actionType={action.type} collabMode closeNew={() => closeIt()} />}
+            {mode === 'collab' && 
+            <ActionForm 
+            header="Submit new Collaboration on Action" 
+            handleSubmit={handleSubmit} 
+            actionType={action.type} 
+            collabMode 
+            closeNew={() => closeIt()}
+            loading={loading}
+             />}
 
             <NewResult
               show={mode === 'result'}
