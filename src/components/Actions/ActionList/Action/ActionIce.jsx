@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 
 export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => {
   const assets = useSelector(state => state.assets.list);
-  console.log(subRotuine)
 
   const handleSelect = (asset) => {
     socket.emit("request", {
@@ -25,15 +24,11 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
 }
 
   const stats = (assets, cost) => {
-    console.log(assets, cost )
 
     const probs = [];
     
     let sum = 0;
     for (let asset of assets) {
-
-      const populated = getAsset(asset)
-
       sum = 1;
       for (const die of asset.dice.filter(el => el.amount >= cost)) {
         probs.push(1 - (die.amount+1 - cost) / die.amount)

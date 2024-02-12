@@ -71,7 +71,7 @@ export const getMyLocations = createSelector(
   (state) => state.locations.list,
   (state) => state.auth.myCharacter,
   (locations, character) =>
-    locations.filter((loc) => loc.unlockedBy.some(el => el._id === character._id || el === character._id))
+    locations.filter((loc) => loc.unlockedBy.some(el => el._id === character._id || el === character._id) || loc.status.some(s => s === 'public'))
 );
 
 export const getMyLocation = createSelector(

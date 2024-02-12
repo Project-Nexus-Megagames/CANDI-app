@@ -53,6 +53,10 @@ function Feed({action}) {
         sortThisIn(ice, list)
       }
 
+      for (const contract of action.contracts) {
+        sortThisIn(contract, list)
+      }
+
       if (!isControl) {
         list = list.filter(el => (el.status && el.status === 'Public') || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
       }
@@ -171,6 +175,15 @@ function Feed({action}) {
                             >
                                 Effect
                             </Button>
+              )}
+                                      {isControl && (
+                            <Button
+                              variant={'solid'}
+                                onClick={() => setMode('contract')}
+                                colorScheme="green"
+                            >
+                                Contract
+                            </Button>
                         )}
                         {/* {isControl && (
                             <Button
@@ -220,7 +233,6 @@ function Feed({action}) {
               selected={action}
             />
             
-
             <CandiModal open={mode==='contract'} onClose={() => closeIt() }  >
               <NewContractForm statusDefault={["action"]} onClose={() => closeIt() } handleCreate={handleCreate} />
             </CandiModal>

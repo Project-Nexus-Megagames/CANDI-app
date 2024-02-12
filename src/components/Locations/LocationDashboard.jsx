@@ -73,7 +73,8 @@ const LocationDashboard = (props) => {
           <StatBar selectedStat={selectedStat} setSelectedStat={setSelectedStat} globalStats={selectedLocation.locationStats} />
           </Box>}
 
-          {mode === 'Actions' &&<Box>
+          {mode === 'Actions' &&
+            <Box>
             <h5>Actions </h5>
             <VStack overflow={'auto'} >
               {locationContracts.filter(el => el.location === selectedLocation._id).map(contract => (

@@ -16,13 +16,18 @@ const Contract = (props) => {
   const clock = useSelector(s => s.clock);
   const account = useSelector(getCharAccount);
   const isCompleted = contract.status.some(el => el === 'completed')
+  const [loading, setLoading] = React.useState(false);
 
   const submit = (goal) => {
     const data = {
       contract: goal._id,
       account: account._id
     }
-    socket.emit('request', { route: 'asset', action: 'contract', data });
+    setLoading(true)
+    socket.emit('request', { route: 'asset', action: 'contract', data }, (response) => {
+      console.log(response);
+      setLoading(false)
+    });
   }
 
   const getTag = (target) => {
@@ -46,7 +51,7 @@ const Contract = (props) => {
         <h5>{contract.name}</h5>
 
         {show && !isCompleted && <ButtonGroup style={{ marginTop: '10px' }}>
-          <Button variant={'solid'} colorScheme='green' size='sm' disabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>
+          <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} isDisabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>
         </ButtonGroup>}
 
         <p>{contract.description}</p>

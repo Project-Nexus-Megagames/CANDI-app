@@ -136,7 +136,7 @@ const Factory = (props) => {
               <Tooltip delay={100} placement='top' label={<div>{facility.status.some((el) => el === 'auto') ? 'Auto Produce On' : 'Auto Produce Off'}</div>} trigger='hover'>
                 <IconButton
                   variant={!loading && facility.status.some((el) => el === 'auto') ? 'solid' : 'outline'}
-                  disabled={!facility.producing || facility.producing.subType === 'research' || facility.producing.tags.some(el => el === 'research')}
+                  disabled={!facility.producing || facility.producing.subModel === 'research' || facility.producing.tags.some(el => el === 'research')}
                   onClick={handleAuto}
                   icon={<AiOutlineReload />}
                   colorScheme={facility.status.some((el) => el === 'auto') ? 'green' : 'orange'}

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Center, Divider, Flex, Heading, Spacer, VStack, Wrap, WrapItem } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Divider, Flex, Grid, Heading, Spacer, VStack, Wrap, WrapItem } from "@chakra-ui/react";
 import React from "react";
 import { getFadedColor, getThisTeam, getThisTeamFromAccount, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
@@ -6,6 +6,7 @@ import NewResult from "../../Modals/NewResult";
 import ActionButtons from "./ActionHeader/ActionButtons";
 import ActionMarkdown from "./ActionMarkdown";
 import CharacterNugget from "../../../Common/CharacterNugget";
+import { DiceList } from "../../../Common/DiceList";
 import Contract from "../../../Common/Contract";
 import Ice from "../../../Team/Ice";
 import { RaidIce } from "../../../Hacking/RaidIce";
@@ -235,6 +236,20 @@ const ActionSubObject = (props) => {
           }
 
           {subObject.asset && <AssetCard asset={subObject.asset} />}
+          {subObject.dice &&
+            <Grid templateColumns='repeat(5, 1fr)' gap={2}>
+              {subObject.dice.map(die => (
+                <Center key={die._id} style={{ textAlign: 'center', backgroundColor: die.result >= subObject.difficulty ? 'green' : 'red' }} >
+                  {<img
+                    style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }}
+                    src={die ? `/images/d${die.dieValue}.png` : '/images/unknown.png'}
+                    alt={die.result} />}
+                  <h4>: {die.result}</h4>
+                    
+                </Center>
+              ))}
+            </Grid>
+          }
         </Box>}
 
         {mode === 'editSubmission' && action.type &&

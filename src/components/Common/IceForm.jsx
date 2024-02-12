@@ -12,6 +12,7 @@ import axios from 'axios';
 import { gameServer } from '../../config';
 import { getIce } from '../../redux/entities/blueprints';
 import { cloudinaryUploadMedium } from '../../services/uploads';
+import CheckerPick from './CheckerPick';
 
 const IceForm = (props) => {
   const { ice, action } = props;
@@ -26,10 +27,10 @@ const IceForm = (props) => {
   const [name, setName] = useState(ice?.name || 'Ice_Name');
   const [code, setCode] = useState(ice?.code || 'Ice_code');
   const [description, setDescription] = useState(ice?.description || 'Ice_description');
-  const [options, setOptions] = React.useState(ice ? [...ice.options] : []);
+  const [options, setOptions] = React.useState([]);
 
   let ConsequenceSchema = {
-    type: "",
+    allowed: ['asset'],
     value: 0
   };
 
@@ -43,31 +44,34 @@ const IceForm = (props) => {
   };
 
   useEffect(() => {
-    if(template) {
+    if (template) {
       const blue = iceBlueprints.find(el => el._id === template)
-      console.log(blue)
 
       let ops = blue.options.map(op => {
-        let { _id, ...newObj } = op;
+        let newObj = {
+          description: op.description,
+          challengeCost: { ...op.challengeCost },
+          consequence: op.consequence,
+        }
+
         return newObj;
       });
-      console.log(ops)
 
       setOptions(ops);
-      setDescription(blue.description);
+      setDescription(blue?.description);
       setName(blue.name);
       setCode(blue.code);
     }
   }, [template]);
 
   const handleFileUpload = async (e) => {
-		const uploadData = new FormData();
-		uploadData.append('file', e.target.files[0], 'file');
-		const img = await cloudinaryUploadMedium(uploadData);
+    const uploadData = new FormData();
+    uploadData.append('file', e.target.files[0], 'file');
+    const img = await cloudinaryUploadMedium(uploadData);
 
     console.log(img)
-		setImageURL(img.secure_url);
-	};
+    setImageURL(img.secure_url);
+  };
 
   const disabledConditions = [
     {
@@ -96,7 +100,7 @@ const IceForm = (props) => {
       props.handleSubmit({ ...data, options, });
     } else {
       const ice = { ...data, options, name, description, code, imageURL, action: action._id, createBlue };
-      const response = await axios.post(`${gameServer}api/ice/createIce`, {ice})
+      const response = await axios.post(`${gameServer}api/ice/createIce`, { ice })
       console.log(response)
       // socket.emit('request', {
       // 	route: 'blueprint',
@@ -108,9 +112,9 @@ const IceForm = (props) => {
   }
 
   const renderImage = () => {
-		if (!imageURL) return <img src={ice?.imageURL}></img>;
-		return <img src={imageURL}></img>;
-	};
+    if (!imageURL) return <img src={ice?.imageURL}></img>;
+    return <img src={imageURL}></img>;
+  };
 
 
   const editState = (incoming, type, index, subIndex) => {
@@ -130,18 +134,18 @@ const IceForm = (props) => {
       case 'optionChallengeType':
       case 'optionChallengeValue':
         thing = options[index];
-        if (typeof (incoming) === 'number') thing.challengeCost.value = parseInt(incoming) 
+        temp = [...options]
+        if (typeof (incoming) === 'number') thing.challengeCost.value = parseInt(incoming)
         else {
           // TODO: UPDATE FORM TO ALLOW ARRAY OF ALLOWED
-          //thing.challengeCost.type = (incoming);
+          thing.challengeCost.allowed = incoming;
         }
 
-        // temp[index] = thing;
-        // setDice(temp);
+        temp[index] = thing;
+        setOptions(temp);
         break;
       case 'optionDescription':
         thing = options[index];
-        console.log(thing)
         thing.description = incoming
         break;
       default:
@@ -193,32 +197,52 @@ const IceForm = (props) => {
           </FormControl>
 
           <FormControl>
-            <FormLabel>Description </FormLabel>
-            <Input onChange={(event) => { editState(event.target.value, 'description'); }} value={description} type='text' size='md' variant='outline'></Input>
+            <FormLabel>Ice Description </FormLabel>
+            <Input
+              onChange={(event) => { editState(event.target.value, 'description'); }}
+              value={description}
+              type='text'
+              size='md'
+              variant='outline'></Input>
 
             <Text fontSize='sm' color='red.500'>
             </Text>
           </FormControl>
 
           <Box w="100%">
-                    <div style={{ margin: 10 }}>
-                      <label style={{ margin: 10 }}>Character Image:</label>
-                      <Input type="file" onChange={(e) => handleFileUpload(e)} />
-                    </div>
-                    <div> {renderImage()}</div>
-                  </Box>
+            <div style={{ margin: 10 }}>
+              <label style={{ margin: 10 }}>Ice Image:</label>
+              <Input type="file" onChange={(e) => handleFileUpload(e)} />
+            </div>
+            <div> {renderImage()}</div>
+          </Box>
 
           <FormControl>
             <FormLabel>Options! </FormLabel>
             {options.map((option, index) => (
-              <Box style={{ border: '3px solid black' }} key={option._id} index={index}>
+              <Box style={{ border: '3px solid black' }} key={option.description} index={index}>
                 <IconButton variant={'outline'} onClick={() => removeElement(index, 'options')} colorScheme='red' size="sm" icon={<CloseButton />} />
                 <FormLabel>Description</FormLabel>
-                <Input onChange={(event) => { editState(event.target.value, 'optionDescription', index); }} type='text' size='md' variant='outline'></Input>
+                <Input
+                  onChange={(event) => { editState(event.target.value, 'optionDescription', index); }}
+                  type='text'
+                  size='md'
+                  defaultValue={option.description}
+                  variant='outline'></Input>
 
                 <FormLabel>Challenge</FormLabel>
                 <InputGroup  >
-                  <SelectPicker label='type' valueKey='type' data={gameConfig.assetTypes} onChange={(event) => { editState(event, 'optionChallengeType', index); }} />
+                  {/* <SelectPicker label='type' valueKey='type' data={gameConfig.assetTypes} onChange={(event) => { editState(event, 'optionChallengeType', index); }} /> */}
+                  {option.challengeCost.allowed.map(tag => <b key={tag} >{tag}</b>)}
+                  <CheckerPick
+                    placeholder="Select Location(s) to unlock..."
+                    onChange={(event) => { editState(event, 'optionChallengeType', index); }}
+                    data={gameConfig.assetTypes}
+                    value={option.challengeCost.allowed}
+                    valueKey="type"
+                    label="type"
+                  />
+
                   <InputNumber prefix='value' style={{ width: 200 }} defaultValue={option.challengeCost.value.toString()} value={option.challengeCost.value} min={0} onChange={(event) => editState(parseInt(event), 'optionChallengeValue', index)}></InputNumber>
 
                 </InputGroup>

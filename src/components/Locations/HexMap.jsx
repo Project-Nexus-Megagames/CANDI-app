@@ -129,7 +129,7 @@ const HexMap = (props) => {
                     }} >♦ 
                     <div className='container' >
                       <t>{loc?.name}</t>
-
+                      {locations.length}
                       {stat && <ResourceNugget key={x} value={stat?.statAmount} type={`${props.selectedStat.type}`} />}
                     </div>
 

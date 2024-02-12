@@ -59,8 +59,8 @@ const AssetCard = (props) => {
                   </h5>}
 
 
-                  {asset.sharedWith.length > 0 && <b>Shared with:</b>}
-                  {asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
+                  {asset.sharedWith && asset.sharedWith.length > 0 && <b>Shared with:</b>}
+                  {asset.sharedWith && asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
                     <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
                       <Avatar
                         size={'xs'}

@@ -10,40 +10,26 @@ import socket from '../../socket';
 import InputNumber from '../Common/InputNumber';
 
 const LocationForm = (props) => {
-	const { facility, mode } = props;
+	const { location, mode } = props;
 	const loggedInUser = useSelector((state) => state.auth.user);
 	const locations = useSelector((state) => state.locations.list);
 	const accounts = useSelector((state) => state.accounts.list);
 	const gameConfig = useSelector((state) => state.gameConfig);
 
-	const [imageURL, setImageURL] = useState('');
-	const [status, setStatus] = useState(facility && facility.status ? facility.status : []);
-	const [owner, setOwner] = useState(facility && facility.account ? facility.account : false);
-	const [location, setLocation] = useState(facility && facility.location ? facility.location : false);
-	const [resources, setResource] = React.useState(facility ? [...facility.producing] : []);
+	const [status, setStatus] = useState(location && location.status ? location.status : []);
+	const [coords, setCoords] = useState(location && location.coords ? location.coords : {x: 0, y: 0, z: 0});
   
 
 	const { register, handleSubmit, reset, formState, watch } = useForm(
 		{
-			defaultValues: facility
+			defaultValues: location
 		},
 		[props]
 	);
 
-	useEffect(() => {
-    if (facility) {
-      reset(facility);
-      let temp = []
-      for (const ass of facility.producing) {
-        temp.push({ amount: ass.amount, type: ass.type })
-      }
-      setResource(temp);      
-    }
-	}, [facility]);
-
 	const validation = {
 		name: {
-			required: 'Asset Name is required',
+			required: 'Name is required',
 			maxLength: {
 				value: 300,
 				message: "That's way too long, try again"
@@ -54,10 +40,6 @@ const LocationForm = (props) => {
 				value: 3000,
 				message: "That's way too long, try again"
 			}
-		},
-		uses: {
-			required: 'Use Amount is required',
-			min: { value: 0, message: 'Must be larger than 0' }
 		}
 	};
 
@@ -68,21 +50,6 @@ const LocationForm = (props) => {
 		const subscription = watch();
 		return () => subscription.unsubscribe;
 	}, [watch]);
-
-
-  const removeElement = (index, type) => {
-		let temp;
-		switch (type) {
-			case 'resources':
-				temp = [...resources];
-				temp.splice(index, 1)
-				setResource(temp);
-				break;
-			default:
-				console.log('UwU Scott made an oopsie doodle!')
-				
-		}
-	}
 
 	const handleStatus = (stuff) => {
 		const stat = stuff.target.id;
@@ -95,15 +62,15 @@ const LocationForm = (props) => {
 
 	function onSubmit(data, e) {
 		if (props.handleSubmit) {
-			props.handleSubmit({ ...data, producing: resources, status: status, });
+			props.handleSubmit({ ...data, status: status, });
 		} else {
 			e.preventDefault();
-			const facility = { ...data, producing: resources, status: status, account: owner, location };
-			console.log('SENDING DATA', facility);
+			const location = { ...data, status: status };
+			console.log('SENDING DATA', location);
 			socket.emit('request', {
-				route: 'facility',
+				route: 'location',
 				action: mode,
-				data: facility,
+				data: location,
 			});
 		}
 		props.closeModal();
@@ -113,17 +80,14 @@ const LocationForm = (props) => {
 		console.log('ERROR', errors);
 	};
 
-  const editState = (incoming, index, type) => {
+  const editState = (incoming, type, index) => {
 		let thing;
 		let temp;
 		switch (type) {
-			case 'die':
-			case 'resources':
-				thing = resources[index];
-				temp = [...resources];
-				typeof(incoming) === 'number' ? thing.amount = parseInt(incoming) : thing.type = (incoming);
-				temp[index] = thing;
-				setResource(temp);
+			case 'coords':
+        let newCoords = coords
+        newCoords[index] = incoming
+        setCoords(newCoords)
 				break;
 			default:
 				console.log('UwU Scott made an oopsie doodle!')
@@ -135,7 +99,9 @@ const LocationForm = (props) => {
 	return (
 		<form onSubmit={handleSubmit(onSubmit, handleError)}>
 			<Box>
-				<VStack spacing='24px' w='100%'>
+        <VStack spacing='24px' w='100%'>
+          
+          <Input type='text' size='md' variant='outline'></Input>
 
 					<FormControl>
 						<FormLabel>Name</FormLabel>
@@ -153,7 +119,7 @@ const LocationForm = (props) => {
 						</Text>
 					</FormControl>
 
-          <Flex>
+          {/* <Flex>
 						<Spacer />
 						<FormControl>
 							<FormLabel>Owner </FormLabel>
@@ -164,28 +130,15 @@ const LocationForm = (props) => {
 							<FormLabel>Location </FormLabel>
               {<SelectPicker onChange={setLocation} data={locations} label='name' />}
 						</FormControl>
-					</Flex>
+					</Flex> */}
 
-          <FormControl>
-						<FormLabel>Produces </FormLabel>
-            {resources.map((die, index) => (
-              
-								<InputGroup key={die._id} index={index}>
-                  {die.amount}?
-                  <SelectPicker label='type' valueKey='type' data={gameConfig.resourceTypes} value={die.type} onChange={(event)=> {editState(event, index, 'resources'); }} />
-									<InputNumber prefix='value' style={{ width: 200 }} defaultValue={die.amount.toString()} value={die.amount} min={0} onChange={(event)=> editState(parseInt(event), index, 'die')}></InputNumber>
-									<IconButton variant={'outline'} onClick={() => removeElement(index, 'resources')} colorScheme='red' size="sm" icon={<CloseButton />} />   
-								</InputGroup>
-							))}		
-              <IconButton variant={'solid'}  onClick={() => setResource([...resources, { amount: 1, type: gameConfig.resourceTypes[resources.length-1]?.type} ])} colorScheme='green' size="sm" icon={<Plus/>} />   
-					</FormControl>
 
 				</VStack>
 			</Box>
 
 			<ButtonGroup>
 				<Button type='submit' variant={'solid'} colorScheme='teal' className='btn btn-primary mr-1'>
-					{facility ? "Edit" : "Create"} Facility
+					{location ? "Edit" : "Create"} Location
 				</Button>
 				<Button variant={'solid'} colorScheme={'yellow'} onClick={() => reset()} leftIcon={<RepeatClockIcon />}>
 					Reset Form

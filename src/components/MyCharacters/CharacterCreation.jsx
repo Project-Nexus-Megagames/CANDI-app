@@ -93,13 +93,17 @@ const CharacterCreation = (props) => {
   }, [occupation]);
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const { data } = await axios.post(`${gameServer}/api/blueprints/characterCreation/`, { occupation: myCharacter.bio });
-        setOccupations(data);
-      }
 
-      // if (occupations.length === 0) fetchData().catch(console.error);
+    try {
+    if (myCharacter) {
+        const fetchData = async () => {
+          const { data } = await axios.post(`${gameServer}api/blueprints/characterCreation/`, { occupation: myCharacter.bio });
+          console.log(data)
+          setOccupations(data.occupations);
+        }
+
+         fetchData().catch(console.error)      
+    }
     }
     catch (err) {
       console.log(err)

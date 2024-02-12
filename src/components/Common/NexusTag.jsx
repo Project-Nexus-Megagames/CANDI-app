@@ -20,7 +20,7 @@ const NexusTag = (props) => {
               </div>              
           </Tooltip>
           )
-          case 'used':
+      case 'used':
       case 'working':
         return(
           <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'

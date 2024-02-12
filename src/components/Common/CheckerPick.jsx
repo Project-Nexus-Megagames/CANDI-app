@@ -2,7 +2,7 @@ import { Checkbox, Menu, Tag, MenuButton, MenuList, Box, VStack, IconButton, HSt
 import React from 'react';
 import { IoChevronDownCircleOutline } from 'react-icons/io5';
 
-function CheckerPick({ data, onChange, placeholder, button, label, value }) {
+function CheckerPick({ data, onChange, placeholder, button, label, value, valueKey }) {
   value = value || [];
 
   const handleChange = (id) => {
@@ -27,7 +27,7 @@ function CheckerPick({ data, onChange, placeholder, button, label, value }) {
         {value && <Box width={'90%'} overflow={'hidden'}>
           {value.length === 0 && placeholder}
           {value.map(el => (
-            <Tag key={el}>{data.find(e => e._id === el)?.name}</Tag>
+            <Tag key={el}>{data.find(e => e._id === el || e[valueKey] === el)?.[label]}</Tag>
           ))}  
         </Box>}
         <IconButton variant={'ghost'} icon={<IoChevronDownCircleOutline />} />        
@@ -36,10 +36,14 @@ function CheckerPick({ data, onChange, placeholder, button, label, value }) {
 
       
       </MenuButton>
-      <MenuList style={{ backgroundColor: "#0f0f0f", color: 'white' }} minWidth={'90%'}  >
+      <MenuList style={{ backgroundColor: "#0f0f0f", color: 'white', zIndex: 999 }} minWidth={'90%'}  >
         <VStack spacing={1} align="start" marginLeft="5px">
           {data && data.map(el => (
-            <Checkbox onChange={() => handleChange(el._id)} key={el._id} isChecked={value.some(e => e === el._id)}  >{label ? el[label] : el._id}</Checkbox>                        
+            <Checkbox
+              onChange={() => handleChange(valueKey ? el[valueKey] : el._id)} key={el._id}
+              isChecked={value.some(e => e === el._id || e === el[valueKey])}>
+              {label ? el[label] : el._id}
+            </Checkbox>                        
           ))}      
         </VStack>
       </MenuList>

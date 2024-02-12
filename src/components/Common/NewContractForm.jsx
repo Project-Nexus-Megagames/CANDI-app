@@ -21,6 +21,7 @@ const NewContractForm = (props) => {
 	const [status, setStatus] = React.useState(props.statusDefault);
 	const accounts = useSelector(s => s.accounts.list);
 	const blueprints = useSelector(s => s.blueprints.list);
+	const gameconfig = useSelector(s => s.gameConfig);
 
   const fullStatus = ["tradable", "working", 'auto']
 
@@ -116,15 +117,16 @@ const NewContractForm = (props) => {
   return ( 
     <>
     <InputGroup>
-      <Input placeholder="Name" style={{ width: '50%' }} value={name} onChange={(e)=> setName(e.target.value)} />
-      <InputNumber placeholder="Name" defaultValue={hours} prefix='H' style={{ width: 100 }} value={hours}  min={0} onChange={(event)=> setHours(event)}></InputNumber>	
+        <Input placeholder="Name" style={{ width: '50%' }} value={name} onChange={(e) => setName(e.target.value)} />
+        Hours til expiration
+      <InputNumber defaultValue={hours} prefix='H' style={{ width: 100 }} value={hours}  min={0} onChange={(event)=> setHours(event)}></InputNumber>	
       <SelectPicker placeholder="Select Who owns this contract" label='name' valueKey='_id' data={accounts} value={selectedAccount} style={{ height: '39px', width: '50%' }} onChange={(event)=> {setselectedAccount(event); }}/>
     </InputGroup>
 
 		<Divider />
     <Flex>
       {fullStatus.map((tag, index) => (
-        <div onClick={() => handleStatus(tag)}>          
+        <div key={index} onClick={() => handleStatus(tag)}>          
           <NexusTag variant={status && status.some(el => el === tag) ? 'solid' : 'ghost'} value={tag} key={index} colorScheme='teal'></NexusTag>
         </div>
       ))}	      
@@ -143,18 +145,18 @@ const NewContractForm = (props) => {
       <br/>
 				{rewards.map((reward, index) => (
 					<InputGroup key={reward._id} index={index}>
-            <SelectPicker label='code' valueKey='code' data={blueprints.filter(el => el.tags.some(tag => tag === 'resource' || tag === 'stock'))} value={reward.type} onChange={(event)=> {editState(event, index, 'reward'); }} />
+            <SelectPicker label='type' valueKey='type' data={gameconfig.resourceTypes} value={reward.type} onChange={(event)=> {editState(event, index, 'reward'); }} />
 						<InputNumber prefix='value' style={{ width: 200 }} value={reward.value} min={0} onChange={(event)=> editState(parseInt(event), index, 'reward')}></InputNumber>
 						<IconButton variant={'outline'} onClick={() => removeElement(index, 'reward')} colorScheme='red' size="sm" icon={<CloseButton />} />   
 					</InputGroup>
 				))}							
-			 <IconButton variant={'solid'}  onClick={() => setRewards([...rewards, { value: 1, type: 'credit'} ])} colorScheme='green' size="sm" icon={<Plus  icon="plus"/>} />   
+			 <IconButton variant={'solid'}  onClick={() => setRewards([...rewards, { value: 1, type: 'shiny_rock'} ])} colorScheme='green' size="sm" icon={<Plus  icon="plus"/>} />   
 			 <Divider/>
 			Contract Target (What they need to turn in to complete)
       <br/>
 				{target.map((target, index) => (
 					<InputGroup key={target._id} index={index}>
-						<SelectPicker cleanable={false} label='code' valueKey='code' data={blueprints.filter(el => el.tags.some(tag => tag === 'resource' || tag === 'stock'))} value={target.type} onChange={(event)=> {editState(event, index, 'target'); }} />	
+						<SelectPicker cleanable={false} label='type' valueKey='type' data={gameconfig.resourceTypes} value={target.type} onChange={(event)=> {editState(event, index, 'target'); }} />	
 						<InputNumber prefix='value' style={{ width: 150 }} value={target.value} min={0} onChange={(event)=> editState(parseInt(event), index, 'target')}></InputNumber>
 						<IconButton variant={'outline'} onClick={() => removeElement(index, 'target')} colorScheme='red' size="sm" icon={<Close/>} />   
 					</InputGroup>

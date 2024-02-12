@@ -10,6 +10,7 @@ import SelectPicker from '../../Common/SelectPicker';
 import AssetForm from '../../Common/AssetForm';
 import CharacterListItem from '../../Common/CharacterListItem';
 import socket from '../../../socket';
+import LocationForm from '../../Locations/LocationForm';
 
 const NewEffects = (props) => {
   const [type, setType] = useState('');
@@ -74,10 +75,11 @@ const NewEffects = (props) => {
         break;
       case 'aspect':
       case 'locationStats':
+      case 'newLocation':
         let asdasd = locations.find(el => el._id == props.selected?.location?._id);
         if (!asdasd) break;
         setSelected(asdasd.locationStats);
-        setSelectedLocation(props.selected?.location?._id)
+        setSelectedLocation(asdasd)
         break;
       case 'addInjury':
         setSelected({
@@ -344,6 +346,9 @@ const NewEffects = (props) => {
 
             </div>
           )}
+
+          
+        {type === 'newLocation' && <LocationForm mode='new' coords={selectedLocation} closeModal={() => { setType(false); }} />}
 
         </ModalBody>
 
