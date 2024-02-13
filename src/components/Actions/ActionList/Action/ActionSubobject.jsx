@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Center, Divider, Flex, Grid, Heading, Spacer, VStack, Wrap, WrapItem } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Divider, Flex, Grid, Heading, Spacer, Tag, VStack, Wrap, WrapItem } from "@chakra-ui/react";
 import React from "react";
 import { getFadedColor, getThisTeam, getThisTeamFromAccount, getTime } from "../../../../scripts/frontend";
 import socket from "../../../../socket";
@@ -6,7 +6,6 @@ import NewResult from "../../Modals/NewResult";
 import ActionButtons from "./ActionHeader/ActionButtons";
 import ActionMarkdown from "./ActionMarkdown";
 import CharacterNugget from "../../../Common/CharacterNugget";
-import { DiceList } from "../../../Common/DiceList";
 import Contract from "../../../Common/Contract";
 import Ice from "../../../Team/Ice";
 import { RaidIce } from "../../../Hacking/RaidIce";
@@ -18,6 +17,8 @@ import ActionForm from "../../Forms/ActionForm";
 import usePermissions from "../../../../hooks/usePermissions";
 import AssetCard from "../../../Common/AssetCard";
 import NewComment from "../../Modals/NewComment";
+import { CandiModal } from "../../../Common/CandiModal";
+import IceForm from "../../../Common/IceForm";
 
 
 const ActionSubObject = (props) => {
@@ -140,7 +141,7 @@ const ActionSubObject = (props) => {
               textAlign={'center'}
             >
               {subObject.__t}
-              {isControl && <b>({subObject.status})</b>} {subObject.model}
+              {subObject.model}
             </Heading>
             <Box
               fontSize={'.9rem'}
@@ -186,43 +187,29 @@ const ActionSubObject = (props) => {
                 <VStack style={{ width: '50%' }} >
                   {subObject.options &&
                     subObject.options.map((subRotuine, index) => (
-                      <Box
+                      <ActionIce
                         key={subRotuine._id}
-                        style={{
-                          width: '100%',
-                          // border: `4px solid ${getFadedColor(subRotuine.challengeCost.type)}`,
-                          padding: '7px'
-                        }}
-                      >
-                        {subRotuine.description && (
-                          <p>{subRotuine.description}</p>
-                        )}
-                        {subRotuine.challengeCost.value}
-                        <Divider vertical />
-                        <ActionIce
-                          show={mode === 'addDice'}
-                          action={action}
-                          ice={subObject}
-                          assets={assets}
-                          loading={props.loading}
-                          subRotuine={subRotuine}
-                          index={index}
-                        />
-                      </Box>
+                        show={mode === 'addDice'}
+                        action={action}
+                        ice={subObject}
+                        assets={assets}
+                        mode={mode}
+                        loading={props.loading}
+                        subRotuine={subRotuine}
+                        index={index}
+                      />
                     ))}
                 </VStack>
 
               </Wrap>
 
               <Center>
-                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="blue" onClick={() => setMode('addDice')} >Add Dice</Button>}
                 {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green"
                   onClick={() => socket.emit("request", {
                     route: "action",
                     action: "roll",
                     data: { id: action._id, ice: subObject._id },
                   })}>Roll</Button>}
-                {mode === 'addDice' && <Button variant={'solid'} colorScheme="orange" onClick={() => setMode(false)} >Finish</Button>}
               </Center>
             </div>
           }
@@ -232,6 +219,7 @@ const ActionSubObject = (props) => {
               actionType={gameConfig.actionTypes.find(el => el.type === action.type)}
               assets={subObject.assets}
               toggleAssetInfo={(data) => console.log(data)}
+              action={subObject._id}
             />
           }
 
@@ -245,7 +233,7 @@ const ActionSubObject = (props) => {
                     src={die ? `/images/d${die.dieValue}.png` : '/images/unknown.png'}
                     alt={die.result} />}
                   <h4>: {die.result}</h4>
-                    
+
                 </Center>
               ))}
             </Grid>
@@ -272,6 +260,21 @@ const ActionSubObject = (props) => {
         closeNew={() => setMode(false)}
         selected={action}
       />
+
+      <CandiModal open={mode === 'editIce'} onClose={() => setMode(false)}  >
+        <IceForm
+          ice={subObject}
+          mode={mode}
+          action={action}
+          handleSubmit={(data) => {
+            socket.emit('request', {
+              route: 'ice',
+              action: mode,
+              data: data
+            }, (response) => response.type === 'success' && setMode(false));
+          }} />
+      </CandiModal>
+
 
       <NewComment
         show={mode === 'editComment'}

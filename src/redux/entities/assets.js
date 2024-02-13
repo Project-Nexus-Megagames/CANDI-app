@@ -5,7 +5,7 @@ import { apiCallBegan } from "../api"; // Import Redux API call
 // Create entity slice of the store
 const slice = createSlice({
   name: "assets",
-	initialState: {
+  initialState: {
     list: [],
     loading: false,
     loaded: false,
@@ -65,8 +65,18 @@ const url = `${gameServer}api/assets`;
 export const getMyUsedAssets = createSelector(
   (state) => state.assets.list,
   state => state.auth.myCharacter,
-  (assets, char) => assets.filter((asset) => (asset.owner === char.characterName || asset.sharedWith.some(char => char._id === char._id)) && asset.some(s => s === 'used') && asset.uses <= 0)
+  (assets, char) => assets.filter((asset) => (asset.account === char.account || asset.sharedWith.some(char => char._id === char._id)) && asset.status.some(s => s === 'used') && asset.uses <= 0)
 );
+
+export const getMyUnusedAssets = createSelector(
+  (state) => state.assets.list,
+  state => state.auth.myCharacter,
+  (assets, char) => assets.filter((asset) =>
+    (asset.account === char.account || asset.sharedWith.some(c => c._id === char._id)) &&
+    !asset.status.some(s => s === 'used')
+  )
+);
+
 
 export const getMyAssets = createSelector(
   (state) => state.assets.list,
@@ -78,7 +88,7 @@ export const getTeamDice = createSelector(
   state => state.assets.list.filter(el => el.account),
   state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
   (assets, account) => assets.filter(
-    asset => (asset.account === account?._id && asset.dice.length > 0 )
+    asset => (asset.account === account?._id && asset.dice.length > 0)
   )
 );
 
@@ -151,9 +161,9 @@ export const loadAssets = payload => (dispatch, getState) => {
       url,
       method: 'get',
       data: payload,
-      onStart:assetsRequested.type,
+      onStart: assetsRequested.type,
       onSuccess: assetsReceived.type,
-      onError:assetsRequestFailed.type
+      onError: assetsRequestFailed.type
     })
   );
 };

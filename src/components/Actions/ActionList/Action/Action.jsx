@@ -46,15 +46,15 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
 
   const handleSubmit = (data0) => {
     const data = {
-			submission: {
-				assets: data0.assets,
-				description: data0.description,
-				intent: intent,
+      submission: {
+        assets: data0.assets,
+        description: data0.description,
+        intent: intent,
         facility: data0.facility,
         //location: data0.destination ? data0.destination : undefined,
-			},
+      },
       ...data0
-		};
+    };
     //console.log(data0)
     socket.emit('request', { route: 'action', action: 'update', data });
     setMode(false);
@@ -143,9 +143,10 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                 actionType={actionType}
                 assets={action.submission.assets}
                 toggleAssetInfo={toggleAssetInfo}
+                action={action._id}
               />}
 
-              {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission}/>}
+              {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission} />}
 
               {control && actionType.type === 'Agenda' && action.options.length == 0 &&
                 <Box>
@@ -164,13 +165,13 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
               />}
             </Box>}
 
-            {mode === 'edit' && <Box> 
-              <ActionForm 
-              defaultValue={{ ...action.submission, name: action.name, location: action.location?._id }} 
-              handleSubmit={(action) =>handleSubmit(action)} 
-              actionType={action.type}
-              actionID={action._id} 
-              closeNew={() => setMode(false)} />
+            {mode === 'edit' && <Box>
+              <ActionForm
+                defaultValue={{ ...action.submission, name: action.name, location: action.location?._id }}
+                handleSubmit={(action) => handleSubmit(action)}
+                actionType={action.type}
+                actionID={action._id}
+                closeNew={() => setMode(false)} />
             </Box>}
 
 

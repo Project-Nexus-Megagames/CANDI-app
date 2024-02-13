@@ -27,7 +27,7 @@ const IceForm = (props) => {
   const [name, setName] = useState(ice?.name || 'Ice_Name');
   const [code, setCode] = useState(ice?.code || 'Ice_code');
   const [description, setDescription] = useState(ice?.description || 'Ice_description');
-  const [options, setOptions] = React.useState([]);
+  const [options, setOptions] = React.useState(ice?.options || []);
 
   let ConsequenceSchema = {
     allowed: ['asset'],
@@ -97,7 +97,7 @@ const IceForm = (props) => {
 
   async function onSubmit(data) {
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, options, });
+      props.handleSubmit({ ...data, options, name, description, code, imageURL, id: ice._id, });
     } else {
       const ice = { ...data, options, name, description, code, imageURL, action: action._id, createBlue };
       const response = await axios.post(`${gameServer}api/ice/createIce`, { ice })

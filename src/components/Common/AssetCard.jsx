@@ -9,11 +9,8 @@ import { useSelector } from 'react-redux';
 import { CandiModal } from './CandiModal';
 import { BsPencil } from 'react-icons/bs';
 import { Close, Trash } from '@rsuite/icons';
-import ResourceNugget from './ResourceNugget';
 import CountDownTag from './CountDownTag';
 import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
-import TeamAvatar from './TeamAvatar';
-import assets from '../../redux/entities/assets';
 import CharacterNugget from './CharacterNugget';
 import { FaHandshake } from 'react-icons/fa';
 import { AddCharacter } from './AddCharacter';
@@ -136,9 +133,10 @@ const AssetCard = (props) => {
             <Flex align={'center'} overflow='hidden' width='100%' >
               <Spacer />
               {asset.dice?.map(die => (
-                <div key={die._id} style={{ textAlign: 'center' }} >
-                  {/* {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />} */}
-                  + {die.amount}
+                <div key={die._id} style={{ textAlign: 'center', alignItems: 'center', display: 'flex', margin: '5px' }} >
+                  <Tag variant={'outline'} color={getFadedColor(die.type)} >{die.type}</Tag>
+                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
+
                 </div>
               ))}
               <Spacer />

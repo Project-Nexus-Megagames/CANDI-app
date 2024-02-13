@@ -294,7 +294,8 @@ const NewAction = (props) => {
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el =>
-                      actionType.assetTypes.some(a => a === el.type) &&
+                      actionType.assetTypes.some(a => a === el.type ||
+                        a.toLowerCase() === el.model.toLowerCase() || el.dice.some(d => d.type.toLowerCase() === a.toLowerCase())) &&
                       !assets.some(ass => ass?._id === el._id)
                     )}
                   />}

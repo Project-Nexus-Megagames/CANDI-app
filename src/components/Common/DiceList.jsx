@@ -8,10 +8,8 @@ export const DiceList = (props) => {
   const [show, setShow] = useState(true);
 
   const getThisDicePool = () => {
-    console.log("")
     let pool = [];
     for (const ass of assets.filter(el => el)) {
-      console.log(ass)
       if (type && ass?.dice) {
         let temp = type === 'all' ? ass?.dice : ass?.dice.filter(die => die.type === type);
         pool = [...pool, ...temp];

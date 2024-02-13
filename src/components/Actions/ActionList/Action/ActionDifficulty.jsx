@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { AccordionItem, Box, Button, Center, Code, Editable, EditableInput, EditablePreview, Flex, HStack, Tag, Tooltip, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Code, Tooltip, VStack } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
-import { CloseIcon } from "@chakra-ui/icons";
-import AssetCard from "../../../Common/AssetCard";
 import InputNumber from "../../../Common/InputNumber";
 import socket from "../../../../socket";
 import WordDivider from "../../../Common/WordDivider";
