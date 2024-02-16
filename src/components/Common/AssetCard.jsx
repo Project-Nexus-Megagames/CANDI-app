@@ -42,8 +42,8 @@ const AssetCard = (props) => {
 
   if (asset)
     return (
-      <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
-        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`, }} >
+      <div style={{ textAlign: 'center', width: "100%", border: selected ? `3px solid white` : undefined, borderRadius: '10px', }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
+        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`, height: '100%' }} >
           <CardHeader>
 
             <Flex align={'center'} overflow='hidden' width='100%'>
@@ -99,7 +99,7 @@ const AssetCard = (props) => {
                   <br />
 
 
-                  <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
+                  {asset.type && <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>}
                   <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
                   <Center>
                     {asset.status?.map(el => (

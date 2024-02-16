@@ -11,6 +11,8 @@ import AssetForm from '../../Common/AssetForm';
 import CharacterListItem from '../../Common/CharacterListItem';
 import socket from '../../../socket';
 import LocationForm from '../../Locations/LocationForm';
+import CharacterTag from '../../Common/CharacterTag';
+import ResourceEffect from './ResourceEffect';
 
 const NewEffects = (props) => {
   const [type, setType] = useState('');
@@ -30,13 +32,14 @@ const NewEffects = (props) => {
   const sortedLocations = _.sortBy(locationsToDisplay, 'name');
   const creatorChar = useSelector(getCharacterById(props.selected.creator._id));
   let playerContacts = useSelector(getUnlockedCharacters(creatorChar));
+  const gameConfig = useSelector(s => s.gameConfig);
 
   useEffect(() => {
     switch (type) {
       case 'bond':
       case 'asset':
         let newAsset = [];
-        const accounts = [...props.selected.collaborators ]
+        const accounts = [...props.selected.collaborators]
         for (const account of accounts) {
           for (const bond of assets.filter((el) => el.account && (el.account == account.account || el.account == account.account._id))) {
             const bondData = {
@@ -75,6 +78,8 @@ const NewEffects = (props) => {
         break;
       case 'aspect':
       case 'locationStats':
+        setSelected(gameConfig.globalStats);
+        break;
       case 'newLocation':
         let asdasd = locations.find(el => el._id == props.selected?.location?._id);
         if (!asdasd) break;
@@ -233,10 +238,11 @@ const NewEffects = (props) => {
   const buttons = [
     { type: 'new', color: 'green', name: 'New Asset' },
     { type: 'asset', color: 'green', name: 'Edit Asset' },
-    { type: 'character', color: 'orange', name: 'Edit Character Contacts', disabled: true },
+    // { type: 'character', color: 'orange', name: 'Edit Character Contacts', disabled: true },
     { type: 'newLocation', color: 'blue', name: 'New Location' },
     { type: 'locationStats', color: 'blue', name: 'Edit Location Stats', },
     { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location', },
+    { type: 'awardResources', color: 'yellow', name: 'Award Resources', },
     // { type: 'addInjury', color: 'green', name: 'addInjury' },
   ]
 
@@ -347,8 +353,10 @@ const NewEffects = (props) => {
             </div>
           )}
 
-          
-        {type === 'newLocation' && <LocationForm mode='new' coords={selectedLocation} closeModal={() => { setType(false); }} />}
+
+          {type === 'newLocation' && <LocationForm mode='new' coords={selectedLocation} closeModal={() => { setType(false); }} />}
+
+          {type === 'awardResources' && <ResourceEffect loggedInUser={loggedInUser} myChar={myChar} characters={[...props.selected.collaborators, props.selected.creator]} action={props.selected._id} />}
 
         </ModalBody>
 

@@ -4,8 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ResourceNugget from './ResourceNugget';
 
-const CharacterListItem = (props) => {
-	const { character, handleSelect, selected } = props;  
+const CharacterListItem = ({ character, handleSelect, selected }) => {
   const myCharacter = useSelector(state => state.auth.myCharacter);
   const characters = useSelector(state => state.characters.list);
   const toast = useToast();
@@ -14,27 +13,27 @@ const CharacterListItem = (props) => {
     if (character.characterName === "The Box") {
       theBox();
     } else {
-			// Build a transitive closure of all control affected.
-			let board = `${character.email}`;
+      // Build a transitive closure of all control affected.
+      let board = `${character.email}`;
 
-			// First get the control of the searched character and the current character
-			let pending = [...new Set([...character.control, ...myCharacter.control])]
-			let seen = [];
+      // First get the control of the searched character and the current character
+      let pending = [...new Set([...character.control, ...myCharacter.control])]
+      let seen = [];
 
-			while (pending.length != 0)  {
-				const cur = pending.shift()
-				seen.push(cur)
-				const character = characters.find((el) => el.characterName.toLowerCase() === cur.toLowerCase())
-				if(character) {
-					// add their controllers to the list to be searched if we haven't already done them
-					board = board.concat(`; ${character.email}`);
-				} else {
-					console.log(`${cur} could not be added to clipboard`);
-					// Alert.error(`${character} could not be added to clipboard`, 6000);
-				}
-			}
-      
-      const gamecontrol = characters.find((el) => el.tags.some(tag => tag.toLowerCase() === 'game control') );
+      while (pending.length != 0) {
+        const cur = pending.shift()
+        seen.push(cur)
+        const character = characters.find((el) => el.characterName.toLowerCase() === cur.toLowerCase())
+        if (character) {
+          // add their controllers to the list to be searched if we haven't already done them
+          board = board.concat(`; ${character.email}`);
+        } else {
+          console.log(`${cur} could not be added to clipboard`);
+          // Alert.error(`${character} could not be added to clipboard`, 6000);
+        }
+      }
+
+      const gamecontrol = characters.find((el) => el.tags.some(tag => tag.toLowerCase() === 'game control'));
       if (gamecontrol) board = board.concat(`; ${gamecontrol.email}`);
       navigator.clipboard.writeText(board);
       // Alert.success("Email Copied!", 6000);
@@ -81,37 +80,37 @@ const CharacterListItem = (props) => {
   };
 
 
-	return (
+  return (
 
-  <Flex align={'center'}  width={'100%'} onClick={() => handleSelect(character)}>
-    <Box flex={1}>
-			<Avatar size="lg" src={character.profilePicture} alt="?" />
-		</Box>
-		<Box
-      flex={8}
-      className="styleCenter"
-			style={{
-				flexDirection: 'column',
-				overflow: 'hidden',
-        textOverflow: 'ellipsis'
-			}}
-		>
-			<h4>{character.characterName}</h4>
-      <Button
-        onClick={(e) => { e.stopPropagation(); copyToClipboard(character)}}
-        leftIcon={<CopyIcon/>}
-        colorScheme='blue'
-        variant='outline'
+    <Flex align={'center'} width={'100%'} onClick={() => handleSelect(character)}>
+      <Box flex={1}>
+        <Avatar size="lg" src={character.profilePicture} alt="?" />
+      </Box>
+      <Box
+        flex={8}
+        className="styleCenter"
+        style={{
+          flexDirection: 'column',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }}
       >
-        {character.email}                         
-      </Button>
-			
-		</Box>  
-     
+        <h4>{character.characterName}</h4>
+        <Button
+          onClick={(e) => { e.stopPropagation(); copyToClipboard(character) }}
+          leftIcon={<CopyIcon />}
+          colorScheme='blue'
+          variant='outline'
+        >
+          {character.email}
+        </Button>
 
-  </Flex>
+      </Box>
 
-	);
+
+    </Flex>
+
+  );
 };
 
 export default CharacterListItem;
