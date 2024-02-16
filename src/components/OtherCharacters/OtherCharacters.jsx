@@ -67,7 +67,7 @@ const OtherCharacters = (props) => {
 
 
   const filterThis = (fil) => {
-    const filtered = characters.filter(
+    const filtered = publicCharacters.filter(
       (char) =>
         char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
         char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||

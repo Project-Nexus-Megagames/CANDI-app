@@ -99,15 +99,26 @@ const CharacterCreation = (props) => {
 
   useEffect(() => {
     console.log(occupation)
+
   }, [occupation]);
 
-  const submitCreation = () => {
-    reduxAction(setCharacter(characters[0]))
+  const submitCreation = async () => {
+    setLoading(true)
+    const { data } = await axios.post(`${gameServer}api/blueprints/characterCreation/`,
+      {
+        occupation: occupation._id,
+        inheritence: inheritence._id,
+        name,
+        bio,
+        id: myCharacter._id
+      });
+    console.log(data)
+    setLoading(false)
   }
 
   const fetchData = async () => {
     setLoading(true)
-    const { data } = await axios.post(`${gameServer}api/blueprints/characterCreation/`, { occupation: myCharacter.bio });
+    const { data } = await axios.post(`${gameServer}api/blueprints/getInfo/`, { occupation: myCharacter.bio });
     console.log(data)
     setOccupations(data.occupations);
     setInheritences(data.inheritences);
@@ -123,7 +134,7 @@ const CharacterCreation = (props) => {
     },
     {
       text: "Pick a name!",
-      disabled: name == 'Enter Name(Press the Shuffle Button for a random name!)'
+      disabled: name == 'Enter Name (Press the Shuffle Button for a random name!)'
     },
     {
       text: "Cody you mongrul caveman. You pedestrian philistine of taste. STOP TRYING TO BEE MOVIE SCRIPT ME!",
@@ -171,7 +182,7 @@ const CharacterCreation = (props) => {
                     {<img src={`/images/team/${myTeam.name}.png`} width={'160px'} alt={myTeam.name} />}
                     <div style={{ marginLeft: '18px' }} >
                       {myTeam.goals.map(goal => (
-                        <b key={goal._id} > {goal.description} </b>
+                        <p key={goal._id} > {goal.description} </p>
                       ))}
                     </div>
                   </Flex>
@@ -189,18 +200,18 @@ const CharacterCreation = (props) => {
                 ))}
               </Grid>
               <Button onClick={() => setActiveStep(activeStep - 1)} >Prev</Button>
-              <Button onClick={() => setActiveStep(activeStep + 1)} >Next</Button>
+              <Button isDisabled={!occupation} onClick={() => setActiveStep(activeStep + 1)} >Next</Button>
             </Box>}
 
             {activeStep === 3 && <Box>
               Your ancestors left you with something... what did they bequeath you?
               <Grid templateColumns='repeat(3, 1fr)' gap={2} overflow={'auto'} maxHeight={'70vh'} >
                 {inheritences.map(el => (
-                  <AssetCard selected={el === occupation} handleSelect={() => setOccupation(el)} key={el._id} asset={el} />
+                  <AssetCard selected={el === inheritence} handleSelect={() => setInheritence(el)} key={el._id} asset={el} />
                 ))}
               </Grid>
               <Button onClick={() => setActiveStep(activeStep - 1)} >Prev</Button>
-              <Button onClick={() => setActiveStep(activeStep + 1)} >Next</Button>
+              <Button isDisabled={!inheritence} onClick={() => setActiveStep(activeStep + 1)} >Next</Button>
             </Box>}
 
             {activeStep === 4 && <Box>
@@ -211,12 +222,23 @@ const CharacterCreation = (props) => {
                 </InputLeftElement>
                 <Input rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></Input>
               </InputGroup>
+              Bio (optional):
+              <textarea rows='6' value={bio} className='textStyle' onChange={(event) => setBio(event.target.value)} />
+
+              Occupation:
+              <AssetCard asset={occupation} />
+
+              Inheritence:
+              <AssetCard asset={inheritence} />
+
+
 
               <Stack>
                 {disabledConditions.filter(el => el.disabled).map((opt, index) =>
                   <Text color='red' key={index}>{opt.text}</Text>
                 )}
               </Stack>
+              <Button onClick={() => setActiveStep(activeStep - 1)} >Prev</Button>
               <Button isDisabled={isDisabled} onClick={submitCreation} variant='solid' colorScheme='green' >Create Character!</Button>
             </Box>}
           </Stack>

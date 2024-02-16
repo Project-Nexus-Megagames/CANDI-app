@@ -15,8 +15,7 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
     'Rat',
     'Mimic',
     'Surface',
-    'Underkin',
-    'Control'
+    'Underkin'
   ]); // TODO: update with Faction tags
 
   const myCharacter = useSelector((state) => state.auth.myCharacter);
@@ -61,9 +60,10 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
         {renderTags.map((tag, index) => (
           <Box key={index}>
             <Box
-              marginTop='2rem'
+              marginTop='1rem'
             />
-            <h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>
+            {filteredCharacters
+              .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0 && <h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>}
             <Box
               marginBottom='1rem'
             />
