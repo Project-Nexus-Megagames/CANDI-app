@@ -143,7 +143,7 @@ const ActionForm = (props) => {
   ];
   const isDisabled = disabledConditions.some(el => el.disabled);
 
-
+  if (!actionType) return (<b>ERROR: ACTION TYPE NOT DEFINED</b>)
   return (
     <div>
       {header && <h4>{header}</h4>}

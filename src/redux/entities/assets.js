@@ -84,6 +84,12 @@ export const getMyAssets = createSelector(
   (assets, char) => assets.filter((asset) => asset.account === char.account || asset.sharedWith.some(c => c._id === char._id))
 );
 
+export const getMyTradableAssets = createSelector(
+  (state) => state.assets.list,
+  state => state.auth.myCharacter,
+  (assets, char) => assets.filter((asset) => asset.account === char.account && asset.tags.some(s => s === 'tradable'))
+);
+
 export const getTeamDice = createSelector(
   state => state.assets.list.filter(el => el.account),
   state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),

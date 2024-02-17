@@ -51,7 +51,7 @@ function ActionDifficulty({ action, submission }) {
 
     let sum = 0;
     for (let asset of assets) {
-
+      if (!asset.dice) asset = getAsset(asset);
       sum = 1;
       for (const die of asset.dice.filter(el => el.amount >= cost)) {
         probs.push(1 - (die.amount + 1 - cost) / die.amount)
@@ -85,7 +85,7 @@ function ActionDifficulty({ action, submission }) {
 
       {mode && <Center>
         <InputNumber defaultValue={submission.difficulty} onChange={setNumber} />
-        <Button onClick={handleDifficulty} >Submit {stats(submission.assets, number)}% </Button>
+        <Button onClick={handleDifficulty} >Submit {prob}% </Button>
       </Center>}
 
       {action.type !== 'Agenda' && myCharacter?._id === action.creator._id && <VStack>

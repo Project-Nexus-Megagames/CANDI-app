@@ -182,9 +182,9 @@ const Navigation = (props) => {
 
         <Box
           flex={2}
-          style={{ width: '70%', margin: '8px', }}
+          style={{ width: '50%', margin: '8px', }}
         >
-          {/* <div className='styleCenterLeft'>
+          <div className='styleCenterLeft'>
             {minutes}:{seconds <= 9 && <t>0</t>}{seconds} ~
             Tick {clock.tickNum}
             <BsGearFill
@@ -193,12 +193,12 @@ const Navigation = (props) => {
               style={{ cursor: 'pointer', marginLeft: "5px" }}
             />
 
-            <Popover 
-            isOpen={open}
-            closeOnBlur
-            openDelay={200} 
-            hasArrow  
-            placement='right'>
+            <Popover
+              isOpen={open}
+              closeOnBlur
+              openDelay={200}
+              hasArrow
+              placement='right'>
               <PopoverTrigger>
                 <FaEmpire
                   spin={clock.loading.toString()}
@@ -207,7 +207,7 @@ const Navigation = (props) => {
                 />
               </PopoverTrigger>
               <PopoverContent backgroundColor={getFadedColor('background')} >
-              {minutes}:{seconds} ~
+                {minutes}:{seconds} ~
                 {speaker}
               </PopoverContent>
             </Popover>
@@ -217,28 +217,26 @@ const Navigation = (props) => {
             isIndeterminate={loading}
             value={loading ? 100 : (seconds + (minutes * 60)) * 100 / max}
             colorScheme={clock.paused ? 'whiteAlpha' : loading ? 'gray' : ((seconds + (minutes * 60)) * 100 / max >= 66) ? "cyan" : ((seconds + (minutes * 60)) * 100 / max >= 33 ? "yellow" : "red")}
-            style={{ width: '30%', }} /> */}
+            style={{ width: '30%', }} />
         </Box>
 
         <Box
           display='flex'
-          flex={2}
         >
-          <Box
-            justifyContent={'center'}
-            alignItems={'center'}
-            display='flex'
-            flexDir={'column'}
-            width={'100%'}
-          >
-            <p>Round: {props.gamestate.round} </p>
+
+          {/* <p>Round: {props.gamestate.round} </p>
             {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
             {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
             {false &&
               <div className='styleCenter'>
                 {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"} />))}
+              </div>} */}
+          <div style={{ borderRadius: '5px', display: 'flex', width: '40%' }}>
+            {myAccout &&
+              <div className='styleCenter'>
+                {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"} />))}
               </div>}
-          </Box>
+          </div>
         </Box>
 
         <Box
@@ -271,8 +269,8 @@ const Navigation = (props) => {
                 <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
                   <VStack divider={<Divider />} overflow={"auto"} >
                     {allCharacters
-                    .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
-                    .map(character => (
+                      .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
+                      .map(character => (
                         <CharacterListItem
                           character={character}
                           key={character._id}
@@ -281,7 +279,7 @@ const Navigation = (props) => {
                           handleSelect={() => {
                             handleCharChange(character._id);
                           }} />
-                    ))}
+                      ))}
                   </VStack>
 
                 </PopoverBody>

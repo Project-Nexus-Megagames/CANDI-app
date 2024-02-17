@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, Divider, Flex, Grid, GridItem, IconButton, VStack } from '@chakra-ui/react';
 import { Funnel, Trash } from '@rsuite/icons';
-import React, { useEffect } from 'react'; // React import
+import React, { useEffect, useRef } from 'react'; // React import
 import { BsPlus, BsX, BsXCircle } from 'react-icons/bs';
 import { useSelector } from 'react-redux'; // Redux store provider
 import { useNavigate } from "react-router";
@@ -22,6 +22,7 @@ import { getTeamTrades } from '../../redux/entities/trades';
 import { FaHandshake } from 'react-icons/fa';
 import { getCharAccount } from '../../redux/entities/accounts';
 import { getPublicCharacters } from '../../redux/entities/characters';
+import Comment from '../Common/Comment';
 
 const Trade = (props) => {
   const tradeLoading = useSelector(s => s.trades.loading);
@@ -31,7 +32,7 @@ const Trade = (props) => {
   const assets = useSelector(s => s.assets.list);
   const teams = useSelector(s => s.teams.list);
 
-  const { login } = useSelector(s => s.auth);
+  const { login, myCharacter } = useSelector(s => s.auth);
   const myTrades = useSelector(getTeamTrades);
   const account = useSelector(getCharAccount);
   const publicCharacter = useSelector(getPublicCharacters);
@@ -39,17 +40,24 @@ const Trade = (props) => {
   const [selectedTrade, setSelectedTrade] = React.useState(null);
   const [mode, setMode] = React.useState(false);
   const [past, setPast] = React.useState(false);
+  const [text, setText] = React.useState("");
   const [partner, setPartner] = React.useState(false);
   const [tags, setTags] = React.useState(['draft', 'completed']);
   const [tradeState, setTradeState] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
+  const messagesEndRef = useRef(null)
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   const navigate = useNavigate();
   useEffect(() => {
     if (!props.login) {
       navigate("/");
     }
-  }, []);
+    scrollToBottom()
+  }, [selectedTrade]);
 
 
   useEffect(() => {
@@ -102,6 +110,24 @@ const Trade = (props) => {
     };
     try {
       socket.emit('request', { route: 'trade', action: 'modifyTrade', data });
+    } catch (err) {
+      // Alert.error(`${err.data} - ${err.message}`)
+    }
+  }
+
+  const sendComment = async () => {
+    let data = {
+      text,
+      trade: selectedTrade._id,
+      commentor: myCharacter._id
+    };
+    try {
+      setLoading(true)
+      socket.emit('request', { route: 'trade', action: 'comment', data }, (response) => {
+        console.log(response);
+        if (response.type === 'success') setText('')
+        setLoading(false)
+      });
     } catch (err) {
       // Alert.error(`${err.data} - ${err.message}`)
     }
@@ -248,7 +274,17 @@ const Trade = (props) => {
 
               <p style={{ size: '11px' }} ><b>Last Updated:</b> {`${new Date(selectedTrade.updatedAt).toLocaleTimeString()} - ${new Date(selectedTrade.updatedAt).toDateString()}`}</p>
               {selectedTrade.status.map((tag, index) => (<NexusTag key={tag} variant='solid' colorScheme="blue">{tag}</NexusTag>))}
-              <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} trade={selectedTrade} isMine={selectedTrade.tradePartner.account === account._id || selectedTrade.initiator.account === account._id} ></TradeCard>
+              {/* <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} trade={selectedTrade} isMine={selectedTrade.tradePartner.account === account._id || selectedTrade.initiator.account === account._id} ></TradeCard> */}
+            </Box>
+
+            <Box height={'80vh'} overflow={'auto'} >
+              Feed:
+              {selectedTrade.comments.map(comment => (
+                <Comment key={comment._id} comment={comment} />
+              ))}
+              <textarea style={{ marginTop: "15px" }} ref={messagesEndRef} rows='5' value={text} className='textStyle' onChange={(event) => setText(event.target.value)}></textarea>
+              <Button isLoading={loading} onClick={sendComment} >Send</Button>
+
             </Box>
 
           </div>}

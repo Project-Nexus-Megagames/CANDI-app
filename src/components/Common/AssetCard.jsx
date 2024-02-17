@@ -46,68 +46,70 @@ const AssetCard = (props) => {
         <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`, height: '100%' }} >
           <CardHeader>
 
-            <Flex align={'center'} overflow='hidden' width='100%'>
+            <Flex align={'left'} overflow='hidden' width='100%'>
               <Spacer />
+              {character && <CharacterNugget size='lg' character={character} />}
               <Box>
+
                 <div display="flex">
 
-                  {<h5 style={{ marginLeft: '5px' }}>{character && <CharacterNugget character={character} />}{asset.name}
-                    {<CountDownTag timeout={asset.timeout} />}
-                  </h5>}
-
-
-                  {asset.sharedWith && asset.sharedWith.length > 0 && <b>Shared with:</b>}
-                  {asset.sharedWith && asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
-                    <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
-                      <Avatar
-                        size={'xs'}
-                        name={char?.characterName}
-                        src={char?.profilePicture}
-                        margin='1'
-                      />
-                      <TagLabel>{char.characterName}</TagLabel>
-                      {(character?._id === asset.ownerCharacter || character.account === asset.account) &&
-                        <TagCloseButton onClick={() => {
-                          const data = {
-                            id: asset._id,
-                            charId: char._id
-                          };
-                          socket.emit('request', {
-                            route: 'asset',
-                            action: 'removeShared',
-                            data
-                          });
-                        }}
-                        />}
-                    </Tag>
-                  )}
-
-                  {!disabled && mode === 'lend' && <AddCharacter
-                    characters={characters.filter(el => !asset.sharedWith.some(ass => ass?._id === el._id))}
-                    handleSelect={(character) => {
-                      const data = {
-                        id: asset._id,
-                        charId: character._id
-                      };
-                      socket.emit('request', {
-                        route: 'asset',
-                        action: 'addShared',
-                        data
-                      });
-                    }}
-                  />}
-                  <br />
-
-
-                  {asset.type && <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>}
-                  <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
-                  <Center>
-                    {asset.status?.map(el => (
-                      <NexusTag key={el} value={el}></NexusTag>
-                    ))}
-                  </Center>
-
+                  <h5 style={{ marginLeft: '5px' }}>{asset.name}
+                    <br />
+                    {/* {<CountDownTag timeout={asset.timeout} />} */}
+                    {asset.type && <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>}
+                    <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
+                    <Center>
+                      {asset.status?.map(el => (
+                        <NexusTag key={el} value={el}></NexusTag>
+                      ))}
+                      {asset.tags?.map(el => (
+                        <NexusTag key={el} value={el}></NexusTag>
+                      ))}
+                    </Center>
+                  </h5>
                 </div>
+
+                {asset.sharedWith && asset.sharedWith.length > 0 && <b>Shared with:</b>}
+                {asset.sharedWith && asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
+                  <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
+                    <Avatar
+                      size={'xs'}
+                      name={char?.characterName}
+                      src={char?.profilePicture}
+                      margin='1'
+                    />
+                    <TagLabel>{char.characterName}</TagLabel>
+                    {(character?._id === asset.ownerCharacter || character.account === asset.account) &&
+                      <TagCloseButton onClick={() => {
+                        const data = {
+                          id: asset._id,
+                          charId: char._id
+                        };
+                        socket.emit('request', {
+                          route: 'asset',
+                          action: 'removeShared',
+                          data
+                        });
+                      }}
+                      />}
+                  </Tag>
+                )}
+
+                {!disabled && mode === 'lend' && <AddCharacter
+                  characters={characters.filter(el => !asset.sharedWith.some(ass => ass?._id === el._id))}
+                  handleSelect={(character) => {
+                    const data = {
+                      id: asset._id,
+                      charId: character._id
+                    };
+                    socket.emit('request', {
+                      route: 'asset',
+                      action: 'addShared',
+                      data
+                    });
+                  }}
+                />}
+                <br />
 
                 {control && showButtons && <ButtonGroup isAttached>
                   <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
@@ -130,6 +132,7 @@ const AssetCard = (props) => {
             </Flex>
 
 
+            Dice Pool:
             <Flex align={'center'} overflow='hidden' width='100%' >
               <Spacer />
               {asset.dice?.map(die => (
@@ -140,12 +143,6 @@ const AssetCard = (props) => {
                 </div>
               ))}
               <Spacer />
-            </Flex>
-
-            <Flex align={'center'} overflow='hidden' width='100%' >
-              {asset.tags?.map(el => (
-                <NexusTag key={el} value={el}></NexusTag>
-              ))}
             </Flex>
 
           </CardHeader>

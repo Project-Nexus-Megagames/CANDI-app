@@ -163,7 +163,7 @@ const CharacterCreation = (props) => {
           {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => reduxAction(setCharacter(myChar))}>Exit (Control Only)</Button>}
         </ModalHeader>
         <ModalBody className='styleCenterTop'>
-          <Stack style={{ width: '70%' }} >
+          <Stack style={{ width: '80%', height: '100%' }} overflow={'auto'}  >
 
 
             {activeStep === 0 && <Box>
@@ -194,7 +194,7 @@ const CharacterCreation = (props) => {
 
             {activeStep === 2 && <Box>
               What is your Occupation?
-              <Grid templateColumns='repeat(3, 1fr)' gap={2}>
+              <Grid templateColumns='repeat(3, 1fr)' gap={2} overflow={'auto'} maxHeight={'60vh'}>
                 {occupations.map(el => (
                   <AssetCard selected={el === occupation} handleSelect={() => setOccupation(el)} key={el._id} asset={el} />
                 ))}
@@ -205,7 +205,7 @@ const CharacterCreation = (props) => {
 
             {activeStep === 3 && <Box>
               Your ancestors left you with something... what did they bequeath you?
-              <Grid templateColumns='repeat(3, 1fr)' gap={2} overflow={'auto'} maxHeight={'70vh'} >
+              <Grid templateColumns='repeat(3, 1fr)' gap={2} overflow={'auto'} maxHeight={'60vh'} >
                 {inheritences.map(el => (
                   <AssetCard selected={el === inheritence} handleSelect={() => setInheritence(el)} key={el._id} asset={el} />
                 ))}
@@ -215,22 +215,23 @@ const CharacterCreation = (props) => {
             </Box>}
 
             {activeStep === 4 && <Box>
-              Finally, What is your name?
-              <InputGroup>
-                <InputLeftElement >
-                  <IconButton onClick={generateName} icon={<Random />} />
-                </InputLeftElement>
-                <Input rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></Input>
-              </InputGroup>
-              Bio (optional):
-              <textarea rows='6' value={bio} className='textStyle' onChange={(event) => setBio(event.target.value)} />
+              <Box overflow={'auto'} maxHeight={'60vh'}>
+                Finally, What is your name?
+                <InputGroup>
+                  <InputLeftElement >
+                    <IconButton onClick={generateName} icon={<Random />} />
+                  </InputLeftElement>
+                  <Input rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></Input>
+                </InputGroup>
+                Bio (optional):
+                <textarea rows='6' value={bio} className='textStyle' onChange={(event) => setBio(event.target.value)} />
 
-              Occupation:
-              <AssetCard asset={occupation} />
+                Occupation:
+                <AssetCard asset={occupation} />
 
-              Inheritence:
-              <AssetCard asset={inheritence} />
-
+                Inheritence:
+                <AssetCard asset={inheritence} />`
+              </Box>
 
 
               <Stack>

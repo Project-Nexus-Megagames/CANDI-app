@@ -17,6 +17,7 @@ import WordDivider from '../../../Common/WordDivider';
 
 const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
   const control = useSelector(state => state.auth.control);
+  const actionTypes = useSelector(state => state.gameConfig.actionTypes);
   const [mode, setMode] = React.useState(false);
   const [name, setName] = useState(action.name);
   const [description, setDescription] = useState(action.submission.description);
@@ -24,6 +25,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
   const [choiceType, setChoiceType] = React.useState('binary');
 
   const isUnpublishedAgenda = (action.tags.some((tag) => tag.toLowerCase() !== 'published') || !action.tags.length > 0) && action.type.toLowerCase() === 'agenda';
+  if (!actionType) actionType = actionTypes.find(el => el.type == action.type)
 
 
   function getBorder() {
