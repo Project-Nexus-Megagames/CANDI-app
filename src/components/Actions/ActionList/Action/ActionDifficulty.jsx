@@ -35,7 +35,7 @@ function ActionDifficulty({ action, submission }) {
   const handleRoll = async () => {
     const data = {
       action: action._id,
-      submission: submission._id,
+      submission: submission._id
     };
     socket.emit('request', {
       route: 'action',
@@ -51,7 +51,9 @@ function ActionDifficulty({ action, submission }) {
 
     let sum = 0;
     for (let asset of assets) {
-      if (!asset.dice) asset = getAsset(asset);
+      console.log(asset)
+      if (!asset || !asset.dice) asset = getAsset(asset);
+      if (!asset) break;
       sum = 1;
       for (const die of asset.dice.filter(el => el.amount >= cost)) {
         probs.push(1 - (die.amount + 1 - cost) / die.amount)
