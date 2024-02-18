@@ -57,9 +57,9 @@ function Feed({ action }) {
       sortThisIn(contract, list)
     }
 
-    if (!isControl) {
-      list = list.filter(el => (el.status && el.status === 'Public') || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
-    }
+    // if (!isControl) {
+    //   list = list.filter(el => (el.status && el.status === 'Public') || el.commentor?._id === myCharacter._id || el.creator?._id === myCharacter._id)
+    // }
 
     setFeed(list)
   }, [action.comments, action.results, action.effects, action.submissions,]);
