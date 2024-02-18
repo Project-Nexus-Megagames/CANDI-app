@@ -6,7 +6,7 @@ import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
 import other from '../Images/other.jpg';
-import news from '../Images/News.jpg';
+import news from '../Images/Big Cheese Says.png';
 import actions from '../Images/actions.jpg';
 import map from '../Images/location.png';
 import control from '../Images/control.png';
@@ -94,10 +94,10 @@ const HomePage = (props) => {
         <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
       </GridItem> */}
 
-
+          {/* 
           <GridItem colSpan={columns == 1 ? 2 : 1}>
             <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
-          </GridItem>
+          </GridItem> */}
 
           {/* <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
         <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />

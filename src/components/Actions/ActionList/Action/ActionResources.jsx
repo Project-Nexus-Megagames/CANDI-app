@@ -14,8 +14,8 @@ function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
 
   const breakpoints = useBreakpointValue({
     base: { columns: 0, rows: actionType.maxAssets, width: '15rem', bottom: '1.75rem', left: '7.5rem' },
-    md: { columns: actionType.maxAssets, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem' },
-    lg: { columns: actionType.maxAssets, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem' }
+    md: { columns: actionType.maxAssets, rows: 0, width: '15rem', bottom: '1.75rem', left: '5rem' },
+    lg: { columns: actionType.maxAssets, rows: 0, width: '25rem', bottom: '1.75rem', left: '7.5rem' }
   })
 
   useEffect(() => {
@@ -48,9 +48,12 @@ function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
     let inner;
     if (retrievedAsset) {
       inner = (
-        <Box >
-          <AssetCard removeAsset={() => isControl ? rejectAsset(retrievedAsset._id) : undefined} showRemove={isControl} asset={retrievedAsset} disabled />
-        </Box>
+        <AssetCard
+          removeAsset={() => isControl ? rejectAsset(retrievedAsset._id) : undefined}
+          showRemove={isControl}
+          asset={retrievedAsset}
+          disabled
+        />
       );
     } else {
       inner = 'Empty Slot'

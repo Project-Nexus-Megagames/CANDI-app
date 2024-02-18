@@ -43,7 +43,7 @@ const AssetCard = (props) => {
 
   if (asset)
     return (
-      <div style={{ textAlign: 'center', width: "100%", border: selected ? `3px solid white` : undefined, borderRadius: '10px', }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
+      <div style={{ textAlign: 'center', width: "100%", height: "100%", border: selected ? `3px solid white` : undefined, borderRadius: '10px', }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
         <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`, height: '100%' }} >
           <CardHeader>
 

@@ -11,7 +11,7 @@ const HexMap = (props) => {
   const { mode, setMode } = props;
   const [gStats, setGStats] = React.useState([]);
   const locations = useSelector(getMyLocations);
-  
+
   const globalStats = useSelector(s => s.gameConfig.globalStats);
   const [value, setValue] = React.useState({ scale: 1, translation: { x: 0, y: 0 } });
 
@@ -82,15 +82,15 @@ const HexMap = (props) => {
     <div style={{}}>
       <h2>Stockpot City</h2>
       <ButtonGroup>
-        {['Stats', 'Actions', 'Characters'].map(el => (
+        {['Stats', 'Actions'].map(el => (
           <Button colorScheme='blue' key={el} variant={mode !== el ? 'ghost' : 'solid'} onClick={() => setMode(el)} >{el}</Button>
         ))}
-        
+
       </ButtonGroup>
 
       {mode && mode === 'Stats' && <div>
         <b>Global Stats</b>
-        <StatBar selectedStat={props.selectedStat} setSelectedStat={props.setSelectedStat} globalStats={gStats} />        
+        <StatBar selectedStat={props.selectedStat} setSelectedStat={props.setSelectedStat} globalStats={gStats} />
       </div>}
 
       <hr />
@@ -126,10 +126,9 @@ const HexMap = (props) => {
                       backgroundImage: loc ?
                         "url(" + tiles[hash] + ")" :
                         "inherit",
-                    }} >♦ 
+                    }} >♦
                     <div className='container' >
                       <t>{loc?.name}</t>
-                      {locations.length}
                       {stat && <ResourceNugget key={x} value={stat?.statAmount} type={`${props.selectedStat.type}`} />}
                     </div>
 

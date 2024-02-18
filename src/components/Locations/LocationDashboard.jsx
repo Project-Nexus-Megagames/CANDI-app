@@ -26,11 +26,11 @@ const LocationDashboard = (props) => {
 
   const locationContracts = useSelector(getLocationContracts);
   const playersPresent = useSelector(getPlayersPresent);
-	let myLocation = useSelector(getMyLocation);
+  let myLocation = useSelector(getMyLocation);
 
 
   const [levels, setLevels] = React.useState([]);
-  const [mode, setMode] = React.useState(false);
+  const [mode, setMode] = React.useState('Stats');
   const [selectedLocation, setSelectedLocation] = React.useState(false);
   const [selectedStat, setSelectedStat] = React.useState(false);
 
@@ -64,42 +64,42 @@ const LocationDashboard = (props) => {
 
           {selectedLocation.description}
 
-          <Button onClick={() => setMode('newFacility')} >New Building</Button>
+          {/* <Button onClick={() => setMode('newFacility')} >New Building</Button> */}
           <br />
 
-          {mode === 'Stats' && <Box>          
+          {mode === 'Stats' && <Box>
             {selectedLocation.name}' Stats
-          <br />
-          <StatBar selectedStat={selectedStat} setSelectedStat={setSelectedStat} globalStats={selectedLocation.locationStats} />
+            <br />
+            <StatBar selectedStat={selectedStat} setSelectedStat={setSelectedStat} globalStats={selectedLocation.locationStats} />
           </Box>}
 
           {mode === 'Actions' &&
             <Box>
-            <h5>Actions </h5>
-            <VStack overflow={'auto'} >
-              {locationContracts.filter(el => el.location === selectedLocation._id).map(contract => (
-                <Contract key={contract._id} contract={contract} show />
-              ))}
-            </VStack>
-          </Box>}
+              <h5>Actions </h5>
+              <VStack overflow={'auto'} >
+                {locationContracts.filter(el => el.location === selectedLocation._id).map(contract => (
+                  <Contract key={contract._id} contract={contract} show />
+                ))}
+              </VStack>
+            </Box>}
 
 
-          <h5>Buildings</h5>
+          {/* <h5>Buildings</h5>
           <VStack overflow={'auto'} >
             {facilities.filter(el => el.location._id == selectedLocation._id).map(facility => (
               <FacilityCard key={facility._id} facility={facility} />
             ))}
-          </VStack>
+          </VStack> */}
 
           {mode === 'Characters' && <Box>
-				 	{myLocation && myLocation.subLocations && myLocation.subLocations.map(sub => 
-						<div key={sub._id}>
-							{sub.name}
-							{playersPresent.filter(el => el.subLocation === sub.name).map(player => 
-							<div key={player._id}>{player.characterName}</div>								
-								)}
- 						</div>)}
-				</Box>}
+            {myLocation && myLocation.subLocations && myLocation.subLocations.map(sub =>
+              <div key={sub._id}>
+                {sub.name}
+                {playersPresent.filter(el => el.subLocation === sub.name).map(player =>
+                  <div key={player._id}>{player.characterName}</div>
+                )}
+              </div>)}
+          </Box>}
 
 
 
@@ -107,10 +107,10 @@ const LocationDashboard = (props) => {
 
         {selectedLocation && selectedLocation.x && <Box>
           Here be dragons...
-          <br/>
+          <br />
           X: {selectedLocation.x} Y: {selectedLocation.y}
           {control && <Button onClick={() => setMode('newLocation')} >
-            New Location  
+            New Location
           </Button>}
         </Box>}
 

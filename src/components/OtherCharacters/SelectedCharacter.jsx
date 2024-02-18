@@ -67,14 +67,14 @@ const SelectedCharacter = (props) => {
         </div>
 
 
-        < Button
+        {/* < Button
           onClick={(e) => { e.stopPropagation(); copyToClipboard(selected) }}
           leftIcon={<CopyIcon />}
           colorScheme='white'
           variant='outline'
         >
           {selected?.email}
-        </Button>
+        </Button> */}
 
         {selected.pronouns && <p>
           Character Pronouns: <b>{selected.pronouns}</b>
@@ -84,7 +84,7 @@ const SelectedCharacter = (props) => {
         </p>}
 
         {(isControl || myCharacter._id === selected._id) && selected.account && <div>
-          <WordDivider word={"Effort"} ></WordDivider>
+          <WordDivider word={"Resources"} ></WordDivider>
           <Center>
             {selectedResource.map((item) =>
               <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
@@ -96,11 +96,14 @@ const SelectedCharacter = (props) => {
 
         {(isControl || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
           <WordDivider word={"Stats"} ></WordDivider>
-          {selected.characterStats && selected.characterStats.map((item) =>
-            <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
-          )}
+          <Center>
+            {selected.characterStats && selected.characterStats.map((item) =>
+              <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
+            )}
+          </Center>
+
         </div>}
-        <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
+        {selected.bio.length > 0 && <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>}
         <p>{selected.bio}</p>
 
       </GridItem>
@@ -113,24 +116,24 @@ const SelectedCharacter = (props) => {
         />
       </GridItem>
 
-      {(isControl || myCharacter._id === selected._id) && <GridItem bg={mode === "new" ? '#232c3b' :'#555555'} area={'body'} >
+      {(isControl || myCharacter._id === selected._id) && <GridItem bg={mode === "new" ? '#232c3b' : '#555555'} area={'body'} >
         <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
           Assets
           {isControl && mode !== "new" && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
           {isControl && mode === "new" && <IconButton onClick={() => setMode(false)} variant={'solid'} colorScheme="red" size={'sm'} icon={<CloseIcon />} />}
         </h5>
         {mode !== "new" && <Grid templateColumns='repeat(3, 1fr)' gap={1}>
-          { assets
+          {assets
             .filter((el) => (el.account && el.account === selected.account) || el.sharedWith.some(c => c._id === selected._id))
             .map((asset) => (
               <AssetCard key={asset._id} asset={asset} character={selected} showButtons />
             ))}
         </Grid>}
         {mode === "new" &&
-            <Center  >
-              <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode} />
-            </Center>
-          }
+          <Center  >
+            <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode} />
+          </Center>
+        }
       </GridItem>}
 
       {/* <CandiModal onClose={() => { setMode(false); }} open={mode === "new"} title={`${mode} Asset`}>

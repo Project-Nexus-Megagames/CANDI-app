@@ -34,18 +34,18 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`)
       articles.list.push(action.payload);
     },
-    articleHidden:(articles, action) => {
+    articleHidden: (articles, action) => {
       console.log(`${action.type} Dispatched`)
       let index = articles.list.findIndex(el => el._id === action.payload._id);
       articles.list[index].hidden = true;
       articles.list = articles.list.filter(item => item.hidden === false);
       articles.hidden = articles.list.filter(item => item.hidden === true);
     },
-		articleUpdated: (articles, action) => {
+    articleUpdated: (articles, action) => {
       console.log(`${action.type} Dispatched...`);
       const index = articles.list.findIndex(el => el._id === action.payload._id);
 
-      if(index > -1) {
+      if (index > -1) {
         if (action.payload.tags.some(el => el.toLowerCase() === 'published') && articles.list[index].tags.some(el => el.toLowerCase() === 'draft')) {
           articles.new.push(action.payload);
         }
@@ -57,7 +57,7 @@ const slice = createSlice({
       }
       articles.lastFetch = Date.now();
     },
-		articleDeleted: (articles, action) => {
+    articleDeleted: (articles, action) => {
       console.log(`${action.type} Dispatched`)
       const index = articles.list.findIndex(el => el._id === action.payload._id);
       articles.list.splice(index, 1);
@@ -74,8 +74,8 @@ const slice = createSlice({
 export const {
   articleAdded,
   articleHidden,
-	articleUpdated,
-	articleDeleted,
+  articleUpdated,
+  articleDeleted,
   clearNewArticle,
   articlesReceived,
   articlesRequested,
@@ -87,23 +87,23 @@ export default slice.reducer; // Reducer Export
 // Selector
 export const getMyArticles = createSelector(
   state => state.articles.list,
-  state => state.characters.list.find(el => el.username === state.auth.myCharacter?.username),
+  state => state.auth.myCharacter,
   (articles, myCharacter) => articles.filter(
-    article => (( article.creator?._id === myCharacter?._id ) ))
+    article => ((article.creator?._id === myCharacter?._id)))
 );
 
 export const getPublishedArticles = createSelector(
   state => state.articles.list,
   state => state.characters.list.find(el => el.username === state.auth.myCharacter?.username),
   (articles) => articles.filter(
-    article => ( article.tags.some(tag => tag === 'Published')))
+    article => (article.tags.some(tag => tag === 'Published')))
 );
 
 export const getCurrentArticles = createSelector(
   state => state.articles.list,
-	state => state.gamestate.round,
+  state => state.gamestate.round,
   (articles, round) => articles.filter(
-    article => ( article.round <= round))
+    article => (article.round <= round))
 );
 
 
@@ -116,10 +116,10 @@ export const loadArticles = (payload) => (dispatch, getState) => {
     apiCallBegan({
       url,
       method: 'get',
-			data: payload,
-      onStart:articlesRequested.type,
-      onSuccess:articlesReceived.type,
-      onError:articlesRequestFailed.type
+      data: payload,
+      onStart: articlesRequested.type,
+      onSuccess: articlesReceived.type,
+      onError: articlesRequestFailed.type
     })
   );
 };

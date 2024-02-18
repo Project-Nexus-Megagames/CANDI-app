@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, StackDivider, Tag, VStack } from "@chakra-ui/react";
+import { Box, Flex, StackDivider, Switch, Tag, VStack } from "@chakra-ui/react";
 import ActionTag from "./ActionTag";
 import CharacterNugget from '../../Common/CharacterNugget';
 import { getFadedColor } from '../../../scripts/frontend';
+import usePermissions from '../../../hooks/usePermissions';
+import { useSelector } from 'react-redux';
 
 function ActionList({ actions, handleSelect, selected }) {
   const [rounds, setRounds] = useState([]);
   const [renderRounds, setRenderRounds] = useState([]);
+  const [controlMode, setControlMode] = useState(false);
+  const myCharacter = useSelector(state => state.auth.myCharacter);
+  const { isControl } = usePermissions();
 
   useEffect(() => {
     try {
@@ -46,6 +51,7 @@ function ActionList({ actions, handleSelect, selected }) {
   };
 
   const sortedActions = (actions) => {
+    if (controlMode) return actions.filter(el => el.control == myCharacter._id && el.type !== 'Agenda')
     return actions
       .sort((a, b) => {
         // sort the catagories alphabetically
@@ -61,7 +67,7 @@ function ActionList({ actions, handleSelect, selected }) {
 
   const handleRoundToggle = (round) => {
     if (renderRounds.some(r => r === round)) setRenderRounds(renderRounds.filter((r => r !== round)))
-    else setRenderRounds([ ...renderRounds, round ])
+    else setRenderRounds([...renderRounds, round])
   }
 
   return (
@@ -70,6 +76,7 @@ function ActionList({ actions, handleSelect, selected }) {
       align='stretch'
       maxWidth={'20vw'}
     >
+      {isControl && <Switch onChange={() => setControlMode(!controlMode)} />}
       {rounds.map(round => (
         <div key={round} >
           <h4 onClick={() => handleRoundToggle(round)} style={{ backgroundColor: getFadedColor('gold'), color: 'black', cursor: 'pointer' }} >Round {round}</h4>

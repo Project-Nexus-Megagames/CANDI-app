@@ -188,6 +188,7 @@ const Navigation = (props) => {
         >
           <div className='styleCenterLeft'>
             {minutes}:{seconds <= 9 && <t>0</t>}{seconds} ~
+            Round {gamestate.round} -
             Tick {clock.tickNum}
             <BsGearFill
               spin={clock.loading.toString()}

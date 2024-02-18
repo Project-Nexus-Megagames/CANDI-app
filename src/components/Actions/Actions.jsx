@@ -11,13 +11,9 @@ import ActionList from './ActionList/ActionList';
 import { getFadedColor, getIcon } from '../../scripts/frontend';
 
 const Actions = (props) => {
-  const actions = useSelector(s => s.actions.list);
   const myActions = useSelector(getMyActions);
-  const myCovertActions = useSelector(getMyCovertActions);
   const fActions = useSelector(filteredActions);
   const [filter, setFilter] = useState('');
-  const login = useSelector(s => s.auth.login);
-  const gamestate = useSelector(s => s.gamestate);
   const gameConfig = useSelector(s => s.gameConfig);
 
 
@@ -31,8 +27,8 @@ const Actions = (props) => {
   const [selected, setSelected] = useState(false);
 
   const [actionType, setActionType] = React.useState(
-     gameConfig.actionTypes.find(el => el.type === props.actionType) ||
-      gameConfig.actionTypes[0]);
+    gameConfig.actionTypes.find(el => el.type === props.actionType) ||
+    gameConfig.actionTypes[0]);
 
   if (!props.login) {
     navigate("/");
@@ -125,16 +121,16 @@ const Actions = (props) => {
           </Box>
         }
         {selected && !showNewActionModal &&
-        <Center>
-          <Action
-            action={selected}
-            actionType={gameConfig.actionTypes.find(el => el.type === selected.type)}
-            key={selected._id}
-            toggleAssetInfo={(asset) => {
-              setAssetInfo({ show: true, asset });
-            }}
-          />          
-        </Center>
+          <Center>
+            <Action
+              action={selected}
+              actionType={gameConfig.actionTypes.find(el => el.type === selected.type)}
+              key={selected._id}
+              toggleAssetInfo={(asset) => {
+                setAssetInfo({ show: true, asset });
+              }}
+            />
+          </Center>
 
         }
       </GridItem>
