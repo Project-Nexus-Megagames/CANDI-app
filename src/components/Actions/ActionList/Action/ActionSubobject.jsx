@@ -181,7 +181,7 @@ const ActionSubObject = (props) => {
           {subObject.__t === "Contract" &&
             <Contract show contract={subObject} />
           }
-          {(subObject.model === "Ice" || subObject.model === "Challlenge") &&
+          {(subObject.model === "Ice" || subObject.model === "Challenge") &&
             <div>
               <Wrap justify="space-around">
                 <Ice ice={subObject} />
@@ -263,7 +263,7 @@ const ActionSubObject = (props) => {
         selected={action}
       />
 
-      <CandiModal open={mode === 'editIce'} onClose={() => setMode(false)}  >
+      <CandiModal open={mode === 'editIce' || mode === 'editChallenge'} onClose={() => setMode(false)}  >
         <IceForm
           ice={subObject}
           mode={mode}
@@ -273,7 +273,7 @@ const ActionSubObject = (props) => {
               route: 'ice',
               action: mode,
               data: data
-            }, (response) => response.type === 'success' && setMode(false));
+            }, (response) => { if (response.type === 'success') setMode(false) });
           }} />
       </CandiModal>
 

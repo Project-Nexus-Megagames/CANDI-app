@@ -67,7 +67,8 @@ function ActionOptions({ options, actionType, action }) {
   // change this to add value to resources on an Agenda
   const agendaValue = (resource, value) => {
     switch (resource) {
-      // case 'agenda_effort': return 20 * value;
+      case 'agenda_effort': return 20 * value;
+      case 'effort': return 10 * value;
       default: return 1 * value;
     }
   }
@@ -165,7 +166,7 @@ function ActionOptions({ options, actionType, action }) {
                           style={{
                             padding: '5px',
                             border: `2px solid ${getFadedColor(getThisTeamFromAccount(accounts, teams, resource.contributor)).name}`,
-                            textAlign:'center'
+                            textAlign: 'center'
                           }} >
                           <h5>
                             <TeamAvatar account={resource.contributor} />
@@ -176,29 +177,29 @@ function ActionOptions({ options, actionType, action }) {
                       fontSize={'2em'}
                       height="150px"
                       index={jndex}
-                      value={`${resource.amount}`}
+                      value={`${resource.amount} (${agendaValue(resource.type, resource.amount)})`}
                       type={resource.type} />
 
-                      {isControl && <ButtonGroup>
+                    {isControl && <ButtonGroup>
                       <Tooltip
                         label='Return Resource to contributor'
                         aria-label='a tooltip'>
                         <IconButton isDisabled icon={<Icon as={FaRecycle} />} colorScheme="blue" onClick={removeResource} variant='solid' />
                       </Tooltip>
 
-                        <Tooltip
-                          label='Remove Resource'
-                          aria-label='a tooltip'>
-                          <IconButton icon={<Icon as={CloseIcon} />} colorScheme="red" onClick={()=> removeResource(resource, index)} variant='outline' />
-                        </Tooltip>
+                      <Tooltip
+                        label='Remove Resource'
+                        aria-label='a tooltip'>
+                        <IconButton icon={<Icon as={CloseIcon} />} colorScheme="red" onClick={() => removeResource(resource, index)} variant='outline' />
+                      </Tooltip>
 
-                      </ButtonGroup>}
-                    </Box>
+                    </ButtonGroup>}
+                  </Box>
                 ))}
-                  </Wrap>
+              </Wrap>
 
-              { options[index]?.assets?.length === 0 && <h5>No Assets Supporting</h5> }
-              { options[index]?.assets?.length > 0 && <h5>Assets Supporting: + {assetProgress(options[index])}</h5> }
+              {options[index]?.assets?.length === 0 && <h5>No Assets Supporting</h5>}
+              {options[index]?.assets?.length > 0 && <h5>Assets Supporting: + {assetProgress(options[index])}</h5>}
               {/* <Flex justify="space-around" align={'center'} >
                           {options[index]?.assets?.map((asset, index) => (
                             <Box key={asset._id}>
@@ -206,14 +207,14 @@ function ActionOptions({ options, actionType, action }) {
                             </Box>												
                           ))}	
                         </Flex> */}
-                  < SimpleGrid columns = { [2]} spacing = '40px' >
-                  {
-                    options[index]?.assets?.map((asset, index) => (
-                      <Box key={asset._id}>
-                        <AssetCard asset={asset} />
-                      </Box>
-                    ))
-                  }
+              < SimpleGrid columns={[2]} spacing='40px' >
+                {
+                  options[index]?.assets?.map((asset, index) => (
+                    <Box key={asset._id}>
+                      <AssetCard asset={asset} />
+                    </Box>
+                  ))
+                }
               </SimpleGrid>
             </div>}
 

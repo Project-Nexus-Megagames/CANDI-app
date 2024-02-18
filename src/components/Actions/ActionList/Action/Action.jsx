@@ -148,7 +148,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                 action={action._id}
               />}
 
-              {(action.submission.difficulty > 0 || control) && <ActionDifficulty action={action} submission={action.submission} />}
+              {(action.submission.difficulty > 0 || control) && actionType.type !== 'Agenda' && <ActionDifficulty action={action} submission={action.submission} />}
 
               {control && actionType.type === 'Agenda' && action.options.length == 0 &&
                 <Box>

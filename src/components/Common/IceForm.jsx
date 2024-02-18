@@ -31,15 +31,15 @@ const IceForm = (props) => {
   const [description, setDescription] = useState(ice?.description || 'Ice_description');
 
   const launderOptions = (options) => {
-    return options.map(op => {
-      let newObj = {
-        description: op.description,
-        challengeCost: { ...op.challengeCost },
-        consequence: op.consequence,
-      }
-
-      return newObj;
-    })
+    if (options)
+      return options.map(op => {
+        let newObj = {
+          description: op.description,
+          challengeCost: { ...op.challengeCost },
+          consequence: op.consequence,
+        }
+        return newObj;
+      })
   }
 
   const [options, setOptions] = React.useState(launderOptions(ice?.options) || []);

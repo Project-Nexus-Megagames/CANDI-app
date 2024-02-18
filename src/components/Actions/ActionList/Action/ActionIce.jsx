@@ -50,10 +50,14 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
   const getRelevantDice = (assets, types) => {
     let total = [];
     for (const ass of assets) {
-      total = total.concat(ass.dice.filter(el =>
-        el.amount >= subRotuine.challengeCost.value &&
-        types.some(t => el.type.toLowerCase() == t.toLowerCase())
-      ))
+
+      if (types.some(t => t === 'asset')) total = total.concat(ass.dice.filter(el =>
+        el.amount >= subRotuine.challengeCost.value))
+      else
+        total = total.concat(ass.dice.filter(el =>
+          el.amount >= subRotuine.challengeCost.value &&
+          types.some(t => el.type.toLowerCase() == t.toLowerCase())
+        ))
     }
     return (total)
   }
@@ -134,8 +138,9 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
             {subRotuine.results.length == 0 && <AddAsset
               handleSelect={(ass) => handleSelect(ass)}
               assets={assets?.filter(el =>
-                el.dice.some(el =>
-                  subRotuine.challengeCost.allowed.some(t => el.type.toLowerCase() === t.toLowerCase()))
+                !subRotuine.contributed.some(s => s._id === el._id) &&
+                el.dice.some(die =>
+                  subRotuine.challengeCost.allowed.some(t => el?.model.toLowerCase() === t.toLowerCase() || die.type.toLowerCase() === t.toLowerCase()))
               )}
             />}
           </WrapItem>

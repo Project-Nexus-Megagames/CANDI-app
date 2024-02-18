@@ -31,11 +31,11 @@ function getFadedColor(color, fade = 1) {
     case 'Pig':
     case 'Pig Goblins':
     case 'Fail':
-    case 'security':
+    case 'brawling':
       return `#e74c3c`
 
     case 'Refined Item':
-    case 'Wealth':
+    case 'wealth':
 
       return `#fbbc04`
     case 'Workshop':
@@ -79,8 +79,8 @@ function getFadedColor(color, fade = 1) {
       return `#e91e63`
 
 
-
     case 'Underkin':
+    case 'minion':
     case 'Underkin Faction':
     case 'The Overlord':
       return `#6d6d6d`
@@ -141,6 +141,7 @@ function getTextColor(color, fade = 1) {
     case 'Frog-text':
     case 'Pig-text':
     case 'Wealth-text':
+    case 'wealth':
     case 'Surface':
     case 'Surface-text':
     case 'Exploratory society':
@@ -296,10 +297,12 @@ const calculateProgress = (options) => {
 
 const agendaValue = (resource, value) => {
   switch (resource) {
+    case 'agenda_effort': return 20 * value;
+    case 'effort': return 10 * value;
     default: return 1 * value;
   }
 }
 
 
 
-export { calculateProgress, getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon, populateThisAccount };
+export { calculateProgress, getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon, populateThisAccount, agendaValue };
