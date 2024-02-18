@@ -48,6 +48,7 @@ const Contract = (props) => {
   return (
     <Box>
       <div style={{ border: `4px solid ${getFadedColor('')}`, minWidth: '20vw', textAlign: 'center' }}>
+        <h4>{contract.name}</h4>
         <h5>{contract.description}</h5>
 
         {show && !isCompleted && <ButtonGroup style={{ marginTop: '10px' }}>

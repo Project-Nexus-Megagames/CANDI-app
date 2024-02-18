@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { VStack, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button, CloseButton } from '@chakra-ui/react';
+import { VStack, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button, CloseButton, NumberInput } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { RepeatClockIcon } from '@chakra-ui/icons';
 import socket from '../../socket';
+import InputNumber from '../Common/InputNumber';
 
 const LocationForm = (props) => {
-  const { location, mode } = props;
+  const { location, mode, coords, action, character } = props;
 
   const [status, setStatus] = useState(location && location.status ? location.status : []);
-  const [coords, setCoords] = useState(location && location.coords ? location.coords : { x: 0, y: 0, z: 0 });
-
+  const [xCoords, setXCoords] = useState(location && location.coords ? location.coords.x : coords ? coords.x : 0);
+  const [yCoords, setYCoords] = useState(location && location.coords ? location.coords.y : coords ? coords.y : 0);
 
   const { register, handleSubmit, reset, formState, watch } = useForm(
     {
@@ -49,7 +50,7 @@ const LocationForm = (props) => {
       props.handleSubmit({ ...data, status: status, });
     } else {
       e.preventDefault();
-      const location = { ...data, status: status };
+      const location = { ...data, coords: { x: xCoords, y: yCoords, z: 2 }, action, effector: character._id };
       console.log('SENDING DATA', location);
       socket.emit('request', {
         route: 'location',
@@ -57,7 +58,7 @@ const LocationForm = (props) => {
         data: location,
       });
     }
-    props.closeModal();
+    // props.closeModal();
   }
 
   const handleError = (errors) => {
@@ -72,7 +73,12 @@ const LocationForm = (props) => {
       <Box>
         <VStack spacing='24px' w='100%'>
 
-          <Input type='text' size='md' variant='outline'></Input>
+          <FormLabel>X</FormLabel>
+          <InputNumber defaultValue={xCoords} onChange={(thing) => setXCoords(thing)} />
+
+
+          <FormLabel>Y</FormLabel>
+          <InputNumber defaultValue={yCoords} onChange={(thing) => setYCoords(thing)} />
 
           <FormControl>
             <FormLabel>Name</FormLabel>

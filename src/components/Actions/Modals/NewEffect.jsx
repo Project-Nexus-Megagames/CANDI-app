@@ -354,7 +354,7 @@ const NewEffects = (props) => {
           )}
 
 
-          {type === 'newLocation' && <LocationForm mode='new' coords={selectedLocation} closeModal={() => { setType(false); }} />}
+          {type === 'newLocation' && <LocationForm mode='new' character={myChar} action={props.selected._id} coords={selectedLocation} closeModal={() => { setType(false); }} />}
 
           {type === 'awardResources' && <ResourceEffect loggedInUser={loggedInUser} myChar={myChar} characters={[...props.selected.collaborators, props.selected.creator]} action={props.selected._id} />}
 
