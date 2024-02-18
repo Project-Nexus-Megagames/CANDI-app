@@ -92,7 +92,7 @@ export const getMyTradableAssets = createSelector(
 
 export const getTeamDice = createSelector(
   state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (assets, account) => assets.filter(
     asset => (asset.account === account?._id && asset.dice.length > 0)
   )
@@ -100,7 +100,7 @@ export const getTeamDice = createSelector(
 
 export const getTeamAssets = createSelector(
   state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (assets, account) => assets.filter(
     asset => (asset.account === account?._id)
   )
@@ -108,7 +108,7 @@ export const getTeamAssets = createSelector(
 
 export const getTeamWorkers = createSelector(
   state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (assets, account) => assets.filter(
     asset => (asset.account === account?._id && asset.tags.some(tag => tag === 'worker'))
   )
@@ -116,7 +116,7 @@ export const getTeamWorkers = createSelector(
 
 export const getTeamAgents = createSelector(
   state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (assets, account) => assets.filter(
     asset => (asset.account === account?._id && asset.tags.some(tag => tag === 'agent'))
   )
@@ -124,7 +124,7 @@ export const getTeamAgents = createSelector(
 
 export const getTeamBrokers = createSelector(
   state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (assets, account) => assets.filter(
     asset => (asset.account === account?._id && asset.tags.some(tag => tag === 'broker'))
   )
@@ -133,7 +133,7 @@ export const getTeamBrokers = createSelector(
 
 export const getTeamContracts = createSelector(
   state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (assets, account) => assets.filter(
     asset => (asset.account === account?._id && asset.tags.some(tag => tag === 'contract'))
   )

@@ -44,8 +44,18 @@ function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
   }
 
   const renderAsset = (assetID) => {
+    console.log("Scott: ", assetID)
     const retrievedAsset = getAsset(assetID);
     let inner;
+    if (assetID && assetID._id)
+      inner = (
+        <AssetCard
+          removeAsset={() => isControl ? rejectAsset(assetID._id) : undefined}
+          showRemove={isControl}
+          asset={assetID}
+          disabled
+        />
+      );
     if (retrievedAsset) {
       inner = (
         <AssetCard

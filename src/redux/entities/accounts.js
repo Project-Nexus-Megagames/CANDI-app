@@ -36,10 +36,10 @@ const slice = createSlice({
     accountUpdated: (accounts, action) => {
       console.log(`${action.type} Dispatched`)
       const index = accounts.list.findIndex(el => el._id === action.payload._id);
-			accounts.list[index] = action.payload;
+      accounts.list[index] = action.payload;
       accounts.lastFetch = Date.now();
     },
-		accountDeleted: (accounts, action) => {
+    accountDeleted: (accounts, action) => {
       console.log(`${action.type} Dispatched`)
       const index = accounts.list.findIndex(el => el._id === action.payload._id);
       accounts.list.splice(index, 1);
@@ -51,7 +51,7 @@ const slice = createSlice({
 export const {
   accountAdded,
   accountUpdated,
-	accountDeleted,
+  accountDeleted,
   accountsReceived,
   accountsRequested,
   accountsRequestFailed
@@ -68,18 +68,18 @@ export const loadAccounts = () => (dispatch, getState) => {
     apiCallBegan({
       url,
       method: 'get',
-      onStart:accountsRequested.type,
-      onSuccess:accountsReceived.type,
-      onError:accountsRequestFailed.type
+      onStart: accountsRequested.type,
+      onSuccess: accountsReceived.type,
+      onError: accountsRequestFailed.type
     })
   );
 };
 
 // Selector
 export const getTeamAccount = createSelector(
-    state => state.accounts.list.filter(el => el.team),
-    state => state.auth.team,
-    (accounts, team) => accounts.find(account => account.team?._id === team?._id) || undefined
+  state => state.accounts.list.filter(el => el.team),
+  state => state.auth?.team,
+  (accounts, team) => accounts.find(account => account.team?._id === team?._id) || undefined
 );
 
 export const getCharAccount = createSelector(

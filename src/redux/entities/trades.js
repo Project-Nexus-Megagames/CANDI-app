@@ -5,7 +5,7 @@ import { apiCallBegan } from "../api"; // Import Redux API call
 // Create entity slice of the store
 const slice = createSlice({
   name: "trades",
-	initialState: {
+  initialState: {
     list: [],
     loading: false,
     loaded: false,
@@ -68,15 +68,15 @@ export const getMyTrades = createSelector(
   state => state.trades.list,
   state => state.accounts.list.find(el => el.name === `${state.auth.myCharacter.characterName}'s Account`),
   (trades, account) => trades.filter(
-    trade => (trade.initiator.account === account._id || trade.tradePartner.account === account._id )
+    trade => (trade.initiator.account === account._id || trade.tradePartner.account === account._id)
   )
 );
 
 export const getTeamTrades = createSelector(
   state => state.trades.list,
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (trades, account) => trades.filter(
-    trade => (trade.initiator.account === account._id || trade.tradePartner.account === account._id )
+    trade => (trade.initiator.account === account._id || trade.tradePartner.account === account._id)
   )
 );
 
@@ -87,9 +87,9 @@ export const loadTrades = payload => (dispatch, getState) => {
       url,
       method: 'get',
       data: payload,
-      onStart:tradesRequested.type,
+      onStart: tradesRequested.type,
       onSuccess: tradesReceived.type,
-      onError:tradesRequestFailed.type
+      onError: tradesRequestFailed.type
     })
   );
 };

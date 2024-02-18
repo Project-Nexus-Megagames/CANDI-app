@@ -15,7 +15,7 @@ function ActionDifficulty({ action, submission }) {
   const { isControl } = usePermissions();
 
   function getAsset(assetID) {
-    return assetID ? assetList.find((el) => el._id === assetID) : null;
+    return (assetID && !assetID._id) ? assetList.find((el) => el._id === assetID) : assetID;
   }
 
   const handleDifficulty = async () => {
@@ -75,7 +75,8 @@ function ActionDifficulty({ action, submission }) {
     for (const sub of action.submissions) {
       assets = [...assets, ...sub.assets]
     }
-    return assets.map(asset => getAsset(asset));
+    assets = assets.map(asset => getAsset(asset));
+    return assets
   }
 
   const prob = stats(allAssets(), submission.difficulty);

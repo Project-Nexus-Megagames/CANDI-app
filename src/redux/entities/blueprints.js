@@ -4,18 +4,18 @@ import { createSelector } from 'reselect'
 import { gameServer } from "../../config";
 
 const slice = createSlice({
-	name: "blueprints",
-	initialState: {
-		list: [],
+  name: "blueprints",
+  initialState: {
+    list: [],
     loading: false,
     lastFetch: null,
-	},
-	reducers: {
-		blueprintsRequested: (blueprints, action) => {
-			console.log(`${action.type} Dispatched...`)
+  },
+  reducers: {
+    blueprintsRequested: (blueprints, action) => {
+      console.log(`${action.type} Dispatched...`)
       blueprints.loading = true;
-		},
-		blueprintsReceived: (blueprints, action) => {
+    },
+    blueprintsReceived: (blueprints, action) => {
       console.log(`${action.type} Dispatched...`);
       blueprints.list = action.payload;
       blueprints.loading = false;
@@ -32,22 +32,22 @@ const slice = createSlice({
     blueprintUpdated: (blueprints, action) => {
       console.log(`${action.type} Dispatched...`);
       const index = blueprints.list.findIndex(el => el._id === action.payload._id);
-			blueprints.list[index] = action.payload;
+      blueprints.list[index] = action.payload;
       blueprints.lastFetch = Date.now();
     },
-		blueprintDeleted: (blueprints, action) => {
+    blueprintDeleted: (blueprints, action) => {
       console.log(`${action.type} Dispatched`)
       const index = blueprints.list.findIndex(el => el._id === action.payload._id);
       blueprints.list.splice(index, 1);
     },
-	}
+  }
 });
 
 // Action Export
 export const {
   blueprintAdded,
   blueprintUpdated,
-	blueprintDeleted,
+  blueprintDeleted,
   blueprintsReceived,
   blueprintsRequested,
   blueprintsRequestFailed
@@ -58,20 +58,20 @@ export default slice.reducer; // Reducer Export
 export const getLabs = createSelector(
   state => state.blueprints.list,
   (blueprints) => blueprints.filter(
-    blue => (blue.tags.some(tag => tag === 'lab') )
+    blue => (blue.tags.some(tag => tag === 'lab'))
   )
 );
 
 export const getFactories = createSelector(
   state => state.blueprints.list,
   (blueprints) => blueprints.filter(
-    blue => (blue.tags.some(tag => tag === 'factory') )
+    blue => (blue.tags.some(tag => tag === 'factory'))
   )
 );
 
 export const getTeamResearched = createSelector(
   state => state.blueprints.list,
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (blueprints, account) => blueprints.filter(
     blue => (blue.researched.some(r => r == account._id))
   )
@@ -80,7 +80,7 @@ export const getTeamResearched = createSelector(
 export const getIce = createSelector(
   state => state.blueprints.list,
   (blueprints) => blueprints.filter(
-    blue => (blue.tags.some(tag => tag === 'ice') || blue.__t === "IceBlueprint" )
+    blue => (blue.tags.some(tag => tag === 'ice') || blue.__t === "IceBlueprint")
   )
 );
 
@@ -92,9 +92,9 @@ export const loadBlueprints = () => (dispatch, getState) => {
     apiCallBegan({
       url,
       method: 'get',
-      onStart:blueprintsRequested.type,
-      onSuccess:blueprintsReceived.type,
-      onError:blueprintsRequestFailed.type
+      onStart: blueprintsRequested.type,
+      onSuccess: blueprintsReceived.type,
+      onError: blueprintsRequestFailed.type
     })
   );
 };

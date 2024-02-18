@@ -5,7 +5,7 @@ import { apiCallBegan } from "../api"; // Import Redux API call
 // Create entity slice of the store
 const slice = createSlice({
   name: "actionLogs",
-	initialState: {
+  initialState: {
     list: [],
     loading: false,
     loaded: false,
@@ -21,7 +21,7 @@ const slice = createSlice({
     },
     actionLogsReceived: (actionLogs, action) => {
       console.log(`${action.type} Dispatched...`);
-      
+
       if (action.payload.length > 50) {
         actionLogs.list = action.payload.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).slice(0, 50);
       }
@@ -75,7 +75,7 @@ export default slice.reducer; // Reducer Export
 
 // Selector
 export const getMyTeamLogs = createSelector(
-  state => state.accounts.list.find(el => el.team && el.team._id === state.auth.team._id),
+  state => state.accounts.list.find(el => el.team && el.team._id === state.auth?.team._id),
   state => state.actionLogs.list,
   (teamAccount, actionLogs) => actionLogs.filter(
     log => (log.account === teamAccount._id)
@@ -85,16 +85,16 @@ export const getMyTeamLogs = createSelector(
 export const getGamestateLogs = createSelector(
   state => state.actionLogs.list,
   (actionLogs) => actionLogs.filter(
-    log => ( log.submodel === 'GameState' )
+    log => (log.submodel === 'GameState')
   )
 );
 
 export const filteredActions = createSelector(
   state => state.actionLogs.filter,
   state => state.actionLogs.list,
-  (filter, actionLogs) => actionLogs.filter(action => action.description.toLowerCase().includes(filter.toLowerCase()) || 
-  action.intent.toLowerCase().includes(filter.toLowerCase()) || 
-  action.creator.characterName.toLowerCase().includes(filter.toLowerCase())
+  (filter, actionLogs) => actionLogs.filter(action => action.description.toLowerCase().includes(filter.toLowerCase()) ||
+    action.intent.toLowerCase().includes(filter.toLowerCase()) ||
+    action.creator.characterName.toLowerCase().includes(filter.toLowerCase())
   )
 );
 
@@ -106,9 +106,9 @@ export const loadActionLogs = payload => (dispatch, getState) => {
       url,
       method: 'get',
       data: payload,
-      onStart:actionLogsRequested.type,
+      onStart: actionLogsRequested.type,
       onSuccess: actionLogsReceived.type,
-      onError:actionLogsRequestFailed.type
+      onError: actionLogsRequestFailed.type
     })
   );
 };

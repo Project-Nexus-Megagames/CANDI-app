@@ -6,7 +6,7 @@ import socket from '../../socket'
 // Create entity slice of the store
 const slice = createSlice({
   name: "ice",
-	initialState: {
+  initialState: {
     list: [],
     loading: false,
     loaded: false,
@@ -67,13 +67,13 @@ export const getMyIce = createSelector(
   state => state.ice.list,
   state => state.auth.myCharacter,
   (ice, char) => ice.filter(
-    ice => (ice.owner === char._id )
+    ice => (ice.owner === char._id)
   )
 );
 
 export const getTeamIce = createSelector(
   state => state.ice.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (ice, account) => ice.filter(
     ice => (ice.account === account._id)
   )
@@ -86,9 +86,9 @@ export const loadIce = payload => (dispatch, getState) => {
       url,
       method: 'get',
       data: payload,
-      onStart:iceRequested.type,
+      onStart: iceRequested.type,
       onSuccess: iceReceived.type,
-      onError:iceRequestFailed.type
+      onError: iceRequestFailed.type
     })
   );
 };
