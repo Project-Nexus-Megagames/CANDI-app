@@ -197,9 +197,9 @@ function Feed({ action }) {
               <Button variant={'solid'}
                 onClick={() => setMode('collab')}
                 colorScheme="pink"
-                isDisabled={!roundActive && !isControl}
+                isDisabled={true}
               >
-                Collaborate
+                Collaborate (DISABLED FOR PLAYTEST)
               </Button>
             )}
             <Button
