@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { VStack, Flex, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button, Spacer, InputGroup, IconButton, CloseButton, Switch } from '@chakra-ui/react';
+import { VStack, Flex, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button, Spacer, InputGroup, IconButton, CloseButton, Switch, Tag, TagCloseButton } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { RepeatClockIcon } from '@chakra-ui/icons';
@@ -13,6 +13,7 @@ import { gameServer } from '../../config';
 import { getIce } from '../../redux/entities/blueprints';
 import { cloudinaryUploadMedium } from '../../services/uploads';
 import CheckerPick from './CheckerPick';
+import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
 const IceForm = (props) => {
   const { ice, action } = props;
@@ -24,6 +25,7 @@ const IceForm = (props) => {
   const [imageURL, setImageURL] = useState('');
   const [template, setTemplate] = useState(false);
   const [createBlue, setCreateBlue] = useState(false);
+  const [add, setAdd] = useState(-1);
   const [name, setName] = useState(ice?.name || 'Ice_Name');
   const [code, setCode] = useState(ice?.code || 'Ice_code');
   const [description, setDescription] = useState(ice?.description || 'Ice_description');
@@ -116,7 +118,6 @@ const IceForm = (props) => {
     return <img src={imageURL}></img>;
   };
 
-
   const editState = (incoming, type, index, subIndex) => {
     console.log(incoming, type, index, subIndex)
     let thing;
@@ -152,8 +153,6 @@ const IceForm = (props) => {
         console.log('UwU Scott made an oopsie doodle!')
     }
   }
-
-  const consequenceTypes = [{ type: 'injury' }];
 
   return (
     <form style={{ width: '90%' }} >
@@ -233,21 +232,31 @@ const IceForm = (props) => {
                 <FormLabel>Challenge</FormLabel>
                 <InputGroup  >
                   {/* <SelectPicker label='type' valueKey='type' data={gameConfig.assetTypes} onChange={(event) => { editState(event, 'optionChallengeType', index); }} /> */}
-                  {option.challengeCost.allowed.map(tag => <b key={tag} >{tag}</b>)}
-                  <CheckerPick
-                    placeholder="Select Location(s) to unlock..."
-                    onChange={(event) => { editState(event, 'optionChallengeType', index); }}
-                    data={gameConfig.assetTypes}
-                    value={option.challengeCost.allowed}
-                    valueKey="type"
-                    label="type"
-                  />
+                  {option.challengeCost.allowed.map(tag => (
+                    <Tag margin={'3px'} key={tag} textTransform='capitalize' backgroundColor={getFadedColor(tag)} color={getTextColor(tag)} variant={'solid'}>
+                      {tag}
+                      {<TagCloseButton onClick={() => { editState(option.challengeCost.allowed.filter(el => el !== tag), 'optionChallengeType', index); }} />}
+                    </Tag>
+                  ))}
+                  {add == index && <SelectPicker
+                    label='type'
+                    valueKey='type'
+                    data={gameConfig.assetTypes.filter(el => !option.challengeCost.allowed.some(t => el.type.toLowerCase() === t.toLowerCase()))}
+                    onChange={(tag) => { editState([...option.challengeCost.allowed, tag], 'optionChallengeType', index); setAdd(-1) }}
+                  />}
+                  {add < 0 && <IconButton
+                    onClick={() => { setAdd(index) }}
+                    variant="solid"
+                    colorScheme='green'
+                    size="sm"
+                    icon={<Plus />}
+                  />}
 
                   <InputNumber prefix='value' style={{ width: 200 }} defaultValue={option.challengeCost.value.toString()} value={option.challengeCost.value} min={0} onChange={(event) => editState(parseInt(event), 'optionChallengeValue', index)}></InputNumber>
 
                 </InputGroup>
 
-                <FormLabel>Consequences</FormLabel>
+                {/* <FormLabel>Consequences</FormLabel>
                 {option.consequence.map((consequence, conIndex) => (
                   <InputGroup key={consequence._id} index={conIndex}>
                     <SelectPicker
@@ -273,7 +282,7 @@ const IceForm = (props) => {
                       icon={<CloseButton />}
                     />
                   </InputGroup>
-                ))}
+                ))} */}
 
 
               </Box>

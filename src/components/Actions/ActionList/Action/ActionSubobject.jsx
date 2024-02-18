@@ -28,7 +28,8 @@ const ActionSubObject = (props) => {
     subObject.effector ? subObject.effector :
       subObject.commentor ? subObject.commentor :
         subObject.creator ? subObject.creator :
-          { playerName: "UNKNOWN!?!", characterName: "UNKNOWN!?!" };
+          subObject.account ? subObject.account :
+            { playerName: "UNKNOWN!?!", characterName: "UNKNOWN!?!" };
 
   const { isControl } = usePermissions();
   const [mode, setMode] = React.useState(false);

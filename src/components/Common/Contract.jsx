@@ -48,13 +48,11 @@ const Contract = (props) => {
   return (
     <Box>
       <div style={{ border: `4px solid ${getFadedColor('')}`, minWidth: '20vw', textAlign: 'center' }}>
-        <h5>{contract.name}</h5>
+        <h5>{contract.description}</h5>
 
         {show && !isCompleted && <ButtonGroup style={{ marginTop: '10px' }}>
           <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} isDisabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>
         </ButtonGroup>}
-
-        <p>{contract.description}</p>
 
         {clock.gametime < contract.timeout &&
           <Tooltip openDelay={50} placement="top" label={(<div>Expires on {new Date(contract.timeout).toDateString()} {new Date(contract.timeout).getHours()}:00</div>)} >
@@ -87,7 +85,7 @@ const Contract = (props) => {
           </HStack>
         </VStack>
 
-        <VStack className="reward-container">
+        {contract.rewards && contract.rewards.length > 0 && <VStack className="reward-container">
           <Tooltip openDelay={50} placement="top" label={(<div>What you will recieve when you complete this contract</div>)} trigger="hover">
             <h4>Rewards</h4>
           </Tooltip >
@@ -100,7 +98,7 @@ const Contract = (props) => {
 
             ))}
           </Wrap>
-        </VStack>
+        </VStack>}
 
         {/* {false && contract.consequence && contract.consequence.length > 0 && <VStack className="consequence-container">
 						<Tooltip className="consequence-container" openDelay={50} placement="top" label={(<div>What you will be punished with if you let this contract expire</div>)} trigger="hover">
