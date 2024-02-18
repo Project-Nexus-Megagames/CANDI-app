@@ -22,14 +22,27 @@ const IceForm = (props) => {
   const gameConfig = useSelector((state) => state.gameConfig);
   const characters = props.characters || useSelector((state) => state.characters.list);
 
-  const [imageURL, setImageURL] = useState('');
+  const [imageUrl, setImageURL] = useState(ice?.imageUrl || '');
   const [template, setTemplate] = useState(false);
   const [createBlue, setCreateBlue] = useState(false);
   const [add, setAdd] = useState(-1);
   const [name, setName] = useState(ice?.name || 'Ice_Name');
   const [code, setCode] = useState(ice?.code || 'Ice_code');
   const [description, setDescription] = useState(ice?.description || 'Ice_description');
-  const [options, setOptions] = React.useState(ice?.options || []);
+
+  const launderOptions = (options) => {
+    return options.map(op => {
+      let newObj = {
+        description: op.description,
+        challengeCost: { ...op.challengeCost },
+        consequence: op.consequence,
+      }
+
+      return newObj;
+    })
+  }
+
+  const [options, setOptions] = React.useState(launderOptions(ice?.options) || []);
 
   let ConsequenceSchema = {
     allowed: ['asset'],
@@ -49,20 +62,13 @@ const IceForm = (props) => {
     if (template) {
       const blue = iceBlueprints.find(el => el._id === template)
 
-      let ops = blue.options.map(op => {
-        let newObj = {
-          description: op.description,
-          challengeCost: { ...op.challengeCost },
-          consequence: op.consequence,
-        }
-
-        return newObj;
-      });
+      let ops = launderOptions(blue.options);
 
       setOptions(ops);
       setDescription(blue?.description);
       setName(blue.name);
       setCode(blue.code);
+      setImageURL(blue.imageUrl);
     }
   }, [template]);
 
@@ -99,23 +105,23 @@ const IceForm = (props) => {
 
   async function onSubmit(data) {
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, options, name, description, code, imageURL, id: ice._id, });
+      props.handleSubmit({ ...data, options, name, description, code, imageUrl, id: ice._id, action: action._id, });
     } else {
-      const ice = { ...data, options, name, description, code, imageURL, action: action._id, createBlue };
+      const ice = { ...data, options, name, description, code, imageUrl, action: action._id, createBlue };
       const response = await axios.post(`${gameServer}api/ice/createIce`, { ice })
       console.log(response)
       // socket.emit('request', {
       // 	route: 'blueprint',
       // 	action: mode,
-      // 	data: { asset, imageURL, loggedInUser }
+      // 	data: { asset, imageUrl, loggedInUser }
       // });
     }
     // props.closeModal();
   }
 
   const renderImage = () => {
-    if (!imageURL) return <img src={ice?.imageURL}></img>;
-    return <img src={imageURL}></img>;
+    if (!imageUrl) return <img src={ice?.imageUrl}></img>;
+    return <img src={imageUrl}></img>;
   };
 
   const editState = (incoming, type, index, subIndex) => {
@@ -163,7 +169,7 @@ const IceForm = (props) => {
 
             <Spacer />
           </Flex>
-
+          {ice?.imageUrl}
           <Box>
             <p>Blueprint:</p>
             <SelectPicker

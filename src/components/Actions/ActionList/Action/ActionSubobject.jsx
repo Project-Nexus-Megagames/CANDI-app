@@ -64,6 +64,7 @@ const ActionSubObject = (props) => {
           submission: subObject._id
         };
         break;
+      case 'Challenge':
       case 'Ice':
         data = {
           id: action._id,
@@ -180,7 +181,7 @@ const ActionSubObject = (props) => {
           {subObject.__t === "Contract" &&
             <Contract show contract={subObject} />
           }
-          {subObject.model === "Ice" &&
+          {(subObject.model === "Ice" || subObject.model === "Challlenge") &&
             <div>
               <Wrap justify="space-around">
                 <Ice ice={subObject} />

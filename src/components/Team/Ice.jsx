@@ -23,9 +23,9 @@ const Ice = ({ ice, compact, width }) => {
   return (
     <div style={{ cursor: 'pointer', textAlign: 'center', }} >
       {/* {ice.code && ice.code !== "???" && <ResourceNugget width={width ? width : '100%'} compact={compact} fontSize={'2em'} blueprint={ice.code} type={"blueprint"} />} */}
-      {ice.imageURL &&
+      {ice.imageUrl &&
         <img
-          src={`${ice.imageURL}`}
+          src={`${ice.imageUrl}`}
           alt='Img could not be displayed'
           style={{ maxHeight: "20vh", width: '90%' }}
         />
