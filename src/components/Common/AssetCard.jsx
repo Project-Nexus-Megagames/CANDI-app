@@ -15,6 +15,7 @@ import CharacterNugget from './CharacterNugget';
 import { FaHandshake } from 'react-icons/fa';
 import { AddCharacter } from './AddCharacter';
 import { CloseIcon } from '@chakra-ui/icons';
+import ResourceNugget from './ResourceNugget';
 
 const AssetCard = (props) => {
   const { showButtons, handleSelect, compact, removeAsset, showRemove, selected } = props;
@@ -144,6 +145,18 @@ const AssetCard = (props) => {
               ))}
               <Spacer />
             </Flex>
+
+            {asset.resources.length > 0 && <Box>
+              Resources:
+              <Flex align={'center'} overflow='hidden' width='100%' >
+                <Spacer />
+                {asset.resources?.map(resource => (
+                  <ResourceNugget key={resource._id} type={resource.type} value={resource.amount} />
+                ))}
+                <Spacer />
+              </Flex>
+            </Box>}
+
 
           </CardHeader>
           <CardBody style={{ paddingTop: '0px' }} >

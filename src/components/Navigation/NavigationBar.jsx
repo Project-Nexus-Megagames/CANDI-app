@@ -63,11 +63,13 @@ const Navigation = (props) => {
         const now = new Date().getTime();
 
         let distance = countDownDate - now;
-        const second = Math.floor((distance % (1000 * 120)) / 1000);
+        //const second = Math.floor((distance % (1000 * 120)) / 1000);
+        const second = Math.floor((distance / 1000) % 60);
+
         const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
 
 
-        if (second <= 0 || clock.paused) {
+        if (second + minutes <= 0 || clock.paused) {
           clearInterval(interval);
         }
         else {
