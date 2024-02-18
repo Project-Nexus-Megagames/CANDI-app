@@ -76,7 +76,7 @@ const HexMap = (props) => {
 
   useEffect(() => {
     compileStats()
-  }, [props.selectedStat]);
+  }, [props.selectedStat, locations]);
 
   return (
     <div style={{}}>
