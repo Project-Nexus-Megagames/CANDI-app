@@ -155,11 +155,11 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                   </ButtonGroup>
                 </Box>}
 
-              {action.options && action.options.length > 1 && <ActionOptions
+              {/* {action.options && action.options.length > 1 && <ActionOptions
                 action={action}
                 options={action.options}
                 actionType={actionType}
-              />}
+              />} */}
             </Box>}
 
             {mode === 'edit' && <Box> 

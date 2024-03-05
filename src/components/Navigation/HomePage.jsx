@@ -71,7 +71,7 @@ const HomePage = (props) => {
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Public Actions" />
+        <ImgPanel img={agendas} to="agendas" title="~ Forum ~" body="Surf the Web!" />
       </GridItem>   
 
 
@@ -79,19 +79,13 @@ const HomePage = (props) => {
         <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
       </GridItem>
 
-      
-      
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://kepler.moonpath.de/")} >
-        <ImgPanel img={map} to="" title="~ Locations ~" body="Where am I" />
-      </GridItem>   
-
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
       </GridItem>
-{/* 
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
-        <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
-      </GridItem> */}
+
+      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1r2wGtHui3ymEjglQu13MInGw7KZcDOH3xlQuZdz6XDA/edit#heading=h.kj1qlof232om")} >
+        <ImgPanel img={map} to="" title="~ Rules ~" body="Learn how to play the game"/>
+      </GridItem>
 
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>

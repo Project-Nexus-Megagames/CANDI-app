@@ -3,7 +3,7 @@ import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
 import { Avatar, Box, Button, Center, CloseButton, Flex, Grid, GridItem, Heading, IconButton, Input, Progress, Spinner, Wrap } from '@chakra-ui/react';
-import { getAgendaActions, getPublishedAgendas } from '../../redux/entities/playerActions';
+import { getPublicActions, getPublicPublishedActions } from '../../redux/entities/playerActions';
 import { Stack } from '@chakra-ui/react';
 import { getMyCharacter } from '../../redux/entities/characters';
 import { calculateProgress, getFadedColor, getTime } from '../../scripts/frontend';
@@ -20,7 +20,7 @@ const Agendas = (props) => {
   const gamestate = useSelector((state) => state.gamestate);
   const gameConfig = useSelector(s => s.gameConfig);
   
-  const agendas = useSelector(getAgendaActions).sort((a, b) => {
+  const agendas = useSelector(getPublicActions).sort((a, b) => {
     let da = new Date(a.createdAt),
       db = new Date(b.createdAt);
     return da - db;
@@ -28,7 +28,7 @@ const Agendas = (props) => {
   
   const myDrafts = agendas.filter(el => el.creator._id === myCharacter._id && !el.tags.some(tag => tag.toLowerCase() === 'published'))
 
-  const publishedAgendas = useSelector(getPublishedAgendas).sort((a, b) => {
+  const publishedAgendas = useSelector(getPublicPublishedActions).sort((a, b) => {
     let da = new Date(a.publishDate),
       db = new Date(b.publishDate);
     return da - db;
@@ -92,7 +92,7 @@ const Agendas = (props) => {
           {!selected && <IconButton variant={'solid'} onClick={() => setMode('new')}  colorScheme='green' size="sm" icon={<Plus/>} />}
           {selected && <IconButton variant={'outline'} onClick={() => setSelected(false)} colorScheme='red' size="sm" icon={<CloseButton />} /> }
           </Box>
-          <Box>
+          {!selected && <Box>
             <Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
               <tbody>
               {<h5>Round {round}</h5>}         
@@ -104,11 +104,11 @@ const Agendas = (props) => {
               </tbody>
             </Stack>
             
-          </Box>
+          </Box>}
           
           {!selected && mode !== 'new' && <Wrap justify="space-around" align={'center'} >
-            {[...filteredData, ...myDrafts].filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
-            {[...filteredData, ...myDrafts]
+            {[...filteredData].filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
+            {[...filteredData]
               .filter((el) => el.round === round)
               .map((agenda) => (
                 <div key={agenda._id}
@@ -137,8 +137,8 @@ const Agendas = (props) => {
                     </Box>
 
                     <Box width={'25%'} >
-                      <Center>{calculateProgress(agenda.options)}</Center>
-
+                      {/* <Center>{calculateProgress(agenda.options)}</Center> */}
+{/* 
                       <Progress
                         borderRadius={'20px'}
                         colorScheme={calculateProgress(agenda.options) > 0 ? 'green' : 'red'}
@@ -147,7 +147,7 @@ const Agendas = (props) => {
                         marginLeft={'5px'}
                         marginRight={'5px'}
                         marginTop={'5px'}
-                        value={Math.abs(calculateProgress(agenda.options))} />
+                        value={Math.abs(calculateProgress(agenda.options))} /> */}
                       <b>Comments {agenda.comments.length}</b>
                     </Box>
                   </Flex>
@@ -155,7 +155,7 @@ const Agendas = (props) => {
               ))}
           </Wrap>}
           
-          {mode === 'new' && <NewAction closeNew={() => setMode(false)} actionType={gameConfig.actionTypes.find(el => el.type === 'Agenda')} />}
+          {mode === 'new' && <NewAction closeNew={() => setMode(false)} actionType={gameConfig.actionTypes.find(el => el.type === 'Forum')} />}
 
           {selected && 
           <Center>

@@ -42,7 +42,7 @@ const slice = createSlice({
       console.log("jwt:")
       console.log(jwt)
 
-      localStorage.setItem('kepler-token', jwt);
+      localStorage.setItem('underground-token', jwt);
       const user = jwtDecode(jwt);
     
       // if (user?.roles.some(el => el === "Control")) auth.control = true;
@@ -93,7 +93,7 @@ const slice = createSlice({
     },
     signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('kepler-token');
+      localStorage.removeItem('underground-token');
       auth.user = null;
       auth.login = false;
       auth.loading = false;

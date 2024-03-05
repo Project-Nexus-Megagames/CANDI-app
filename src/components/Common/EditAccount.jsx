@@ -24,9 +24,9 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
 	const [add, setAdd] = React.useState(false);
 
 
-  // useEffect(() => {
-  //   setResources
-  // }, [])
+  useEffect(() => {
+    if (account) setResources(account.resources.map( r => {return { type: r.type, balance: r.balance }} ))
+  }, [account])
 
   const handleClose = () => { 
     if (onClose && onClose instanceof Function) onClose();
