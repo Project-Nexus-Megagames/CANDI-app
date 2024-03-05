@@ -4,7 +4,7 @@ import { getFadedColor, getTextColor, } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
 import { getMyCharacter, getPlayerCharacters, getPublicPlayerCharacters } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack, HStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import { AddAsset } from '../../Common/AddAsset';
 import { CheckIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
@@ -50,7 +50,7 @@ const NewAction = (props) => {
 
 
   useEffect(() => {
-    newMap(actionType.maxAssets);
+    if (actionType) newMap(actionType.maxAssets);
   }, [actionType]);
 
 
@@ -84,7 +84,7 @@ const NewAction = (props) => {
           facility: facility,
         },
         name: name,
-        type: actionType.type,
+        type: actionType?.type,
         creator: character._id,
         collaborators,
         account: myAccout._id,
@@ -115,11 +115,13 @@ const NewAction = (props) => {
 
   const isResourceDisabled = () => {
     let boolean = false;
+
     for (const resource of actionType.resourceTypes) {
       boolean = myAccout.resources.some(e => e.type === resource.type) &&
-        myAccout.resources.find(e => e.type === resource.type)?.balance < resource.min
+        myAccout.resources.find(e => e.type === resource.type)?.balance >= resource.min
     }
-    return boolean;
+    console.log(!boolean)
+    return !boolean;
   };
 
 
@@ -173,9 +175,8 @@ const NewAction = (props) => {
             </Tag>
           )}
         </Box>}
-        <Flex width={"100%"} align={"end"} >
-          <Spacer />
-          <Box width={"49%"}>
+        <HStack width={"100%"} align={"center"} justify={'space-around'}  >
+          <Box width={"50%"}>
             Name:
             {10 - name.length > 0 && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -189,8 +190,8 @@ const NewAction = (props) => {
             )}
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>
-          <Spacer />
-          <Box width={"49%"}>
+
+          {actionType.requiresDestination && <Box width={"49%"}>
             Destination
             {!destination && actionType.requiresDestination && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -208,9 +209,9 @@ const NewAction = (props) => {
               {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
             </Flex>
 
-          </Box>
-          <Spacer />
-        </Flex>
+          </Box>}
+
+        </HStack>
         <br />
         <Divider />
         <Flex width={"100%"} >

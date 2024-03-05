@@ -116,6 +116,16 @@ export const getPublishedAgendas = createSelector(
   (actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
 );
 
+export const getPublicActions = createSelector(
+  state => state.actions.list,
+	(actions) => actions.filter(el => el.tags.some(tag => tag.toLowerCase() === 'public') && !el.tags.some(tag => tag.toLowerCase() === 'published'))
+);
+
+export const getPublicPublishedActions = createSelector(
+  state => state.actions.list,
+	(actions) => actions.filter(el => el.tags.some(tag => tag.toLowerCase() === 'public') && el.tags.some(tag => tag.toLowerCase() === 'published'))
+);
+
 //export const getArticleActions = createSelector(
 //  state => state.actions.list,
 //  (actions) => actions.filter(el => el.type === 'Article' && el.tags.some(tag => tag.toLowerCase() === 'published'))
