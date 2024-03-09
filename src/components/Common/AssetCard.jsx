@@ -138,7 +138,7 @@ const AssetCard = (props) => {
               {asset.dice?.map(die => (
                 <div key={die._id} style={{ textAlign: 'center' }} >
                   {/* {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />} */}
-                  + {die.amount}
+                  D{die.amount}
                 </div>
               ))}
               <Spacer />

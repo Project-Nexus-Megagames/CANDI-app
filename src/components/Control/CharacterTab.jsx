@@ -45,13 +45,7 @@ const CharacterTab = (props) => {
         <Input style={{ width: '100%' }} placeholder="Search" onChange={(e) => setFilter(e.target.value)}></Input>
         {renderTags.map((tag, index) => (
           <Box key={index}>
-            <Box
-              marginTop='2rem'
-            />
-            <h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>
-            <Box
-              marginBottom='1rem'
-            />
+            {<h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>}
             <VStack divider={<Divider />} >
               {characters
                 .filter(user => user.characterName.toLowerCase().includes(fil.toLowerCase()) ||
