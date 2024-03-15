@@ -87,6 +87,7 @@ const AssetCard = (props) => {
 
                   {!disabled && mode === 'lend' && <AddCharacter
                     characters={characters.filter(el => !asset.sharedWith.some(ass => ass?._id === el._id))}
+                    isDisabled={asset.lendUses <= asset.sharedWith.length}
                     handleSelect={(character) => {
                       const data = {
                         id: asset._id,
@@ -123,7 +124,7 @@ const AssetCard = (props) => {
                     colorScheme={mode === 'lend' ? "red" : "blue"}
                     size={'sm'}
                     leftIcon={mode === 'lend' ? <CloseIcon /> : <FaHandshake />}
-                  >{mode === 'lend' ? "Finish" : "Share"}</Button>}
+                  >{mode === 'lend' ? "Finish" : `Share (max ${asset.lendUses})`}</Button>}
 
               </Box>
 

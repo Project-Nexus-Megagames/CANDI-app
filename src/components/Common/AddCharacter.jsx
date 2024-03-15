@@ -4,7 +4,7 @@ import { BsPlus } from "react-icons/bs";
 import AssetCard from "./AssetCard";
 import CharacterListItem from "../OtherCharacters/CharacterListItem";
 
-export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }) => {
+export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters, isDisabled }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
 	const [fill, setFilter] = React.useState('');
 
@@ -27,7 +27,7 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
       <Popover style={{ zIndex: 99989 }} >
         <PopoverTrigger>
           <Center className="styleCenter"  >
-            <Button variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Character</Button>
+            <Button isDisabled={isDisabled} variant="solid"  colorScheme='green' size="xs" leftIcon={<BsPlus/>}>Add Character</Button>
           </Center>
           
         </PopoverTrigger>
@@ -44,7 +44,7 @@ export const AddCharacter = ({ open, handleSelect, onClose, onOpen, characters }
                 .filter(a => a?.characterName.toLowerCase().includes(fill.toLowerCase()) || a?.playerName.toLowerCase().includes(fill.toLowerCase()))
                 .map((character) => (
                   <div  key={character._id}>
-                    <CharacterListItem character={character} handleSelect={() => { handleSelect(character); setFilter('') }} />
+                    <CharacterListItem character={character} handleSelect={() => { if (!isDisabled) handleSelect(character); setFilter('') }} />
                     <Divider />              
                   </div>             
                 ))}

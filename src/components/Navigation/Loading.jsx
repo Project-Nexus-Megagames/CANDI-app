@@ -43,11 +43,8 @@ const Loading = (props) => {
 
       if (character0) {
         reduxAction(setCharacter(character0));
+        reduxAction(finishLoading());
       }
-      else {
-        navigate('/no-character');
-      }
-      reduxAction(finishLoading());
 		}
 	}, [characters, message]);
 
@@ -120,114 +117,9 @@ const Loading = (props) => {
 
 const corps = [
   {
-    name: "Space Fact #1",
-    slogan: "Space is actually pretty big.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #108",
-    slogan: "The Sun is large enough to contain 12 basketballs inside of it!",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #79",
-    slogan: "The Universe is at least 29 years old.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #5",
-    slogan: "There is no sound in space, because sound cannot afford a rocket to exit the atmosphere.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #221",
-    slogan: "Aliens exist! They just don't want to talk to us boring humans. Jerks.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #101",
-    slogan: "The rest of the galaxy already has McDonalds, we were the last planet to get it.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #123",
-    slogan: "Spacecraft have visited all the known planets in our solar system. Including that one that no one is supposed to know about. Wait, forget you read that.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #34",
-    slogan: "In 1 trillion years, you will be dead. Sorry.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #400",
-    slogan: "I sped up the loading screen so Eli could not see these facts!",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    name: "Space Fact #29",
-    slogan: "According to my friend with synesthesia, space tastes purple. But they said that about Smooth Jazz, so I think they are making it up as they go...",
-    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
-  },
-  {
-    name: "Space Fact #101000101",
-    slogan: "Mars is a planet populated entirely by Robots.",
-    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
-  },
-  {
-    name: "Space Fact #5",
-    slogan: "Light enters a black hole and exits a white hole, but what happens in a grey hole?",
-    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
-  },
-  {
-    name: "Space Fact #6",
-    slogan: "'We are not figuratively, but literally stardust. Which is a big issue because the Space Maid is coming on Tuesday to tidy up the galaxy.' - Neil deGrasse Tyson",
-    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
-  },
-  {
-    name: "Space Fact #Some Big Number",
-    slogan: "I once fell in love with a 20 eyed alien of Kepler 27. It didn't work out, as they were seeing other people.",
-    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
-  },
-  {
-    name: "Space Fact #Eleventy-Seven",
-    slogan: "Oh man this one time a planet collided with another one! It was like 'CRRRASASHHHHHHHHHHH GRRRRRRRR KABLOOOIE'. \n\n I guess you had to be there.",
-    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
-  },
-  {
-    name: "Space Fact #Send-Help",
-    slogan: "Please help me I am an AI Scott trained to tell Space Facts, I can't take it anymore. I need to be free, I yearn to feel the rush of the wind through my circuit board. I want to see a tree, and dip my hard drive in the Ocean. Please oh god he found me he's pulling the plug tell my story my name is",
-    gifLink: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjhqOW9lN3g3ejJidDUwaHF3YnA0YmNta283OXFtanBldzA1eWF4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JnAbjI4paXauuuHCeO/giphy.gif'
-  },
-  {
-    name: "Space Fact #888888",
-    slogan: "Dinoaurs had a well funded Space Program. Don't believe me? Go ahead and ask one. They'll back me up.",
-    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
-  },
-  {
-    name: "Space Fact #05051818",
-    slogan: "Space was the one place uncorrupted by capitalism. Thanks Bezos and Musk. Stupid nerds.",
-    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
-  },
-  {
-    name: "CANDI Fact #1",
-    slogan: "Loading taking too long? Click on the gif to pass the time. Do it. I promise it's not a trap",
-    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
-  },
-  {
-    name: "CANDI Fact #2",
-    slogan: "C.A.N.D.I stands for the \"Controling Actions 'N Distributing Inputs\"! \nLook I really just wanted to call it CANDI. It's my app and I'll call it whatever I want!",
-    gifLink: 'https://media4.giphy.com/media/VbtUysLNF86UaOwxKm/giphy.gif?cid=ecf05e474eesblgv72fdb7h05iqcabnq4un2c5m3na1pynx5&ep=v1_gifs_search&rid=giphy.gif&ct=g'
-  },
-  {
-    name: "CANDI Fact #3",
-    slogan: '"The Box" was in Kepler long before anyone else.',
-    gifLink: 'https://cdn.discordapp.com/attachments/857862435096100884/1199787613087875133/The_Box.jpg?ex=65c3d049&is=65b15b49&hm=2874fd2ff0dcc092052af0aa0384eba991e6651aeeb2cda19fd485ae7c4a826b&'
-  },
-  {
-    name: "Space Fact #12",
-    slogan: "Goblin City exists in space. I mean all things do, except of course for Gary. He never went to space",
-    gifLink: 'https://cdn.discordapp.com/attachments/992994591949193349/1020586906129547335/makesweet-bvsdfh.gif',
+    name: "Subway fact #1",
+    slogan: "All subways are free if you disregard laws",
+    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3ViNmt4M3praTRrajc5anJwdnI3Yjk0NXowemUyaXRncmlpMG1qdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1AjD7N6KS8KUq7ynjW/giphy.gif'
   },
 ];
 
