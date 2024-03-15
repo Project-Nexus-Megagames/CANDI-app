@@ -222,6 +222,14 @@ const AssetForm = (props) => {
 						</Text>
 					</FormControl>
 
+          <FormControl>
+						<FormLabel>Lend Uses (How many times this asset can be lent out per round)</FormLabel>
+						<Input type='text' size='md' variant='outline' {...register('lendUses', validation.lendUses)}></Input>
+						<Text fontSize='sm' color='red.500'>
+							{errors.lendUses && errors.lendUses.message}
+						</Text>
+					</FormControl>
+
 					<Grid templateColumns={`repeat(2, 1fr)`} width={'100%'}>
 						{['hidden', 'lent', 'lendable', 'used', 'working'].map((stat, index) => (
 							<FormControl key={index} display='flex' alignItems='center'>
