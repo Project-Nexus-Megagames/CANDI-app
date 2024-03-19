@@ -9,7 +9,7 @@ import { gamestateReceived } from './entities/gamestate';
 import { facilityUpdated } from './entities/facilities';
 import { iceUpdated } from './entities/ice';
 import { actionLogUpdated } from './entities/actionLogs';
-import { accountUpdated } from './entities/accounts';
+import { accountAdded, accountUpdated } from './entities/accounts';
 // import { marketUpdated } from './entities/markets';
 import { clockReceived } from './entities/clock';
 import { actionDeleted, playerActionUpdated } from './entities/playerActions';
@@ -91,6 +91,9 @@ const initUpdates = () => {
                 case 'Trade':
                     store.dispatch(tradeAdded(el));
                     break;
+                case 'Account':
+                  store.dispatch(accountAdded(el));
+                  break;
                 default:
                     console.log(`Unable to createClients Redux for ${el.model}: ${el._id}`);
                     break;

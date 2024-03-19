@@ -100,6 +100,9 @@ function getFadedColor(color, fade = 1) {
     case 'card':
       return '#1a1d24'
 
+    case 'PC':
+      return '#7332a8'
+
 		default:
 			return `rgba( 0, 160, 189, ${fade} )`;
 
