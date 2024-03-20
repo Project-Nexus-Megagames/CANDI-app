@@ -124,7 +124,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Location required",
-      disabled: !destination && !collabMode
+      disabled: !destination && !collabMode && actionType.requiresDestination
     },
     // {
     //   text: "Not Enough Resources for this action",
@@ -140,28 +140,7 @@ const ActionForm = (props) => {
       {!header && <h4>Edit {actionType.type} Action</h4>}
       <br />
       <form>
-        Needed Resources:
-        <Center>
-          {actionType.resourceTypes.map(el => {
-            const resources = myAccout.resources.find(e => e.type === el.type);
-            return (
-              <Box key={el._id}>
-                {resources?.balance < el.min && (
-                  <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                    Lacking Resources
-                  </Tag>
-                )}
-                {resources == undefined || resources?.balance >= el.min && (
-                  <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                    <CheckIcon />
-                  </Tag>
-                )}
-                <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
-              </Box>)
-          }
 
-          )}
-        </Center>
         <Flex width={"100%"} align={"end"} >
           {actionType.collab && !collabMode && <Box>
             Collaborators:
@@ -181,8 +160,10 @@ const ActionForm = (props) => {
             )}
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>}
+
           <Spacer />
-          {!collabMode && <Box width={"49%"}>
+
+          {!collabMode && actionType.requiresDestination && <Box width={"49%"}>
             Destination
             {!destination && actionType.requiresDestination && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -209,13 +190,13 @@ const ActionForm = (props) => {
             </Flex>
 
           </Box>}
-          <Spacer />
+          
         </Flex>
         <br />
         <Divider />
         <Flex width={"100%"} >
           <Spacer />
-          <Box width={"49%"} >
+          <Box width={"99%"} >
             Description:
             {10 - description.length > 0 && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -233,7 +214,28 @@ const ActionForm = (props) => {
 
         </Flex>
         <br />
+        {/* Needed Resources:
+        <Center>
+          {actionType.resourceTypes.map(el => {
+            const resources = myAccout.resources.find(e => e.type === el.type);
+            return (
+              <Box key={el._id}>
+                {resources?.balance < el.min && (
+                  <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                    Lacking Resources
+                  </Tag>
+                )}
+                {resources == undefined || resources?.balance >= el.min && (
+                  <Tag variant='solid'  colorScheme={'green'}>
+                    <CheckIcon />
+                  </Tag>
+                )}
+                <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
+              </Box>)
+          }
 
+          )}
+        </Center> */}
 
         <br />
 
@@ -261,7 +263,8 @@ const ActionForm = (props) => {
                   <AddAsset
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
-                    assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type) && !assets.some(ass => ass?._id === el._id))} />}
+                    assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type || a === el.model) && !assets.some(ass => ass?._id === el._id || ass === el._id))} 
+                    />}
                 {ass &&
                   <AssetCard
                     showRemove

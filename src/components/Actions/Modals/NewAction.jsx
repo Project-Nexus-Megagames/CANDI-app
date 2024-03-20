@@ -212,6 +212,28 @@ const NewAction = (props) => {
 
           </Box>}
 
+          <Box>
+        Needed Resources:
+        <Center>
+          {actionType.resourceTypes.map(el => (
+            <Box key={el._id}>
+              
+              {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
+                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                  Lacking Resources
+                </Tag>
+              )}
+              {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
+                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                  <CheckIcon />
+                </Tag>
+              )}
+              <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
+            </Box>
+          ))}
+        </Center>
+      </Box>
+
         </HStack>
         <br />
         <Divider />
@@ -273,7 +295,7 @@ const NewAction = (props) => {
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el =>
-                      actionType.assetTypes.some(a => a === el.type) &&
+                      (actionType.assetTypes.some(a => a === el.type || a === el.model)) &&
                       !assets.some(ass => ass?._id === el._id)
                     )}
                   />}
@@ -305,28 +327,6 @@ const NewAction = (props) => {
             <Text color='red' key={index}>{opt.text}</Text>
           )}
         </VStack>
-
-        <Box>
-        Needed Resources:
-        <Center>
-          {actionType.resourceTypes.map(el => (
-            <Box key={el._id}>
-              
-              {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
-                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                  Lacking Resources
-                </Tag>
-              )}
-              {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
-                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                  <CheckIcon />
-                </Tag>
-              )}
-              <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
-            </Box>
-          ))}
-        </Center>
-      </Box>
 
         <Button loading={loading} colorScheme="green" onClick={() => handleSubmit()} variant='solid' isDisabled={isDisabled} >
           <b>Submit</b>
