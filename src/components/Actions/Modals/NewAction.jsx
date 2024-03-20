@@ -162,8 +162,9 @@ const NewAction = (props) => {
 
   return (
     <div>
-      <h4>New {actionType.type} Action</h4>
+      <h4>New {actionType.type}</h4>
       <br />
+
       <form>
         {actionType.collab && <Box>
           Collaborators:
@@ -211,12 +212,34 @@ const NewAction = (props) => {
 
           </Box>}
 
+          <Box>
+        Needed Resources:
+        <Center>
+          {actionType.resourceTypes.map(el => (
+            <Box key={el._id}>
+              
+              {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
+                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                  Lacking Resources
+                </Tag>
+              )}
+              {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
+                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                  <CheckIcon />
+                </Tag>
+              )}
+              <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
+            </Box>
+          ))}
+        </Center>
+      </Box>
+
         </HStack>
         <br />
         <Divider />
         <Flex width={"100%"} >
           <Spacer />
-          <Box width={"49%"} >
+          <Box width={"99%"} >
             Description:
             {10 - description.length > 0 && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -237,30 +260,7 @@ const NewAction = (props) => {
             <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
           </Box>
           <Spacer />
-          <Box width={"49%"}>
-            Needed Resources:
-            <Center>
-              {actionType.resourceTypes.map(el => (
-                <Box key={el._id}>
-                  {el.type}
-                  {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
-                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                      Lacking Resources
-                    </Tag>
-                  )}
-                  {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
-                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                      <CheckIcon />
-                    </Tag>
-                  )}
-                  <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
-                </Box>
-              ))}
-            </Center>
 
-            {/* <DiceList assets={assets} type={"all"} /> */}
-          </Box>
-          <Spacer />
         </Flex>
         <br />
 
@@ -295,7 +295,7 @@ const NewAction = (props) => {
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el =>
-                      actionType.assetTypes.some(a => a === el.type) &&
+                      (actionType.assetTypes.some(a => a === el.type || a === el.model)) &&
                       !assets.some(ass => ass?._id === el._id)
                     )}
                   />}
