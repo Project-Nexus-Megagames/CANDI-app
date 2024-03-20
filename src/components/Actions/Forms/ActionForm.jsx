@@ -140,6 +140,28 @@ const ActionForm = (props) => {
       {!header && <h4>Edit {actionType.type} Action</h4>}
       <br />
       <form>
+        Needed Resources:
+        <Center>
+          {actionType.resourceTypes.map(el => {
+            const resources = myAccout.resources.find(e => e.type === el.type);
+            return (
+              <Box key={el._id}>
+                {resources?.balance < el.min && (
+                  <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                    Lacking Resources
+                  </Tag>
+                )}
+                {resources == undefined || resources?.balance >= el.min && (
+                  <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                    <CheckIcon />
+                  </Tag>
+                )}
+                <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
+              </Box>)
+          }
+
+          )}
+        </Center>
         <Flex width={"100%"} align={"end"} >
           {actionType.collab && !collabMode && <Box>
             Collaborators:
@@ -208,33 +230,7 @@ const ActionForm = (props) => {
             <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
           </Box>
           <Spacer />
-          <Box width={"49%"}>
-            Needed Resources:
-            <Center>
-              {actionType.resourceTypes.map(el => {
-                const resources = myAccout.resources.find(e => e.type === el.type);
-                return (
-                  <Box key={el._id}>
-                    {resources?.balance < el.min && (
-                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                        Lacking Resources
-                      </Tag>
-                    )}
-                    {resources == undefined || resources?.balance >= el.min && (
-                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                        <CheckIcon />
-                      </Tag>
-                    )}
-                    <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
-                  </Box>)
-              }
 
-              )}
-            </Center>
-
-            {/* <DiceList assets={assets} type={"all"} /> */}
-          </Box>
-          <Spacer />
         </Flex>
         <br />
 
