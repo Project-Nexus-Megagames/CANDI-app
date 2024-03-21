@@ -1,5 +1,5 @@
 import { CopyIcon } from '@chakra-ui/icons';
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Button, Flex, Hide, Spacer, Tag, useToast } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Avatar, Box, Button, Flex, HStack, Hide, Spacer, Tag, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ResourceNugget from '../Common/ResourceNugget';
@@ -27,14 +27,12 @@ const CharacterListItem = (props) => {
     // }}
   >
 
-    <Flex 
+    <HStack 
     style={{ 
       backgroundColor: reduxSelected == character ? getFadedColor('default', 0.5) : 'inherit' 
       }} 
-      align={'center'} 
-      width={'100%'} 
-
-      
+      align={'left'} 
+      width={'100%'}       
       onClick={() => handleSelect(character)}>
       <Box flex={1}>
         {character.profilePicture && <Avatar size={size || 'lg'} src={character.profilePicture} alt="?" />}
@@ -68,7 +66,7 @@ const CharacterListItem = (props) => {
       </Box>
 
 
-    </Flex>
+    </HStack>
     </Button>
   );
 };

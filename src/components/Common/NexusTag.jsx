@@ -30,7 +30,7 @@ const NexusTag = (props) => {
               <h5>This Asset is on cooldown and cannot be used for other Actions</h5>
             </div>)}>
               <div style={{	display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content' }}>
-                <img style={{ fill: 'red', margin: '4px', }} src={`/images/cancel.png`} width={'20px'} alt={`${icon}???`} />
+                <img style={{ fill: 'red', margin: '4px', }} src={`/images/clock.png`} width={'20px'} alt={`${icon}???`} />
               </div>              
           </Tooltip>
           )

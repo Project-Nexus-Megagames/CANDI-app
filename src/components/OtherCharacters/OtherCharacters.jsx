@@ -72,7 +72,11 @@ const OtherCharacters = (props) => {
         char.characterName.toLowerCase().includes(fil.toLowerCase()) ||
         char.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
         char.tags.some((el) => el.toLowerCase().includes(fil.toLowerCase()))
-    );
+    ).sort((a, b) => { // sort the catagories alphabetically 
+      if (a.characterName < b.characterName) { return -1; }
+      if (a.characterName > b.characterName) { return 1; }
+      return 0;
+    });
     setFilteredCharacters(filtered);
   };
 
@@ -95,7 +99,7 @@ const OtherCharacters = (props) => {
                 onChange={(e) => filterThis(e.target.value)}
                 value={props.filter}
                 onClick={() => setMode('new')}
-                handleSelect={(char) => { reduxAction(characterSelected(char)); setMode(false); }}
+                handleSelect={(char) => { setSelected(char); reduxAction(characterSelected(char)); setMode(false);  }}
                 isOpen={mode === 'drawer'}
                 onClose={() => setMode(false)}
               />
