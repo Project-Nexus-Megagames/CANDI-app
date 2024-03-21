@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, Spacer, Tag, TagCloseButton, TagLabel, Wrap } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
@@ -52,14 +52,44 @@ const AssetCard = (props) => {
             <Flex align={'center'} overflow='hidden' width='100%'>
               <Spacer />
               <Box>
-                <div display="flex">
 
-                  {<h5 style={{ marginLeft: '5px' }}>{character && <CharacterNugget character={character} />}{asset.name}
-                    {<CountDownTag timeout={asset.timeout} />}
-                  </h5>}
+                <div display="flex"  >
+                  <HStack >
+                    {character && <CharacterNugget size='lg' character={character} />}
+
+                    <Box textAlign={'left'} >
+                      {asset.name}
+                      <br />
+                      <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
+                      <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
+                      {<CountDownTag timeout={asset.timeout} />}
+                      <Wrap>
+                        {asset.status.length > 0 && asset.status?.map(el => (
+                          <NexusTag key={el} value={el}></NexusTag>
+                        ))}
+                        {asset.dice?.map(die => (
+                          <Center
+                            key={die._id}
+                            style={{
+                              textAlign: 'center',
+                              padding: '2px',
+                              width: '35px',
+                              marginLeft: '5px', border: `2px solid ${getFadedColor(die.type)}`,
+                              borderRadius: '8px'
+                            }} >
+                            {/* {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />} */}
+                            D{die.amount}
+                          </Center>
+                        ))}
+                      </Wrap>
+                    </Box>
+                  </HStack>
 
 
-                  {asset.sharedWith.length > 0 && <b>Shared with:</b>}
+
+
+
+                  {asset.sharedWith.length > 0 && <p>Shared with:</p>}
                   {asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
                     <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
                       <Avatar
@@ -68,7 +98,8 @@ const AssetCard = (props) => {
                         src={char?.profilePicture}
                         margin='1'
                       />
-                      <TagLabel>{char.characterName}</TagLabel>
+                      <TagLabel>
+                        {char.characterName}</TagLabel>
                       {(character?._id === asset.ownerCharacter || character.account === asset.account) &&
                         <TagCloseButton onClick={() => {
                           const data = {
@@ -100,23 +131,10 @@ const AssetCard = (props) => {
                       });
                     }}
                   />}
-                  <br />
-
-
-                  <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
-                  <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
-                  <Center>
-                    {asset.status?.map(el => (
-                      <NexusTag key={el} value={el}></NexusTag>
-                    ))}
-                  </Center>
 
                 </div>
 
-                {control && showButtons && <ButtonGroup isAttached>
-                  <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
-                  <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
-                </ButtonGroup>}
+
                 {(character?._id === asset.ownerCharacter || character.account === asset.account) && showButtons && asset.status.some(el => el === 'lendable') &&
                   <Button
                     variant={'ghost'}
@@ -136,12 +154,7 @@ const AssetCard = (props) => {
 
             <Flex align={'center'} overflow='hidden' width='100%' >
               <Spacer />
-              {asset.dice?.map(die => (
-                <div key={die._id} style={{ textAlign: 'center' }} >
-                  {/* {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />} */}
-                  D{die.amount}
-                </div>
-              ))}
+
               <Spacer />
             </Flex>
 
