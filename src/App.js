@@ -159,6 +159,9 @@ const App = (props) => {
         }
       }
     });
+
+    localStorage.removeItem('candi-token');
+
   }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 
   const quack = () => {

@@ -160,7 +160,6 @@ const News = (props) => {
       <Box bg='#1b2330' style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}> 
       <Flex width={'100%'} alignItems='center' >
             <Input  placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(e.target.value)} />
-            {myAccout.naqme}
             
             {myArticleEffort > 0 && <NewArticle drawer={true} myArticleEffort={myArticleEffort} />}
             
