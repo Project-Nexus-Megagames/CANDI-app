@@ -133,7 +133,7 @@ export const getMyUnlockedCharacters = createSelector(
   (state) => state.auth.myCharacter,
   (characters, character) => {
     if (!character) return [];
-    return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id));
+    return characters.filter((char) => character.knownContacts.some((el) => el._id === char._id || el === char._id));
   }
 );
 

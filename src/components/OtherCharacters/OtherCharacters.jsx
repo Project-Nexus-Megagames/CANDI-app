@@ -31,6 +31,8 @@ const OtherCharacters = (props) => {
   const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
 
+  console.log("knownContacts", knownContacts)
+
 
   if (!props.login) {
     navigate("/");
