@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"; // React imports
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Route, Routes, Navigate,} from 'react-router-dom';
 import { Alert, ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
 
@@ -58,7 +58,7 @@ const App = (props) => {
   const toast = useToast();
   const toastIdRef = React.useRef()
 
-  useEffect(() => {
+  useEffect(async() => {
     const theme = "dark";
     // console.log(`Setting Theme: ${theme}`);
 
@@ -70,9 +70,11 @@ const App = (props) => {
     link.href = `/${theme}.css`;
 
     head.appendChild(link);
+    await (loadGameConfig())
     return () => {
       setTimeout(() => head.removeChild(link), 2000);
     };
+
   }, []);
 
   useEffect(() => {

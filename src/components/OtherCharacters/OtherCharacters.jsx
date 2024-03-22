@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"; // Redux store provider
 import NewCharacter from "../Control/NewCharacter";
 import { getPublicCharacters, getPrivateCharacters, getMyUnlockedCharacters, characterSelected } from "./../../redux/entities/characters";
-import { Accordion, Box, Button, ButtonGroup, Center, Container, Divider, Flex, Grid, GridItem, Hide, Input, InputGroup, InputLeftElement, Show, Spinner, Tag, VStack } from "@chakra-ui/react";
-import { getFadedColor, getTextColor } from "../../scripts/frontend";
-import { ChevronLeftIcon, DeleteIcon, EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { Box, Button, ButtonGroup, Center, Grid, GridItem, Hide, Show } from "@chakra-ui/react";
+import { ChevronLeftIcon, DeleteIcon, EditIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import CharactersDrawer from "./CharactersDrawer";
 import SelectedCharacter from "./SelectedCharacter";
 import { useNavigate } from "react-router";
@@ -30,9 +29,6 @@ const OtherCharacters = (props) => {
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
-
-  console.log("knownContacts", knownContacts)
-
 
   if (!props.login) {
     navigate("/");

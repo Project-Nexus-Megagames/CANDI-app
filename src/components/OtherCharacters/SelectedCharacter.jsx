@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, IconButton, Spacer, Tag } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, IconButton, SimpleGrid, Spacer, Tag } from '@chakra-ui/react';
 import CharacterListItem from './CharacterListItem';
 import ResourceNugget from '../Common/ResourceNugget';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,9 @@ import WordDivider from '../WordDivider';
 import { CandiModal } from '../Common/CandiModal';
 import { AddResource, EditAccount } from '../Common/EditAccount';
 import usePermissions from '../../hooks/usePermissions';
+import ManageContacts from '../Control/ManageContacts';
+import CharacterTag from '../Common/CharacterTag';
+import { BsPencil } from 'react-icons/bs';
 
 const SelectedCharacter = (props) => {
   const { selected } = props;
@@ -100,6 +103,14 @@ const SelectedCharacter = (props) => {
             <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
           )}
         </div>}
+
+        <h4>Contacts{isControl && <IconButton icon={<BsPencil/>} onClick={() => setMode('editContacts')} ></IconButton>}</h4>
+        <Grid templateColumns='repeat(3, 1fr)' gap={1}>
+          {selected && selected.knownContacts.map(el => (
+            <CharacterTag key={el} character={characters.find(ch => ch._id === el)} />
+          ))}
+        </Grid>
+
         <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
         <p>{selected.bio}</p>
 
@@ -126,11 +137,14 @@ const SelectedCharacter = (props) => {
               <AssetCard key={asset._id} asset={asset} character={selected} showButtons  />
             ))}
         </Grid>}
+
         {mode === "new" &&
             <Center  >
               <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode} />
             </Center>
           }
+
+        {mode === 'editContacts' && <ManageContacts defaultCharacter={selected._id} show={mode === 'editContacts'} closeModal={() => setMode(false)} />}
       </GridItem>}
 
       {/* <CandiModal onClose={() => { setMode(false); }} open={mode === "new"} title={`${mode} Asset`}>
