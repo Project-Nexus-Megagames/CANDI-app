@@ -231,7 +231,7 @@ const NewEffects = (props) => {
   const buttons = [
     { type: 'new', color: 'green', name: 'New Asset' },
     { type: 'asset', color: 'green', name: 'Edit Asset' },
-    { type: 'character', color: 'orange', name: 'Edit Character Contacts', disabled: true },
+    { type: 'character', color: 'orange', name: 'Edit Character Contacts' },
     { type: 'newLocation', color: 'blue', name: 'New Location' },
     { type: 'locationStats', color: 'blue', name: 'Edit Location Stats', },
     { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location', },
@@ -333,7 +333,7 @@ const NewEffects = (props) => {
                 onChange={(event) => handleCharSelect(event)}
                 data={sortedCharacters}
                 valueKey="_id"
-                labelKey="characterName"
+                label="characterName"
                 value={array}
               />
               <SimpleGrid columns={2} minChildWidth='120px' spacing='40px'>
@@ -341,7 +341,14 @@ const NewEffects = (props) => {
                   <CharacterListItem key={el} character={sortedCharacters.find(ch => ch._id === el)} />
                 ))}
               </SimpleGrid>
-
+              <Button
+                disabled={type === ''}
+                onClick={() => handleSubmit(array)}
+                variant="solid"
+              >
+                Submit
+              </Button>
+                
             </div>
           )}
 

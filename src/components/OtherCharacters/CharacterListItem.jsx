@@ -48,6 +48,7 @@ const CharacterListItem = (props) => {
         }}
       >
         <h4>{character?.characterName}</h4>
+        <b>{character?.characterTitle}</b>
         <Flex  >
           {character.tags && character.tags.filter(el => el.toLowerCase() !== 'public').map((item) =>
             <Tag key={item} variant={'solid'} style={{ backgroundColor: getFadedColor(item), color: getTextColor(item), textTransform: 'capitalize', margin: '4px' }} >{item}</Tag>

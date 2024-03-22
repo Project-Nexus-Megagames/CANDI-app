@@ -20,7 +20,7 @@ const OtherCharacters = (props) => {
   const loggedInUser = useSelector((state) => state.auth.user);
   const control = useSelector((state) => state.auth.control);
   const reduxSelected = useSelector((state) => state.characters.selected);
-  const characters = useSelector((state) => state.characters.list);
+  // const characters = useSelector((state) => state.characters.list);
 
 
   const publicCharacters = useSelector(getPublicCharacters);
@@ -31,14 +31,16 @@ const OtherCharacters = (props) => {
   const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
 
+  console.log("knownContacts", knownContacts)
+
 
   if (!props.login) {
     navigate("/");
     return <div />;
   }
 
-  // let characters = [...publicCharacters, ...knownContacts];
-  // characters = [...new Set(characters)];
+  let characters = [...publicCharacters, ...knownContacts];
+  characters = [...new Set(characters)];
 
   useEffect(() => {
     if (selected !== reduxSelected)
