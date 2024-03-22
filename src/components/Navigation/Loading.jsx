@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import loadState from '../../scripts/initState';
 import { finishLoading, setControl, setTeam, signOut, setCharacter, loadingState } from '../../redux/entities/auth';
-import { Check } from '@rsuite/icons';
-import { Box, Button, Center, Flex, Progress, Spinner, Text } from '@chakra-ui/react';
+import { ArrowLeft, ArrowRight, Check } from '@rsuite/icons';
+import { Box, Button, Center, Flex, IconButton, Progress, Spinner, Text } from '@chakra-ui/react';
 
-const Loading = (props) => {
+const Loading = ({controlMode}) => {
 	const reduxAction = useDispatch();
 	const navigate = useNavigate();
 
@@ -15,8 +15,11 @@ const Loading = (props) => {
 	const characters = useSelector((s) => s.characters.list);
 	const teams = useSelector((s) => s.teams.list);
 	const entities = useSelector((s) => s)
+  
+	const gameConfig = useSelector((s) => s.gameConfig)
 
-	const [message, setMessage] = React.useState( Math.floor(Math.random() * corps.length));
+	const [loadingTips, setLoadingTips] = React.useState([{ title: "loading", description: "loading", }]);
+	const [message, setMessage] = React.useState( Math.floor(Math.random() * loadingTips.length));
 	const [sections, setSections] = React.useState(Object.keys(entities).sort());
 
 	let done = Object.keys(entities)
@@ -29,10 +32,20 @@ const Loading = (props) => {
       loadState();
 		}
     const interval = setInterval(() => {
-      setMessage(Math.floor(Math.random() * corps.length))
+      setMessage(Math.floor(Math.random() * loadingTips.length))
     }, 4500);
     return () => clearInterval(interval);
 	}, []);
+
+  useEffect(() => {
+    console.log("gameConfig", gameConfig)
+		if (gameConfig && gameConfig.loadingTips) {
+      console.log("loadingTips", gameConfig.loadingTips)
+			setLoadingTips(gameConfig.loadingTips)
+      setMessage(Math.floor(Math.random() * gameConfig.loadingTips.length))
+		}
+
+	}, [gameConfig]);
 
 	useEffect(() => {
 		// console.log('Trigger A');
@@ -47,6 +60,7 @@ const Loading = (props) => {
       }
 		}
 	}, [characters, message]);
+
 
 	// useEffect(() => {
 	// 	console.log('Trigger B');
@@ -74,15 +88,17 @@ const Loading = (props) => {
 	return (
 		<div>
       <Center>
-        <Text fontSize={"x-large"} >{corps[message]?.name}</Text> 
+        <Text fontSize={"x-large"} >{loadingTips[message]?.title}</Text> 
       </Center>
 
       <Center>
-        <img width={"350px"} src={`${corps[message]?.gifLink}`} alt='Loading...' onClick={() => boredClick()} />
+        <IconButton icon={<ArrowLeft/>} isDisabled={message <= 0} onClick={() => {setMessage(message-1); }} />
+        <img width={"350px"} src={`${loadingTips[message]?.gifLink}`} alt='Loading...' onClick={() => boredClick()} />
+        <IconButton icon={<ArrowRight/>} isDisabled={message >= loadingTips.length-1} onClick={() => {setMessage(message+1); }} />
       </Center>
 
       <Center>
-        <Text fontSize={"lg"} >"{corps[message]?.slogan}"</Text> 
+        <Text fontSize={"lg"} >"{loadingTips[message]?.description}"</Text> 
       </Center>
       
       
@@ -115,13 +131,6 @@ const Loading = (props) => {
 	);
 };
 
-const corps = [
-  {
-    name: "Subway fact #1",
-    slogan: "All subways are free if you disregard laws",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3ViNmt4M3praTRrajc5anJwdnI3Yjk0NXowemUyaXRncmlpMG1qdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1AjD7N6KS8KUq7ynjW/giphy.gif'
-  },
-];
 
   const bored = [
     'https://www.youtube.com/watch?v=QSS3GTmKWVA', // Freddie Mercury gets Trapped in a Slide and Calls out for Mamma (ASMR)
