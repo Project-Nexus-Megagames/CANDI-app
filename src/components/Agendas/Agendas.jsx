@@ -56,7 +56,7 @@ const Agendas = (props) => {
     if (filter) {
       let filtered = [];
       let agendasToFilter = [];
-      myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter = publishedAgendas);
+      myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter =  [...new Set([...publishedAgendas, ...myDrafts])]);
 
       filtered = agendasToFilter.filter(
         (agenda) =>
@@ -65,7 +65,7 @@ const Agendas = (props) => {
           agenda.creator.characterName?.toLowerCase().includes(filter.toLowerCase())
       );
       setFilteredData(filtered);
-    } else myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? setFilteredData(agendas) : setFilteredData(publishedAgendas);
+    } else myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? setFilteredData(agendas) : setFilteredData([...new Set([...publishedAgendas, ...myDrafts])]);
   }, [agendas, filter, publishedAgendas, myCharacter]);
 
   const handleSearch = (e) => {
