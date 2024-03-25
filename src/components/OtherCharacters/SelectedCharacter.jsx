@@ -94,7 +94,6 @@ const SelectedCharacter = (props) => {
             )}
             {isControl && selected && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
           </Center>
-
         </div>}
 
         {(isControl || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>

@@ -118,7 +118,7 @@ export const getPublishedAgendas = createSelector(
 
 export const getPublicActions = createSelector(
   state => state.actions.list,
-	(actions) => actions.filter(el => el.tags.some(tag => tag.toLowerCase() === 'public') && !el.tags.some(tag => tag.toLowerCase() === 'published'))
+	(actions) => actions.filter(el => el.tags.some(tag => tag.toLowerCase() === 'public') )
 );
 
 export const getPublicPublishedActions = createSelector(

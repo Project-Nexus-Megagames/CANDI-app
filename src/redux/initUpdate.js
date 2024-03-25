@@ -14,7 +14,7 @@ import { accountAdded, accountUpdated } from './entities/accounts';
 import { clockReceived } from './entities/clock';
 import { actionDeleted, playerActionUpdated } from './entities/playerActions';
 import { blueprintUpdated } from './entities/blueprints';
-import { articleDeleted } from './entities/articles';
+import { articleDeleted, articleUpdated } from './entities/articles';
 
 
 const initUpdates = () => {
@@ -31,6 +31,9 @@ const initUpdates = () => {
                     case 'Action':
                         store.dispatch(playerActionUpdated(el));
                         break;
+                    case 'Article':
+                      store.dispatch(articleUpdated(el));
+                      break;
                     case 'Blueprint':
                       store.dispatch(blueprintUpdated(el));
                       break;

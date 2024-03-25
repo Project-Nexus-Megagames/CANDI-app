@@ -15,7 +15,7 @@ import HexLocation from '../../../Locations/HexLocation';
 import ActionForm from '../../Forms/ActionForm';
 import WordDivider from '../../../Common/WordDivider';
 
-const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
+const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons }) => {
   const control = useSelector(state => state.auth.control);
   const [mode, setMode] = React.useState(false);
   const [name, setName] = useState(action.name);
@@ -23,7 +23,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
   const [intent, setIntent] = useState(action.submission.intent);
   const [choiceType, setChoiceType] = React.useState('binary');
 
-  const isUnpublishedAgenda = (action.tags.some((tag) => tag.toLowerCase() !== 'published') || !action.tags.length > 0) && action.type.toLowerCase() === 'agenda';
+  const isUnpublishedAgenda = (!action.tags.some((tag) => tag.toLowerCase() === 'published') && action.tags.some((tag) => tag.toLowerCase() === 'public'));
 
 
   function getBorder() {
@@ -117,6 +117,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
                 creator={action.creator}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                closeAction={closeAction}
                 edit={mode === 'edit'}
                 name={name}
               />}</Center>
