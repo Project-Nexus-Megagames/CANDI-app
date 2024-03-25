@@ -19,13 +19,13 @@ const Agendas = (props) => {
   const { login, myCharacter } = useSelector((state) => state.auth);
   const gamestate = useSelector((state) => state.gamestate);
   const gameConfig = useSelector(s => s.gameConfig);
-  
+
   const agendas = useSelector(getPublicActions).sort((a, b) => {
     let da = new Date(a.createdAt),
       db = new Date(b.createdAt);
     return da - db;
   });
-  
+
   const myDrafts = agendas.filter(el => el.creator._id === myCharacter._id && !el.tags.some(tag => tag.toLowerCase() === 'published'))
 
   const publishedAgendas = useSelector(getPublicPublishedActions).sort((a, b) => {
@@ -56,7 +56,7 @@ const Agendas = (props) => {
     if (filter) {
       let filtered = [];
       let agendasToFilter = [];
-      myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter = publishedAgendas);
+      myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter =  [...new Set([...publishedAgendas, ...myDrafts])]);
 
       filtered = agendasToFilter.filter(
         (agenda) =>
@@ -65,11 +65,11 @@ const Agendas = (props) => {
           agenda.creator.characterName?.toLowerCase().includes(filter.toLowerCase())
       );
       setFilteredData(filtered);
-    } else myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? setFilteredData(agendas) : setFilteredData(publishedAgendas);
+    } else myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? setFilteredData(agendas) : setFilteredData([...new Set([...publishedAgendas, ...myDrafts])]);
   }, [agendas, filter, publishedAgendas, myCharacter]);
 
   const handleSearch = (e) => {
-    setFilter(e);
+    setFilter(e.target.value);
   };
 
   const handlePublish = async (agenda) => {
@@ -87,25 +87,25 @@ const Agendas = (props) => {
 
         <GridItem pl='2' area={'nav'} >
 
-        <Box>
-          <Input style={{ width: '80%', margin: '5px' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
-          {!selected && <IconButton variant={'solid'} onClick={() => setMode('new')}  colorScheme='green' size="sm" icon={<Plus/>} />}
-          {selected && <IconButton variant={'outline'} onClick={() => setSelected(false)} colorScheme='red' size="sm" icon={<CloseButton />} /> }
-          </Box>
+          {!selected && <Box>
+            <Input style={{ width: '80%', margin: '5px' }} placeholder="Search" onChange={(e) => handleSearch(e)}></Input>
+            {!selected && <IconButton variant={'solid'} onClick={() => setMode('new')} colorScheme='green' size="sm" icon={<Plus />} />}
+            {selected && <IconButton variant={'outline'} onClick={() => setSelected(false)} colorScheme='red' size="sm" icon={<CloseButton />} />}
+          </Box>}
           {!selected && <Box>
             <Stack direction={['column', 'row']} align="center" spacing="4" justify={'center'}>
               <tbody>
-              {<h5>Round {round}</h5>}         
+                {<h5>Round {round}</h5>}
                 {[1, 2, 3, 4, 5, 6, 7, 8].filter(el => el <= gamestate.round).map((x, i) => (
-                  <Button key={i} style={{ margin: '4px' }} onClick={() => setRound(i + 1)}  variant={x === round ? 'solid' : 'outline'} circle>
+                  <Button key={i} style={{ margin: '4px' }} onClick={() => setRound(i + 1)} variant={x === round ? 'solid' : 'outline'} circle>
                     {i + 1}
                   </Button>
                 ))}
               </tbody>
             </Stack>
-            
+
           </Box>}
-          
+
           {!selected && mode !== 'new' && <Wrap justify="space-around" align={'center'} >
             {[...filteredData].filter((el) => el.round === round).length === 0 && <b>Nothing here yet...</b>}
             {[...filteredData]
@@ -116,7 +116,7 @@ const Agendas = (props) => {
                   style={{
                     cursor: 'pointer',
                     border:
-                      (agenda.tags.some((tag) => tag.toLowerCase() !== 'published') || !agenda.tags.length > 0) && agenda.type === 'Agenda'
+                      (!agenda.tags.some((tag) => tag.toLowerCase() === 'published'))
                         ? `4px dotted ${getFadedColor(agenda.type)}`
                         : `4px solid ${getFadedColor(agenda.type)}`,
                     borderRadius: '5px',
@@ -138,7 +138,7 @@ const Agendas = (props) => {
 
                     <Box width={'25%'} >
                       {/* <Center>{calculateProgress(agenda.options)}</Center> */}
-{/* 
+                      {/* 
                       <Progress
                         borderRadius={'20px'}
                         colorScheme={calculateProgress(agenda.options) > 0 ? 'green' : 'red'}
@@ -154,16 +154,17 @@ const Agendas = (props) => {
                 </div>
               ))}
           </Wrap>}
-          
+
           {mode === 'new' && <NewAction closeNew={() => setMode(false)} actionType={gameConfig.actionTypes.find(el => el.type === 'Forum')} />}
 
-          {selected && 
-          <Center>
-            <Action
-              actionType={gameConfig.actionTypes[1]}
-              action={selected}
-            />
-            </Center>}            
+          {selected &&
+            <Center>
+              <Action
+                actionType={gameConfig.actionTypes[1]}
+                action={selected}
+                closeAction={() => setSelected(false)}
+              />
+            </Center>}
 
 
         </GridItem>

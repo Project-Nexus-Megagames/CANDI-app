@@ -2,13 +2,13 @@ import React from "react";
 import usePermissions from "../../../../../hooks/usePermissions";
 import { useSelector } from "react-redux";
 import { Box, Button, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from "@chakra-ui/react";
-import { HiPencilAlt, HiSave, HiTrash, HiSpeakerphone  } from 'react-icons/hi';
+import { HiPencilAlt, HiSave, HiTrash, HiSpeakerphone } from 'react-icons/hi';
 import socket from "../../../../../socket";
 import { CandiWarning } from "../../../../Common/CandiWarning";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
-import { CloseIcon } from "@chakra-ui/icons";
+import { ArrowLeftIcon, CloseIcon } from "@chakra-ui/icons";
 
-function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, edit }) {
+function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete, edit }) {
   const [mode, setMode] = React.useState(false);
 
   const { isControl, characterId } = usePermissions();
@@ -18,8 +18,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
 
   const isAccessible = characterId === creator._id || isControl;
   const isDisabled = (game.status !== 'Active' || game.round > action.round) && !isControl;
-  const isPublishable = (action.tags?.some((tag) => tag !== 'Published') || !action.tags?.length > 0)
-    && action.type === 'Agenda';
+  const isUnpublishedAgenda = (!action.tags.some((tag) => tag.toLowerCase() === 'published') && action.tags.some((tag) => tag.toLowerCase() === 'public'));
 
   const handlePublish = async () => {
     const id = action._id;
@@ -34,7 +33,26 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
           spacing={buttonSpacing}
           isAttached
         >
-          {isPublishable && (
+          {closeAction &&
+            <Tooltip
+              label='Cancel'
+              aria-label='Cancel tooltip'
+            >
+              <Button
+                size="sm"
+                onClick={(e) => {
+                  closeAction(action)
+                  e.stopPropagation();
+                }}
+                backgroundColor="teal"
+                variant={'solid'}
+                leftIcon={<Icon as={ArrowLeftIcon} />}
+                marginTop='0.25rem'
+                aria-label={'Close Action'}
+              >Back</Button>
+            </Tooltip>}
+
+          {isUnpublishedAgenda && (
             <Tooltip
               label='Publish'
               aria-label='Publish tooltip'
@@ -47,7 +65,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
                   e.stopPropagation();
                 }}
                 backgroundColor="green"
-                icon={<Icon as={HiSpeakerphone } />}
+                icon={<Icon as={HiSpeakerphone} />}
                 marginTop='0.25rem'
                 aria-label={'Publish Action'}
               />
