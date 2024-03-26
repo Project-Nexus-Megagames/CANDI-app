@@ -132,7 +132,7 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
                 edit={false}
               />
 
-              {action.location && <ActionMarkdown
+              {action.location && action.location.name !== 'unknown' && <ActionMarkdown
                 header='Location'
                 tooltip='Where this action takes place'
                 textAlign='center'

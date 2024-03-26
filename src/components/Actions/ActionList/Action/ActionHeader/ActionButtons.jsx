@@ -18,7 +18,7 @@ function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete,
 
   const isAccessible = characterId === creator._id || isControl;
   const isDisabled = (game.status !== 'Active' || game.round > action.round) && !isControl;
-  const isUnpublishedAgenda = (!action.tags.some((tag) => tag.toLowerCase() === 'published') && action.tags.some((tag) => tag.toLowerCase() === 'public'));
+  const isUnpublishedAgenda = (!action.tags?.some((tag) => tag.toLowerCase() === 'published') && action.tags?.some((tag) => tag.toLowerCase() === 'public'));
 
   const handlePublish = async () => {
     const id = action._id;
