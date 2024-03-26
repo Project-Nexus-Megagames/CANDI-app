@@ -53,7 +53,7 @@ const AssetCard = (props) => {
               <Spacer />
               <Box>
 
-                <div display="flex"  >
+                <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(asset.type)}`, padding: '5px'  }} display="flex"  >
                   <HStack >
                     {character && <CharacterNugget size='lg' character={character} />}
 
@@ -134,6 +134,10 @@ const AssetCard = (props) => {
 
                 </div>
 
+                {control && showButtons && <ButtonGroup isAttached>
+                  <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
+                  <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
+                </ButtonGroup>}
 
                 {(character?._id === asset.ownerCharacter || character.account === asset.account) && showButtons && asset.status.some(el => el === 'lendable') &&
                   <Button
