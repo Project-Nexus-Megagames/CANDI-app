@@ -97,18 +97,21 @@ const SelectedCharacter = (props) => {
         </div>}
 
         {(isControl || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
-          <WordDivider word={"Stats"} ></WordDivider>
+          {/* <WordDivider word={"Stats"} ></WordDivider>
           {selected.characterStats && selected.characterStats.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
-          )}
+          )} */}
+
+          <h4>Contacts{isControl && <IconButton icon={<BsPencil/>} onClick={() => setMode('editContacts')} ></IconButton>}</h4>
+          {selected.knownContacts.length == 0 && <b>No Contacts Found</b>}
+          <Grid templateColumns='repeat(3, 1fr)' gap={1}>
+            {selected && selected.knownContacts.map(el => (
+              <CharacterTag key={el} character={characters.find(ch => ch._id === el)} />
+            ))}
+          </Grid>          
         </div>}
 
-        <h4>Contacts{isControl && <IconButton icon={<BsPencil/>} onClick={() => setMode('editContacts')} ></IconButton>}</h4>
-        <Grid templateColumns='repeat(3, 1fr)' gap={1}>
-          {selected && selected.knownContacts.map(el => (
-            <CharacterTag key={el} character={characters.find(ch => ch._id === el)} />
-          ))}
-        </Grid>
+
 
         <p style={{ color: "rgb(153, 153, 153)" }}>Bio</p>
         <p>{selected.bio}</p>
