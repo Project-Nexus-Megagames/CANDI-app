@@ -27,8 +27,8 @@ function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete,
 
   return (
     <Box>
-      {isAccessible && (
-        <ButtonGroup
+      
+      <ButtonGroup
           flexDir={buttonDirection}
           spacing={buttonSpacing}
           isAttached
@@ -52,7 +52,7 @@ function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete,
               >Back</Button>
             </Tooltip>}
 
-          {isUnpublishedAgenda && (
+          {isAccessible && isUnpublishedAgenda && (
             <Tooltip
               label='Publish'
               aria-label='Publish tooltip'
@@ -71,7 +71,8 @@ function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete,
               />
             </Tooltip>
           )}
-          {!edit && <IconButton
+
+          {isAccessible && !edit && <IconButton
             isDisabled={isDisabled}
             size="sm"
             onClick={(e) => {
@@ -98,7 +99,7 @@ function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete,
             aria-label={'Edit Action'}
 
           >Submit</Button>} */}
-          {!edit && <IconButton
+          {isAccessible && !edit && <IconButton
             isDisabled={isDisabled || edit || (action.tags?.includes('Published') && !isControl)}
             size="sm"
             onClick={(e) => {
@@ -111,7 +112,7 @@ function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete,
             marginTop='0.25rem'
             aria-label={'Delete Action'}
           />}
-          {edit &&
+          {isAccessible && edit &&
             <Tooltip
               label='Cancel'
               aria-label='Cancel tooltip'
@@ -129,8 +130,8 @@ function ActionButtons({ action, toggleEdit, closeAction, creator, handleDelete,
                 aria-label={'Delete Action'}
               >Cancel</Button>
             </Tooltip>}
-        </ButtonGroup>
-      )}
+      </ButtonGroup>
+      
       <CandiWarning open={mode === "confirm"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleDelete(); setMode(false); }}>
         Are ya sure?
       </CandiWarning>

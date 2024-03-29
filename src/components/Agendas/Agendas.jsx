@@ -125,18 +125,18 @@ const Agendas = (props) => {
                     minWidth: '500px'
                   }}
                 >
-                  <Flex align="middle" style={{}} justify="space-between">
+                  <Flex align="middle"  justify="space-between" >
                     <Box style={{ margin: '5px' }} width={'25%'}>
-                      <Avatar circle size="md" src={agenda.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
+                      <Avatar circle size="lg" src={agenda.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
                     </Box>
 
-                    <Box >
-                      <h5>{agenda.name}</h5>
+                    <Box width={'60%'} style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'clip' }}>
+                      <h5 >{agenda.name}</h5>
                       {agenda.creator.playerName} - {agenda.creator.characterName}
                       <p className="slim-text">{getTime(agenda.submission.updatedAt)}</p>
                     </Box>
 
-                    <Box width={'25%'} >
+                    <Center width={'25%'} >
                       {/* <Center>{calculateProgress(agenda.options)}</Center> */}
                       {/* 
                       <Progress
@@ -149,7 +149,7 @@ const Agendas = (props) => {
                         marginTop={'5px'}
                         value={Math.abs(calculateProgress(agenda.options))} /> */}
                       <b>Comments {agenda.comments.length}</b>
-                    </Box>
+                    </Center>
                   </Flex>
                 </div>
               ))}
