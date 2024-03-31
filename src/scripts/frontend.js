@@ -7,6 +7,8 @@ function getFadedColor(color, fade = 1) {
 	switch (color) {
 		case 'Agenda':
 		case 'Public':
+      case 'forum':
+        case 'Forum':
     case 'For':
 			return `#22a12a`;
 		case 'Agenda-rs':

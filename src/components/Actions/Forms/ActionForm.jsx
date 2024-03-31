@@ -112,7 +112,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Description is too long!",
-      disabled: description.length >= 1000
+      disabled: description.length >= 4000
     },
     {
       text: "Name is too short",
