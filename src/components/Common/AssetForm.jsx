@@ -21,7 +21,7 @@ const AssetForm = (props) => {
 
 	const [imageURL, setImageURL] = useState('');
 	const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
-	const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
+	const [status, setStatus] = useState(asset && asset.status ? asset.status : ['hidden']);
 	const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
 	const [account, setAccount] = React.useState(asset ? (asset.account) : 
   character ? character.account : false);

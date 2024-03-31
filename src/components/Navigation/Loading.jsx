@@ -18,7 +18,6 @@ const Loading = ({controlMode}) => {
   
 	const gameConfig = useSelector((s) => s.gameConfig)
 
-	const [loadingTips, setLoadingTips] = React.useState([{ title: "loading", description: "loading", }]);
 	const [message, setMessage] = React.useState( Math.floor(Math.random() * loadingTips.length));
 	const [sections, setSections] = React.useState(Object.keys(entities).sort());
 
@@ -37,15 +36,15 @@ const Loading = ({controlMode}) => {
     return () => clearInterval(interval);
 	}, []);
 
-  useEffect(() => {
-    console.log("gameConfig", gameConfig)
-		if (gameConfig && gameConfig.loadingTips) {
-      console.log("loadingTips", gameConfig.loadingTips)
-			setLoadingTips(gameConfig.loadingTips)
-      setMessage(Math.floor(Math.random() * gameConfig.loadingTips.length))
-		}
+  // useEffect(() => {
+  //   console.log("gameConfig", gameConfig)
+	// 	if (gameConfig && gameConfig.loadingTips) {
+  //     console.log("loadingTips", gameConfig.loadingTips)
+	// 		setLoadingTips(gameConfig.loadingTips)
+  //     setMessage(Math.floor(Math.random() * gameConfig.loadingTips.length))
+	// 	}
 
-	}, [gameConfig]);
+	// }, [gameConfig]);
 
 	useEffect(() => {
 		// console.log('Trigger A');
@@ -130,6 +129,14 @@ const Loading = ({controlMode}) => {
 		</div>
 	);
 };
+
+const loadingTips = [
+  {
+    title: "Subway fact #1",
+    description: "All subways are free if you disregard laws",
+    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3ViNmt4M3praTRrajc5anJwdnI3Yjk0NXowemUyaXRncmlpMG1qdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1AjD7N6KS8KUq7ynjW/giphy.gif'
+  },
+];
 
 
   const bored = [

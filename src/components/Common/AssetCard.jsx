@@ -42,11 +42,14 @@ const AssetCard = (props) => {
   const account = populateThisAccount(accounts, asset?.account)
   const team = getThisTeam(teams, account.manager);
   const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
+  const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
+  const border = isHidden ? 'dotted' : 'solid'
+
 
   if (asset)
     return (
       <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
-        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`, }} >
+        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px ${border} ${getFadedColor(asset.type)}`, }} >
           <CardHeader>
 
             <Flex align={'center'} overflow='hidden' width='100%'>

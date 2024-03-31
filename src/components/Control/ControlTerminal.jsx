@@ -121,7 +121,7 @@ const ControlTerminal = (props) => {
 
           <EditGamestate show={mode === 'edit'} onClose={() => setMode(false)} />
 
-          Loading screen tips
+          {/* Loading screen tips
           <Center>
 
             <Box width={'50%'} >
@@ -148,8 +148,7 @@ const ControlTerminal = (props) => {
 
           </Center>
 
-
-          <Loading controlMode />
+          <Loading controlMode /> */}
 
         </TabPanel>
 
