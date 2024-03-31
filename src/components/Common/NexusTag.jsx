@@ -7,6 +7,19 @@ const NexusTag = (props) => {
 
   const renderIcon = (icon) => {
     switch(icon.toLowerCase()) {  
+      case 'hidden':
+        return(
+          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+            label={(
+            <div>
+              <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+              <h5>This Asset is hidden until the round turns over</h5>
+            </div>)}>
+              <div style={{	display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content' }}>
+                <img style={{ fill: 'red', margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />
+              </div>              
+          </Tooltip>
+          )
       case 'draft':
         return(
           <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
@@ -20,7 +33,7 @@ const NexusTag = (props) => {
               </div>              
           </Tooltip>
           )
-          case 'used':
+        case 'used':
       case 'working':
         return(
           <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
@@ -34,45 +47,6 @@ const NexusTag = (props) => {
               </div>              
           </Tooltip>
           )
-      case 'brain':
-        return(
-          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
-            label={(
-            <div>
-              <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
-              <h5>{icon}</h5>
-            </div>)}>
-              <div style={{	display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content' }}>
-                <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />
-              </div>              
-          </Tooltip>
-          )
-      case 'brawn':
-        return(
-          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
-            label={(
-            <div>
-              <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
-              <h5>{icon}</h5>
-            </div>)}>
-              <div style={{	display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content' }}>
-                <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />
-              </div>              
-          </Tooltip>
-        )
-      case 'stealth':
-        return(
-          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
-            label={(
-            <div>
-              <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
-              <h5>{icon}</h5>
-            </div>)}>
-              <div style={{	display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px',  padding: '1px', margin: '3px', width: 'fit-content' }}>
-                <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />
-              </div>              
-          </Tooltip>
-        )
       case 'auto':
         return(
           <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
