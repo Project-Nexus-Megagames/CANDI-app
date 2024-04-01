@@ -11,16 +11,22 @@ const InputNumber = (props) => {
   const format = (val) => `$` + val
   const parse = (val) => val.replace(/^\$/, '')
 
-  const { defaultValue, onChange, min } = props;
-  return ( 
-    <NumberInput min={min} onChange={(valueString) => onChange(parse(valueString))} defaultValue={format(defaultValue)} >
+  const { defaultValue, onChange, min, max, width } = props;
+  return (
+    <NumberInput
+      min={min}
+      max={max}
+      onChange={(valueString) => onChange(parseInt(valueString))}
+      defaultValue={format(defaultValue)}
+      width={width}
+    >
       <NumberInputField />
       <NumberInputStepper>
         <NumberIncrementStepper />
         <NumberDecrementStepper />
       </NumberInputStepper>
     </NumberInput>
-   );
+  );
 }
- 
+
 export default InputNumber;

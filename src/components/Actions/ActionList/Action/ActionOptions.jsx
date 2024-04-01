@@ -27,7 +27,6 @@ function ActionOptions({ options, actionType, action }) {
   const roundActive = game.status === 'Active';
   const charAccount = useSelector(getCharAccount);
 
-  const myTeam = useSelector(s => s.auth.team);
   const account = useSelector(s => s.accounts.list[0]);
   const accounts = useSelector(s => s.accounts.list);
   const teams = useSelector(s => s.teams.list);

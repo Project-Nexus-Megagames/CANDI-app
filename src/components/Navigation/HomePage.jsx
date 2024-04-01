@@ -89,15 +89,11 @@ const HomePage = (props) => {
           <GridItem colSpan={columns == 1 ? 2 : 1}>
             <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
           </GridItem>
-          {/* 
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1qynD1iNvi7zGyQyL1c3LL-yN8bmHh5ZrCLOl9YvpFqo/edit")} >
-        <ImgPanel img={map} to="" title="~ Wiki ~" body="Learn more about the world"/>
-      </GridItem> */}
 
-          {/* 
-          <GridItem colSpan={columns == 1 ? 2 : 1}>
-            <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
-          </GridItem> */}
+          {team && <GridItem colSpan={columns == 1 ? 2 : 1}>
+            <ImgPanel img={other} to="team" title={'~ My Team ~'} body="teeeaam" />
+          </GridItem>}
+
 
           {/* <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
         <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />

@@ -16,13 +16,14 @@ import TradeCard from './TradeCard';
 import TradeOffer from './TradeOffer';
 
 import { getFadedColor, getThisTeamFromAccount } from '../../scripts/frontend';
-import { getTeamTrades } from '../../redux/entities/trades';
+import { getMyTrades, getTeamTrades } from '../../redux/entities/trades';
 
 
 import { FaHandshake } from 'react-icons/fa';
 import { getCharAccount } from '../../redux/entities/accounts';
 import { getPublicCharacters } from '../../redux/entities/characters';
 import Comment from '../Common/Comment';
+import usePermissions from '../../hooks/usePermissions';
 
 const Trade = (props) => {
   const tradeLoading = useSelector(s => s.trades.loading);
@@ -33,13 +34,14 @@ const Trade = (props) => {
   const teams = useSelector(s => s.teams.list);
 
   const { login, myCharacter } = useSelector(s => s.auth);
-  const myTrades = useSelector(getTeamTrades);
+  const { isControl } = usePermissions();
+  const myTrades = useSelector(getMyTrades);
   const account = useSelector(getCharAccount);
   const publicCharacter = useSelector(getPublicCharacters);
 
   const [selectedTrade, setSelectedTrade] = React.useState(null);
   const [mode, setMode] = React.useState(false);
-  const [past, setPast] = React.useState(false);
+  const [past, setPast] = React.useState(true);
   const [text, setText] = React.useState("");
   const [partner, setPartner] = React.useState(false);
   const [tags, setTags] = React.useState(['draft', 'completed']);
@@ -218,7 +220,7 @@ const Trade = (props) => {
                 <Button size={'sm'} onClick={() => setMode('new')} leftIcon={<BsPlus />} variant={"solid"} colorScheme='green'>New Trade</Button>
                 <ButtonGroup>
 
-                  <Button
+                  {isControl && <Button
                     size={'sm'}
                     onClick={() => setPast(!past)}
                     leftIcon={past ? <TeamAvatar size={'xs'} account={account._id} /> : <FaHandshake style={{ margin: '4px', }} />}
@@ -226,7 +228,7 @@ const Trade = (props) => {
                     style={{ backgroundColor: getFadedColor(account.name) }}
                   >
                     {past ? "My Trades" : "All Trades"}
-                  </Button>
+                  </Button>}
 
                   <CheckerPick
                     button={<IconButton size={'sm'} variant={'solid'} colorScheme='purple' onClick={() => setMode(mode === 'filter' ? false : 'filter')} icon={<Funnel />} />}

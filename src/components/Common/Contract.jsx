@@ -9,6 +9,7 @@ import ResourceNugget from '../Common/ResourceNugget';
 import { Check, Close } from '@rsuite/icons';
 import { Button, ButtonGroup, HStack, Tag, Tooltip, VStack, Flex, Spacer, Wrap, Box } from '@chakra-ui/react';
 import NexusTag from './NexusTag';
+import InputNumber from './InputNumber';
 
 const Contract = (props) => {
   const { contract, show } = props;
@@ -17,6 +18,8 @@ const Contract = (props) => {
   const account = useSelector(getCharAccount);
   const isCompleted = contract.status.some(el => el === 'completed')
   const [loading, setLoading] = React.useState(false);
+  const [mode, setMode] = React.useState(false);
+  const [resources, setResources] = React.useState(contract.target.map(c => { return { type: c.type, value: 0 } }));
 
   const submit = (goal) => {
     const data = {
@@ -25,16 +28,38 @@ const Contract = (props) => {
     }
     setLoading(true)
     socket.emit('request', { route: 'asset', action: 'contract', data }, (response) => {
+      setLoading(false)
+    });
+  }
+
+  const contribute = () => {
+    const data = {
+      contract: contract._id,
+      resources: resources.filter(el => el.value > 0),
+      account: account._id
+    }
+    setLoading(true)
+    socket.emit('request', { route: 'asset', action: 'contractContribute', data }, (response) => {
       console.log(response);
       setLoading(false)
     });
   }
 
-  const getTag = (target) => {
-    const rawr = account !== undefined ? account.resources.find(el => el.type === target.type) : undefined
-    const megabucks = rawr ? rawr.balance : 'Error w/ account';
-    return target.value > megabucks ? <Tag variant='solid' colorScheme='red'><Close />{"  "}{megabucks}</Tag> : <Tag variant='solid' colorScheme='green'><Check />{"  "}{megabucks}</Tag>
+  const getContribtuedAmount = (type) => {
+    const rawr = contract.contributed.find(el => el.type === type);
+    if (rawr) return (rawr.value)
+    return (0)
   }
+
+  const getTag = (target) => {
+    const contributed = getContribtuedAmount(target.type);
+    console.log(contributed, target.value);
+    return target.value > contributed ?
+      false :
+      <Tag variant='solid' colorScheme='green'><Check />{"  "}</Tag>
+  }
+
+
 
   const isDisabled = (goal) => {
     for (const target of goal.target) {
@@ -45,14 +70,26 @@ const Contract = (props) => {
     return false;
   }
 
+  const getMax = (res) => {
+    return account.resources.find(el => el.type === res)?.balance || 0;
+  }
+
+  const handleChange = (resource, value) => {
+    const res = resources.findIndex(el => el.type === resource)
+    resources[res].value = value;
+    setResources(resources)
+  }
+
   return (
-    <Box>
-      <div style={{ border: `4px solid ${getFadedColor('')}`, minWidth: '20vw', textAlign: 'center' }}>
+    <Box style={{ border: `4px solid ${getFadedColor('')}`, backgroundColor: '#1f2021', minWidth: '100%', textAlign: 'center', borderRadius: '10px' }}>
+      <div >
         <h4>{contract.name}</h4>
         <h5>{contract.description}</h5>
 
         {show && !isCompleted && <ButtonGroup style={{ marginTop: '10px' }}>
-          <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} isDisabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>
+          <Button variant={'solid'} colorScheme='blue' size='sm' isLoading={loading} onClick={() => setMode(mode ? false : 'contribute')} >{mode ? 'Cancel' : 'Contribute'}</Button>
+          {!mode && <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} isDisabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>}
+          {mode && <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} onClick={() => contribute()} >Submit</Button>}
         </ButtonGroup>}
 
         {clock.gametime < contract.timeout &&
@@ -66,24 +103,27 @@ const Contract = (props) => {
           ))}
         </Flex>}
       </div>
-      <Wrap justify={'space-around'} style={{ border: `4px solid ${getFadedColor('contract')}`, }} >
+      <Wrap justify={'space-around'} style={{ border: `4px solid ${getFadedColor('contract')}`, margin: '5px', backgroundColor: '#303134', borderRadius: '10px' }} >
 
         <VStack  >
           <Tooltip openDelay={50} placement="top" label={(<div>What you need to spend to complete this contract</div>)} trigger="hover">
             <h4>Target</h4>
           </Tooltip >
 
-          <HStack >
+          <Wrap >
             {contract.target.map(g => (
-              <div key={g._id} style={{ paddingBottom: '10px' }}  >
-                <ResourceNugget fontSize={'2em'} width={'100px'} index={g._id} value={g.value} type={g.type} />
-                {/* <div style={{ position: 'relative', top: '-30px', left: '70px'	}} >
-											{show && getTag(g)}
-										</div> */}
+              <div key={g._id} width={'100px'} style={{ paddingBottom: '5px' }}  >
+                <ResourceNugget fontSize={'2em'} index={g._id} value={`${getContribtuedAmount(g.type)}/${g.value}`} type={g.type} />
+                <div style={{ position: 'relative', top: '-30px', left: '30px' }} >
+                  {show && getTag(g)}
+                </div>
+                {mode === 'contribute' && <div style={{}} >
+                  <InputNumber width={'100px'} defaultValue={0} min={0} max={getMax(g.type)} onChange={(value) => handleChange(g.type, value)} />
+                </div>}
 
               </div>
             ))}
-          </HStack>
+          </Wrap>
         </VStack>
 
         {contract.rewards && contract.rewards.length > 0 && <VStack className="reward-container">

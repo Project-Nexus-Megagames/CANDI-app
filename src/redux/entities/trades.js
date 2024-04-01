@@ -66,7 +66,7 @@ const url = `${gameServer}api/trades`;
 
 export const getMyTrades = createSelector(
   state => state.trades.list,
-  state => state.accounts.list.find(el => el.name === `${state.auth.myCharacter.characterName}'s Account`),
+  state => state.accounts.list.find(el => el._id === state.auth.myCharacter.account),
   (trades, account) => trades.filter(
     trade => (trade.initiator.account === account._id || trade.tradePartner.account === account._id)
   )

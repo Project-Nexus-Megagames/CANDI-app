@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"; // React imports
 import { connect } from "react-redux";
-import { Route, Routes, Navigate,} from 'react-router-dom';
-import { Alert, ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
+import { Route, Routes, Navigate, } from 'react-router-dom';
+import { Grid, GridItem, useToast } from "@chakra-ui/react";
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
@@ -16,7 +16,7 @@ import Log from "./components/Control/Log";
 
 import Login from "./components/Navigation/Login";
 import initUpdates from "./redux/initUpdate";
-import { getMyCharacter, loadCharacters } from "./redux/entities/characters";
+import { loadCharacters } from "./redux/entities/characters";
 import { loadAssets } from "./redux/entities/assets";
 import { loadLocations } from "./redux/entities/locations";
 import { loadGamestate } from "./redux/entities/gamestate";
@@ -34,18 +34,16 @@ import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
 import NavigationBar from "./components/Navigation/NavigationBar";
 import { loadAllActions } from "./redux/entities/playerActions";
-import { ErrorAlert } from "./components/Common/ErrorAlert";
-import { SuccessAlert } from "./components/Common/SuccessAlert";
-import loadState from './scripts/initState';
+import TeamDashboard from "./components/Team/TeamDashboard";
 import Loading from "./components/Navigation/Loading";
 import CharacterStats from "./components/StatDisplays/CharacterStats";
 import LocationDashboard from "./components/Locations/LocationDashboard";
 import Trade from "./components/Trade/Trade";
 import { alertAdded } from "./redux/entities/alerts";
 import store from "./redux/store";
-import { CandiAlert } from "./components/Common/CandiAlert";
 import LandingPage from "./components/Navigation/Landing/LandingPage";
 import NavBar from "./components/Navigation/Landing/NavBar";
+
 
 // React App Component
 initUpdates();
@@ -77,20 +75,20 @@ const App = (props) => {
 
   useEffect(() => {
     if (flag) {
-      const interval = setTimeout(() => {  
-        let temp = seconds - 1; 
-        quack() 
-        if (seconds < 46) error() 
+      const interval = setTimeout(() => {
+        let temp = seconds - 1;
+        quack()
+        if (seconds < 46) error()
         if (seconds < 31) rise();
         if (seconds < 16) fall();
 
         if (toastIdRef.current) {
-          toast.update(toastIdRef.current, 
-            { 
-            title: 'MANDATORY UPDATE', 
-            description: `CANDI will refresh itself in ${temp} seconds. Please wrap up what you are doing. Or don't, you have all the agency here.`, 
-            status: 'error', 
-          })
+          toast.update(toastIdRef.current,
+            {
+              title: 'MANDATORY UPDATE',
+              description: `CANDI will refresh itself in ${temp} seconds. Please wrap up what you are doing. Or don't, you have all the agency here.`,
+              status: 'error',
+            })
         }
 
         if (seconds <= 0) {
@@ -99,7 +97,7 @@ const App = (props) => {
         }
         else setSeconds(temp);
       }, 1000);
-      return () => clearInterval(interval);   
+      return () => clearInterval(interval);
     }
   }, [flag, seconds]);
 
@@ -111,7 +109,7 @@ const App = (props) => {
 
   useEffect(() => {
     console.log("App Loaded");
-    
+
     socket.onAny((event, ...args) => {
       // console.log(event);
       if (event === "clients") {
@@ -123,8 +121,8 @@ const App = (props) => {
       if (data) {
         switch (data.type) {
           case 'success':
-          case 'error': 
-          // Alert.error(data.message, 6000);
+          case 'error':
+            // Alert.error(data.message, 6000);
             if (!toast.isActive(data.type)) toast({
               position: "top-right",
               isClosable: true,
@@ -147,7 +145,7 @@ const App = (props) => {
             setSeconds(60);
             setFlag(true)
             toastIdRef.current = toast({
-              title: 'MANDATORY UPDATE',              
+              title: 'MANDATORY UPDATE',
               position: "top",
               description: `CANDI will refresh itself in 60 seconds`,
               duration: 70000,
@@ -155,7 +153,7 @@ const App = (props) => {
             });
             break;
           default:
-            // Alert.info(data.message, 6000);
+          // Alert.info(data.message, 6000);
         }
       }
     });
@@ -165,7 +163,7 @@ const App = (props) => {
     const audio = new Audio("/alert.mp3");
     audio.loop = false;
     audio.volume = 0.40;
-    audio.playbackRate = (0.8); 
+    audio.playbackRate = (0.8);
     audio.play();
   };
 
@@ -197,60 +195,61 @@ const App = (props) => {
       style={
         props.duck
           ? {
-              backgroundImage: `url("https://c.tenor.com/xXMKqzQrpJ0AAAAM/skeleton-trumpet.gif")`,
-              color: "red",
-              fontFamily: "Spook",
-            }
+            backgroundImage: `url("https://c.tenor.com/xXMKqzQrpJ0AAAAM/skeleton-trumpet.gif")`,
+            color: "red",
+            fontFamily: "Spook",
+          }
           : {}
       }
     >
-        <Grid
-          templateAreas={`"header header"
+      <Grid
+        templateAreas={`"header header"
                           "main main"`}
-          gridTemplateRows={'72px 1fr'}
-          h='100vh'
-          gap='1'
-          color={'#fff'}
-        >
-          {myCharacter && <GridItem pl='1'  area={'header'} >
-            <NavigationBar />
-          </GridItem>}
+        gridTemplateRows={'72px 1fr'}
+        h='100vh'
+        gap='1'
+        color={'#fff'}
+      >
+        {myCharacter && <GridItem pl='1' area={'header'} >
+          <NavigationBar />
+        </GridItem>}
 
-          {!myCharacter && <GridItem pl='1'  area={'header'} >
-            <NavBar />
-          </GridItem>}
+        {!myCharacter && <GridItem pl='1' area={'header'} >
+          <NavBar />
+        </GridItem>}
 
-          <GridItem pl='1' area={'main'} overflow='auto' >
-            <Routes>
-             <Route exact path='/login' element={<Login {...props} />} />
-             <Route exact path='/loading' element={<Loading {...props} />} />
-              <Route exact path='/landing' element={<LandingPage {...props} />} />
-             
-              <Route exact path='/home' element={<HomePage {...props} />} />
+        <GridItem pl='1' area={'main'} overflow='auto' >
+          <Routes>
+            <Route exact path='/login' element={<Login {...props} />} />
+            <Route exact path='/loading' element={<Loading {...props} />} />
+            <Route exact path='/landing' element={<LandingPage {...props} />} />
 
-              <Route path='/home/news' element={<News {...props} />} />
-              <Route path='home/agendas' element={<Agendas {...props} />} />
-              <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
-              <Route exact path='/home/leaderboard' element={<CharacterStats {...props} />} />
-              <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
-              <Route exact path='/home/actions' element={<Actions {...props} />} />
-              <Route exact path='/home/locations' element={<LocationDashboard {...props} />} />
+            <Route exact path='/home' element={<HomePage {...props} />} />
 
-              <Route exact path='/home/control' element={<ControlTerminal {...props} />} />
-              <Route exact path='/home/trading' element={<Trade {...props} />} />
+            <Route path='/home/news' element={<News {...props} />} />
+            <Route path='home/agendas' element={<Agendas {...props} />} />
+            <Route exact path='/home/others' element={<OtherCharacters {...props} />} />
+            <Route exact path='/home/leaderboard' element={<CharacterStats {...props} />} />
+            <Route exact path='/home/character' element={<OtherCharacters selected={myCharacter} {...props} />} />
+            <Route exact path='/home/actions' element={<Actions {...props} />} />
+            <Route exact path='/home/locations' element={<LocationDashboard {...props} />} />
+
+            <Route exact path='/home/control' element={<ControlTerminal {...props} />} />
+            <Route exact path='/home/trading' element={<Trade {...props} />} />
+            <Route exact path='/home/team' element={<TeamDashboard {...props} />} />
 
 
-              <Route exact path='/log' element={<Log {...props} />} />
-              <Route exact path='/404' element={<NotFound {...props} />} />
-              <Route exact path='/no-character' element={<NoCharacter {...props} />} />
-              <Route exact path='/registration' element={<Registration {...props} />} />
-              <Route exact path='/down' element={<Down {...props} />} />
-              <Route path="/" element={<Navigate to="/login" />}/>   
-              <Route exact path='/404' element={<NotFound {...props} />} />      
-            </Routes>    
-          </GridItem>
+            <Route exact path='/log' element={<Log {...props} />} />
+            <Route exact path='/404' element={<NotFound {...props} />} />
+            <Route exact path='/no-character' element={<NoCharacter {...props} />} />
+            <Route exact path='/registration' element={<Registration {...props} />} />
+            <Route exact path='/down' element={<Down {...props} />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route exact path='/404' element={<NotFound {...props} />} />
+          </Routes>
+        </GridItem>
 
-        </Grid>    
+      </Grid>
     </div>
   );
 };

@@ -9,6 +9,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@rsuite/icons": "^1.0.2",
     "axios": "^1.2.2",
+    "chart.js": "^4.4.2",
     "framer-motion": "^8.4.2",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",

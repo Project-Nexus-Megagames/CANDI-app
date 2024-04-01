@@ -92,12 +92,21 @@ function getFadedColor(color, fade = 1) {
     case 'gold':
       return `rgb(212, 175, 55, ${fade})`
 
+    case 'faith': return `#e91e63`
     case 'magic': return `#df812e`
     case 'The Nova Union': return `#3198dd`
     case 'Kepler Vanguard': return `#2dcc70`
     case 'Exploratory Society': return `#1cbb9b`
     case 'Nomadum Negotiation': return `#71368a`
     case 'Factionless': return `#2dcc70`
+
+
+    case 'shiny_rock': return `#9b559f`
+    case 'weird_bug': return `#e95925`
+    case 'excellent_moss': return `#57fc49`
+    case 'neat_junk': return `#fcf034`
+    case 'mushroom': return `#fc9e49`
+    case 'sharp_fang': return `#ffffff`
 
     case 'background':
       return `rgba( 15, 19, 26, ${fade} )`;
