@@ -7,8 +7,9 @@ function getFadedColor(color, fade = 1) {
   switch (color) {
     case 'Agenda':
     case 'Public':
+    case 'Deposit':
     case 'For':
-      return `#22a12a`;
+      return `rgba(34,161,42, ${fade})`; // #22a12a
     case 'Agenda-rs':
       return 'green'
 
@@ -19,6 +20,8 @@ function getFadedColor(color, fade = 1) {
 
     case 'Craft':
       return `rgba(66,133,244, ${fade})`; // #4285f4
+
+    case 'Withdrawal':
     case 'Form Bond':
       return `rgba(204,0,0, ${fade})`; // #cc0000
     case 'A':

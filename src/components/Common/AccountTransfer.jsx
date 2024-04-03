@@ -10,22 +10,25 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  IconButton
+  IconButton,
+  Wrap
 } from '@chakra-ui/react'
 import ResourceNugget from "./ResourceNugget";
 import InputNumber from "./InputNumber";
 import SelectPicker from "./SelectPicker";
 import { useSelector } from "react-redux";
 import socket from "../../socket";
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon, PlusSquareIcon } from "@chakra-ui/icons";
 
-export const EditAccount = ({ open, account, onClose, onOpen }) => {
+export const AccountTransfer = ({ open, toAccount, fromAccount, onClose, onOpen, transactionType }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
+  const { myCharacter, } = useSelector(s => s.auth);
   const gameConfig = useSelector((state) => state.gameConfig);
-  const [resources, setResources] = React.useState(account.resources.map(r => { return { type: r.type, balance: r.balance } }));
+  const [resources, setResources] = React.useState([]);
   const [add, setAdd] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
+  // { type: r.type, balance: r.balance }
 
   // useEffect(() => {
   //   setResources
@@ -34,6 +37,7 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
   const handleClose = () => {
     if (onClose && onClose instanceof Function) onClose();
     CloseModal();
+    setLoading(false)
   };
 
   const handleOpen = () => {
@@ -42,7 +46,7 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
   }
 
   const editState = (incoming, type, index) => {
-    // console.log(incoming, type, index)
+    console.log(incoming, type, index)
     let thing;
     let temp;
     switch (type) {
@@ -68,16 +72,18 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
 
   useEffect(() => {
     if (open) handleOpen();
-    else handleClose();
+    //else handleClose();
   }, [open]);
 
   const handleSubmit = () => {
     setLoading(true)
     const data = {
-      account: account._id,
-      resources
+      to: toAccount._id,
+      from: fromAccount._id,
+      resources,
+      character: myCharacter._id
     }
-    socket.emit('request', { route: 'character', action: 'resetAccount', data }, (response) => {
+    socket.emit('request', { route: 'transaction', action: 'transfer', data }, (response) => {
       handleClose();
       setLoading(false);
     });
@@ -85,12 +91,12 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
 
   return (
     <>
-      <Button variant={'solid'} onClick={handleOpen} >Edit Account</Button>
+      <Button variant={'solid'} onClick={handleOpen} >{transactionType}</Button>
 
-      <Modal isOpen={isOpen} onClose={handleClose} closeOnOverlayClick={false} >
+      <Modal isOpen={isOpen} onClose={handleClose} closeOnOverlayClick={false} isCentered >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit Account</ModalHeader>
+          <ModalHeader>{transactionType}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {resources.map((resource, index) =>
@@ -101,17 +107,22 @@ export const EditAccount = ({ open, account, onClose, onOpen }) => {
                 <InputNumber
                   onChange={(ddd) => editState(ddd, 'increase', index)}
                   defaultValue={resource.balance}
+                  max={fromAccount.resources.find(el => el.type === resource.type).balance}
                 ></InputNumber>
               </Box>
             )}
-            <Button onClick={() => setAdd(true)} >Add Resource</Button>
-            {add &&
-              <SelectPicker
-                valueKey={'type'}
-                label={'type'}
-                data={gameConfig.resourceTypes.filter(el => !resources.some(r => r.type === el.type))}
-                onChange={(ddd) => editState(ddd, 'add')}
-              />}
+            {!add && <Button variant='solid' leftIcon={<PlusSquareIcon />} colorScheme="green" onClick={() => setAdd(true)} >Add Resource</Button>}
+            {add && <Wrap>
+              <IconButton icon={<CloseIcon />} onClick={() => setAdd(false)} />
+              {gameConfig.resourceTypes.filter(el => fromAccount.resources.some(r => r.type === el.type) && !resources.some(r => r.type === el.type)).map((resource) => (
+                <Button variant={'link'} onClick={() => editState(resource.type, 'add')} key={resource._id}>
+                  <ResourceNugget size="sm" type={resource.type} />
+
+                </Button>
+              ))}
+            </Wrap>}
+
+
           </ModalBody>
 
           <ModalFooter>

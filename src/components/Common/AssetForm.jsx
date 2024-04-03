@@ -12,9 +12,10 @@ import { Plus } from '@rsuite/icons';
 import { getCharAccount } from '../../redux/entities/accounts';
 import CharacterTag from './CharacterTag';
 import { AddCharacter } from './AddCharacter';
+import TeamAvatar from './TeamAvatar';
 
 const AssetForm = (props) => {
-  const { asset, character, mode } = props;
+  const { asset, character, mode, teamAccount, team } = props;
   const loggedInUser = useSelector((state) => state.auth.user);
   const blueprints = useSelector((state) => state.blueprints.list);
   const gameConfig = useSelector((state) => state.gameConfig);
@@ -26,7 +27,8 @@ const AssetForm = (props) => {
   const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
   const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
   const [account, setAccount] = React.useState(asset ? (asset.account) :
-    character ? character.account : false);
+    character ? character.account :
+      teamAccount ? teamAccount : false);
 
 
 
@@ -200,8 +202,11 @@ const AssetForm = (props) => {
             <p>Owner:</p>
 
             {!account && <AddCharacter characters={characters} handleSelect={(char) => editState(char, 0, 'selectAccount')} />}
-            {account &&
+            {account && !teamAccount &&
               <CharacterTag isAccessible character={account} onClick={() => setAccount(false)} />
+            }
+            {account && teamAccount &&
+              <TeamAvatar team={team} onClick={() => setAccount(false)} />
             }
           </Box>
 

@@ -3,31 +3,31 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor } from '../../scripts/frontend';
 
-	/**
-		value: numerical value of the resource/asset
+/**
+  value: numerical value of the resource/asset
 
-		type:  name of the resource. if set to 'blueprint' the nugget will look up what blueprint this is rendering based on the unique code passed
+  type:  name of the resource. if set to 'blueprint' the nugget will look up what blueprint this is rendering based on the unique code passed
 
-		blueprint: unique code that nugget can look up
+  blueprint: unique code that nugget can look up
 
-		loading: if the game is loading or not
+  loading: if the game is loading or not
 
-		And before you say it yeah I know it's not great but it's better than my usual code. Plus I am even leaving documentation of sorts. Look at me programming here.
-	*/
+  And before you say it yeah I know it's not great but it's better than my usual code. Plus I am even leaving documentation of sorts. Look at me programming here.
+*/
 const ResourceNugget = (props) => {
-	const { value, type, blueprint, fontSize, width, loading, altIconPath, backgroundColor, compact, label } = props;
+  const { value, type, blueprint, fontSize, width, loading, altIconPath, backgroundColor, compact, label, onClick } = props;
 
-	let blueprints = useSelector((state) => state.blueprints.list);
-	let lookup = blueprints.find((el) => el.code === type);
-	if (!lookup) lookup = blueprints.find((el) => el.code === blueprint);
+  let blueprints = useSelector((state) => state.blueprints.list);
+  let lookup = blueprints.find((el) => el.code === type);
+  if (!lookup) lookup = blueprints.find((el) => el.code === blueprint);
   let altP = altIconPath ? altIconPath : "";
 
-	return (
+  return (
     <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover' color={'white'} closeDelay={500}
-    label={label ? label :(
-      <div style={{ textTransform: 'capitalize', }}>
-        {lookup ? <h5>{lookup.name} {value}</h5> :<h5>{type} {value}</h5>} 
-        {lookup && lookup.description && <p>{lookup.description}</p>}  </div>)} >
+      label={label ? label : (
+        <div style={{ textTransform: 'capitalize', }} onClick={onClick} >
+          {lookup ? <h5>{lookup.name} {value}</h5> : <h5>{type} {value}</h5>}
+          {lookup && lookup.description && <p>{lookup.description}</p>}  </div>)} >
       <div
         className='styleCenter'
         style={{
@@ -42,10 +42,10 @@ const ResourceNugget = (props) => {
         {type !== 'blueprint' && <img src={`/images/${type}${altP}.png`} width={'50%'} alt={`${type}${altP}!`} />}
         {type === 'blueprint' && lookup && <img src={`/images/${lookup.model}/${lookup.code}${altP}.png`} width={'50%'} alt={`${lookup.model} / ${lookup.code}`} />}
 
-        {value && !compact && <h5  style={{ fontSize: fontSize }}>{value}</h5>}
+        {value && !compact && <h5 style={{ fontSize: fontSize }}>{value}</h5>}
       </div>
     </Tooltip>
-	);
+  );
 };
 
 export default ResourceNugget;

@@ -29,6 +29,7 @@ const Contract = (props) => {
     setLoading(true)
     socket.emit('request', { route: 'asset', action: 'contract', data }, (response) => {
       setLoading(false)
+      setMode(false)
     });
   }
 
@@ -42,6 +43,8 @@ const Contract = (props) => {
     socket.emit('request', { route: 'asset', action: 'contractContribute', data }, (response) => {
       console.log(response);
       setLoading(false)
+      setMode(false)
+      setResources(contract.target.map(c => { return { type: c.type, value: 0 } }))
     });
   }
 

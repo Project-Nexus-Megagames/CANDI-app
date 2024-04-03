@@ -17,7 +17,7 @@ import { BsArrowRightCircle } from 'react-icons/bs';
 
 
 const ControlTerminal = (props) => {
-  const { login, team, character, loading, user } = useSelector(s => s.auth);
+  const { login, team, character, user } = useSelector(s => s.auth);
   const assets = useSelector(s => s.assets.list);
   const clock = useSelector((s) => s.clock);
 
@@ -27,6 +27,7 @@ const ControlTerminal = (props) => {
   const navigate = useNavigate();
   const [target, setTarget] = React.useState();
   const [tab, setTab] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
 
   const tags = ['dice', 'contract', 'ice']
 
@@ -74,6 +75,14 @@ const ControlTerminal = (props) => {
   const handleEffect = () => {
     const data = user.username;
     socket.emit('request', { route: 'gamestate', action: 'unhideEffects', data });
+  }
+
+  const handleContracts = () => {
+    setLoading(true)
+    const data = user.username;
+    socket.emit('request', { route: 'asset', action: 'resetContracts', data }, (response) => {
+      setLoading(false)
+    });
   }
 
   const handleUnhideAll = () => {
@@ -137,10 +146,11 @@ const ControlTerminal = (props) => {
               Hidden Assets: {assets.filter(el => el.status.some(s => s === 'hidden')).length}
             </Box>
 
-            <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>
-            <Button onClick={() => handleUnhideAll()} >Unhide Assets</Button>
-            <Button onClick={() => handleResetEfferot()} >Reset Effort</Button>
-            <Button onClick={() => handleEffect()} >Unhide Effects</Button>
+            <Button isLoading={loading} onClick={() => handleUnUseAll()} >Reset Assets</Button>
+            <Button isLoading={loading} onClick={() => handleUnhideAll()} >Unhide Assets</Button>
+            <Button isLoading={loading} onClick={() => handleResetEfferot()} >Reset Effort</Button>
+            <Button isLoading={loading} onClick={() => handleEffect()} >Unhide Effects</Button>
+            <Button isLoading={loading} onClick={() => handleContracts()} >Reset Contracts</Button>
           </div>}
 
           <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'; // React import
+import React, { useEffect, useState } from 'react'; // React import
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useNavigate } from 'react-router-dom';
 import Production from './Production';
 import ServerManagement from './ServerManagement';
-import { getTeamAccount } from '../../redux/entities/accounts';
-import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack, Grid, GridItem, Box, Button, Center } from '@chakra-ui/react';
+import { getCharAccount, getTeamAccount } from '../../redux/entities/accounts';
+import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack, Grid, GridItem, Box, Button, Center, ButtonGroup, IconButton } from '@chakra-ui/react';
 import { getTeamFacilities } from '../../redux/entities/facilities';
 import { getTeamAssets, getTeamWorkers, getTeamContracts } from '../../redux/entities/assets';
 import { getTeamIce } from '../../redux/entities/ice';
@@ -20,21 +20,30 @@ import usePermissions from '../../hooks/usePermissions';
 import ResourceNugget from '../Common/ResourceNugget';
 import { EditAccount } from '../Common/EditAccount';
 import Contract from '../Common/Contract';
+import { AccountTransfer } from '../Common/AccountTransfer';
+import { CloseIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import AssetForm from '../Common/AssetForm';
 
 
 const TeamDashboard = (props) => {
   const navigate = useNavigate();
   const reduxAction = useDispatch();
-  const { login, team, myCharacter } = useSelector(s => s.auth);
+  const { login, team } = useSelector(s => s.auth);
   const clock = useSelector(s => s.clock);
   const { teamTab } = useSelector(s => s.gamestate);
-  const account = useSelector(getTeamAccount);
+
+  const teamAccount = useSelector(getTeamAccount);
+  const myAccount = useSelector(getCharAccount);
+
   const facilities = useSelector(getTeamFacilities);
   const workers = useSelector(getTeamWorkers);
   const assets = useSelector(getTeamAssets);
   const contracts = useSelector(getTeamContracts);
   const teamIce = useSelector(getTeamIce);
   const myLogs = useSelector(getMyTeamLogs);
+
+
+  const [mode, setMode] = useState(false);
 
   const { isControl } = usePermissions();
 
@@ -58,7 +67,7 @@ const TeamDashboard = (props) => {
       labels.push(i + 1)
     }
 
-    for (let resource of account.resources.filter(el => (el.balance > 0))) {
+    for (let resource of teamAccount.resources.filter(el => (el.balance > 0))) {
       console.log(resource.type)
       let newThing = {
         label: resource.type,
@@ -114,17 +123,41 @@ const TeamDashboard = (props) => {
 
             <GridItem pl='2' bg='#0f131a' area={'main'} >
               <Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}>
-                Stuff Here
-                <Button onClick={() => generateLineData()} >Click Me</Button>
 
-                {account && <div>
+                {teamAccount && <div>
+                  {teamAccount.name}
+                  <ButtonGroup>
+                    <AccountTransfer transactionType={"Deposit"} fromAccount={myAccount} toAccount={teamAccount} />
+                    <AccountTransfer transactionType={"Withdraw"} fromAccount={teamAccount} toAccount={myAccount} />
+                    {isControl && <EditAccount account={teamAccount} />}
+                  </ButtonGroup>
                   <Center>
-                    {account.resources.map((item) =>
+                    {teamAccount.resources.map((item) =>
                       <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
                     )}
-                    {isControl && <EditAccount account={account} />}
                   </Center>
+
+                  {<GridItem bg={mode === "new" ? '#232c3b' : '#555555'} area={'body'} >
+                    <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
+                      Assets
+                      {isControl && mode !== "new" && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
+                      {isControl && mode === "new" && <IconButton onClick={() => setMode(false)} variant={'solid'} colorScheme="red" size={'sm'} icon={<CloseIcon />} />}
+                    </h5>
+                    {mode !== "new" && <Grid templateColumns='repeat(3, 1fr)' gap={1}>
+                      {assets
+                        .filter((el) => (el.account && el.account === teamAccount._id && !el.tags.some(t => t === 'contract')))
+                        .map((asset) => (
+                          <AssetCard key={asset._id} asset={asset} showButtons />
+                        ))}
+                    </Grid>}
+                    {mode === "new" &&
+                      <Center  >
+                        <AssetForm closeModal={() => setMode(false)} mode={mode} team={team} teamAccount={teamAccount} />
+                      </Center>
+                    }
+                  </GridItem>}
                 </div>}
+
 
               </Box>
             </GridItem>
@@ -143,7 +176,7 @@ const TeamDashboard = (props) => {
         </TabPanel>
 
         <TabPanel>
-          {/* <Trade account={account} /> */}
+          {/* <Trade teamAccount={teamAccount} /> */}
         </TabPanel>
 
         {/* <TabPanel>
