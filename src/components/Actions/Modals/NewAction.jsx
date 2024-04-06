@@ -120,7 +120,7 @@ const NewAction = (props) => {
       boolean = myAccout.resources.some(e => e.type === resource.type) &&
         myAccout.resources.find(e => e.type === resource.type)?.balance >= resource.min
     }
-    console.log(!boolean)
+    
     return !boolean;
   };
 
@@ -296,6 +296,7 @@ const NewAction = (props) => {
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el =>
                       (actionType.assetTypes.some(a => a === el.type || a === el.model)) &&
+                      (!el.status.some(a => a === 'used' || a === 'working')) &&
                       !assets.some(ass => ass?._id === el._id)
                     )}
                   />}

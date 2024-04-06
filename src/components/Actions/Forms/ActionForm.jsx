@@ -263,7 +263,10 @@ const ActionForm = (props) => {
                   <AddAsset
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
-                    assets={myAssets.filter(el => actionType.assetTypes.some(a => a === el.type || a === el.model) && !assets.some(ass => ass?._id === el._id || ass === el._id))} 
+                    assets={myAssets.filter(el => 
+                      actionType.assetTypes.some(a => a === el.type || a === el.model) && 
+                      (!el.status.some(a => a === 'used' || a === 'working')) &&
+                      !assets.some(ass => ass?._id === el._id || ass === el._id))} 
                     />}
                 {ass &&
                   <AssetCard

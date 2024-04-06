@@ -24,10 +24,7 @@ const Actions = (props) => {
   const navigate = useNavigate();
   const [showNewActionModal, setShowNewActionModal] = useState(false);
   const [assetInfo, setAssetInfo] = useState({ show: false, asset: '' });
-  const [editAction, setEditAction] = useState({ show: false, action: null })
   const { isControl } = usePermissions();
-  const [rounds, setRounds] = useState([]);
-  const [renderRounds, setRenderRounds] = useState([]);
   const [selected, setSelected] = useState(false);
 
   const [actionType, setActionType] = React.useState(
@@ -51,6 +48,10 @@ const Actions = (props) => {
       console.log(err);
     }
   }, [actionList])
+
+  useEffect(() => {
+    if(showNewActionModal && selected) setShowNewActionModal(false)
+  }, [selected])
 
   actionList = actionList.filter(action =>
     action.submission.description.toLowerCase().includes(filter.toLowerCase()) ||
@@ -85,7 +86,7 @@ const Actions = (props) => {
             aria-label='a tooltip'>
             <IconButton
               icon={<AddIcon />}
-              onClick={setShowNewActionModal}
+              onClick={() => {setShowNewActionModal(true); setSelected(false) }}
               colorScheme={'green'}
               style={{
                 marginLeft: '1rem'

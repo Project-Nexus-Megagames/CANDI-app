@@ -1,33 +1,35 @@
 import React, { useEffect } from "react";
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
   useDisclosure,
   Button,
   IconButton,
   Input,
-  Grid,
   Box,
   VStack,
   Divider,
-  Portal
+  Text,
+  Center
 } from '@chakra-ui/react'
-import Worker from "../Team/Worker";
 import { BsPlus } from "react-icons/bs";
 import AssetCard from "./AssetCard";
+import { CandiModal } from "./CandiModal";
+import { populateThisAccount } from "../../scripts/frontend";
+import { useSelector } from "react-redux";
 
-export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets }) => {
+export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
-	const [fill, setFilter] = React.useState('');
+  const [fill, setFilter] = React.useState('');
+  const accounts = useSelector(state => state.accounts.list);
 
-  const handleClose = () => { 
+  const uniqueAccountIds = new Set();
+  assets.forEach(asset => {
+    uniqueAccountIds.add(asset.account);
+  });
+  // Convert the Set to an array
+  const uniqueAccountIdsArray = Array.from(uniqueAccountIds).map(acc => { return populateThisAccount(accounts, acc) });
+  const [selectedAccount, setSelectedAccount] = React.useState(uniqueAccountIdsArray ? uniqueAccountIdsArray[0] : false);
+
+  const handleClose = () => {
     if (onClose && onClose instanceof Function) onClose();
     CloseModal();
   };
@@ -42,36 +44,37 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets }) => {
     else handleClose();
   }, [open]);
 
-  const filteredAssets = assets.filter(a => a.name.toLowerCase().includes(fill.toLowerCase()));
+  let filteredAssets = assets.filter(a => a.name.toLowerCase().includes(fill.toLowerCase()));
+  if (uniqueAccountIdsArray && selectedAccount) filteredAssets = filteredAssets.filter(a => a.account === selectedAccount?._id);
 
   return (
-      <Popover placement='left-start' isLazy>
-        <PopoverTrigger>
-          <Box className="styleCenter" style={{ minWidth: '100px', minHeight: '100px', border: '3px dotted', margin: '5px' }} >
-            <IconButton variant="solid"  colorScheme='green' size="md" icon={<BsPlus/>} /> 
-          </Box>
-          
-        </PopoverTrigger>
-        <Portal>
-          <PopoverContent bg='#343a40' minWidth={'30vw'}>
-            <PopoverArrow />
-            <PopoverHeader>
-              <Input style={{ width: '94%' }} value={fill} onChange={(e)=> setFilter(e.target.value)} placeholder={`${assets.length} Assets`} />
-              </PopoverHeader>
-            <PopoverCloseButton />
-            <PopoverBody>
-              <VStack divider={<Divider />} style={{ maxHeight: '40vh', overflow: 'auto', paddingTop: filteredAssets.length < 3 ? '0vh' : '45vh' }} justify="space-around" align={'center'}  >
-                {filteredAssets.map((ass) => (
-                  <Box key={ass._id} style={{ width: '100%' }}>
-                    <AssetCard  handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass}  />
-                  </Box>                
-                ))}
-                </VStack>
+    <>
+      <Center className="styleCenter"  >
+        <IconButton onClick={() => handleOpen()} isDisabled={disabled || assets.length <= 0} variant="solid" colorScheme='green' size="sm" icon={<BsPlus size={'25'} />} />
+        {assets.length <= 0 && <Text color='red' >No Assets</Text>}
+      </Center>
+      <CandiModal open={isOpen} onClose={() => handleClose()}  >
 
-            </PopoverBody>
-          </PopoverContent>
-        </Portal>
-
-      </Popover>
+        <Input style={{ width: '94%' }} value={fill} onChange={(e) => setFilter(e.target.value)} placeholder={`${assets.length} Assets`} />
+        {uniqueAccountIdsArray && uniqueAccountIdsArray.length > 1 && uniqueAccountIdsArray.map(account => (
+          <Button
+            onClick={() => setSelectedAccount(account)}
+            variant={selectedAccount?._id === account._id ? 'solid' : 'ghost'}
+            key={account?._id}
+            colorScheme={selectedAccount?._id === account._id ? 'green' : 'teal'}
+          >
+            {account?.name}
+          </Button>
+        ))}
+        <Divider />
+        <VStack divider={<Divider />} style={{ overflow: 'scroll', }} justify="space-around" align={'center'}  >
+          {filteredAssets.map((ass) => (
+            <Box key={ass._id} style={{ width: '100%', cursor: 'pointer' }}>
+              <AssetCard handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass} />
+            </Box>
+          ))}
+        </VStack>
+      </CandiModal>
+    </>
   );
 };

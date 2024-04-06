@@ -51,7 +51,7 @@ const AssetTab = (props) => {
                      user.description.toLowerCase().includes(fil.toLowerCase()
                    ))
                   .map(asset => (
-                     <Box key={asset._id} onClick={() => setSelected(asset)}>
+                     <Box key={asset._id} onClick={() => setSelected(asset)} style={{ backgroundColor: selected === asset ? getFadedColor() : 'inherit' }}  >
                         <p>{asset.name}</p>
                         
                         {asset._id}
