@@ -300,6 +300,7 @@ const NewAction = (props) => {
                     assets={myAssets.filter(el =>
                       (actionType.assetTypes.some(a => a === el.type || a === el.model)) &&
                       (!el.status.some(a => a === 'used' || a === 'working' || a === 'hidden')) &&
+                      el.uses > 0 &&
                       !assets.some(ass => ass?._id === el._id)
                     )}
                   />}
