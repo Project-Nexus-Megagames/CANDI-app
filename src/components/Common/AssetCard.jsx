@@ -57,10 +57,10 @@ const AssetCard = (props) => {
               <Box>
 
                 <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(asset.type)}`, padding: '5px'  }} display="flex"  >
-                  <HStack >
+                  <Center >
                     {character && <CharacterNugget size='lg' character={character} />}
 
-                    <Box textAlign={'left'} >
+                    <Box textAlign={'left'} marginLeft={'5px'} >
                       {asset.name}
                       <br />
                       <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
@@ -86,7 +86,7 @@ const AssetCard = (props) => {
                         ))}
                       </Wrap>
                     </Box>
-                  </HStack>
+                  </Center>
 
 
 

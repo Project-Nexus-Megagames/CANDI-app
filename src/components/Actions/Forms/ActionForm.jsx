@@ -105,6 +105,7 @@ const ActionForm = (props) => {
     setAssets(arr);
   }
 
+  const maxLength = 4000;
   const disabledConditions = [
     {
       text: "Description is too short",
@@ -112,7 +113,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Description is too long!",
-      disabled: description.length >= 4000
+      disabled: description.length >= maxLength
     },
     {
       text: "Name is too short",
@@ -203,8 +204,16 @@ const ActionForm = (props) => {
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {10 - description.length <= 0 && (
+            {description.length >= maxLength && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                 too long: ({description.length} / {maxLength})
+                
+              </Tag>
+            )}
+
+            {10 - description.length <= 0 && description.length < maxLength && (
               <Tag variant='solid' colorScheme={'green'}>
+                {description.length} / {maxLength}
                 <CheckIcon />
               </Tag>
             )}
@@ -266,6 +275,7 @@ const ActionForm = (props) => {
                     assets={myAssets.filter(el => 
                       actionType.assetTypes.some(a => a === el.type || a === el.model) && 
                       (!el.status.some(a => a === 'used' || a === 'working')) &&
+                      el.uses > 0 &&
                       !assets.some(ass => ass?._id === el._id || ass === el._id))} 
                     />}
                 {ass &&

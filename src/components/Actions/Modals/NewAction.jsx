@@ -7,7 +7,7 @@ import socket from '../../../socket';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack, HStack } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import { AddAsset } from '../../Common/AddAsset';
-import { CheckIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
 import WordDivider from '../../Common/WordDivider';
 import AssetCard from '../../Common/AssetCard';
 import SelectPicker from '../../Common/SelectPicker';
@@ -125,6 +125,7 @@ const NewAction = (props) => {
   };
 
 
+  const maxLength = 4000;
   const disabledConditions = [
     {
       text: "Description is too short",
@@ -132,7 +133,7 @@ const NewAction = (props) => {
     },
     {
       text: "Description is too long!",
-      disabled: description.length >= 4000
+      disabled: description.length >= maxLength
     },
     {
       text: "Name is too short",
@@ -246,14 +247,16 @@ const NewAction = (props) => {
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {description.length >= 1000 && (
+            {description.length >= maxLength && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                Description is too long.
+                 too long: ({description.length} / {maxLength})   
+                <CloseIcon />             
               </Tag>
             )}
 
-            {10 - description.length <= 0 && description.length < 1000 && (
+            {10 - description.length <= 0 && description.length < maxLength && (
               <Tag variant='solid' colorScheme={'green'}>
+                {description.length} / {maxLength}
                 <CheckIcon />
               </Tag>
             )}
@@ -296,7 +299,8 @@ const NewAction = (props) => {
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el =>
                       (actionType.assetTypes.some(a => a === el.type || a === el.model)) &&
-                      (!el.status.some(a => a === 'used' || a === 'working')) &&
+                      (!el.status.some(a => a === 'used' || a === 'working' || a === 'hidden')) &&
+                      el.uses > 0 &&
                       !assets.some(ass => ass?._id === el._id)
                     )}
                   />}

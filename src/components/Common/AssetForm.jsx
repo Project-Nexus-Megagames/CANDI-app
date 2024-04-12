@@ -231,7 +231,7 @@ const AssetForm = (props) => {
 					</FormControl>
 
 					<Grid templateColumns={`repeat(2, 1fr)`} width={'100%'}>
-						{['hidden', 'lent', 'lendable', 'used', 'working'].map((stat, index) => (
+						{['hidden', 'multi-use', 'lendable', 'used', 'working'].map((stat, index) => (
 							<FormControl key={index} display='flex' alignItems='center'>
 								<FormLabel mb='0'>{stat}</FormLabel>
 								<Switch id={stat} onChange={handleStatus} isChecked={status.some((el) => el === stat)} />
