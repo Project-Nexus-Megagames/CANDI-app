@@ -274,7 +274,7 @@ const ActionForm = (props) => {
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el => 
                       actionType.assetTypes.some(a => a === el.type || a === el.model) && 
-                      (!el.status.some(a => a === 'used' || a === 'working')) &&
+                      (!el.status.some(a => a === 'used' || a === 'working') || el.status.some(a => a === 'multi-use')) &&
                       el.uses > 0 &&
                       !assets.some(ass => ass?._id === el._id || ass === el._id))} 
                     />}
