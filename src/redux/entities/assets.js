@@ -70,8 +70,8 @@ export const getMyUsedAssets = createSelector(
 
 export const getMyAssets = createSelector(
   (state) => state.assets.list,
-  state => state.auth.myCharacter,
-  (assets, char) => assets.filter((asset) => asset.account === char.account || asset.sharedWith.some(c => c._id === char._id))
+  state => state.auth.character,
+  (assets, char) => assets.filter((asset) => asset.account === char.account || asset.sharedWith.some(c => c._id == char._id))
 );
 
 export const getTeamDice = createSelector(
