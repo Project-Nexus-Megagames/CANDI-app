@@ -138,7 +138,7 @@ const Actions = (props) => {
             aria-label='a tooltip'>
             <IconButton
               icon={<AddIcon />}
-              onClick={setShowNewActionModal}
+              onClick={() => setShowNewActionModal(true)}
               colorScheme={'green'}
               variant={'solid'}
               style={{
@@ -212,7 +212,7 @@ const Actions = (props) => {
           </Box>
         </Flex>}
 
-        {smallScreen && showNewActionModal &&
+        {showNewActionModal &&
           <Box>
             <Center>
               <ButtonGroup isAttached>
