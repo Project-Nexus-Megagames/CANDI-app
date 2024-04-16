@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { setCharacter, signOut } from '../../redux/entities/auth';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
-import { Box, Button, ButtonGroup, Container, Divider, Flex, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Progress, VStack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Container, Divider, Flex, Hide, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Progress, Show, VStack } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import usePermissions from "../../hooks/usePermissions";
 import { useLocation, useNavigate } from 'react-router';
@@ -241,57 +241,69 @@ const Navigation = (props) => {
           </Box>
         </Box>
 
-        <Box
-          flex={2}
-          display='flex'
-          marginLeft='auto'
-          justifyContent='right'
-        >
+        <Hide below='md'>
+          <Box
+            flex={2}
+            display='flex'
+            marginLeft='auto'
+            justifyContent='right'
+          >
 
-          <AlertList />
-          {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
-          {isControl && (
-            <Popover>
-              <PopoverTrigger
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                colorScheme={'#0f131a'}
-                _hover={{ bg: 'gray.400' }}
-              >
-                <Button variant={'ghost'} >View As</Button>
-              </PopoverTrigger>
-              <PopoverContent
-                backgroundColor={'#0f131a'}
-                overflow="hidden"
-                maxHeight={'50vh'}
-              >
-                <PopoverHeader >
-                  <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
-                </PopoverHeader >
-                <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
-                  <VStack divider={<Divider />} overflow={"auto"} >
-                    {allCharacters
-                    .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
-                    .map(character => (
-                        <CharacterListItem
-                          character={character}
-                          key={character._id}
-                          isAccessible
-                          size='md'
-                          handleSelect={() => {
-                            handleCharChange(character._id);
-                          }} />
-                    ))}
-                  </VStack>
+            <AlertList />
+            {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
+            {isControl && (
+              <Popover>
+                <PopoverTrigger
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  colorScheme={'#0f131a'}
+                  _hover={{ bg: 'gray.400' }}
+                >
+                  <Button variant={'ghost'} >View As</Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  backgroundColor={'#0f131a'}
+                  overflow="hidden"
+                  maxHeight={'50vh'}
+                >
+                  <PopoverHeader >
+                    <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
+                  </PopoverHeader >
+                  <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
+                    <VStack divider={<Divider />} overflow={"auto"} >
+                      {allCharacters
+                      .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
+                      .map(character => (
+                          <CharacterListItem
+                            character={character}
+                            key={character._id}
+                            isAccessible
+                            size='md'
+                            handleSelect={() => {
+                              handleCharChange(character._id);
+                            }} />
+                      ))}
+                    </VStack>
 
-                </PopoverBody>
+                  </PopoverBody>
 
-              </PopoverContent >
-            </Popover>
-          )}
+                </PopoverContent >
+              </Popover>
+            )}
 
-          {isControl && <UserList />}
-        </Box>
+            {isControl && <UserList />}
+          </Box>          
+        </Hide>
+
+        <Show below='md'>
+          <Box
+            flex={3}
+            display='flex'
+            marginLeft='auto'
+            justifyContent='right'
+          />
+        </Show>
+
       </Flex>
     </Container>
   );

@@ -7,6 +7,7 @@ const slice = createSlice({
   name: "playerActions",
 	initialState: {
     list: [],
+    compactList: [],
     loading: false,
     loaded: false,
     lastFetch: null,
@@ -22,6 +23,15 @@ const slice = createSlice({
     playerActionsReceived: (playerActions, action) => {
       console.log(`${action.type} Dispatched...`);
       playerActions.list = action.payload;
+
+      playerActions.compactList = action.payload.map(el => {return({ 
+        id: el._id, 
+        name: el.name, 
+        creator: el.creator, 
+        submission: el.submission, 
+        tags: el.tags   
+        })});
+
       playerActions.loading = false;
       playerActions.lastFetch = Date.now();
       playerActions.loaded = true;
