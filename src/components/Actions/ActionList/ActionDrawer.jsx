@@ -3,7 +3,7 @@ import ActionList from "./ActionList";
 import {    Center,    Drawer,    DrawerBody,    DrawerCloseButton,    DrawerContent,    DrawerFooter,    DrawerHeader,    DrawerOverlay,    Flex,    IconButton,    Input,    InputGroup,    InputLeftElement,    Tooltip,    useBreakpointValue,} from "@chakra-ui/react";
 import { AddIcon, SearchIcon } from '@chakra-ui/icons'
 
-function ActionDrawer({actions, onClick, handleSelect, isOpen, onClose}) {
+function ActionDrawer({actions, onClick, handleSelect, isOpen, onClose, rounds, renderRounds, handleRoundToggle}) {
     const drawerSize = useBreakpointValue({base: 'full', sm: 'sm'});
     const [filter, setFilter] = useState('');
 
@@ -14,6 +14,7 @@ function ActionDrawer({actions, onClick, handleSelect, isOpen, onClose}) {
             onClose={onClose}
             isFullHeight
             size={drawerSize}
+            isLazy
         >
             <DrawerOverlay/>
             <DrawerContent
@@ -63,6 +64,9 @@ function ActionDrawer({actions, onClick, handleSelect, isOpen, onClose}) {
                           action.creator.characterName.toLowerCase().includes(filter.toLowerCase())  ||
                           action.name.toLowerCase().includes(filter.toLowerCase()))}
                         handleSelect={handleSelect}
+                        renderRounds={renderRounds}
+                        rounds={rounds}
+                        handleRoundToggle={handleRoundToggle}
                     />
                 </DrawerBody>
                 <DrawerFooter/>

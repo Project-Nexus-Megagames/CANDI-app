@@ -1,33 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Flex, StackDivider, Tag, VStack } from "@chakra-ui/react";
 import ActionTag from "./ActionTag";
 import CharacterNugget from '../../Common/CharacterNugget';
 import { getFadedColor } from '../../../scripts/frontend';
+import { useSelector } from 'react-redux';
 
-function ActionList({ actions, handleSelect, selected }) {
-  const [rounds, setRounds] = useState([]);
-  const [renderRounds, setRenderRounds] = useState([]);
-
-  useEffect(() => {
-    try {
-      createListCategories();
-    } catch (err) {
-      console.log(err);
-    }
-  }, [actions])
-
-  const createListCategories = () => {
-    const rounds = [];
-    for (const action of actions) {
-      if (!rounds.some((item) => item === action.round)) {
-        rounds.push(action.round);
-      }
-    }
-    rounds.reverse();
-    setRounds(rounds);
-    setRenderRounds(rounds);
-  };
-
+function ActionList({ actions, handleSelect, selected, renderRounds, rounds, handleRoundToggle }) {
   const tagStyle = (item) => {
     switch (item.toLowerCase()) {
       case 'news':
@@ -59,22 +37,18 @@ function ActionList({ actions, handleSelect, selected }) {
       })
   }
 
-  const handleRoundToggle = (round) => {
-    if (renderRounds.some(r => r === round)) setRenderRounds(renderRounds.filter((r => r !== round)))
-    else setRenderRounds([ ...renderRounds, round ])
-  }
-
   return (
     <VStack
       divider={<StackDivider />}
       align='stretch'
-      maxWidth={'20vw'}
+      
     >
-      {rounds.map(round => (
+      {rounds && rounds.map(round => (
         <div key={round} >
           <h4 onClick={() => handleRoundToggle(round)} style={{ backgroundColor: getFadedColor('gold'), color: 'black', cursor: 'pointer' }} >Round {round}</h4>
-          {sortedActions(actions.filter(el => el.round === round)).length <= 0 && <b>No Actions</b>}
-          {renderRounds.some(r => r === round) && sortedActions(actions.filter(el => el.round === round)).map((action) => (
+          <p>{(actions.filter(el => el.round === round)).length} Actions</p>
+
+          {renderRounds.some(r => r === round) && actions.filter(el => el.round === round).map((action) => (
             <Flex
               key={action._id}
               onClick={() => handleSelect(action)}

@@ -12,9 +12,10 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
     const [slots, setSlots] = React.useState([]);
 
     const breakpoints = useBreakpointValue({
-        base: {columns: 0, rows: actionType.maxAssets, width: '15rem', bottom: '1.75rem', left: '7.5rem'},
-        md: {columns: actionType.maxAssets, rows: 0, width: '10rem', bottom: '1.75rem', left: '5rem'},
-        lg: {columns: actionType.maxAssets, rows: 0, width: '15rem', bottom: '1.75rem', left: '7.5rem'}
+      sm: {columns: 1, rows: actionType.maxAssets, width: '', bottom: '1.0rem', left: '7.5rem'},
+        base: {columns: 1, rows: actionType.maxAssets, bottom: '1.0rem', left: '7.5rem'},
+        md: {columns: 2, rows: 0, bottom: '1.0rem', left: '5rem'},
+        lg: {columns: actionType.maxAssets, rows: 0, width: '22vw', bottom: '1.0rem', left: '7.5rem'}
     })
 
     useEffect(() => {
@@ -38,26 +39,7 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
         let inner;
         if (retrievedAsset) {
             inner = (
-                <Box >
-                    {isControl &&
-                        <IconButton
-                            size="xs"
-                            onClick={(e) => {
-                                //TODO: add remove asset logic
-                                console.log('im clicked instead');
-                                e.stopPropagation()
-                            }}
-                            icon={<CloseIcon/>}
-                            backgroundColor="red"
-                            aria-label={'Remove Asset'}
-                            position='relative'
-                            bottom={breakpoints.bottom}
-                            left={breakpoints.left}
-                            isRound
-                        />
-                    }
-                    <AssetCard marginTop={isControl ? '-2.5rem' : 0} asset={retrievedAsset} disabled />
-                </Box>
+              <AssetCard asset={retrievedAsset} disabled />
             );
         } else {
             inner = 'Empty Slot'
@@ -72,9 +54,7 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
                 width={breakpoints.width}
                 border={'1px solid white'}
                 borderRadius={'10'}
-                marginTop={'2rem'}
-                minH="10vh"
-                onClick={() => retrievedAsset && toggleAssetInfo(retrievedAsset)}
+                minH={'25vh'}
             >
                 {inner}
             </Flex>
@@ -84,17 +64,14 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
     return (
         <Box>
             <WordDivider word={`Assets(${assets.length})` }/>
+            C:{breakpoints.columns} R:{breakpoints.rows}
+            width{breakpoints.width}
             <SimpleGrid
               columns={breakpoints.columns}
               rows={breakpoints.rows}
             >
                 {slots.map((slot, index) => (
-                    <Flex
-                        key={index}
-                        justifyContent={'center'}
-                    >
-                        {renderAsset(assets[index])}
-                    </Flex>
+                        renderAsset(assets[index])
                 ))}
             </SimpleGrid>
         </Box>

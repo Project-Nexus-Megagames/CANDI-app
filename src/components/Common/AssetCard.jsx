@@ -49,7 +49,7 @@ const AssetCard = (props) => {
   if (asset)
     return (
       <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
-        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px ${border} ${getFadedColor(asset.type)}`, }} >
+        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px ${border} ${getFadedColor(asset.type)}`, minHeight: "20em", height: '100%' }} >
           <CardHeader>
 
             <Flex align={'center'} overflow='hidden' width='100%'>
@@ -173,7 +173,7 @@ const AssetCard = (props) => {
 
           </CardHeader>
           <CardBody style={{ paddingTop: '0px' }} >
-            {!compact && <div style={{ maxHeight: '20vh', overflow: 'auto', textOverflow: 'ellipsis', }} >
+            {!compact && <div style={{ maxHeight: '10vh', overflow: 'auto', textOverflow: 'ellipsis', }} >
               {asset.description}
             </div>}
           </CardBody>
