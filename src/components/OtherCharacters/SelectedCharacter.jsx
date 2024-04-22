@@ -137,7 +137,7 @@ const SelectedCharacter = (props) => {
             .filter((el) => (el.account && el.account === selected.account) || el.sharedWith.some(c => c._id === selected._id))
             .filter((el) => !el.status.some(s => s === 'hidden') || isControl)
             .map((asset) => (
-              <AssetCard key={asset._id} asset={asset} character={selected} showButtons  />
+              <AssetCard key={asset._id} asset={asset}  showButtons  />
             ))}
         </Grid>}
 
