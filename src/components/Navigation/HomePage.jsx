@@ -7,7 +7,7 @@ import ImgPanel from './ImgPanel';
 // import aang from '../Images/aang.jpg'
 import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
-import actions from '../Images/actions.jpg';
+import actionImg from '../Images/actions.jpg';
 import map from '../Images/location.png'; 
 import control from '../Images/control.png';
 import agendas from '../Images/agenda.jpg';
@@ -36,7 +36,7 @@ const HomePage = (props) => {
 	const [selectedChar, setSelectedChar] = React.useState('');
 	const tempCharacter = useSelector(getCharacterById(selectedChar));
   const {isControl} = usePermissions();
-	const [rand, setRand] = React.useState(Math.floor(Math.random() * 500));
+	const [rand, setRand] = React.useState(Math.floor(Math.random() * 1000));
   const columns = useBreakpointValue({base: 1, lg: 3, md: 2, sm: 1});
 
   if (!props.login) {
@@ -72,7 +72,7 @@ const HomePage = (props) => {
       </GridItem>   */}
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Private Actions" />
+        <ImgPanel img={actionImg} to="actions" title="~ Actions ~" body="Private Actions" />
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
@@ -134,11 +134,11 @@ const HomePage = (props) => {
         <img src='https://cdn.discordapp.com/attachments/1212818889382305864/1231712941699629146/sunglasses_PNG155.png?ex=6637f511&is=66258011&hm=298ed216cfbca369b0098d90465f09f385b292ed39b93bae8738e34a4b871cdd&' ></img>
       </CandiWarning>
 
-      <CandiWarning open={rand > 151 && rand < 200} title={"It's so bright, why can't you see it?"} rejectText={'I must not look...'} confirmText={"I want to."} onClose={() => setRand(0)} handleAccept={() => setRand(0)}>
+      <CandiWarning open={rand > 150 && rand < 200} title={"It's so bright, why can't you see it?"} rejectText={'I must not look...'} confirmText={"I want to."} onClose={() => setRand(0)} handleAccept={() => setRand(0)}>
         <img src='https://cdn.discordapp.com/attachments/857862435096100884/1231713818103644311/Sun-Shaped-Sunglasses-removebg-preview.png?ex=6637f5e2&is=662580e2&hm=ea0f7bc352360901883eb905cd3ad6939695b3def4e6a15a63aea9f9777ff950&' ></img>
       </CandiWarning>
 
-      <CandiWarning open={rand > 201 && rand < 250} title={"SUBMITSUBMITSUBMITSUBMIT\nSUBMITSUBMITSUBMITSUBMIT\nSUBMITSUBMITSUBMITSUBMIT\nSUBMITSUBMITSUBMITSUBMIT"} rejectText={'SUBMIT'} confirmText={"SUBMIT"} onClose={() => setRand(0)} handleAccept={() => setRand(0)}>
+      <CandiWarning open={rand > 201 && rand < 202} title={"SUBMITSUBMITSUBMITSUBMIT\nSUBMITSUBMITSUBMITSUBMIT\nSUBMITSUBMITSUBMITSUBMIT\nSUBMITSUBMITSUBMITSUBMIT"} rejectText={'SUBMIT'} confirmText={"SUBMIT"} onClose={() => setRand(0)} handleAccept={() => setRand(0)}>
         <img src='https://cdn.discordapp.com/attachments/857862435096100884/1231714459366457394/sunglasses-graphic-design-template-vector-png_248576-removebg-preview.png?ex=6626d2fb&is=6625817b&hm=d43f3326e1240c6ca14ebd5e91bd7861af45e08c4668ee3d8ddda5b2151d5cad&' ></img>
       </CandiWarning>
 
