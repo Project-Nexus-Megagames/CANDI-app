@@ -230,6 +230,7 @@ const ActionSubObject = (props) => {
           <ActionForm
             collabMode
             defaultValue={subObject}
+            tags={action.tags}
             actionType={action.type}
             handleSubmit={(data) => handleSubmit(data)}
             closeNew={() => setMode(false)}

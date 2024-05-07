@@ -83,7 +83,8 @@ const NewEffects = (props) => {
         setSelected({
           name: '',
           duration: '0',
-          ownerCharacter: props.selected.creator._id,
+          character: props.selected.creator._id,
+          received: props.selected.round,
           permanent: false
         });
         break;
@@ -134,10 +135,10 @@ const NewEffects = (props) => {
   };
 
   const handleAddInjury = (type, change) => {
+    console.log(type, change)
     let temp = { ...selected };
     temp[type] = change;
-    temp.received = props.selected.round;
-    temp.actionTitle = props.selected.name;
+    console.log(temp)
     setSelected(temp);
   };
 
@@ -194,9 +195,8 @@ const NewEffects = (props) => {
     );
   };
 
-  const handleSubmit = async (aaaa) => {
+  const handleSubmit = async (aaaa) => { 
     try {
-      const populatedCharacter = characters.find(el => el._id == character)
       const data = {
         type,
         action: props.action._id,
@@ -204,8 +204,10 @@ const NewEffects = (props) => {
         effector: myChar._id,
         loggedInUser
       };
+      console.log(data)
       socket.emit('request', { route: 'action', action: 'effect', data });
     } catch (err) {
+      console.log(err)
       // Alert.error(`Error: ${err.body} ${err.message}`, 5000);
     }
     // handleExit();
@@ -228,6 +230,9 @@ const NewEffects = (props) => {
     }
   };
 
+  const renderInjuries = () => {
+	};
+
   const buttons = [
     { type: 'new', color: 'green', name: 'New Asset' },
     { type: 'asset', color: 'green', name: 'Edit Asset' },
@@ -235,7 +240,7 @@ const NewEffects = (props) => {
     { type: 'newLocation', color: 'blue', name: 'New Location' },
     { type: 'locationStats', color: 'blue', name: 'Edit Location Stats', },
     { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location', },
-    // { type: 'addInjury', color: 'green', name: 'addInjury' },
+    { type: 'addInjury', color: 'green', name: 'Add Injury' },
   ]
 
   return (
@@ -351,6 +356,39 @@ const NewEffects = (props) => {
                 
             </div>
           )}
+
+          {type === 'healInjuries' && (
+						<div>
+							<Divider>Heal Injuries</Divider>
+							{/* {renderInjuries()} */}
+						</div>
+					)}
+					{type === 'addInjury' && selected && (
+						<div>
+							<div>Title:</div>
+							<Input
+								onChange={(e) => handleAddInjury('name', e.target.value)}
+								style={{ marginBottom: ' 10px' }}
+							></Input>
+							{!selected.permanent && (
+								<div>
+									Duration:
+									<InputNumber
+										min={0}
+										onChange={(e) => handleAddInjury('duration', e)}
+										style={{ marginBottom: ' 10px' }}
+									/>
+								</div>
+							)}
+              <Button
+                disabled={type === ''}
+                onClick={() => handleSubmit(selected)}
+                variant="solid"
+              >
+                Submit
+              </Button>
+						</div>
+					)}
 
         </ModalBody>
 

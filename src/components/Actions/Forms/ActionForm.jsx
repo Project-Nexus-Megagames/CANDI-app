@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getTextColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text } from '@chakra-ui/react';
+import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text, Checkbox } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
@@ -17,7 +17,7 @@ import { HiSave } from 'react-icons/hi';
  * @returns Component
  */
 const ActionForm = (props) => {
-  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header, loading } = props;
+  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header, loading, tags } = props;
 
   const { gameConfig } = useSelector((state) => state);
   const { myCharacter } = useSelector((s) => s.auth);
@@ -41,7 +41,8 @@ const ActionForm = (props) => {
   const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
   const [destination, setDestination] = React.useState(defaultValue?.location ? defaultValue.location : false);
   const [facility, setFacility] = React.useState(undefined);
-
+  
+  const [exertion, setExertion] = React.useState(tags?.some(el => el === 'exertion'));
 
   useEffect(() => {
     if (actionType && actionType.type && !defaultValue) {
@@ -81,7 +82,8 @@ const ActionForm = (props) => {
       type: actionType.type,
       location: destination,
       myCharacter: myCharacter._id,
-      creator: myCharacter._id,
+      creator: myCharacter._id,      
+      tags: exertion ? ['exertion'] : [],
       id: actionID
     };
     closeNew();
@@ -159,6 +161,11 @@ const ActionForm = (props) => {
                 <CheckIcon />
               </Tag>
             )}
+
+                        <Box>
+              <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Exertion</Checkbox>
+            </Box>
+
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>}
 

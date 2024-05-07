@@ -94,6 +94,13 @@ const SelectedCharacter = (props) => {
             )}
             {isControl && selected && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
           </Center>
+
+          {selected.injuries.length > 0 && <WordDivider word={"Injuries"} ></WordDivider>}
+          <Center>
+            {selected.injuries.map((item) =>
+              <Tag margin={'3px'} variant={'solid'} colorScheme='red' key={item._id} >{item.name} ({item.duration} Rounds) </Tag>
+            )}
+          </Center>
         </div>}
 
         {(isControl || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
@@ -101,6 +108,8 @@ const SelectedCharacter = (props) => {
           {selected.characterStats && selected.characterStats.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
           )} */}
+
+
 
           <h4>Contacts{isControl && <IconButton icon={<BsPencil/>} onClick={() => setMode('editContacts')} ></IconButton>}</h4>
           {selected.knownContacts.length == 0 && <b>No Contacts Found</b>}

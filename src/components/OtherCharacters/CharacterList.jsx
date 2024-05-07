@@ -9,8 +9,14 @@ import { getPrivateCharacters } from "../../redux/entities/characters";
 function CharacterList({ filteredCharacters, value, onChange, onClick, handleSelect, isOpen, onClose }) {
   const drawerSize = useBreakpointValue({ base: 'full', sm: 'sm' });
   const [renderTags] = React.useState([
-    'PC',
-    'NPC',
+    'The Auclairs',
+    'The Carpendars',
+    'The Dougherties',
+    'The Gygies',
+    'The Inmans',
+    'The Irmingelds',
+    'The McKays',
+    'The Pembletons',
     'Control'
   ]); // TODO: update with Faction tags
 

@@ -165,6 +165,7 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
 
             {mode === 'edit' && <Box> 
               <ActionForm 
+              tags={action.tags}
               defaultValue={{ ...action.submission, name: action.name, location: action.location?._id }} 
               handleSubmit={(action) =>handleSubmit(action)} 
               actionType={action.type}

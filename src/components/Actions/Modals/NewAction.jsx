@@ -4,7 +4,7 @@ import { getFadedColor, getTextColor, } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
 import { getMyCharacter, getPlayerCharacters, getPublicPlayerCharacters } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack, HStack } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack, HStack, Checkbox } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import { AddAsset } from '../../Common/AddAsset';
 import { CheckIcon, CloseIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
@@ -48,6 +48,8 @@ const NewAction = (props) => {
   const [facility, setFacility] = React.useState(undefined);
   const [collaborators, setCollaborators] = React.useState([]);
 
+  
+  const [exertion, setExertion] = React.useState(false);
 
   useEffect(() => {
     if (actionType) newMap(actionType.maxAssets);
@@ -89,6 +91,7 @@ const NewAction = (props) => {
         collaborators,
         account: myAccout._id,
         location: destination,
+        tags: exertion ? ['exertion'] : [],
         user: user.username
       };
 
@@ -190,6 +193,11 @@ const NewAction = (props) => {
                 <CheckIcon />
               </Tag>
             )}
+
+            <Box>
+              <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Exertion</Checkbox>
+            </Box>
+
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>
 
