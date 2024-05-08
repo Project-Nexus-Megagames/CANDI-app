@@ -14,8 +14,9 @@ export function initConnection(user, character, version) {
   console.log('Socket Connecting....')
   socket.auth = { username: user.username, character: character ? character.characterName : "Unassigned" , version }
     
-  //console.log(socket);
+  console.log(socket);
   socket.connect();
+  console.log('Socket done')
 }
 
 export default socket;
