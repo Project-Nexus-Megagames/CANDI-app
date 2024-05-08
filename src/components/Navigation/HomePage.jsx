@@ -9,8 +9,11 @@ import other from '../Images/other.jpg';
 import news from '../Images/News.jpg';
 import actionImg from '../Images/actions.jpg';
 import map from '../Images/location.png'; 
+import lore from '../Images/lore.jpg'; 
 import control from '../Images/control.png';
 import agendas from '../Images/agenda.jpg';
+import gcBanner from '../Images/gcBanner.png';
+import rules from '../Images/rules.png';
 
 
 //import { Link } from 'react-router-dom';
@@ -75,31 +78,37 @@ const HomePage = (props) => {
         <ImgPanel img={actionImg} to="actions" title="~ Actions ~" body="Private Actions" />
       </GridItem>   
 
-      <GridItem colSpan={columns == 1 ? 2 : 1}>
+      {/* <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={agendas} to="agendas" title="~ Forum ~" body="Surf the Web!" />
-      </GridItem>   
+      </GridItem>    */}
 
-
-      <GridItem colSpan={columns == 1 ? 2 : 1} >
+      {/* <GridItem colSpan={columns == 1 ? 2 : 1} >
         <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-      </GridItem>
+      </GridItem> */}
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
       </GridItem>
-
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1r2wGtHui3ymEjglQu13MInGw7KZcDOH3xlQuZdz6XDA/edit#heading=h.kj1qlof232om")} >
-        <ImgPanel img={map} to="" title="~ Rules ~" body="Learn how to play the game"/>
-      </GridItem>
-
-
+      
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
       </GridItem>    
 
+      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
+        <ImgPanel img={rules} to="" title="~ Rules ~" body="Learn how to play the game"/>
+      </GridItem>
+
+      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1ymZHqLiU7CP0_cR8YRIkwAcvHaufjZis/view")} >
+        <ImgPanel img={lore} to="" title="~ Lore ~" body="Learn more aobut the world"/>
+      </GridItem>
+
       {/* <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
         <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
       </GridItem>                         */}
+
+<GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/forms/d/e/1FAIpQLSeo0RErM5tnKoD9exGiYk3JRw-0Z0bU9PzuUa4XDy7DorKe3w/viewform")} >
+        <ImgPanel img={gcBanner} to="" title="~ Goblin City playtest ~" body="Sign up to play in the Goblin City playtest!"/>
+      </GridItem>
 
       {isControl && <GridItem colSpan={columns} >
           <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
