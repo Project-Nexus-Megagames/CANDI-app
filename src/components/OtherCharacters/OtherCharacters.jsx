@@ -27,6 +27,7 @@ const OtherCharacters = (props) => {
   const knownContacts = useSelector(getMyUnlockedCharacters);
   const [selected, setSelected] = useState(props.selected ? props.selected : reduxSelected ? reduxSelected : false);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
+  const [filter, setFilter] = useState('');
   const [mode, setMode] = useState(false);
   const [asset, setAsset] = useState(false);
 
@@ -76,6 +77,7 @@ const OtherCharacters = (props) => {
       return 0;
     });
     setFilteredCharacters(filtered);
+    setFilter(fil)
   };
 
   return (
@@ -100,6 +102,7 @@ const OtherCharacters = (props) => {
                 handleSelect={(char) => { setSelected(char); reduxAction(characterSelected(char)); setMode(false);  }}
                 isOpen={mode === 'drawer'}
                 onClose={() => setMode(false)}
+                filter={filter}
               />
             </Hide>
           </GridItem>

@@ -6,17 +6,29 @@ import { getFadedColor, getTextColor } from "../../scripts/frontend";
 import { useSelector } from "react-redux";
 import { getPrivateCharacters } from "../../redux/entities/characters";
 
-function CharacterList({ filteredCharacters, value, onChange, onClick, handleSelect, isOpen, onClose }) {
+function CharacterList({ filteredCharacters, value, onChange, onClick, handleSelect, filter, onClose }) {
   const drawerSize = useBreakpointValue({ base: 'full', sm: 'sm' });
   const [renderTags] = React.useState([
     'The Auclairs',
+    'The Ashcrofts',
+    'The Blackwells',
     'The Carpendars',
     'The Dougherties',
+    'The Drackens',
+    'The Goatswoods',
     'The Gygies',
     'The Inmans',
     'The Irmingelds',
+    'The Lancetts',
+    'The Lovelaces',
+    'The Madrys',
     'The McKays',
     'The Pembletons',
+    'The Shapters',
+    'The Thistletons',
+    'The Willows',
+    'NPC',
+    'Location',
     'Control'
   ]); // TODO: update with Faction tags
 
@@ -61,16 +73,13 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
       <Box  >
         {renderTags.map((tag, index) => (
           <Box key={index}>
-            <Box
-              marginTop='2rem'
-            />
-            <h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>
-            <Box
-              marginBottom='1rem'
-            />
+
+            {(filter.length === 0 || filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase())).length > 0) && 
+              <h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', marginTop: '5px', marginBottom: '5px' }} >{tag}</h5>
+            }
+
             <VStack divider={<Divider />} >
-              {filteredCharacters
-                .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
+              {filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
                 .map((character =>
                   <CharacterListItem tag={tag} showButton={true} key={character._id} character={character} handleSelect={(character) => handleSelect(character)} />
                 ))}
