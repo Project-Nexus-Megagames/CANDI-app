@@ -41,7 +41,7 @@ const Actions = (props) => {
     return <div />;
   }
 
-  let actionList = isControl ? fActions : myActions;
+  let actionList = true ? fActions : myActions;
 
   useEffect(() => {
     try {
