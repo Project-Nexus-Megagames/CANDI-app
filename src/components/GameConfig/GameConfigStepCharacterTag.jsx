@@ -85,7 +85,7 @@ function GameConfigStepCharacterTag() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit, handleError)}>
-      <h4>Step 7: Create Resource Types</h4>
+      <h4>Step 7: Create Character Tags</h4>
       <Flex padding='20px'>
         <VStack spacing='24px' align='left'>
           {fields.map((item, i) => (
@@ -139,6 +139,22 @@ function GameConfigStepCharacterTag() {
                     </Text>
                   </FormControl>
 
+                  <FormControl variant='floating'>
+                    <FormLabel>Text color of Tag (hex code)</FormLabel>
+                    <Input
+                      borderColor={item.textColor}
+                      key={item.id}
+                      type='text'
+                      size='md'
+                      variant='outline'
+                      defaultValue={oldConfig.characterTags?.[i]?.textColor}
+                      {...register(`characterTags.${i}.textColor`, validation.textColor)}
+                    />
+                    <Text fontSize='sm' color='red.500'>
+                      {errors.characterTags?.[i]?.textColor && errors.characterTags[i].textColor.message}
+                    </Text>
+                  </FormControl>
+
                   <Button size='xs' onClick={() => remove(i)}>
                     -
                   </Button>
@@ -160,6 +176,7 @@ function GameConfigStepCharacterTag() {
                   name: 'tag_name',
                   description: 'tag_description',
                   color: '#00a0bd',
+                  textColor: '#000000'
                 })
               }
             >

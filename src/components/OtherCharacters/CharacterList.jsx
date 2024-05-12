@@ -52,7 +52,7 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
 
             {(filter.length === 0 || filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.name.toLowerCase())).length > 0) && 
                 <Tooltip label={tag.description} placement='top'>
-                <h5 style={{ backgroundColor: tag.color, textAlign: 'center', marginTop: '5px', marginBottom: '5px' }} >{tag.name}</h5>
+                <h5 style={{ backgroundColor: tag.color, color: tag.textColor, textAlign: 'center', marginTop: '5px', marginBottom: '5px' }} >{tag.name}</h5>
               </Tooltip>
             }
 

@@ -34,6 +34,7 @@ const slice = createSlice({
 			gameConfig.characterStats = action.payload.characterStats;
 			gameConfig.globalStats = action.payload.globalStats;
 			gameConfig.loadingTips = action.payload.loadingTips;
+			gameConfig.characterTags = action.payload.characterTags;
 			gameConfig.loading = false;
 			gameConfig.lastFetch = Date.now();
 			gameConfig.loaded = true;
