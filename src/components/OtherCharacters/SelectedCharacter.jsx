@@ -103,7 +103,7 @@ const SelectedCharacter = (props) => {
           </Center>
         </div>}
 
-        {(isControl || myCharacter._id === selected._id) && selected.characterStats && selected.characterStats.length > 0 && <div>
+        {(isControl || myCharacter._id === selected._id) && <div>
           {/* <WordDivider word={"Stats"} ></WordDivider>
           {selected.characterStats && selected.characterStats.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.statAmount} width={'80px'} height={'30'} />
