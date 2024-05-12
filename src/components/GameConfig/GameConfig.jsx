@@ -10,6 +10,7 @@ import GameConfigStep4 from './GameConfigStep4';
 import GameConfigStepAssets from './GameConfigStepAssets';
 import socket from '../../socket';
 import GameConfigLayout from './GameConfigLayout';
+import GameConfigStepCharacterTag from './GameConfigStepCharacterTag';
 
 function GameConfig(props) {
 	const config = useSelector((state) => state.gameConfig);
@@ -52,6 +53,9 @@ function GameConfig(props) {
 					<Button colorScheme={'teal'} variant={step === 'charstat' ? 'solid' : 'outline'} onClick={() => setStep('charstat')}>
 						Character Stats
 					</Button>
+          <Button colorScheme={'teal'} variant={step === 'chartag' ? 'solid' : 'outline'} onClick={() => setStep('chartag')}>
+						Character Tags
+					</Button>
 				</VStack>
 				<Button disabled={false} rightIcon={<CalendarIcon />} onClick={submitConfig} colorScheme={'blue'} className='btn btn-primary mr-1'>
 					Submit
@@ -64,6 +68,7 @@ function GameConfig(props) {
 			{step === 'action' && <GameConfigStepActions />}
 			{step === 'globalstat' && <GameConfig3 />}
 			{step === 'charstat' && <GameConfigStep4 />}
+			{step === 'chartag' && <GameConfigStepCharacterTag />}
 		</div>
 	);
 }
