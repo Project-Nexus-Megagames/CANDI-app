@@ -119,7 +119,7 @@ const HomePage = (props) => {
     </Grid>
       }
 
-      {/* <CandiWarning open={rand === 1} title={"You sure about that?"} onClose={() => setRand(-1)} handleAccept={() => setRand(-1)}>
+      <CandiWarning open={rand === 1} title={"You sure about that?"} onClose={() => setRand(-1)} handleAccept={() => setRand(-1)}>
         Looks like you are about to delete the entire database. Are ya sure?
       </CandiWarning>
 
@@ -133,7 +133,7 @@ const HomePage = (props) => {
 
       <CandiWarning open={rand === -3} title={"AAAAAAAAAAAAA"} onClose={() => setRand(0)} handleAccept={() => setRand(0)} rejectText={'UNDO UNDO UNDO'} confirmText={'UNDO UNDO UNDO'}>
         I also took the liberty of deleting all the source code for CANDI everywhere
-      </CandiWarning> */}
+      </CandiWarning>
 
 
 		</React.Fragment>

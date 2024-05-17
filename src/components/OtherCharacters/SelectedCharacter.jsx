@@ -65,10 +65,18 @@ const SelectedCharacter = (props) => {
       fontWeight='bold'>
 
       <GridItem pl='2' area={'side'} >
-        <div className='styleCenter' >
-          <CharacterListItem handleSelect={() => console.log("Hello Player! Hope you are having fun!")} character={selected} />
+        <div className='styleCenter'  >
+          <h3 style={{ marginBottom: '-15px'}}>
+            {selected.characterName}        
+            <IconButton
+              onClick={(e) => { navigator.clipboard.writeText(selected.characterName); }}
+              icon={<CopyIcon />}
+              colorScheme='white'
+              variant='ghost'
+            />
+        </h3>
         </div>
-
+        <p>{selected.characterTitle}</p>
 
         < Button
           onClick={(e) => { e.stopPropagation(); copyToClipboard(selected) }}
