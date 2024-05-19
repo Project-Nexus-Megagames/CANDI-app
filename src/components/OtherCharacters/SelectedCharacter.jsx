@@ -15,6 +15,7 @@ import usePermissions from '../../hooks/usePermissions';
 import ManageContacts from '../Control/ManageContacts';
 import CharacterTag from '../Common/CharacterTag';
 import { BsPencil } from 'react-icons/bs';
+import HealInjury from '../Control/HealInjury';
 
 const SelectedCharacter = (props) => {
   const { selected } = props;
@@ -103,12 +104,20 @@ const SelectedCharacter = (props) => {
             {isControl && selected && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
           </Center>
 
-          {selected.injuries.length > 0 && <WordDivider word={"Injuries"} ></WordDivider>}
-          <Center>
-            {selected.injuries.map((item) =>
-              <Tag margin={'3px'} variant={'solid'} colorScheme='red' key={item._id} >{item.name} ({item.duration} Rounds) </Tag>
-            )}
-          </Center>
+          {selected.injuries.length > 0 && 
+            <div>
+              <WordDivider word={"Injuries"} ></WordDivider>
+              {isControl && <Button onClick={() => setMode("healInjury")} >Heal</Button>}
+
+              <HealInjury show={mode ==='healInjury'} closeModal={() => setMode(false)} selectedChar={selected._id} />
+
+              <Center>
+                {selected.injuries.map((item) =>
+                  <Tag margin={'3px'} variant={'solid'} colorScheme='red' key={item._id} >{item.name} ({item.duration} Rounds) </Tag>
+                )}
+              </Center>              
+          </div>}
+
         </div>}
 
         {(isControl || myCharacter._id === selected._id) && <div>

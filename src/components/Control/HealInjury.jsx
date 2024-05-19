@@ -12,7 +12,7 @@ import { Checkbox, CheckboxGroup } from '@chakra-ui/checkbox';
 const HealInjury = (props) => {
 	const characters = useSelector((state) => state.characters.list);
 	const sortedCharacters = _.sortBy(characters, 'characterName');
-	const [selectedChar, setSelectedChar] = useState('');
+	const [selectedChar, setSelectedChar] = useState(props.selectedChar ? props.selectedChar: '');
 	const [injuriesToHeal, setInjuriesToHeal] = useState('');
 	const char = useSelector(getCharacterById(selectedChar));
 
@@ -31,7 +31,9 @@ const HealInjury = (props) => {
 				data
 			});
 			// eslint-disable-next-line no-empty
-		} catch (err) {}
+		} catch (err) {
+      console.log(err)
+    }
 		handleExit();
 	};
 
@@ -102,9 +104,9 @@ const HealInjury = (props) => {
     <SelectPicker					
 				placeholder="Heal an Injury"
 				onChange={(event) => handleCharChange(event)}
-				data={sortedCharacters}
+				data={sortedCharacters.filter(el => el.injuries.length > 0)}
 				valueKey="_id"
-				labelKey="characterName"
+				label="characterName"
 				/>
     </Box>
     <Box>{renderCharacter()}</Box>

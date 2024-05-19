@@ -228,6 +228,29 @@ const ActionForm = (props) => {
           </Box>
           <Spacer />
 
+          <Box width={"99%"} >
+            Intent:
+            {10 - intent.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - intent.length} more characters...
+              </Tag>
+            )}
+            {intent.length >= maxLength && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                 too long: ({intent.length} / {maxLength})
+                
+              </Tag>
+            )}
+
+            {10 - intent.length <= 0 && intent.length < maxLength && (
+              <Tag variant='solid' colorScheme={'green'}>
+                {intent.length} / {maxLength}
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='6' value={intent} className='textStyle' onChange={(event) => setIntent(event.target.value)} />
+          </Box>
+
         </Flex>
         <br />
         {/* Needed Resources:
