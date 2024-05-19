@@ -39,7 +39,7 @@ const HomePage = (props) => {
 	const [selectedChar, setSelectedChar] = React.useState('');
 	const tempCharacter = useSelector(getCharacterById(selectedChar));
   const {isControl} = usePermissions();
-	const [rand, setRand] = React.useState(Math.floor(Math.random() * 1000));
+	const [rand, setRand] = React.useState(Math.floor(Math.random() * 10000));
   const columns = useBreakpointValue({base: 1, lg: 3, md: 2, sm: 1});
 
   if (!props.login) {
