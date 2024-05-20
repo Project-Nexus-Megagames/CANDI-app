@@ -29,8 +29,33 @@ const CharacterTab = (props) => {
       }
       uniqueChars = [...new Set(uniqueChars)];
       setRenderTags(uniqueChars);
+
+      if (selected) {
+        const updated = characters.find((el) => el._id === selected._id);
+        setSelected(updated);
+      }
     }
   }, [characters]);
+
+  function renderTagCategory(tag, index) {
+    const filteredCharacters = characters
+    .filter(user => user.characterName.toLowerCase().includes(fil.toLowerCase()) ||
+    user.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
+    user.playerName.toLowerCase().includes(fil.toLowerCase()
+    ))
+  .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
+
+    if (filteredCharacters.length === 0) return (<t>`</t>)
+    return(<Box key={index}>
+      {<h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>}
+      <VStack divider={<Divider />} >
+        {filteredCharacters
+          .map((character =>
+            <CharacterListItem key={character._id} character={character} handleSelect={(character) => setSelected(character)} />
+          ))}
+      </VStack>
+    </Box>)
+  }
 
   return (
     <Grid
@@ -43,22 +68,8 @@ const CharacterTab = (props) => {
 
       <GridItem pl='2' bg='#0f131a' area={'nav'} style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }} >
         <Input style={{ width: '100%' }} placeholder="Search" onChange={(e) => setFilter(e.target.value)}></Input>
-        {renderTags.map((tag, index) => (
-          <Box key={index}>
-            {<h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>}
-            <VStack divider={<Divider />} >
-              {characters
-                .filter(user => user.characterName.toLowerCase().includes(fil.toLowerCase()) ||
-                  user.characterTitle.toLowerCase().includes(fil.toLowerCase()) ||
-                  user.playerName.toLowerCase().includes(fil.toLowerCase()
-                  ))
-                .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
-                .map((character =>
-                  <CharacterListItem key={character._id} character={character} handleSelect={(character) => setSelected(character)} />
-                ))}
-            </VStack>
-          </Box>
-        ))}
+        
+        {renderTags.map((tag, index) => (renderTagCategory(tag, index)))}
 
 <h5 style={{ backgroundColor: getFadedColor('tagless'), color: getTextColor(`${'tagless'}-text`), textAlign: 'center', }} >{'tagless'}</h5>
         {characters
@@ -72,6 +83,7 @@ const CharacterTab = (props) => {
           ))
         }
       </GridItem>
+      
       <GridItem pl='2' bg='#0f131a' area={'main'} >
 
         <Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}>

@@ -138,7 +138,6 @@ const NewEffects = (props) => {
     console.log(type, change)
     let temp = { ...selected };
     temp[type] = change;
-    console.log(temp)
     setSelected(temp);
   };
 

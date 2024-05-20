@@ -8,115 +8,114 @@ import { Button, ButtonGroup } from '@chakra-ui/button';
 import SelectPicker from '../Common/SelectPicker';
 import { CandiModal } from '../Common/CandiModal';
 import { Checkbox, CheckboxGroup } from '@chakra-ui/checkbox';
+import { Tag, TagLabel } from '@chakra-ui/react';
 
-const HealInjury = (props) => {
-	const characters = useSelector((state) => state.characters.list);
-	const sortedCharacters = _.sortBy(characters, 'characterName');
-	const [selectedChar, setSelectedChar] = useState(props.selectedChar ? props.selectedChar: '');
-	const [injuriesToHeal, setInjuriesToHeal] = useState('');
-	const char = useSelector(getCharacterById(selectedChar));
+const HealInjury = ({ show, character, closeModal }) => {
+  const characters = useSelector((state) => state.characters.list);
+  const sortedCharacters = _.sortBy(characters, 'characterName');
+  const [selectedChar, setSelectedChar] = useState(character ? character : '');
+  const [injuriesToHeal, setInjuriesToHeal] = useState('');
+  const char = useSelector(getCharacterById(selectedChar));
 
-	const handleExit = () => {
-		setInjuriesToHeal('');
-		setSelectedChar('');
-		props.closeModal();
-	};
+  const handleExit = () => {
+    setInjuriesToHeal('');
+    setSelectedChar('');
+    closeModal();
+  };
 
-	const handleSubmit = () => {
-		const data = { char, injuriesToHeal };
-		try {
-			socket.emit('request', {
-				route: 'character',
-				action: 'healInjury',
-				data
-			});
-			// eslint-disable-next-line no-empty
-		} catch (err) {
+  const handleSubmit = () => {
+    const data = { char, injuriesToHeal };
+    try {
+      socket.emit('request', {
+        route: 'character',
+        action: 'healInjury',
+        data
+      });
+      // eslint-disable-next-line no-empty
+    } catch (err) {
       console.log(err)
     }
-		handleExit();
-	};
+    handleExit();
+  };
 
-	const handleCharChange = (event) => {
-		if (event) {
-			setSelectedChar(event);
-		}
-	};
+  const handleCharChange = (event) => {
+    if (event) {
+      setSelectedChar(event);
+    }
+  };
 
-	const handleHealInjuries = (injIds) => {
-		setInjuriesToHeal(injIds);
-	};
+  const renderCharacter = () => {
+    if (!char) return <div>Please Select a character!</div>;
 
-	const renderCharacter = () => {
-		if (!char) return <div>Please Select a character!</div>;
+    return (
+      <div>
+        <div style={{ fontWeight: 'bold', fontSize: '16px' }}>
+          {char.characterName}
+        </div>
+        {renderInjuries(char)}
+      </div>
+    );
+  };
 
-		return (
-			<div>
-				<div style={{ fontWeight: 'bold', fontSize: '16px' }}>
-					{char.characterName}
-				</div>
-				{renderInjuries(char)}
-			</div>
-		);
-	};
+  const renderInjuries = (char) => {
+    if (!char) return <div>Please Select a character!</div>;
+    if (char.injuries.length === 0)
+      return (
+        <div>{char.characterName} currently does not have any injuries</div>
+      );
+    return (
+      <div>
+        <CheckboxGroup
+          name="injuryList"
+          onChange={(value) => {
+            setInjuriesToHeal(value);
+          }}
+        >
+          {char.injuries.map((injury, index) => {
+            let autoheal = '';
+            if (injury.permanent) {
+              autoheal = 'Permanent injury';
+            } else {
+              const expires = injury.duration + injury.received;
+              autoheal = `Will heal at the end of round ${expires}`;
+            }
+            return (
+              <Checkbox value={injury._id} key={index}>
+                <Tag margin={'3px'} variant={'solid'} colorScheme='red'  >
+                  <img src="/images/injury.png" alt="injury" width={'35px'} style={{ margin: '3px 3px 3px 0px' }} />
+                  <TagLabel>{injury.name}</TagLabel>
 
-	const renderInjuries = (char) => {
-		if (!char) return <div>Please Select a character!</div>;
-		if (char.injuries.length === 0)
-			return (
-				<div>{char.characterName} currently does not have any injuries</div>
-			);
-		return (
-			<div>
-				<CheckboxGroup
-					name="injuryList"
-					onChange={(value) => {
-						handleHealInjuries(value);
-					}}
-				>
-					{char.injuries.map((injury, index) => {
-						let autoheal = '';
-						if (injury.permanent) {
-							autoheal = 'Permanent injury';
-						} else {
-							const expires = injury.duration + injury.received;
-							autoheal = `Will heal at the end of round ${expires}`;
-						}
-						return (
-							<Checkbox value={injury._id} key={index}>
-								<b>{injury.name}</b> received from action &quot;
-								{injury.actionTitle}
-								&quot;. ({autoheal}).
-							</Checkbox>
-						);
-					})}
-				</CheckboxGroup>
-			</div>
-		);
-	};
+                </Tag>
+              </Checkbox>
+            );
+          })}
+        </CheckboxGroup>
+      </div>
+    );
+  };
 
-	return (
-    <CandiModal open={props.show} title={"Play God and Heal a Character's Injuries"} 
-    onHide={() => {
-      handleExit();
-    }}>
-    <Box>
-    <SelectPicker					
-				placeholder="Heal an Injury"
-				onChange={(event) => handleCharChange(event)}
-				data={sortedCharacters.filter(el => el.injuries.length > 0)}
-				valueKey="_id"
-				label="characterName"
-				/>
-    </Box>
-    <Box>{renderCharacter()}</Box>
-    <ButtonGroup>
+  return (
+    <CandiModal open={show} title={"Play God and Heal a Character's Injuries"}
+      onHide={() => {
+        handleExit();
+      }}>
+      <Box>
+        <SelectPicker
+          placeholder="Heal an Injury"
+          onChange={(event) => handleCharChange(event)}
+          data={sortedCharacters.filter(el => el.injuries.length > 0)}
+          valueKey="_id"
+          label="characterName"
+        />
+      </Box>
+      <Box>{renderCharacter()}</Box>
+      <ButtonGroup>
         <Button onClick={() => handleSubmit()} color="red">
-        Play God and Heal
+          Play God and Heal
         </Button>
-      </ButtonGroup>        
-  </CandiModal>
-	);
+      </ButtonGroup>
+    </CandiModal>
+  );
 };
 
 export default HealInjury;

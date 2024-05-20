@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, IconButton, SimpleGrid, Spacer, Tag } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, Icon, IconButton, SimpleGrid, Spacer, Stack, Tag, TagLabel, TagLeftIcon, Tooltip } from '@chakra-ui/react';
 import CharacterListItem from './CharacterListItem';
 import ResourceNugget from '../Common/ResourceNugget';
 import { useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import ManageContacts from '../Control/ManageContacts';
 import CharacterTag from '../Common/CharacterTag';
 import { BsPencil } from 'react-icons/bs';
 import HealInjury from '../Control/HealInjury';
+import { AddInjury } from '../Common/AddInjury';
 
 const SelectedCharacter = (props) => {
   const { selected } = props;
@@ -67,15 +68,15 @@ const SelectedCharacter = (props) => {
 
       <GridItem pl='2' area={'side'} >
         <div className='styleCenter'  >
-          <h3 style={{ marginBottom: '-15px'}}>
-            {selected.characterName}        
+          <h3 style={{ marginBottom: '-15px' }}>
+            {selected.characterName}
             <IconButton
               onClick={(e) => { navigator.clipboard.writeText(selected.characterName); }}
               icon={<CopyIcon />}
               colorScheme='white'
               variant='ghost'
             />
-        </h3>
+          </h3>
         </div>
         <p>{selected.characterTitle}</p>
 
@@ -104,19 +105,39 @@ const SelectedCharacter = (props) => {
             {isControl && selected && <EditAccount account={accounts.find(el => el._id === selected.account)} />}
           </Center>
 
-          {selected.injuries.length > 0 && 
+          {(selected.injuries.length > 0 || isControl) && <WordDivider word={`Injuries`} >
+                {isControl && 
+                <ButtonGroup>
+                  <Button isDisabled={selected.injuries.length === 0} variant={'solid'} colorScheme='orange' onClick={() => setMode("healInjury")} >Heal</Button>
+                  <Button variant={'solid'} colorScheme='green' onClick={() => setMode("addInjury")} >Add</Button>
+                </ButtonGroup>
+                }
+              </WordDivider>}
+
+          {selected.injuries.length > 0 &&
             <div>
-              <WordDivider word={"Injuries"} ></WordDivider>
-              {isControl && <Button onClick={() => setMode("healInjury")} >Heal</Button>}
 
-              <HealInjury show={mode ==='healInjury'} closeModal={() => setMode(false)} selectedChar={selected._id} />
+              {mode === 'healInjury' && <HealInjury show={mode === 'healInjury'}  closeModal={() => setMode(false)} character={selected._id} />}
+              {mode === 'addInjury' && <AddInjury show={mode === 'addInjury'} closeModal={() => setMode(false)} character={selected._id} />}
 
-              <Center>
+              <Stack>
                 {selected.injuries.map((item) =>
-                  <Tag margin={'3px'} variant={'solid'} colorScheme='red' key={item._id} >{item.name} ({item.duration} Rounds) </Tag>
+                  <Tooltip
+                    key={item._id}
+                    label={item.name}
+                    aria-label='a tooltip'
+                    placement='top'
+                  >
+                    <Tag margin={'3px'} variant={'solid'} colorScheme='red'  >
+                      <img src="/images/injury.png" alt="injury" width={'35px'} style={{ margin: '3px 3px 3px 0px' }} />
+                      <TagLabel>{item.name}</TagLabel>
+
+                    </Tag>
+                  </Tooltip>
+
                 )}
-              </Center>              
-          </div>}
+              </Stack>
+            </div>}
 
         </div>}
 
@@ -128,13 +149,13 @@ const SelectedCharacter = (props) => {
 
 
 
-          <h4>Contacts{isControl && <IconButton icon={<BsPencil/>} onClick={() => setMode('editContacts')} ></IconButton>}</h4>
+          <h4>Contacts{isControl && <IconButton icon={<BsPencil />} onClick={() => setMode('editContacts')} ></IconButton>}</h4>
           {selected.knownContacts.length == 0 && <b>No Contacts Found</b>}
           <Grid templateColumns='repeat(3, 1fr)' gap={1}>
             {selected && selected.knownContacts.map(el => (
               <CharacterTag key={el} character={characters.find(ch => ch._id === el)} />
             ))}
-          </Grid>          
+          </Grid>
         </div>}
 
 
@@ -152,26 +173,27 @@ const SelectedCharacter = (props) => {
         />
       </GridItem>
 
-      {(isControl || myCharacter._id === selected._id) && <GridItem bg={mode === "new" ? '#232c3b' :'#555555'} area={'body'} >
+      {(isControl || myCharacter._id === selected._id) && <GridItem bg={mode === "new" ? '#232c3b' : '#555555'} area={'body'} >
         <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
           Assets
           {isControl && mode !== "new" && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
           {isControl && mode === "new" && <IconButton onClick={() => setMode(false)} variant={'solid'} colorScheme="red" size={'sm'} icon={<CloseIcon />} />}
         </h5>
         {mode !== "new" && <Grid templateColumns='repeat(3, 1fr)' gap={1}>
-          { assets
+          {assets
             .filter((el) => (el.account && el.account === selected.account) || el.sharedWith.some(c => c._id === selected._id))
             .filter((el) => !el.status.some(s => s === 'hidden') || isControl)
+            .filter((el) => !el.uses <= 0)
             .map((asset) => (
-              <AssetCard key={asset._id} asset={asset}  showButtons  />
+              <AssetCard key={asset._id} asset={asset} showButtons />
             ))}
         </Grid>}
 
         {mode === "new" &&
-            <Center  >
-              <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode} />
-            </Center>
-          }
+          <Center  >
+            <AssetForm closeModal={() => setMode(false)} character={selected} mode={mode} />
+          </Center>
+        }
 
         {mode === 'editContacts' && <ManageContacts defaultCharacter={selected._id} show={mode === 'editContacts'} closeModal={() => setMode(false)} />}
       </GridItem>}
