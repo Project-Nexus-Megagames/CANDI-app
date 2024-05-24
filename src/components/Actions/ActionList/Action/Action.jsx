@@ -49,7 +49,7 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
       submission: {
         assets: data0.assets,
         description: data0.description,
-        intent: intent,
+        intent: data0.intent,
         facility: data0.facility,
         //location: data0.destination ? data0.destination : undefined,
       },
