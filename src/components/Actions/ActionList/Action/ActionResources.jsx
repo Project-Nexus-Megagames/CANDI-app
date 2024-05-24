@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Flex, Heading, IconButton, SimpleGrid, Tag, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, IconButton, SimpleGrid, Tag, useBreakpointValue } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import usePermissions from "../../../../hooks/usePermissions";
 import { CloseIcon } from "@chakra-ui/icons";
@@ -14,8 +14,8 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
     const breakpoints = useBreakpointValue({
       sm: {columns: 1, rows: actionType.maxAssets, width: '', bottom: '1.0rem', left: '7.5rem'},
         base: {columns: 1, rows: actionType.maxAssets, bottom: '1.0rem', left: '7.5rem'},
-        md: {columns: 2, rows: 0, bottom: '1.0rem', left: '5rem'},
-        lg: {columns: actionType.maxAssets, rows: 0, width: '22vw', bottom: '1.0rem', left: '7.5rem'}
+        md: {columns: 1, rows: 0, bottom: '1.0rem', left: '5rem'},
+        lg: {columns: 2, rows: 0, width: '22vw', bottom: '1.0rem', left: '7.5rem'}
     })
 
     useEffect(() => {
@@ -46,18 +46,18 @@ function ActionResources({ assets, toggleAssetInfo, actionType }) {
         }
 
         return (
-            <Flex
+            <Center
                 backgroundColor={'#0e1013'}
                 textAlign={'center'}
                 justifyContent={'center'}
                 alignItems={'center'}
-                width={breakpoints.width}
+                width={"95%"}
                 border={'1px solid white'}
                 borderRadius={'10'}
                 minH={'25vh'}
             >
                 {inner}
-            </Flex>
+            </Center>
         )
     };
 
