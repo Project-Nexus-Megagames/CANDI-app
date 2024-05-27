@@ -300,7 +300,7 @@ const agendaValue = (resource, value) => {
 }
 
 const quack = () => {
-  const audio = new Audio("/alert.mp3");
+  const audio = new Audio("/skullsound2.mp3");
   audio.loop = false;
   audio.volume = 0.40;
   audio.playbackRate = (0.8); 
