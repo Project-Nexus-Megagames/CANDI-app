@@ -107,7 +107,8 @@ const ActionForm = (props) => {
     setAssets(arr);
   }
 
-  const maxLength = 4000;
+  const maxLength = 3000;
+  const maxLengthIntent = 1000;
   const disabledConditions = [
     {
       text: "Description is too short",
@@ -116,6 +117,14 @@ const ActionForm = (props) => {
     {
       text: "Description is too long!",
       disabled: description.length >= maxLength
+    },
+    {
+      text: "intent is too short",
+      disabled: intent.length < 10
+    },
+    {
+      text: "Intent is too long!",
+      disabled: intent.length >= maxLengthIntent
     },
     {
       text: "Name is too short",
@@ -242,9 +251,9 @@ const ActionForm = (props) => {
               </Tag>
             )}
 
-            {10 - intent.length <= 0 && intent.length < maxLength && (
+            {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
               <Tag variant='solid' colorScheme={'green'}>
-                {intent.length} / {maxLength}
+                {intent.length} / {maxLengthIntent}
                 <CheckIcon />
               </Tag>
             )}

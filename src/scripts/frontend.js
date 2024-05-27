@@ -299,6 +299,29 @@ const agendaValue = (resource, value) => {
   }
 }
 
+const quack = () => {
+  const audio = new Audio("/alert.mp3");
+  audio.loop = false;
+  audio.volume = 0.40;
+  audio.playbackRate = (0.8); 
+  audio.play();
+};
 
 
-export { calculateProgress, getThisTeam, getThisAccount, getThisTeamFromAccount, getCountdownHours, getFadedColor, getThisEffort, getTextColor, getTime, openLink, getIcon, populateThisAccount };
+
+
+export { 
+  calculateProgress, 
+  getThisTeam, 
+  getThisAccount, 
+  getThisTeamFromAccount, 
+  getCountdownHours, 
+  getFadedColor, 
+  getThisEffort, 
+  getTextColor, 
+  getTime, 
+  openLink, 
+  getIcon, 
+  populateThisAccount,
+  quack 
+};

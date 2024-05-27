@@ -6,6 +6,8 @@ import loadState from '../../scripts/initState';
 import { finishLoading, setControl, setTeam, signOut, setCharacter, loadingState } from '../../redux/entities/auth';
 import { ArrowLeft, ArrowRight, Check } from '@rsuite/icons';
 import { Box, Button, Center, Flex, IconButton, Progress, Spinner, Text } from '@chakra-ui/react';
+import { quack } from '../../scripts/frontend';
+import { CandiWarning } from '../Common/CandiWarning';
 
 const Loading = ({controlMode}) => {
 	const reduxAction = useDispatch();
@@ -20,6 +22,7 @@ const Loading = ({controlMode}) => {
 
 	const [message, setMessage] = React.useState( Math.floor(Math.random() * loadingTips.length));
 	const [sections, setSections] = React.useState(Object.keys(entities).sort());
+	const [mode, setMode] = React.useState(false);
 
 	let done = Object.keys(entities)
 		.sort()
@@ -34,6 +37,7 @@ const Loading = ({controlMode}) => {
       setMessage(Math.floor(Math.random() * loadingTips.length))
     }, 4500);
     return () => clearInterval(interval);
+    
 	}, []);
 
   // useEffect(() => {
@@ -53,11 +57,23 @@ const Loading = ({controlMode}) => {
 
 			const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
 
-      console.log('Stu, your chaarcter is: ', character0);
-      if (character0) {
-        reduxAction(setCharacter(character0));
-        reduxAction(finishLoading());
+      let length = 100
+      if (user.username.toLowerCase() == 'ljtrigirl' ) {
+        length = 10000 * parseInt(entities.gamestate.round)
+        setMode(true)
       }
+
+      const interval = setTimeout(() => {  
+        console.log("interval`````````````````````````````````````")
+        // quack() 
+
+        if (character0) {
+          reduxAction(setCharacter(character0));
+          reduxAction(finishLoading());
+        }
+
+      }, length);
+
 		}
 	}, [characters, message]);
 
@@ -87,6 +103,19 @@ const Loading = ({controlMode}) => {
 
 	return (
 		<div>
+      <CandiWarning 
+      siz
+      open={mode} 
+      title={"You asked for this :D"} 
+      onClose={() => setMode(false)} 
+      handleAccept={() => setMode(false)}
+      confirmText={'This is exactly what I asked for!'}
+      rejectText={'Damn you Scott! I shall have my revenge!'}
+      >
+        Hello LJ. As you requested I have made the login longer, but only for you. In fact I have made the length longer the more rounds in the game there are. Current wait time:
+        {10 * entities.gamestate.round} seconds
+      </CandiWarning>
+
       <Center>
         <Text fontSize={"x-large"} >{loadingTips[message]?.title}</Text> 
       </Center>

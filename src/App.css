@@ -303,3 +303,22 @@ ul li {
 };
 
 
+.hello-world {
+  color: white;
+  font-size: 32px;
+  line-height: 200px;
+  background: rgb(25, 152, 194);
+  border: 2px solid rgb(54, 54, 214);
+  border-radius: 5px;
+  height: 200px;
+  animation: fade-in 3s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100;
+  }
+}

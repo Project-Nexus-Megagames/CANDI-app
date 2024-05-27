@@ -176,6 +176,7 @@ const Navigation = (props) => {
                 <MenuItem onClick={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</MenuItem>
                 <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
                 <MenuItem onClick={() => reduxAction(toggleDuck())}>Spook</MenuItem>
+                <MenuItem onClick={() => navigate("/memorium")}>To the Sad Parade</MenuItem>
               </MenuList>
             </Menu>}
         </Box>
