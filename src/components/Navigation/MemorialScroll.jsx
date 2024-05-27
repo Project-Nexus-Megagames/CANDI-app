@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import FadeInOut from './FadeInOut';
 import WordDivider from '../Common/WordDivider';
 
-import { useTransition, animated, config } from 'react-spring'
-
 export const MemorialScroll = () => {
   const navigate = useNavigate();
 
