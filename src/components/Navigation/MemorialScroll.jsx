@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/button';
 import { Box } from '@chakra-ui/layout';
 import { Fade, useDisclosure } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import FadeInOut from './FadeInOut';
@@ -16,6 +16,8 @@ export const MemorialScroll = () => {
   const [sayingI, setSaying] = useState(0);
   const [audio, setAudio] = useState(0);
   const [startBool, setStart] = useState(false);
+
+  let sadAudio = useRef();
 
   const characters = useSelector(state => state.characters.list);
   const deadChaaracters = characters.filter(el => el.tags.some(t => t.toLowerCase() === 'dead'))
@@ -47,9 +49,8 @@ export const MemorialScroll = () => {
 
   const start = () => {
     setStart((startBool) => (startBool = true));
-    const audioFile = new Audio('/sad.mp3');
-    audioFile.loop = false;
-    audioFile.play();
+    sadAudio.current = new Audio('/sad.mp3');
+    sadAudio.current.play();
 
     const interval = setInterval(() => {
       toggleShow()
@@ -58,6 +59,15 @@ export const MemorialScroll = () => {
     }, 3000);
     return () => clearInterval(interval);
   };
+
+  useEffect(() => {
+    // Perform some setup actions
+    return () => {
+      sadAudio.current.pause()
+      // This is the cleanup function
+      // It will be called when the component is unmounted
+    };
+  }, []); // The empty array ensures this effect runs once on mount and once on unmount
 
   const cry = () => {
     setAudio(audio >= 4 ? 0 : audio + 1)
