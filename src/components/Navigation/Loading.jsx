@@ -286,7 +286,10 @@ const loadingTips = [
     'https://www.youtube.com/watch?v=jFHH3cFzKbo&ab_channel=Evan%27sKazooCovers', // Interstellar Docking Scene but the Orchestra was Fired and Replaced by Kazoos
     'https://www.youtube.com/watch?v=CwaD9tb1P50&ab_channel=Tr0ubleshooter', // release the kitties
     'https://www.youtube.com/watch?v=MGJZfmYMltM&ab_channel=MarcRebillet-Topic', // Girl's Club
-    'https://www.youtube.com/watch?v=aRsOBFhNjVM&ab_channel=NPCarlsson' // Steamed Hams Inc. ♪
+    'https://www.youtube.com/watch?v=aRsOBFhNjVM&ab_channel=NPCarlsson', // Steamed Hams Inc. ♪
+    'https://www.youtube.com/watch?v=t6BQo_eMgj8&ab_channel=JoeJohnson',
+    "https://www.youtube.com/watch?v=JQVKkjA0law&t=1s&ab_channel=%E3%83%90%E3%83%BC%E3%83%90%E3%83%91%E3%83%91",
+    
   ]; // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
   
 export default Loading;

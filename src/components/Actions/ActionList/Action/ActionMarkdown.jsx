@@ -20,22 +20,17 @@ function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data, tex
                 marginTop='0.5rem'
                 marginBottom='0.5rem'
             >
-              {!edit && <Text 
+              {!edit && <ReactMarkdown 
                 marginLeft='0.6rem'
                 marginRight='0.6rem'
-                //maxHeight={'20vh'}
+                remarkPlugins={[remarkGfm]}
 
                 overflow={'auto'}
                 fontSize='lg'>{markdown}
-              </Text>}
+              </ReactMarkdown>}
 
               {edit && <textarea rows='5' value={data} className='textStyle' onChange={(event) => handleEdit(event.target.value, header.toLowerCase())}></textarea>}
 
-                {/* <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                >
-                    {markdown}
-                </ReactMarkdown> */}
             </Box>
         </Box>
     );
