@@ -6,7 +6,7 @@ import { apiCallBegan } from '../api'; // Import Redux API call
 const slice = createSlice({
 	name: 'gamestate',
 	initialState: {
-		version: '5.6.9',
+		version: '5.6.10 - Markdown',
 		loading: false,
 		loaded: false,
 		lastFetch: null,

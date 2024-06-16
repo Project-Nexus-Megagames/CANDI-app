@@ -10,6 +10,7 @@ import SelectPicker from '../../Common/SelectPicker';
 import { getCharAccount } from '../../../redux/entities/accounts';
 import ResourceNugget from '../../Common/ResourceNugget';
 import { HiSave } from 'react-icons/hi';
+import MDEditor from '@uiw/react-md-editor';
 
 /**
  * Form for a new ACTION
@@ -41,7 +42,7 @@ const ActionForm = (props) => {
   const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
   const [destination, setDestination] = React.useState(defaultValue?.location ? defaultValue.location : false);
   const [facility, setFacility] = React.useState(undefined);
-  
+
   const [exertion, setExertion] = React.useState(tags?.some(el => el === 'exertion'));
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const ActionForm = (props) => {
       type: actionType.type,
       location: destination,
       myCharacter: myCharacter._id,
-      creator: myCharacter._id,      
+      creator: myCharacter._id,
       tags: exertion ? ['exertion'] : [],
       id: actionID
     };
@@ -149,7 +150,7 @@ const ActionForm = (props) => {
   return (
     <div>
       {header && <h4>{header}</h4>}
-      {!header && <h4>Edit {actionType.type} Action</h4>}
+      {!header && <h4>Edit {actionType.type}</h4>}
       <br />
       <form>
 
@@ -171,7 +172,7 @@ const ActionForm = (props) => {
               </Tag>
             )}
 
-                        <Box>
+            <Box>
               <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Exertion</Checkbox>
             </Box>
 
@@ -207,12 +208,12 @@ const ActionForm = (props) => {
             </Flex>
 
           </Box>}
-          
+
         </Flex>
         <br />
         <Divider />
         <Flex width={"100%"} >
-          <Spacer />
+
           <Box width={"99%"} >
             Description:
             {10 - description.length > 0 && (
@@ -222,8 +223,8 @@ const ActionForm = (props) => {
             )}
             {description.length >= maxLength && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                 too long: ({description.length} / {maxLength})
-                
+                too long: ({description.length} / {maxLength})
+
               </Tag>
             )}
 
@@ -233,35 +234,47 @@ const ActionForm = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
-          </Box>
-          <Spacer />
+            <MDEditor
+              height="100%"
+              value={description}
+              preview="edit"
+              onChange={setDescription} />
 
-          <Box width={"99%"} >
-            Intent:
-            {10 - intent.length > 0 && (
-              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                {10 - intent.length} more characters...
-              </Tag>
-            )}
-            {intent.length >= maxLength && (
-              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                 too long: ({intent.length} / {maxLength})
-                
-              </Tag>
-            )}
-
-            {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
-              <Tag variant='solid' colorScheme={'green'}>
-                {intent.length} / {maxLengthIntent}
-                <CheckIcon />
-              </Tag>
-            )}
-            <textarea rows='6' value={intent} className='textStyle' onChange={(event) => setIntent(event.target.value)} />
           </Box>
+
+
 
         </Flex>
         <br />
+        <br />
+        <Box width={"99%"} >
+          Intent:
+          {10 - intent.length > 0 && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              {10 - intent.length} more characters...
+            </Tag>
+          )}
+          {intent.length >= maxLength && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              too long: ({intent.length} / {maxLength})
+
+            </Tag>
+          )}
+
+          {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
+            <Tag variant='solid' colorScheme={'green'}>
+              {intent.length} / {maxLengthIntent}
+              <CheckIcon />
+            </Tag>
+          )}
+          <MDEditor
+            height="100%"
+            value={intent}
+            preview="edit"
+            onChange={setIntent} />
+
+        </Box>
+
         {/* Needed Resources:
         <Center>
           {actionType.resourceTypes.map(el => {
@@ -311,12 +324,12 @@ const ActionForm = (props) => {
                   <AddAsset
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
-                    assets={myAssets.filter(el => 
-                      actionType.assetTypes.some(a => a === el.type || a === el.model) && 
+                    assets={myAssets.filter(el =>
+                      actionType.assetTypes.some(a => a === el.type || a === el.model) &&
                       (!el.status.some(a => a === 'used' || a === 'working') || el.status.some(a => a === 'multi-use')) &&
                       el.uses > 0 &&
-                      !assets.some(ass => ass?._id === el._id || ass === el._id))} 
-                    />}
+                      !assets.some(ass => ass?._id === el._id || ass === el._id))}
+                  />}
                 {ass &&
                   <AssetCard
                     showRemove

@@ -17,6 +17,7 @@ import ActionForm from "../../Forms/ActionForm";
 import usePermissions from "../../../../hooks/usePermissions";
 import AssetCard from "../../../Common/AssetCard";
 import NewComment from "../../Modals/NewComment";
+import MDEditor from "@uiw/react-md-editor";
 
 
 const ActionSubObject = (props) => {
@@ -109,7 +110,8 @@ const ActionSubObject = (props) => {
     <Center>
       <div key={subObject._id}
         style={{
-          border: (subObject.model == "Comment" && team) ? `3px solid ${team?.color}` : `3px solid ${getFadedColor(subObject.model)}`,
+          // border: (subObject.model == "Comment" && team) ? `3px solid ${team?.color}` : `3px solid ${getFadedColor(subObject.model)}`,
+          border: `3px solid ${getFadedColor(subObject.model)}`,
           borderRadius: '5px',
           padding: '5px',
           width: '85%'
@@ -163,10 +165,12 @@ const ActionSubObject = (props) => {
 
         </Flex>
 
-        {mode !== 'editSubmission' && <Box>
-          {subObject.__t !== "Contract" && <ActionMarkdown
-            markdown={subObject.description ? subObject.description : subObject.body}
+        {(mode !== 'editSubmission' && mode !== 'editComment'&& mode !== 'editEffect') && <Box>
+          {subObject.__t !== "Contract" && <MDEditor.Markdown
+            style={{ textAlign: 'left', padding: '0.4rem', backgroundColor: '#283242' }}
+            source={subObject.description ? subObject.description : subObject.body}
           />}
+
           {subObject.__t === "Contract" &&
             <Contract show contract={subObject} />
           }
@@ -226,7 +230,7 @@ const ActionSubObject = (props) => {
           {subObject.asset && <AssetCard asset={subObject.asset} />}
         </Box>}
 
-        {mode === 'editSubmission' && action.type &&
+        {(mode === 'editSubmission') && action.type &&
           <ActionForm
             collabMode
             defaultValue={subObject}
@@ -236,8 +240,24 @@ const ActionSubObject = (props) => {
             closeNew={() => setMode(false)}
             actionID={subObject._id}
           />}
+
+        {mode === 'editComment' && <NewComment
+          show={mode === 'editComment'}
+          mode={"updateSubObject"}
+          comment={subObject}
+          closeNew={() => setMode(false)}
+          selected={action}
+        />}
+        {mode === 'editEffect' && <NewComment
+          show={mode === 'editEffect'}
+          mode={"updateSubObject"}
+          comment={subObject}
+          closeNew={() => setMode(false)}
+          selected={action}
+        />}
       </div>
       {/* <Divider orientation='vertical' />    */}
+
 
 
       <NewResult
@@ -248,13 +268,6 @@ const ActionSubObject = (props) => {
         selected={action}
       />
 
-      <NewComment
-        show={mode === 'editComment'}
-        mode={"updateSubObject"}
-        comment={subObject}
-        closeNew={() => setMode(false)}
-        selected={action}
-      />
     </Center>
 
   );

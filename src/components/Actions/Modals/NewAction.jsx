@@ -18,6 +18,7 @@ import { DiceList } from '../../Common/DiceList';
 import { AddCharacter } from '../../Common/AddCharacter';
 import axios from 'axios';
 import { gameServer } from '../../../config';
+import MDEditor from '@uiw/react-md-editor';
 
 /**
  * Form for a new ACTION
@@ -26,7 +27,7 @@ import { gameServer } from '../../../config';
  */
 const NewAction = (props) => {
   const { actionType } = props;
-  const gameConfig = useSelector((state) => state.gameConfig);
+  const gamestate = useSelector((state) => state.gamestate);
   const locations = useSelector((state) => state.locations.list)
   const facilities = useSelector((state) => state.facilities.list)
   const playerCharacters = useSelector(getPublicPlayerCharacters);
@@ -159,6 +160,10 @@ const NewAction = (props) => {
       text: "Not Enough Resources for this action",
       disabled: isResourceDisabled()
     },
+    {
+      text: 'Round is not active',
+      disabled: gamestate.status.toLowerCase() !== 'active'
+    }
   ];
   const isDisabled = disabledConditions.some(el => el.disabled);
 
@@ -255,8 +260,9 @@ const NewAction = (props) => {
         </HStack>
         <br />
         <Divider />
+
         <Flex width={"100%"} >
-          <Spacer />
+          
           <Box width={"99%"} >
             Description:
             {10 - description.length > 0 && (
@@ -277,10 +283,15 @@ const NewAction = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
+            <MDEditor
+              height="100%"
+              value={description}
+              preview="edit"
+              onChange={setDescription} />
           </Box>
-          <Spacer />
 
+        </Flex>
+        <br />
           <Box width={"99%"} >
             Intent:
             {10 - intent.length > 0 && (
@@ -301,12 +312,13 @@ const NewAction = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <textarea rows='6' value={intent} className='textStyle' onChange={(event) => setIntent(event.target.value)} />
+            
+            <MDEditor
+              height="100%"
+              value={intent}
+              preview="edit"
+              onChange={setIntent} />
           </Box>
-
-        </Flex>
-        <br />
-
 
         <br />
 
