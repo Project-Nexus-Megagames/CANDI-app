@@ -165,7 +165,7 @@ const ActionSubObject = (props) => {
 
         </Flex>
 
-        {(mode !== 'editSubmission' && mode !== 'editComment'&& mode !== 'editEffect') && <Box>
+        {(mode !== 'editSubmission' && mode !== 'editComment'&& mode !== 'editEffect' && mode !== 'editResult') && <Box>
           {subObject.__t !== "Contract" && <MDEditor.Markdown
             style={{ textAlign: 'left', padding: '0.4rem', backgroundColor: '#283242' }}
             source={subObject.description ? subObject.description : subObject.body}
@@ -255,19 +255,15 @@ const ActionSubObject = (props) => {
           closeNew={() => setMode(false)}
           selected={action}
         />}
-      </div>
-      {/* <Divider orientation='vertical' />    */}
-
-
-
-      <NewResult
+              {mode === 'editResult' && <NewResult
         show={mode === 'editResult'}
         mode={"updateSubObject"}
         result={subObject}
         closeNew={() => setMode(false)}
         selected={action}
-      />
-
+      />}
+      </div>
+      
     </Center>
 
   );

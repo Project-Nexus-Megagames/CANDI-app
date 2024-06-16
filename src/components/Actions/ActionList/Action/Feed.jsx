@@ -211,12 +211,20 @@ function Feed({ action }) {
       </Center>
 
       {mode === 'comment' && <NewComment
-            show={mode === 'comment'}
-            closeNew={() => closeIt()}
-            gamestate={gamestate}
-            mode={mode}
-            selected={action}
-          />}
+        show={mode === 'comment'}
+        closeNew={() => closeIt()}
+        gamestate={gamestate}
+        mode={mode}
+        selected={action}
+      />}
+
+      {mode === 'result' && <NewResult
+        show={mode === 'result'}
+        mode={mode}
+        closeNew={() => closeIt()}
+        selected={action}
+      />}
+
 
       {mode === 'collab' &&
         <ActionForm
@@ -228,12 +236,6 @@ function Feed({ action }) {
           loading={loading}
         />}
 
-      <NewResult
-        show={mode === 'result'}
-        mode={mode}
-        closeNew={() => closeIt()}
-        selected={action}
-      />
 
 
       <CandiModal open={mode === 'contract'} onClose={() => closeIt()}  >
