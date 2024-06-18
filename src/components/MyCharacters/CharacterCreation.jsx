@@ -103,17 +103,20 @@ const CharacterCreation = (props) => {
   }, [occupation]);
 
   const submitCreation = async () => {
-    setLoading(true)
-    const { data } = await axios.post(`${gameServer}api/blueprints/characterCreation/`,
-      {
-        occupation: occupation._id,
-        inheritence: inheritence._id,
-        name,
-        bio,
-        id: myCharacter._id
-      });
-    console.log(data)
-    setLoading(false)
+    if (!loading) {
+      setLoading(true)
+      const { data } = await axios.post(`${gameServer}api/blueprints/characterCreation/`,
+        {
+          occupation: occupation._id,
+          inheritence: inheritence._id,
+          name,
+          bio,
+          id: myCharacter._id
+        });
+      console.log(data)
+      setLoading(false)
+    }
+
   }
 
   const fetchData = async () => {

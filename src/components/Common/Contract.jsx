@@ -15,23 +15,17 @@ const Contract = (props) => {
   const { contract, show } = props;
   const { control, character, login } = useSelector(s => s.auth);
   const clock = useSelector(s => s.clock);
-  const account = useSelector(getCharAccount);
+
+  const charAccount = useSelector(getCharAccount);
+  const teamAccount = useSelector(getTeamAccount);
+
+
+  const [account, setAccount] = React.useState(charAccount || teamAccount);
+
   const isCompleted = contract.status.some(el => el === 'completed')
   const [loading, setLoading] = React.useState(false);
   const [mode, setMode] = React.useState(false);
   const [resources, setResources] = React.useState(contract.target.map(c => { return { type: c.type, value: 0 } }));
-
-  const submit = (goal) => {
-    const data = {
-      contract: goal._id,
-      account: account._id
-    }
-    setLoading(true)
-    socket.emit('request', { route: 'asset', action: 'contract', data }, (response) => {
-      setLoading(false)
-      setMode(false)
-    });
-  }
 
   const contribute = () => {
     const data = {
@@ -91,7 +85,7 @@ const Contract = (props) => {
 
         {show && !isCompleted && <ButtonGroup style={{ marginTop: '10px' }}>
           <Button variant={'solid'} colorScheme='blue' size='sm' isLoading={loading} onClick={() => setMode(mode ? false : 'contribute')} >{mode ? 'Cancel' : 'Contribute'}</Button>
-          {!mode && <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} isDisabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>}
+          {/* {!mode && <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} isDisabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>} */}
           {mode && <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} onClick={() => contribute()} >Submit</Button>}
         </ButtonGroup>}
 
@@ -112,6 +106,19 @@ const Contract = (props) => {
           <Tooltip openDelay={50} placement="top" label={(<div>What you need to spend to complete this contract</div>)} trigger="hover">
             <h4>Target</h4>
           </Tooltip >
+
+          {mode === 'contribute' && [charAccount, teamAccount].map(acc => (
+            <Button
+              key={acc._id}
+              onClick={() => setAccount(acc)}
+              size='xs'
+              margin={'0'}
+              variant={account === acc ? 'solid' : 'link'}
+              colorScheme={account === acc ? 'teal' : 'none'}
+            >
+              {acc.name}
+            </Button>
+          ))}
 
           <Wrap >
             {contract.target.map(g => (

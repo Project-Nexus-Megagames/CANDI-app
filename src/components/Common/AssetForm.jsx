@@ -26,6 +26,7 @@ const AssetForm = (props) => {
   const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
   const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
   const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
+  const [resources, setResources] = React.useState(asset ? [...asset.resources] : []);
   const [account, setAccount] = React.useState(asset ? (asset.account) :
     character ? character.account :
       teamAccount ? teamAccount : false);
@@ -115,6 +116,11 @@ const AssetForm = (props) => {
         temp.splice(index, 1)
         setDice(temp);
         break;
+      case 'resource':
+        temp = [...resources];
+        temp.splice(index, 1)
+        setResources(temp);
+        break;
       default:
         console.log('UwU Scott made an oopsie doodle!')
 
@@ -132,10 +138,10 @@ const AssetForm = (props) => {
 
   function onSubmit(data, e) {
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, dice, type: type, status: status, account: account });
+      props.handleSubmit({ ...data, dice, resources, type: type, status: status, account: account });
     } else {
       e.preventDefault();
-      const asset = { ...data, dice, type: type, status: status, account: account };
+      const asset = { ...data, dice, resources, type: type, status: status, account: account };
       socket.emit('request', {
         route: 'asset',
         action: mode,
@@ -162,7 +168,13 @@ const AssetForm = (props) => {
         temp[index] = thing;
         setDice(temp);
         break;
-
+      case 'resource':
+        thing = resources[index];
+        temp = [...resources];
+        typeof (incoming) === 'number' ? thing.amount = parseInt(incoming) : thing.type = (incoming);
+        temp[index] = thing;
+        setResources(temp);
+        break;
       case 'selectAccount':
         setAccount(incoming.account);
         break;
@@ -240,6 +252,20 @@ const AssetForm = (props) => {
               </InputGroup>
             ))}
             <IconButton variant={'solid'} onClick={() => setDice([...dice, { amount: 1, type: type }])} colorScheme='green' size="sm" icon={<Plus />} />
+          </FormControl>
+
+          <FormControl>
+            <FormLabel>Resouces! </FormLabel>
+            {resources.map((resource, index) => (
+
+              <InputGroup key={resource._id} index={index}>
+                {resource.amount}?
+                <SelectPicker label='type' valueKey='type' data={gameConfig.resourceTypes} value={resource.type} onChange={(event) => { editState(event, index, 'resource'); }} />
+                <InputNumber prefix='value' style={{ width: 200 }} defaultValue={resource.amount.toString()} value={resource.amount} min={0} onChange={(event) => editState(parseInt(event), index, 'resource')}></InputNumber>
+                <IconButton variant={'outline'} onClick={() => removeElement(index, 'resource')} colorScheme='red' size="sm" icon={<CloseButton />} />
+              </InputGroup>
+            ))}
+            <IconButton variant={'solid'} onClick={() => setResources([...resources, { amount: 1, type: gameConfig.resourceTypes[0].type || 'effort' }])} colorScheme='green' size="sm" icon={<Plus />} />
           </FormControl>
 
           <FormControl>

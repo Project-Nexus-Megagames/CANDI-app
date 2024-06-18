@@ -8,7 +8,6 @@ const slice = createSlice({
   name: 'auth',
   initialState: {
     user: undefined,
-    myCharacter: undefined,
     login: false,
     loading: false,
     control: false,
@@ -21,6 +20,7 @@ const slice = createSlice({
     lastLogin: null,
 
     character: undefined,
+    myCharacter: undefined,
     team: false,
   },
   // Reducers - Events
@@ -32,19 +32,19 @@ const slice = createSlice({
     },
     loadingState: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
-      auth.loadingStart = true;      
+      auth.loadingStart = true;
     },
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      
+
       console.log("jwt:")
       console.log(jwt)
 
       localStorage.setItem('kepler-token', jwt);
       const user = jwtDecode(jwt);
-    
+
       // if (user?.roles.some(el => el === "Control")) auth.control = true;
 
       auth.error = null;

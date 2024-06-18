@@ -53,7 +53,7 @@ const LocationDashboard = (props) => {
   return (
     <Grid
       templateAreas={`"nav main"`}
-      gridTemplateColumns={'30% 70%'}
+      gridTemplateColumns={selectedLocation ? '30% 70%' : '0% 100%'}
       gap='1'
       fontWeight='bold'>
 
@@ -128,7 +128,7 @@ const LocationDashboard = (props) => {
           handleHover={(location) => (!selectedLocation) ? setSelectedLocation(location) : undefined}
         />}
         {mode === 'newFacility' && <FacilityForm mode='new' location={selectedLocation} closeModal={() => { setMode(false); }} />}
-        {mode === 'newLocation' && <LocationForm mode='new' coords={selectedLocation} closeModal={() => { setMode(false); }} />}
+        {mode === 'newLocation' && <LocationForm character={myCharacter} mode='new' coords={selectedLocation} closeModal={() => { setMode(false); }} />}
       </GridItem>
     </Grid>
   );

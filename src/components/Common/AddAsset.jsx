@@ -22,10 +22,22 @@ import {
 } from '@chakra-ui/react'
 import { BsPlus } from "react-icons/bs";
 import AssetCard from "./AssetCard";
+import { CandiModal } from "./CandiModal";
+import { populateThisAccount } from "../../scripts/frontend";
+import { useSelector } from "react-redux";
 
 export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
   const [fill, setFilter] = React.useState('');
+  const accounts = useSelector(state => state.accounts.list);
+
+  const uniqueAccountIds = new Set();
+  assets.forEach(asset => {
+    uniqueAccountIds.add(asset.account);
+  });
+  // Convert the Set to an array
+  const uniqueAccountIdsArray = Array.from(uniqueAccountIds).map(acc => { return populateThisAccount(accounts, acc) });
+  const [selectedAccount, setSelectedAccount] = React.useState(uniqueAccountIdsArray ? uniqueAccountIdsArray[0] : false);
 
   const handleClose = () => {
     if (onClose && onClose instanceof Function) onClose();
@@ -42,37 +54,64 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled
     else handleClose();
   }, [open]);
 
-  const filteredAssets = assets.filter(a => a.name.toLowerCase().includes(fill.toLowerCase()));
+  let filteredAssets = assets.filter(a => a.name.toLowerCase().includes(fill.toLowerCase()));
+  if (uniqueAccountIdsArray && selectedAccount) filteredAssets = filteredAssets.filter(a => a.account === selectedAccount?._id);
 
   return (
-    <Popover placement='left-start' isLazy>
-      <PopoverTrigger>
-        <Box className="styleCenter"  >
-          <IconButton isDisabled={disabled || assets.length <= 0} variant="solid" colorScheme='green' size="sm" icon={<BsPlus size={'25'} />} />
-          {assets.length <= 0 && <Text color='red' >No Assets</Text>}
-        </Box>
+    <>
+      <Box className="styleCenter"  >
+        <IconButton onClick={() => handleOpen()} isDisabled={disabled || assets.length <= 0} variant="solid" colorScheme='green' size="sm" icon={<BsPlus size={'25'} />} />
+        {assets.length <= 0 && <Text color='red' >No Assets</Text>}
+      </Box>
+      <CandiModal open={isOpen} onClose={() => handleClose()}  >
 
-      </PopoverTrigger>
-      <Portal>
-        <PopoverContent bg='#343a40' minWidth={'30vw'}>
-          <PopoverArrow />
-          <PopoverHeader>
-            <Input style={{ width: '94%' }} value={fill} onChange={(e) => setFilter(e.target.value)} placeholder={`${assets.length} Assets`} />
-          </PopoverHeader>
-          <PopoverCloseButton />
-          <PopoverBody>
-            <VStack divider={<Divider />} style={{ maxHeight: '40vh', overflow: 'auto', paddingTop: filteredAssets.length < 3 ? '0vh' : '45vh' }} justify="space-around" align={'center'}  >
-              {filteredAssets.map((ass) => (
-                <Box key={ass._id} style={{ width: '100%' }}>
-                  <AssetCard handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass} />
-                </Box>
-              ))}
-            </VStack>
+        <Input style={{ width: '94%' }} value={fill} onChange={(e) => setFilter(e.target.value)} placeholder={`${assets.length} Assets`} />
+        {uniqueAccountIdsArray && uniqueAccountIdsArray.length > 1 && uniqueAccountIdsArray.map(account => (
+          <Button
+            onClick={() => setSelectedAccount(account)}
+            variant={selectedAccount?._id === account._id ? 'solid' : 'ghost'}
+            key={account?._id}
+            colorScheme={selectedAccount?._id === account._id ? 'green' : 'teal'}
+          >
+            {account?.name}
+          </Button>
+        ))}
+        <Divider />
+        <VStack divider={<Divider />} style={{ overflow: 'scroll', }} justify="space-around" align={'center'}  >
+          {filteredAssets.map((ass) => (
+            <Box key={ass._id} style={{ width: '100%', cursor: 'pointer' }}>
+              <AssetCard handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass} />
+            </Box>
+          ))}
+        </VStack>
+      </CandiModal>
+    </>
 
-          </PopoverBody>
-        </PopoverContent>
-      </Portal>
+    // <Popover strategy='fixed' placement='left-start' isLazy>
+    //   <PopoverTrigger>
+    //     <Box className="styleCenter"  >
+    //       <IconButton isDisabled={disabled || assets.length <= 0} variant="solid" colorScheme='green' size="sm" icon={<BsPlus size={'25'} />} />
+    //       {assets.length <= 0 && <Text color='red' >No Assets</Text>}
+    //     </Box>
 
-    </Popover>
+    //   </PopoverTrigger>
+    //   <PopoverContent bg='#343a40' minWidth={'30vw'} style={{ overflow: 'clip' }}>
+    //     <PopoverArrow />
+    //     <PopoverCloseButton />
+
+
+    //     <PopoverBody>
+    //       <VStack divider={<Divider />} style={{ overflow: 'scroll', }} justify="space-around" align={'center'}  >
+    //         {filteredAssets.map((ass) => (
+    //           <Box key={ass._id} style={{ width: '100%' }}>
+    //             <AssetCard handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass} />
+    //           </Box>
+    //         ))}
+    //       </VStack>
+
+    //     </PopoverBody>
+    //   </PopoverContent>
+
+    // </Popover>
   );
 };

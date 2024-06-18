@@ -37,7 +37,7 @@ const HomePage = (props) => {
   const tempCharacter = useSelector(getCharacterById(selectedChar));
   const { isControl } = usePermissions();
   const [rand, setRand] = React.useState(Math.floor(Math.random() * 10000));
-  const columns = useBreakpointValue({ base: 1, lg: 3, md: 2, sm: 1 });
+  const columns = useBreakpointValue({ base: 2, lg: 6, md: 4, sm: 2 });
 
   if (!props.login) {
     navigate("/");
@@ -63,34 +63,34 @@ const HomePage = (props) => {
         <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>
 
 
-          <GridItem colSpan={columns == 1 ? 2 : 1}>
+          <GridItem colSpan={columns == 1 ? 3 : 2}>
             <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
           </GridItem>
 
-          <GridItem colSpan={columns == 1 ? 2 : 1}>
+          <GridItem colSpan={columns == 1 ? 3 : 2}>
             <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Private Actions" />
           </GridItem>
 
-          <GridItem colSpan={columns == 1 ? 2 : 1}>
+          <GridItem colSpan={columns == 1 ? 3 : 2}>
             <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Public Actions" />
           </GridItem>
 
 
-          <GridItem colSpan={columns == 1 ? 2 : 1} >
+          <GridItem colSpan={columns == 1 ? 2 : 3} >
             <ImgPanel new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
           </GridItem>
 
 
 
-          <GridItem colSpan={columns == 1 ? 2 : 1} >
+          <GridItem colSpan={columns == 1 ? 2 : 3} >
             <ImgPanel img={map} to="locations" title="~ Locations ~" body="Where am I" />
           </GridItem>
 
-          <GridItem colSpan={columns == 1 ? 2 : 1}>
+          <GridItem colSpan={columns == 1 ? 3 : 2}>
             <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
           </GridItem>
 
-          {team && <GridItem colSpan={columns == 1 ? 2 : 1}>
+          {team && <GridItem colSpan={3}>
             <ImgPanel img={other} to="team" title={'~ My Team ~'} body="teeeaam" />
           </GridItem>}
 

@@ -17,11 +17,14 @@ import { getIce } from "../../../../redux/entities/blueprints";
 import Ice from "../../../Team/Ice";
 import { ActionIce } from "./ActionIce";
 import IceForm from "../../../Common/IceForm";
+import { getTeamAccount } from "../../../../redux/entities/accounts";
 
 function Feed({ action }) {
   const gamestate = useSelector(state => state.gamestate);
   const facilities = useSelector(state => state.facilities.list);
   const myCharacter = useSelector(state => state.auth.myCharacter);
+  const teamAccount = useSelector(getTeamAccount);
+
   const iceBlueprints = useSelector(getIce);
   const { isControl } = usePermissions();
   const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
@@ -228,7 +231,17 @@ function Feed({ action }) {
       </CandiModal>
 
       <CandiModal open={mode === 'getIce'} onClose={() => closeIt()}  >
-        <IceForm mode={mode} action={action} />
+        <IceForm
+          mode={mode}
+          action={action}
+          handleSubmit={(data) => {
+            socket.emit('request', {
+              route: 'ice',
+              action: 'create',
+              data: { ...data, account: teamAccount._id }
+            }, (response) => { console.log(response) });
+          }}
+        />
       </CandiModal>
 
 

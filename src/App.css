@@ -192,8 +192,8 @@
   color: #fff;
   text-shadow: -1px 1px #000000;
   background-color: #36343f;
-  width: 180px;
-  height: 180px;
+  /* width: 180px;
+  height: 180px; */
   /* background: grey; */
   background-size: cover; /* Resize the background image to cover the entire container */
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);

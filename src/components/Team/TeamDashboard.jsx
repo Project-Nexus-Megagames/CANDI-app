@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import Production from './Production';
 import ServerManagement from './ServerManagement';
 import { getCharAccount, getTeamAccount } from '../../redux/entities/accounts';
-import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack, Grid, GridItem, Box, Button, Center, ButtonGroup, IconButton } from '@chakra-ui/react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack, Grid, GridItem, Box, Button, Center, ButtonGroup, IconButton, Wrap } from '@chakra-ui/react';
 import { getTeamFacilities } from '../../redux/entities/facilities';
 import { getTeamAssets, getTeamWorkers, getTeamContracts } from '../../redux/entities/assets';
 import { getTeamIce } from '../../redux/entities/ice';
 import { AiOutlineSwap } from 'react-icons/ai';
-import { FaHandshake } from 'react-icons/fa';
+import { FaHandshake, FaSnowboarding } from 'react-icons/fa';
 import { editTab } from '../../redux/entities/gamestate';
 import AssetCard from '../Common/AssetCard';
 import { getFadedColor } from '../../scripts/frontend';
@@ -23,6 +23,9 @@ import Contract from '../Common/Contract';
 import { AccountTransfer } from '../Common/AccountTransfer';
 import { CloseIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import AssetForm from '../Common/AssetForm';
+import Ice from './Ice';
+import { ActionIce } from '../Actions/ActionList/Action/ActionIce';
+import socket from '../../socket';
 
 
 const TeamDashboard = (props) => {
@@ -98,6 +101,7 @@ const TeamDashboard = (props) => {
     >
       <TabList>
         <Tab>DashBoard</Tab>
+        <Tab> <FaSnowboarding style={{ margin: '4px', }} /> {"  "} Challenges</Tab>
         <Tab> <AiOutlineSwap style={{ margin: '4px', }} /> {"  "} Trade</Tab>
       </TabList>
 
@@ -176,12 +180,44 @@ const TeamDashboard = (props) => {
         </TabPanel>
 
         <TabPanel>
-          {/* <Trade teamAccount={teamAccount} /> */}
+          {teamIce.map(ice => (
+            <div key={ice._id} >
+              <Wrap justify="space-around">
+                <Ice ice={ice} />
+
+                <VStack style={{ width: '50%' }} >
+                  {ice.options &&
+                    ice.options.map((subRotuine, index) => (
+                      <ActionIce
+                        key={subRotuine._id}
+                        show={mode === 'addDice'}
+                        ice={ice}
+                        assets={assets}
+                        mode={mode}
+                        loading={props.loading}
+                        subRotuine={subRotuine}
+                        index={index}
+                      />
+                    ))}
+                </VStack>
+
+              </Wrap>
+
+              <Center>
+                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green"
+                  onClick={() => socket.emit("request", {
+                    route: "action",
+                    action: "roll",
+                    data: { ice: ice._id },
+                  })}>Roll</Button>}
+              </Center>
+            </div>
+          ))}
         </TabPanel>
 
-        {/* <TabPanel>
-						Account rework coming
-					</TabPanel> */}
+        <TabPanel>
+          {/* <Trade teamAccount={teamAccount} /> */}
+        </TabPanel>
 
         <TabPanel>
           {/* <Contracts /> */}

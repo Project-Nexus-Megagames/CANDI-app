@@ -13,6 +13,7 @@ import socket from '../../../socket';
 import LocationForm from '../../Locations/LocationForm';
 import CharacterTag from '../../Common/CharacterTag';
 import ResourceEffect from './ResourceEffect';
+import IceForm from '../../Common/IceForm';
 
 const NewEffects = (props) => {
   const [type, setType] = useState('');
@@ -244,6 +245,7 @@ const NewEffects = (props) => {
     { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location', },
     { type: 'awardResources', color: 'yellow', name: 'Award Resources', },
     // { type: 'addInjury', color: 'green', name: 'addInjury' },
+    { type: 'spawn', color: 'red', name: 'Spawn Challenge', },
   ]
 
   return (
