@@ -49,7 +49,7 @@ const NewAction = (props) => {
   const [facility, setFacility] = React.useState(undefined);
   const [collaborators, setCollaborators] = React.useState([]);
 
-  
+
   const [exertion, setExertion] = React.useState(false);
 
   useEffect(() => {
@@ -124,7 +124,7 @@ const NewAction = (props) => {
       boolean = myAccout.resources.some(e => e.type === resource.type) &&
         myAccout.resources.find(e => e.type === resource.type)?.balance >= resource.min
     }
-    
+
     return !boolean;
   };
 
@@ -236,33 +236,33 @@ const NewAction = (props) => {
           </Box>}
 
           <Box>
-        Needed Resources:
-        <Center>
-          {actionType.resourceTypes.map(el => (
-            <Box key={el._id}>
-              
-              {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
-                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                  Lacking Resources
-                </Tag>
-              )}
-              {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
-                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                  <CheckIcon />
-                </Tag>
-              )}
-              <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
-            </Box>
-          ))}
-        </Center>
-      </Box>
+            Needed Resources:
+            <Center>
+              {actionType.resourceTypes.map(el => (
+                <Box key={el._id}>
+
+                  {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
+                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                      Lacking Resources
+                    </Tag>
+                  )}
+                  {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
+                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                      <CheckIcon />
+                    </Tag>
+                  )}
+                  <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
+                </Box>
+              ))}
+            </Center>
+          </Box>
 
         </HStack>
         <br />
         <Divider />
 
         <Flex width={"100%"} >
-          
+
           <Box width={"99%"} >
             Description:
             {10 - description.length > 0 && (
@@ -270,10 +270,10 @@ const NewAction = (props) => {
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {description.length >= maxLength && (
+            {description.length > maxLength && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                 too long: ({description.length} / {maxLength})   
-                <CloseIcon />             
+                too long: ({description.length} / {maxLength})
+                <CloseIcon />
               </Tag>
             )}
 
@@ -283,42 +283,56 @@ const NewAction = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <MDEditor
-              height="100%"
-              value={description}
-              preview="edit"
-              onChange={setDescription} />
+            {description.length == maxLength && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                PERFECTION ({description.length} / {maxLength})
+              </Tag>
+            )}
+            <div data-color-mode="dark">
+              <MDEditor
+                style={{ backgroundColor: '#1a1d24', color: 'white' }}
+                value={description}
+                preview="edit"
+                onChange={setDescription} />
+            </div>
+
           </Box>
 
         </Flex>
         <br />
-          <Box width={"99%"} >
-            Intent:
-            {10 - intent.length > 0 && (
-              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                {10 - intent.length} more characters...
-              </Tag>
-            )}
-            {intent.length >= maxLength && (
-              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                 too long: ({intent.length} / {maxLength})
-                
-              </Tag>
-            )}
+        <Box width={"99%"} >
+          Intent:
+          {10 - intent.length > 0 && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              {10 - intent.length} more characters...
+            </Tag>
+          )}
+          {intent.length > maxLength && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              too long: ({intent.length} / {maxLength})
+            </Tag>
+          )}
+          {intent.length == maxLength && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+              PERFECTION ({intent.length} / {maxLength})
+            </Tag>
+          )}
 
-            {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
-              <Tag variant='solid' colorScheme={'green'}>
-                {intent.length} / {maxLengthIntent}
-                <CheckIcon />
-              </Tag>
-            )}
-            
+          {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
+            <Tag variant='solid' colorScheme={'green'}>
+              {intent.length} / {maxLengthIntent}
+              <CheckIcon />
+            </Tag>
+          )}
+          <div data-color-mode="dark">
             <MDEditor
-              height="100%"
+              style={{ backgroundColor: '#1a1d24', color: 'white' }}
               value={intent}
               preview="edit"
               onChange={setIntent} />
-          </Box>
+          </div>
+
+        </Box>
 
         <br />
 

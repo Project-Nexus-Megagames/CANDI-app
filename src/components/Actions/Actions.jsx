@@ -116,6 +116,7 @@ const Actions = (props) => {
       templateAreas={`"nav main"`}
       gridTemplateColumns={window.innerWidth < 1000 ? '0% 100%' : '25% 75%'}
       gap='1'
+      bg='#fa9c37'
       fontWeight='bold'>
       <GridItem pl='2' bg='#1b2330' area={'nav'} style={{ height: 'calc(100vh - 78px)', overflow: 'auto',scrollbarWidth: 'none' }} >
 

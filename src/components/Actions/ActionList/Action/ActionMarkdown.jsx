@@ -20,7 +20,10 @@ const ActionMarkdown = ({ header, markdown, tooltip, edit, handleEdit, data, tex
                 marginTop='0.5rem'
                 marginBottom='0.5rem'
             >
-              <MDEditor.Markdown source={markdown} style={{ backgroundColor: '#1a1d24' }} />
+                <div data-color-mode="dark">
+                <MDEditor.Markdown source={markdown} style={{ backgroundColor: '#1a1d24' }} />
+
+                </div>
               {edit && <textarea rows='5' value={data} className='textStyle' onChange={(event) => handleEdit(event.target.value, header?.toLowerCase())}></textarea>}
 
             </Box>
