@@ -117,7 +117,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Description is too long!",
-      disabled: description.length >= maxLength
+      disabled: description.length > maxLength
     },
     {
       text: "intent is too short",
@@ -125,7 +125,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Intent is too long!",
-      disabled: intent.length >= maxLengthIntent
+      disabled: intent.length > maxLengthIntent
     },
     {
       text: "Name is too short",
@@ -133,7 +133,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Name is too long!",
-      disabled: name.length >= 1000 && !collabMode
+      disabled: name.length > 1000 && !collabMode
     },
     {
       text: "Location required",
@@ -221,10 +221,9 @@ const ActionForm = (props) => {
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {description.length >= maxLength && (
+            {description.length > maxLength && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
                 too long: ({description.length} / {maxLength})
-
               </Tag>
             )}
 
@@ -234,11 +233,18 @@ const ActionForm = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <MDEditor
-              height="100%"
-              value={description}
-              preview="edit"
-              onChange={setDescription} />
+            {description.length == maxLength && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                PERFECTION ({description.length} / {maxLength})
+              </Tag>
+            )}
+            <div data-color-mode="dark">
+              <MDEditor
+                style={{ backgroundColor: '#1a1d24', color: 'white' }}
+                value={description}
+                preview="edit"
+                onChange={setDescription} />
+            </div>
 
           </Box>
 
@@ -254,24 +260,31 @@ const ActionForm = (props) => {
               {10 - intent.length} more characters...
             </Tag>
           )}
-          {intent.length >= maxLength && (
+          {intent.length > maxLengthIntent && (
             <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-              too long: ({intent.length} / {maxLength})
+              too long: ({intent.length} / {maxLengthIntent})
 
             </Tag>
           )}
-
           {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
             <Tag variant='solid' colorScheme={'green'}>
               {intent.length} / {maxLengthIntent}
               <CheckIcon />
             </Tag>
           )}
-          <MDEditor
-            height="100%"
-            value={intent}
-            preview="edit"
-            onChange={setIntent} />
+          {intent.length == maxLengthIntent && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+              PERFECTION ({intent.length} / {maxLengthIntent})
+            </Tag>
+          )}
+
+          <div data-color-mode="dark">
+            <MDEditor
+              style={{ backgroundColor: '#1a1d24', color: 'white' }}
+              value={intent}
+              preview="edit"
+              onChange={setIntent} />
+          </div>
 
         </Box>
 
