@@ -307,14 +307,14 @@ const NewAction = (props) => {
               {10 - intent.length} more characters...
             </Tag>
           )}
-          {intent.length > maxLength && (
+          {intent.length > maxLengthIntent && (
             <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-              too long: ({intent.length} / {maxLength})
+              too long: ({intent.length} / {maxLengthIntent})
             </Tag>
           )}
-          {intent.length == maxLength && (
+          {intent.length == maxLengthIntent && (
             <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-              PERFECTION ({intent.length} / {maxLength})
+              PERFECTION ({intent.length} / {maxLengthIntent})
             </Tag>
           )}
 
