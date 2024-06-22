@@ -138,7 +138,7 @@ const NewAction = (props) => {
     },
     {
       text: "Description is too long!",
-      disabled: description.length >= maxLength
+      disabled: description.length > maxLength
     },
     {
       text: "Intent is too short",
@@ -146,7 +146,7 @@ const NewAction = (props) => {
     },
     {
       text: "Intent is too long!",
-      disabled: intent.length >= maxLengthIntent
+      disabled: intent.length > maxLengthIntent
     },
     {
       text: "Name is too short",
