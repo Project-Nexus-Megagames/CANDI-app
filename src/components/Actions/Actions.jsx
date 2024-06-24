@@ -67,7 +67,6 @@ const Actions = (props) => {
   }, [selected])
 
   const createListCategories = (actions) => {
-    console.log('hi boss')
     const listRounds = [];
     for (const action of actions) {
       if (!listRounds.some((item) => item === action.round)) {
@@ -79,8 +78,6 @@ const Actions = (props) => {
     setRenderRounds([gamestate.round]);
     // if (renderRounds.length === 0) setRenderRounds(listRounds.slice(0, 1))
     // if (selected) setSelected(actions.find(el => el._id === selected._id))
-    
-    console.log(listRounds)
   };
 
   const handleRoundToggle = (round) => {

@@ -25,12 +25,14 @@ import { CandiWarning } from '../Common/CandiWarning';
 import { openLink } from '../../scripts/frontend';
 import NoCharacter from './NoCharacter';
 import CharacterCreation from '../MyCharacters/CharacterCreation';
+import { toggleAuido } from '../../redux/entities/gamestate';
 
 const HomePage = (props) => {
 	const navigate = useNavigate();
 	const reduxAction = useDispatch();
 
 	const { login, loadComplete, myCharacter, team } = useSelector(s => s.auth)
+  const play = useSelector(state => state.gamestate.play);
   const actions = useSelector(state => state.actions.list)
   const gamestate = useSelector(state => state.gamestate)
 	const newArticles = useSelector((state) => state.articles.new);
@@ -74,7 +76,7 @@ const HomePage = (props) => {
         <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
       </GridItem>   */}
 
-      <GridItem colSpan={columns == 1 ? 2 : 1}>
+      <GridItem onClick={() => {if (!play) reduxAction(toggleAuido());}} colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={actionImg} to="actions" title="~ Actions ~" body="Private Actions" />
       </GridItem>   
 
