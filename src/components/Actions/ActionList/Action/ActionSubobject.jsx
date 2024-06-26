@@ -229,7 +229,11 @@ const ActionSubObject = (props) => {
           {subObject.dice &&
             <Grid templateColumns='repeat(5, 1fr)' gap={2}>
               {subObject.dice.map(die => (
-                <Center key={die._id} style={{ textAlign: 'center', backgroundColor: die.result >= subObject.difficulty ? 'green' : 'red' }} >
+                <Center key={die._id} style={{
+                  textAlign: 'center', backgroundColor:
+                    die?.result >= subObject.difficulty ? 'green' :
+                      die?.result <= 2 ? 'red' : 'inherit'
+                }} >
                   {<img
                     style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }}
                     src={die ? `/images/d${die.dieValue}.png` : '/images/unknown.png'}

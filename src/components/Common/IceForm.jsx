@@ -14,10 +14,11 @@ import { getIce } from '../../redux/entities/blueprints';
 import { cloudinaryUploadMedium } from '../../services/uploads';
 import CheckerPick from './CheckerPick';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
+import { getTeamAccount } from '../../redux/entities/accounts';
 
 const IceForm = (props) => {
   const { ice, action } = props;
-  const loggedInUser = useSelector((state) => state.auth.user);
+  const team = useSelector((state) => state.auth.team);
   const iceBlueprints = useSelector(getIce);
   const gameConfig = useSelector((state) => state.gameConfig);
   const characters = props.characters || useSelector((state) => state.characters.list);
@@ -105,7 +106,7 @@ const IceForm = (props) => {
 
   async function onSubmit(data) {
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, options, name, description, code, imageUrl, id: ice?._id, action: action?._id, });
+      props.handleSubmit({ ...data, options, name, description, code, imageUrl, id: ice?._id, action: action?._id, getTeamAccount: team.account });
     } else {
       const ice = { ...data, options, name, description, code, imageUrl, action: action?._id, createBlue };
       const response = await axios.post(`${gameServer}api/ice/createIce`, { ice })
@@ -116,7 +117,7 @@ const IceForm = (props) => {
       // 	data: { asset, imageUrl, loggedInUser }
       // });
     }
-    // props.closeModal();
+    props.closeModal();
   }
 
   const renderImage = () => {

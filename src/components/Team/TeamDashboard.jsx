@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Production from './Production';
 import ServerManagement from './ServerManagement';
 import { getCharAccount, getTeamAccount } from '../../redux/entities/accounts';
-import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack, Grid, GridItem, Box, Button, Center, ButtonGroup, IconButton, Wrap } from '@chakra-ui/react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack, Grid, GridItem, Box, Button, Center, ButtonGroup, IconButton, Wrap, Stack } from '@chakra-ui/react';
 import { getTeamFacilities } from '../../redux/entities/facilities';
 import { getTeamAssets, getTeamWorkers, getTeamContracts } from '../../redux/entities/assets';
 import { getTeamIce } from '../../redux/entities/ice';
@@ -87,7 +87,6 @@ const TeamDashboard = (props) => {
             templateAreas={`"nav main right-nav"`}
             gridTemplateColumns={'20% 60% 20%'}
             gap='1'
-            bg='#fff'
             fontWeight='bold'>
 
             <GridItem pl='2' bg='#0f131a' area={'nav'} >
@@ -139,7 +138,7 @@ const TeamDashboard = (props) => {
                     {isControl && <EditAccount account={teamAccount} />}
                   </ButtonGroup>
                   <Wrap>
-                    {[...teamAccount.resources].sort((a, b) => b.balance - a.balance).map((item) =>
+                    {[...teamAccount.resources].filter(el => el.balance > 0).sort((a, b) => b.balance - a.balance).map((item) =>
                       <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
                     )}
                   </Wrap>
@@ -164,10 +163,9 @@ const TeamDashboard = (props) => {
             templateAreas={`"nav main"`}
             gridTemplateColumns={'30% 70%'}
             gap='1'
-            bg='#fff'
             fontWeight='bold'>
 
-            <GridItem area={'nav'} bg='#0f131a'>
+            <GridItem area={'nav'} bg='#0f131a' style={{ height: 'calc(100vh - 135px)', overflow: 'auto', }}>
               {assets
                 .filter((el) => (el.account && el.account === teamAccount?._id && !el.tags.some(t => t === 'contract')))
                 .map((asset) => (
@@ -178,7 +176,7 @@ const TeamDashboard = (props) => {
                 ))}
             </GridItem>
 
-            <GridItem area={'main'} bg='#0f131a'>
+            <GridItem area={'main'} bg='#0f131a' style={{ height: 'calc(100vh - 135px)', overflow: 'auto', }}>
               {isControl && <Button
                 variant={'solid'}
                 onClick={() => setMode('getIce')}
@@ -186,15 +184,19 @@ const TeamDashboard = (props) => {
               >
                 New Complication
               </Button>}
-              {teamIce.map(ice => (
-                <div key={ice._id} >
-                  <IceCard ice={ice} showButtons={isControl} handleSelect />
-                </div>
-              ))}
+              <Stack align='center' >
+                {teamIce.map(ice => (
+                  <div key={ice._id} style={{ width: "90%" }} >
+                    <IceCard ice={ice} showButtons={isControl} handleSelect />
+                  </div>
+                ))}
+              </Stack>
+
             </GridItem>
 
             <CandiModal open={mode === 'getIce'} onClose={() => closeIt()}  >
               <IceForm
+                closeModal={closeIt}
                 mode={mode}
                 handleSubmit={(data) => {
                   socket.emit('request', {
@@ -208,14 +210,6 @@ const TeamDashboard = (props) => {
 
           </Grid>
 
-        </TabPanel>
-
-        <TabPanel>
-          {/* <Trade teamAccount={teamAccount} /> */}
-        </TabPanel>
-
-        <TabPanel>
-          {/* <Contracts /> */}
         </TabPanel>
 
       </TabPanels>

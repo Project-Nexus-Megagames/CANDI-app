@@ -18,6 +18,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import ResourceNugget from './ResourceNugget';
 import { getTeamIce } from '../../redux/entities/ice';
 import { ActionIce } from '../Actions/ActionList/Action/ActionIce';
+import IceForm from './IceForm';
 
 const IceCard = (props) => {
   const { showButtons, handleSelect, compact, removeAsset, showRemove, selected } = props;
@@ -45,14 +46,14 @@ const IceCard = (props) => {
           <CardHeader>
 
             <Flex align={'left'} overflow='hidden' width='100%'>
+              <Spacer />
               {ice.imageUrl &&
                 <img
                   src={`${ice.imageUrl}`}
                   alt='Img could not be displayed'
-                  style={{ maxHeight: "20vh", width: '40%' }}
+                  style={{ maxHeight: "20vh", }}
                 />
               }
-              <Spacer />
               <Box>
 
                 <div display="flex">
@@ -97,7 +98,7 @@ const IceCard = (props) => {
 
               {ice.options &&
                 ice.options.map((subRotuine, index) => (
-                  <Box width={"30vw"} minWidth={'250px'} key={subRotuine._id}>
+                  <Box width={"49%"} minWidth={'250px'} key={subRotuine._id}>
                     <ActionIce
                       show={mode === 'addDice'}
                       ice={ice}
@@ -121,7 +122,17 @@ const IceCard = (props) => {
         </CandiWarning>}
 
         <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Ice`}>
-          {/* <AssetForm closeModal={() => { setMode(false); }} character={character} asset={asset} mode={mode} /> */}
+          <IceForm
+            ice={ice}
+            mode={mode}
+            closeModal={() => { setMode(false); }}
+            handleSubmit={(data) => {
+              socket.emit('request', {
+                route: 'ice',
+                action: 'editIce',
+                data: data
+              }, (response) => { if (response.type === 'success') setMode(false) });
+            }} />
         </CandiModal>
 
       </div>

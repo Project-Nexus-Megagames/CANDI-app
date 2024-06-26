@@ -193,14 +193,14 @@ function Feed({ action }) {
                 onClick={() => setMode('getIce')}
                 colorScheme="yellow"
               >
-                Challenge
+                Complication
               </Button>
             )}
             {isCollaborator && (
               <Button variant={'solid'}
                 onClick={() => setMode('collab')}
                 colorScheme="pink"
-                isDisabled={true}
+                isDisabled={!true}
               >
                 Collaborate (DISABLED FOR PLAYTEST)
               </Button>

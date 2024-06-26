@@ -79,7 +79,7 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
       <Flex align={'center'} >
         <Box width={'60%'} >
           {subRotuine.description && (
-            <h3>{subRotuine.description}</h3>
+            <h5>{subRotuine.description}</h5>
           )}
           {subRotuine.challengeCost.allowed.map((item) =>
             <Tag
@@ -151,7 +151,15 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
 
       {<Grid templateColumns='repeat(5, 1fr)' gap={2}>
         {subRotuine.results.map((die, index2) => (
-          <WrapItem key={index2} colSpan={4} style={{ textAlign: 'center', backgroundColor: die?.result >= subRotuine.challengeCost.value ? 'green' : 'red' }}>
+          <WrapItem
+            key={index2}
+            colSpan={4}
+            style={{
+              textAlign: 'center',
+              backgroundColor:
+                die?.result >= subRotuine.challengeCost.value ? 'green' :
+                  die?.result <= 2 ? 'red' : 'inherit'
+            }}>
             {/* <Dice alt asset={die} /> */}
             <div >
               {<img

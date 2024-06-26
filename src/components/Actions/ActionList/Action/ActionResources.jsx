@@ -44,10 +44,11 @@ function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
   }
 
   const renderAsset = (assetID) => {
-    console.log("Scott: ", assetID)
+    console.log("ScottY: ", assetID)
+    console.log(assetID?._id)
     const retrievedAsset = getAsset(assetID);
     let inner;
-    if (assetID && assetID._id)
+    if (assetID && assetID._id !== undefined) {
       inner = (
         <AssetCard
           removeAsset={() => isControl ? rejectAsset(assetID._id) : undefined}
@@ -56,7 +57,8 @@ function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
           disabled
         />
       );
-    if (retrievedAsset) {
+    }
+    else if (retrievedAsset) {
       inner = (
         <AssetCard
           removeAsset={() => isControl ? rejectAsset(retrievedAsset._id) : undefined}

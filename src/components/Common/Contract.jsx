@@ -136,7 +136,7 @@ const Contract = (props) => {
           {mode === 'contribute' && [charAccount, teamAccount].map(acc => (
             <Button
               key={acc._id}
-              onClick={() => setAccount(acc)}
+              onClick={() => { setAccount(acc); setResources(contract.target.map(c => { return { type: c.type, value: 0 } })); }}
               size='xs'
               margin={'0'}
               variant={account === acc ? 'solid' : 'link'}
@@ -149,12 +149,12 @@ const Contract = (props) => {
           <Wrap >
             {contract.target.map(g => (
               <div key={g._id} width={'100px'} style={{ paddingBottom: '5px' }}  >
-                <ResourceNugget fontSize={'2em'} index={g._id} value={`${getContribtuedAmount(g.type)}/${g.value}`} type={g.type} />
+                <ResourceNugget fontSize={'1.7em'} index={g._id} value={`${getContribtuedAmount(g.type)}/${g.value}`} type={g.type} />
                 <div style={{ position: 'relative', top: '-30px', left: '30px' }} >
                   {show && getTag(g)}
                 </div>
-                {mode === 'contribute' && <div style={{}} >
-                  <InputNumber width={'100px'} defaultValue={0} min={0} max={getMax(g.type)} onChange={(value) => handleChange(g.type, value)} />
+                {mode === 'contribute' && <div style={{}} >{resources[g.type]?.value}
+                  <InputNumber width={'100px'} value={resources[g.type]?.value} defaultValue={0} min={0} max={getMax(g.type)} onChange={(value) => handleChange(g.type, value)} />
                 </div>}
 
               </div>

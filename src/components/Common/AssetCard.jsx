@@ -146,7 +146,7 @@ const AssetCard = (props) => {
               <Spacer />
             </Flex>
 
-            {asset.resources.length > 0 && <Box>
+            {asset.resources && asset.resources.length > 0 && <Box>
               Resources:
               <Flex align={'center'} overflow='hidden' width='100%' >
                 <Spacer />

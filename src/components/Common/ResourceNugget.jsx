@@ -39,7 +39,7 @@ const ResourceNugget = (props) => {
           backgroundColor: props.selected ? getFadedColor(type, 0.7) : backgroundColor,
         }}
       >
-        {type !== 'blueprint' && <img src={`/images/${type}${altP}.png`} width={'50%'} alt={`${type}${altP}!`} />}
+        {type !== 'blueprint' && <img src={`/images/${type}${altP}.png`} width={'50%'} style={{ minWidth: '35px' }} alt={`${type}${altP}!`} />}
         {type === 'blueprint' && lookup && <img src={`/images/${lookup.model}/${lookup.code}${altP}.png`} width={'50%'} alt={`${lookup.model} / ${lookup.code}`} />}
 
         {value && !compact && <h5 style={{ fontSize: fontSize }}>{value}</h5>}
