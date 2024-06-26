@@ -13,7 +13,7 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
     'Spider',
     'Frog',
     'Rat',
-    'Mimic',
+    'Raccoon',
     'Surface',
     'Underkin'
   ]); // TODO: update with Faction tags

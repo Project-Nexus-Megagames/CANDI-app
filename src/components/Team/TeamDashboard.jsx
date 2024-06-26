@@ -26,6 +26,11 @@ import AssetForm from '../Common/AssetForm';
 import Ice from './Ice';
 import { ActionIce } from '../Actions/ActionList/Action/ActionIce';
 import socket from '../../socket';
+import SelectPicker from '../Common/SelectPicker';
+import { setTeam } from '../../redux/entities/auth';
+import { CandiModal } from '../Common/CandiModal';
+import IceForm from '../Common/IceForm';
+import IceCard from '../Common/IceCard';
 
 
 const TeamDashboard = (props) => {
@@ -34,6 +39,8 @@ const TeamDashboard = (props) => {
   const { login, team } = useSelector(s => s.auth);
   const clock = useSelector(s => s.clock);
   const { teamTab } = useSelector(s => s.gamestate);
+  const teams = useSelector(s => s.teams.list);
+
 
   const teamAccount = useSelector(getTeamAccount);
   const myAccount = useSelector(getCharAccount);
@@ -47,7 +54,7 @@ const TeamDashboard = (props) => {
 
 
   const [mode, setMode] = useState(false);
-
+  const closeIt = () => { setMode(false); };
   const { isControl } = usePermissions();
 
   // const [tabIndex, setTab] = React.useState(0);
@@ -62,39 +69,6 @@ const TeamDashboard = (props) => {
     // setTab(6); // todo add in get tab index from thing
   }
 
-  const generateLineData = () => {
-    let datasets = [];
-    let labels = [];
-
-    for (let i = 0; i < clock.tickNum; i++) {
-      labels.push(i + 1)
-    }
-
-    for (let resource of teamAccount.resources.filter(el => (el.balance > 0))) {
-      console.log(resource.type)
-      let newThing = {
-        label: resource.type,
-        data: [0],
-        borderColor: getFadedColor(resource.type)
-      };
-
-      for (let tick of labels) {
-        let log = myLogs.find(el => el.resource === resource.type && el.tickNum === tick)
-        newThing.data.push(log ? log.amount : newThing.data[tick - 1])
-        // for (let log of myLogs.find(el => el.resource === resource.type && el.tickNum === tick)) {
-        //   console.log(log.amount)
-        //   newThing.data.push(log.amount)
-        // }        
-      }
-
-
-      newThing.data.reverse()
-      datasets.push(newThing)
-    }
-    console.log(datasets);
-    return { labels, datasets };
-  }
-
   return (
     <Tabs isLazy index={teamTab} onChange={(t) => reduxAction(editTab({ tab: 'teamTab', value: t }))}
       style={{ border: getFadedColor(team?.name), color: 'white' }}
@@ -102,13 +76,14 @@ const TeamDashboard = (props) => {
       <TabList>
         <Tab>DashBoard</Tab>
         <Tab> <FaSnowboarding style={{ margin: '4px', }} /> {"  "} Challenges</Tab>
-        <Tab> <AiOutlineSwap style={{ margin: '4px', }} /> {"  "} Trade</Tab>
+        {/* <Tab> <AiOutlineSwap style={{ margin: '4px', }} /> {"  "} Trade</Tab> */}
       </TabList>
 
       <TabPanels>
 
         <TabPanel>
           <Grid
+            h='200px'
             templateAreas={`"nav main right-nav"`}
             gridTemplateColumns={'20% 60% 20%'}
             gap='1'
@@ -116,7 +91,7 @@ const TeamDashboard = (props) => {
             fontWeight='bold'>
 
             <GridItem pl='2' bg='#0f131a' area={'nav'} >
-              <Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}>
+              <Box style={{ height: 'calc(100vh - 135px)', overflow: 'auto', }} >
                 <VStack>
                   {contracts.map(contract => (
                     <Contract show key={contract._id} contract={contract} />
@@ -126,22 +101,11 @@ const TeamDashboard = (props) => {
             </GridItem>
 
             <GridItem pl='2' bg='#0f131a' area={'main'} >
-              <Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}>
+              <Box style={{ height: 'calc(100vh - 135px)', overflow: 'auto', }} >
+                {isControl && <SelectPicker fullData data={teams} label='name' onChange={(team) => reduxAction(setTeam(team))} />}
 
                 {teamAccount && <div>
-                  {teamAccount.name}
-                  <ButtonGroup>
-                    <AccountTransfer transactionType={"Deposit"} fromAccount={myAccount} toAccount={teamAccount} />
-                    <AccountTransfer transactionType={"Withdraw"} fromAccount={teamAccount} toAccount={myAccount} />
-                    {isControl && <EditAccount account={teamAccount} />}
-                  </ButtonGroup>
-                  <Center>
-                    {teamAccount.resources.map((item) =>
-                      <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
-                    )}
-                  </Center>
-
-                  {<GridItem bg={mode === "new" ? '#232c3b' : '#555555'} area={'body'} >
+                  {<Box bg={mode === "new" ? '#232c3b' : '#555555'} area={'body'} >
                     <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
                       Assets
                       {isControl && mode !== "new" && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
@@ -149,7 +113,7 @@ const TeamDashboard = (props) => {
                     </h5>
                     {mode !== "new" && <Grid templateColumns='repeat(3, 1fr)' gap={1}>
                       {assets
-                        .filter((el) => (el.account && el.account === teamAccount._id && !el.tags.some(t => t === 'contract')))
+                        .filter((el) => (el.account && el.account === teamAccount?._id && !el.tags.some(t => t === 'contract')))
                         .map((asset) => (
                           <AssetCard key={asset._id} asset={asset} showButtons />
                         ))}
@@ -159,60 +123,91 @@ const TeamDashboard = (props) => {
                         <AssetForm closeModal={() => setMode(false)} mode={mode} team={team} teamAccount={teamAccount} />
                       </Center>
                     }
-                  </GridItem>}
+                  </Box>}
                 </div>}
-
 
               </Box>
             </GridItem>
 
             <GridItem pl='2' bg='#0f131a' area={'right-nav'} >
-              <Box style={{ height: 'calc(100vh - 120px)', overflow: 'auto', }}>
+              <Box style={{ height: 'calc(100vh - 135px)', overflow: 'auto', }} >
+                {teamAccount && <div>
+                  {teamAccount.name}
+                  <ButtonGroup isAttached>
+                    <AccountTransfer transactionType={"Deposit"} fromAccount={myAccount} toAccount={teamAccount} />
+                    <AccountTransfer transactionType={"Withdraw"} fromAccount={teamAccount} toAccount={myAccount} />
+                    {isControl && <EditAccount account={teamAccount} />}
+                  </ButtonGroup>
+                  <Wrap>
+                    {[...teamAccount.resources].sort((a, b) => b.balance - a.balance).map((item) =>
+                      <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
+                    )}
+                  </Wrap>
+                </div>}
+
                 <LogRecords reports={myLogs.sort((a, b) => {
                   let da = new Date(a.createdAt),
                     db = new Date(b.createdAt);
                   return db - da;
                 })} />
+
               </Box>
             </GridItem>
 
           </Grid>
         </TabPanel>
 
+        {/* Challenges */}
         <TabPanel>
-          {teamIce.map(ice => (
-            <div key={ice._id} >
-              <Wrap justify="space-around">
-                <Ice ice={ice} />
+          <Grid
+            h='200px'
+            templateAreas={`"nav main"`}
+            gridTemplateColumns={'30% 70%'}
+            gap='1'
+            bg='#fff'
+            fontWeight='bold'>
 
-                <VStack style={{ width: '50%' }} >
-                  {ice.options &&
-                    ice.options.map((subRotuine, index) => (
-                      <ActionIce
-                        key={subRotuine._id}
-                        show={mode === 'addDice'}
-                        ice={ice}
-                        assets={assets}
-                        mode={mode}
-                        loading={props.loading}
-                        subRotuine={subRotuine}
-                        index={index}
-                      />
-                    ))}
-                </VStack>
+            <GridItem area={'nav'} bg='#0f131a'>
+              {assets
+                .filter((el) => (el.account && el.account === teamAccount?._id && !el.tags.some(t => t === 'contract')))
+                .map((asset) => (
+                  <div key={asset._id} >
+                    <AssetCard height={'30vh'} asset={asset} showButtons />
+                  </div>
 
-              </Wrap>
+                ))}
+            </GridItem>
 
-              <Center>
-                {mode !== 'addDice' && <Button variant={'solid'} colorScheme="green"
-                  onClick={() => socket.emit("request", {
-                    route: "action",
-                    action: "roll",
-                    data: { ice: ice._id },
-                  })}>Roll</Button>}
-              </Center>
-            </div>
-          ))}
+            <GridItem area={'main'} bg='#0f131a'>
+              {isControl && <Button
+                variant={'solid'}
+                onClick={() => setMode('getIce')}
+                colorScheme="yellow"
+              >
+                New Complication
+              </Button>}
+              {teamIce.map(ice => (
+                <div key={ice._id} >
+                  <IceCard ice={ice} showButtons={isControl} handleSelect />
+                </div>
+              ))}
+            </GridItem>
+
+            <CandiModal open={mode === 'getIce'} onClose={() => closeIt()}  >
+              <IceForm
+                mode={mode}
+                handleSubmit={(data) => {
+                  socket.emit('request', {
+                    route: 'ice',
+                    action: 'create',
+                    data: { ...data, account: teamAccount._id }
+                  }, (response) => { console.log(response) });
+                }}
+              />
+            </CandiModal>
+
+          </Grid>
+
         </TabPanel>
 
         <TabPanel>
@@ -221,14 +216,6 @@ const TeamDashboard = (props) => {
 
         <TabPanel>
           {/* <Contracts /> */}
-        </TabPanel>
-
-        <TabPanel>
-          <Production facilities={facilities} workers={workers} />
-        </TabPanel>
-
-        <TabPanel>
-          <ServerManagement ice={teamIce} facilities={facilities} handleTransfer={handleTransfer} />
         </TabPanel>
 
       </TabPanels>

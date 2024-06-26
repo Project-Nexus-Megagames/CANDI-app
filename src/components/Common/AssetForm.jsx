@@ -59,11 +59,18 @@ const AssetForm = (props) => {
       let found = blueprints.find(el => el._id === blueprint)
       reset(found);
       let temp = []
+      let resouces = []
       for (const ass of found.dice) {
         temp.push({ amount: ass.amount, type: ass.type })
       }
       setDice(temp);
-      setType(found.type)
+
+      for (const ass of found.resources) {
+        resouces.push({ amount: ass.amount, type: ass.type })
+      }
+      setDice(temp);
+      setResources(resouces);
+      setType(found.type || "Asset")
     }
   }, [blueprint]);
 

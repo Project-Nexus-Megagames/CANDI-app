@@ -75,7 +75,7 @@ export const getTeamIce = createSelector(
   state => state.ice.list.filter(el => el.account),
   state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (ice, account) => ice.filter(
-    ice => (ice.account === account._id)
+    ice => (ice.account === account?._id)
   )
 );
 

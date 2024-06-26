@@ -17,7 +17,7 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
     socket.emit("request", {
       route: "action",
       action: "contribute",
-      data: { id: action._id, choiceIndex: index, asset: asset._id, subRotuine: subRotuine._id, ice: ice._id },
+      data: { id: action?._id, choiceIndex: index, asset: asset._id, subRotuine: subRotuine._id, ice: ice._id },
     })
   }
 
@@ -32,9 +32,12 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
     let sum = 0;
     for (let asset of assets) {
       sum = 1;
-      for (const die of asset.dice.filter(el => el.amount >= cost)) {
-        probs.push(1 - (die.amount + 1 - cost) / die.amount)
+      if (asset && asset.dice) {
+        for (const die of asset.dice.filter(el => el.amount >= cost)) {
+          probs.push(1 - (die.amount + 1 - cost) / die.amount)
+        }
       }
+
 
     }
 
@@ -51,10 +54,10 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
     let total = [];
     for (const ass of assets) {
 
-      if (types.some(t => t === 'asset')) total = total.concat(ass.dice.filter(el =>
+      if (types.some(t => t === 'asset')) total = total.concat(ass?.dice?.filter(el =>
         el.amount >= subRotuine.challengeCost.value))
       else
-        total = total.concat(ass.dice.filter(el =>
+        total = total.concat(ass?.dice?.filter(el =>
           el.amount >= subRotuine.challengeCost.value &&
           types.some(t => el.type.toLowerCase() == t.toLowerCase())
         ))
@@ -105,7 +108,7 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
 
       <Tooltip
         label={subRotuine.contributed.map((asset, index) =>
-          <Tag style={{ backgroundColor: getFadedColor(asset.type.toLowerCase()) }} key={index} >{asset.name}</Tag>
+          <Tag key={index} >{asset?.name}</Tag>
         )}
         aria-label='a tooltip'
       >
@@ -117,16 +120,16 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
           {subRotuine.results.length == 0 && getRelevantDice(subRotuine.contributed, subRotuine.challengeCost.allowed).map((die, index2) => (
             <WrapItem key={index2} colSpan={4}>
               {/* <Dice alt asset={die} /> */}
-              <div key={die._id} >
+              <div key={die?._id} >
                 {<img
                   style={{
                     maxHeight: '30px',
-                    backgroundColor: getFadedColor(die.type),
+                    backgroundColor: getFadedColor(die?.type),
                     height: 'auto',
                     borderRadius: '5px',
                   }}
-                  src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'}
-                  alt={die.amount}
+                  src={die ? `/images/d${die?.amount}.png` : '/images/unknown.png'}
+                  alt={die?.amount}
                 />}
               </div>
             </WrapItem>
@@ -148,20 +151,20 @@ export const ActionIce = ({ subRotuine, action, index, loading, show, ice }) => 
 
       {<Grid templateColumns='repeat(5, 1fr)' gap={2}>
         {subRotuine.results.map((die, index2) => (
-          <WrapItem key={index2} colSpan={4} style={{ textAlign: 'center', backgroundColor: die.result >= subRotuine.challengeCost.value ? 'green' : 'red' }}>
+          <WrapItem key={index2} colSpan={4} style={{ textAlign: 'center', backgroundColor: die?.result >= subRotuine.challengeCost.value ? 'green' : 'red' }}>
             {/* <Dice alt asset={die} /> */}
             <div >
               {<img
                 style={{
                   maxHeight: '45px',
-                  backgroundColor: getFadedColor(die.type.toLowerCase()),
+                  backgroundColor: getFadedColor(die?.type.toLowerCase()),
                   height: 'auto',
                   borderRadius: '5px',
                 }}
                 src={die ? `/images/d${die.dieValue}.png` : '/images/unknown.png'}
-                alt={die.dieValue}
+                alt={die?.dieValue}
               />}
-              <h4>{die.result}</h4>
+              <h4>{die?.result}</h4>
             </div>
 
           </WrapItem>

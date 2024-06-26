@@ -22,11 +22,11 @@ const LogRecords = (props) => {
   }
 
   return (
-    <Box style={{ width: "100%" }}>
+    <Box  >
       <h4>{reports.length} Report{s}</h4>
       <Stepper index={reports.length} orientation='vertical' gap='0'>
         {reports.map(report =>
-          <div key={report._id}  >
+          <div style={{ width: "100%", }} key={report._id}  >
             {renderReport(report)}
           </div>
         )}

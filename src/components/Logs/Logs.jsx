@@ -64,15 +64,15 @@ const TransactionLog = props => {
   const icon = getIcon(report.transaction)
 
   return (
-    <Step style={{ width: "100%", backgroundColor: getFadedColor(report.transaction, 0.4) }} key={report._id}  >
+    <Step style={{ backgroundColor: getFadedColor(report.transaction, 0.2), width: '100%' }} key={report._id}  >
       <StepIndicator >
         <StepStatus
           complete={icon}
         />
       </StepIndicator>
 
-      <Box style={{ margin: "2px", padding: "5px", border: `2px solid ${getFadedColor(report.transaction)}` }}  >
-        <StepTitle>{report.transaction}</StepTitle>
+      <Box style={{ width: "100%", margin: "2px", padding: "5px", border: `2px solid ${getFadedColor(report.transaction)}` }}  >
+        <StepTitle >{report.transaction}</StepTitle>
         <StepDescription>
           <b>({getTime(report.createdAt)})</b>
           {report.counterparty && <p>{getEnglish(report)} {report.counterparty.name}</p>}
@@ -80,7 +80,7 @@ const TransactionLog = props => {
 
         </StepDescription>
 
-        <Flex>
+        <Flex >
           <ResourceNugget value={report.amount} type={report.resource} />
         </Flex>
 

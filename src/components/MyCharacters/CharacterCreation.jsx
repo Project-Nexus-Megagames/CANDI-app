@@ -121,7 +121,7 @@ const CharacterCreation = (props) => {
 
   const fetchData = async () => {
     setLoading(true)
-    const { data } = await axios.post(`${gameServer}api/blueprints/getInfo/`, { occupation: myCharacter.bio });
+    const { data } = await axios.post(`${gameServer}api/blueprints/getInfo/`, { occupation: myCharacter.bio, team: myTeam.name });
     console.log(data)
     setOccupations(data.occupations);
     setInheritences(data.inheritences);
@@ -173,6 +173,7 @@ const CharacterCreation = (props) => {
               <h3>Hello, and welcome to Goblin City!</h3>
               <b>The first thing you will be doing is creating a character, deciding their name, occupation, and inheritence. This will determine what your starting assets are.</b>
               <Button loading={loading} loadingText="Getting data..." onClick={() => fetchData()} >Let's get Started!</Button>
+
             </Box>}
 
             {activeStep === 1 && <Box>
@@ -243,7 +244,7 @@ const CharacterCreation = (props) => {
                 )}
               </Stack>
               <Button onClick={() => setActiveStep(activeStep - 1)} >Prev</Button>
-              <Button isDisabled={isDisabled} onClick={submitCreation} variant='solid' colorScheme='green' >Create Character!</Button>
+              <Button isDisabled={isDisabled || loading} onClick={submitCreation} variant='solid' colorScheme='green' >Create Character!</Button>
             </Box>}
           </Stack>
 

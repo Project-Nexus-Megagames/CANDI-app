@@ -10,11 +10,14 @@ import { Check, Close } from '@rsuite/icons';
 import { Button, ButtonGroup, HStack, Tag, Tooltip, VStack, Flex, Spacer, Wrap, Box } from '@chakra-ui/react';
 import NexusTag from './NexusTag';
 import InputNumber from './InputNumber';
+import { CandiModal } from './CandiModal';
+import NewContractForm from './NewContractForm';
 
 const Contract = (props) => {
   const { contract, show } = props;
   const { control, character, login } = useSelector(s => s.auth);
   const clock = useSelector(s => s.clock);
+  const loggedInUser = useSelector((state) => state.auth.user);
 
   const charAccount = useSelector(getCharAccount);
   const teamAccount = useSelector(getTeamAccount);
@@ -42,6 +45,29 @@ const Contract = (props) => {
     });
   }
 
+  const reset = () => {
+    const data = {
+      contract: contract._id,
+      account: account._id
+    }
+    setLoading(true)
+    socket.emit('request', { route: 'asset', action: 'contractReset', data }, (response) => {
+      console.log(response);
+      setLoading(false)
+      setMode(false)
+      setResources(contract.target.map(c => { return { type: c.type, value: 0 } }))
+    });
+  }
+
+  const editContract = (inc) => {
+    setLoading(true)
+    socket.emit('request', { route: 'asset', action: 'modify', data: { ...inc, loggedInUser } }, (response) => {
+      console.log(response);
+      setLoading(false)
+      setMode(false)
+    });
+  }
+
   const getContribtuedAmount = (type) => {
     const rawr = contract.contributed.find(el => el.type === type);
     if (rawr) return (rawr.value)
@@ -50,7 +76,6 @@ const Contract = (props) => {
 
   const getTag = (target) => {
     const contributed = getContribtuedAmount(target.type);
-    console.log(contributed, target.value);
     return target.value > contributed ?
       false :
       <Tag variant='solid' colorScheme='green'><Check />{"  "}</Tag>
@@ -85,7 +110,8 @@ const Contract = (props) => {
 
         {show && !isCompleted && <ButtonGroup style={{ marginTop: '10px' }}>
           <Button variant={'solid'} colorScheme='blue' size='sm' isLoading={loading} onClick={() => setMode(mode ? false : 'contribute')} >{mode ? 'Cancel' : 'Contribute'}</Button>
-          {/* {!mode && <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} isDisabled={isDisabled(contract)} onClick={() => submit(contract)} >Complete</Button>} */}
+          {!mode && control && <Button variant={'solid'} colorScheme='orange' size='sm' isLoading={loading} onClick={() => reset(contract)} >Reset</Button>}
+          {!mode && control && <Button variant={'solid'} colorScheme='yellow' size='sm' isLoading={loading} onClick={() => setMode('edit')} >Edit</Button>}
           {mode && <Button variant={'solid'} colorScheme='green' size='sm' isLoading={loading} onClick={() => contribute()} >Submit</Button>}
         </ButtonGroup>}
 
@@ -162,6 +188,9 @@ const Contract = (props) => {
 						</HStack>												
 			</VStack>} */}
 
+        <CandiModal open={mode === 'edit'} onClose={() => setMode(false)}  >
+          <NewContractForm contract={contract} statusDefault={["action"]} onClose={() => setMode(false)} handleCreate={editContract} />
+        </CandiModal>
 
       </Wrap>
     </Box>

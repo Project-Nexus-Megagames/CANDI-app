@@ -15,7 +15,7 @@ function getFadedColor(color, fade = 1) {
 
     case 'Main':
     case 'Normal':
-    case 'Misc':
+    case 'ice':
       return `#5b26b0`;
 
     case 'Craft':

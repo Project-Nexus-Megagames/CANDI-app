@@ -105,9 +105,9 @@ const IceForm = (props) => {
 
   async function onSubmit(data) {
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, options, name, description, code, imageUrl, id: ice?._id, action: action._id, });
+      props.handleSubmit({ ...data, options, name, description, code, imageUrl, id: ice?._id, action: action?._id, });
     } else {
-      const ice = { ...data, options, name, description, code, imageUrl, action: action._id, createBlue };
+      const ice = { ...data, options, name, description, code, imageUrl, action: action?._id, createBlue };
       const response = await axios.post(`${gameServer}api/ice/createIce`, { ice })
       console.log(response)
       // socket.emit('request', {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { setCharacter, signOut } from '../../redux/entities/auth';
+import { setCharacter, setTeam, signOut } from '../../redux/entities/auth';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
 import { Box, Button, ButtonGroup, Container, Divider, Flex, IconButton, Input, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Progress, VStack } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
@@ -32,6 +32,7 @@ const Navigation = (props) => {
   const [selectedChar, setSelectedChar] = React.useState(myChar._id);
   const currentCharacter = useSelector(getCharacterById(selectedChar));
   const allCharacters = useSelector(state => state.characters.list);
+  const teams = useSelector(state => state.teams.list);
   const loading = useSelector(s => s.gamestate.loading)
   const { isControl } = usePermissions();
   const gamestate = useSelector(state => state.gamestate)
@@ -54,6 +55,8 @@ const Navigation = (props) => {
 
   useEffect(() => {
     reduxAction(setCharacter(currentCharacter));
+    const myTeam = currentCharacter ? teams.find((el) => el.characters.some((user) => user._id == currentCharacter._id)) : false;
+    if (myTeam) reduxAction(setTeam(myTeam));
   }, [currentCharacter]);
 
   useEffect(() => { //equivalent of comonentDidMount

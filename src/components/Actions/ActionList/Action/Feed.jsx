@@ -65,7 +65,7 @@ function Feed({ action }) {
     // }
 
     setFeed(list)
-  }, [action.comments, action.results, action.effects, action.submissions,]);
+  }, [action.comments, action.results, action.effects, action.submissions, action.contracts]);
 
   function sortThisIn(incoming, targetArray) {
     let index = 0

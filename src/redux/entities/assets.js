@@ -71,8 +71,9 @@ export const getMyUsedAssets = createSelector(
 export const getMyUnusedAssets = createSelector(
   (state) => state.assets.list,
   state => state.auth.myCharacter,
-  (assets, char) => assets.filter((asset) =>
-    (asset.account === char.account || asset.sharedWith.some(c => c._id === char._id)) &&
+  state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
+  (assets, char, team) => assets.filter((asset) =>
+    (asset.account === char.account || asset.sharedWith.some(c => c._id === char._id) || asset.account === team?._id) && !asset.tags.some(s => s === 'contract') &&
     !asset.status.some(s => s === 'used')
   )
 );

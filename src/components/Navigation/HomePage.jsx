@@ -62,37 +62,37 @@ const HomePage = (props) => {
       {loadComplete && myCharacter &&
         <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>
 
-
           <GridItem colSpan={columns == 1 ? 3 : 2}>
-            <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
+            <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Private and Shared Actions" />
           </GridItem>
 
-          <GridItem colSpan={columns == 1 ? 3 : 2}>
-            <ImgPanel img={actions} to="actions" title="~ Actions ~" body="Private Actions" />
-          </GridItem>
-
-          <GridItem colSpan={columns == 1 ? 3 : 2}>
+          {/* <GridItem colSpan={columns == 1 ? 3 : 2}>
             <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Public Actions" />
-          </GridItem>
-
-
-          <GridItem colSpan={columns == 1 ? 2 : 3} >
-            <ImgPanel new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
-          </GridItem>
-
-
-
-          <GridItem colSpan={columns == 1 ? 2 : 3} >
-            <ImgPanel img={map} to="locations" title="~ Locations ~" body="Where am I" />
-          </GridItem>
+          </GridItem> */}
 
           <GridItem colSpan={columns == 1 ? 3 : 2}>
             <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
           </GridItem>
 
+
+          <GridItem colSpan={columns == 1 ? 2 : 2} >
+            <ImgPanel new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />
+          </GridItem>
+
+
+
+          {/* <GridItem colSpan={columns == 1 ? 2 : 3} >
+            <ImgPanel img={map} to="locations" title="~ Locations ~" body="Where am I" />
+          </GridItem> */}
+
+
           {team && <GridItem colSpan={3}>
-            <ImgPanel img={other} to="team" title={'~ My Team ~'} body="teeeaam" />
+            <ImgPanel img={`/images/team/${team.name}.png`} to="team" title={`~ ${team.name} ~`} body="My Team's Assets and Resources" />
           </GridItem>}
+
+          <GridItem colSpan={columns == 1 ? 3 : 3}>
+            <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
+          </GridItem>
 
 
           {/* <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>

@@ -176,6 +176,8 @@ const Trade = (props) => {
   const initiatorTeam = getThisTeamFromAccount(accounts, teams, selectedTrade?.initiator.account);
   const partnerTeam = getThisTeamFromAccount(accounts, teams, selectedTrade?.tradePartner.account);
 
+  const isPrimary = myCharacter.account === selectedTrade?.initiator.account || myCharacter.account === selectedTrade?.tradePartner.account
+
   return (
     <div>
       <Grid
@@ -270,7 +272,7 @@ const Trade = (props) => {
           {selectedTrade && <div>
             <Box >
               <ButtonGroup isAttached>
-                {selectedTrade && !selectedTrade.status.some(el => el === 'completed') && <Button variant={'solid'} colorScheme={'red'} size='sm' leftIcon={<Trash />} onClick={() => setMode('trash')}>Trash Trade</Button>}
+                {selectedTrade && !selectedTrade.status.some(el => el === 'completed') && <Button isDisabled={!isPrimary} variant={'solid'} colorScheme={'red'} size='sm' leftIcon={<Trash />} onClick={() => setMode('trash')}>Trash Trade</Button>}
                 {selectedTrade && <Button colorScheme={'blue'} size='sm' rightIcon={<BsXCircle />} variant={'solid'} onClick={() => setSelectedTrade(null)}>Close Trade</Button>}
               </ButtonGroup>
 

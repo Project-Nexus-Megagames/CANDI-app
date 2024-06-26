@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, ButtonGroup, CloseButton, Divider, Flex, IconButton, Input, InputGroup, Spacer, Stack, Text } from '@chakra-ui/react'
 import SelectPicker from './SelectPicker';
 import socket from '../../socket';
@@ -8,22 +8,41 @@ import InputNumber from './InputNumber';
 import NexusTag from './NexusTag';
 
 const NewContractForm = (props) => {
-  const [selectedAccount, setselectedAccount] = React.useState(false);
+  const [selectedAccount, setselectedAccount] = React.useState(props.contract?.account || false);
   const [payoutAccount, setpayoutAccount] = React.useState(undefined);
 
-  const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
+  const [name, setName] = React.useState(props.contract?.name || '');
+  const [description, setDescription] = React.useState(props.contract?.description || '');
   const [hours, setHours] = React.useState(0);
 
   const [rewards, setRewards] = React.useState([]);
   const [target, setTarget] = React.useState([]);
-  const [consequence, setConsequence] = React.useState([]);
-  const [status, setStatus] = React.useState(props.statusDefault);
+  const [consequence, setConsequence] = React.useState(props.contract?.consequence || []);
+  const [status, setStatus] = React.useState(props.contract?.status || props.statusDefault);
+
   const accounts = useSelector(s => s.accounts.list);
-  const blueprints = useSelector(s => s.blueprints.list);
   const gameconfig = useSelector(s => s.gameConfig);
 
   const fullStatus = ["tradable", "working", 'auto']
+
+  useEffect(() => {
+    if (props.contract) {
+      console.log(props.contract)
+
+      let temp = []
+      let rewards = []
+      for (const ass of props.contract.target) {
+        temp.push({ value: ass.value, type: ass.type })
+      }
+      setTarget(temp);
+
+      for (const ass of props.contract.rewards) {
+        rewards.push({ value: ass.value, type: ass.type })
+      }
+      setRewards(rewards);
+
+    }
+  }, [props.contract]);
 
   const handleStatus = (tag) => {
     if (status.some(el => el === tag)) setStatus(status.filter(s => s !== tag))
@@ -88,16 +107,19 @@ const NewContractForm = (props) => {
 
   const handleCreate = () => {
     if (props.handleCreate) props.handleCreate({
-      owner: selectedAccount,
-      account: selectedAccount,
-      payoutAccount,
-      name,
-      description,
-      hours,
-      rewards,
-      consequence,
-      target,
-      status
+      asset: {
+        _id: props.contract?._id,
+        owner: selectedAccount,
+        account: selectedAccount,
+        payoutAccount,
+        name,
+        description,
+        hours,
+        rewards,
+        consequence,
+        target,
+        status
+      }
     })
     else socket.emit('request', {
       route: 'asset', action: 'newContract',
@@ -165,7 +187,7 @@ const NewContractForm = (props) => {
         {rewards.map((reward, index) => (
           <InputGroup key={reward._id} index={index}>
             <SelectPicker label='type' valueKey='type' data={gameconfig.resourceTypes} value={reward.type} onChange={(event) => { editState(event, index, 'reward'); }} />
-            <InputNumber prefix='value' style={{ width: 200 }} value={reward.value} min={0} onChange={(event) => editState(parseInt(event), index, 'reward')}></InputNumber>
+            <InputNumber prefix='value' style={{ width: 200 }} value={reward.value.toString()} min={0} onChange={(event) => editState(parseInt(event), index, 'reward')}></InputNumber>
             <IconButton variant={'outline'} onClick={() => removeElement(index, 'reward')} colorScheme='red' size="sm" icon={<CloseButton />} />
           </InputGroup>
         ))}
@@ -176,7 +198,7 @@ const NewContractForm = (props) => {
         {target.map((target, index) => (
           <InputGroup key={target._id} index={index}>
             <SelectPicker cleanable={false} label='type' valueKey='type' data={gameconfig.resourceTypes} value={target.type} onChange={(event) => { editState(event, index, 'target'); }} />
-            <InputNumber prefix='value' style={{ width: 150 }} value={target.value} min={0} onChange={(event) => editState(parseInt(event), index, 'target')}></InputNumber>
+            <InputNumber prefix='value' style={{ width: 150 }} defaultValue={target.value.toString()} value={target.value.toString()} min={0} onChange={(event) => editState(parseInt(event), index, 'target')}></InputNumber>
             <IconButton variant={'outline'} onClick={() => removeElement(index, 'target')} colorScheme='red' size="sm" icon={<Close />} />
           </InputGroup>
         ))}
