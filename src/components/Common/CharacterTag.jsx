@@ -12,10 +12,10 @@ const CharacterTag = ({ isDisabled, isAccessible, onClick, character }) => {
   const teams = useSelector(s => s.teams.list);
   const characters = useSelector(state => state.characters.list);
 
-  const thisCharacter = characters.find(el =>
+  const thisCharacter = characters?.find(el =>
     el._id === character ||
-    el._id === character._id ||
-    el.account === character._id ||
+    el._id === character?._id ||
+    el.account === character?._id ||
     el.account === character
   )
 

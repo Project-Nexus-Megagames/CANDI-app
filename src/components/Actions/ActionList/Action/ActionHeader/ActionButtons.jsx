@@ -2,7 +2,7 @@ import React from "react";
 import usePermissions from "../../../../../hooks/usePermissions";
 import { useSelector } from "react-redux";
 import { Box, Button, ButtonGroup, Icon, IconButton, Tooltip, useBreakpointValue } from "@chakra-ui/react";
-import { HiPencilAlt, HiSave, HiTrash, HiSpeakerphone  } from 'react-icons/hi';
+import { HiPencilAlt, HiSave, HiTrash, HiSpeakerphone } from 'react-icons/hi';
 import socket from "../../../../../socket";
 import { CandiWarning } from "../../../../Common/CandiWarning";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
@@ -16,7 +16,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
   const buttonDirection = useBreakpointValue({ base: 'column', md: 'row' });
   const buttonSpacing = useBreakpointValue({ base: 0, md: '0.5rem' });
 
-  const isAccessible = characterId === creator._id || isControl;
+  const isAccessible = characterId === creator?._id || isControl;
   const isDisabled = (game.status !== 'Active' || game.round > action.round) && !isControl;
   const isPublishable = (action.tags?.some((tag) => tag !== 'Published') || !action.tags?.length > 0)
     && action.type === 'Agenda';
@@ -47,7 +47,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
                   e.stopPropagation();
                 }}
                 backgroundColor="green"
-                icon={<Icon as={HiSpeakerphone } />}
+                icon={<Icon as={HiSpeakerphone} />}
                 marginTop='0.25rem'
                 aria-label={'Publish Action'}
               />

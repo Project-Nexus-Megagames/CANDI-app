@@ -43,7 +43,7 @@ const Navigation = (props) => {
   const [seconds, setSeconds] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [open, setOpen] = React.useState(false);
-  const max = 900;
+  const max = 35 * 60;
 
   useEffect(() => {
     renderTime();

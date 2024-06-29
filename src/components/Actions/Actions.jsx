@@ -110,7 +110,7 @@ const Actions = (props) => {
       <GridItem overflow='auto' pl='2' bg='#0f131a' area={'main'} style={{ height: 'calc(100vh - 95px)', overflow: 'auto', }} >
         {showNewActionModal &&
           <Box>
-            <Center>
+            {/* <Center>
               <ButtonGroup isAttached>
                 {props.actionType}
                 {gameConfig &&
@@ -129,7 +129,7 @@ const Actions = (props) => {
                     </Tooltip>
                   ))}
               </ButtonGroup>
-            </Center>
+            </Center> */}
             <NewAction closeNew={() => setShowNewActionModal(false)} actionType={actionType} />
           </Box>
         }

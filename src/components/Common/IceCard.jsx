@@ -7,12 +7,12 @@ import NexusTag from './NexusTag';
 import AssetForm from './AssetForm';
 import { useSelector } from 'react-redux';
 import { CandiModal } from './CandiModal';
-import { BsPencil } from 'react-icons/bs';
+import { Bs0Circle, BsPencil } from 'react-icons/bs';
 import { Close, Trash } from '@rsuite/icons';
 import CountDownTag from './CountDownTag';
 import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import CharacterNugget from './CharacterNugget';
-import { FaHandshake } from 'react-icons/fa';
+import { FaHandshake, FaSkullCrossbones } from 'react-icons/fa';
 import { AddCharacter } from './AddCharacter';
 import { CloseIcon } from '@chakra-ui/icons';
 import ResourceNugget from './ResourceNugget';
@@ -31,6 +31,22 @@ const IceCard = (props) => {
     socket.emit('request', {
       route: 'ice',
       action: 'delete',
+      data: { id: ice._id }
+    });
+  };
+
+  const resetIce = async () => {
+    socket.emit('request', {
+      route: 'ice',
+      action: 'reset',
+      data: { id: ice._id }
+    });
+  };
+
+  const punishIce = async () => {
+    socket.emit('request', {
+      route: 'ice',
+      action: 'punish',
       data: { id: ice._id }
     });
   };
@@ -81,6 +97,8 @@ const IceCard = (props) => {
 
                 {control && showButtons && <ButtonGroup isAttached>
                   <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
+                  <IconButton variant={'ghost'} onClick={() => setMode("reset")} colorScheme="yellow" size={'sm'} icon={<Bs0Circle />} />
+                  <IconButton variant={'ghost'} onClick={() => setMode("consequence")} colorScheme="red" size={'sm'} icon={<FaSkullCrossbones />} />
                   <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
                 </ButtonGroup>}
 
@@ -117,8 +135,16 @@ const IceCard = (props) => {
 
         </Card>
 
+        {ice && <CandiWarning open={mode === 'consequence'} title={`Consequence "${ice.name}"?`} onClose={() => setMode(false)} handleAccept={() => punishIce()}>
+          This will punish the team
+        </CandiWarning>}
+
         {ice && <CandiWarning open={mode === 'delete'} title={`Delete "${ice.name}"?`} onClose={() => setMode(false)} handleAccept={() => deleteAssert()}>
           This can never be undone.
+        </CandiWarning>}
+
+        {ice && <CandiWarning open={mode === 'reset'} title={`Reset "${ice.name}"?`} onClose={() => setMode(false)} handleAccept={() => resetIce()}>
+          This will reset the dice results and contributed Assets
         </CandiWarning>}
 
         <CandiModal onClose={() => { setMode(false); }} open={mode === "modify"} title={`${mode} Ice`}>

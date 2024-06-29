@@ -50,14 +50,14 @@ function ActionList({ actions, handleSelect, selected, controlMode }) {
   };
 
   const sortedActions = (actions) => {
-    if (controlMode) return actions.filter(el => el.control == myCharacter._id && el.type !== 'Agenda')
+    if (controlMode) return actions.filter(el => el.control?._id == myCharacter._id)
     return actions
       .sort((a, b) => {
         // sort the catagories alphabetically
-        if (a.creator.characterName < b.creator.characterName) {
+        if (a.creator?.characterName < b.creator?.characterName) {
           return -1;
         }
-        if (a.creator.characterName > b.creator.characterName) {
+        if (a.creator?.characterName > b.creator?.characterName) {
           return 1;
         }
         return 0;

@@ -28,7 +28,7 @@ const AssetForm = (props) => {
   const [imageURL, setImageURL] = useState('');
   const [blueprint, setBlueprint] = useState(false);
   const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
-  const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
+  const [status, setStatus] = useState(asset && asset?.status ? asset?.status : []);
   const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
   const [resources, setResources] = React.useState((asset && asset.resource) ? [...asset.resources] : []);
   const [account, setAccount] = React.useState((asset && asset.account) ? (asset.account) :
@@ -166,7 +166,7 @@ const AssetForm = (props) => {
         data: { asset, imageURL, loggedInUser }
       });
     }
-    props.closeModal();
+    if (props.closeModal) props.closeModal();
   }
 
   const handleError = (errors) => {

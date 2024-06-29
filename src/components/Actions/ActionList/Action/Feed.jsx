@@ -227,6 +227,7 @@ function Feed({ action }) {
         <IceForm
           mode={mode}
           action={action}
+          closeModal={closeIt}
           handleSubmit={(data) => {
             socket.emit('request', {
               route: 'ice',

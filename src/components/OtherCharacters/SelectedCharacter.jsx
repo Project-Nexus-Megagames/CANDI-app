@@ -32,18 +32,18 @@ const SelectedCharacter = (props) => {
       let board = `${character.email}`;
       let array = [...character.control];
 
-      for (const controller of myCharacter.control) {
-        if (!array.some((el) => el === controller)) {
-          array.push(controller);
+      for (const control of myCharacter.control) {
+        if (!array.some((el) => el === control)) {
+          array.push(control);
         }
       }
 
-      for (const controller of array) {
-        const character = characters.find((el) => el.characterName === controller);
+      for (const control of array) {
+        const character = characters.find((el) => el.characterName === control);
         if (character) {
           board = board.concat(`; ${character.email}`);
-        } else console.log(`${controller} could not be added to clipboard`);
-        // Alert.error(`${controller} could not be added to clipboard`, 6000);
+        } else console.log(`${control} could not be added to clipboard`);
+        // Alert.error(`${control} could not be added to clipboard`, 6000);
       }
 
       navigator.clipboard.writeText(board);

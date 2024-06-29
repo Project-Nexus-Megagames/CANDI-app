@@ -91,7 +91,7 @@ function ActionDifficulty({ action, submission }) {
         <Button onClick={handleDifficulty} >Submit {prob}% </Button>
       </Center>}
 
-      {action.type !== 'Agenda' && myCharacter?._id === action.creator._id && <VStack>
+      {action.type !== 'Agenda' && myCharacter?._id === action.creator?._id && <VStack>
         <Code colorScheme={prob > 80 ? 'green' : prob > 40 ? 'yellow' : 'red'}>{`${prob}% Chance of success`}</Code>
         <Tooltip
           label={"This will roll all dice submitted for this action"}
@@ -100,7 +100,7 @@ function ActionDifficulty({ action, submission }) {
           <Button isDisabled={submission.difficulty <= 0} onClick={handleRoll} variant={'solid'} color={'green'} >ROLL THEM DICE</Button>
         </Tooltip>
       </VStack>}
-      {action.type !== 'Agenda' && myCharacter?._id !== action.creator._id && submission.difficulty > 0 && <b>Only the Action creator can roll</b>}
+      {action.type !== 'Agenda' && myCharacter?._id !== action.creator?._id && submission.difficulty > 0 && <b>Only the Action creator can roll</b>}
       <DiceList assets={allAssets()} type='all' />
     </Box>
   );

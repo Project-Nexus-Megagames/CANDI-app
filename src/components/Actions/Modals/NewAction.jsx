@@ -162,7 +162,7 @@ const NewAction = (props) => {
 
   return (
     <div>
-      <h4>New {actionType.type} Action</h4>
+      <h4>New {actionType.type}</h4>
       <br />
       <form>
         {actionType.collab && <Box>

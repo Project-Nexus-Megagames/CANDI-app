@@ -65,7 +65,7 @@ const url = `${gameServer}api/assets`;
 export const getMyUsedAssets = createSelector(
   (state) => state.assets.list,
   state => state.auth.myCharacter,
-  (assets, char) => assets.filter((asset) => (asset.account === char.account || asset.sharedWith.some(char => char._id === char._id)) && asset.status.some(s => s === 'used') && asset.uses <= 0)
+  (assets, char) => assets.filter((asset) => (asset.account === char.account || asset.sharedWith.some(char => char._id === char._id)) && asset?.status.some(s => s === 'used') && asset.uses <= 0)
 );
 
 export const getMyUnusedAssets = createSelector(
@@ -74,7 +74,7 @@ export const getMyUnusedAssets = createSelector(
   state => state.accounts.list.find(el => el.name === `${state.auth?.team.name}'s Account`),
   (assets, char, team) => assets.filter((asset) =>
     (asset.account === char.account || asset.sharedWith.some(c => c._id === char._id) || asset.account === team?._id) && !asset.tags.some(s => s === 'contract') &&
-    !asset.status.some(s => s === 'used')
+    !asset?.status.some(s => s === 'used')
   )
 );
 
@@ -149,14 +149,14 @@ export const getTeamContracts = createSelector(
 export const getPublicContracts = createSelector(
   state => state.assets.list.filter(el => el.account),
   (assets) => assets.filter(
-    asset => (asset.status.some(tag => tag === 'public') && asset.tags.some(tag => tag === 'contract'))
+    asset => (asset?.status.some(tag => tag === 'public') && asset.tags.some(tag => tag === 'contract'))
   )
 );
 
 export const getLocationContracts = createSelector(
   state => state.assets.list.filter(el => el.location),
   (assets) => assets.filter(
-    asset => (asset.status.some(tag => tag === 'public') && asset.tags.some(tag => tag === 'contract'))
+    asset => (asset?.status.some(tag => tag === 'public') && asset.tags.some(tag => tag === 'contract'))
   )
 );
 

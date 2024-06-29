@@ -78,7 +78,7 @@ const AssetCard = (props) => {
                         {control && showButtons && <div>
                           <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'xs'} icon={<BsPencil />} />
                           <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'xs'} icon={<Trash />} />
-                          <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => damageAsset()} colorScheme="red" size={'xs'} icon={<FaBreadSlice />} />
+                          <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => damageAsset()} colorScheme="red" size={'xs'} icon={<img width='20px' src={`/images/damaged.png`} />} />
                         </div>}
 
                       </ButtonGroup>

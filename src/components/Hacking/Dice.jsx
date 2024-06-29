@@ -5,7 +5,7 @@ import { getFadedColor } from '../../scripts/frontend';
 
 const Dice = ({ entered, asset, alt }) => {
 
-  if (asset.status && asset.status.some(el => el === 'working'))
+  if (asset?.status && asset?.status.some(el => el === 'working'))
     return (
       <div style={{ cursor: 'not-allowed' }} >
         <Flex justify="space-around" align='middle'>
@@ -41,7 +41,7 @@ const Dice = ({ entered, asset, alt }) => {
           <b>{asset.name}</b>
         </Box>}
 
-        {asset.status && asset.status.map((status, index) => (
+        {asset?.status && asset?.status.map((status, index) => (
           <p index={index}>{status}</p>
         ))}
       </Flex>

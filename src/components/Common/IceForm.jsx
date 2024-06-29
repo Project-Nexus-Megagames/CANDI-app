@@ -24,6 +24,7 @@ const IceForm = (props) => {
   const characters = props.characters || useSelector((state) => state.characters.list);
 
   const [imageUrl, setImageURL] = useState(ice?.imageUrl || '');
+  const [consequences, setConsequences] = useState(false);
   const [template, setTemplate] = useState(false);
   const [createBlue, setCreateBlue] = useState(false);
   const [add, setAdd] = useState(-1);
@@ -70,6 +71,7 @@ const IceForm = (props) => {
       setName(blue.name);
       setCode(blue.code);
       setImageURL(blue.imageUrl);
+      setConsequences(blue.consequences);
     }
   }, [template]);
 
@@ -105,8 +107,9 @@ const IceForm = (props) => {
   }
 
   async function onSubmit(data) {
+    console.log(consequences)
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, options, name, description, code, imageUrl, id: ice?._id, action: action?._id, getTeamAccount: team.account });
+      props.handleSubmit({ ...data, options, name, description, code, imageUrl, id: ice?._id, action: action?._id, getTeamAccount: team.account, consequences: consequences });
     } else {
       const ice = { ...data, options, name, description, code, imageUrl, action: action?._id, createBlue };
       const response = await axios.post(`${gameServer}api/ice/createIce`, { ice })
