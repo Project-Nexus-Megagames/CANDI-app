@@ -7,7 +7,7 @@ import { assetAdded, assetDeleted, assetUpdated } from './entities/assets';
 import { teamUpdated } from './entities/teams';
 import { gamestateReceived } from './entities/gamestate';
 import { facilityUpdated } from './entities/facilities';
-import { iceUpdated } from './entities/ice';
+import { iceDeleted, iceUpdated } from './entities/ice';
 import { actionLogUpdated } from './entities/actionLogs';
 import { accountUpdated } from './entities/accounts';
 // import { marketUpdated } from './entities/markets';
@@ -126,6 +126,10 @@ const initUpdates = () => {
           break;
         case 'Article':
           store.dispatch(articleDeleted(el));
+          break;
+        case 'ice':
+        case 'Ice':
+          store.dispatch(iceDeleted(el));
           break;
         default:
           console.log(`Unable to deleteClients Redux element for ${el.model}: ${el._id}`);
