@@ -124,7 +124,7 @@ const App = (props) => {
           case 'error':
             // Alert.error(data.message, 6000);
             if (!toast.isActive(data.type)) toast({
-              position: "top-right",
+              position: "bottom-right",
               isClosable: true,
               status: data.type,
               duration: 5000,
@@ -135,7 +135,7 @@ const App = (props) => {
             break;
           case "article":
             toast({
-              position: "top-right",
+              position: "bottom-right",
               isClosable: true,
               duration: 7000,
               render: () => <ArticleAlert data={data.data} />,
@@ -157,7 +157,7 @@ const App = (props) => {
         }
       }
     });
-  }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
+  }, []);
 
   const quack = () => {
     const audio = new Audio("/alert.mp3");

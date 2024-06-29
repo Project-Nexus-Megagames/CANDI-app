@@ -240,12 +240,12 @@ const NewEffects = (props) => {
     { type: 'new', color: 'green', name: 'New Asset' },
     { type: 'asset', color: 'green', name: 'Edit Asset' },
     // { type: 'character', color: 'orange', name: 'Edit Character Contacts', disabled: true },
-    { type: 'newLocation', color: 'blue', name: 'New Location' },
-    { type: 'locationStats', color: 'blue', name: 'Edit Location Stats', },
-    { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location', },
+    // { type: 'newLocation', color: 'blue', name: 'New Location' },
+    // { type: 'locationStats', color: 'blue', name: 'Edit Location Stats', },
+    // { type: 'unlockMapTile', color: 'blue', name: 'Unlock Location', },
     { type: 'awardResources', color: 'yellow', name: 'Award Resources', },
-    // { type: 'addInjury', color: 'green', name: 'addInjury' },
-    { type: 'spawn', color: 'red', name: 'Spawn Challenge', },
+    { type: 'addInjury', color: 'green', name: 'addInjury' },
+    // { type: 'spawn', color: 'red', name: 'Spawn Challenge', },
   ]
 
   return (
@@ -359,6 +359,33 @@ const NewEffects = (props) => {
           {type === 'newLocation' && <LocationForm mode='new' character={myChar} action={props.selected._id} coords={selectedLocation} closeModal={() => { setType(false); }} />}
 
           {type === 'awardResources' && <ResourceEffect loggedInUser={loggedInUser} myChar={myChar} characters={[...props.selected.collaborators, props.selected.creator]} action={props.selected._id} />}
+
+          {type === 'addInjury' && selected && (
+            <div>
+              <div>Title:</div>
+              <Input
+                onChange={(e) => handleAddInjury('name', e.target.value)}
+                style={{ marginBottom: ' 10px' }}
+              ></Input>
+              {!selected.permanent && (
+                <div>
+                  Duration:
+                  <InputNumber
+                    min={0}
+                    onChange={(e) => handleAddInjury('duration', e)}
+                    style={{ marginBottom: ' 10px' }}
+                  />
+                </div>
+              )}
+              <Button
+                disabled={type === ''}
+                onClick={() => handleSubmit(selected)}
+                variant="solid"
+              >
+                Submit
+              </Button>
+            </div>
+          )}
 
         </ModalBody>
 

@@ -44,8 +44,6 @@ function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
   }
 
   const renderAsset = (assetID) => {
-    console.log("ScottY: ", assetID)
-    console.log(assetID?._id)
     const retrievedAsset = getAsset(assetID);
     let inner;
     if (assetID && assetID._id !== undefined) {

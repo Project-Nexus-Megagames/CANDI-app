@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Center, Divider, Flex, IconButton, Spacer, StatDownArrow, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Button, Center, Divider, IconButton, Spacer, StatDownArrow } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import WordDivider from "../../../Common/WordDivider";
 import NewResult from "../../Modals/NewResult";
@@ -11,24 +11,17 @@ import { PlusSquareIcon } from "@chakra-ui/icons";
 import { CandiModal } from "../../../Common/CandiModal";
 import NewContractForm from "../../../Common/NewContractForm";
 import socket from "../../../../socket";
-import Server from "../../../Team/Server";
 import ActionForm from "../../Forms/ActionForm";
-import { getIce } from "../../../../redux/entities/blueprints";
-import Ice from "../../../Team/Ice";
-import { ActionIce } from "./ActionIce";
 import IceForm from "../../../Common/IceForm";
 import { getTeamAccount } from "../../../../redux/entities/accounts";
 
 function Feed({ action }) {
   const gamestate = useSelector(state => state.gamestate);
-  const facilities = useSelector(state => state.facilities.list);
   const myCharacter = useSelector(state => state.auth.myCharacter);
   const teamAccount = useSelector(getTeamAccount);
 
-  const iceBlueprints = useSelector(getIce);
   const { isControl } = usePermissions();
   const isCollaborator = action.collaborators.some(el => el._id === myCharacter._id)
-  const roundActive = gamestate.status === 'Active';
 
   const [mode, setMode] = React.useState(false);
   const [feed, setFeed] = React.useState([]);

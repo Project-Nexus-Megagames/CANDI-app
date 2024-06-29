@@ -1,6 +1,4 @@
 import { Box, Text } from "@chakra-ui/react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import React from "react";
 import WordDivider from "../../../Common/WordDivider";
 import { getFadedColor } from "../../../../scripts/frontend";
@@ -11,6 +9,7 @@ function ActionMarkdown({ header, markdown, tooltip, edit, handleEdit, data, tex
       {header && <WordDivider
         word={header}
         tooltip={tooltip}
+        minWidth={'80vw'}
       />}
       <Box
         //maxHeight={'20vh'}

@@ -71,7 +71,7 @@ const HomePage = (props) => {
           </GridItem> */}
 
           <GridItem colSpan={columns == 1 ? 3 : 2}>
-            <ImgPanel img={myCharacter.profilePicture} to="character" title="~ My Character ~" body="My Assets and Traits" />
+            <ImgPanel img={other} to="character" title="~ My Character ~" body="My Assets and Traits" />
           </GridItem>
 
 

@@ -22,6 +22,7 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
   const [name, setName] = useState(action.name);
   const [description, setDescription] = useState(action.submission.description);
   const [intent, setIntent] = useState(action.submission.intent);
+  const [how, setHow] = useState(action.submission.how);
   const [choiceType, setChoiceType] = React.useState('binary');
 
   const isUnpublishedAgenda = (action.tags.some((tag) => tag.toLowerCase() !== 'published') || !action.tags.length > 0) && action.type.toLowerCase() === 'agenda';
@@ -51,7 +52,8 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
       submission: {
         assets: data0.assets,
         description: data0.description,
-        intent: intent,
+        how: data0.how,
+        intent: data0.intent,
         facility: data0.facility,
         //location: data0.destination ? data0.destination : undefined,
       },
@@ -73,6 +75,9 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
         break;
       case 'description':
         setDescription(incoming)
+        break;
+      case 'how':
+        setHow(incoming)
         break;
       case 'submit':
         handleSubmit()
@@ -125,21 +130,36 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
             {mode !== 'edit' && <Box>
 
               <ActionMarkdown
-                header='Description'
-                tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
+                header='What are you doing?'
                 markdown={action.submission.description}
                 data={description}
                 handleEdit={handleEdit}
                 edit={false}
               />
 
-              {action.location && <ActionMarkdown
+              <ActionMarkdown
+                header='How are you able to accomplish this action?'
+                markdown={action.submission.how}
+                data={how}
+                handleEdit={handleEdit}
+                edit={false}
+              />
+
+              <ActionMarkdown
+                header='What do you want to gain from this action?'
+                markdown={action.submission.intent}
+                data={intent}
+                handleEdit={handleEdit}
+                edit={false}
+              />
+
+              {/* {action.location && <ActionMarkdown
                 header='Location'
                 tooltip='Where this action takes place'
                 textAlign='center'
                 markdown={action.location.name}
                 edit={false}
-              />}
+              />} */}
 
               {actionType.type !== 'Agenda' && actionType.maxAssets > 0 && <ActionResources
                 actionType={actionType}

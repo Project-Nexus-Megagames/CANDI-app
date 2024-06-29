@@ -31,9 +31,8 @@ import {
 import { getDateString } from "../../scripts/dateTime";
 import { getMyCharacter } from "../../redux/entities/characters";
 import socket from "../../socket";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { IoTrashBin } from "react-icons/io5";
+import MDEditor from "@uiw/react-md-editor";
 
 const ViewArticle = (props) => {
   const [newComment, setNewComment] = useState("");
@@ -120,7 +119,7 @@ const ViewArticle = (props) => {
               <Divider />
               <VStack>{article?.imageURL && <Image src={article?.imageURL} maxW='960px' />}</VStack>
 
-              <ReactMarkdown children={article?.body} remarkPlugins={[remarkGfm]}></ReactMarkdown>
+              <MDEditor.Markdown source={article?.body} style={{ backgroundColor: '#1a1d24', color: 'white', padding: '5px 10px 10px 5px' }} />
 
               <Divider orientation='horizontal' />
               <Textarea value={newComment} componentClass='textarea' placeholder='Leave a Comment!' rows={3} onChange={(e) => setNewComment(e.target.value)} />

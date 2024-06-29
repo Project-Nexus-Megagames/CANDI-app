@@ -9,15 +9,19 @@ import SelectPicker from './SelectPicker';
 import socket from '../../socket';
 import InputNumber from './InputNumber';
 import { Plus } from '@rsuite/icons';
-import { getCharAccount } from '../../redux/entities/accounts';
+import { getTeamAccounts } from '../../redux/entities/accounts';
 import CharacterTag from './CharacterTag';
 import { AddCharacter } from './AddCharacter';
 import TeamAvatar from './TeamAvatar';
+import { AddAccount } from './AddAccount';
+import { AddTeam } from './AddTeam';
 
 const AssetForm = (props) => {
-  const { asset, character, mode, teamAccount, team } = props;
+  const { asset, character, mode, teamAccount } = props;
   const loggedInUser = useSelector((state) => state.auth.user);
+  const teams = useSelector((state) => state.teams.list);
   const blueprints = useSelector((state) => state.blueprints.list);
+  const accounts = useSelector((state) => state.accounts.list);
   const gameConfig = useSelector((state) => state.gameConfig);
   const characters = props.characters || useSelector((state) => state.characters.list);
 
@@ -26,8 +30,8 @@ const AssetForm = (props) => {
   const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
   const [status, setStatus] = useState(asset && asset.status ? asset.status : []);
   const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
-  const [resources, setResources] = React.useState(asset ? [...asset.resources] : []);
-  const [account, setAccount] = React.useState(asset ? (asset.account) :
+  const [resources, setResources] = React.useState((asset && asset.resource) ? [...asset.resources] : []);
+  const [account, setAccount] = React.useState((asset && asset.account) ? (asset.account) :
     character ? character.account :
       teamAccount ? teamAccount : false);
 
@@ -48,9 +52,16 @@ const AssetForm = (props) => {
         temp.push({ amount: ass.amount, type: ass.type })
       }
       setDice(temp);
-      setAccount(asset.account)
+      setAccount(asset?.account)
     }
   }, [asset]);
+
+  useEffect(() => {
+    if (account) {
+      console.log(account)
+    }
+  }, [account]);
+
 
 
   useEffect(() => {
@@ -105,7 +116,7 @@ const AssetForm = (props) => {
     },
   ];
   const isDisabled = disabledConditions.some(el => el.disabled);
-
+  const isTeam = account?.type === 'team';
   const { errors } = formState;
   const watchCharName = watch('name', 'New Asset');
 
@@ -183,7 +194,7 @@ const AssetForm = (props) => {
         setResources(temp);
         break;
       case 'selectAccount':
-        setAccount(incoming.account);
+        setAccount(accounts.find(a => a._id === incoming.account));
         break;
       default:
         console.log('UwU Scott made an oopsie doodle!')
@@ -220,12 +231,20 @@ const AssetForm = (props) => {
           <Box>
             <p>Owner:</p>
 
-            {!account && <AddCharacter characters={characters} handleSelect={(char) => editState(char, 0, 'selectAccount')} />}
-            {account && !teamAccount &&
+            {!account &&
+              <div >
+                <AddCharacter characters={characters} handleSelect={(char) => editState(char, 0, 'selectAccount')} />
+                <AddTeam teams={teams} handleSelect={(t) => editState(t, 0, 'selectAccount')} />
+              </div>
+            }
+            {account && !isTeam &&
               <CharacterTag isAccessible character={account} onClick={() => setAccount(false)} />
             }
-            {account && teamAccount &&
-              <TeamAvatar team={team} onClick={() => setAccount(false)} />
+            {account && isTeam &&
+              <div onClick={() => setAccount(false)} >
+                <TeamAvatar account={account._id} />
+              </div>
+
             }
           </Box>
 

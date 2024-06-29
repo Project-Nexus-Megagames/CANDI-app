@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getTextColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text } from '@chakra-ui/react';
+import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text, TagLabel, TagCloseButton } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
@@ -10,6 +10,8 @@ import SelectPicker from '../../Common/SelectPicker';
 import { getCharAccount } from '../../../redux/entities/accounts';
 import ResourceNugget from '../../Common/ResourceNugget';
 import { HiSave } from 'react-icons/hi';
+import { AddCharacter } from '../../Common/AddCharacter';
+import { getPublicPlayerCharacters } from '../../../redux/entities/characters';
 
 /**
  * Form for a new ACTION
@@ -23,10 +25,8 @@ const ActionForm = (props) => {
   const { myCharacter } = useSelector((s) => s.auth);
   // const myCharacter = useSelector(getMyCharacter);
   const myAssets = useSelector(getMyAssets);
-  const myContacts = useSelector(s => s.characters.list);
-  const locations = useSelector((state) => state.locations.list)
-  const facilities = useSelector((state) => state.facilities.list)
-  const myAccout = useSelector(getCharAccount);
+  const playerCharacters = useSelector(getPublicPlayerCharacters);
+
 
   const [effort, setEffort] = React.useState(defaultValue?.effort ? { effortType: defaultValue.effort.effortType, amount: defaultValue.effort.amount } : { effortType: 'Normal', amount: 0 });
   const [resources, setResources] = React.useState(defaultValue?.resouces ? defaultValue.resouces : []);
@@ -39,6 +39,7 @@ const ActionForm = (props) => {
 
   const [intent, setIntent] = React.useState(defaultValue?.intent ? defaultValue.intent : '');
   const [name, setName] = React.useState(defaultValue?.name ? defaultValue.name : '');
+  const [how, setHow] = React.useState(defaultValue?.how ? defaultValue.name : '');
   const [destination, setDestination] = React.useState(defaultValue?.location ? defaultValue.location : false);
   const [facility, setFacility] = React.useState(undefined);
 
@@ -86,6 +87,7 @@ const ActionForm = (props) => {
     const data = {
       assets: assets.filter(el => el),
       description: description,
+      how: how,
       intent: intent,
       name: name,
       type: actionType.type,
@@ -150,10 +152,17 @@ const ActionForm = (props) => {
       {!header && <h4>Edit {actionType.type} Action</h4>}
       <br />
       <form>
+        {actionType.collab && !collabMode && <Box>
+          Collaborators:
+          <AddCharacter characters={playerCharacters.filter(el => !collaborators.some(ass => ass?._id === el._id))} handleSelect={(char) => editState(char, 'addCollab')} />
+          {collaborators.length > 0 && collaborators.map(char =>
+            <Tag margin={'2px'} key={char._id} variant={'solid'} >
+              <TagLabel>{char.characterName}</TagLabel>
+              <TagCloseButton onClick={() => editState(char, 'collab')} />
+            </Tag>
+          )}
+        </Box>}
         <Flex width={"100%"} align={"end"} >
-          {actionType.collab && !collabMode && <Box>
-            Collaborators:
-          </Box>}
           <Spacer />
           {!collabMode && <Box width={"49%"}>
             Name:
@@ -169,34 +178,7 @@ const ActionForm = (props) => {
             )}
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>}
-          <Spacer />
-          {!collabMode && <Box width={"49%"}>
-            Destination
-            {!destination && actionType.requiresDestination && (
-              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                Select Destination
-              </Tag>
-            )}
 
-            {destination && (
-              <Tag variant='solid' colorScheme={'green'}>
-                <CheckIcon />
-              </Tag>
-            )}
-            <h5>{locations.find(el => el._id === destination)?.name}</h5>
-            <Flex>
-              <SelectPicker
-                data={locations}
-                label="name"
-                onChange={setDestination}
-                placeholder={destination ? locations.find(el => el._id === destination)?.name : "Select a Destination (" + locations.length + ") in range"}
-                value={destination}
-              />
-
-              {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
-            </Flex>
-
-          </Box>}
           <Spacer />
         </Flex>
         <br />
@@ -204,7 +186,7 @@ const ActionForm = (props) => {
         <Flex width={"100%"} >
           <Spacer />
           <Box width={"49%"} >
-            Description:
+            What are you doing?
             {10 - description.length > 0 && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
                 {10 - description.length} more characters...
@@ -217,34 +199,40 @@ const ActionForm = (props) => {
             )}
             <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
           </Box>
-          <Spacer />
-          <Box width={"49%"}>
-            Needed Resources:
-            <Center>
-              {actionType.resourceTypes.map(el => {
-                const resources = myAccout.resources.find(e => e.type === el.type);
-                return (
-                  <Box key={el._id}>
-                    {resources?.balance < el.min && (
-                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                        Lacking Resources
-                      </Tag>
-                    )}
-                    {resources == undefined || resources?.balance >= el.min && (
-                      <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                        <CheckIcon />
-                      </Tag>
-                    )}
-                    <ResourceNugget type={el.type} value={el.min} label={`You have ${resources?.balance} ${el.type} resource${resources?.balance > 0 && 's'}`} />
-                  </Box>)
-              }
 
-              )}
-            </Center>
+          {!collabMode && <Spacer />}
 
-            {/* <DiceList assets={assets} type={"all"} /> */}
-          </Box>
-          <Spacer />
+          {!collabMode && <Box width={"49%"} >
+            How are you able to accomplish this action?
+            {10 - how.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - how.length} more characters...
+              </Tag>
+            )}
+            {10 - how.length <= 0 && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='6' value={how} className='textStyle' onChange={(event) => setHow(event.target.value)} />
+          </Box>}
+
+          {<Spacer />}
+
+          {!collabMode && <Box width={"49%"} >
+            What do you want to gain from this action?
+            {10 - intent.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - intent.length} more characters...
+              </Tag>
+            )}
+            {10 - intent.length <= 0 && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='6' value={intent} className='textStyle' onChange={(event) => setIntent(event.target.value)} />
+          </Box>}
         </Flex>
         <br />
 

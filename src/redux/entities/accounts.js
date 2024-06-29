@@ -82,6 +82,11 @@ export const getTeamAccount = createSelector(
   (accounts, team) => accounts.find(account => account.team?._id === team?._id) || undefined
 );
 
+export const getTeamAccounts = createSelector(
+  state => state.accounts.list.filter(el => el.team),
+  (accounts) => accounts
+);
+
 export const getCharAccount = createSelector(
   state => state.accounts.list.filter(el => el.type === 'individual'),
   state => state.auth.myCharacter,

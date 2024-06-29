@@ -6,10 +6,9 @@ import { getFadedColor } from '../../../scripts/frontend';
 import usePermissions from '../../../hooks/usePermissions';
 import { useSelector } from 'react-redux';
 
-function ActionList({ actions, handleSelect, selected }) {
+function ActionList({ actions, handleSelect, selected, controlMode }) {
   const [rounds, setRounds] = useState([]);
   const [renderRounds, setRenderRounds] = useState([]);
-  const [controlMode, setControlMode] = useState(false);
   const myCharacter = useSelector(state => state.auth.myCharacter);
   const { isControl } = usePermissions();
 
@@ -76,7 +75,6 @@ function ActionList({ actions, handleSelect, selected }) {
       align='stretch'
       maxWidth={'20vw'}
     >
-      {isControl && <Switch onChange={() => setControlMode(!controlMode)} />}
       {rounds.map(round => (
         <div key={round} >
           <h4 onClick={() => handleRoundToggle(round)} style={{ backgroundColor: getFadedColor('gold'), color: 'black', cursor: 'pointer' }} >Round {round}</h4>

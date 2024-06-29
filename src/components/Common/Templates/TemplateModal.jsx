@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import socket from '../../../socket';
-import { useDrop } from 'react-dnd';
 import { getTeamAccount } from '../../redux/entities/accounts';
 import { useNavigate } from 'react-router-dom';
 import {

@@ -43,6 +43,7 @@ const NewAction = (props) => {
   const [description, setDescription] = React.useState('');
   const [intent, setIntent] = React.useState('');
   const [name, setName] = React.useState('');
+  const [how, setHow] = React.useState('');
   const [destination, setDestination] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [facility, setFacility] = React.useState(undefined);
@@ -81,6 +82,7 @@ const NewAction = (props) => {
           assets: assets.filter(el => el),
           description: description,
           intent: intent,
+          how: how,
           facility: facility,
         },
         name: name,
@@ -190,7 +192,7 @@ const NewAction = (props) => {
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>
           <Spacer />
-          <Box width={"49%"}>
+          {/* <Box width={"49%"}>
             Destination
             {!destination && actionType.requiresDestination && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
@@ -208,56 +210,59 @@ const NewAction = (props) => {
               {destination && facilities.filter(el => el.location._id === destination).length > 0 && <SelectPicker onChange={setFacility} data={facilities.filter(el => el.location._id === destination)} label="name" placeholder={"Select a Facility (" + facilities.filter(el => el.location._id === destination).length + ") present"} />}
             </Flex>
 
-          </Box>
-          <Spacer />
+          </Box> */}
         </Flex>
         <br />
         <Divider />
         <Flex width={"100%"} >
           <Spacer />
           <Box width={"49%"} >
-            Description:
+            What are you doing?
             {10 - description.length > 0 && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {description.length >= 1000 && (
-              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                Description is too long.
-              </Tag>
-            )}
-
-            {10 - description.length <= 0 && description.length < 1000 && (
+            {10 - description.length <= 0 && (
               <Tag variant='solid' colorScheme={'green'}>
                 <CheckIcon />
               </Tag>
             )}
             <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
           </Box>
-          <Spacer />
-          <Box width={"49%"}>
-            Needed Resources:
-            <Center>
-              {actionType.resourceTypes.map(el => (
-                <Box key={el._id}>
-                  {el.type}
-                  {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
-                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                      Lacking Resources
-                    </Tag>
-                  )}
-                  {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
-                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                      <CheckIcon />
-                    </Tag>
-                  )}
-                  <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
-                </Box>
-              ))}
-            </Center>
 
-            {/* <DiceList assets={assets} type={"all"} /> */}
+          <Spacer />
+
+          <Box width={"49%"} >
+            How are you able to accomplish this action?
+            {10 - how.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - how.length} more characters...
+              </Tag>
+            )}
+            {10 - how.length <= 0 && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='6' value={how} className='textStyle' onChange={(event) => setHow(event.target.value)} />
+          </Box>
+
+          <Spacer />
+
+          <Box width={"49%"} >
+            What do you want to gain from this action?
+            {10 - intent.length > 0 && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                {10 - intent.length} more characters...
+              </Tag>
+            )}
+            {10 - intent.length <= 0 && (
+              <Tag variant='solid' colorScheme={'green'}>
+                <CheckIcon />
+              </Tag>
+            )}
+            <textarea rows='6' value={intent} className='textStyle' onChange={(event) => setIntent(event.target.value)} />
           </Box>
           <Spacer />
         </Flex>

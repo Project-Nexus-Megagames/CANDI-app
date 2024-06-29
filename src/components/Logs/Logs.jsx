@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Box,
+  Center,
   Flex,
   Step,
   StepDescription,
@@ -11,6 +12,7 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
+  Tag,
   useSteps,
 } from '@chakra-ui/react'
 import { getFadedColor } from "../../scripts/frontend";
@@ -72,17 +74,16 @@ const TransactionLog = props => {
       </StepIndicator>
 
       <Box style={{ width: "100%", margin: "2px", padding: "5px", border: `2px solid ${getFadedColor(report.transaction)}` }}  >
-        <StepTitle >{report.transaction}</StepTitle>
+        <StepTitle className="styleCenter" >{report.transaction} <Tag variant='subtle' colorScheme='cyan'>{getTime(report.createdAt)}</Tag> </StepTitle>
         <StepDescription>
-          <b>({getTime(report.createdAt)})</b>
           {report.counterparty && <p>{getEnglish(report)} {report.counterparty.name}</p>}
-          {/* <p>{report.note}</p> */}
+          <p>{report.note}</p>
 
         </StepDescription>
 
-        <Flex >
+        <Center >
           <ResourceNugget value={report.amount} type={report.resource} />
-        </Flex>
+        </Center>
 
       </Box>
 

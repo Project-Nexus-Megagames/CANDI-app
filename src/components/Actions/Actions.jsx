@@ -5,7 +5,7 @@ import NewAction from './Modals/NewAction';
 import Action from "./ActionList/Action/Action";
 import { Grid, GridItem, Flex, Input, InputGroup, InputLeftElement, Tooltip, IconButton, Accordion, Box, Center, ButtonGroup, Button } from "@chakra-ui/react";
 import usePermissions from "../../hooks/usePermissions";
-import { AddIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { AddIcon, PlusSquareIcon, SearchIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from 'react-router';
 import ActionList from './ActionList/ActionList';
 import { getFadedColor, getIcon } from '../../scripts/frontend';
@@ -19,11 +19,9 @@ const Actions = (props) => {
 
   const navigate = useNavigate();
   const [showNewActionModal, setShowNewActionModal] = useState(false);
-  const [assetInfo, setAssetInfo] = useState({ show: false, asset: '' });
-  const [editAction, setEditAction] = useState({ show: false, action: null })
+  const [controlMode, setControlMode] = useState(false);
+
   const { isControl } = usePermissions();
-  const [rounds, setRounds] = useState([]);
-  const [renderRounds, setRenderRounds] = useState([]);
   const [selected, setSelected] = useState(false);
 
   const [actionType, setActionType] = React.useState(
@@ -76,6 +74,21 @@ const Actions = (props) => {
               color='white'
             />
           </InputGroup>
+
+          {isControl && <Tooltip
+            label='Filter my control actions'
+            aria-label='a tooltip'>
+            <IconButton
+              icon={controlMode ? <ViewOffIcon /> : <ViewIcon />}
+              onClick={() => setControlMode(!controlMode)}
+              colorScheme={'orange'}
+              style={{
+                marginLeft: '1rem'
+              }}
+              variant={'solid'}
+            />
+          </Tooltip>}
+
           <Tooltip
             label='Add New Action'
             aria-label='a tooltip'>
@@ -91,7 +104,7 @@ const Actions = (props) => {
             />
           </Tooltip>
         </Flex>
-        <ActionList actions={actionList} handleSelect={setSelected} selected={selected} />
+        <ActionList controlMode={controlMode} actions={actionList} handleSelect={setSelected} selected={selected} />
       </GridItem>
 
       <GridItem overflow='auto' pl='2' bg='#0f131a' area={'main'} style={{ height: 'calc(100vh - 95px)', overflow: 'auto', }} >
@@ -126,9 +139,6 @@ const Actions = (props) => {
               action={selected}
               actionType={gameConfig.actionTypes.find(el => el.type === selected.type)}
               key={selected._id}
-              toggleAssetInfo={(asset) => {
-                setAssetInfo({ show: true, asset });
-              }}
             />
           </Center>
 

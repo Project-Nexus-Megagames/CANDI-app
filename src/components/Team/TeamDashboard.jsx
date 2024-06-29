@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react'; // React import
 import { useDispatch, useSelector } from 'react-redux'; // Redux store provider
 import { useNavigate } from 'react-router-dom';
-import Production from './Production';
-import ServerManagement from './ServerManagement';
 import { getCharAccount, getTeamAccount } from '../../redux/entities/accounts';
 import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack, Grid, GridItem, Box, Button, Center, ButtonGroup, IconButton, Wrap, Stack } from '@chakra-ui/react';
 import { getTeamFacilities } from '../../redux/entities/facilities';
 import { getTeamAssets, getTeamWorkers, getTeamContracts } from '../../redux/entities/assets';
 import { getTeamIce } from '../../redux/entities/ice';
-import { AiOutlineSwap } from 'react-icons/ai';
-import { FaHandshake, FaSnowboarding } from 'react-icons/fa';
+import { FaSnowboarding } from 'react-icons/fa';
 import { editTab } from '../../redux/entities/gamestate';
 import AssetCard from '../Common/AssetCard';
 import { getFadedColor } from '../../scripts/frontend';
 import LogRecords from '../Logs/LogRecords';
 import { getMyTeamLogs } from '../../redux/entities/actionLogs';
-import AccountLineGraph from '../Team/AccountLineGraph';
 import usePermissions from '../../hooks/usePermissions';
 import ResourceNugget from '../Common/ResourceNugget';
 import { EditAccount } from '../Common/EditAccount';
@@ -23,8 +19,6 @@ import Contract from '../Common/Contract';
 import { AccountTransfer } from '../Common/AccountTransfer';
 import { CloseIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import AssetForm from '../Common/AssetForm';
-import Ice from './Ice';
-import { ActionIce } from '../Actions/ActionList/Action/ActionIce';
 import socket from '../../socket';
 import SelectPicker from '../Common/SelectPicker';
 import { setTeam } from '../../redux/entities/auth';
@@ -106,13 +100,13 @@ const TeamDashboard = (props) => {
                 {teamAccount && <div>
                   {<Box bg={mode === "new" ? '#232c3b' : '#555555'} area={'body'} >
                     <h5 style={{ backgroundColor: getFadedColor("Asset"), color: 'black' }} >
-                      Assets
+                      {teamAccount.name} Assets
                       {isControl && mode !== "new" && <IconButton onClick={() => setMode("new")} variant={'solid'} colorScheme="green" size={'sm'} icon={<PlusSquareIcon />} />}
                       {isControl && mode === "new" && <IconButton onClick={() => setMode(false)} variant={'solid'} colorScheme="red" size={'sm'} icon={<CloseIcon />} />}
                     </h5>
                     {mode !== "new" && <Grid templateColumns='repeat(3, 1fr)' gap={1}>
                       {assets
-                        .filter((el) => (el.account && el.account === teamAccount?._id && !el.tags.some(t => t === 'contract')))
+                        .filter((el) => (el.account && (el.account === teamAccount?._id) && !el.tags.some(t => t === 'contract')))
                         .map((asset) => (
                           <AssetCard key={asset._id} asset={asset} showButtons />
                         ))}

@@ -14,7 +14,7 @@ import { accountUpdated } from './entities/accounts';
 import { clockReceived } from './entities/clock';
 import { actionDeleted, playerActionUpdated } from './entities/playerActions';
 import { blueprintUpdated } from './entities/blueprints';
-import { articleDeleted } from './entities/articles';
+import { articleDeleted, articleUpdated } from './entities/articles';
 
 
 const initUpdates = () => {
@@ -22,9 +22,12 @@ const initUpdates = () => {
   socket.on('updateClients', (data) => {
     // console.log('updateClients');
     for (const el of data) {
-      // console.log(el)
+      // console.log(el)publish
       if (el) {
         switch (el.model) {
+          case 'Article':
+            store.dispatch(articleUpdated(el));
+            break;
           case 'Log':
             store.dispatch(actionLogUpdated(el));
             break;
@@ -73,6 +76,7 @@ const initUpdates = () => {
             break;
           default:
             console.log(`Unable to updateClients Redux for ${el.model}: ${el._id}`);
+            console.log(el);
             break;
         }
       }

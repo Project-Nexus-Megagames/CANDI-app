@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Collapse, Flex, HStack, IconButton, Spacer, Tag, TagCloseButton, TagLabel, Wrap } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
@@ -9,17 +9,24 @@ import { useSelector } from 'react-redux';
 import { CandiModal } from './CandiModal';
 import { BsPencil } from 'react-icons/bs';
 import { Close, Trash } from '@rsuite/icons';
+import ResourceNugget from './ResourceNugget';
 import CountDownTag from './CountDownTag';
 import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
+import TeamAvatar from './TeamAvatar';
+import assets from '../../redux/entities/assets';
 import CharacterNugget from './CharacterNugget';
-import { FaHandshake } from 'react-icons/fa';
+import { FaBreadSlice, FaHandshake } from 'react-icons/fa';
 import { AddCharacter } from './AddCharacter';
 import { CloseIcon } from '@chakra-ui/icons';
-import ResourceNugget from './ResourceNugget';
+import MDEditor from '@uiw/react-md-editor';
 
 const AssetCard = (props) => {
-  const { showButtons, handleSelect, compact, removeAsset, showRemove, selected } = props;
+  const { showButtons, handleSelect, compact, removeAsset, showRemove } = props;
   const [mode, setMode] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const [overflow, setOverflow] = useState(false);
+
   const control = useSelector(state => state.auth.control);
   const teams = useSelector(state => state.teams.list);
   const assets = useSelector(state => state.assets.list);
@@ -34,44 +41,94 @@ const AssetCard = (props) => {
     });
   };
 
+  const damageAsset = async () => {
+    socket.emit('request', {
+      route: 'asset',
+      action: 'damageAsset',
+      data: { id: asset._id }
+    });
+  };
+
   const asset = props.asset._id ? props.asset : assets.find(el => el._id === props.asset)
 
   const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
   const account = populateThisAccount(accounts, asset?.account)
   const team = getThisTeam(teams, account.manager);
   const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
+  const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
+  const border = isHidden ? 'dotted' : 'solid'
+
 
   if (asset)
     return (
-      <div style={{ textAlign: 'center', width: "100%", height: "100%", border: selected ? `3px solid white` : undefined, borderRadius: '10px', }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
-        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px solid ${getFadedColor(asset.type)}`, height: '100%' }} >
+      <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
+        <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px ${border} ${getFadedColor(asset.type)}`, minHeight: "20em", height: '100%' }} >
           <CardHeader>
-
-            <Flex align={'left'} overflow='hidden' width='100%'>
+            <Flex align={'center'} overflow='hidden' width='100%'>
               <Spacer />
-              {character && <CharacterNugget size='lg' character={character} />}
-              <Box>
 
-                <div display="flex">
+              <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(asset.type)}`, padding: '5px', width: '80%' }} display="flex"  >
+                <Center >
+                  {character && <CharacterNugget size='lg' character={character} />}
 
-                  <h5 style={{ marginLeft: '5px' }}>{asset.name}
-                    <br />
-                    {/* {<CountDownTag timeout={asset.timeout} />} */}
-                    {asset.type && <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>}
+                  <Box textAlign={'left'} marginLeft={'5px'} >
+                    <Flex>
+                      {asset.name}
+                      <Spacer />
+                      <ButtonGroup isAttached>
+                        {control && showButtons && <div>
+                          <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'xs'} icon={<BsPencil />} />
+                          <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'xs'} icon={<Trash />} />
+                          <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => damageAsset()} colorScheme="red" size={'xs'} icon={<FaBreadSlice />} />
+                        </div>}
+
+                        {(character?._id === asset.ownerCharacter || character.account === asset.account) && showButtons && asset.status.some(el => el === 'lendable') &&
+                          <Button
+                            style={{ margin: '0px' }}
+                            variant={'ghost'}
+                            onClick={() => setMode(mode === 'lend' ? false : "lend")}
+                            colorScheme={mode === 'lend' ? "red" : "blue"}
+                            size={'xs'}
+                            leftIcon={mode === 'lend' ? <CloseIcon /> : <FaHandshake />}
+                          >{mode === 'lend' ? "Finish" : `Share (max ${asset.lendUses})`}</Button>}
+                      </ButtonGroup>
+                    </Flex>
+
+                    <Tag variant={'outline'} color={getFadedColor(asset.type)} >{asset.type}</Tag>
                     <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
-                    <Center>
-                      {asset.status?.map(el => (
+                    {<CountDownTag timeout={asset.timeout} />}
+                    <Wrap>
+                      {asset.status.length > 0 && asset.status?.map(el => (
                         <NexusTag key={el} value={el}></NexusTag>
                       ))}
-                      {asset.tags?.map(el => (
-                        <NexusTag key={el} value={el}></NexusTag>
-                      ))}
-                    </Center>
-                  </h5>
-                </div>
+                      {asset.dice?.map(die => (
+                        <div key={die._id} style={{ textAlign: 'center', alignItems: 'center', display: 'flex', margin: '5px' }} >
+                          <Tag variant={'outline'} color={getFadedColor(die.type)} >{die.type}</Tag>
+                          {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
 
-                {asset.sharedWith && asset.sharedWith.length > 0 && <b>Shared with:</b>}
-                {asset.sharedWith && asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
+                        </div>
+                        // <Center
+                        //   key={die._id}
+                        //   style={{
+                        //     textAlign: 'center',
+                        //     padding: '2px',
+                        //     width: '35px',
+                        //     marginLeft: '5px', border: `2px solid ${getFadedColor(die.type)}`,
+                        //     borderRadius: '8px'
+                        //   }} >
+                        //   {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
+                        // </Center>
+                      ))}
+                    </Wrap>
+                  </Box>
+                </Center>
+
+
+
+
+
+                {asset.sharedWith?.length > 0 && <p>Shared with:</p>}
+                {asset.sharedWith?.length > 0 && asset.sharedWith?.map(char =>
                   <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
                     <Avatar
                       size={'xs'}
@@ -79,7 +136,8 @@ const AssetCard = (props) => {
                       src={char?.profilePicture}
                       margin='1'
                     />
-                    <TagLabel>{char.characterName}</TagLabel>
+                    <TagLabel>
+                      {char.characterName}</TagLabel>
                     {(character?._id === asset.ownerCharacter || character.account === asset.account) &&
                       <TagCloseButton onClick={() => {
                         const data = {
@@ -97,7 +155,8 @@ const AssetCard = (props) => {
                 )}
 
                 {!disabled && mode === 'lend' && <AddCharacter
-                  characters={characters.filter(el => !asset.sharedWith.some(ass => ass?._id === el._id))}
+                  characters={characters.filter(el => !asset.sharedWith?.some(ass => ass?._id === el._id))}
+                  isDisabled={asset.lendUses <= asset.sharedWith?.length}
                   handleSelect={(character) => {
                     const data = {
                       id: asset._id,
@@ -110,22 +169,9 @@ const AssetCard = (props) => {
                     });
                   }}
                 />}
-                <br />
 
-                {control && showButtons && <ButtonGroup isAttached>
-                  <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
-                  <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
-                </ButtonGroup>}
-                {(character?._id === asset.ownerCharacter || character.account === asset.account) && showButtons && asset.status.some(el => el === 'lendable') &&
-                  <Button
-                    variant={'ghost'}
-                    onClick={() => setMode(mode === 'lend' ? false : "lend")}
-                    colorScheme={mode === 'lend' ? "red" : "blue"}
-                    size={'sm'}
-                    leftIcon={mode === 'lend' ? <CloseIcon /> : <FaHandshake />}
-                  >{mode === 'lend' ? "Finish" : "Share"}</Button>}
+              </div>
 
-              </Box>
 
               {removeAsset && showRemove && <IconButton variant={'outline'} onClick={removeAsset} colorScheme="red" size={'sm'} icon={<Close />} />}
 
@@ -133,18 +179,17 @@ const AssetCard = (props) => {
             </Flex>
 
 
-            Dice Pool:
             <Flex align={'center'} overflow='hidden' width='100%' >
               <Spacer />
-              {asset.dice?.map(die => (
-                <div key={die._id} style={{ textAlign: 'center', alignItems: 'center', display: 'flex', margin: '5px' }} >
-                  <Tag variant={'outline'} color={getFadedColor(die.type)} >{die.type}</Tag>
-                  {<img style={{ maxHeight: '30px', backgroundColor: getFadedColor(die.type), height: 'auto', borderRadius: '5px', }} src={die ? `/images/d${die.amount}.png` : '/images/unknown.png'} alt={die.amount} />}
 
-                </div>
-              ))}
               <Spacer />
             </Flex>
+
+            {/* <Flex align={'center'} overflow='hidden' width='100%' >
+              {asset.tags?.map(el => (
+                <NexusTag key={el} value={el}></NexusTag>
+              ))}
+            </Flex> */}
 
             {asset.resources && asset.resources.length > 0 && <Box>
               Resources:
@@ -157,12 +202,18 @@ const AssetCard = (props) => {
               </Flex>
             </Box>}
 
-
           </CardHeader>
           <CardBody style={{ paddingTop: '0px' }} >
-            {!compact && <div style={{ maxHeight: '20vh', overflow: 'auto', textOverflow: 'ellipsis', }} >
-              {asset.description}
-            </div>}
+
+            <Collapse ref={v => v && setOverflow(v.children[0]?.scrollHeight > v.scrollHeight)} startingHeight={150} in={show}>
+              {!compact && <div data-color-mode="dark" style={{ maxHeight: '100%', overflow: 'clip', textOverflow: 'ellipsis', }} >
+                <MDEditor.Markdown source={asset.description} style={{ backgroundColor: '#1a1d24', color: 'white', padding: '5px 10px 10px 5px' }} />
+              </div>}
+            </Collapse>
+            {overflow && <Button variant={'solid'} size='sm' onClick={() => setShow(!show)} mt='1rem'>
+              Show {show ? 'Less' : 'More'}
+            </Button>}
+
           </CardBody>
 
         </Card>
