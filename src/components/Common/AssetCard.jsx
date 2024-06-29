@@ -51,15 +51,14 @@ const AssetCard = (props) => {
 
   const asset = props.asset._id ? props.asset : assets.find(el => el._id === props.asset)
 
-  const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
-  const account = populateThisAccount(accounts, asset?.account)
-  const team = getThisTeam(teams, account.manager);
-  const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
-  const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
-  const border = isHidden ? 'dotted' : 'solid'
+  if (asset) {
+    const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
+    const account = populateThisAccount(accounts, asset?.account)
+    const team = getThisTeam(teams, account.manager);
+    const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
+    const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
+    const border = isHidden ? 'dotted' : 'solid'
 
-
-  if (asset)
     return (
       <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
         <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px ${border} ${getFadedColor(asset.type)}`, minHeight: "20em", height: '100%' }} >
@@ -82,15 +81,6 @@ const AssetCard = (props) => {
                           <IconButton style={{ margin: '0px' }} variant={'ghost'} onClick={() => damageAsset()} colorScheme="red" size={'xs'} icon={<FaBreadSlice />} />
                         </div>}
 
-                        {(character?._id === asset.ownerCharacter || character.account === asset.account) && showButtons && asset.status.some(el => el === 'lendable') &&
-                          <Button
-                            style={{ margin: '0px' }}
-                            variant={'ghost'}
-                            onClick={() => setMode(mode === 'lend' ? false : "lend")}
-                            colorScheme={mode === 'lend' ? "red" : "blue"}
-                            size={'xs'}
-                            leftIcon={mode === 'lend' ? <CloseIcon /> : <FaHandshake />}
-                          >{mode === 'lend' ? "Finish" : `Share (max ${asset.lendUses})`}</Button>}
                       </ButtonGroup>
                     </Flex>
 
@@ -98,7 +88,7 @@ const AssetCard = (props) => {
                     <Tag variant={'outline'} color={getFadedColor(asset.type)} >Uses: {asset.uses}</Tag>
                     {<CountDownTag timeout={asset.timeout} />}
                     <Wrap>
-                      {asset.status.length > 0 && asset.status?.map(el => (
+                      {asset?.status && asset?.status.length > 0 && asset?.status?.map(el => (
                         <NexusTag key={el} value={el}></NexusTag>
                       ))}
                       {asset.dice?.map(die => (
@@ -122,10 +112,6 @@ const AssetCard = (props) => {
                     </Wrap>
                   </Box>
                 </Center>
-
-
-
-
 
                 {asset.sharedWith?.length > 0 && <p>Shared with:</p>}
                 {asset.sharedWith?.length > 0 && asset.sharedWith?.map(char =>
@@ -186,10 +172,10 @@ const AssetCard = (props) => {
             </Flex>
 
             {/* <Flex align={'center'} overflow='hidden' width='100%' >
-              {asset.tags?.map(el => (
-                <NexusTag key={el} value={el}></NexusTag>
-              ))}
-            </Flex> */}
+                {asset.tags?.map(el => (
+                  <NexusTag key={el} value={el}></NexusTag>
+                ))}
+              </Flex> */}
 
             {asset.resources && asset.resources.length > 0 && <Box>
               Resources:
@@ -228,6 +214,9 @@ const AssetCard = (props) => {
 
       </div>
     );
+  }
+
+
   return (
     <b>Cannot Render Asset {props.asset}</b>
   )
