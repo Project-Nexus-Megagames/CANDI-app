@@ -195,7 +195,7 @@ function Feed({ action }) {
                 colorScheme="pink"
                 isDisabled={!true}
               >
-                Collaborate (DISABLED FOR PLAYTEST)
+                Collaborate
               </Button>
             )}
             <Button

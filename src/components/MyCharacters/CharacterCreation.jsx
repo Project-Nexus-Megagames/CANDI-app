@@ -97,11 +97,6 @@ const CharacterCreation = (props) => {
     count: steps.length,
   })
 
-  useEffect(() => {
-    console.log(occupation)
-
-  }, [occupation]);
-
   const submitCreation = async () => {
     if (!loading) {
       setLoading(true)
@@ -113,7 +108,7 @@ const CharacterCreation = (props) => {
           bio,
           id: myCharacter._id
         });
-      console.log(data)
+
       setLoading(false)
     }
 
@@ -122,7 +117,7 @@ const CharacterCreation = (props) => {
   const fetchData = async () => {
     setLoading(true)
     const { data } = await axios.post(`${gameServer}api/blueprints/getInfo/`, { occupation: myCharacter.bio, team: myTeam.name });
-    console.log(data)
+
     setOccupations(data.occupations);
     setInheritences(data.inheritences);
     setActiveStep(1)

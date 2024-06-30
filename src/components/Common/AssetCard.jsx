@@ -21,7 +21,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import MDEditor from '@uiw/react-md-editor';
 
 const AssetCard = (props) => {
-  const { showButtons, handleSelect, compact, removeAsset, showRemove } = props;
+  const { showButtons, handleSelect, compact, removeAsset, showRemove, selected } = props;
   const [mode, setMode] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -60,7 +60,7 @@ const AssetCard = (props) => {
     const border = isHidden ? 'dotted' : 'solid'
 
     return (
-      <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
+      <div style={{ textAlign: 'center', width: "100%", border: selected ? '2px solid white' : 'inherit' }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
         <Card className={disabled ? 'forbidden' : "toggle-tag"} key={asset._id} style={{ border: `3px ${border} ${getFadedColor(asset.type)}`, minHeight: "20em", height: '100%' }} >
           <CardHeader>
             <Flex align={'center'} overflow='hidden' width='100%'>
