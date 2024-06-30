@@ -17,7 +17,7 @@ function ActionButtons({ action, toggleEdit, handleEdit, creator, handleDelete, 
   const buttonSpacing = useBreakpointValue({ base: 0, md: '0.5rem' });
 
   const isAccessible = characterId === creator?._id || isControl;
-  const isDisabled = (game.status !== 'Active' || game.round > action.round) && !isControl;
+  const isDisabled = false //(game.status !== 'Active' || game.round > action.round) && !isControl;
   const isPublishable = (action.tags?.some((tag) => tag !== 'Published') || !action.tags?.length > 0)
     && action.type === 'Agenda';
 
