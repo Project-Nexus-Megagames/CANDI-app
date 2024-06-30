@@ -24,7 +24,7 @@ const IceForm = (props) => {
   const characters = props.characters || useSelector((state) => state.characters.list);
 
   const [imageUrl, setImageURL] = useState(ice?.imageUrl || '');
-  const [consequences, setConsequences] = useState(false);
+  const [consequences, setConsequences] = useState({});
   const [template, setTemplate] = useState(false);
   const [createBlue, setCreateBlue] = useState(false);
   const [add, setAdd] = useState(-1);
