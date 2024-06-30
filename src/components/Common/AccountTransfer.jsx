@@ -91,7 +91,7 @@ export const AccountTransfer = ({ open, toAccount, fromAccount, onClose, onOpen,
 
   return (
     <>
-      <Button variant={'solid'} onClick={handleOpen} >{transactionType}</Button>
+      <Button colorScheme={transactionType === 'Withdraw' ? 'yellow' : 'green'} variant={'solid'} onClick={handleOpen} >{transactionType}</Button>
 
       <Modal isOpen={isOpen} onClose={handleClose} closeOnOverlayClick={false} isCentered >
         <ModalOverlay />

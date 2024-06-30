@@ -8,8 +8,8 @@ import ActionMarkdown from '../Actions/ActionList/Action/ActionMarkdown';
 const Comment = (props) => {
   const { comment } = props;
   const teams = useSelector(s => s.teams.list);
-  const team = getThisTeam(teams, comment.commentor._id);
-  const creator = comment.commentor;
+  const team = getThisTeam(teams, comment?.commentor._id);
+  const creator = comment?.commentor;
   const time = getTime(comment.createdAt);
 
   return (
@@ -24,7 +24,7 @@ const Comment = (props) => {
           backgroundColor: (team.color) ? `${team?.color}` : `${getFadedColor(comment.model)}`,
         }} >
 
-        <CharacterNugget character={comment.commentor} />
+        <CharacterNugget character={comment?.commentor} />
 
         <Spacer />
 

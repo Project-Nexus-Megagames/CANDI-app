@@ -122,42 +122,9 @@ const ViewArticle = (props) => {
               <MDEditor.Markdown source={article?.body} style={{ backgroundColor: '#1a1d24', color: 'white', padding: '5px 10px 10px 5px' }} />
 
               <Divider orientation='horizontal' />
-              <Textarea value={newComment} componentClass='textarea' placeholder='Leave a Comment!' rows={3} onChange={(e) => setNewComment(e.target.value)} />
-              <Button bg='black' onClick={() => handleComment()}>
-                Send Comment
-              </Button>
-              <HStack hover>
-                {article?.comments.map((comment, index) => (
-                  <div key={index}>
-                    <Stack align='left'>
-                      <HStack align='left'>{/* <TeamAvatar size={'sm'} code={'none'} />  */}</HStack>
-                      <VStack align='left'>
-                        <Stack direction='row' justify='space-between' spacing='4'>
-                          <HStack>
-                            <Avatar src={comment.commentor.profilePicture} boxSize='10' />
-                            <b>{comment.commentor.characterName}</b>
-                          </HStack>
-                          <HStack>
-                            <ButtonGroup>
-                              {comment.commentor._id === myChar._id && (
-                                <IconButton
-                                  size='xs'
-                                  onClick={() => {
-                                    onOpen(setCommentId(comment._id));
-                                  }}
-                                  color='red'
-                                  icon={<IoTrashBin icon='trash2' />}
-                                />
-                              )}
-                            </ButtonGroup>
-                          </HStack>
-                        </Stack>
-                        <p>{comment.body}</p>
-                      </VStack>
-                    </Stack>
-                  </div>
-                ))}
-              </HStack>
+
+
+
             </Stack>
           </Center>
         </DrawerBody>

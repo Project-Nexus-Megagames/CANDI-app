@@ -10,11 +10,12 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
   const drawerSize = useBreakpointValue({ base: 'full', sm: 'sm' });
   const [renderTags] = React.useState([
     'Pig',
-    'Spider',
-    'Frog',
+    // 'Spider',
+    // 'Frog',
     'Rat',
-    'Raccoon',
-    'Surface',
+    // 'Raccoon',
+    // 'Surface',
+    'Myconid',
     'Underkin'
   ]); // TODO: update with Faction tags
 

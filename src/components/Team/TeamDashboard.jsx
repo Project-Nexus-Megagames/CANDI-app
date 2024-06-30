@@ -69,7 +69,7 @@ const TeamDashboard = (props) => {
     >
       <TabList>
         <Tab>DashBoard</Tab>
-        <Tab> <FaSnowboarding style={{ margin: '4px', }} /> {"  "} Challenges</Tab>
+        <Tab> <FaSnowboarding style={{ margin: '4px', }} /> {"  "} Conplications</Tab>
         {/* <Tab> <AiOutlineSwap style={{ margin: '4px', }} /> {"  "} Trade</Tab> */}
       </TabList>
 

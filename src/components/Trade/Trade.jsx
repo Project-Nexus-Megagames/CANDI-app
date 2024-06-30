@@ -162,16 +162,16 @@ const Trade = (props) => {
   }
 
   const trashProposal = async () => {
+    setSelectedTrade(false);
     let data = {
       trade: selectedTrade._id,
     };
     socket.emit('request', { route: 'trade', action: 'deleteTrade', data });
-    setSelectedTrade(false);
   }
 
   if (!login) return (<div />);
-  const initiatorAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade.initiator.account) : {};
-  const partnerAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade.tradePartner.account) : {};
+  const initiatorAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade?.initiator.account) : {};
+  const partnerAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade?.tradePartner.account) : {};
 
   const initiatorTeam = getThisTeamFromAccount(accounts, teams, selectedTrade?.initiator.account);
   const partnerTeam = getThisTeamFromAccount(accounts, teams, selectedTrade?.tradePartner.account);
@@ -193,10 +193,10 @@ const Trade = (props) => {
               submitApproval={submitApproval}
               rejectProposal={rejectProposal}
               myAccount={account}
-              account={selectedTrade.initiator.account === account._id ? partnerAccount : initiatorAccount}
-              team={selectedTrade.initiator.account === account._id ? partnerTeam : initiatorTeam}
-              offer={selectedTrade.initiator.account === account._id ? selectedTrade.tradePartner.offer : selectedTrade.initiator.offer}
-              ratified={selectedTrade.initiator.account === account._id ? selectedTrade.tradePartner.ratified : selectedTrade.initiator.ratified}
+              account={selectedTrade?.initiator.account === account._id ? partnerAccount : initiatorAccount}
+              team={selectedTrade?.initiator.account === account._id ? partnerTeam : initiatorTeam}
+              offer={selectedTrade?.initiator.account === account._id ? selectedTrade.tradePartner.offer : selectedTrade?.initiator.offer}
+              ratified={selectedTrade?.initiator.account === account._id ? selectedTrade.tradePartner.ratified : selectedTrade?.initiator.ratified}
               status={selectedTrade.status}
               loading={tradeLoading || gameLoading}
               onOfferEdit={onOfferEdit} />}
@@ -206,10 +206,10 @@ const Trade = (props) => {
           {selectedTrade && <TradeOffer
             submitApproval={submitApproval}
             rejectProposal={rejectProposal}
-            offer={selectedTrade.initiator.account === account._id ? selectedTrade.initiator.offer : selectedTrade.tradePartner.offer}
-            ratified={selectedTrade.initiator.account === account._id ? selectedTrade.initiator.ratified : selectedTrade.tradePartner.ratified}
+            offer={selectedTrade?.initiator.account === account._id ? selectedTrade?.initiator.offer : selectedTrade.tradePartner.offer}
+            ratified={selectedTrade?.initiator.account === account._id ? selectedTrade?.initiator.ratified : selectedTrade.tradePartner.ratified}
             myAccount={account}
-            account={selectedTrade.initiator.account === account._id ? initiatorAccount : partnerAccount}
+            account={selectedTrade?.initiator.account === account._id ? initiatorAccount : partnerAccount}
             status={selectedTrade.status}
             loading={tradeLoading || gameLoading}
             onOfferEdit={onOfferEdit} />}
@@ -249,11 +249,11 @@ const Trade = (props) => {
                 label={'characterName'}
                 valueKey={'account'}
                 placeholder='Select Trade Partner'
-                data={publicCharacter}
+                data={publicCharacter.filter(el => el._id !== myCharacter._id)}
                 onChange={setPartner}
               />
-              <Button size={'sm'} variant={"solid"} colorScheme='green' disabled={!partner} loading={tradeLoading} onClick={() => createTrade()}>Create</Button>
-              <IconButton size={'sm'} variant={'solid'} colorScheme='red' onClick={() => setMode(false)} icon={<BsX />} />
+              <Button size={'sm'} variant={"solid"} colorScheme='green' isDisabled={!partner} loading={tradeLoading} onClick={() => createTrade()}>Create</Button>
+              <IconButton size={'sm'} variant={'solid'} colorScheme='red' onClick={() => { setMode(false); setPartner(false) }} icon={<BsX />} />
 
             </div>}
 
@@ -261,7 +261,7 @@ const Trade = (props) => {
             <div >
               <VStack divider={<Divider />} style={{ height: 'calc(100vh - 195px)', overflow: 'auto', textAlign: 'center', }}>
                 {tradeState.map((trade) => (
-                  <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} key={trade._id} trade={trade} selectTrade={selectTrade} isMine={trade.initiator.account === account._id} ></TradeCard>
+                  <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} key={trade._id} trade={trade} selectTrade={selectTrade} isMine={trade?.initiator.account === account._id} ></TradeCard>
                 ))}
               </VStack>
 
@@ -272,13 +272,13 @@ const Trade = (props) => {
           {selectedTrade && <div>
             <Box >
               <ButtonGroup isAttached>
-                {selectedTrade && !selectedTrade.status.some(el => el === 'completed') && <Button isDisabled={!isPrimary} variant={'solid'} colorScheme={'red'} size='sm' leftIcon={<Trash />} onClick={() => setMode('trash')}>Trash Trade</Button>}
+                {selectedTrade && !selectedTrade.status.some(el => el === 'completed') && <Button isDisabled={!isPrimary || true} variant={'solid'} colorScheme={'red'} size='sm' leftIcon={<Trash />} onClick={() => setMode('trash')}>Trash Trade</Button>}
                 {selectedTrade && <Button colorScheme={'blue'} size='sm' rightIcon={<BsXCircle />} variant={'solid'} onClick={() => setSelectedTrade(null)}>Close Trade</Button>}
               </ButtonGroup>
 
               <p style={{ size: '11px' }} ><b>Last Updated:</b> {`${new Date(selectedTrade.updatedAt).toLocaleTimeString()} - ${new Date(selectedTrade.updatedAt).toDateString()}`}</p>
               {selectedTrade.status.map((tag, index) => (<NexusTag key={tag} variant='solid' colorScheme="blue">{tag}</NexusTag>))}
-              {/* <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} trade={selectedTrade} isMine={selectedTrade.tradePartner.account === account._id || selectedTrade.initiator.account === account._id} ></TradeCard> */}
+              {/* <TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} trade={selectedTrade} isMine={selectedTrade.tradePartner.account === account._id || selectedTrade?.initiator.account === account._id} ></TradeCard> */}
             </Box>
 
             <Box height={'80vh'} overflow={'auto'} >

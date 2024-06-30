@@ -76,15 +76,15 @@ const Loading = (props) => {
   return (
     <div>
       <Center>
-        <Text fontSize={"x-large"} >{corps[message]?.name}</Text>
+        <Text fontSize={"x-large"} >{corps[message]?.title}</Text>
       </Center>
 
       <Center>
-        <img width={"350px"} src={`${corps[message]?.gifLink}`} alt='Loading...' onClick={() => boredClick()} />
+        <img width={"350px"} style={{ maxHeight: '50vh' }} src={`${corps[message]?.gifLink}`} alt='Loading...' onClick={() => boredClick()} />
       </Center>
 
       <Center>
-        <Text fontSize={"lg"} >"{corps[message]?.slogan}"</Text>
+        <Text fontSize={"lg"} >"{corps[message]?.description}"</Text>
       </Center>
 
 

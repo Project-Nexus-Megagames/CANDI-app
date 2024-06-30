@@ -199,7 +199,7 @@ const Navigation = (props) => {
               style={{ cursor: 'pointer', marginLeft: "5px" }}
             />
 
-            <Popover
+            {isControl && <Popover
               isOpen={open}
               closeOnBlur
               openDelay={200}
@@ -216,7 +216,7 @@ const Navigation = (props) => {
                 {minutes}:{seconds} ~
                 {speaker}
               </PopoverContent>
-            </Popover>
+            </Popover>}
 
           </div>
           <Progress
