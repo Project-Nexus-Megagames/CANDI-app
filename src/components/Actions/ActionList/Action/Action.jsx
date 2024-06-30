@@ -15,7 +15,7 @@ import HexLocation from '../../../Locations/HexLocation';
 import ActionForm from '../../Forms/ActionForm';
 import WordDivider from '../../../Common/WordDivider';
 
-const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
+const Action = ({ action, hidebuttons, actionType }) => {
   const control = useSelector(state => state.auth.control);
   const actionTypes = useSelector(state => state.gameConfig.actionTypes);
   const [mode, setMode] = React.useState(false);
@@ -164,7 +164,6 @@ const Action = ({ action, toggleAssetInfo, hidebuttons, actionType }) => {
               {actionType.type !== 'Agenda' && actionType.maxAssets > 0 && <ActionResources
                 actionType={actionType}
                 assets={action.submission.assets}
-                toggleAssetInfo={toggleAssetInfo}
                 action={action._id}
               />}
 

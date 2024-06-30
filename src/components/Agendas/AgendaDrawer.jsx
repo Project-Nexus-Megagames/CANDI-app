@@ -45,18 +45,15 @@ const AgendaDrawer = (props) => {
           <Text>{selected?.name}</Text>
         </DrawerHeader>
         <DrawerBody align='center'>
-          {selected &&  
-          <Action
+          {selected &&
+            <Action
               action={selected}
               key={selected._id}
-              toggleAssetInfo={(asset) => {
-                  console.log({show: true, asset});
-              }}
               actionType={actionTypes.find(el => el.type === 'Agenda')}
               toggleEdit={(action) => {
-                  console.log({show: true, action})
+                console.log({ show: true, action })
               }}
-          />}
+            />}
           {/* {selected && <SelectedAction special={true} handleSelect={props.closeDrawer} selected={selected} />} */}
         </DrawerBody>
       </DrawerContent>

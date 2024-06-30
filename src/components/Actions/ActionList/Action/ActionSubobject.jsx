@@ -220,7 +220,6 @@ const ActionSubObject = (props) => {
             <ActionResources
               actionType={gameConfig.actionTypes.find(el => el.type === action.type)}
               assets={subObject.assets}
-              toggleAssetInfo={(data) => console.log(data)}
               action={subObject._id}
             />
           }

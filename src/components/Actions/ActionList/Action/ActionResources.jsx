@@ -7,7 +7,7 @@ import WordDivider from "../../../Common/WordDivider";
 import AssetCard from "../../../Common/AssetCard";
 import socket from "../../../../socket";
 
-function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
+function ActionResources({ assets, actionType, action }) {
   const assetList = useSelector(state => state.assets.list);
   const { isControl } = usePermissions();
   const [slots, setSlots] = React.useState([]);
@@ -80,7 +80,6 @@ function ActionResources({ assets, toggleAssetInfo, actionType, action }) {
         borderRadius={'10'}
         marginTop={'2rem'}
         minH="10vh"
-        onClick={() => retrievedAsset && toggleAssetInfo(retrievedAsset)}
       >
         {inner}
       </Flex>

@@ -11,9 +11,7 @@ import AssetForm from '../../Common/AssetForm';
 import CharacterListItem from '../../Common/CharacterListItem';
 import socket from '../../../socket';
 import LocationForm from '../../Locations/LocationForm';
-import CharacterTag from '../../Common/CharacterTag';
 import ResourceEffect from './ResourceEffect';
-import IceForm from '../../Common/IceForm';
 
 const NewEffects = (props) => {
   const [type, setType] = useState('');

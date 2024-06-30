@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag, TagCloseButton, TagLabel, VStack, Wrap } from '@chakra-ui/react';
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, Spacer, Tag, TagCloseButton, TagLabel, Tooltip, VStack, Wrap } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
@@ -101,6 +101,21 @@ const IceCard = (props) => {
                   <IconButton variant={'ghost'} onClick={() => setMode("consequence")} colorScheme="red" size={'sm'} icon={<FaSkullCrossbones />} />
                   <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} />
                 </ButtonGroup>}
+                <br />
+                {ice.consequences && ice.consequences.map(item =>
+                  <Tooltip
+                    key={item._id}
+                    label={'What will happen if you do not beat this complication'}
+                    aria-label='a tooltip'
+                    placement='top'
+                  >
+                    <Tag margin={'3px'} variant={'solid'} colorScheme='red'  >
+                      <img src="/images/injury.png" alt="injury" width={'35px'} style={{ margin: '3px 3px 3px 0px' }} />
+                      <TagLabel>{item.type} ({item.value})</TagLabel>
+
+                    </Tag>
+                  </Tooltip>
+                )}
 
               </Box>
 

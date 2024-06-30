@@ -11,7 +11,7 @@ import { getCharAccount } from '../../../redux/entities/accounts';
 import ResourceNugget from '../../Common/ResourceNugget';
 import { HiSave } from 'react-icons/hi';
 import { AddCharacter } from '../../Common/AddCharacter';
-import { getPublicPlayerCharacters } from '../../../redux/entities/characters';
+import { getPublicCharacters } from '../../../redux/entities/characters';
 
 /**
  * Form for a new ACTION
@@ -25,7 +25,7 @@ const ActionForm = (props) => {
   const { myCharacter } = useSelector((s) => s.auth);
   // const myCharacter = useSelector(getMyCharacter);
   const myAssets = useSelector(getMyAssets);
-  const playerCharacters = useSelector(getPublicPlayerCharacters);
+  const playerCharacters = useSelector(getPublicCharacters);
 
 
   const [effort, setEffort] = React.useState(defaultValue?.effort ? { effortType: defaultValue.effort.effortType, amount: defaultValue.effort.amount } : { effortType: 'Normal', amount: 0 });
