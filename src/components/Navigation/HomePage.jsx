@@ -76,7 +76,7 @@ const HomePage = (props) => {
         <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
       </GridItem>   */}
 
-      <GridItem onClick={() => {if (!play) reduxAction(toggleAuido());}} colSpan={columns == 1 ? 2 : 1}>
+      <GridItem  colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={actionImg} to="actions" title="~ Actions ~" body="Private Actions" />
       </GridItem>   
 

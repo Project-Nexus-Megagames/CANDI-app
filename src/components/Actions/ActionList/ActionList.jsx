@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { Box, Flex, StackDivider, Tag, VStack } from "@chakra-ui/react";
 import ActionTag from "./ActionTag";
 import CharacterNugget from '../../Common/CharacterNugget';
 import { getFadedColor } from '../../../scripts/frontend';
-import { useSelector } from 'react-redux';
 
 function ActionList({ actions, handleSelect, selected, renderRounds, rounds, handleRoundToggle }) {
   const tagStyle = (item) => {
@@ -23,19 +22,6 @@ function ActionList({ actions, handleSelect, selected, renderRounds, rounds, han
     }
   };
 
-  const sortedActions = (actions) => {
-    return actions
-      .sort((a, b) => {
-        // sort the catagories alphabetically
-        if (a.creator.characterName < b.creator.characterName) {
-          return -1;
-        }
-        if (a.creator.characterName > b.creator.characterName) {
-          return 1;
-        }
-        return 0;
-      })
-  }
 
   return (
     <VStack
