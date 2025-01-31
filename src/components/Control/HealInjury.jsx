@@ -3,12 +3,9 @@ import { useSelector } from 'react-redux'; // Redux store provider
 import socket from '../../socket';
 import _ from 'lodash';
 import { getCharacterById } from '../../redux/entities/characters';
-import { Box } from '@chakra-ui/layout';
-import { Button, ButtonGroup } from '@chakra-ui/button';
 import SelectPicker from '../Common/SelectPicker';
 import { CandiModal } from '../Common/CandiModal';
-import { Checkbox, CheckboxGroup } from '@chakra-ui/checkbox';
-import { Tag, TagLabel } from '@chakra-ui/react';
+import { Box, Tag, TagLabel, Button, ButtonGroup, Checkbox, CheckboxGroup } from '@chakra-ui/react';
 
 const HealInjury = ({ show, character, closeModal }) => {
   const characters = useSelector((state) => state.characters.list);

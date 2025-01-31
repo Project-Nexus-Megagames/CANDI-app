@@ -55,39 +55,22 @@ const Loading = ({controlMode}) => {
 		if (entities.characters.list.length > 0 && user && user !== undefined) {
 			console.log('Finished Loading????');
 
-			const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
-
-      let length = 100
-      if (user.username.toLowerCase() == 'ljtrigirl' ) {
-        length = 10000 * parseInt(entities.gamestate.round)
-        setMode(true)
-      }
-
-      const interval = setTimeout(() => {  
-        console.log("interval`````````````````````````````````````")
-        // quack() 
-
-        if (character0) {
-          reduxAction(setCharacter(character0));
-          reduxAction(finishLoading());
-        }
-
-      }, length);
-
+      const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
+      reduxAction(setCharacter(character0));
 		}
 	}, [characters, message]);
 
 
-	// useEffect(() => {
-	// 	console.log('Trigger B');
-	// 	if (teams.length > 0 && !team && myCharacter) {
-	// 		console.log('Finished Loading!!!!');
-	// 		const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
-	// 		reduxAction(setTeam(myTeam));
+	useEffect(() => {
+		console.log('Trigger B');
+		if (teams.length > 0 && !team && myCharacter) {
+			console.log('Finished Loading!!!!');
+			const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
 
-	// 		//reduxAction(finishLoading());
-	// 	}
-	// }, [myCharacter, message]);
+			reduxAction(setTeam(myTeam));
+			reduxAction(finishLoading());
+		}
+	}, [myCharacter, message]);
 
   const handleLogOut = async () => {
 		reduxAction(signOut())
@@ -102,19 +85,7 @@ const Loading = ({controlMode}) => {
 
 
 	return (
-		<div>
-      <CandiWarning 
-      siz
-      open={mode} 
-      title={"You asked for this :D"} 
-      onClose={() => setMode(false)} 
-      handleAccept={() => setMode(false)}
-      confirmText={'This is exactly what I asked for!'}
-      rejectText={'Damn you Scott! I shall have my revenge!'}
-      >
-        Hello LJ. As you requested I have made the login longer, but only for you. In fact I have made the length longer the more rounds in the game there are. Current wait time:
-        {10 * entities.gamestate.round} seconds
-      </CandiWarning>
+		<div >
 
       <Center>
         <Text fontSize={"x-large"} >{loadingTips[message]?.title}</Text> 

@@ -20,7 +20,6 @@ import {
   Stepper,
   Box,
 } from '@chakra-ui/react'
-import { useSteps } from '@chakra-ui/stepper';
 
 const CharacterCreation = (props) => {
   const blueprints = useSelector(s => s.blueprints.list);
@@ -32,12 +31,6 @@ const CharacterCreation = (props) => {
     { title: 'Inheritemce', description: 'Inheritemce' },
     { title: 'Character Details', description: 'Name, Species, and Goals' },
   ]
-
-
-  const { activeStep, setActiveStep } = useSteps({
-    index: 1,
-    count: steps.length,
-  })
 
   // _Character_
 
@@ -51,26 +44,6 @@ const CharacterCreation = (props) => {
         </ModalBody>
 
         <ModalFooter bg={'blue.500'}>
-          <Stepper width={"100vw"} size='lg' index={activeStep}>
-            {steps.map((step, index) => (
-              <Step key={index} onClick={() => setActiveStep(index)}>
-                <StepIndicator>
-                  <StepStatus
-                    complete={<StepIcon />}
-                    incomplete={<StepNumber />}
-                    active={<StepNumber />}
-                  />
-                </StepIndicator>
-
-                <Box flexShrink='0'>
-                  <StepTitle>{step.title}</StepTitle>
-                  <StepDescription>{step.description}</StepDescription>
-                </Box>
-
-                <StepSeparator />
-              </Step>
-            ))}
-          </Stepper>
 
           <Button variant='ghost'>Create Character!</Button>
         </ModalFooter>

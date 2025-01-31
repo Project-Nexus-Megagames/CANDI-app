@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux'; // Redux store provider
 import socket from '../../socket';
 import _ from 'lodash';
-import { getCharacterById } from '../../redux/entities/characters';
-import { Box } from '@chakra-ui/layout';
-import { Button, ButtonGroup } from '@chakra-ui/button';
-import SelectPicker from '../Common/SelectPicker';
 import { CandiModal } from '../Common/CandiModal';
-import { Checkbox, CheckboxGroup } from '@chakra-ui/checkbox';
-import { Input } from '@chakra-ui/react';
+import { Input, Button } from '@chakra-ui/react';
 import InputNumber from './InputNumber';
 
 export const AddInjury = ({ character, closeModal, show }) => {

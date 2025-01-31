@@ -12,6 +12,7 @@ const slice = createSlice({
 		nextTick: null,
 		tickNum: null,
 		paused: true,
+    curentTime: {minutes: 9, seconds: 9}
   },
   // Reducers - Events
   reducers: {
@@ -25,6 +26,8 @@ const slice = createSlice({
 			clock.gametime = action.payload.gametime;
 			clock.nextTick = action.payload.nextTick;
 			clock.tickNum = action.payload.tickNum;
+			clock.curentTime = action.payload.curentTime;
+      
 
       clock.loading = false;
       clock.lastFetch = Date.now();

@@ -1,4 +1,3 @@
-import { Divider } from '@chakra-ui/layout';
 import React, { useState } from 'react';
 import { CandiModal } from '../Common/CandiModal';
 
@@ -29,7 +28,6 @@ function AssetInfo({asset, showInfo, closeInfo}) {
 				<p>{asset.description}</p>
 				{asset.uses !== 999 && (
 					<React.Fragment>
-						<Divider/>{' '}
 						<div>
 							<b>Uses: {asset.uses}</b>{' '}
 						</div>

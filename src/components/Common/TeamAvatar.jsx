@@ -15,23 +15,14 @@ const TeamAvatar = (props) => {
   if (props.team) team = props.team;
   if (props.character) character = props.character;
 
-  if (account && (!team)) {
-    let acc = accounts.find(el => el._id === account);
-    team = acc?.team;
-  }
-
-  if (account && !team) {
-    let acc = accounts.find(el => el._id === account);
-    team = teams.find(el => el.characters.some(c => c?._id === acc.manager || c === acc.manager))    
-  }
-  
+  team = teams.find(el => el._id === team) 
 
   if (team)
 	return (
     <Tooltip openDelay={200} hasArrow placement='top' label={<div>
-      <p color='black' >{team.name}</p>
+      <p color='black' >{team.name} asdasdasdasdas</p>
       </div>}>
-        <Avatar size={size ? size : 'md'} bg={getFadedColor(team.name)} name={team.name} src={`/images/team/${team.name}.png`}>
+        <Avatar size={size ? size : 'md'} bg={getFadedColor(team.code)} name={team.name} src={`/images/team/${team.code}.png`}>
           {badge && <AvatarBadge boxSize='1.25em' bg={online ? 'green.500' : '#d4af37'} />}
         </Avatar>
     </Tooltip>

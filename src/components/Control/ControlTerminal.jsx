@@ -1,187 +1,216 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import socket from '../../socket';
 import Registration from './Registration';
-import { Box, Button, Center, HStack, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
-import ActionTable from './ActionTable';
-import GameConfig from '../GameConfig/GameConfig';
-import CharacterTab from './CharacterTab';
-import AssetTab from './AssetTab';
-import { CandiWarning } from '../Common/CandiWarning';
-import EditGamestate from './EditGamestate';
-import TeamTab from './TeamTab';
-import Loading from '../Navigation/Loading';
+import Contracts from '../Team/Contracts';
+import { getGamestateLogs } from '../../redux/entities/actionLogs';
+import { getTeamAccount } from '../../redux/entities/accounts';
+import LogRecords from '../Logs/LogRecords';
+import ResourceNugget from '../Common/ResourceNugget';
+import { PauseOutline, PlayOutline } from '@rsuite/icons';
+import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
+import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
+import { Box, Button, ButtonGroup, HStack, Divider, Grid, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, InputGroup } from '@chakra-ui/react';
+import SelectPicker from '../Common/SelectPicker';
+import WordDivider from '../Common/WordDivider';
+import AssetCard from '../Common/AssetCard';
+import InputNumber from '../Common/InputNumber';
+import Teams from './Teams';
+import Blueprints from './Blueprints';
+import { BsSave } from 'react-icons/bs';
+import { EditAccount } from '../Common/EditAccount';
+import { editTab } from '../../redux/entities/gamestate';
+
+const ControlDashboard = (props) => {
+	const reduxAction = useDispatch();
+	const { login, team, character, loading } = useSelector((s) => s.auth);
+	const { controlTab } = useSelector(s => s.gamestate);
+	const blueprints = useSelector((s) => s.blueprints.list);
+	const accounts = useSelector((s) => s.accounts.list);
+	const facilities = useSelector((s) => s.facilities.list);
+	const locations = useSelector(s => s.locations.list);
+	const subLocations = useSelector(s => s.locations.subLocations);
+	const clock = useSelector((s) => s.clock);
+	const gamestate = useSelector((s) => s.gamestate);
+	const govAccount = useSelector(getTeamAccount);
+
+	const logs = useSelector(getGamestateLogs);
+
+	let [account, setAccount] = React.useState(govAccount);
+	const navigate = useNavigate();
+	const [target, setTarget] = React.useState(govAccount?._id);
+	const [tab, setTab] = React.useState(0);
+	const [auctionType, setAuctionType] = React.useState(false);
+	const [amount, setAmount] = React.useState(0);
+	const [fill, setFilter] = React.useState('');
+	const [roundLength, setRoundLength] = React.useState(gamestate?.roundLength);
+
+	const tags = ['asset', 'contract', 'ice', 'facility',];
+
+	useEffect(() => {
+		if (target) setAccount(accounts.find((el) => el._id === target));
+	}, [target, accounts]);
+
+	useEffect(() => {
+		if (!login) navigate('/');
+	}, [login, navigate]);
+
+	const handleCreate = (code, amount = false) => {
+		if (amount) {
+			socket.emit('request', { route: 'transaction', action: 'deposit', data: { resource: code, amount, to: target } });
+		} else
+			socket.emit('request', {
+				route: 'asset',
+				action: 'create',
+				data: {
+					owner: target,
+					account: target,
+					amount: amount,
+					code
+				}
+			});
+	};
+
+	const handleNewAcution = () => {
+		socket.emit('request', { route: 'market', action: 'controlAuction', data: { blueprint: auctionType, amount } });
+	};
+
+	return (
+		<Tabs isLazy variant='enclosed' index={controlTab} onChange={(t) => reduxAction(editTab({ tab: 'controlTab', value: t }))}>
+			<TabList>
+				<Tab>DashBoard</Tab>
+				<Tab>Logs</Tab>
+				<Tab>Teams</Tab>
+				{/* <Tab>Actions</Tab> */}
+				<Tab>Contracts</Tab>
+				<Tab>Blueprints</Tab>
+				<Tab>Register</Tab>
+			</TabList>
+
+			<TabPanels>
+				<TabPanel>
+					<div style={{ height: 'calc(100vh - 160px)', overflow: 'auto', marginTop: '5px' }} >
+						<ButtonGroup isAttached>
+							<IconButton disabled icon={<ArrowLeftLineIcon />} onClick={() => socket.emit('request', { route: 'clock', action: 'revert' })} />
+							<IconButton
+								disabled={clock.paused}
+								icon={<PauseOutline />}
+								onClick={() => {
+									socket.emit('request', { route: 'clock', action: 'pause' });
+								}}
+							/>
+							<IconButton
+								disabled={!clock.paused}
+								icon={<PlayOutline />}
+								onClick={() => {
+									socket.emit('request', { route: 'clock', action: 'play' });
+								}}
+							/>
+							<IconButton icon={<ArrowRightLineIcon />} onClick={() => socket.emit('request', { route: 'clock', action: 'skip' })} />
+
+							<Button onClick={() => socket.emit('request', { route: 'clock', action: 'reset' })}>
+								Reset
+							</Button>
+							<Button onClick={() => socket.emit('request', { route: 'clock', action: 'redo' })}>
+								Redo {gamestate.lastTick}
+							</Button>
+						</ButtonGroup>
+
+						<HStack >
+							<InputNumber defaultValue={roundLength?.hours} onChange={(e) => setRoundLength({ ...roundLength, hours: parseInt(e) })} />
+							<InputNumber defaultValue={roundLength?.minutes} onChange={(e) => setRoundLength({ ...roundLength, minutes: parseInt(e) })} />
+							<InputNumber defaultValue={roundLength?.seconds} onChange={(e) => setRoundLength({ ...roundLength, seconds: parseInt(e) })} />
+							<IconButton variant={'solid'} colorScheme='green' icon={<BsSave />} onClick={() => socket.emit('request', { route: 'gamestate', action: 'editRoundLength', data: roundLength })} />
+						</HStack>
 
 
-const ControlTerminal = (props) => {
-  const { login, team, character, user } = useSelector(s => s.auth);
-  const assets = useSelector(s => s.assets.list);
+						Tick Num: {clock.tickNum}
+						{/* <div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101", margin: '1px' }}>
+							<InputPicker labelKey='name' valueKey='_id' data={accounts} value={target} style={{ height: '39px', width: '40%' }} onChange={(event)=> {setTarget(event); }} />
+						</div> */}
 
-  let [account, setAccount] = React.useState();
-  const [mode, setMode] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+						<Divider />
 
-  const navigate = useNavigate();
-  const [target, setTarget] = React.useState();
-  const [tab, setTab] = React.useState(0);
+						{/* Auction stuff
+             <Button onClick={() => setAuctionType('defense-contract')} >Defense Contract</Button>
+             <Button onClick={() => setAuctionType('consumer-contract')} >Consumer Contract</Button>
+             <Button onClick={() => setAuctionType('labor-contract')} >Labor Contract</Button>             
 
-  const [title, setTitle] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [gifLink, setGifLink] = React.useState('');
+             {auctionType && <Box>
+              <InputNumber
+                defaultValue="0"
+                onChange={(value) => setAmount(value)}
+              />
+              <Button onClick={handleNewAcution} >Create {auctionType}</Button>
+             </Box> } */}
 
-  const tags = ['dice', 'contract', 'ice']
+						<SelectPicker label='name' data={accounts} value={account?.name} onChange={(id) => setTarget(id)} />
 
-  useEffect(() => {
-    if (!login || !user)
-      navigate('/');
-  }, [login, navigate])
+						{account && <div>
+							{account.name}
+							<HStack>
+								{account.resources.filter(el => el.balance > 0).map((resource, index) => (
+									<ResourceNugget
+										fontSize={'1.5em'}
+										key={resource._id + index}
+										type={resource.code ? resource.code : resource.type}
+										value={resource.balance}
+										width={"100px"} />
+								))}
+							</HStack>
+						</div>}
 
-  const createLoadingTip = () => {
+						<Input value={fill} onChange={(e) => setFilter(e.target.value)} />
+						{account && <EditAccount account={account} />}
+						{account && tags.map((tag, index) => {
+							const relevant = blueprints.filter(el => el.tags.some(t => t === tag) && el.name.toLowerCase().includes(fill.toLowerCase()))
+							return (
+								<div key={tag}>
+									<WordDivider word={tag} />
+									<Grid style={{ minHeight: relevant.length > 0 ? '20vh' : '0' }} justify="space-around" align={'center'} gridTemplateRows={'1fr'} gap={4} templateColumns={`repeat(3, 1fr)`}>
+										{relevant.map((blue) => (
+											<Box style={{ width: '90%' }}>
+												<AssetCard handleSelect={() => handleCreate(blue.code)} asset={blue} disabled />
+											</Box>
+										))}
+									</Grid>
 
-    setLoading(true)
-    socket.emit('request', { route: 'gameConfig', action: 'createLoadingTip', data: {
-      title,
-      description,
-      gifLink
-    }}, (response) => {
-      console.log(response);
-      setLoading(false)
-    });
-  }
+								</div>
+							)
+						})}
+					</div>
+				</TabPanel>
 
-  const handleRound = () => {
-    const data = user.username;
-    socket.emit('request', { route: 'gamestate', action: 'nextRound', data });
-  }
+				<TabPanel>
+					<LogRecords reports={logs} />
+				</TabPanel>
 
-  const handleUnUseAll = () => {
-    const data = user.username;
-    socket.emit('request', { route: 'asset', action: 'unuseAll', data });
-  }
-
-  const handleResetEfferot = () => {
-    const data = user.username;
-    socket.emit('request', { route: 'character', action: 'resetEffort', data });
-  }
-
-  const handleClose = () => {
-    const data = user.username;
-    socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
-  }
-
-  const handleEffect = () => {
-    const data = user.username;
-    socket.emit('request', { route: 'gamestate', action: 'unhideEffects', data });
-  }
-
-  const handleUnhideAll = () => {
-    const data = user.username;
-    socket.emit('request', { route: 'asset', action: 'unhide', data });
-  }
-
-  return (
-    <Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
-      <TabList>
-        <Tab>DashBoard</Tab>
-        <Tab>Actions</Tab>
-        <Tab>Configuration</Tab>
-        <Tab>Register</Tab>
-        {<Tab>Characters</Tab>}
-        {<Tab>Assets</Tab>}
-        {user?.username.toLowerCase() === 'bobtheninjaman' && <Tab> * Teams</Tab>}
-      </TabList>
-
-      <TabPanels>
-
-        <TabPanel>
-          <div>
-
-            <Button variant={'solid'} colorScheme='teal' onClick={handleClose}>Close</Button>
-            <Button variant={'solid'} colorScheme='teal' onClick={() => setMode("edit")}>Edit Round</Button>
-            <Button variant={'solid'} colorScheme='teal' onClick={() => setMode("next")}>Next Round</Button>
-          </div>
-
-          {(user?.username.toLowerCase() === 'bobtheninjaman' || user?.username.toLowerCase() === 'franzi') && <div>
-            <Box>
-              Used Assets: {assets.filter(el => el.status.some(s => s === 'used')).length}
-              Working Assets: {assets.filter(el => el.status.some(s => s === 'working')).length}
-              Hidden Assets: {assets.filter(el => el.status.some(s => s === 'hidden')).length}
-            </Box>
-
-            <Button onClick={() => handleUnUseAll()} >Reset Assets</Button>
-            <Button onClick={() => handleUnhideAll()} >Unhide Assets</Button>
-            <Button onClick={() => handleResetEfferot()} >Reset Effort</Button>
-            <Button onClick={() => handleEffect()} >Unhide Effects</Button>
-          </div>}
-
-          <CandiWarning open={mode === "next"} title={"You sure about that?"} onClose={() => setMode(false)} handleAccept={() => { handleRound(); setMode(false); }}>
-            Are ya sure?
-          </CandiWarning>
-
-          <EditGamestate show={mode === 'edit'} onClose={() => setMode(false)} />
-
-          {/* Loading screen tips
-          <Center>
-
-            <Box width={'50%'} >
-              <Input placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)} />
-              <Input placeholder='Description' value={description} onChange={(e) => setDescription(e.target.value)} />
-              <Input placeholder='gifLink' value={gifLink} onChange={(e) => setGifLink(e.target.value)} />
-              <Button onClick={createLoadingTip} >Submit</Button>
-            </Box>
-
-            <Box>
-              Preview:
-              <Center>
-                <Text fontSize={"x-large"} >{title}</Text>
-              </Center>
-
-              <Center>
-                <img width={"350px"} src={gifLink} alt='Loading...' />
-              </Center>
-
-              <Center>
-                <Text fontSize={"lg"} >"{description}"</Text>
-              </Center>
-            </Box>        
-
-          </Center>
-
-          <Loading controlMode /> */}
-
-        </TabPanel>
-
-        <TabPanel>
-          <ActionTable />
-        </TabPanel>
-
-        <TabPanel>
-          <div style={{ width: '90%', height: '95vh' }}>
-            <GameConfig />
-          </div>
-        </TabPanel>
-
-        <TabPanel>
-          <Registration />
-        </TabPanel>
-
-        <TabPanel>
-          <CharacterTab />
-        </TabPanel>
-
-        <TabPanel>
-          <AssetTab />
-        </TabPanel>
-
-        <TabPanel>
-          <TeamTab />
-        </TabPanel>
+				<TabPanel>
+					<Teams />
+				</TabPanel>
 
 
-      </TabPanels>
-    </Tabs>
-  );
-}
+				{/* <TabPanel>
+					<Actions />
+				</TabPanel> */}
 
-export default (ControlTerminal);
+				<TabPanel>
+					<Contracts control={true} />
+				</TabPanel>
+
+				<TabPanel>
+					<Blueprints />
+				</TabPanel>
+
+				<TabPanel>
+					<Registration />
+				</TabPanel>
+
+
+			</TabPanels>
+		</Tabs>
+	);
+};
+
+export default ControlDashboard;

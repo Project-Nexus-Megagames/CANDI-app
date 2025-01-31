@@ -70,6 +70,8 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       auth.team = action.payload;
       // initConnection(auth.user, auth.team, auth.version);
+      
+      if (action.payload.name === 'Control Team') auth.control = true;
     },
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);

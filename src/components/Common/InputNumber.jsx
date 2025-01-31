@@ -13,11 +13,11 @@ const InputNumber = (props) => {
 
   const { defaultValue, onChange, min } = props;
   return ( 
-    <NumberInput min={min} onChange={(valueString) => onChange(parse(valueString))} defaultValue={format(defaultValue)} >
+    <NumberInput height={'100%'} allowMouseWheel size={'sm'} min={min} onChange={(valueString) => onChange(parse(valueString))} defaultValue={format(defaultValue)} >
       <NumberInputField />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
+      <NumberInputStepper >
+        <NumberIncrementStepper overflow='hidden' bg='green' color='white' />
+        <NumberDecrementStepper bg='tomato' color='white' />
       </NumberInputStepper>
     </NumberInput>
    );

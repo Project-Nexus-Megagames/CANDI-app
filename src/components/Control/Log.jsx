@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/layout';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
 import { getGameStateLog, getControlLog } from '../../redux/entities/log';
@@ -6,6 +5,7 @@ import { getDateTimeString } from '../../scripts/dateTime';
 
 import NavigationBar from '../Navigation/NavigationBar';
 import ControlLogEntry from './ControlLogEntry';
+import { Box } from '@chakra-ui/react';
 
 const Log = () => {
 	const [selectedCat, setSelectedCat] = useState('');

@@ -77,6 +77,13 @@ export const getTeamResearched = createSelector(
   )
 );
 
+export const getIce = createSelector(
+  state => state.blueprints.list,
+  (blueprints) => blueprints.filter(
+    blue => (blue.tags.some(tag => tag === 'ice') || blue.__t === "IceBlueprint")
+  )
+);
+
 const url = `${gameServer}api/blueprints`;
 
 // blueprints Loader into state

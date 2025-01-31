@@ -137,10 +137,17 @@ export const getLocationContracts = createSelector(
   )
 );
 
-export const getWorkers = createSelector(
-  state => state.assets.list.filter(el => el.account),
+export const getAthletes = createSelector(
+  state => state.assets.list,
   (assets) => assets.filter(
-    asset => (asset.tags.some(tag => tag === 'worker'))
+    asset => (asset.__t === "Athlete")
+  )
+);
+
+export const getDraft = createSelector(
+  state => state.assets.list,
+  (assets) => assets.filter(
+    asset => (asset.__t === "Draft")
   )
 );
 

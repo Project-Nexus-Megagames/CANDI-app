@@ -17,6 +17,11 @@ const slice = createSlice({
 		discovered: false,
 		play: false,
 		duck: false,
+		roundLength: { 
+			seconds: 0,
+			minutes: 0,
+			hours: 0
+		   },
 
 	},
 	// Reducers - Events
@@ -27,10 +32,14 @@ const slice = createSlice({
 		},
 		gamestateReceived: (gamestate, action) => {
 			console.log(`${action.type} Dispatched...`);
+
+			console.log(action.payload)
+
 			gamestate.round = action.payload.round;
 			gamestate.endTime = action.payload.endTime;
 			gamestate.status = action.payload.status;
 			gamestate.tag = action.payload.tag;
+			gamestate.roundLength = action.payload.roundLength;
 
 
 			gamestate.loading = false;
@@ -49,15 +58,19 @@ const slice = createSlice({
 			console.log(`${action.type} Dispatched`);
 			gamestate.duck = !gamestate.duck;
 		},
-    toggleAuido: (gamestate, action) => {
+		toggleLoading: (gamestate, action) => {
+			console.log(`${action.type} Dispatched`)
+			gamestate.loading = !gamestate.loading;
+		  },
+		  editTab: (gamestate, action) => {
 			console.log(`${action.type} Dispatched`);
-			gamestate.play = !gamestate.play;
-		}
+			gamestate[action.payload.tab] = action.payload.value;
+		  },
 	}
 });
 
 // Action Export
-export const { gamestateAdded, gamestateReceived, gamestateRequested, gamestateRequestFailed, toggleDuck, toggleAuido } = slice.actions;
+export const { gamestateAdded, gamestateReceived, gamestateRequested, gamestateRequestFailed, toggleDuck, toggleAuido, toggleLoading, editTab } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

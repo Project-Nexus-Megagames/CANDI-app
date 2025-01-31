@@ -1,9 +1,6 @@
-import { Button } from '@chakra-ui/button';
-import { Box } from '@chakra-ui/layout';
 import { IconButton, useDisclosure, ButtonGroup } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { PauseOutline, PlayOutline } from '@rsuite/icons';
 import { toggleAuido } from '../../redux/entities/gamestate';
 

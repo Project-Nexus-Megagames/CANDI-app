@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"; // React imports
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { Route, Routes, Navigate,} from 'react-router-dom';
-import { Alert, ChakraProvider, Grid, GridItem, useToast } from "@chakra-ui/react";
+import { Grid, GridItem, useToast } from "@chakra-ui/react";
 
 // import 'bootstrap/dist/css/bootstrap.css'; //only used for global nav (black bar)
 
@@ -16,7 +16,7 @@ import Log from "./components/Control/Log";
 
 import Login from "./components/Navigation/Login";
 import initUpdates from "./redux/initUpdate";
-import { getMyCharacter, loadCharacters } from "./redux/entities/characters";
+import { loadCharacters } from "./redux/entities/characters";
 import { loadAssets } from "./redux/entities/assets";
 import { loadLocations } from "./redux/entities/locations";
 import { loadGamestate } from "./redux/entities/gamestate";
@@ -34,20 +34,17 @@ import { loadLog } from "./redux/entities/log";
 import { ArticleAlert } from "./components/Common/ArticleAlert";
 import NavigationBar from "./components/Navigation/NavigationBar";
 import { loadAllActions } from "./redux/entities/playerActions";
-import { ErrorAlert } from "./components/Common/ErrorAlert";
-import { SuccessAlert } from "./components/Common/SuccessAlert";
-import loadState from './scripts/initState';
 import Loading from "./components/Navigation/Loading";
 import CharacterStats from "./components/StatDisplays/CharacterStats";
 import LocationDashboard from "./components/Locations/LocationDashboard";
 import Trade from "./components/Trade/Trade";
 import { alertAdded } from "./redux/entities/alerts";
 import store from "./redux/store";
-import { CandiAlert } from "./components/Common/CandiAlert";
 import LandingPage from "./components/Navigation/Landing/LandingPage";
 import NavBar from "./components/Navigation/Landing/NavBar";
-import { MemorialScroll } from "./components/Navigation/MemorialScroll";
 import { quack } from "./scripts/frontend";
+import Athletes from "./components/Assets/Athletes";
+import Draft from "./components/Assets/Draft";
 
 // React App Component
 initUpdates();
@@ -238,13 +235,15 @@ const App = (props) => {
               <Route exact path='/home/control' element={<ControlTerminal {...props} />} />
               <Route exact path='/home/trading' element={<Trade {...props} />} />
 
-
-              <Route exact path='/memorium' element={<MemorialScroll {...props} />} />
               <Route exact path='/log' element={<Log {...props} />} />
               <Route exact path='/404' element={<NotFound {...props} />} />
               <Route exact path='/no-character' element={<NoCharacter {...props} />} />
               <Route exact path='/registration' element={<Registration {...props} />} />
               <Route exact path='/down' element={<Down {...props} />} />
+
+              <Route exact path='/home/athletes' element={<Athletes {...props} />} />
+              <Route exact path='/home/draft' element={<Draft {...props} />} />
+
               <Route path="/" element={<Navigate to="/login" />}/>   
               <Route exact path='/404' element={<NotFound {...props} />} />      
             </Routes>    
