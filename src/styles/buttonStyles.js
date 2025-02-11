@@ -1,15 +1,14 @@
 const buttonStyles = {
 	baseStyle: {
-		mx: '0.25rem',
-		my: '0.5rem'
+
 	},
 	variants: {
 		primary: {
 			bg: 'purple.600',
 			color: 'white',
 			_hover: {
-				bg: 'purple.800',
-				color: 'gray.200'
+				bg: 'gray.200',
+				color: 'gray.800'
 			}
 		},
 		caution: {
@@ -21,7 +20,7 @@ const buttonStyles = {
 			}
 		},
 		outline: {
-      color: 'white',
+			color: 'white',
 			_hover: {
 				bg: 'gray.500'
 			}

@@ -67,6 +67,7 @@ const Loading = ({controlMode}) => {
 			console.log('Finished Loading!!!!');
 			const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
 
+      console.log(myCharacter, myTeam);
 			reduxAction(setTeam(myTeam));
 			reduxAction(finishLoading());
 		}

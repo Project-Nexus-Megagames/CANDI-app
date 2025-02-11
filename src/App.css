@@ -322,3 +322,9 @@ ul li {
     opacity: 100;
   }
 }
+
+.toggle-tag:hover {
+  opacity: .75;
+  text-align: center;
+  cursor: pointer;
+}

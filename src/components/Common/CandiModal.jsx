@@ -20,7 +20,7 @@ export const CandiModal = ({ open, title, onClose, onOpen, children, overlayClos
   }, [open]);
 
   return (
-    <Modal closeOnOverlayClick={overlayClose} scrollBehavior="inside" size="3xl" isOpen={isOpen} onClose={handleClose} isCentered>
+    <Modal closeOnOverlayClick={overlayClose} scrollBehavior="inside" size="3xl" isOpen={isOpen} onClose={handleClose} isCentered colorScheme="cyan">
       <ModalOverlay />
       <ModalContent bgColor="#343840">
         <ModalCloseButton size="sm" top="0px" right="0px" />

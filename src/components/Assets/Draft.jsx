@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import usePermissions from '../../hooks/usePermissions';
-import { Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Stack } from '@chakra-ui/react';
+import { Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer } from '@chakra-ui/react';
 import { Plus } from '@rsuite/icons';
 import AssetCard from '../Common/AssetCard';
 import { useSelector } from 'react-redux';
 import { getDraft } from '../../redux/entities/assets';
-import AthleteCard from '../Common/AthleteCard';
+import AthleteCard from './AthleteCard';
 import TeamAvatar from '../Common/TeamAvatar';
+import NexusTag from '../Common/NexusTag';
+import { getFadedColor } from '../../scripts/frontend';
+import DraftCard from './DraftCard';
 
 const Draft = (props) => {
     const { isControl } = usePermissions();
@@ -18,11 +21,15 @@ const Draft = (props) => {
 
     const toggleRound = (round) => {
         if (extended.some(el => el === round)) {
-            setExtended(extended.filter(el=> el !== round))
+            setExtended(extended.filter(el => el !== round))
         }
         else {
             setExtended([...extended, round])
         }
+    }
+
+    const handleSelect = () => {
+
     }
 
     return (
@@ -35,12 +42,17 @@ const Draft = (props) => {
             <GridItem pl='2' area={'nav'} >
                 <Stack>
                     {rounds.map(r => (
-                        <Box>
-                            <h5 onClick={()=> toggleRound(r)} style={{ backgroundColor: 'red'}} >Round: {r}</h5>
-                            
-                            {extended.some(el => el === r) && draft.filter(dra => dra.round === r).map(dra => (
-                                <Box> <TeamAvatar team={dra.teamOwner} /> {dra.name}</Box>
-                            ))}
+                        <Box >
+                            <h5 className={"toggle-tag"} onClick={() => toggleRound(r)} style={{ backgroundColor: getFadedColor('round', 0.2 * r) }} >Round: {r}</h5>
+
+                            <Wrap spacing='10px' justify='space-around'>
+                                {extended.some(el => el === r) && draft.filter(dra => dra.round === r).map(dra => {
+                                    return (
+                                        <DraftCard draft={dra} handleSelect={handleSelect} />
+                                    )
+                                })}
+                            </Wrap>
+
                         </Box>
                     ))}
                 </Stack>

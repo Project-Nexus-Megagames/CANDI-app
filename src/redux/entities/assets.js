@@ -82,39 +82,6 @@ export const getTeamDice = createSelector(
   )
 );
 
-export const getTeamAssets = createSelector(
-  state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (assets, account) => assets.filter(
-    asset => (asset.account === account?._id)
-  )
-);
-
-export const getTeamWorkers = createSelector(
-  state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (assets, account) => assets.filter(
-    asset => (asset.account === account?._id && asset.tags.some(tag => tag === 'worker'))
-  )
-);
-
-export const getTeamAgents = createSelector(
-  state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (assets, account) => assets.filter(
-    asset => (asset.account === account?._id && asset.tags.some(tag => tag === 'agent'))
-  )
-);
-
-export const getTeamBrokers = createSelector(
-  state => state.assets.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (assets, account) => assets.filter(
-    asset => (asset.account === account?._id && asset.tags.some(tag => tag === 'broker'))
-  )
-);
-
-
 export const getTeamContracts = createSelector(
   state => state.assets.list.filter(el => el.account),
   state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
@@ -150,6 +117,39 @@ export const getDraft = createSelector(
     asset => (asset.__t === "Draft")
   )
 );
+
+export const getTeamDraft = createSelector(
+  state => state.assets.list,
+  state => state.auth.team,
+  (assets, team) => assets.filter(
+    asset => (asset.__t === "Draft" && asset.teamOwner._id === team._id )
+  )
+);
+
+export const getReadyTeamDraft = createSelector(
+  state => state.assets.list,
+  state => state.auth.team,
+  (assets, team) => assets.filter(
+    asset => (asset.__t === "Draft" && asset.teamOwner._id === team._id && !asset.status.some(tag => tag === 'cooldown') && !asset.status.some(tag => tag === 'used'))
+  )
+);
+
+export const getTeamAssets = createSelector(
+  state => state.assets.list.filter(el => el.teamOwner),
+  state => state.auth.team,
+  (assets, team) => assets.filter(
+    asset => (asset.teamOwner?._id === team?._id)
+  )
+);
+
+export const getTeamAthletes = createSelector(
+  state => state.assets.list.filter(el => el.teamOwner),
+  state => state.auth.team,
+  (assets, team) => assets.filter(
+    asset => (asset.__t === "Athlete" && asset.teamOwner._id === team._id )
+  )
+);
+
 
 // assets Loader into state
 export const loadAssets = payload => (dispatch, getState) => {

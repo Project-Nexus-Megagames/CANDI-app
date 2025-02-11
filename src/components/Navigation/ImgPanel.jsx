@@ -21,7 +21,7 @@ const ImgPanel = (props) => {
 						src={props.img}
 						className={props.disabled ? 'image disabled' : 'image'}
 						height="auto"
-						alt="Failed to load img"
+						alt={`Failed to load img ${props.img}`}
 					/>
 				</div>
 				<h6

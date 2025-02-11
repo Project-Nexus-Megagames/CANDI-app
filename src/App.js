@@ -45,6 +45,7 @@ import NavBar from "./components/Navigation/Landing/NavBar";
 import { quack } from "./scripts/frontend";
 import Athletes from "./components/Assets/Athletes";
 import Draft from "./components/Assets/Draft";
+import TeamDashboard from "./components/Trade/TeamDashboard";
 
 // React App Component
 initUpdates();
@@ -243,6 +244,8 @@ const App = (props) => {
 
               <Route exact path='/home/athletes' element={<Athletes {...props} />} />
               <Route exact path='/home/draft' element={<Draft {...props} />} />
+              <Route exact path='/home/team' element={<TeamDashboard {...props} />} />
+              
 
               <Route path="/" element={<Navigate to="/login" />}/>   
               <Route exact path='/404' element={<NotFound {...props} />} />      

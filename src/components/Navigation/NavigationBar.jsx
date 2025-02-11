@@ -6,10 +6,13 @@ import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, Hamburge
 import { clockRequested } from '../../redux/entities/clock';
 import { getCharAccount, getTeamAccount } from '../../redux/entities/accounts';
 import { gamestateRequested, gamestateRequestFailed, toggleLoading } from '../../redux/entities/gamestate';
-import { Button, Divider, Menu, MenuButton, MenuList, MenuItem, Popover, PopoverContent, PopoverTrigger, Portal, Progress, Switch, VStack, IconButton, ButtonGroup } from '@chakra-ui/react';
+import { Button, Divider, Menu, MenuButton, MenuList, MenuItem, Popover, PopoverContent, PopoverTrigger, Portal, Progress, Switch, VStack, IconButton, ButtonGroup, Input } from '@chakra-ui/react';
 import { BsFillGearFill, BsPause, BsPlayFill } from "react-icons/bs"
 import ResourceNugget from '../Common/ResourceNugget';
-import { setCharacter, signOut } from '../../redux/entities/auth';
+import { setCharacter, setTeam, signOut } from '../../redux/entities/auth';
+import TeamCard from '../Common/TeamCard';
+import { CandiModal } from '../Common/CandiModal';
+import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
 
 // const mapStateToProps = state => ({
 // 	login: state.auth.login,
@@ -26,20 +29,27 @@ const NavBar = (props) => {
   const reduxAction = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, team, character, control } = useSelector(s => s.auth)
+  const { login, team, myCharacter, control } = useSelector(s => s.auth)
   const loading = useSelector(s => s.gamestate.loading)
+  const allCharacters = useSelector(state => state.characters.list);
+  const teams = useSelector(state => state.teams.list);
   const clock = useSelector(s => s.clock)
   const teamAccount = useSelector(getTeamAccount);
   const gamestate = useSelector(state => state.gamestate)
   const account = useSelector(getCharAccount);
+  
+  const myChar = useSelector(getMyCharacter);
+  const [selectedChar, setSelectedChar] = React.useState(myChar._id);
+  const currentCharacter = useSelector(getCharacterById(selectedChar));
 
   const [seconds, setSeconds] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [hours, setHours] = React.useState(0);
+  const [filter, setFilter] = React.useState('');
+  const [mode, setMode] = React.useState('');
 
   useEffect(() => { //equivalent of comonentDidMount
     if (clock) {
-      console.log(clock)
       const interval = setInterval(() => {
         let countDownDate = new Date(clock.nextTick).getTime();
         const now = new Date().getTime();
@@ -53,7 +63,7 @@ const NavBar = (props) => {
           clearInterval(interval);
           if (clock?.curentTime) {
             setSeconds(clock?.curentTime?.seconds);
-            setMinutes(clock?.curentTime?.minutes);            
+            setMinutes(clock?.curentTime?.minutes);
           }
 
         }
@@ -66,6 +76,12 @@ const NavBar = (props) => {
       return () => clearInterval(interval);
     }
   }, [clock])
+
+  useEffect(() => {
+    reduxAction(setCharacter(currentCharacter));
+    const myTeam = teams.find((el) => el.characters.some((user) => user._id == currentCharacter._id));
+    reduxAction(setTeam(myTeam));
+  }, [currentCharacter]);
 
   const rawr = account !== undefined ? account.resources.find(el => el.type === 'credit') : undefined
   const megabucks = rawr ? rawr.balance : 'Error w/ account';
@@ -81,6 +97,11 @@ const NavBar = (props) => {
     navigate('/login');
   };
 
+  const handleCharChange = (charId) => {
+    if (charId) {
+      setSelectedChar(charId);
+    } else setSelectedChar(myChar._id);
+  };
 
   return (
     <div style={{
@@ -137,7 +158,6 @@ const NavBar = (props) => {
           {hours}:{minutes <= 9 && <t>0</t>}{minutes}:{seconds <= 9 && <t>0</t>}{seconds} ~
           Round {gamestate.round} Pick: {clock.tickNum}
           <BsFillGearFill spin={clock.loading.toString()} onClick={() => { reduxAction(clockRequested()); socket.emit('request', { route: 'clock', action: 'getState' }); }} style={{ cursor: 'pointer', marginLeft: "5px" }} />
-          {control && <Switch isChecked={loading} onChange={() => reduxAction(toggleLoading())} />}
         </div>}
         {<Progress
           isIndeterminate={loading}
@@ -163,41 +183,33 @@ const NavBar = (props) => {
           </div>}
       </div>
 
-      <div style={{ textAlign: 'right', justifyContent: 'right', alignItems: 'right', width: '30%', marginRight: '10px', marginTop: '15px', }} >
-
-        {team && teamAccount &&
-          <div>
-            <Popover placement='left-start' trigger='hover' >
-              <PopoverTrigger>
-                <Button style={{ color: 'white' }} variant={'link'} size='sm' >{team.name} $({megabucksTeam}) </Button>
-              </PopoverTrigger>
-
-              <Portal  >
-                <PopoverContent style={{ backgroundColor: "#343840", maxHeight: '80vh', overflow: 'auto' }} width={"150px"} >
-                  <VStack divider={<Divider />} >
-                    {teamAccount.resources.filter(el => el.balance > 0).map((resource, index) => (
-                      <ResourceNugget
-                        fontSize={'2em'}
-                        key={resource._id + index}
-                        type={resource.code ? resource.code : resource.type}
-                        value={resource.balance}
-                        height={"20px"}
-                        width={"120px"} />
-                    ))}
-                  </VStack>
-                </PopoverContent>
-
-              </Portal>
-            </Popover>
-          </div>}
-
-        <br />
-
+      <div style={{ textAlign: 'right', justifyContent: 'right', alignItems: 'right', width: '16%', marginRight: '10px', marginTop: '15px', }} >
+        <TeamCard team={team} handleSelect={(()=> setMode('change'))} />
+        {myChar && myCharacter && myChar !== myCharacter && <Button size={'xs'} onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
         {!team && <Link style={{ color: 'white' }} to="/login">Sign In</Link>}
-
-        {/* <TeamAvatar size={'xs'} code={!team ? null : team.code} /> */}
       </div>
       <div />
+
+      <CandiModal open={mode === 'change'} onClose={()=> setMode(false)} >
+        <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
+
+        <VStack divider={<Divider />} overflow={"auto"} >
+          {allCharacters.filter(el => el.characterName.toLowerCase().includes(filter)).map(character => (
+            <Button
+              variant={"unstyled"}
+              key={character._id}
+              value={character._id}
+              _hover={{ bg: 'gray.400' }}
+              onClick={() => {
+                handleCharChange(character._id);
+                setMode(false)
+              }}
+            >
+              {character.characterName}
+            </Button>
+          ))}
+        </VStack>
+      </CandiModal>
     </div>
   )
 };

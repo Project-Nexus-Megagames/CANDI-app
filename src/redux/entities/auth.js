@@ -42,7 +42,7 @@ const slice = createSlice({
       console.log("jwt:")
       console.log(jwt)
 
-      localStorage.setItem('underground-token', jwt);
+      localStorage.setItem('draft-token', jwt);
       const user = jwtDecode(jwt);
     
       // if (user?.roles.some(el => el === "Control")) auth.control = true;
@@ -71,7 +71,7 @@ const slice = createSlice({
       auth.team = action.payload;
       // initConnection(auth.user, auth.team, auth.version);
       
-      if (action.payload.name === 'Control Team') auth.control = true;
+      if (action.payload?.name === 'Control Team') auth.control = true;
     },
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);

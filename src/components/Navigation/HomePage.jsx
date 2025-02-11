@@ -31,7 +31,7 @@ const HomePage = (props) => {
 	const navigate = useNavigate();
 	const reduxAction = useDispatch();
 
-	const { login, loadComplete, myCharacter, control } = useSelector(s => s.auth)
+	const { login, loadComplete, myCharacter, control, team } = useSelector(s => s.auth)
   const play = useSelector(state => state.gamestate.play);
   const actions = useSelector(state => state.actions.list)
   const gamestate = useSelector(state => state.gamestate)
@@ -67,9 +67,12 @@ const HomePage = (props) => {
 
       {myCharacter && <CharacterCreation />}
 
-      {loadComplete && myCharacter && 
-      <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>        
+      {loadComplete && myCharacter && team &&
+      <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>      
 
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={`/images/team/${team.code}.png`} to="team" body={'Manage team assets'} title="~ Team ~" />
+      </GridItem>  
       
       <GridItem colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={gcBanner} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
