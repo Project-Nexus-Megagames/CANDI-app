@@ -15,7 +15,7 @@ const TeamAvatar = (props) => {
     team = acc?.team;
   }
 
-  if (team._id === undefined) team = teams.find(el => el._id === team) 
+  if (team?._id === undefined) team = teams.find(el => el._id === team) 
 
 
   if (team)

@@ -6,7 +6,7 @@ const NexusTag = (props) => {
   const { value, variant, children, width } = props;
 
   const renderIcon = (icon) => {
-    switch (icon.toLowerCase()) {
+    switch (icon?.toLowerCase()) {
       case 'hidden':
         return (
           <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'

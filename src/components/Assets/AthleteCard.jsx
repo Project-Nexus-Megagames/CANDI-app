@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, IconButton, SimpleGrid, Spacer, Tag, Text } from '@chakra-ui/react';
+import { Avatar, AvatarBadge, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from '../Common/CandiWarning';
@@ -42,7 +42,6 @@ const AthleteCard = (props) => {
   const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
   const account = populateThisAccount(accounts, asset?.account)
   const team = getThisTeam(teams, account.manager);
-  const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
   const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
   const border = isHidden ? 'dotted' : 'solid'
 
@@ -60,31 +59,53 @@ const AthleteCard = (props) => {
           <CardHeader>
             <Flex align={'center'} overflow='hidden' width='100%'>
               <Spacer />
-              <Box>
 
-                <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(asset.type)}`, padding: '5px' }} display="flex"  >
-                  <Center >
-                    {character && <CharacterNugget size='lg' character={character} />}
-                    {asset.teamOwner && <TeamAvatar team={asset.teamOwner?._id} />}
+              <Stack>
+                <Avatar size={'xl'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
+                  {asset.teamOwner && <AvatarBadge boxSize='1.25em' bg={true ? 'green.500' : '#d4af37'}>
+                    <TeamAvatar team={asset.teamOwner?._id} />
+                  </AvatarBadge>}
+                </Avatar>
 
-                    <Box textAlign={'left'} marginLeft={'5px'} >
-                      "{asset.description}" - {asset.name}
-                      {control && showButtons && <ButtonGroup isAttached>
-                        <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'sm'} icon={<BsPencil />} />
-                        {/* <IconButton variant={'ghost'} onClick={() => setMode("delete")} colorScheme="red" size={'sm'} icon={<Trash />} /> */}
-                      </ButtonGroup>}
-                      <br />
-                      <Tag variant={'outline'} color={'green'} >{asset.position}</Tag>
-                      <Tag variant={'outline'} color={'green'} >Pop: {asset.popularity}</Tag>
-                      <Tag variant={'outline'} color={'orange'} >%{asset.robot}</Tag>
+                {showButtons && <ButtonGroup isAttached>
+                  {control &&
+                    <IconButton  variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'xs'} icon={<BsPencil />} />}
+                  {/* <Button onClick={() => setShow(!show)} >{!show ? "Show Stats" : "Hide Stats"}</Button> */}
+                  {drafts && <Button size={'xs'} isDisabled={drafts.length === 0 || asset?.teamOwner} onClick={() => setMode("draft")} >{"Draft"}</Button>}
+                </ButtonGroup>}
+              </Stack>
 
 
-                      {<CountDownTag timeout={asset.timeout} />}
-                    </Box>
-                  </Center>
-                </div>
 
-              </Box>
+              <Spacer />
+
+              <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(asset.type)}`, padding: '5px' }} display="flex"  >
+                <Center >
+
+                  <Box textAlign={'left'} marginLeft={'5px'} >
+
+                    <HStack marginBottom={'3px'} >
+                      <Text as='u' fontSize={'lg'} casing={'capitalize'} >{asset.name}</Text>
+
+                      <Text as='kbd' fontSize={'md'} casing={'capitalize'}>{asset.species}</Text>
+
+                      {asset.tags.map((el, index) => (
+                        <Tag key={index} variant={'solid'} colorScheme={el.color}>
+                          {el}
+                        </Tag>
+                      ))}
+                    </HStack>
+
+                    <SimpleGrid columns={3} spacing={1}>
+                      {asset.stats.map((stat, index) => (
+                        <Tag variant={'outline'} key={stat._id} color={stat.color} >{stat.name} - {stat.statAmount}</Tag>
+                      ))}
+                    </SimpleGrid>
+
+                    {<CountDownTag timeout={asset.timeout} />}
+                  </Box>
+                </Center>
+              </div>
 
               {removeAsset && showRemove && <IconButton variant={'outline'} onClick={removeAsset} colorScheme="red" size={'sm'} icon={<Close />} />}
 
@@ -104,12 +125,6 @@ const AthleteCard = (props) => {
             </Flex>
 
           </CardHeader>
-          <Text fontWeight="light">Last Season Highlight: {asset.last_season_highlight}</Text>
-          {showButtons && <ButtonGroup isAttached>
-            <Button onClick={() => setShow(!show)} >{!show ? "Show Stats" : "Hide Stats"}</Button>
-            {drafts && <Button isDisabled={drafts.length === 0 || asset.teamOwner} onClick={() => setMode("draft")} >{"Draft"}</Button>}
-          </ButtonGroup>}
-
 
           {show && <CardBody style={{ paddingTop: '0px' }} >
 

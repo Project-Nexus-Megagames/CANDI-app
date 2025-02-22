@@ -119,7 +119,7 @@ export const getDraft = createSelector(
 );
 
 export const getTeamDraft = createSelector(
-  state => state.assets.list,
+  state => state.assets.list.filter(el => el.teamOwner),
   state => state.auth.team,
   (assets, team) => assets.filter(
     asset => (asset.__t === "Draft" && asset.teamOwner._id === team._id )
@@ -127,7 +127,7 @@ export const getTeamDraft = createSelector(
 );
 
 export const getReadyTeamDraft = createSelector(
-  state => state.assets.list,
+  state => state.assets.list.filter(el => el.teamOwner),
   state => state.auth.team,
   (assets, team) => assets.filter(
     asset => (asset.__t === "Draft" && asset.teamOwner._id === team._id && !asset.status.some(tag => tag === 'cooldown') && !asset.status.some(tag => tag === 'used'))

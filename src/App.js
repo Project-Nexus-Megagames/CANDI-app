@@ -45,7 +45,7 @@ import NavBar from "./components/Navigation/Landing/NavBar";
 import { quack } from "./scripts/frontend";
 import Athletes from "./components/Assets/Athletes";
 import Draft from "./components/Assets/Draft";
-import TeamDashboard from "./components/Trade/TeamDashboard";
+import TeamDashboard from "./components/Team/TeamDashboard";
 
 // React App Component
 initUpdates();
