@@ -17,7 +17,7 @@ import AssetForm from '../Common/AssetForm';
 
 
 const AthleteCard = (props) => {
-  const { showButtons = false, handleSelect, drafts = false, removeAsset, showRemove, stats, filterTags, } = props;
+  const { showButtons = false, handleSelect, drafts = false, removeAsset, showRemove, stats, filterTags, compact } = props;
   const [mode, setMode] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -37,7 +37,7 @@ const AthleteCard = (props) => {
     });
   };
 
-  const asset = props.asset._id ? props.asset : assets.find(el => el._id === props.asset)
+  const asset = props.asset?._id ? props.asset : assets.find(el => el._id === props.asset)
 
   const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
   const account = populateThisAccount(accounts, asset?.account)
@@ -61,9 +61,9 @@ const AthleteCard = (props) => {
               <Spacer />
 
               <Stack>
-                <Avatar size={'xl'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
+                <Avatar size={compact ? 'md' : 'xl'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
                   {asset.teamOwner && <AvatarBadge boxSize='1.25em' bg={true ? 'green.500' : '#d4af37'}>
-                    <TeamAvatar team={asset.teamOwner?._id} />
+                    <TeamAvatar size={compact ? 'xs' : 'md'} team={asset.teamOwner?._id} />
                   </AvatarBadge>}
                 </Avatar>
 
@@ -96,11 +96,11 @@ const AthleteCard = (props) => {
                       ))}
                     </HStack>
 
-                    <SimpleGrid columns={3} spacing={1}>
+                    {!compact && <SimpleGrid columns={3} spacing={1}>
                       {asset.stats.map((stat, index) => (
                         <Tag variant={'outline'} key={stat._id} color={stat.color} >{stat.name} - {stat.statAmount}</Tag>
                       ))}
-                    </SimpleGrid>
+                    </SimpleGrid>}
 
                     {<CountDownTag timeout={asset.timeout} />}
                   </Box>

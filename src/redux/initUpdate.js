@@ -15,6 +15,7 @@ import { clockReceived } from './entities/clock';
 import { actionDeleted, playerActionUpdated } from './entities/playerActions';
 import { blueprintUpdated } from './entities/blueprints';
 import { articleDeleted, articleUpdated } from './entities/articles';
+import { eventUpdated } from './entities/events';
 
 
 const initUpdates = () => {
@@ -72,6 +73,11 @@ const initUpdates = () => {
                         break;
                     case 'GameState':
                         store.dispatch(gamestateReceived(el));
+                        break;
+                    case 'event':
+                    case 'match':
+                    case 'Event':
+                        store.dispatch(eventUpdated(el));
                         break;
                     default:
                         console.log(`Unable to updateClients Redux for ${el.model}: ${el._id}`);

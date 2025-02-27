@@ -70,7 +70,7 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled
         <VStack divider={<Divider />} style={{ overflow: 'scroll', }} justify="space-around" align={'center'}  >
           {filteredAssets.map((ass) => (
             <Box key={ass._id} style={{ width: '100%', cursor: 'pointer' }}>
-              <AssetCard handleSelect={() => { handleSelect(ass); CloseModal(); }} asset={ass} />
+              <AssetCard handleSelect={() => { handleSelect(ass);  }} asset={ass} />
             </Box>
           ))}
         </VStack>

@@ -6,12 +6,6 @@ import ImgPanel from './ImgPanel';
 
 // import aang from '../Images/aang.jpg'
 import other from '../Images/other.jpg';
-import news from '../Images/News.jpg';
-import actionImg from '../Images/actions.jpg';
-import map from '../Images/location.png'; 
-import lore from '../Images/lore.jpg'; 
-import control from '../Images/control.png';
-import agendas from '../Images/agenda.jpg';
 import gcBanner from '../Images/gcBanner.png';
 import rules from '../Images/rules.png';
 
@@ -20,12 +14,9 @@ import rules from '../Images/rules.png';
 import { setCharacter } from '../../redux/entities/auth';
 import Loading from './Loading';
 import { useNavigate } from 'react-router';
-import usePermissions from '../../hooks/usePermissions';
-import { CandiWarning } from '../Common/CandiWarning';
 import { openLink } from '../../scripts/frontend';
 import NoCharacter from './NoCharacter';
 import CharacterCreation from '../MyCharacters/CharacterCreation';
-import { toggleAuido } from '../../redux/entities/gamestate';
 
 const HomePage = (props) => {
 	const navigate = useNavigate();
@@ -88,9 +79,13 @@ const HomePage = (props) => {
         <ImgPanel img={other} to="draft" title={'~ Draft ~'} body="Draft order" />
       </GridItem>   
 
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={other} to="matches" title={'~ Matches ~'} body="Upcoming Goblin Ball Matches" />
+      </GridItem>   
+
+      {/* <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
         <ImgPanel img={rules} to="" title="~ Rules ~" body="Learn how to play the game"/>
-      </GridItem>
+      </GridItem> */}
 
       {control && <GridItem colSpan={columns} >
           <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />

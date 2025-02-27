@@ -15,6 +15,7 @@ import { loadGamestate } from '../redux/entities/gamestate';
 import { loadGameConfig } from '../redux/entities/gameConfig';
 import { loadArticles } from '../redux/entities/articles';
 import { loadAllActions } from '../redux/entities/playerActions';
+import { loadEvents } from '../redux/entities/events';
 
 
 let loader = {
@@ -33,6 +34,7 @@ let loader = {
 	trades: loadTrades,
 	gamestate: loadGamestate,
 	gameConfig: loadGameConfig,
+	events: loadEvents
 }
 
 //Get all objects from DB collections and store to redux state

@@ -16,6 +16,7 @@ import actionLogs from './entities/actionLogs';
 import ice from './entities/ice';
 import facilities from './entities/facilities';
 import actions from './entities/playerActions';
+import events from './entities/events';
 
 
 
@@ -39,4 +40,5 @@ export default combineReducers({
   locations,
   teams,
   trades,
+  events,
 });
