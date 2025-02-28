@@ -1,4 +1,4 @@
-import { CreditCardPlus } from "@rsuite/icons";
+import { CreditCardPlus  } from "@rsuite/icons";
 import React from "react";
 import {
   Box,
@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { getFadedColor } from "../../scripts/frontend";
 import ResourceNugget from "../Common/ResourceNugget";
+import { StarIcon } from "@chakra-ui/icons";
 
 const getTime = (date) => {
   let countDownDate = new Date(date).getTime();
@@ -76,80 +77,6 @@ const TransactionLog = props => {
   );
 };
 
-// TODO - Research log should be fleshed out for March.
-// const ResearchLog = props => {
-//   let { outcomes, rolls, _id, team, type, timestamp, lab, funding, stats, progress, project } = props.report;
-//   if (props.report.project === null) console.log(props.report)
-//   let date = new Date(props.report.date);
-//   if (timestamp === undefined) timestamp = {turn: 'void', phase: 'uncertian', clock: '00:00'};
-
-//   let results = [];
-//   for (let i = 0; i < rolls.length; i++) {
-//     let outcome = `Roll #${i + 1} | ${outcomes[i]} - Die Result: ${rolls[i]}`;
-//     results.push(outcome);
-//   }
-//   return (
-//     <Timeline.Item key={_id} dot={<Icon icon="flask" size="2x" />}>
-//       <Panel
-//         style={{
-//           padding: "0px",
-//           backgroundImage: "linear-gradient(to bottom right, #d6eaf8, #fff)"
-//         }}
-//         header={`${type} - ${team.code} | ${timestamp.turn} ${timestamp.phase} - ${timestamp.clock} Date: ${date.toLocaleTimeString()} - ${date.toDateString()}`}
-//         collapsible
-//       >
-// 				<FlexboxGrid>
-//           <FlexboxGrid.Item colSpan={12}>
-//             <div>
-//               {/* <Whisper placement="top" speaker={teamSpeaker} trigger="click">
-//                 <IconButton size="xs" icon={<Icon icon="info-circle" />} />
-//               </Whisper> */}
-//               <b> Team:</b> {team.name} | <b>Science Rate:</b> {team.sciRate}
-//             </div>
-//             <div>
-//               {/* <Whisper placement="top" speaker={labSpeaker} trigger="click">
-//                 <IconButton size="xs" icon={<Icon icon="info-circle" />} />
-//               </Whisper> */}
-//               <b> Lab:</b> {lab.name} | <b>Science Rate:</b> {lab.sciRate}
-//             </div>
-//             <div>
-//               {/* <Whisper placement="top" speaker={fundingSpeaker} trigger="click">
-//                 <IconButton size="xs" icon={<Icon icon="info-circle" />} />
-//               </Whisper> */}
-//               <b>Funding Level:</b> {funding}
-//             </div>
-//           </FlexboxGrid.Item>
-//           <FlexboxGrid.Item colSpan={12}>
-//           <div>
-//               {/* <Whisper placement="top" speaker={amountSpeaker} trigger="click">
-//                 < size="xs" icon={<Icon icon="info-circle" />} />
-//               </Whisper> */}
-//               <b> Multiplyer:</b> {stats.finalMultiplyer}
-//             </div> 
-//             <div>
-//               {/* <Whisper placement="top" speaker={noteSpeaker} trigger="click">
-//                 <IconButton size="xs" icon={<Icon icon="info-circle" />} />
-//               </Whisper> */}
-//               <b> Breakthroughs:</b> {stats.breakthroughCount}</div>
-//               <div>
-//               {/* <Whisper placement="top" speaker={noteSpeaker} trigger="click">
-//                 <IconButton size="xs" icon={<Icon icon="info-circle" />} />
-//               </Whisper> */}
-//               <b> Progress:</b> {progress.endingProgress}</div>
-//           </FlexboxGrid.Item>
-//         </FlexboxGrid>
-//         <p><b>Active Project:</b> {project.name}</p>
-//           <ul>
-//             {results.map(el => (
-//               <li key={el}>{el}</li>
-//             ))}
-//           </ul>
-//       </Panel>
-//     </Timeline.Item>
-//   );
-// };
-
-// TODO - This trade log needs to be filled out...
 const TradeLog = props => {
   let { report } = props;
   let date = new Date(report.date);
@@ -284,59 +211,31 @@ const ProductionLog = props => {
 
     <StepSeparator />
   </Step>
-    // <Timeline.Item
-    //   key={report._id}
-    //   dot={<Numbers/>}
-    // >
-    //   <Panel
-    //     style={{
-    //       padding: "0px",
-    //       border: `3px solid ${getFadedColor(report.facility.type, .5)}`,
-    //       backgroundColor: getFadedColor(report.facility.type, .1), color: 'white',
-    //     }}
-		// 		header={
-    //       <FlexboxGrid  align='space-between' justify="start">
-    //       <FlexboxGrid.Item style={{ margin: '5px' }} >
-    //        <ResourceNugget  value={1} type={report.produced.code} />
-    //       </FlexboxGrid.Item>
-
-    //       <FlexboxGrid.Item >
-		// 				<div className={"container"}>
-		// 					<img className={''} src={`/images/arrow.png`} height="60" alt='Failed to load img' />
-		// 					<div className="centerLog" >{report.__t}</div>
-		// 				</div>
-		// 				</FlexboxGrid.Item>
-
-    //         <FlexboxGrid.Item colSpan={4}>
-
-    //         </FlexboxGrid.Item>
-
-    //       <FlexboxGrid.Item colSpan={8}>
-    //        <b>({getTime(report.createdAt)})</b>
-    //       </FlexboxGrid.Item>
-    //     </FlexboxGrid>
-    //   }
-    //     collapsible
-    //   >
-    //     <FlexboxGrid>
-    //       <FlexboxGrid.Item colSpan={12}>
-    //         <div>
-    //           <b> Resource:</b> <ResourceNugget  value={1} type={report.produced.code} />
-    //         </div> 
-    //         <div>
-    //           <b> Account:</b> {report.account}</div>
-    //       </FlexboxGrid.Item>
-    //       <FlexboxGrid.Item colSpan={12}>
-    //       <div>
-    //           <b> facility:</b> {report.facility.name}
-    //         </div> 
-    //         <div>
-    //           <b> Note:</b> {report.note}</div>
-    //       </FlexboxGrid.Item>
-    //     </FlexboxGrid>
-    //   </Panel>
-    // </Timeline.Item>
   );
 };
 
-export {  TransactionLog, MarketLog, TradeLog, ProductionLog };
+const EventLog = props => {
+  let { report } = props;
+	
+  return (
+  <Step key={report._id} width={'100%'} >
+    <StepIndicator >
+      <StepStatus
+        complete={<StarIcon/>}
+        incomplete={<StepNumber />}
+        active={<StepNumber />}
+      />
+    </StepIndicator>
+
+    <Box flexShrink='0' style={{  margin: "2px", padding: "5px", border: `2px solid ${getFadedColor(report.transaction)}`, width: '95%', maxWidth: '88%'   }}  >
+      <StepTitle>Round {report.round}: {report.text}</StepTitle>
+      <StepDescription>{<b>({getTime(report.createdAt)})</b>}</StepDescription>      
+      
+    </Box>
+
+    <StepSeparator />
+  </Step>
+  );
+};
+
+export {  TransactionLog, MarketLog, TradeLog, ProductionLog, EventLog };

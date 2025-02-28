@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Grid, GridItem, Input, IconButton, StackDivider, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, Button, StatDownArrow, StatUpArrow } from '@chakra-ui/react';
+import { Grid, GridItem, Input, IconButton, StackDivider, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, Button, StatDownArrow, StatUpArrow, ButtonGroup } from '@chakra-ui/react';
 import { getFadedColor } from '../../scripts/frontend';
 import TeamAvatar from '../Common/TeamAvatar';
 import NexusTag from '../Common/NexusTag';
@@ -9,6 +9,7 @@ import { ArrowDownIcon } from '@chakra-ui/icons';
 import { AddAsset } from '../Common/AddAsset';
 import { getTeamAssets, getTeamAthletes } from '../../redux/entities/assets';
 import socket from '../../socket';
+import LogRecords from '../Logs/LogRecords';
 
 const MatchCard = ({ match, handleSelect }) => {
     const blueprints = useSelector(s => s.blueprints.list);
@@ -67,10 +68,15 @@ const MatchCard = ({ match, handleSelect }) => {
                 </Stack>
             </Flex>
 
-            {mode !== "expand" && <IconButton size={'xs'} onClick={() => setMode("expand")} rounded="full" icon={<StatDownArrow />} />}
-            {mode === "expand" && <IconButton size={'xs'} onClick={() => setMode(false)} rounded="full" icon={<StatUpArrow />} />}
+            <ButtonGroup isAttached>
+                {mode && <Button onClick={() => setMode("roster")} variant={mode === 'roster' ? 'solid' : 'outline'} colorScheme='blue' size={'xs'} >Roster</Button>}
+                {!mode && <IconButton size={'xs'} onClick={() => setMode("roster")} rounded="full" icon={<StatDownArrow />} />}
+                {mode && <IconButton size={'xs'} variant={'solid'} colorScheme='red' onClick={() => setMode(false)} icon={<StatUpArrow />} />}
+                {mode && <Button onClick={() => setMode("logs")} variant={mode === 'logs' ? 'solid' : 'outline'} colorScheme='orange' size={'xs'} >Logs</Button>}
 
-            {mode === "expand" && <Flex style={{ backgroundColor: '#13151a', }} >
+            </ButtonGroup>
+
+            {mode === 'roster' && <Flex style={{ backgroundColor: '#13151a', }} >
 
                 <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                     {array.map((slot, index) => (
@@ -101,6 +107,10 @@ const MatchCard = ({ match, handleSelect }) => {
                 </Stack>
 
             </Flex>}
+
+            {mode === 'logs' && <Stack>
+                <LogRecords reports={match.logs} />
+            </Stack>}
 
         </div>
     );
