@@ -15,7 +15,7 @@ const Login = (props) => {
 	const navigate = useNavigate();
   const toast = useToast();
 
-	const loginToken = localStorage.getItem("underground-token");
+	const loginToken = localStorage.getItem("draft-token");
   useEffect(() => {
 		if (loginToken && loginToken !== null && loginToken !== undefined && loginToken !== 'undefined' && props.login === false) {
 			console.log('Attempting to token login!');
