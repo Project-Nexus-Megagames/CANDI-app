@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import usePermissions from '../../hooks/usePermissions';
-import { Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer } from '@chakra-ui/react';
+import { Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, WrapItem } from '@chakra-ui/react';
 import { Plus } from '@rsuite/icons';
 import AssetCard from '../Common/AssetCard';
 import { useSelector } from 'react-redux';
@@ -15,12 +15,12 @@ import { useNavigate } from 'react-router-dom';
 
 const Matches = (props) => {
     const { isControl } = usePermissions();
-        const gamestate = useSelector(state => state.gamestate);
+    const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
-    const [extended, setExtended] = useState([7,9,11,13,15,17,19].filter(el => el > gamestate.round));
+    const [extended, setExtended] = useState([7, 9, 11, 13, 15, 17, 19].filter(el => el > gamestate.round));
     const events = useSelector(state => state.events.list)
-    const rounds = [7,9,11,13,15,17,19]
+    const rounds = [7, 9, 11, 13, 15, 17, 19]
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -55,10 +55,12 @@ const Matches = (props) => {
                         <Box key={r} >
                             <h5 className={"toggle-tag"} onClick={() => toggleRound(r)} style={{ backgroundColor: getFadedColor('round', 0.2 * r) }} >Round: {r}</h5>
 
-                            <Wrap spacing='10px' justify='space-around'>
+                            <Wrap spacing='5px' justify='space-around'>
                                 {extended.some(el => el === r) && events.filter(dra => dra.round === r).map(match => {
                                     return (
-                                        <MatchCard key={match._id} match={match} />
+                                        <WrapItem key={match._id} width={"40vw"} >
+                                            <MatchCard match={match} />
+                                        </WrapItem>
                                     )
                                 })}
                             </Wrap>

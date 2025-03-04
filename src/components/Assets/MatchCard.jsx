@@ -42,7 +42,7 @@ const MatchCard = ({ match, handleSelect }) => {
                 backgroundColor: '#1a1d24',
                 margin: '3px',
                 padding: '3px',
-                minWidth: '350px',
+                minWidth: '40vw',
             }}
             onClick={() => (handleSelect && !disabled) ? handleSelect(match) : console.log((handleSelect && !disabled))}
         >
