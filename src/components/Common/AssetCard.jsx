@@ -92,54 +92,6 @@ const AssetCard = (props) => {
                       </Wrap>
                     </Box>
                   </Center>
-
-
-
-
-
-                  {asset.sharedWith.length > 0 && <p>Shared with:</p>}
-                  {asset.sharedWith.length > 0 && asset.sharedWith.map(char =>
-                    <Tag margin={'2px'} key={char._id} variant={'solid'} colorScheme='telegram' >
-                      <Avatar
-                        size={'xs'}
-                        name={char?.characterName}
-                        src={char?.profilePicture}
-                        margin='1'
-                      />
-                      <TagLabel>
-                        {char.characterName}</TagLabel>
-                      {(character?._id === asset.ownerCharacter || character.account === asset.account) &&
-                        <TagCloseButton onClick={() => {
-                          const data = {
-                            id: asset._id,
-                            charId: char._id
-                          };
-                          socket.emit('request', {
-                            route: 'asset',
-                            action: 'removeShared',
-                            data
-                          });
-                        }}
-                        />}
-                    </Tag>
-                  )}
-
-                  {!disabled && mode === 'lend' && <AddCharacter
-                    characters={characters.filter(el => !asset.sharedWith.some(ass => ass?._id === el._id))}
-                    isDisabled={asset.lendUses <= asset.sharedWith.length}
-                    handleSelect={(character) => {
-                      const data = {
-                        id: asset._id,
-                        charId: character._id
-                      };
-                      socket.emit('request', {
-                        route: 'asset',
-                        action: 'addShared',
-                        data
-                      });
-                    }}
-                  />}
-
                 </div>
 
                 {control && showButtons && <ButtonGroup isAttached>

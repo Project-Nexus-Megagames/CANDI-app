@@ -42,7 +42,7 @@ const MatchCard = ({ match, handleSelect }) => {
                 backgroundColor: '#1a1d24',
                 margin: '3px',
                 padding: '3px',
-                minWidth: '350px'
+                minWidth: '350px',
             }}
             onClick={() => (handleSelect && !disabled) ? handleSelect(match) : console.log((handleSelect && !disabled))}
         >
@@ -66,6 +66,7 @@ const MatchCard = ({ match, handleSelect }) => {
                 <Stack>
                     <TeamAvatar size={"xl"} team={match.awayTeam?._id} />
                 </Stack>
+                <Spacer />
             </Flex>
 
             <ButtonGroup isAttached>
@@ -76,41 +77,54 @@ const MatchCard = ({ match, handleSelect }) => {
 
             </ButtonGroup>
 
-            {mode === 'roster' && <Flex style={{ backgroundColor: '#13151a', }} >
+            {mode === 'roster' &&
+                <Flex
+                    style={{
+                        backgroundColor: '#13151a',
+                        maxHeight: '40vh',
+                        overflow: 'auto'
+                    }}
+                >
 
-                <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
-                    {array.map((slot, index) => (
-                        <div key={index} >
-                            {match.homeRoster[index] && <AthleteCard asset={match.homeRoster[index]} compact />}
-                            {!match.homeRoster[index] &&
-                                <div>
-                                    <b>Slot {index + 1}</b>
-                                    {isHome && <AddAsset assets={athletes} handleSelect={addRoster} />}
-                                </div>}
-                        </div>
-                    ))}
-                </Stack>
+                    <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
+                        {array.map((slot, index) => (
+                            <div key={index} >
+                                {match.homeRoster[index] && <AthleteCard asset={match.homeRoster[index]} compact />}
+                                {!match.homeRoster[index] &&
+                                    <div>
+                                        <b>Slot {index + 1}</b>
+                                        {isHome && <AddAsset assets={athletes} handleSelect={addRoster} />}
+                                    </div>}
+                            </div>
+                        ))}
+                    </Stack>
 
-                <Spacer />
+                    <Spacer />
 
-                <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
-                    {array.map((slot, index) => (
-                        <div key={index} >
-                            {match.awayRoster[index] && <AthleteCard asset={match.awayRoster[index]} compact />}
-                            {!match.awayRoster[index] &&
-                                <div>
-                                    <b>Slot {index + 1}</b>
-                                    {isVisitor && <AddAsset assets={athletes} handleSelect={addRoster} />}
-                                </div>}
-                        </div>
-                    ))}
-                </Stack>
+                    <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
+                        {array.map((slot, index) => (
+                            <div key={index} >
+                                {match.awayRoster[index] && <AthleteCard asset={match.awayRoster[index]} compact />}
+                                {!match.awayRoster[index] &&
+                                    <div>
+                                        <b>Slot {index + 1}</b>
+                                        {isVisitor && <AddAsset assets={athletes} handleSelect={addRoster} />}
+                                    </div>}
+                            </div>
+                        ))}
+                    </Stack>
 
-            </Flex>}
+                </Flex>}
 
-            {mode === 'logs' && <Stack>
-                <LogRecords reports={match.logs} />
-            </Stack>}
+            {mode === 'logs' &&
+                <Stack
+                    style={{
+                        backgroundColor: '#13151a',
+                        maxHeight: '40vh',
+                        overflow: 'auto'
+                    }}>
+                    <LogRecords reports={match.logs} />
+                </Stack>}
 
         </div>
     );

@@ -15,11 +15,12 @@ import { useNavigate } from 'react-router-dom';
 
 const Matches = (props) => {
     const { isControl } = usePermissions();
+        const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
-    const [extended, setExtended] = useState([5, 6]);
+    const [extended, setExtended] = useState([7,9,11,13,15,17,19].filter(el => el > gamestate.round));
     const events = useSelector(state => state.events.list)
-    const rounds = [5, 6, 7, 8, 9, 10]
+    const rounds = [7,9,11,13,15,17,19]
 
     const navigate = useNavigate();
     useEffect(() => {

@@ -72,6 +72,7 @@ const App = (props) => {
 
     head.appendChild(link);
     await (loadGameConfig())
+    socket.emit('request', { route: 'clock', action: 'getState' })
     return () => {
       setTimeout(() => head.removeChild(link), 2000);
     };

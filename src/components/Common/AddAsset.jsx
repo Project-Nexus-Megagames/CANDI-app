@@ -15,6 +15,7 @@ import AssetCard from "./AssetCard";
 import { CandiModal } from "./CandiModal";
 import { populateThisAccount } from "../../scripts/frontend";
 import { useSelector } from "react-redux";
+import AthleteCard from "../Assets/AthleteCard";
 
 export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
@@ -56,21 +57,13 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled
       <CandiModal open={isOpen} onClose={() => handleClose()}  >
 
         <Input style={{ width: '94%' }} value={fill} onChange={(e) => setFilter(e.target.value)} placeholder={`${assets.length} Assets`} />
-        {uniqueAccountIdsArray && uniqueAccountIdsArray.length > 1 && uniqueAccountIdsArray.map(account => (
-          <Button
-            onClick={() => setSelectedAccount(account)}
-            variant={selectedAccount?._id === account._id ? 'solid' : 'ghost'}
-            key={account?._id}
-            colorScheme={selectedAccount?._id === account._id ? 'green' : 'teal'}
-          >
-            {account?.name}
-          </Button>
-        ))}
+
         <Divider />
         <VStack divider={<Divider />} style={{ overflow: 'scroll', }} justify="space-around" align={'center'}  >
           {filteredAssets.map((ass) => (
             <Box key={ass._id} style={{ width: '100%', cursor: 'pointer' }}>
-              <AssetCard handleSelect={() => { handleSelect(ass);  }} asset={ass} />
+              {ass.__t === "Athlete" && <AthleteCard handleSelect={() => { handleSelect(ass);  }} asset={ass} compact />}
+              {/* <AssetCard handleSelect={() => { handleSelect(ass);  }} asset={ass} /> */}
             </Box>
           ))}
         </VStack>

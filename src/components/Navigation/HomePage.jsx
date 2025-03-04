@@ -4,12 +4,6 @@ import { Grid, GridItem, Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { getCharacterById } from '../../redux/entities/characters';
 import ImgPanel from './ImgPanel';
 
-// import aang from '../Images/aang.jpg'
-import other from '../Images/other.jpg';
-import gcBanner from '../Images/gcBanner.png';
-import rules from '../Images/rules.png';
-
-
 //import { Link } from 'react-router-dom';
 import { setCharacter } from '../../redux/entities/auth';
 import Loading from './Loading';
@@ -62,25 +56,25 @@ const HomePage = (props) => {
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>      
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={`/images/team/${team.code}.png`} to="team" body={'Manage team assets'} title="~ Team ~" />
+        <ImgPanel backgroundColor={team.color} img={`/images/team/${team.code}.png`} to="team" body={'Manage team assets'} title="~ Team ~" />
       </GridItem>  
       
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={gcBanner} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
+        <ImgPanel backgroundColor="#cb904d" img={"/images/panels/trophy.png"} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
       </GridItem>  
 
 
       
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={other} to="athletes" title={'~ Athletes~'} body="players available to be drafted" />
+        <ImgPanel backgroundColor="#499797" img={"/images/panels/skills.png"} to="athletes" title={'~ Athletes~'} body="players available to be drafted" />
       </GridItem>    
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={other} to="draft" title={'~ Draft ~'} body="Draft order" />
+        <ImgPanel backgroundColor="#8C271E" img={"/images/panels/card-pick.png"} to="draft" title={'~ Draft ~'} body="Draft order" />
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={other} to="matches" title={'~ Matches ~'} body="Upcoming Goblin Ball Matches" />
+        <ImgPanel backgroundColor="#432534" img={"/images/panels/matches.png"} to="matches" title={'~ Matches ~'} body="Upcoming Goblin Ball Matches" />
       </GridItem>   
 
       {/* <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
@@ -88,7 +82,7 @@ const HomePage = (props) => {
       </GridItem> */}
 
       {control && <GridItem colSpan={columns} >
-          <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
+          <ImgPanel img={"/images/panels/trophy"} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
       </GridItem>}
 
 

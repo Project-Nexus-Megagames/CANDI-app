@@ -65,13 +65,13 @@ const url = `${gameServer}api/assets`;
 export const getMyUsedAssets = createSelector(
   (state) => state.assets.list,
   state => state.auth.myCharacter,
-  (assets, char) => assets.filter((asset) => (asset.owner === char.characterName || asset.sharedWith.some(char => char._id === char._id)) && asset.some(s => s === 'used') && asset.uses <= 0)
+  (assets, char) => assets.filter((asset) => (asset.owner === char.characterName) && asset.some(s => s === 'used') && asset.uses <= 0)
 );
 
 export const getMyAssets = createSelector(
   (state) => state.assets.list,
   state => state.auth.character,
-  (assets, char) => assets.filter((asset) => asset.account === char.account || asset.sharedWith.some(c => c._id == char._id))
+  (assets, char) => assets.filter((asset) => asset.account === char.account )
 );
 
 export const getTeamDice = createSelector(
@@ -147,6 +147,13 @@ export const getTeamAthletes = createSelector(
   state => state.auth.team,
   (assets, team) => assets.filter(
     asset => (asset.__t === "Athlete" && asset.teamOwner._id === team._id )
+  )
+);
+
+export const getDraftableAthletes = createSelector(
+  state => state.assets.list,
+  (assets) => assets.filter(
+    asset => (asset.__t === "Athlete" && !asset.teamOwner)
   )
 );
 

@@ -1,23 +1,59 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer } from '@chakra-ui/react';
 import { getFadedColor } from '../../scripts/frontend';
 import TeamAvatar from '../Common/TeamAvatar';
 import NexusTag from '../Common/NexusTag';
 import AthleteCard from './AthleteCard';
+import { AddAsset } from '../Common/AddAsset';
+import { getDraftableAthletes } from '../../redux/entities/assets';
+import socket from '../../socket';
 
 const DraftCard = ({ draft, handleSelect }) => {
     const blueprints = useSelector(s => s.blueprints.list);
-    const { login, team, character } = useSelector(s => s.auth);
+    const { login, team, control } = useSelector(s => s.auth);
+    const athletes = useSelector(getDraftableAthletes);
     const disabled = draft?.status?.some(el => el.toLowerCase() === ('cooldown'));
     const border = disabled ? 'dotted' : 'solid';
+    const [loading, setLoading] = useState(false);
+
+    const quePick = (choiceNum, athlete) => {
+        setLoading(true)
+        socket.emit('request', { 
+            route: 'asset', 
+            action: 'choiceDraft', 
+            data: { 
+                athlete: athlete._id, 
+                draft: draft._id, 
+                choiceNum
+             }}, 
+                (response) => {
+            console.log(response);
+            setLoading(false)
+        })
+    }
+
+    const removeChoice = (choiceNum) => {
+        setLoading(true)
+        socket.emit('request', { 
+            route: 'asset', 
+            action: 'removeChoice', 
+            data: { 
+                draft: draft._id, 
+                choiceNum
+             }}, 
+                (response) => {
+            console.log(response);
+            setLoading(false)
+        })
+    }
 
     return (
         <div key={draft._id}
             style={{
                 textAlign: 'center',
                 width: "20vw",
-                border: `3px ${border} ${getFadedColor(draft.type)}`,
+                border: `3px ${border} ${getFadedColor('draft')}`,
                 backgroundColor: '#1a1d24',
                 minWidth: '350px'
             }}
@@ -37,7 +73,16 @@ const DraftCard = ({ draft, handleSelect }) => {
                 <Spacer />
             </Flex>
 
-            {draft.picked && <AthleteCard asset={draft.picked} />}
+            {draft.picked && <AthleteCard asset={draft.picked} compact />}
+            {disabled && (team._id === draft.teamOwner._id || control) && !draft.picked && <Box>
+                First Choice
+                {!draft.firstChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)}/>}
+                {draft.firstChoice && <AthleteCard asset={draft.firstChoice} compact showRemove removeAsset={() => removeChoice('firstChoice', false)} />}
+                
+                Second Choice
+                {!draft.secondChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)}/>}
+                {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact />}
+                </Box>}
         </div>
     );
 }

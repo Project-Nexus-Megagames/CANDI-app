@@ -15,8 +15,10 @@ const slice = createSlice({
 		resourceTypes: [],
 		characterStats: [],
 		characterTags: [],
+		athleteTags: [],
 		globalStats: [],
-		loadingTips: [],
+		species: [],
+		athleteStats: [],
 		layout: []
 	},
 	// Reducers - Events
@@ -33,8 +35,12 @@ const slice = createSlice({
 			gameConfig.resourceTypes = action.payload.resourceTypes;
 			gameConfig.characterStats = action.payload.characterStats;
 			gameConfig.globalStats = action.payload.globalStats;
-			gameConfig.loadingTips = action.payload.loadingTips;
+
+
+			gameConfig.species = action.payload.species;
+			gameConfig.athleteStats = action.payload.athleteStats;
 			gameConfig.characterTags = action.payload.characterTags;
+			gameConfig.athleteTags = action.payload.athleteTags;
 			gameConfig.loading = false;
 			gameConfig.lastFetch = Date.now();
 			gameConfig.loaded = true;

@@ -13,9 +13,10 @@ import DraftCard from './DraftCard';
 
 const Draft = (props) => {
     const { isControl } = usePermissions();
+    const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
-    const [extended, setExtended] = useState([1]);
+    const [extended, setExtended] = useState([1, 2, 3, 4, 5].filter(el => el > gamestate.round));
     const draft = useSelector(getDraft);
     const rounds = [1, 2, 3, 4, 5]
 
@@ -38,7 +39,7 @@ const Draft = (props) => {
             gridTemplateColumns={'100%'}
             gap='1'
             fontWeight='bold'>
-
+{gamestate.tickNum}
             <GridItem pl='2' area={'nav'} >
                 <Stack>
                     {rounds.map(r => (

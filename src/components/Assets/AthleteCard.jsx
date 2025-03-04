@@ -9,7 +9,7 @@ import { CandiModal } from '../Common/CandiModal';
 import { BsPencil } from 'react-icons/bs';
 import { Close, Trash } from '@rsuite/icons';
 import CountDownTag from '../Common/CountDownTag';
-import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
+import { getFadedColor, getTextColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import CharacterNugget from '../Common/CharacterNugget';
 import DraftCard from './DraftCard';
 import TeamAvatar from '../Common/TeamAvatar';
@@ -69,7 +69,7 @@ const AthleteCard = (props) => {
 
                 {showButtons && <ButtonGroup isAttached>
                   {control &&
-                    <IconButton  variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'xs'} icon={<BsPencil />} />}
+                    <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'xs'} icon={<BsPencil />} />}
                   {/* <Button onClick={() => setShow(!show)} >{!show ? "Show Stats" : "Hide Stats"}</Button> */}
                   {drafts && <Button size={'xs'} isDisabled={drafts.length === 0 || asset?.teamOwner} onClick={() => setMode("draft")} >{"Draft"}</Button>}
                 </ButtonGroup>}
@@ -89,16 +89,33 @@ const AthleteCard = (props) => {
 
                       <Text as='kbd' fontSize={'md'} casing={'capitalize'}>{asset.species}</Text>
 
-                      {asset.tags.map((el, index) => (
+                      {!compact && asset.tags.map((el, index) => (
                         <Tag key={index} variant={'solid'} colorScheme={el.color}>
                           {el}
                         </Tag>
                       ))}
                     </HStack>
 
-                    {!compact && <SimpleGrid columns={3} spacing={1}>
+                    {<SimpleGrid columns={3}>
                       {asset.stats.map((stat, index) => (
-                        <Tag variant={'outline'} key={stat._id} color={stat.color} >{stat.name} - {stat.statAmount}</Tag>
+                        <Tag
+                          variant={'outline'}
+                          key={stat._id}
+                          size={compact ? "sm" : "lg"}
+                          style={{
+                            backgroundColor: getFadedColor(stat.code, stat.statAmount / 8 + 0.4),
+                            color: getTextColor(stat.name),
+                            border: `1px solid white`,
+                            borderRadius: '0'
+                          }} >
+                          <Avatar
+                            src={stat.code === "CON" ? "/images/stats/HP.png" :`/images/stats/${stat.code}.png`}
+                            name={stat.code}
+                            size='xs'
+                            ml={-1}
+                            mr={2}
+                          /> {!compact && stat.code} {stat.statAmount}
+                        </Tag>
                       ))}
                     </SimpleGrid>}
 
@@ -112,12 +129,6 @@ const AthleteCard = (props) => {
               <Spacer />
             </Flex>
 
-            {filterTags && filterTags.map(el => (
-              <Tag variant={'solid'} colorScheme={'red'}>
-                {el.property}: {asset[el.property]}
-              </Tag>
-            ))}
-
             <Flex align={'center'} overflow='hidden' width='100%' >
               {asset.tags?.map(el => (
                 <NexusTag key={el} value={el}></NexusTag>
@@ -125,18 +136,6 @@ const AthleteCard = (props) => {
             </Flex>
 
           </CardHeader>
-
-          {show && <CardBody style={{ paddingTop: '0px' }} >
-
-            <SimpleGrid spacing={1} columns={2}>
-              {stats.map((el, index) => (
-                <Tag key={index} variant={'solid'} colorScheme={el.color}>
-                  {el.name}: {asset[el.property]}
-                </Tag>
-              ))}
-            </SimpleGrid>
-
-          </CardBody>}
 
         </Card>
 

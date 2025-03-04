@@ -13,7 +13,8 @@ const ImgPanel = (props) => {
 					position: 'relative',
 					margin: '10px',
 					height: '42vh',
-					overflow: 'hidden'
+					overflow: 'hidden',
+					backgroundColor: props.backgroundColor || 'inherit'
 				}}
 			>
 				<div className="container">
@@ -21,6 +22,7 @@ const ImgPanel = (props) => {
 						src={props.img}
 						className={props.disabled ? 'image disabled' : 'image'}
 						height="auto"
+						width={"100%"}
 						alt={`Failed to load img ${props.img}`}
 					/>
 				</div>
