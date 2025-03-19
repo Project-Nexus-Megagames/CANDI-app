@@ -11,7 +11,7 @@ import ResourceNugget from '../Common/ResourceNugget';
 import { PauseOutline, PlayOutline } from '@rsuite/icons';
 import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
-import { Box, Button, ButtonGroup, HStack, Divider, Grid, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, InputGroup } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, HStack, Divider, Grid, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, InputGroup, InputLeftAddon } from '@chakra-ui/react';
 import SelectPicker from '../Common/SelectPicker';
 import WordDivider from '../Common/WordDivider';
 import AssetCard from '../Common/AssetCard';
@@ -45,6 +45,8 @@ const ControlDashboard = (props) => {
 	const [amount, setAmount] = React.useState(0);
 	const [fill, setFilter] = React.useState('');
 	const [roundLength, setRoundLength] = React.useState(gamestate?.roundLength);
+	const [tickNum, setTickNum] = React.useState(clock.tickNum);
+	const [tickPerRound, setTickPerRound] = React.useState(gamestate.tickPerRound);
 
 	const tags = ['asset', 'contract', 'ice', 'facility',];
 
@@ -124,26 +126,27 @@ const ControlDashboard = (props) => {
 							<IconButton variant={'solid'} colorScheme='green' icon={<BsSave />} onClick={() => socket.emit('request', { route: 'gamestate', action: 'editRoundLength', data: roundLength })} />
 						</HStack>
 
+						<HStack >
+							<InputGroup size='sm' border={'1px solid red'} width={'200px'} >
+								<InputLeftAddon bgColor={'red'} >Tick Number</InputLeftAddon>
+								<InputNumber defaultValue={clock.tickNum} onChange={(e) => setTickNum(parseInt(e))} />
+							</InputGroup>
 
-						Tick Num: {clock.tickNum}
-						{/* <div style={{ height: '40px', borderRadius: '0px', backgroundColor: "#000101", margin: '1px' }}>
-							<InputPicker labelKey='name' valueKey='_id' data={accounts} value={target} style={{ height: '39px', width: '40%' }} onChange={(event)=> {setTarget(event); }} />
-						</div> */}
+							<InputGroup size='sm' border={'1px solid blue'} width={'200px'} >
+								<InputLeftAddon bgColor={'blue'} >Tick Per Round</InputLeftAddon>
+								<InputNumber defaultValue={gamestate.tickPerRound} onChange={(e) => setTickPerRound(parseInt(e))} />
+							</InputGroup>
+
+							<IconButton
+								variant={'solid'}
+								colorScheme='green'
+								icon={<BsSave />}
+								onClick={() => socket.emit('request', { route: 'gamestate', action: 'editTick', data: { tickNum, tickPerRound } })}
+							/>
+						</HStack>
+
 
 						<Divider />
-
-						{/* Auction stuff
-             <Button onClick={() => setAuctionType('defense-contract')} >Defense Contract</Button>
-             <Button onClick={() => setAuctionType('consumer-contract')} >Consumer Contract</Button>
-             <Button onClick={() => setAuctionType('labor-contract')} >Labor Contract</Button>             
-
-             {auctionType && <Box>
-              <InputNumber
-                defaultValue="0"
-                onChange={(value) => setAmount(value)}
-              />
-              <Button onClick={handleNewAcution} >Create {auctionType}</Button>
-             </Box> } */}
 
 						<SelectPicker label='name' data={accounts} value={account?.name} onChange={(id) => setTarget(id)} />
 
@@ -163,22 +166,7 @@ const ControlDashboard = (props) => {
 
 						<Input value={fill} onChange={(e) => setFilter(e.target.value)} />
 						{account && <EditAccount account={account} />}
-						{account && tags.map((tag, index) => {
-							const relevant = blueprints.filter(el => el.tags.some(t => t === tag) && el.name.toLowerCase().includes(fill.toLowerCase()))
-							return (
-								<div key={tag}>
-									<WordDivider word={tag} />
-									<Grid style={{ minHeight: relevant.length > 0 ? '20vh' : '0' }} justify="space-around" align={'center'} gridTemplateRows={'1fr'} gap={4} templateColumns={`repeat(3, 1fr)`}>
-										{relevant.map((blue) => (
-											<Box style={{ width: '90%' }}>
-												<AssetCard handleSelect={() => handleCreate(blue.code)} asset={blue} disabled />
-											</Box>
-										))}
-									</Grid>
 
-								</div>
-							)
-						})}
 					</div>
 				</TabPanel>
 

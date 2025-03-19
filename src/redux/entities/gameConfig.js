@@ -35,6 +35,7 @@ const slice = createSlice({
 			gameConfig.resourceTypes = action.payload.resourceTypes;
 			gameConfig.characterStats = action.payload.characterStats;
 			gameConfig.globalStats = action.payload.globalStats;
+			gameConfig.matchRounds = action.payload.matchRounds;
 
 
 			gameConfig.species = action.payload.species;

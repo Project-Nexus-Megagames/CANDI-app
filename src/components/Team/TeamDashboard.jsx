@@ -8,6 +8,8 @@ import LogRecords from '../Logs/LogRecords';
 import { getMyTeamLogs } from '../../redux/entities/actionLogs';
 import AthleteCard from '../Assets/AthleteCard';
 import DraftCard from '../Assets/DraftCard';
+import MatchesCarosel from './MatchesCarosel';
+import { getTeamMatches } from '../../redux/entities/events';
 
 
 const TeamDashboard = () => {
@@ -17,6 +19,7 @@ const TeamDashboard = () => {
   const drafts = useSelector(getTeamDraft);
   const athletes = useSelector(getTeamAthletes);
   const myLogs = useSelector(getMyTeamLogs);
+  const matches = useSelector(getTeamMatches);
 
   // const [tabIndex, setTab] = React.useState(0);
 
@@ -47,8 +50,8 @@ const TeamDashboard = () => {
         <LogRecords reports={myLogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))} />
       </GridItem>
 
-      <GridItem area={'account'} bg='orange.300'>
-        <Box>Account Section</Box>
+      <GridItem area={'account'} bg='orange.400'>
+        <MatchesCarosel matches={matches} />
       </GridItem>
 
       <GridItem area={'drafts'} bg='#0f131a'>

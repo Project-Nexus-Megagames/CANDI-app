@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, AvatarBadge, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { Avatar, AvatarBadge, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from '../Common/CandiWarning';
@@ -14,6 +14,7 @@ import CharacterNugget from '../Common/CharacterNugget';
 import DraftCard from './DraftCard';
 import TeamAvatar from '../Common/TeamAvatar';
 import AssetForm from '../Common/AssetForm';
+import StatIcon from './StatIcon';
 
 
 const AthleteCard = (props) => {
@@ -98,23 +99,17 @@ const AthleteCard = (props) => {
 
                     {<SimpleGrid columns={3}>
                       {asset.stats.map((stat, index) => (
-                        <Tag
+                        <Tag key={stat._id}
                           variant={'outline'}
-                          key={stat._id}
                           size={compact ? "sm" : "lg"}
                           style={{
                             backgroundColor: getFadedColor(stat.code, stat.statAmount / 8 + 0.4),
                             color: getTextColor(stat.name),
                             border: `1px solid white`,
                             borderRadius: '0'
-                          }} >
-                          <Avatar
-                            src={stat.code === "CON" ? "/images/stats/HP.png" :`/images/stats/${stat.code}.png`}
-                            name={stat.code}
-                            size='xs'
-                            ml={-1}
-                            mr={2}
-                          /> {!compact && stat.code} {stat.statAmount}
+                          }}>
+                          <StatIcon stat={stat} compact={compact} />
+                          {!compact && stat.code} {stat.statAmount}
                         </Tag>
                       ))}
                     </SimpleGrid>}

@@ -6,7 +6,7 @@ import { apiCallBegan } from '../api'; // Import Redux API call
 const slice = createSlice({
 	name: 'gamestate',
 	initialState: {
-		version: '5.6.15 - The End',
+		version: '5.6',
 		loading: false,
 		loaded: false,
 		lastFetch: null,
@@ -40,6 +40,7 @@ const slice = createSlice({
 			gamestate.status = action.payload.status;
 			gamestate.tag = action.payload.tag;
 			gamestate.roundLength = action.payload.roundLength;
+			gamestate.tickPerRound = action.payload.tickPerRound;
 
 
 			gamestate.loading = false;

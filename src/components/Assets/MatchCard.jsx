@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Grid, GridItem, Input, IconButton, StackDivider, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, Button, StatDownArrow, StatUpArrow, ButtonGroup } from '@chakra-ui/react';
+import { Grid, GridItem, Input, IconButton, StackDivider, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, Button, StatDownArrow, StatUpArrow, ButtonGroup, Tag } from '@chakra-ui/react';
 import { getFadedColor } from '../../scripts/frontend';
 import TeamAvatar from '../Common/TeamAvatar';
 import NexusTag from '../Common/NexusTag';
@@ -10,9 +10,10 @@ import { AddAsset } from '../Common/AddAsset';
 import { getTeamAssets, getTeamAthletes } from '../../redux/entities/assets';
 import socket from '../../socket';
 import LogRecords from '../Logs/LogRecords';
+import StatIcon from './StatIcon';
 
 const MatchCard = ({ match, handleSelect }) => {
-    const blueprints = useSelector(s => s.blueprints.list);
+    const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
     const { login, team, character } = useSelector(s => s.auth);
     const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState(false);
@@ -58,7 +59,18 @@ const MatchCard = ({ match, handleSelect }) => {
 
                 <Stack textAlign={'center'} width={'60%'} >
                     <Text noOfLines={1} fontSize='4xl'>{match.homeScore} - {match.awayScore}</Text>
-                    <Text noOfLines={1} marginTop={'-15px'} fontSize='md'>{match.status}</Text>
+                    <Text noOfLines={1} marginTop={'-15px'} fontSize='md'>{match.status} ({match.scheduledTick})</Text>
+                    {matchRounds.filter(el => el.public).map((round, index) => (<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} key={round._id} colorScheme='green' variant={'solid'} >
+                        <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
+                        <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
+                        {round.name}
+                    </Tag>))}
+
+                    {match.facility?.specialRounds.map((round, index) => (<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} key={round._id} colorScheme='green' variant={'solid'} >
+                        <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
+                        <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
+                        {round.name}
+                    </Tag>))}
                 </Stack>
 
                 <Spacer />

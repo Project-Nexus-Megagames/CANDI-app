@@ -57,10 +57,10 @@ export default slice.reducer; // Reducer Export
 const url = `${gameServer}api/events`;
 
 // // Selector
-export const getMyMatches = createSelector(
-  state => state.entities.events.list.filter(el => el.__t === "Match"),
+export const getTeamMatches = createSelector(
+  state => state.events.list.filter(el => el.__t === "Match"),
   state => state.auth.team,
-  (events, team) => events.find(
+  (events, team) => events.filter(
     event => event.homeTeam._id === team._id || event.awayTeam._id === team._id
   )
 );

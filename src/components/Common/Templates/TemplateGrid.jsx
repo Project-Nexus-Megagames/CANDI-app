@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import socket from '../../../socket';
-import { useDrop } from 'react-dnd';
 import { getTeamAccount } from '../../redux/entities/accounts';
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -21,13 +19,6 @@ const TemplateGrid = (props) => {
 			navigate('/');
 	}, [props.login, navigate])
 		
-	const [{ isOver }, drop] = useDrop(() => ({
-		accept: "asset",
-		drop: (item) => item.facility ? socket.emit('request', { route: 'asset', action: 'remove', data: { worker: item.id, facility: item.facility } }) : console.log('nope'),
-		collect: (monitor) => ({
-			isOver: !!monitor.isOver(),
-		}),
-	}));
 	
 	if (!login || !character || !team) return (<div />);	
 	return ( 
