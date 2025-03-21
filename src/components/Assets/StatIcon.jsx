@@ -2,13 +2,27 @@ import React, { useEffect } from 'react';
 import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
-const StatIcon = ({compact, stat}) => {
+const StatIcon = ({preferredCurrency, stat}) => {
+  let src;
+  let additionalText;
+  
+  switch (stat.code) {
+    case 'CON':
+      src = "/images/stats/HP.png";
+      break;
+    case 'SAL':
+      src = `/images/${preferredCurrency}.png`;
+      additionalText = ` (${preferredCurrency})`
+      break;
+    default:
+      src = `/images/stats/${stat.code}.png`
+  }
 
     return ( 
-        <Tooltip hasArrow placement='top' label={stat.name}>
+        <Tooltip hasArrow placement='top' label={stat.name+additionalText}>
           <Avatar
             backgroundColor={getFadedColor(stat.code)}
-            src={stat.code === "CON" ? "/images/stats/HP.png" :`/images/stats/${stat.code}.png`}
+            src={src}
             name={stat.code}
             size='xs'
             ml={-1}

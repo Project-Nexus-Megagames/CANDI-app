@@ -108,7 +108,7 @@ const AthleteCard = (props) => {
                             border: `1px solid white`,
                             borderRadius: '0'
                           }}>
-                          <StatIcon stat={stat} compact={compact} />
+                          <StatIcon stat={stat} compact={compact} preferredCurrency={asset.preferredCurrency} />
                           {!compact && stat.code} {stat.statAmount}
                         </Tag>
                       ))}
