@@ -16,7 +16,7 @@ const Draft = (props) => {
     const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
-    const [extended, setExtended] = useState([1, 2, 3, 4, 5].filter(el => el > gamestate.round));
+    const [extended, setExtended] = useState([1, 2, 3, 4, 5])//.filter(el => el > gamestate.round));
     const draft = useSelector(getDraft);
     const rounds = [1, 2, 3, 4, 5]
 

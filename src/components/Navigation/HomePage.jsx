@@ -77,6 +77,10 @@ const HomePage = (props) => {
         <ImgPanel backgroundColor="#432534" img={"/images/panels/matches.png"} to="matches" title={'~ Matches ~'} body="Upcoming Goblin Ball Matches" />
       </GridItem>   
 
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel backgroundColor="#432534" img={"/images/panels/standing.png"} to="standing" title={'~ Matches ~'} body="Upcoming Goblin Ball Matches" />
+      </GridItem>   
+
       {/* <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
         <ImgPanel img={rules} to="" title="~ Rules ~" body="Learn how to play the game"/>
       </GridItem> */}

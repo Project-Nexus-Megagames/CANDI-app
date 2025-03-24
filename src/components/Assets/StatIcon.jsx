@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
-const StatIcon = ({preferredCurrency, stat}) => {
+const StatIcon = ({preferredCurrency, stat, size='xs'}) => {
   let src;
-  let additionalText;
+  let additionalText = '';
   
   switch (stat.code) {
     case 'CON':
@@ -12,7 +12,7 @@ const StatIcon = ({preferredCurrency, stat}) => {
       break;
     case 'SAL':
       src = `/images/${preferredCurrency}.png`;
-      additionalText = ` (${preferredCurrency})`
+      if (preferredCurrency) additionalText = ` (${preferredCurrency})`
       break;
     default:
       src = `/images/stats/${stat.code}.png`
@@ -24,7 +24,7 @@ const StatIcon = ({preferredCurrency, stat}) => {
             backgroundColor={getFadedColor(stat.code)}
             src={src}
             name={stat.code}
-            size='xs'
+            size={size}
             ml={-1}
             mr={2}
           />             
