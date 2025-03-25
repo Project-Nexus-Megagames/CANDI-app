@@ -7,14 +7,14 @@ const LogRecords = (props) => {
 	let { reports, owner, accounts, } = props;
 	let s = reports.length !== 1 ? 's' : '';
 
-	const renderReport = (report) => {
+	const renderReport = (report, index) => {
 		switch (report.__t) {
 			case 'TransactionLog':
 				return (<TransactionLog key={report._id} report={report} {...props} />);
 			case 'MarketLog':
 				return (<MarketLog key={report._id} report={report} {...props} />);
 			case 'EventLog':
-				return (<EventLog key={report._id} report={report} {...props} />);
+				return (<EventLog key={report._id} report={report} {...props} index={index} />);
 			default:
 				return (<b>{report.__t}!!!</b>)
 		}
@@ -24,7 +24,7 @@ const LogRecords = (props) => {
 		<Box>
 			<h4>{reports.length} Report{s}</h4>
 			<Stepper index={reports.length} orientation='vertical' gap='0'>
-				{reports.map(report => renderReport(report) 
+				{reports.map((report, index) => renderReport(report, index) 
 				)}
 			</Stepper>
 

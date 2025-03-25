@@ -18,7 +18,7 @@ import StatIcon from './StatIcon';
 
 
 const AthleteCard = (props) => {
-  const { showButtons = false, handleSelect, drafts = false, removeAsset, showRemove, stats, filterTags, compact } = props;
+  const { showButtons = false, handleSelect, drafts = false, removeAsset, showRemove, stats=true, height, compact } = props;
   const [mode, setMode] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -54,7 +54,7 @@ const AthleteCard = (props) => {
           key={asset._id}
           style={{
             border: `3px ${border} ${getFadedColor(asset.type)}`,
-            height: '100%'
+            height: height ? height : '100%'
           }}
         >
           <CardHeader>
@@ -97,7 +97,7 @@ const AthleteCard = (props) => {
                       ))}
                     </HStack>
 
-                    {<SimpleGrid columns={3}>
+                    {stats && <SimpleGrid columns={3}>
                       {asset.stats.map((stat, index) => (
                         <Tag key={stat._id}
                           variant={'outline'}
@@ -123,13 +123,6 @@ const AthleteCard = (props) => {
 
               <Spacer />
             </Flex>
-
-            <Flex align={'center'} overflow='hidden' width='100%' >
-              {asset.tags?.map(el => (
-                <NexusTag key={el} value={el}></NexusTag>
-              ))}
-            </Flex>
-
           </CardHeader>
 
         </Card>

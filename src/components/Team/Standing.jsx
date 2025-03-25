@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import usePermissions from '../../hooks/usePermissions';
-import { Grid, GridItem, Box, Stack, Wrap, WrapItem, SimpleGrid, Text } from '@chakra-ui/react';
+import { Grid, GridItem, Box, Stack, Wrap, WrapItem, SimpleGrid, Text, Center } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import TeamAvatar from '../Common/TeamAvatar';
 import { getFadedColor } from '../../scripts/frontend';
@@ -33,10 +33,41 @@ const Standing = (props) => {
 
     return (
         <SimpleGrid
-        columns={2} spacing={10}
+            columns={2} spacing={10}
             gap='1'
             fontWeight='bold'>
 
+            <GridItem pl='2' >
+                <Stack>
+                    <Box >
+                        <h5 className={"toggle-tag"} style={{ backgroundColor: getFadedColor('pop') }} >Popularity</h5>
+
+                        <Wrap spacing='5px' justify='space-around'>
+                            {[...teams]
+                                .sort((a, b) => {
+                                    // sort alphabetically
+                                    if (a?.popularity < b?.popularity) {
+                                        return 1;
+                                    }
+                                    if (a?.popularity > b?.popularity) {
+                                        return -1;
+                                    }
+                                    return 0;
+                                })
+                                .slice(0, 5)
+                                .map(team => {
+                                    return (
+                                        <Center key={team._id} width={"40vw"} >
+                                            <TeamAvatar team={team} />
+                                            <Text noOfLines={1} fontSize='4xl'>{team.popularity}</Text>
+                                        </Center>
+                                    )
+                                })}
+                        </Wrap>
+
+                    </Box>
+                </Stack>
+            </GridItem>
 
             {divisions.map(d => (
                 <GridItem key={d.code} pl='2' >
@@ -45,16 +76,27 @@ const Standing = (props) => {
                             <h5 className={"toggle-tag"} style={{ backgroundColor: getFadedColor(d.code) }} >{d.name}</h5>
 
                             <Wrap spacing='5px' justify='space-around'>
-                                {teams.filter(team => team.division.toLowerCase() === d.code).map(team => {
-                                    return (
-                                        <WrapItem key={team._id} width={"40vw"} >
-                                            <TeamAvatar team={team} />
-                                            <Text noOfLines={1} fontSize='4xl'>W: {team.wins} L: {team.losses} T: {team.ties}</Text>
-                                            <StatIcon stat={{code: 'pop', name: "Popularity" }} compact size={'md'} />
-                                            <Text noOfLines={1} fontSize='4xl'>{team.popularity}</Text>
-                                        </WrapItem>
-                                    )
-                                })}
+                                {[...teams]
+                                    .sort((a, b) => {
+                                        // sort alphabetically
+                                        if (a?.wins < b?.wins) {
+                                            return 1;
+                                        }
+                                        if (a?.wins > b?.wins) {
+                                            return -1;
+                                        }
+                                        return 0;
+                                    })
+                                    .filter(team => team.division.toLowerCase() === d.code).map(team => {
+                                        return (
+                                            <Center key={team._id} width={"40vw"} >
+                                                <TeamAvatar team={team} />
+                                                <Text noOfLines={1} fontSize='4xl'>W: {team.wins} L: {team.losses}</Text>
+                                                <StatIcon stat={{ code: 'pop', name: "Popularity" }} compact size={'md'} />
+                                                <Text noOfLines={1} fontSize='4xl'>{team.popularity}</Text>
+                                            </Center>
+                                        )
+                                    })}
                             </Wrap>
 
                         </Box>

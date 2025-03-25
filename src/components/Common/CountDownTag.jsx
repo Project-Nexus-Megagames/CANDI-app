@@ -13,7 +13,7 @@ const CountDownTag = (props) => {
   if (hours > -1)
   return (
     <Tooltip  hasArrow delay={100} placement='top' trigger='hover'
-      label={`Comes off cooldown in ${hours} Turns`} >
+      label={`Comes off cooldown in ${hours} ticks (${timeout})`} >
         <Tag colorScheme={hours < 4 ? 'red' : hours < 10 ? 'orange' :'green'} size='md' variant='solid'>
           {(hours)}
         </Tag>

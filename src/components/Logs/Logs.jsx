@@ -14,6 +14,7 @@ import {
 import { getFadedColor } from "../../scripts/frontend";
 import ResourceNugget from "../Common/ResourceNugget";
 import { StarIcon } from "@chakra-ui/icons";
+import AthleteCard from "../Assets/AthleteCard";
 
 const getTime = (date) => {
   let countDownDate = new Date(date).getTime();
@@ -215,7 +216,7 @@ const ProductionLog = props => {
 };
 
 const EventLog = props => {
-  let { report } = props;
+  let { report, index } = props;
 	
   return (
   <Step key={report._id} width={'100%'} >
@@ -227,10 +228,10 @@ const EventLog = props => {
       />
     </StepIndicator>
 
-    <Box flexShrink='0' style={{  margin: "2px", padding: "5px", border: `2px solid ${getFadedColor(report.transaction)}`, width: '95%', maxWidth: '88%'   }}  >
-      <StepTitle>Round {report.round}: {report.text}</StepTitle>
+    <Box backgroundColor={getFadedColor('blue', (0.2*Math.floor(report.round)))} flexShrink='0' style={{  margin: "2px", padding: "5px", border: `2px solid ${getFadedColor(report.transaction)}`, width: '95%', maxWidth: '88%'   }}  >
+      <StepTitle>Round {report.round}) {report.text}</StepTitle>
       <StepDescription>{<b>({getTime(report.createdAt)})</b>}</StepDescription>      
-      
+      {report.athlete && <AthleteCard asset={report.athlete} compact stats={false} />}
     </Box>
 
     <StepSeparator />
