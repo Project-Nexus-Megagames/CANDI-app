@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { getFadedColor, getThisTeam } from '../../scripts/frontend';
 
 const TeamAvatar = (props) => {
-	const { account, online, badge, size } = props;
+	const { account, online, badge, size, character } = props;
 	const teams = useSelector(s => s.teams.list);  
 	const accounts = useSelector(s => s.accounts.list);
 
@@ -13,6 +13,9 @@ const TeamAvatar = (props) => {
   if (account && !team) {
     let acc = accounts.find(el => el._id === account);
     team = acc?.team;
+  }
+  if (character && !team) {
+    team = getThisTeam(teams, character);
   }
 
   if (team?._id === undefined) team = teams.find(el => el._id === team) 

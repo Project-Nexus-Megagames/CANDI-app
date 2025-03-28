@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getTeamAccount } from '../../redux/entities/accounts';
-import { Box, Grid, GridItem, Stack } from '@chakra-ui/react';
+import { Box, Center, Grid, GridItem, IconButton, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import MatchCard from '../Assets/MatchCard';
+import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
 const MatchesCarosel = ({matches}) => {
     const navigate = useNavigate();
@@ -12,9 +13,8 @@ const MatchesCarosel = ({matches}) => {
     const loading =  useSelector(s => s.gamestate.loading);
     const account = useSelector(getTeamAccount);
     
+    const [index, setIndex] = useState(0);
 
-
-    const [levels, setLevels] = React.useState([]);
 
     useEffect(() => {
         if(!login)
@@ -24,11 +24,11 @@ const MatchesCarosel = ({matches}) => {
     
     if (!login || !character || !team) return (<div />);	
     return ( 
-        <Stack>
-            {matches.map((match, index) => (
-                <MatchCard match={match} key={index} />
-            ))}
-        </Stack>
+        <Center height={'100%'} >
+            <IconButton colorScheme='blue' variant={'solid'} icon={<ArrowLeftIcon/>} isDisabled={index <= 0} onClick={()=> setIndex(index-1)} />
+            {matches[index] && <MatchCard match={matches[index]} />} {index} {matches.length}
+            <IconButton colorScheme='blue' variant={'solid'} icon={<ArrowRightIcon/>} isDisabled={index+1 === matches.length} onClick={()=> setIndex(index+1)} />
+        </Center>
     );
 }
 

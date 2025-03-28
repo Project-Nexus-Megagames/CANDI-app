@@ -16,13 +16,14 @@ import { loadGameConfig } from '../redux/entities/gameConfig';
 import { loadArticles } from '../redux/entities/articles';
 import { loadAllActions } from '../redux/entities/playerActions';
 import { loadEvents } from '../redux/entities/events';
+import { loadMarkets } from '../redux/entities/markets';
 
 
 let loader = {
 	accounts: loadAccounts,
 	actions: loadAllActions,
 	actionLogs: loadActionLogs,
-  articles: loadArticles,
+	articles: loadArticles,
 	assets: loadAssets,
 	characters: loadCharacters,
 	blueprints: loadBlueprints,
@@ -34,7 +35,8 @@ let loader = {
 	trades: loadTrades,
 	gamestate: loadGamestate,
 	gameConfig: loadGameConfig,
-	events: loadEvents
+	events: loadEvents,
+	markets: loadMarkets
 }
 
 //Get all objects from DB collections and store to redux state

@@ -16,6 +16,7 @@ import { actionDeleted, playerActionUpdated } from './entities/playerActions';
 import { blueprintUpdated } from './entities/blueprints';
 import { articleDeleted, articleUpdated } from './entities/articles';
 import { eventUpdated } from './entities/events';
+import { marketUpdated } from './entities/markets';
 
 
 const initUpdates = () => {
@@ -78,6 +79,9 @@ const initUpdates = () => {
                     case 'match':
                     case 'Event':
                         store.dispatch(eventUpdated(el));
+                        break;
+                    case 'Market':
+                        store.dispatch(marketUpdated(el));
                         break;
                     default:
                         console.log(`Unable to updateClients Redux for ${el.model}: ${el._id}`);

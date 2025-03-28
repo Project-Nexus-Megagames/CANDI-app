@@ -29,7 +29,7 @@ const MatchCard = ({ match, handleSelect }) => {
 
     const array = new Array(5).fill(null);
     const backgroundColor =
-        match?.status === 'scheduled' ? '#1a1d24' :
+        match?.status === 'scheduled' ? getFadedColor() :
             homeWon ? match.homeTeam.color : match.awayTeam.color
 
     const addRoster = (athlete) => {

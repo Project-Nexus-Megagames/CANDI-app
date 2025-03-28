@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'; // React import
 import { useSelector } from 'react-redux'; // Redux store provider
 import { useNavigate } from 'react-router-dom';
-import { Wrap, Grid, GridItem, Box, VStack } from '@chakra-ui/react';
+import { Wrap, Grid, GridItem, Box, VStack, WrapItem, Center } from '@chakra-ui/react';
 import { getTeamDraft, getTeamAthletes } from '../../redux/entities/assets';
 import AssetCard from '../Common/AssetCard';
 import LogRecords from '../Logs/LogRecords';
@@ -10,16 +10,20 @@ import AthleteCard from '../Assets/AthleteCard';
 import DraftCard from '../Assets/DraftCard';
 import MatchesCarosel from './MatchesCarosel';
 import { getTeamMatches } from '../../redux/entities/events';
+import { EditAccount } from '../Common/EditAccount';
+import ResourceNugget from '../Common/ResourceNugget';
+import { getTeamAccount } from '../../redux/entities/accounts';
 
 
 const TeamDashboard = () => {
   const navigate = useNavigate();
-  const { login, team } = useSelector(s => s.auth);
+  const { login, team, isControl } = useSelector(s => s.auth);
   const { teamTab } = useSelector(s => s.gamestate);
   const drafts = useSelector(getTeamDraft);
   const athletes = useSelector(getTeamAthletes);
   const myLogs = useSelector(getMyTeamLogs);
   const matches = useSelector(getTeamMatches);
+  const account = useSelector(getTeamAccount);
 
   // const [tabIndex, setTab] = React.useState(0);
 
@@ -45,16 +49,22 @@ const TeamDashboard = () => {
       h='calc(100vh - 78px)'
       fontWeight='bold'
     >
-      <GridItem area={'transaction'} bg='blue.500'>
-        transaction Section
+      <GridItem area={'transaction'} bg='#1a1d24' overflow={'auto'} >
+        <Box bg='blue.300' color="black">Team Account</Box>
+        <Center>
+          {account && account.resources.map((item) =>
+            <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
+          )}
+          {isControl && account &&<EditAccount account={account} />}
+        </Center>
         <LogRecords reports={myLogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))} />
       </GridItem>
 
-      <GridItem area={'account'} bg='orange.400'>
+      <GridItem area={'account'} bg='#1a1d24' overflow={'auto'}>
         <MatchesCarosel matches={matches} />
       </GridItem>
 
-      <GridItem area={'drafts'} bg='#0f131a'>
+      <GridItem area={'drafts'} bg='#0f131a' overflow={'auto'}>
         <VStack>
           {drafts.map(asset => (
             <DraftCard draft={asset} key={asset._id} />
@@ -62,15 +72,15 @@ const TeamDashboard = () => {
         </VStack>
       </GridItem>
 
-      <GridItem area={'athlete'} bg='green.300'>
-        <Box>Athlete Section {athletes.length}</Box>
-        <Box>
-          <Wrap spacing='10px' justify='space-around'>
-            {athletes.map(asset => (
-              <AthleteCard asset={asset} key={asset._id} />
-            ))}
-          </Wrap>
-        </Box>
+      <GridItem area={'athlete'} bg='#1a1d24' overflow={'auto'}>
+        <Box bg='green.300' color="black">Athlete Section {athletes.length}</Box>
+        <Wrap spacing='10px' justify='space-around'>
+          {athletes.map(asset => (
+            <WrapItem key={asset._id}>
+              <AthleteCard asset={asset} />
+            </WrapItem>
+          ))}
+        </Wrap>
       </GridItem>
     </Grid>
 

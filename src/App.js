@@ -48,6 +48,7 @@ import Draft from "./components/Assets/Draft";
 import TeamDashboard from "./components/Team/TeamDashboard";
 import Matches from "./components/Assets/Matches";
 import Standing from "./components/Team/Standing";
+import Auctions from "./components/Market/Auctions";
 
 // React App Component
 initUpdates();
@@ -250,6 +251,7 @@ const App = (props) => {
               <Route exact path='/home/matches' element={<Matches {...props} />} />
               <Route exact path='/home/standing' element={<Standing {...props} />} />
               <Route exact path='/home/team' element={<TeamDashboard {...props} />} />
+              <Route exact path='/home/market' element={<Auctions {...props} />} />
               
 
               <Route path="/" element={<Navigate to="/login" />}/>   
