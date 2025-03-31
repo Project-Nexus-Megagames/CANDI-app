@@ -17,7 +17,7 @@ const Standing = (props) => {
         { name: "Toad Division", description: "Warts warts warts", code: 'toad' },
         { name: "Garbage Division", description: "", code: 'garbage' },
         { name: "Slime Division", description: "", code: 'slime' },
-        { name: "Mole Division", description: "", code: 'mole' }
+        { name: "Squid Division", description: "", code: 'squid' }
     ]
 
     const navigate = useNavigate();

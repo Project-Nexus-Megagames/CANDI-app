@@ -82,7 +82,7 @@ const HomePage = (props) => {
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel backgroundColor="#a452ba" img={"/images/panels/standing.png"} to="market" title={'~ Standing ~'} body="Free Agents" />
+        <ImgPanel backgroundColor="#55c96a" img={"/images/panels/auctions.png"} to="market" title={'~ Free Agent Market ~'} body="Free Agents" />
       </GridItem>   
 
       {/* <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
