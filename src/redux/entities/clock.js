@@ -12,7 +12,7 @@ const slice = createSlice({
 		nextTick: null,
 		tickNum: null,
 		paused: true,
-    curentTime: {minutes: 9, seconds: 9}
+    curentTime: {hours: 9, minutes: 9, seconds: 9}
   },
   // Reducers - Events
   reducers: {
@@ -22,6 +22,9 @@ const slice = createSlice({
     },
     clockReceived: (clock, action) => {
       console.log(`${action.type} Dispatched...`);
+      console.log(action.payload);
+
+
 			clock.paused = action.payload.paused;
 			clock.gametime = action.payload.gametime;
 			clock.nextTick = action.payload.nextTick;

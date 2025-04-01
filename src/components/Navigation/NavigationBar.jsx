@@ -64,6 +64,7 @@ const NavBar = (props) => {
           if (clock?.curentTime) {
             setSeconds(clock?.curentTime?.seconds);
             setMinutes(clock?.curentTime?.minutes);
+            setHours(clock?.curentTime?.hours);
           }
 
         }
