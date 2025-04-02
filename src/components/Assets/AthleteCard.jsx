@@ -18,7 +18,17 @@ import StatIcon from './StatIcon';
 
 
 const AthleteCard = (props) => {
-  const { showButtons = false, handleSelect, drafts = false, removeAsset, showRemove, stats=true, height, compact } = props;
+  const {
+    showButtons = false,
+    handleSelect,
+    drafts = false,
+    removeAsset,
+    showRemove,
+    stats = true,
+    height,
+    compact,
+    filterTags
+  } = props;
   const [mode, setMode] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -45,7 +55,6 @@ const AthleteCard = (props) => {
   const team = getThisTeam(teams, account.manager);
   const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
   const border = isHidden ? 'dotted' : 'solid'
-
 
   if (asset)
     return (
@@ -98,7 +107,7 @@ const AthleteCard = (props) => {
                     </HStack>
 
                     {stats && <SimpleGrid columns={3}>
-                      {asset.stats.map((stat, index) => (
+                      {asset.stats.filter(s => filterTags.length == 0 || filterTags.some(ft => ft.code === s.code)).map((stat, index) => (
                         <Tag key={stat._id}
                           variant={'outline'}
                           size={compact ? "sm" : "lg"}
