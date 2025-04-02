@@ -27,7 +27,7 @@ const AthleteCard = (props) => {
     stats = true,
     height,
     compact,
-    filterTags
+    filterTags = []
   } = props;
   const [mode, setMode] = useState(false);
   const [show, setShow] = useState(false);
