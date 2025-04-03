@@ -6,7 +6,7 @@ import { ArrowBackIcon, ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, Hamburge
 import { clockRequested } from '../../redux/entities/clock';
 import { getCharAccount, getTeamAccount } from '../../redux/entities/accounts';
 import { gamestateRequested, gamestateRequestFailed, toggleLoading } from '../../redux/entities/gamestate';
-import { Button, Divider, Menu, MenuButton, MenuList, MenuItem, Popover, PopoverContent, PopoverTrigger, Portal, Progress, Switch, VStack, IconButton, ButtonGroup, Input } from '@chakra-ui/react';
+import { Button, Divider, Menu, MenuButton, MenuList, MenuItem, Popover, PopoverContent, PopoverTrigger, Portal, Progress, Switch, VStack, IconButton, ButtonGroup, Input, Center } from '@chakra-ui/react';
 import { BsFillGearFill, BsPause, BsPlayFill } from "react-icons/bs"
 import ResourceNugget from '../Common/ResourceNugget';
 import { setCharacter, setTeam, signOut } from '../../redux/entities/auth';
@@ -37,7 +37,7 @@ const NavBar = (props) => {
   const teamAccount = useSelector(getTeamAccount);
   const gamestate = useSelector(state => state.gamestate)
   const account = useSelector(getCharAccount);
-  
+
   const myChar = useSelector(getMyCharacter);
   const [selectedChar, setSelectedChar] = React.useState(myChar._id);
   const currentCharacter = useSelector(getCharacterById(selectedChar));
@@ -184,14 +184,23 @@ const NavBar = (props) => {
           </div>}
       </div>
 
-      <div style={{ textAlign: 'right', justifyContent: 'right', alignItems: 'right', width: '16%', marginRight: '10px', marginTop: '15px', }} >
-        <TeamCard team={team} handleSelect={(()=> setMode('change'))} />
+      <Center
+        style={{
+          textAlign: 'right',
+          justifyContent: 'right',
+          alignItems: 'right',
+          width: '16%',
+          marginRight: '10px',
+          marginTop: '15px',
+          marginBottom: '10px',
+        }} >
+        {team && <TeamCard team={team} handleSelect={(() => { if (control) setMode('change') })} />}
         {myChar && myCharacter && myChar !== myCharacter && <Button size={'xs'} onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
         {!team && <Link style={{ color: 'white' }} to="/login">Sign In</Link>}
-      </div>
+      </Center>
       <div />
 
-      <CandiModal open={mode === 'change'} onClose={()=> setMode(false)} >
+      <CandiModal open={mode === 'change'} onClose={() => setMode(false)} >
         <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
 
         <VStack divider={<Divider />} overflow={"auto"} >
