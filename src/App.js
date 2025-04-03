@@ -166,7 +166,7 @@ const App = (props) => {
       }
     });
 
-    localStorage.removeItem('candi-token');
+    localStorage.removeItem('draft-token');
 
   }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 

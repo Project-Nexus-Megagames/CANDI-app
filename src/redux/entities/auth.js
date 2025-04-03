@@ -95,7 +95,7 @@ const slice = createSlice({
     },
     signOut: (auth, action) => {
       console.log(`${action.type} Dispatched`);
-      localStorage.removeItem('underground-token');
+      localStorage.removeItem('draft-token');
       auth.user = null;
       auth.login = false;
       auth.loading = false;

@@ -57,12 +57,12 @@ const Login = (props) => {
 
   return (
     <div className="styleCenter">
-      <Card maxW='lg'>
-      <img
+      <Card width={'500px'} >
+      {/* <img
         src={'https://cdn.discordapp.com/attachments/1161172411190874205/1214397506880933950/Screenshot_2024-03-04_at_9.21.55_PM.png?ex=65f8f6d0&is=65e681d0&hm=ae74989ebcc98ef392cf2e93975e260068a2c58bbfe7a9325582c368988ba0a9&'}
         width={600}
         alt="Failed to load img"
-      />
+      /> */}
       <h5>Login with your Nexus account</h5>
           <p>
             Don't have a Nexus account?{" "}

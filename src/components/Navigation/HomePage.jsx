@@ -90,7 +90,7 @@ const HomePage = (props) => {
       </GridItem> */}
 
       {control && <GridItem colSpan={columns} >
-          <ImgPanel img={"/images/panels/trophy"} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
+          <ImgPanel img={"/images/panels/trophy.png"} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />
       </GridItem>}
 
 

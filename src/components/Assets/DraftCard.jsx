@@ -81,7 +81,7 @@ const DraftCard = ({ draft, handleSelect }) => {
                 
                 Second Choice
                 {!draft.secondChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)}/>}
-                {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact />}
+                {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove removeAsset={() => removeChoice('secondChoice', false)} />}
                 </Box>}
         </div>
     );
