@@ -156,7 +156,7 @@ const NavBar = (props) => {
 
 
         {login && <div className='styleCenterLeft'>
-          {hours}:{minutes <= 9 && <t>0</t>}{minutes}:{seconds <= 9 && <t>0</t>}{seconds} ~
+          {hours}:{minutes <= 9 && <p>0</p>}{minutes}:{seconds <= 9 && <p>0</p>}{seconds} ~
           Round {gamestate.round} Pick: {clock.tickNum}
           <BsFillGearFill spin={clock.loading.toString()} onClick={() => { reduxAction(clockRequested()); socket.emit('request', { route: 'clock', action: 'getState' }); }} style={{ cursor: 'pointer', marginLeft: "5px" }} />
         </div>}

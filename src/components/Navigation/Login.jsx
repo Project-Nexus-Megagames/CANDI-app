@@ -17,6 +17,7 @@ const Login = (props) => {
 
 	const loginToken = localStorage.getItem("draft-token");
   useEffect(() => {
+    console.log(localStorage)
 		if (loginToken && loginToken !== null && loginToken !== undefined && loginToken !== 'undefined' && props.login === false) {
 			console.log('Attempting to token login!');
       reduxAction(authReceived({ token: loginToken }));
@@ -48,7 +49,7 @@ const Login = (props) => {
 	};
 
 	const onSubmit = async () => {
-		// remember ? localStorage.setItem('kepler-token', login) : localStorage.removeItem('kepler-token');
+		remember ? localStorage.setItem('draft-token', login) : localStorage.removeItem('draft-token');
 
 		reduxAction(loginUser({ user: login, password }));
 	};
@@ -85,12 +86,12 @@ const Login = (props) => {
 
           <FormControl style={{ color: '#d4af37', marginBottom: '10px' }}>
             <FormLabel>Email / Username</FormLabel>
-            <Input value={login} onKeyPress={handleKeyPress} onChange={(e)=> setLogin(e.target.value)}  />
+            <Input value={login} onKeyDown={handleKeyPress} onChange={(e)=> setLogin(e.target.value)}  />
           </FormControl>
 
           <FormControl style={{  color: "#8a0674"}}>
             <FormLabel>Password</FormLabel>
-            <Input type='password' onKeyPress={handleKeyPress} value={password} onChange={(e)=> setPassword(e.target.value)} />
+            <Input type='password' onKeyDown={handleKeyPress} value={password} onChange={(e)=> setPassword(e.target.value)} />
           </FormControl>
           
 

@@ -61,7 +61,7 @@ const App = (props) => {
   const toast = useToast();
   const toastIdRef = React.useRef()
 
-  useEffect(async() => {
+  useEffect(() => {
     const theme = "dark";
     // console.log(`Setting Theme: ${theme}`);
 
@@ -73,7 +73,6 @@ const App = (props) => {
     link.href = `/${theme}.css`;
 
     head.appendChild(link);
-    await (loadGameConfig())
     socket.emit('request', { route: 'clock', action: 'getState' })
     return () => {
       setTimeout(() => head.removeChild(link), 2000);
@@ -165,8 +164,6 @@ const App = (props) => {
         }
       }
     });
-
-    localStorage.removeItem('draft-token');
 
   }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 
