@@ -54,6 +54,7 @@ const initUpdates = () => {
                     case 'Location':
                         store.dispatch(locationUpdated(el));
                         break;
+                    case 'facility':
                     case 'Facility':
                         store.dispatch(facilityUpdated(el));
                         break;               

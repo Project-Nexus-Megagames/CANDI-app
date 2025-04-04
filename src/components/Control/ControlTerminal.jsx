@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import socket from '../../socket';
@@ -11,7 +11,7 @@ import ResourceNugget from '../Common/ResourceNugget';
 import { PauseOutline, PlayOutline } from '@rsuite/icons';
 import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
-import { Box, Button, ButtonGroup, HStack, Divider, Grid, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, InputGroup, InputLeftAddon } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, HStack, Divider, Grid, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, InputGroup, InputLeftAddon, Tag, TagCloseButton } from '@chakra-ui/react';
 import SelectPicker from '../Common/SelectPicker';
 import WordDivider from '../Common/WordDivider';
 import AssetCard from '../Common/AssetCard';
@@ -21,10 +21,14 @@ import Blueprints from './Blueprints';
 import { BsSave } from 'react-icons/bs';
 import { EditAccount } from '../Common/EditAccount';
 import { editTab } from '../../redux/entities/gamestate';
+import StatIcon from '../Assets/StatIcon';
+import { getFadedColor } from '../../scripts/frontend';
+import { CandiModal } from '../Common/CandiModal';
 
 const ControlDashboard = (props) => {
 	const reduxAction = useDispatch();
 	const { login, team, character, loading } = useSelector((s) => s.auth);
+	const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
 	const { controlTab } = useSelector(s => s.gamestate);
 	const blueprints = useSelector((s) => s.blueprints.list);
 	const accounts = useSelector((s) => s.accounts.list);
@@ -47,6 +51,7 @@ const ControlDashboard = (props) => {
 	const [roundLength, setRoundLength] = React.useState(gamestate?.roundLength);
 	const [tickNum, setTickNum] = React.useState(clock.tickNum);
 	const [tickPerRound, setTickPerRound] = React.useState(gamestate.tickPerRound);
+	const [specialRound, setSpecialRound] = useState(false);
 
 	const tags = ['asset', 'contract', 'ice', 'facility',];
 
@@ -57,6 +62,15 @@ const ControlDashboard = (props) => {
 	useEffect(() => {
 		if (!login) navigate('/');
 	}, [login, navigate]);
+
+	const editRound = async () => {
+		socket.emit('request', {
+			route: 'gameConfig',
+			action: 'editRound',
+			data: { specialRound }
+		});
+	};
+
 
 	const handleCreate = (code, amount = false) => {
 		if (amount) {
@@ -146,6 +160,47 @@ const ControlDashboard = (props) => {
 						</HStack>
 
 
+						<Divider />
+
+						Standard Rounds
+						{matchRounds.filter(el => el.public).map((round) => (
+							<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
+								<StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
+								<StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
+								{round.name}
+								{<TagCloseButton onClick={() => setSpecialRound(round)} />}
+							</Tag>))}
+
+						{specialRound && <CandiModal
+							onClose={() => { setSpecialRound(false); }}
+							open={specialRound}
+							title={`Edit ${specialRound.name}`}
+						>
+							<Input
+								onChange={(e) => setSpecialRound({ ...specialRound, name: e.target.value })}
+								value={props.filter}
+								placeholder={specialRound.name}
+								color='white'
+							/>
+							<SelectPicker
+								data={athleteStats}
+								label="code"
+								valueKey="code"
+								onChange={(change) => setSpecialRound({ ...specialRound, primaryStat: change })}
+								placeholder={specialRound.primaryStat}
+								value={specialRound.primaryStat}
+							/>
+							<SelectPicker
+								data={athleteStats}
+								label="code"
+								valueKey="code"
+								onChange={(change) => setSpecialRound({ ...specialRound, secondaryStat: change })}
+								placeholder={specialRound.secondaryStat}
+								value={specialRound.secondaryStat}
+							/>
+
+							<Button onClick={editRound} > Submit</Button>
+						</CandiModal>}
 						<Divider />
 
 						<SelectPicker label='name' data={accounts} value={account?.name} onChange={(id) => setTarget(id)} />

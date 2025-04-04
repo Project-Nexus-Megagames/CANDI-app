@@ -64,41 +64,9 @@ const url = `${gameServer}api/facilities`;
 
 export const getTeamFacilities = createSelector(
   state => state.facilities.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (facilities, account) => facilities.filter(
-    asset => (asset.account === account._id)
-  )
-);
-
-export const getTeamLabs = createSelector(
-  state => state.facilities.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (facilities, account) => facilities.filter(
-    asset => (asset.account === account._id && asset.tags.some(tag => tag === 'lab'))
-  )
-);
-
-export const getTeamServers = createSelector(
-  state => state.facilities.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (facilities, account) => facilities.filter(
-    asset => (asset.account === account._id && asset.tags.some(tag => tag === 'server'))
-  )
-);
-
-export const getTeamFactories = createSelector(
-  state => state.facilities.list.filter(el => el.account),
-  state => state.accounts.list.find(el => el.name === `${state.auth.team.name}'s Account`),
-  (facilities, account) => facilities.filter(
-    asset => (asset.account === account._id && asset.tags.some(tag => tag === 'factory'))
-  )
-);
-
-export const getPresentFacilities = createSelector(
-  state => state.facilities.list,
-  state => state.characters.list.find(el => el._id === state.auth.myCharacter._id),
-  (facilities, myCharacter) => facilities.filter(
-    fac => fac.location?._id === myCharacter.location?._id 
+  state => state.auth.team,
+  (facilities, team) => facilities.filter(
+    asset => (asset.teamOwner._id === team._id)
   )
 );
 

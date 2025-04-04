@@ -24,9 +24,9 @@ const MatchesCarosel = ({matches}) => {
     
     if (!login || !character || !team) return (<div />);	
     return ( 
-        <Center height={'100%'} >
+        <Center >
             <IconButton colorScheme='blue' variant={'solid'} icon={<ArrowLeftIcon/>} isDisabled={index <= 0} onClick={()=> setIndex(index-1)} />
-            {matches[index] && <MatchCard match={matches[index]} />} {index} {matches.length}
+            {matches[index] && <MatchCard match={matches[index]} />}
             <IconButton colorScheme='blue' variant={'solid'} icon={<ArrowRightIcon/>} isDisabled={index+1 === matches.length} onClick={()=> setIndex(index+1)} />
         </Center>
     );

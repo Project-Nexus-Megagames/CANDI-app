@@ -13,6 +13,8 @@ import { getTeamMatches } from '../../redux/entities/events';
 import { EditAccount } from '../Common/EditAccount';
 import ResourceNugget from '../Common/ResourceNugget';
 import { getTeamAccount } from '../../redux/entities/accounts';
+import { getTeamFacilities } from '../../redux/entities/facilities';
+import FacilityCard from './FacilityCard';
 
 
 const TeamDashboard = () => {
@@ -21,6 +23,7 @@ const TeamDashboard = () => {
   const { teamTab } = useSelector(s => s.gamestate);
   const drafts = useSelector(getTeamDraft);
   const athletes = useSelector(getTeamAthletes);
+  const facilities = useSelector(getTeamFacilities);
   const myLogs = useSelector(getMyTeamLogs);
   const matches = useSelector(getTeamMatches);
   const account = useSelector(getTeamAccount);
@@ -55,12 +58,15 @@ const TeamDashboard = () => {
           {account && account.resources.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
           )}
-          {isControl && account &&<EditAccount account={account} />}
+          {isControl && account && <EditAccount account={account} />}
         </Center>
         <LogRecords reports={myLogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))} />
       </GridItem>
 
       <GridItem area={'account'} bg='#1a1d24' overflow={'auto'}>
+        {facilities.map(facility => (
+          <FacilityCard key={facility._id} facility={facility._id} />
+        ))}
         <MatchesCarosel matches={matches} />
       </GridItem>
 
@@ -73,7 +79,7 @@ const TeamDashboard = () => {
       </GridItem>
 
       <GridItem area={'athlete'} bg='#1a1d24' overflow={'auto'}>
-        <Box bg='green.300' color="black">Athlete Section {athletes.length}</Box>
+        <Box bg='green.300' color="black">Asset Section</Box>
         <Wrap spacing='10px' justify='space-around'>
           {athletes.map(asset => (
             <WrapItem key={asset._id}>

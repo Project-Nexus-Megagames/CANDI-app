@@ -70,8 +70,6 @@ function getFadedColor(color, fade = 1) {
     case 'Mimic Party':
       return `#e91e63`
 
-
-
     case 'Underkin':
     case 'Underkin Faction':
     case 'The Overlord':
@@ -96,7 +94,6 @@ function getFadedColor(color, fade = 1) {
       return `rgba(102, 187, 106, ${fade})`
     case 'POP':
       return `rgba(255, 202, 40, ${fade})`
-
     case 'LUK':
       return `rgba(38, 198, 218, ${fade})`
     case 'JSQ':
