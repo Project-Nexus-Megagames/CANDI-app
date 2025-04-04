@@ -8,6 +8,7 @@ import AthleteCard from './AthleteCard';
 import { AddAsset } from '../Common/AddAsset';
 import { getDraftableAthletes } from '../../redux/entities/assets';
 import socket from '../../socket';
+import CountDownTag from '../Common/CountDownTag';
 
 const DraftCard = ({ draft, handleSelect }) => {
     const blueprints = useSelector(s => s.blueprints.list);
@@ -66,9 +67,13 @@ const DraftCard = ({ draft, handleSelect }) => {
                 <Stack textAlign={'left'} width={'60%'} >
                     <Text noOfLines={1} marginBottom={'-15px'} fontSize='lg'>{draft.name}</Text>
                     <Text noOfLines={1} marginBottom={'-10px'} fontSize='md' >{draft.teamOwner?.name}</Text>
-                    {draft.status.length > 0 && draft.status?.map(el => (
-                        <NexusTag key={el} value={el}></NexusTag>
-                    ))}
+                    <HStack>
+                        {draft.status.length > 0 && draft.status?.map(el => (
+                            <NexusTag key={el} value={el}></NexusTag>
+                        ))}                    
+                        <CountDownTag timeout={draft.pickNum} width={'20px'} />
+                    </HStack>
+
                 </Stack>
                 <Spacer />
             </Flex>
