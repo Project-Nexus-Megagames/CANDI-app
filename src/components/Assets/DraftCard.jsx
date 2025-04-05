@@ -9,8 +9,9 @@ import { AddAsset } from '../Common/AddAsset';
 import { getDraftableAthletes } from '../../redux/entities/assets';
 import socket from '../../socket';
 import CountDownTag from '../Common/CountDownTag';
+import { Close } from '@rsuite/icons';
 
-const DraftCard = ({ draft, handleSelect }) => {
+const DraftCard = ({ draft, handleSelect, removeAsset }) => {
     const blueprints = useSelector(s => s.blueprints.list);
     const { login, team, control } = useSelector(s => s.auth);
     const athletes = useSelector(getDraftableAthletes);
@@ -20,33 +21,35 @@ const DraftCard = ({ draft, handleSelect }) => {
 
     const quePick = (choiceNum, athlete) => {
         setLoading(true)
-        socket.emit('request', { 
-            route: 'asset', 
-            action: 'choiceDraft', 
-            data: { 
-                athlete: athlete._id, 
-                draft: draft._id, 
+        socket.emit('request', {
+            route: 'asset',
+            action: 'choiceDraft',
+            data: {
+                athlete: athlete._id,
+                draft: draft._id,
                 choiceNum
-             }}, 
-                (response) => {
-            console.log(response);
-            setLoading(false)
-        })
+            }
+        },
+            (response) => {
+                console.log(response);
+                setLoading(false)
+            })
     }
 
     const removeChoice = (choiceNum) => {
         setLoading(true)
-        socket.emit('request', { 
-            route: 'asset', 
-            action: 'removeChoice', 
-            data: { 
-                draft: draft._id, 
+        socket.emit('request', {
+            route: 'asset',
+            action: 'removeChoice',
+            data: {
+                draft: draft._id,
                 choiceNum
-             }}, 
-                (response) => {
-            console.log(response);
-            setLoading(false)
-        })
+            }
+        },
+            (response) => {
+                console.log(response);
+                setLoading(false)
+            })
     }
 
     return (
@@ -70,24 +73,32 @@ const DraftCard = ({ draft, handleSelect }) => {
                     <HStack>
                         {draft.status.length > 0 && draft.status?.map(el => (
                             <NexusTag key={el} value={el}></NexusTag>
-                        ))}                    
+                        ))}
                         <CountDownTag timeout={draft.pickNum} width={'20px'} />
                     </HStack>
 
                 </Stack>
+                {removeAsset &&
+                    <IconButton
+                        variant={'outline'}
+                        onClick={removeAsset}
+                        colorScheme="red"
+                        size={'sm'}
+                        icon={<Close />}
+                    />}
                 <Spacer />
             </Flex>
 
             {draft.picked && <AthleteCard asset={draft.picked} compact />}
             {disabled && (team._id === draft.teamOwner._id || control) && !draft.picked && <Box>
                 First Choice
-                {!draft.firstChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)}/>}
+                {!draft.firstChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)} />}
                 {draft.firstChoice && <AthleteCard asset={draft.firstChoice} compact showRemove removeAsset={() => removeChoice('firstChoice', false)} />}
-                
+
                 Second Choice
-                {!draft.secondChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)}/>}
+                {!draft.secondChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)} />}
                 {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove removeAsset={() => removeChoice('secondChoice', false)} />}
-                </Box>}
+            </Box>}
         </div>
     );
 }

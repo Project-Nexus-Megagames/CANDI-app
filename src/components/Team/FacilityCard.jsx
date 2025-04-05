@@ -15,14 +15,8 @@ import SelectPicker from '../Common/SelectPicker';
 const FacilityCard = (props) => {
     const {
         showButtons = false,
-        handleSelect,
-        drafts = false,
-        removefacility,
-        showRemove,
-        stats = true,
-        height,
+        width = '100%',
         compact,
-        filterTags = []
     } = props;
     const [mode, setMode] = useState(false);
     const [specialRound, setSpecialRound] = useState(false);
@@ -44,20 +38,20 @@ const FacilityCard = (props) => {
     const facility = props.facility?._id ? props.facility : facilitys.find(el => el._id === props.facility)
     const disabled = false;
 
+    console.log(facility)
+
     if (facility)
         return (
             <div
-                style={{ textAlign: 'center', width: "100%", minWidth: '500px' }}
+                style={{ textAlign: 'center', width: width }}
             // onClick={() => (handleSelect && !disabled) ? handleSelect(facility) : console.log((handleSelect && !disabled))}
             >
                 <Card
                     key={facility._id}
                     style={{
                         border: `3px solid ${getFadedColor('facility')}`,
-                        height: height ? height : '100%'
                     }}
                 >
-                    <CardHeader>
                         <Flex align={'center'} overflow='hidden' width='100%'>
                             <Spacer />
 
@@ -71,15 +65,13 @@ const FacilityCard = (props) => {
                                 </ButtonGroup>}
                             </Stack>
 
-                            <Spacer />
-
                             <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(facility.type)}`, padding: '5px' }} display="flex"  >
                                 <Center >
 
                                     <Box textAlign={'left'} marginLeft={'5px'} >
 
                                         <HStack marginBottom={'3px'} >
-                                            <Text as='u' fontSize={'lg'} casing={'capitalize'} >{facility.name}</Text>
+                                            <Text as='u' fontSize={compact ? 'sm' :'lg'} casing={'capitalize'} >{facility.name}</Text>
                                         </HStack>
 
                                     </Box>
@@ -89,7 +81,6 @@ const FacilityCard = (props) => {
                             <Spacer />
 
                         </Flex>
-                    </CardHeader>
 
                     {facility?.specialRounds.map((round) => (
                         <Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >

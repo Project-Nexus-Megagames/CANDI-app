@@ -177,7 +177,7 @@ const Trade = (props) => {
 		<div>
 			<Grid
 				templateAreas={`"to1 to2 nav"`}
-				gridTemplateColumns={'40% 40% 20%'}
+				gridTemplateColumns={'40% 40% 19.5%'}
 				gap='1'
 				fontWeight='bold'
 				h='calc(100vh - 78px)'
@@ -205,7 +205,7 @@ const Trade = (props) => {
 						offer={isMyTrade ? selectedTrade.initiator.offer : selectedTrade.tradePartner.offer}
 						ratified={isMyTrade ? selectedTrade.initiator.ratified : selectedTrade.tradePartner.ratified}
 						myAccount={account}
-						team={team}
+						team={isMyTrade ? initiatorTeam : partnerTeam}
 						account={isMyTrade ? initiatorAccount : partnerAccount}
 						status={selectedTrade.status}
 						loading={tradeLoading || gameLoading}
@@ -252,7 +252,16 @@ const Trade = (props) => {
 						<div >
 							<VStack divider={<Divider />} style={{ height: 'calc(100vh - 195px)', overflow: 'auto', textAlign: 'center', }}>
 								{tradeState.map((trade) => (
-									<TradeCard initiatorTeam={initiatorTeam} partnerTeam={partnerTeam} key={trade._id} trade={trade} selectTrade={selectTrade} isMine={trade.initiator.team === team._id} ></TradeCard>
+									<TradeCard 
+									initiatorTeam={initiatorTeam} 
+									partnerTeam={partnerTeam} 
+									key={trade._id} 
+									trade={trade} 
+									selectTrade={selectTrade} 
+									isMine={trade.initiator.team._id === team._id} 
+									>
+
+									</TradeCard>
 								))}
 							</VStack>
 

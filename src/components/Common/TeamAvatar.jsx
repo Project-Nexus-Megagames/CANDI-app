@@ -31,7 +31,10 @@ const TeamAvatar = (props) => {
         </Avatar>
     </Tooltip>
 	);
-  return (<b>oops team avatar broke</b>)
+  else {
+    console.log(props.team)
+    return (<b>oops team avatar broke</b>)
+  }
 };
 
 export default TeamAvatar;

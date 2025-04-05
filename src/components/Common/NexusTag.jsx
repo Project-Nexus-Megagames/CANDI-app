@@ -96,7 +96,7 @@ const NexusTag = (props) => {
                   <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
                   <h5>This match will happen soon(ish)</h5>
                 </div>)}>
-              <Tag textTransform={'capitalize'} colorScheme={'green'} size='md' variant='solid' marginLeft={1} marginRight={1} >
+              <Tag textTransform={'capitalize'} colorScheme={'blue'} size='md' variant='solid' marginLeft={1} marginRight={1} >
               <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`completed`} />
                 {(icon)}
               </Tag>

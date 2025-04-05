@@ -12,6 +12,7 @@ import socket from '../../socket';
 import LogRecords from '../Logs/LogRecords';
 import StatIcon from './StatIcon';
 import CountDownTag from '../Common/CountDownTag';
+import FacilityCard from '../Team/FacilityCard';
 
 const MatchCard = ({ match, handleSelect }) => {
     const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
@@ -39,6 +40,8 @@ const MatchCard = ({ match, handleSelect }) => {
             setLoading(false)
         })
     }
+
+    console.log(match)
 
     return (
         <div key={match._id}
@@ -72,21 +75,30 @@ const MatchCard = ({ match, handleSelect }) => {
                 <Spacer />
 
                 <Stack textAlign={'center'} width={'60%'} >
-                    <Text noOfLines={1} fontSize='4xl'>{match.homeScore} - {match.awayScore}</Text>
+                    <Text marginBottom={'-2'} noOfLines={1} fontSize='4xl'>{match.homeScore} - {match.awayScore}</Text>
 
-                    <SimpleGrid columns={2} gap={1}>
-                        {matchRounds.filter(el => el.public).map((round, index) => (<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
+                    <Stack gap={1} align={'center'} >
+                        {match.facility && <FacilityCard width={'60%'} compact facility={match.facility} />}
+                        {/* {match.facility?.specialRounds.map((round, index) => (<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
                             <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
                             <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                             {round.name}
-                        </Tag>))}
+                        </Tag>))} */}
 
-                        {match.facility?.specialRounds.map((round, index) => (<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
-                            <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
-                            <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
-                            {round.name}
-                        </Tag>))}
-                    </SimpleGrid>
+                        {matchRounds.filter(el => el.public).map((round, index) => (
+                            <Tag
+                                border={`2px solid ${getFadedColor(round.primaryStat)}`}
+                                backgroundColor={getFadedColor(round.primaryStat, 0.5)}
+                                key={round._id}
+                                colorScheme='green'
+                                variant={'solid'}
+                                width={'60%'}
+                            >
+                                <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
+                                <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
+                                {round.name}
+                            </Tag>))}
+                    </Stack>
 
                 </Stack>
 

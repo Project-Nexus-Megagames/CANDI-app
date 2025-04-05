@@ -16,6 +16,7 @@ import { CandiModal } from "./CandiModal";
 import { populateThisAccount } from "../../scripts/frontend";
 import { useSelector } from "react-redux";
 import AthleteCard from "../Assets/AthleteCard";
+import DraftCard from "../Assets/DraftCard";
 
 export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
@@ -61,8 +62,9 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled
         <Divider />
         <VStack divider={<Divider />} style={{ overflow: 'scroll', }} justify="space-around" align={'center'}  >
           {filteredAssets.map((ass) => (
-            <Box key={ass._id} style={{ width: '100%', cursor: 'pointer' }}>
+            <Box key={ass._id} style={{ width: '100%', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
               {ass.__t === "Athlete" && <AthleteCard handleSelect={() => { handleSelect(ass);  }} asset={ass} compact />}
+              {ass.__t === "Draft" && <DraftCard handleSelect={() => { handleSelect(ass);  }} draft={ass} /> }
               {/* <AssetCard handleSelect={() => { handleSelect(ass);  }} asset={ass} /> */}
             </Box>
           ))}

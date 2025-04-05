@@ -36,6 +36,12 @@ const Athletes = (props) => {
         }
     }, []);
 
+    // useEffect(() => {
+    //     if (renderAthletes) {
+    //         //setRenderAthletes(athletes.filter(el => !renderAthletes.some(ra => ra._id === el._id)))
+    //     }
+    // }, [athletes]);
+
     function searchAthletes() {
         setLoading(true)
         socket.emit('request', { route: 'asset', action: 'searchAthletes', data: filterTags }, (response) => {
@@ -165,6 +171,7 @@ const Athletes = (props) => {
                 <SimpleGrid columns={3} columnGap="2" rowGap="4">
                     {renderAthletes.sort(compareFn).map(athlete => (
                         <AthleteCard
+                            key={athlete._id}
                             asset={athlete}
                             drafts={drafts}
                             showButtons

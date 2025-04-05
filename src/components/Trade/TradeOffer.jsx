@@ -14,6 +14,8 @@ import TeamAvatar from '../Common/TeamAvatar';
 import { useSelector } from 'react-redux';
 import { getTeamAssets } from '../../redux/entities/assets';
 import { getFadedColor } from '../../scripts/frontend';
+import AthleteCard from '../Assets/AthleteCard';
+import DraftCard from '../Assets/DraftCard';
 
 const TradeOffer = (props) => { //trade object
 	const [resources, setResources] = React.useState((props.offer && props.offer.resources) ? props.offer?.resources : []);
@@ -142,16 +144,22 @@ const TradeOffer = (props) => { //trade object
 
 			<WordDivider word={'Assets'}></WordDivider>
 
-			{<SimpleGrid style={{ minHeight: '20vh' }} minChildWidth='200px' spacing='20px' align={'center'}>
+			{<SimpleGrid columns={2} style={{ minHeight: '20vh' }} spacing='5px' align={'center'}>
 				{assets && disabled && assets.length === 0 && <h5>No Assets Offered</h5>}
 				{assets && assets.map((asset, index) => (
-					<Box key={assets._id}>
-						<AssetCard showRemove={!disabled} removeAsset={() => removeElement(index, 'asset')} height="150px" index={index} asset={asset} />
+					<Box key={asset._id}>
+						{asset.__t}
+						{/* <AssetCard showRemove={!disabled} removeAsset={() => removeElement(index, 'asset')} height="150px" index={index} asset={asset} /> */}
+						{asset.__t === "Athlete" && <AthleteCard removeAsset={() => removeElement(index, 'asset')} asset={asset} compact />}
+						{asset.__t === "Draft" && <DraftCard removeAsset={() => removeElement(index, 'asset')} draft={asset} /> }
 					</Box>
 				))}
 
 				{!disabled &&
-					<AddAsset assets={teamAssets.filter(el => el.tags.some(s => s === 'tradable'))} handleSelect={(asset) => editState(asset, 0, 'add-asset')} />}
+					<AddAsset
+						assets={teamAssets.filter(el => el.tags.some(s => s === 'tradable') && !el.status.some(s => s === 'used'))}
+						handleSelect={(asset) => editState(asset, 0, 'add-asset')}
+					/>}
 			</SimpleGrid >}
 
 			<Divider />
@@ -159,8 +167,8 @@ const TradeOffer = (props) => { //trade object
 			{props.status.some(el => el !== 'completed') && <Flex >
 				<Box  >
 					{props.myAccount._id === props.account._id && <div>
-						{disabled && <IconButton size='sm'  variant="solid" colorScheme={"facebook"} icon={<BsPencilFill/>}   onClick={() => onEdit()}>Edit Trade</IconButton>}
-						{!disabled && <IconButton size='sm' variant="solid" colorScheme={"facebook"}  icon={<BsSave/>} onClick={() => submitEdit()}>Save Offer</IconButton> }
+						{disabled && <IconButton size='sm' variant="solid" colorScheme={"facebook"} icon={<BsPencilFill />} onClick={() => onEdit()}>Edit Trade</IconButton>}
+						{!disabled && <IconButton size='sm' variant="solid" colorScheme={"facebook"} icon={<BsSave />} onClick={() => submitEdit()}>Save Offer</IconButton>}
 					</div>}
 
 				</Box>
