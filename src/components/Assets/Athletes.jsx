@@ -27,7 +27,7 @@ const Athletes = (props) => {
     const [loading, setLoading] = React.useState(false);
 
 
-    const [renderAthletes, setRenderAthletes] = useState(athletes.splice(0, 20));
+    const [renderAthletes, setRenderAthletes] = useState(false);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -101,9 +101,10 @@ const Athletes = (props) => {
             templateAreas={`"nav main"`}
             gridTemplateColumns={'400px 1fr'}
             gap='1'
+      h='calc(100vh - 78px)'
             fontWeight='bold'>
 
-            <GridItem pl='2' area={'nav'} >
+            <GridItem pl='2' area={'nav'} overflow={'auto'}>
                 {!selected && <Center >
                     <Input style={{ width: '80%', margin: '5px' }} placeholder="Search" onChange={(e) => setFilter(e.target.value)}></Input>
                     <ButtonGroup isAttached marginRight={'0px'} >
@@ -118,7 +119,7 @@ const Athletes = (props) => {
                     <Box position='relative' >
                         <Divider />
                         <AbsoluteCenter bg='#0f131a' px='4'>
-                            Sort By
+                            Sort/Filter By
                         </AbsoluteCenter>
                     </Box>
 
@@ -130,7 +131,6 @@ const Athletes = (props) => {
                                 variant='solid'
                                 backgroundColor={tag.color}
                                 color={tag.textColor}
-
                             >
                                 <TagLeftIcon boxSize='18px' as={tag.ascending > 0 ? ChevronUpIcon : ChevronDownIcon} onClick={() => setAscending(index, tag.ascending * -1)} />
                                 <TagLabel as={Button} variant={'colorScheme'} colorScheme='inherit' onClick={() => setAscending(index, tag.ascending * -1)} >{tag.code}</TagLabel>
@@ -167,16 +167,24 @@ const Athletes = (props) => {
                 </Box>}
             </GridItem>
 
-            <GridItem pl='2' area={'main'} >
+            <GridItem pl='2' area={'main'} overflow={'auto'}>
                 <SimpleGrid columns={3} columnGap="2" rowGap="4">
-                    {renderAthletes.sort(compareFn).map(athlete => (
+                    {renderAthletes && renderAthletes.sort(compareFn).map(athlete => (
                         <AthleteCard
                             key={athlete._id}
                             asset={athlete}
                             drafts={drafts}
                             showButtons
                             stats={true}
-                            filterTags={filterTags}
+                        />
+                    ))}
+                    {!renderAthletes && athletes.sort(compareFn).map(athlete => (
+                        <AthleteCard
+                            key={athlete._id}
+                            asset={athlete}
+                            drafts={drafts}
+                            showButtons
+                            stats={true}
                         />
                     ))}
                 </SimpleGrid>
