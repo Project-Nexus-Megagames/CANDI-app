@@ -64,14 +64,14 @@ const TeamDashboard = () => {
       </GridItem>
 
       <GridItem area={'account'} bg='#1a1d24' overflow={'auto'}>
-        {facilities.map(facility => (
-          <FacilityCard key={facility._id} facility={facility._id} />
-        ))}
         <MatchesCarosel matches={matches} />
       </GridItem>
 
       <GridItem area={'drafts'} bg='#0f131a' overflow={'auto'}>
         <VStack>
+          {facilities.map(facility => (
+            <FacilityCard key={facility._id} facility={facility._id} />
+          ))}
           {drafts.map(asset => (
             <DraftCard draft={asset} key={asset._id} />
           ))}

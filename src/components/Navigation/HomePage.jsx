@@ -82,12 +82,12 @@ const HomePage = (props) => {
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel backgroundColor="#55c96a" img={"/images/panels/auctions.png"} to="market" title={'~ Free Agent Market ~'} body="Free Agents" />
+        <ImgPanel disabled backgroundColor="#55c96a" img={"/images/panels/auctions.png"} to="market" title={'~ Free Agent Market ~'} body="Free Agents" />
       </GridItem>   
 
-      {/* <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
-        <ImgPanel img={rules} to="" title="~ Rules ~" body="Learn how to play the game"/>
-      </GridItem> */}
+      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1XMHhRa4F77vL6f8xppPhA_YHuWMvKxJPlwzHjX6LzyE/edit?usp=sharing")} >
+        <ImgPanel backgroundColor="#499797" img={"/images/panels/medallist.png"} to="" title="~ Rules ~" body="Learn how to play the game"/>
+      </GridItem>
 
       {control && <GridItem colSpan={columns} >
           <ImgPanel img={"/images/panels/trophy.png"} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />

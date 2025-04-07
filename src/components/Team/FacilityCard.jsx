@@ -10,6 +10,7 @@ import TeamAvatar from '../Common/TeamAvatar';
 import StatIcon from '../Assets/StatIcon';
 import { CandiModal } from '../Common/CandiModal';
 import SelectPicker from '../Common/SelectPicker';
+import { Edit } from '@rsuite/icons';
 
 
 const FacilityCard = (props) => {
@@ -20,6 +21,7 @@ const FacilityCard = (props) => {
     } = props;
     const [mode, setMode] = useState(false);
     const [specialRound, setSpecialRound] = useState(false);
+    const [editName, setEditName] = useState(false);
     const { athleteStats } = useSelector(s => s.gameConfig);
     const [overflow, setOverflow] = useState(false);
 
@@ -32,6 +34,14 @@ const FacilityCard = (props) => {
             route: 'facility',
             action: 'editRound',
             data: { facility: facility._id, specialRound }
+        });
+    };
+
+    const editFacilityName = async () => {
+        socket.emit('request', {
+            route: 'facility',
+            action: 'name',
+            data: { facility: facility._id, name: editName }
         });
     };
 
@@ -67,13 +77,11 @@ const FacilityCard = (props) => {
 
                             <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(facility.type)}`, padding: '5px' }} display="flex"  >
                                 <Center >
-
                                     <Box textAlign={'left'} marginLeft={'5px'} >
-
                                         <HStack marginBottom={'3px'} >
                                             <Text as='u' fontSize={compact ? 'sm' :'lg'} casing={'capitalize'} >{facility.name}</Text>
+                                            {control && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setEditName(facility.name)} />}
                                         </HStack>
-
                                     </Box>
                                 </Center>
                             </div>
@@ -87,7 +95,7 @@ const FacilityCard = (props) => {
                             <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
                             <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                             {round.name}
-                            {control && <TagCloseButton onClick={() => setSpecialRound(round)} />}
+                            {control && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setSpecialRound(round)} />}
                         </Tag>))}
 
                 </Card>
@@ -123,6 +131,21 @@ const FacilityCard = (props) => {
                     <Button onClick={editRound} > Submit
 
                     </Button>
+                </CandiModal>}
+
+                {editName && <CandiModal
+                    onClose={() => { setEditName(false); }}
+                    open={editName}
+                    title={`Edit ${editName}`}
+                >
+                    <Input
+                        onChange={(e) => setEditName(e.target.value)}
+                        value={props.filter}
+                        placeholder={editName}
+                        color='white'
+                    />
+
+                    <Button onClick={editFacilityName}>Submit</Button>
                 </CandiModal>}
 
             </div>

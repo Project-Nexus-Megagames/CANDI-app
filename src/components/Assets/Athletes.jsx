@@ -72,10 +72,23 @@ const Athletes = (props) => {
         if (aValue > bValue) {
             return 1;
         }
-
-
-        // names must be equal
         return 0;
+    }
+
+    function filterFn(value) {
+        let tagCompare = true;
+        for (const tag of filterTags) {
+            // if (typeof tag)
+            const nameA = value.stats.find(el => el.code === tag.code) // ignore upper and lowercase
+
+            if (nameA.statAmount < tag.min) {
+                tagCompare = false;
+            }
+            if (nameA.statAmount > tag.max) {
+                tagCompare = false;
+            }
+        }
+        return tagCompare && (value.name.includes(filter) || value.species.includes(filter) || value.tags.some(t => t.toLowerCase().includes(filter)))
     }
 
     function setAscending(index, ascNumber) {
@@ -101,12 +114,12 @@ const Athletes = (props) => {
             templateAreas={`"nav main"`}
             gridTemplateColumns={'400px 1fr'}
             gap='1'
-      h='calc(100vh - 78px)'
+            h='calc(100vh - 78px)'
             fontWeight='bold'>
 
             <GridItem pl='2' area={'nav'} overflow={'auto'}>
                 {!selected && <Center >
-                    <Input style={{ width: '80%', margin: '5px' }} placeholder="Search" onChange={(e) => setFilter(e.target.value)}></Input>
+                    <Input style={{ width: '80%', margin: '5px' }} placeholder="Search Name, Tag, Species" onChange={(e) => setFilter(e.target.value)}></Input>
                     <ButtonGroup isAttached marginRight={'0px'} >
                         {!selected && isControl && <IconButton variant={'solid'} onClick={() => setMode('new')} colorScheme='green' size="md" icon={<Plus />} />}
                         {selected && <IconButton variant={'outline'} onClick={() => setSelected(false)} colorScheme='red' size="md" icon={<CloseButton />} />}
@@ -169,7 +182,7 @@ const Athletes = (props) => {
 
             <GridItem pl='2' area={'main'} overflow={'auto'}>
                 <SimpleGrid columns={3} columnGap="2" rowGap="4">
-                    {renderAthletes && renderAthletes.sort(compareFn).map(athlete => (
+                    {/* {renderAthletes && renderAthletes.sort(compareFn).map(athlete => (
                         <AthleteCard
                             key={athlete._id}
                             asset={athlete}
@@ -177,8 +190,8 @@ const Athletes = (props) => {
                             showButtons
                             stats={true}
                         />
-                    ))}
-                    {!renderAthletes && athletes.sort(compareFn).map(athlete => (
+                    ))} */}
+                    {athletes.filter(filterFn).sort(compareFn).map(athlete => (
                         <AthleteCard
                             key={athlete._id}
                             asset={athlete}
