@@ -18,9 +18,9 @@ const Matches = (props) => {
     const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
-    const [extended, setExtended] = useState([7, 9, 11, 13, 15, 17, 19].filter(el => el > gamestate.round));
+    const rounds = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+    const [extended, setExtended] = useState(rounds);
     const events = useSelector(state => state.events.list)
-    const rounds = [7, 8, 9, 10, 11, 12, 13]
 
     const navigate = useNavigate();
     useEffect(() => {
