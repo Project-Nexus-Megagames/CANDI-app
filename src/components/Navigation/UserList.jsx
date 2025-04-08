@@ -14,6 +14,7 @@ import {
   IconButton,
   Badge,
   Button,
+  Center,
 } from '@chakra-ui/react'
 
 
@@ -46,13 +47,13 @@ const UserList = () => {
               ) : null}
               {userList.length > 0 && socket !== null ? (
                 <React.Fragment>
-                  <ul>
+                  <Center>
                     {userList.map((user, index) => (
                       <li id={user.username + index} key={user.character}>
                         {user.character} | {user.clientVersion}{' '}
                       </li>
                     ))}
-                  </ul>
+                  </Center>
                 </React.Fragment>
               ) : null}
           </PopoverBody>

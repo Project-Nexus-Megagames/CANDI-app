@@ -13,6 +13,7 @@ import { setCharacter, setTeam, signOut } from '../../redux/entities/auth';
 import TeamCard from '../Common/TeamCard';
 import { CandiModal } from '../Common/CandiModal';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
+import UserList from './UserList';
 
 // const mapStateToProps = state => ({
 // 	login: state.auth.login,
@@ -189,6 +190,7 @@ const NavBar = (props) => {
           marginTop: '15px',
           marginBottom: '10px',
         }} >
+          {control && <UserList />}
         {team && <TeamCard team={team} handleSelect={(() => { if (control) setMode('change') })} />}
         {myChar && myCharacter && myChar !== myCharacter && <Button size={'xs'} onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
         {!team && <Link style={{ color: 'white' }} to="/login">Sign In</Link>}
