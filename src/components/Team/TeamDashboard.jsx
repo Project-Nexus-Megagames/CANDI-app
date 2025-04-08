@@ -73,7 +73,7 @@ const TeamDashboard = () => {
             <FacilityCard key={facility._id} facility={facility._id} isOwned={round < 8} /> 
           ))}
           {drafts.map(asset => (
-            <DraftCard draft={asset} key={asset._id} showRemove/>
+            <DraftCard draft={asset} key={asset._id} showRemove={true}/>
           ))}
         </VStack>
       </GridItem>

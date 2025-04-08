@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, AvatarBadge, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
@@ -6,8 +6,8 @@ import { CandiWarning } from '../Common/CandiWarning';
 import NexusTag from '../Common/NexusTag';
 import { useSelector } from 'react-redux';
 import { CandiModal } from '../Common/CandiModal';
-import { BsPencil } from 'react-icons/bs';
-import { Close, Trash } from '@rsuite/icons';
+import { BsBookmarkHeartFill , BsBookmark, BsPencil } from 'react-icons/bs';
+import { Calendar, Close, Trash } from '@rsuite/icons';
 import CountDownTag from '../Common/CountDownTag';
 import { getFadedColor, getTextColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import CharacterNugget from '../Common/CharacterNugget';
@@ -15,6 +15,7 @@ import DraftCard from './DraftCard';
 import TeamAvatar from '../Common/TeamAvatar';
 import AssetForm from '../Common/AssetForm';
 import StatIcon from './StatIcon';
+import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
 
 const AthleteCard = (props) => {
@@ -22,6 +23,7 @@ const AthleteCard = (props) => {
     showButtons = false,
     handleSelect,
     drafts = false,
+    upcomingDrafts = false,
     removeAsset,
     showRemove,
     stats = true,
@@ -31,14 +33,23 @@ const AthleteCard = (props) => {
   } = props;
   const [mode, setMode] = useState(false);
   const [show, setShow] = useState(false);
-
-  const [overflow, setOverflow] = useState(false);
+  const [draftIndex, setDraftIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [isBookmarked, setBookmarked] = useState(false);
 
   const control = useSelector(state => state.auth.control);
+  const myTeam = useSelector(state => state.auth.team);
   const teams = useSelector(state => state.teams.list);
   const assets = useSelector(state => state.assets.list);
   const accounts = useSelector(state => state.accounts.list);
-  const characters = useSelector(state => state.characters.list);
+
+  
+    useEffect(() => {
+      if (myTeam) {
+        const team = teams.find(el => el._id === myTeam._id)
+        setBookmarked(team?.bookmarked.some(el => el == asset._id))
+      }
+    }, [teams])
 
   const deleteAssert = async () => {
     socket.emit('request', {
@@ -48,11 +59,20 @@ const AthleteCard = (props) => {
     });
   };
 
-  const asset = props.asset?._id ? props.asset : assets.find(el => el._id === props.asset)
+  const bookmarkAthlete = async () => {
+    setLoading(true)
+    socket.emit('request', {
+      route: 'asset',
+      action: 'bookmarkAthlete',
+      data: { athlete: asset._id, team: myTeam._id }
+    },
+      (response) => {
+        setLoading(false)
+      });
+  };
 
+  const asset = props.asset?._id ? props.asset : assets.find(el => el._id === props.asset)
   const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
-  const account = populateThisAccount(accounts, asset?.account)
-  const team = getThisTeam(teams, account.manager);
   const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
   const border = isHidden ? 'dotted' : 'solid'
 
@@ -80,12 +100,44 @@ const AthleteCard = (props) => {
                 {showButtons && <ButtonGroup isAttached>
                   {control &&
                     <IconButton variant={'ghost'} onClick={() => setMode("modify")} colorScheme="orange" size={'xs'} icon={<BsPencil />} />}
-                  {/* <Button onClick={() => setShow(!show)} >{!show ? "Show Stats" : "Hide Stats"}</Button> */}
-                  {drafts && <Button size={'xs'} isDisabled={drafts.length === 0 || asset?.teamOwner} onClick={() => setMode("draft")} >{"Draft"}</Button>}
+
+                  <Tooltip hasArrow placement='top' label={"Bookmark this Athlete"}>
+                    <IconButton
+                      size={'xs'}
+                      isDisabled={upcomingDrafts.length === 0}
+                      icon={isBookmarked ? <BsBookmarkHeartFill /> : <BsBookmark />}
+                      variant={!isBookmarked ? 'outline' : 'solid'}
+                      colorScheme='yellow'
+                      isLoading={loading}
+                      onClick={() => bookmarkAthlete()} >
+                      {"Draft"}
+                    </IconButton>
+                  </Tooltip>
+
+                  {drafts && <Button
+                    size={'xs'}
+                    isDisabled={drafts.length === 0 || asset?.teamOwner}
+                    variant={'solid'}
+                    isLoading={loading}
+                    style={{ backgroundColor: '#8c271e', color: 'white' }}
+                    onClick={() => setMode("draft")} >
+                    {"Draft"}
+                  </Button>}
+                  {upcomingDrafts &&
+                    <Tooltip hasArrow placement='top' label={"Schedule this Athlete to be drafted"}>
+                      <IconButton
+                        size={'xs'}
+                        isDisabled={upcomingDrafts.length === 0 || asset?.teamOwner}
+                        icon={<Calendar />}
+                        variant={'solid'}
+                        isLoading={loading}
+                        style={{ backgroundColor: '#8c271e', color: 'white' }}
+                        onClick={() => setMode("sechedule")} >
+                        {"Draft"}
+                      </IconButton>
+                    </Tooltip>}
                 </ButtonGroup>}
-              </Stack>
-
-
+              </Stack>              
 
               <Spacer />
 
@@ -95,6 +147,7 @@ const AthleteCard = (props) => {
                   <Box textAlign={'left'} marginLeft={'5px'} >
 
                     <HStack marginBottom={'3px'} >
+                      {isBookmarked && <BsBookmarkHeartFill size={'18px'} color='yellow' fill='yellow' />}
                       <Text as='u' fontSize={'lg'} casing={'capitalize'} >{asset.name}</Text>
 
                       <Text as='kbd' fontSize={'md'} casing={'capitalize'}>{asset.species}</Text>
@@ -123,7 +176,6 @@ const AthleteCard = (props) => {
                       ))}
                     </SimpleGrid>}
 
-                    {<CountDownTag timeout={asset.timeout} />}
                   </Box>
                 </Center>
               </div>
@@ -156,6 +208,26 @@ const AthleteCard = (props) => {
                   athlete: asset._id
                 }
               })} >Draft!</Button>
+          </Box>}
+        </CandiModal>
+
+        <CandiModal onClose={() => { setMode(false); }} open={mode === "sechedule"} title={`Sechedule Draft of "${asset.name}"`}>
+          {upcomingDrafts.length === 0 && <Box>
+            You do not have a valid draft slot yet!
+          </Box>}
+          {upcomingDrafts.length > 0 && <Box>
+            Using Draft Pick
+
+            <Center height={'100%'} >
+              <IconButton colorScheme='blue' variant={'solid'} icon={<ArrowLeftIcon />} isDisabled={draftIndex <= 0} onClick={() => setDraftIndex(draftIndex - 1)} />
+              <DraftCard
+                draft={upcomingDrafts[draftIndex]}
+                handleClose={() => setMode(false)}
+                scheduleAthlete={asset}
+              />
+              <IconButton colorScheme='blue' variant={'solid'} icon={<ArrowRightIcon />} isDisabled={draftIndex + 1 === upcomingDrafts.length} onClick={() => setDraftIndex(draftIndex + 1)} />
+            </Center>
+
           </Box>}
         </CandiModal>
 

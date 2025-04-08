@@ -17,6 +17,7 @@ import { blueprintUpdated } from './entities/blueprints';
 import { articleDeleted, articleUpdated } from './entities/articles';
 import { eventUpdated } from './entities/events';
 import { marketUpdated } from './entities/markets';
+import { checkTeam } from './entities/auth';
 
 
 const initUpdates = () => {
@@ -50,6 +51,7 @@ const initUpdates = () => {
                         break;
                     case 'Team':
                         store.dispatch(teamUpdated(el));
+                        store.dispatch(checkTeam(el))
                         break;
                     case 'Location':
                         store.dispatch(locationUpdated(el));

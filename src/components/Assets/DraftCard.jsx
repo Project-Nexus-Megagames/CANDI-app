@@ -10,14 +10,17 @@ import { getDraftableAthletes } from '../../redux/entities/assets';
 import socket from '../../socket';
 import CountDownTag from '../Common/CountDownTag';
 import { Close } from '@rsuite/icons';
+import { BsPlus } from 'react-icons/bs';
 
-const DraftCard = ({ draft, handleSelect, removeAsset, showRemove=false }) => {
+const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, scheduleAthlete = false, handleClose = false }) => {
     const blueprints = useSelector(s => s.blueprints.list);
     const { login, team, control } = useSelector(s => s.auth);
     const athletes = useSelector(getDraftableAthletes);
     const disabled = draft?.status?.some(el => el.toLowerCase() === ('cooldown'));
     const border = disabled ? 'dotted' : 'solid';
     const [loading, setLoading] = useState(false);
+
+    const sortedAssets = [ ...athletes.filter(el => team.bookmarked.some(b => b === el._id)), ...athletes.filter(el => !team.bookmarked.some(b => b === el._id)) ]
 
     const quePick = (choiceNum, athlete) => {
         setLoading(true)
@@ -31,7 +34,7 @@ const DraftCard = ({ draft, handleSelect, removeAsset, showRemove=false }) => {
             }
         },
             (response) => {
-                console.log(response);
+                handleClose && handleClose()
                 setLoading(false)
             })
     }
@@ -90,13 +93,49 @@ const DraftCard = ({ draft, handleSelect, removeAsset, showRemove=false }) => {
             </Flex>
 
             {draft.picked && <AthleteCard asset={draft.picked} compact />}
-            {disabled && (team._id === draft.teamOwner._id || control) && !draft.picked && <Box>
+            {disabled && (team._id === draft.teamOwner._id) && !draft.picked && <Box>
                 First Choice
-                {!draft.firstChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)} />}
-                {draft.firstChoice && <AthleteCard asset={draft.firstChoice} compact showRemove={showRemove} removeAsset={() => removeChoice('firstChoice', false)} />}
+                {!draft.firstChoice && !scheduleAthlete &&
+                    <AddAsset
+                        assets={sortedAssets}
+                        handleSelect={(athlete) => quePick('firstChoice', athlete)}
+                    />}
+                {!draft.firstChoice && scheduleAthlete &&
+                    <Center>
+                        <IconButton
+                            onClick={() => quePick('firstChoice', scheduleAthlete)}
+                            isLoading={loading}
+                            variant="solid"
+                            colorScheme='green'
+                            size="sm"
+                            icon={<BsPlus size={'25'} />}
+                        />
+                    </Center>}
+                {draft.firstChoice &&
+                    <AthleteCard
+                        asset={draft.firstChoice}
+                        compact
+                        showRemove={showRemove}
+                        removeAsset={() => removeChoice('firstChoice', false)}
+                    />}
 
                 Second Choice
-                {!draft.secondChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)} />}
+                {!draft.secondChoice && !scheduleAthlete &&
+                    <AddAsset
+                        assets={sortedAssets}
+                        handleSelect={(athlete) => quePick('secondChoice', athlete)}
+                    />}
+                {!draft.secondChoice && scheduleAthlete &&
+                    <Center>
+                        <IconButton
+                            onClick={() => quePick('secondChoice', scheduleAthlete)}
+                            isLoading={loading}
+                            variant="solid"
+                            colorScheme='green'
+                            size="sm"
+                            icon={<BsPlus size={'25'} />}
+                        />
+                    </Center>}
                 {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove={showRemove} removeAsset={() => removeChoice('secondChoice', false)} />}
             </Box>}
         </div>

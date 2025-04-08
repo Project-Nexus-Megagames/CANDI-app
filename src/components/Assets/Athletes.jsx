@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import usePermissions from '../../hooks/usePermissions';
 import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
+    PopoverFooter,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverAnchor,
     Slider, SliderTrack, SliderFilledTrack, SliderThumb, Tooltip, SliderMark, Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Center, ButtonGroup, Tag, TagCloseButton, TagLeftIcon, TagLabel, Button, Divider, AbsoluteCenter,
-    InputGroup
+    InputGroup,
+    HStack,
+    Stack
 } from '@chakra-ui/react';
 import { Plus } from '@rsuite/icons';
 import { useSelector } from 'react-redux';
-import { getAthletes, getReadyTeamDraft } from '../../redux/entities/assets';
+import { getAthletes, getReadyTeamDraft, getUpcomingTeamDraft } from '../../redux/entities/assets';
 import AthleteCard from './AthleteCard';
-import { FaFilter } from 'react-icons/fa';
+import { FaEye, FaFilter } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDownIcon, ChevronUpIcon, Search2Icon } from '@chakra-ui/icons';
 import { AddTag } from '../Common/AddTag';
 import InputNumber from '../Common/InputNumber';
 import socket from '../../socket';
+import StatIcon from './StatIcon';
 
 const Athletes = (props) => {
     const { isControl } = usePermissions();
@@ -24,10 +36,17 @@ const Athletes = (props) => {
     const [mode, setMode] = useState('filter');
     const athletes = useSelector(getAthletes);
     const drafts = useSelector(getReadyTeamDraft);
+    const upcomingDrafts = useSelector(getUpcomingTeamDraft);
+    const salaryTypes = [
+        { name: "Shiny Rock", code: "shiny_rock" },
+        { name: "Excellent Moss", code: "excellent_moss" },
+        { name: "Mushroom", code: "mushroom" },
+        { name: "Gold", code: "gold" }
+    ]
+    const [renderSalary, setRenderSalary] = React.useState(salaryTypes);
+
     const [loading, setLoading] = React.useState(false);
-
-
-    const [renderAthletes, setRenderAthletes] = useState(false);
+    const [renderedOwned, setRenderOwned] = useState(true);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -36,20 +55,14 @@ const Athletes = (props) => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (renderAthletes) {
-    //         //setRenderAthletes(athletes.filter(el => !renderAthletes.some(ra => ra._id === el._id)))
-    //     }
-    // }, [athletes]);
-
-    function searchAthletes() {
-        setLoading(true)
-        socket.emit('request', { route: 'asset', action: 'searchAthletes', data: filterTags }, (response) => {
-            setRenderAthletes(response);
-            setLoading(false)
-        });
+    function toggleAdditionalFilter(sal) {
+        if (renderSalary.some(el => el.code === sal.code))
+            setRenderSalary(renderSalary.filter(el => el.code !== sal.code))
+        else
+            setRenderSalary([...renderSalary, sal])
     }
 
+    // for sorting post filters
     function compareFn(a, b) {
         let aValue = 0;
         let bValue = 0;
@@ -76,7 +89,7 @@ const Athletes = (props) => {
     }
 
     function filterFn(value) {
-        let tagCompare = true;
+        let tagCompare = renderedOwned ? value.teamOwner !== undefined : true;
         for (const tag of filterTags) {
             // if (typeof tag)
             const nameA = value.stats.find(el => el.code === tag.code) // ignore upper and lowercase
@@ -88,7 +101,9 @@ const Athletes = (props) => {
                 tagCompare = false;
             }
         }
-        return tagCompare && (value.name.includes(filter) || value.species.includes(filter) || value.tags.some(t => t.toLowerCase().includes(filter)))
+        return tagCompare &&
+            renderSalary.some(el => el.code === value.preferredCurrency) &&
+            (value.name.includes(filter) || value.species.includes(filter) || value.tags.some(t => t.toLowerCase().includes(filter)))
     }
 
     function setAscending(index, ascNumber) {
@@ -123,7 +138,38 @@ const Athletes = (props) => {
                     <ButtonGroup isAttached marginRight={'0px'} >
                         {!selected && isControl && <IconButton variant={'solid'} onClick={() => setMode('new')} colorScheme='green' size="md" icon={<Plus />} />}
                         {selected && <IconButton variant={'outline'} onClick={() => setSelected(false)} colorScheme='red' size="md" icon={<CloseButton />} />}
-                        <IconButton isLoading={loading} variant={'solid'} onClick={searchAthletes} colorScheme='pink' size="md" icon={<Search2Icon />} />
+                        <Popover  >
+                            <PopoverTrigger>
+                                <IconButton isLoading={loading} variant={'solid'} colorScheme='pink' size="md" icon={<FaEye />} />
+                            </PopoverTrigger>
+                            <PopoverContent backgroundColor='#1d232e'>
+                                <PopoverArrow />
+                                <PopoverCloseButton />
+                                <PopoverHeader>Filter by...</PopoverHeader>
+                                <PopoverBody>
+                                    <Stack>
+                                        {salaryTypes.map(sal =>
+                                            <Button
+                                                variant={renderSalary.some(el => el.code === sal.code) ? 'solid' : 'outline'}
+                                                colorScheme='blue'
+                                                onClick={() => toggleAdditionalFilter(sal)}
+                                                leftIcon={<StatIcon stat={{ code: 'SAL' }} preferredCurrency={sal.code} />}
+                                                key={sal.code} >
+                                                {sal.name}
+                                            </Button>
+                                        )}
+                                        <Button
+                                            variant={renderedOwned ? 'solid' : 'outline'}
+                                            colorScheme='green'
+                                            onClick={() => setRenderOwned(!renderedOwned)}
+                                        >
+                                            {renderedOwned ? "Showing Owned Athletes" : "Showing All Athletes"}
+                                        </Button>
+                                    </Stack>
+                                </PopoverBody>
+                            </PopoverContent>
+                        </Popover>
+
                     </ButtonGroup>
 
                 </Center>}
@@ -182,20 +228,12 @@ const Athletes = (props) => {
 
             <GridItem pl='2' area={'main'} overflow={'auto'}>
                 <SimpleGrid columns={3} columnGap="2" rowGap="4">
-                    {/* {renderAthletes && renderAthletes.sort(compareFn).map(athlete => (
-                        <AthleteCard
-                            key={athlete._id}
-                            asset={athlete}
-                            drafts={drafts}
-                            showButtons
-                            stats={true}
-                        />
-                    ))} */}
                     {athletes.filter(filterFn).sort(compareFn).map(athlete => (
                         <AthleteCard
                             key={athlete._id}
                             asset={athlete}
                             drafts={drafts}
+                            upcomingDrafts={upcomingDrafts}
                             showButtons
                             stats={true}
                         />

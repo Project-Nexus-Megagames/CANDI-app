@@ -73,6 +73,12 @@ const slice = createSlice({
       
       if (action.payload?.name === 'Control Team') auth.control = true;
     },
+    checkTeam: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      if (auth.team._id === action.payload._id) {
+        auth.team = action.payload;
+      }
+    },
     setCharacter: (auth, action) => {
       console.log(`${action.type} Dispatched`);
 
@@ -116,7 +122,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { authReceived, loginRequested, authRequestFailed, loginSocket, clearAuthError, signOut, updateUser, usersRecieved, finishLoading, setCharacter, setControl, setTeam, loadingState } = slice.actions;
+export const { authReceived, loginRequested, authRequestFailed, loginSocket, clearAuthError, signOut, updateUser, usersRecieved, finishLoading, setCharacter, setControl, setTeam, loadingState, checkTeam } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 
