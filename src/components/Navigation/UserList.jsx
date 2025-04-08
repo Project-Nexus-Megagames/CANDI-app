@@ -52,7 +52,7 @@ const UserList = () => {
                   <Stack>
                     {userList.map((user, index) => (
                       <Box id={user.username + index} key={user.character}>
-                        {user.character} | {user.clientVersion}{' '}
+                        {user.character} ({user.username}) | {user.clientVersion}{' '}
                       </Box>
                     ))}
                   </Stack>
