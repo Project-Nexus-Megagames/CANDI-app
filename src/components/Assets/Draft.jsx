@@ -10,15 +10,24 @@ import TeamAvatar from '../Common/TeamAvatar';
 import NexusTag from '../Common/NexusTag';
 import { getFadedColor } from '../../scripts/frontend';
 import DraftCard from './DraftCard';
+import { useNavigate } from 'react-router-dom';
 
 const Draft = (props) => {
     const { isControl } = usePermissions();
+    const { team } = useSelector(s => s.auth);
     const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
     const [extended, setExtended] = useState([1, 2, 3, 4, 5])//.filter(el => el > gamestate.round));
     const draft = useSelector(getDraft);
     const rounds = [1, 2, 3, 4, 5]
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!props.login) {
+            navigate("/");
+        }
+    }, []);
 
     const toggleRound = (round) => {
         if (extended.some(el => el === round)) {
@@ -39,7 +48,7 @@ const Draft = (props) => {
             gridTemplateColumns={'100%'}
             gap='1'
             fontWeight='bold'>
-{gamestate.tickNum}
+            {gamestate.tickNum}
             <GridItem pl='2' area={'nav'} >
                 <Stack>
                     {rounds.map(r => (
@@ -49,7 +58,7 @@ const Draft = (props) => {
                             <Wrap spacing='10px' justify='space-around'>
                                 {extended.some(el => el === r) && draft.filter(dra => dra.round === r).map(dra => {
                                     return (
-                                        <DraftCard draft={dra} handleSelect={handleSelect} />
+                                        <DraftCard draft={dra} handleSelect={handleSelect} showRemove={team._id === dra.teamOwner._id} />
                                     )
                                 })}
                             </Wrap>
