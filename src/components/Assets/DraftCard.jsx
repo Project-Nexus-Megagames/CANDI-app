@@ -11,7 +11,7 @@ import socket from '../../socket';
 import CountDownTag from '../Common/CountDownTag';
 import { Close } from '@rsuite/icons';
 
-const DraftCard = ({ draft, handleSelect, removeAsset }) => {
+const DraftCard = ({ draft, handleSelect, removeAsset, showRemove=false }) => {
     const blueprints = useSelector(s => s.blueprints.list);
     const { login, team, control } = useSelector(s => s.auth);
     const athletes = useSelector(getDraftableAthletes);
@@ -92,12 +92,12 @@ const DraftCard = ({ draft, handleSelect, removeAsset }) => {
             {draft.picked && <AthleteCard asset={draft.picked} compact />}
             {disabled && (team._id === draft.teamOwner._id || control) && !draft.picked && <Box>
                 First Choice
-                {!draft.firstChoice && !disabled && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)} />}
-                {draft.firstChoice && <AthleteCard asset={draft.firstChoice} compact showRemove={!disabled} removeAsset={() => removeChoice('firstChoice', false)} />}
+                {!draft.firstChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)} />}
+                {draft.firstChoice && <AthleteCard asset={draft.firstChoice} compact showRemove={showRemove} removeAsset={() => removeChoice('firstChoice', false)} />}
 
                 Second Choice
-                {!draft.secondChoice && !disabled && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)} />}
-                {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove={!disabled} removeAsset={() => removeChoice('secondChoice', false)} />}
+                {!draft.secondChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)} />}
+                {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove={showRemove} removeAsset={() => removeChoice('secondChoice', false)} />}
             </Box>}
         </div>
     );
