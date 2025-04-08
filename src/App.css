@@ -42,6 +42,22 @@
   object-fit: fill;
 }
 
+.trade-item {
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+	border: 2px solid #ffffff;
+	border-radius: 1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #333133;
+}
+
+.trade-item:hover {
+  opacity: .75;
+  background-color: #4b3f49;
+}
+
 .portrait {
   margin: 1rem;
 }

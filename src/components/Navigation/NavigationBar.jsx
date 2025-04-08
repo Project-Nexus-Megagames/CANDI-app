@@ -84,11 +84,6 @@ const NavBar = (props) => {
     reduxAction(setTeam(myTeam));
   }, [currentCharacter]);
 
-  const rawr = account !== undefined ? account.resources.find(el => el.type === 'credit') : undefined
-  const megabucks = rawr ? rawr.balance : 'Error w/ account';
-
-  const rawr2 = teamAccount !== undefined ? teamAccount.resources.find(el => el.type === 'r_credit') : undefined
-  const megabucksTeam = rawr2 ? rawr2.balance : `Error w/ account credits`;
   const max = (gamestate?.roundLength?.minutes * 60) + gamestate?.roundLength?.seconds || 0;
   const fraction = ((minutes * 60) + seconds) / max;
 

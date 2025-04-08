@@ -45,7 +45,7 @@ const Trade = (props) => {
 
 	const messagesEndRef = useRef(null)
 	const scrollToBottom = () => {
-	  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
 	}
 
 	const navigate = useNavigate();
@@ -59,7 +59,7 @@ const Trade = (props) => {
 
 	useEffect(() => {
 		if (selectedTrade) {
-			let trade = trades.find(el => el._id === selectedTrade._id);
+			let trade = trades.find(el => el._id === selectedTrade?._id);
 			setSelectedTrade(trade);
 		}
 	}, [trades, selectedTrade]);
@@ -143,35 +143,35 @@ const Trade = (props) => {
 		let data = {
 			trade: selectedTrade._id,
 		};
-		socket.emit('request', { route: 'trade', action: 'deleteTrade', data });
 		setSelectedTrade(false);
+		socket.emit('request', { route: 'trade', action: 'deleteTrade', data });
 	}
 
 	const sendComment = async () => {
 		let data = {
-		  text,
-		  trade: selectedTrade._id,
-		  commentor: myCharacter._id
+			text,
+			trade: selectedTrade._id,
+			commentor: myCharacter._id
 		};
 		try {
-		  setLoading(true)
-		  socket.emit('request', { route: 'trade', action: 'comment', data }, (response) => {
-			console.log(response);
-			if (response.type === 'success') setText('')
-			setLoading(false)
-		  });
+			setLoading(true)
+			socket.emit('request', { route: 'trade', action: 'comment', data }, (response) => {
+				console.log(response);
+				if (response.type === 'success') setText('')
+				setLoading(false)
+			});
 		} catch (err) {
-		  // Alert.error(`${err.data} - ${err.message}`)
+			// Alert.error(`${err.data} - ${err.message}`)
 		}
-	  }
+	}
 
 	if (!login) return (<div />);
-	const initiatorAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade.initiator?.account) : {};
-	const partnerAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade.tradePartner?.account) : {};
+	const initiatorAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade?.initiator?.account || el._id === selectedTrade?.initiator?.account?._id) : {};
+	const partnerAccount = selectedTrade ? accounts.find(el => el._id === selectedTrade?.tradePartner?.account || el._id === selectedTrade?.tradePartner?.account?._id) : {};
 
 	const initiatorTeam = selectedTrade?.initiator?.team;
 	const partnerTeam = selectedTrade?.tradePartner?.team;
-	const isMyTrade = selectedTrade?.initiator.team?._id === team._id;
+	const isMyTrade = selectedTrade?.initiator?.team?._id === team._id;
 
 	return (
 		<div>
@@ -191,9 +191,9 @@ const Trade = (props) => {
 							myAccount={account}
 							account={isMyTrade ? partnerAccount : initiatorAccount}
 							team={isMyTrade ? partnerTeam : initiatorTeam}
-							offer={isMyTrade ? selectedTrade.tradePartner.offer : selectedTrade.initiator.offer}
-							ratified={isMyTrade ? selectedTrade.tradePartner.ratified : selectedTrade.initiator.ratified}
-							status={selectedTrade.status}
+							offer={isMyTrade ? selectedTrade?.tradePartner.offer : selectedTrade?.initiator.offer}
+							ratified={isMyTrade ? selectedTrade?.tradePartner.ratified : selectedTrade?.initiator.ratified}
+							status={selectedTrade?.status}
 							loading={tradeLoading || gameLoading}
 							onOfferEdit={onOfferEdit} />}
 				</GridItem>
@@ -202,12 +202,12 @@ const Trade = (props) => {
 					{selectedTrade && <TradeOffer
 						submitApproval={submitApproval}
 						rejectProposal={rejectProposal}
-						offer={isMyTrade ? selectedTrade.initiator.offer : selectedTrade.tradePartner.offer}
-						ratified={isMyTrade ? selectedTrade.initiator.ratified : selectedTrade.tradePartner.ratified}
+						offer={isMyTrade ? selectedTrade?.initiator.offer : selectedTrade?.tradePartner.offer}
+						ratified={isMyTrade ? selectedTrade?.initiator.ratified : selectedTrade?.tradePartner.ratified}
 						myAccount={account}
 						team={isMyTrade ? initiatorTeam : partnerTeam}
 						account={isMyTrade ? initiatorAccount : partnerAccount}
-						status={selectedTrade.status}
+						status={selectedTrade?.status}
 						loading={tradeLoading || gameLoading}
 						onOfferEdit={onOfferEdit} />}
 				</GridItem>
@@ -252,13 +252,13 @@ const Trade = (props) => {
 						<div >
 							<VStack divider={<Divider />} style={{ height: 'calc(100vh - 195px)', overflow: 'auto', textAlign: 'center', }}>
 								{tradeState.map((trade) => (
-									<TradeCard 
-									initiatorTeam={initiatorTeam} 
-									partnerTeam={partnerTeam} 
-									key={trade._id} 
-									trade={trade} 
-									selectTrade={selectTrade} 
-									isMine={trade.initiator.team._id === team._id} 
+									<TradeCard
+										initiatorTeam={initiatorTeam}
+										partnerTeam={partnerTeam}
+										key={trade._id}
+										trade={trade}
+										selectTrade={selectTrade}
+										isMine={trade.initiator.team._id === team._id}
 									>
 
 									</TradeCard>
@@ -272,17 +272,17 @@ const Trade = (props) => {
 					{selectedTrade && <div>
 						<Box >
 							<ButtonGroup isAttached>
-								{selectedTrade && isMyTrade && !selectedTrade.status.some(el => el === 'completed') && <Button variant={'solid'} colorScheme={'red'} size='sm' leftIcon={<Trash />} onClick={() => setMode('trash')}>Trash Trade</Button>}
+								{selectedTrade && isMyTrade && !selectedTrade?.status.some(el => el === 'completed') && <Button variant={'solid'} colorScheme={'red'} size='sm' leftIcon={<Trash />} onClick={() => setMode('trash')}>Trash Trade</Button>}
 								{selectedTrade && <Button colorScheme={'blue'} size='sm' rightIcon={<BsXCircle />} variant={'solid'} onClick={() => setSelectedTrade(null)}>Close Trade</Button>}
 							</ButtonGroup>
 
-							<p style={{ size: '11px' }} ><b>Last Updated:</b> {`${new Date(selectedTrade.updatedAt).toLocaleTimeString()} - ${new Date(selectedTrade.updatedAt).toDateString()}`}</p>
-							{selectedTrade.status.map((tag, index) => (<NexusTag key={tag} variant='solid' colorScheme="blue">{tag}</NexusTag>))}
+							<p style={{ size: '11px' }} ><b>Last Updated:</b> {`${new Date(selectedTrade?.updatedAt).toLocaleTimeString()} - ${new Date(selectedTrade?.updatedAt).toDateString()}`}</p>
+
 						</Box>
 
 						<Box height={'80vh'} overflow={'auto'} >
 							Feed:
-							{selectedTrade.comments.map(comment => (
+							{selectedTrade?.comments.map(comment => (
 								<Comment key={comment._id} comment={comment} />
 							))}
 							<textarea style={{ marginTop: "15px" }} ref={messagesEndRef} rows='5' value={text} className='textStyle' onChange={(event) => setText(event.target.value)}></textarea>

@@ -61,7 +61,7 @@ const DraftCard = ({ draft, handleSelect, removeAsset }) => {
                 backgroundColor: '#1a1d24',
                 minWidth: '350px'
             }}
-            onClick={() => (handleSelect && !disabled) ? handleSelect(draft) : console.log((handleSelect && !disabled))}
+            onClick={() => (handleSelect) ? handleSelect(draft) : console.log((handleSelect))}
         >
             <Flex alignItems='center'>
                 <Spacer />
@@ -92,12 +92,12 @@ const DraftCard = ({ draft, handleSelect, removeAsset }) => {
             {draft.picked && <AthleteCard asset={draft.picked} compact />}
             {disabled && (team._id === draft.teamOwner._id || control) && !draft.picked && <Box>
                 First Choice
-                {!draft.firstChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)} />}
-                {draft.firstChoice && <AthleteCard asset={draft.firstChoice} compact showRemove removeAsset={() => removeChoice('firstChoice', false)} />}
+                {!draft.firstChoice && !disabled && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('firstChoice', athlete)} />}
+                {draft.firstChoice && <AthleteCard asset={draft.firstChoice} compact showRemove={!disabled} removeAsset={() => removeChoice('firstChoice', false)} />}
 
                 Second Choice
-                {!draft.secondChoice && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)} />}
-                {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove removeAsset={() => removeChoice('secondChoice', false)} />}
+                {!draft.secondChoice && !disabled && <AddAsset assets={athletes} handleSelect={(athlete) => quePick('secondChoice', athlete)} />}
+                {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove={!disabled} removeAsset={() => removeChoice('secondChoice', false)} />}
             </Box>}
         </div>
     );

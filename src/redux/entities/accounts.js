@@ -59,6 +59,13 @@ export const {
 
 export default slice.reducer; // Reducer Export
 
+export const getTeamAccounts = createSelector(
+  state => state.accounts.list,
+  (accounts) => accounts.filter(
+    asset => (asset.team)
+  )
+);
+
 // Action Creators (Commands)
 const url = `${gameServer}api/accounts`;
 

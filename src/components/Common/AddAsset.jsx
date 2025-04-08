@@ -64,7 +64,7 @@ export const AddAsset = ({ open, handleSelect, onClose, onOpen, assets, disabled
           {filteredAssets.map((ass) => (
             <Box key={ass._id} style={{ width: '100%', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
               {ass.__t === "Athlete" && <AthleteCard handleSelect={() => { handleSelect(ass);  }} asset={ass} compact />}
-              {ass.__t === "Draft" && <DraftCard handleSelect={() => { handleSelect(ass);  }} draft={ass} /> }
+              {ass.__t === "Draft" && <DraftCard handleSelect={() => { handleSelect(ass);  }} draft={ass} disabled={true} /> }
               {/* <AssetCard handleSelect={() => { handleSelect(ass);  }} asset={ass} /> */}
             </Box>
           ))}

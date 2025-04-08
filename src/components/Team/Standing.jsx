@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import usePermissions from '../../hooks/usePermissions';
-import { Grid, GridItem, Box, Stack, Wrap, WrapItem, SimpleGrid, Text, Center } from '@chakra-ui/react';
+import { Grid, GridItem, Box, Stack, Wrap, WrapItem, SimpleGrid, Text, Center, Spacer } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import TeamAvatar from '../Common/TeamAvatar';
 import { getFadedColor } from '../../scripts/frontend';
 import { useNavigate } from 'react-router-dom';
 import StatIcon from '../Assets/StatIcon';
+import ResourceNugget from '../Common/ResourceNugget';
+import { getTeamAccounts } from '../../redux/entities/accounts';
 
 const Standing = (props) => {
     const { isControl } = usePermissions();
     const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
+    const accounts = useSelector(getTeamAccounts)
     const teams = useSelector(state => state.teams.list)
+    
     const divisions = [
         { name: "Toad Division", description: "Warts warts warts", code: 'toad' },
         { name: "Garbage Division", description: "", code: 'garbage' },
@@ -88,12 +92,18 @@ const Standing = (props) => {
                                         return 0;
                                     })
                                     .filter(team => team.division.toLowerCase() === d.code).map(team => {
+                                        const account = accounts.find(el => el.team._id === team._id)
                                         return (
-                                            <Center key={team._id} width={"40vw"} >
+                                            <Center key={team._id} width={"40vw"} style={{ border: `3px solid ${team.color}`, padding: '3px' }}>
                                                 <TeamAvatar team={team} />
                                                 <Text noOfLines={1} fontSize='4xl'>W: {team.wins} L: {team.losses}</Text>
                                                 <StatIcon stat={{ code: 'pop', name: "Popularity" }} compact size={'md'} />
                                                 <Text noOfLines={1} fontSize='4xl'>{team.popularity}</Text>
+                                                <Spacer />
+                                                {account.resources?.map((item) =>
+                                                    <ResourceNugget key={item._id} type={item.type} value={item.balance} width={'80px'} height={'30'} />
+                                                )}
+                                                <Spacer />
                                             </Center>
                                         )
                                     })}

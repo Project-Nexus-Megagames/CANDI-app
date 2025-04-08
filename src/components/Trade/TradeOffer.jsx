@@ -130,7 +130,7 @@ const TradeOffer = (props) => { //trade object
 				))}
 			</VStack>
 
-			{!disabled && <IconButton onClick={() => setResources([...resources, { value: 1, type: 'credit' }])} variant="solid" colorScheme='green' size="sm" icon={<Plus />} />}
+			{!disabled && <IconButton onClick={() => setResources([...resources, { value: 1, type: props.myAccount.resources.find(el => el.balance > 0 && el.tratradable)?.type }])} variant="solid" colorScheme='green' size="sm" icon={<Plus />} />}
 			{disabled && <Flex style={{ minHeight: '20vh' }} justify="space-around" align={'center'} >
 				{resources.length === 0 && <h5>No Resources Offered</h5>}
 				{disabled && resources.map((resource, index) => (
@@ -157,7 +157,12 @@ const TradeOffer = (props) => { //trade object
 
 				{!disabled &&
 					<AddAsset
-						assets={teamAssets.filter(el => el.tags.some(s => s === 'tradable') && !el.status.some(s => s === 'used'))}
+						assets={teamAssets.filter(el => 
+							el.tags.some(s => s === 'tradable') && 
+							!el.status.some(s => s === 'used') &&
+							!assets.some(ass => ass?._id === el._id || ass === el._id)
+						)}
+						// assets={athletes.filter(el => !match.awayRoster.some(ass => ass?._id === el._id || ass === el._id))}
 						handleSelect={(asset) => editState(asset, 0, 'add-asset')}
 					/>}
 			</SimpleGrid >}
