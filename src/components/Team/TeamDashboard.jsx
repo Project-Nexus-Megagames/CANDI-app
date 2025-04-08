@@ -20,7 +20,7 @@ import FacilityCard from './FacilityCard';
 const TeamDashboard = () => {
   const navigate = useNavigate();
   const { login, team, isControl } = useSelector(s => s.auth);
-  const { teamTab } = useSelector(s => s.gamestate);
+  const { round } = useSelector(s => s.gamestate);
   const drafts = useSelector(getTeamDraft);
   const athletes = useSelector(getTeamAthletes);
   const facilities = useSelector(getTeamFacilities);
@@ -70,7 +70,7 @@ const TeamDashboard = () => {
       <GridItem area={'drafts'} bg='#0f131a' overflow={'auto'}>
         <VStack>
           {facilities.map(facility => (
-            <FacilityCard key={facility._id} facility={facility._id} />
+            <FacilityCard key={facility._id} facility={facility._id} isOwned={round < 8} /> 
           ))}
           {drafts.map(asset => (
             <DraftCard draft={asset} key={asset._id} />

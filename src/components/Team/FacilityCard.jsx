@@ -18,6 +18,7 @@ const FacilityCard = (props) => {
         showButtons = false,
         width = '100%',
         compact,
+        isOwned=false
     } = props;
     const [mode, setMode] = useState(false);
     const [specialRound, setSpecialRound] = useState(false);
@@ -47,8 +48,6 @@ const FacilityCard = (props) => {
 
     const facility = props.facility?._id ? props.facility : facilitys.find(el => el._id === props.facility)
     const disabled = false;
-
-    console.log(facility)
 
     if (facility)
         return (
@@ -80,7 +79,7 @@ const FacilityCard = (props) => {
                                     <Box textAlign={'left'} marginLeft={'5px'} >
                                         <HStack marginBottom={'3px'} >
                                             <Text as='u' fontSize={compact ? 'sm' :'lg'} casing={'capitalize'} >{facility.name}</Text>
-                                            {control && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setEditName(facility.name)} />}
+                                            {isOwned && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setEditName(facility.name)} />}
                                         </HStack>
                                     </Box>
                                 </Center>
@@ -95,7 +94,7 @@ const FacilityCard = (props) => {
                             <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
                             <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                             {round.name}
-                            {control && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setSpecialRound(round)} />}
+                            {isOwned && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setSpecialRound(round)} />}
                         </Tag>))}
 
                 </Card>
