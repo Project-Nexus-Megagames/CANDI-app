@@ -86,7 +86,7 @@ const NavBar = (props) => {
   }, [currentCharacter]);
 
   const max = (gamestate?.roundLength?.minutes * 60) + gamestate?.roundLength?.seconds || 0;
-  const fraction = ((minutes * 60) + seconds) / max;
+  const fraction = ((hours * 60 * 60) + (minutes * 60) + seconds) / max;
 
   const handleLogOut = () => {
     reduxAction(signOut());
