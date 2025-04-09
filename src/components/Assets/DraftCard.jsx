@@ -93,7 +93,7 @@ const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, sched
             </Flex>
 
             {draft.picked && <AthleteCard asset={draft.picked} compact />}
-            {disabled && (team._id === draft.teamOwner._id) && !draft.picked && <Box>
+            {disabled && (team._id === draft.teamOwner._id || control) && !draft.picked && <Box>
                 First Choice
                 {!draft.firstChoice && !scheduleAthlete &&
                     <AddAsset
