@@ -13,7 +13,8 @@ import {
     Slider, SliderTrack, SliderFilledTrack, SliderThumb, Tooltip, SliderMark, Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Center, ButtonGroup, Tag, TagCloseButton, TagLeftIcon, TagLabel, Button, Divider, AbsoluteCenter,
     InputGroup,
     HStack,
-    Stack
+    Stack,
+    useBreakpointValue
 } from '@chakra-ui/react';
 import { Plus } from '@rsuite/icons';
 import { useSelector } from 'react-redux';
@@ -38,6 +39,8 @@ const Athletes = (props) => {
     const athletes = useSelector(getAthletes);
     const drafts = useSelector(getReadyTeamDraft);
     const upcomingDrafts = useSelector(getUpcomingTeamDraft);
+    const columns = useBreakpointValue({base: 3, lg: 3, md: 1, sm: 1});
+
     const salaryTypes = [
         { name: "Shiny Rock", code: "shiny_rock", color: "#9b549f" },
         { name: "Excellent Moss", code: "excellent_moss", color: "#55f348" },
@@ -47,7 +50,7 @@ const Athletes = (props) => {
     const [renderSalary, setRenderSalary] = React.useState(salaryTypes);
 
     const [loading, setLoading] = React.useState(false);
-    const [renderedOwned, setRenderOwned] = useState(1);
+    const [renderedOwned, setRenderOwned] = useState(4);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -134,7 +137,7 @@ const Athletes = (props) => {
     return (
         <Grid
             templateAreas={`"nav main"`}
-            gridTemplateColumns={'400px 1fr'}
+            gridTemplateColumns={'0.25fr 1fr'}
             gap='1'
             h='calc(100vh - 78px)'
             fontWeight='bold'>
@@ -155,17 +158,6 @@ const Athletes = (props) => {
                                 <PopoverHeader>Filter by...</PopoverHeader>
                                 <PopoverBody>
                                     <Stack>
-                                        {salaryTypes.map(sal =>
-                                            <Button
-                                                variant={renderSalary.some(el => el.code === sal.code) ? 'solid' : 'outline'}
-                                                backgroundColor={!renderSalary.some(el => el.code === sal.code) ? "#465063" : sal.color}
-                                                textColor={'black'}
-                                                onClick={() => toggleAdditionalFilter(sal)}
-                                                leftIcon={<StatIcon stat={{ code: 'SAL' }} preferredCurrency={sal.code} />}
-                                                key={sal.code} >
-                                                {sal.name}
-                                            </Button>
-                                        )}
                                         <Button
                                             variant={renderedOwned ? 'solid' : 'outline'}
                                             colorScheme='green'
@@ -178,6 +170,17 @@ const Athletes = (props) => {
                                                         "Showing My Athletes"
                                             } {renderedOwned % 5}
                                         </Button>
+                                        {salaryTypes.map(sal =>
+                                            <Button
+                                                variant={renderSalary.some(el => el.code === sal.code) ? 'solid' : 'outline'}
+                                                backgroundColor={!renderSalary.some(el => el.code === sal.code) ? "#465063" : sal.color}
+                                                textColor={'black'}
+                                                onClick={() => toggleAdditionalFilter(sal)}
+                                                leftIcon={<StatIcon stat={{ code: 'SAL' }} preferredCurrency={sal.code} />}
+                                                key={sal.code} >
+                                                {sal.name}
+                                            </Button>
+                                        )}
                                     </Stack>
                                 </PopoverBody>
                             </PopoverContent>
@@ -240,7 +243,7 @@ const Athletes = (props) => {
             </GridItem>
 
             <GridItem pl='2' area={'main'} overflow={'auto'}>
-                <SimpleGrid columns={3} columnGap="2" rowGap="4">
+                <SimpleGrid columns={columns} columnGap="2" rowGap="4">
                     {athletes.filter(filterFn).sort(compareFn).map(athlete => (
                         <AthleteCard
                             key={athlete._id}
