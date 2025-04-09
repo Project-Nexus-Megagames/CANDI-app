@@ -46,7 +46,7 @@ const Athletes = (props) => {
     const [renderSalary, setRenderSalary] = React.useState(salaryTypes);
 
     const [loading, setLoading] = React.useState(false);
-    const [renderedOwned, setRenderOwned] = useState(true);
+    const [renderedOwned, setRenderOwned] = useState(false);
 
     const navigate = useNavigate();
     useEffect(() => {
