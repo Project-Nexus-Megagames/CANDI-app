@@ -29,6 +29,7 @@ import StatIcon from './StatIcon';
 
 const Athletes = (props) => {
     const { isControl } = usePermissions();
+    const { team } = useSelector(state => state.auth);
     const gameConfig = useSelector(state => state.gameConfig);
     const [filter, setFilter] = useState('');
     const [filterTags, setFilterTags] = useState([]);
@@ -38,15 +39,15 @@ const Athletes = (props) => {
     const drafts = useSelector(getReadyTeamDraft);
     const upcomingDrafts = useSelector(getUpcomingTeamDraft);
     const salaryTypes = [
-        { name: "Shiny Rock", code: "shiny_rock" },
-        { name: "Excellent Moss", code: "excellent_moss" },
-        { name: "Mushroom", code: "mushroom" },
-        { name: "Gold", code: "gold" }
+        { name: "Shiny Rock", code: "shiny_rock", color: "#9b549f" },
+        { name: "Excellent Moss", code: "excellent_moss", color: "#55f348" },
+        { name: "Mushroom", code: "mushroom", color: "#f79b48" },
+        { name: "Gold", code: "gold", color: "#dddd12", textColor: "black" }
     ]
     const [renderSalary, setRenderSalary] = React.useState(salaryTypes);
 
     const [loading, setLoading] = React.useState(false);
-    const [renderedOwned, setRenderOwned] = useState(false);
+    const [renderedOwned, setRenderOwned] = useState(1);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -89,7 +90,13 @@ const Athletes = (props) => {
     }
 
     function filterFn(value) {
-        let tagCompare = renderedOwned ? value.teamOwner !== undefined : true;
+        let tagCompare =
+            (renderedOwned % 5) == 0 ? value.teamOwner?._id === team._id : // My athletes
+            (renderedOwned % 5) == 1 ? value.teamOwner !== undefined : // owned athletes
+            (renderedOwned % 5) == 2 ? value.teamOwner === undefined : // un-owned athletes
+            (renderedOwned % 5) == 3 ? team.bookmarked.some(el => el === value._id) : // bookmarked
+            (renderedOwned % 5) == 4 ? true :                           // all
+                    true;
         for (const tag of filterTags) {
             // if (typeof tag)
             const nameA = value.stats.find(el => el.code === tag.code) // ignore upper and lowercase
@@ -151,7 +158,8 @@ const Athletes = (props) => {
                                         {salaryTypes.map(sal =>
                                             <Button
                                                 variant={renderSalary.some(el => el.code === sal.code) ? 'solid' : 'outline'}
-                                                colorScheme='blue'
+                                                backgroundColor={!renderSalary.some(el => el.code === sal.code) ? "#465063" : sal.color}
+                                                textColor={'black'}
                                                 onClick={() => toggleAdditionalFilter(sal)}
                                                 leftIcon={<StatIcon stat={{ code: 'SAL' }} preferredCurrency={sal.code} />}
                                                 key={sal.code} >
@@ -161,9 +169,14 @@ const Athletes = (props) => {
                                         <Button
                                             variant={renderedOwned ? 'solid' : 'outline'}
                                             colorScheme='green'
-                                            onClick={() => setRenderOwned(!renderedOwned)}
+                                            onClick={() => setRenderOwned(renderedOwned + 1)}
                                         >
-                                            {renderedOwned ? "Showing Owned Athletes" : "Showing All Athletes"}
+                                            {renderedOwned % 5 === 1 ? "Showing Owned Athletes" :
+                                                renderedOwned % 5 === 2 ? "Showing Un-Owned Athletes" :
+                                                    renderedOwned % 5 === 3 ? "Showing Bookmarked Athletes" :
+                                                    renderedOwned % 5 === 4 ? "Showing All Athletes" :
+                                                        "Showing My Athletes"
+                                            } {renderedOwned % 5}
                                         </Button>
                                     </Stack>
                                 </PopoverBody>
