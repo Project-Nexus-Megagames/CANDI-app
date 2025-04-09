@@ -137,6 +137,31 @@ const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, sched
                         />
                     </Center>}
                 {draft.secondChoice && <AthleteCard asset={draft.secondChoice} compact showRemove={showRemove} removeAsset={() => removeChoice('secondChoice', false)} />}
+           
+                Third Choice
+                {!draft.thirdChoice && !scheduleAthlete &&
+                    <AddAsset
+                        assets={sortedAssets}
+                        handleSelect={(athlete) => quePick('thirdChoice', athlete)}
+                    />}
+                {!draft.thirdChoice && scheduleAthlete &&
+                    <Center>
+                        <IconButton
+                            onClick={() => quePick('thirdChoice', scheduleAthlete)}
+                            isLoading={loading}
+                            variant="solid"
+                            colorScheme='green'
+                            size="sm"
+                            icon={<BsPlus size={'25'} />}
+                        />
+                    </Center>}
+                {draft.thirdChoice &&
+                    <AthleteCard
+                        asset={draft.thirdChoice}
+                        compact
+                        showRemove={showRemove}
+                        removeAsset={() => removeChoice('thirdChoice', false)}
+                    />}
             </Box>}
         </div>
     );
