@@ -15,13 +15,14 @@ const MatchesByRound = ({ matches, rounds }) => {
     const [selected, setSelected] = useState(null);
     const [index, setIndex] = useState(rounds.findIndex(el => el == round));
 
+    if (index < 0) setIndex(0)
+
     if (rounds.length == 0 && matches) {
         rounds = Array.from(new Set(matches.map(match => match.round)));
     }
 
     return (
         <Stack height={'100%'} >
-
             <Text fontSize='24'>
                 <IconButton
                     colorScheme='blue'
