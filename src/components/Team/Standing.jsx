@@ -40,11 +40,11 @@ const Standing = (props) => {
     ]
 
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     if (!props.login) {
-    //         navigate("/");
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (teams.length == 0) {
+            navigate("/");
+        }
+    }, []);
 
     return (
         <SimpleGrid
@@ -65,7 +65,7 @@ const Standing = (props) => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {[...teams]
+                            {teams && [...teams]
                                 .sort((a, b) => {
                                     // sort alphabetically
                                     if (a?.wins < b?.wins) {
