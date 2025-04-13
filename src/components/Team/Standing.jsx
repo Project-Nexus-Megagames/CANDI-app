@@ -85,9 +85,14 @@ const Standing = (props) => {
                                             <Td>{team.wins}</Td>
                                             <Td>{team.losses}</Td>
                                             <Td>{team.popularity}</Td>
-                                            {account && account.resources?.map((item) =>
-                                                <ResourceNugget key={item._id} type={item.type} value={item.balance} width={'80px'} height={'30'} />
-                                            )}
+                                            {props.login && <Td>
+                                                <SimpleGrid columns={2} >
+                                                    {account && account.resources?.map((item) =>
+                                                        <ResourceNugget key={item._id} type={item.type} value={item.balance} width={'80px'} height={'30'} />
+                                                    )}
+                                                </SimpleGrid>
+                                            </Td>}
+
                                         </Tr>
                                     )
                                 })}
@@ -111,7 +116,7 @@ const Standing = (props) => {
 
                 <Text fontSize='2xl' >Roster</Text>
                 <Wrap spacing='10px' justify='space-around'>
-                    {assets.filter(el => el.teamOwner?._id === selected._id && el.__t == 'Athlete' ).map(asset => (
+                    {assets.filter(el => el.teamOwner?._id === selected._id && el.__t == 'Athlete').map(asset => (
                         <WrapItem key={asset._id}>
                             <AthleteCard asset={asset} />
                         </WrapItem>
