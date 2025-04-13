@@ -24,7 +24,7 @@ import { CandiModal } from '../Common/CandiModal';
 import AthleteCard from '../Assets/AthleteCard';
 
 const Standing = (props) => {
-    const { isControl, character } = usePermissions();
+    const { isControl, myCharacter, login } = usePermissions();
     const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
@@ -61,7 +61,7 @@ const Standing = (props) => {
                                 <Th>W</Th>
                                 <Th >L</Th>
                                 <Th >POP</Th>
-                                {character && <Th >RES</Th>}
+                                {props.login && <Th >RES</Th>}
                             </Tr>
                         </Thead>
                         <Tbody>
