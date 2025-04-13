@@ -65,7 +65,7 @@ const FacilityCard = (props) => {
                             <Spacer />
 
                             <Stack>
-                                <TeamAvatar size={compact ? 'xs' : 'md'} team={facility.teamOwner?._id} />
+                                <TeamAvatar size={compact ? 'xs' : 'md'} team={facility.teamOwner} />
 
                                 {showButtons && <ButtonGroup isAttached>
                                     {control &&
@@ -89,10 +89,10 @@ const FacilityCard = (props) => {
 
                         </Flex>
 
-                    {facility?.specialRounds.map((round) => (
+                    {athleteStats && facility?.specialRounds.map((round) => (
                         <Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
-                            <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
-                            <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
+                            <StatIcon stat={{code: round.primaryStat}} compact />
+                            <StatIcon stat={{code: round.secondaryStat}} compact />
                             {round.name}
                             {isOwned && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setSpecialRound(round)} />}
                         </Tag>))}

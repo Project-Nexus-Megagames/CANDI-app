@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Collapse, Flex, HStack, IconButton, Spacer, Tag, TagCloseButton, TagLabel, Wrap } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
@@ -13,12 +13,13 @@ import ResourceNugget from './ResourceNugget';
 import CountDownTag from './CountDownTag';
 import { getFadedColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import TeamAvatar from './TeamAvatar';
-import assets from '../../redux/entities/assets';
 import CharacterNugget from './CharacterNugget';
 import { FaHandshake } from 'react-icons/fa';
 import { AddCharacter } from './AddCharacter';
 import { CloseIcon } from '@chakra-ui/icons';
 import MDEditor from '@uiw/react-md-editor';
+import axios from 'axios';
+import { gameServer } from '../../config';
 
 const AssetCard = (props) => {
   const { showButtons, handleSelect, compact, removeAsset, showRemove } = props;
@@ -32,6 +33,23 @@ const AssetCard = (props) => {
   const assets = useSelector(state => state.assets.list);
   const accounts = useSelector(state => state.accounts.list);
   const characters = useSelector(state => state.characters.list);
+
+  useEffect(() => {
+    if (true) {
+      try{
+        console.log('dsadasdasdsa')
+        const fetchData = async () => {
+          const {data} = await axios.get(`${gameServer}api/assets/${props.asset}`);
+          console.log(data)
+        }
+      }
+      catch (err) {
+        console.log(err)
+        // Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
+      }	      
+    }
+
+	}, []);
 
   const deleteAssert = async () => {
     socket.emit('request', {
@@ -49,7 +67,6 @@ const AssetCard = (props) => {
   const character = props.character ? props.character : characters.find(el => el.account === asset?.account)
   const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
   const border = isHidden ? 'dotted' : 'solid'
-
 
   if (asset)
     return (

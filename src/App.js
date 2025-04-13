@@ -41,7 +41,7 @@ import Trade from "./components/Trade/Trade";
 import { alertAdded } from "./redux/entities/alerts";
 import store from "./redux/store";
 import LandingPage from "./components/Navigation/Landing/LandingPage";
-import NavBar from "./components/Navigation/Landing/NavBar";
+import PublicNavBar from "./components/Navigation/Landing/PublicNavBar";
 import { quack } from "./scripts/frontend";
 import Athletes from "./components/Assets/Athletes";
 import Draft from "./components/Assets/Draft";
@@ -60,6 +60,7 @@ const App = (props) => {
   const [flag, setFlag] = React.useState(false);
   const toast = useToast();
   const toastIdRef = React.useRef()
+	const loginToken = localStorage.getItem("draft-token");
 
   useEffect(() => {
     const theme = "dark";
@@ -215,7 +216,7 @@ const App = (props) => {
           </GridItem>}
 
           {!myCharacter && <GridItem pl='1'  area={'header'} >
-            <NavBar />
+            <PublicNavBar />
           </GridItem>}
 
           <GridItem pl='1' area={'main'} overflow='auto' >
@@ -243,7 +244,7 @@ const App = (props) => {
               <Route exact path='/registration' element={<Registration {...props} />} />
               <Route exact path='/down' element={<Down {...props} />} />
 
-              <Route exact path='/home/athletes' element={<Athletes {...props} />} />
+              <Route exact path='/home/athletes' element={<Athletes {...props} showButtons />} />
               <Route exact path='/home/draft' element={<Draft {...props} />} />
               <Route exact path='/home/matches' element={<Matches {...props} />} />
               <Route exact path='/home/standing' element={<Standing {...props} />} />
@@ -251,7 +252,7 @@ const App = (props) => {
               <Route exact path='/home/market' element={<Auctions {...props} />} />
               
 
-              <Route path="/" element={<Navigate to="/login" />}/>   
+              <Route path="/" element={<Navigate to={loginToken ? "login" :"/landing"} />}/>   
               <Route exact path='/404' element={<NotFound {...props} />} />      
             </Routes>    
           </GridItem>

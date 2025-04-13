@@ -20,7 +20,7 @@ const slice = createSlice({
       events.loading = true;
     },
     eventsReceived: (events, action) => {
-      console.log(`${action.type} Dispatched...`);
+      console.log(`${action.type} Dispatched...!!`);
       events.list = action.payload;
       events.loading = false;
       events.lastFetch = Date.now();

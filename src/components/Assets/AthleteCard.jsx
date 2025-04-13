@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { Avatar, AvatarBadge, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
+import { Avatar, AvatarBadge, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, Icon, IconButton, SimpleGrid, Spacer, Stack, Tag, TagLeftIcon, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from '../Common/CandiWarning';
 import NexusTag from '../Common/NexusTag';
 import { useSelector } from 'react-redux';
 import { CandiModal } from '../Common/CandiModal';
-import { BsBookmarkHeartFill , BsBookmark, BsPencil } from 'react-icons/bs';
+import { BsBookmarkHeartFill, BsBookmark, BsPencil } from 'react-icons/bs';
 import { Calendar, Close, Trash } from '@rsuite/icons';
 import CountDownTag from '../Common/CountDownTag';
 import { getFadedColor, getTextColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
@@ -43,13 +43,13 @@ const AthleteCard = (props) => {
   const assets = useSelector(state => state.assets.list);
   const accounts = useSelector(state => state.accounts.list);
 
-  
-    useEffect(() => {
-      if (myTeam) {
-        const team = teams.find(el => el._id === myTeam._id)
-        setBookmarked(team?.bookmarked.some(el => el == asset._id))
-      }
-    }, [teams])
+
+  useEffect(() => {
+    if (myTeam) {
+      const team = teams.find(el => el._id === myTeam._id)
+      setBookmarked(team?.bookmarked.some(el => el == asset._id))
+    }
+  }, [teams])
 
   const deleteAssert = async () => {
     socket.emit('request', {
@@ -91,9 +91,9 @@ const AthleteCard = (props) => {
               <Spacer />
 
               <Stack>
-                <Avatar size={compact ? 'md' : 'xl'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
+                <Avatar size={height ? height : 'xl'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
                   {asset.teamOwner && <AvatarBadge boxSize='1.25em' bg={true ? 'green.500' : '#d4af37'}>
-                    <TeamAvatar size={compact ? 'xs' : 'md'} team={asset.teamOwner?._id} />
+                    <TeamAvatar size={compact ? 'md' : 'md'} team={asset.teamOwner?._id} />
                   </AvatarBadge>}
                 </Avatar>
 
@@ -137,7 +137,15 @@ const AthleteCard = (props) => {
                       </IconButton>
                     </Tooltip>}
                 </ButtonGroup>}
-              </Stack>              
+                {stats && <HStack marginBottom={'3px'} overflow={'hidden'} >
+
+                  {asset.injuries && asset.injuries.length > 0 &&
+                    <Tag variant={'solid'} colorScheme='red'>
+                      <Avatar size={'xs'} src={'/images/injury.png'} />
+                      {asset.injuries.length}x Injury
+                    </Tag>}
+                </HStack>}
+              </Stack>
 
               <Spacer />
 
@@ -159,11 +167,13 @@ const AthleteCard = (props) => {
                       ))}
                     </HStack>
 
+
+
                     {stats && <SimpleGrid columns={3}>
-                      {asset.stats.filter(s => filterTags.length == 0 || filterTags.some(ft => ft.code === s.code)).map((stat, index) => (
+                      {asset.stats && asset.stats.filter(s => filterTags.length == 0 || filterTags.some(ft => ft.code === s.code)).map((stat, index) => (
                         <Tag key={stat._id}
                           variant={'outline'}
-                          size={compact ? "sm" : "lg"}
+                          size={compact ? "sm" : "md"}
                           style={{
                             backgroundColor: getFadedColor(stat.code, stat.statAmount / 8 + 0.4),
                             color: getTextColor(stat.name),

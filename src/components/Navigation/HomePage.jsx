@@ -50,7 +50,7 @@ const HomePage = (props) => {
       {!loadComplete && <Loading />}      
 			{loadComplete && (!myCharacter ) && <NoCharacter />}
 
-      {myCharacter && <CharacterCreation />}
+      {/* {myCharacter && <CharacterCreation />} */}
 
       {loadComplete && myCharacter && team &&
       <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={1}>      

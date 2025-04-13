@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, useDisclosure, ModalHeader } from "@chakra-ui/react";
 
-export const CandiModal = ({ open, title, onClose, onOpen, children, overlayClose }) => {
+export const CandiModal = ({ open, title, onClose, onOpen, children, overlayClose, size="3xl", border }) => {
   const { isOpen, onOpen: OpenModal, onClose: CloseModal } = useDisclosure();
 
   const handleClose = () => { 
@@ -20,9 +20,9 @@ export const CandiModal = ({ open, title, onClose, onOpen, children, overlayClos
   }, [open]);
 
   return (
-    <Modal closeOnOverlayClick={overlayClose} scrollBehavior="inside" size="3xl" isOpen={isOpen} onClose={handleClose} isCentered colorScheme="cyan">
+    <Modal  closeOnOverlayClick={overlayClose} scrollBehavior="inside" size={size} isOpen={isOpen} onClose={handleClose} isCentered colorScheme="cyan">
       <ModalOverlay />
-      <ModalContent bgColor="#343840">
+      <ModalContent border={border} bgColor="#343840">
         <ModalCloseButton size="sm" top="0px" right="0px" />
         { title && <ModalHeader>{title}</ModalHeader> }
         <ModalBody overflow={'auto'}>

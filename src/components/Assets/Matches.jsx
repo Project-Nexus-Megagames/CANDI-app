@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import usePermissions from '../../hooks/usePermissions';
-import { Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, WrapItem } from '@chakra-ui/react';
+import { Grid, GridItem, Input, IconButton, CloseButton, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, WrapItem, Button } from '@chakra-ui/react';
 import { Plus } from '@rsuite/icons';
 import AssetCard from '../Common/AssetCard';
 import { useSelector } from 'react-redux';
@@ -38,8 +38,8 @@ const Matches = (props) => {
         }
     }
 
-    const handleSelect = () => {
-
+    const handleSelect = (data) => {
+        console.log(data)
     }
 
     return (
@@ -50,7 +50,7 @@ const Matches = (props) => {
             fontWeight='bold'>
 
             <GridItem pl='2' area={'nav'} >
-                <Stack>
+                {!selected && <Stack>
                     {rounds.map(r => (
                         <Box key={r} >
                             <h5 className={"toggle-tag"} onClick={() => toggleRound(r)} style={{ backgroundColor: getFadedColor('round', 0.2 * r) }} >Round: {r}</h5>
@@ -59,7 +59,7 @@ const Matches = (props) => {
                                 {extended.some(el => el === r) && events.filter(dra => dra.round === r).map(match => {
                                     return (
                                         <WrapItem key={match._id} width={"40vw"} >
-                                            <MatchCard match={match} />
+                                            <MatchCard match={match} handleSelect={setSelected} />
                                         </WrapItem>
                                     )
                                 })}
@@ -67,7 +67,11 @@ const Matches = (props) => {
 
                         </Box>
                     ))}
-                </Stack>
+                </Stack>}
+                {selected && <Stack align={'center'} >
+                    <Button variant='outline' colorScheme='white' onClick={() => setSelected(false)} >Back</Button>
+                    <MatchCard match={selected} defaultMode="roster"/>
+                </Stack>}
             </GridItem>
         </Grid>
     );

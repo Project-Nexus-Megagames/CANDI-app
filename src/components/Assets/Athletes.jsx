@@ -28,7 +28,7 @@ import InputNumber from '../Common/InputNumber';
 import socket from '../../socket';
 import StatIcon from './StatIcon';
 
-const Athletes = (props) => {
+const Athletes = ({showButtons}) => {
     const { isControl } = usePermissions();
     const { team } = useSelector(state => state.auth);
     const gameConfig = useSelector(state => state.gameConfig);
@@ -54,7 +54,7 @@ const Athletes = (props) => {
 
     const navigate = useNavigate();
     useEffect(() => {
-        if (!props.login) {
+        if (athletes.length == 0) {
             navigate("/");
         }
     }, []);
@@ -97,7 +97,7 @@ const Athletes = (props) => {
             (renderedOwned % 5) == 0 ? value.teamOwner?._id === team._id : // My athletes
             (renderedOwned % 5) == 1 ? value.teamOwner !== undefined : // owned athletes
             (renderedOwned % 5) == 2 ? value.teamOwner === undefined : // un-owned athletes
-            (renderedOwned % 5) == 3 ? team.bookmarked.some(el => el === value._id) : // bookmarked
+            (renderedOwned % 5) == 3 ? (team && team?.bookmarked.some(el => el === value._id)) : // bookmarked
             (renderedOwned % 5) == 4 ? true :                           // all
                     true;
         for (const tag of filterTags) {
@@ -250,7 +250,7 @@ const Athletes = (props) => {
                             asset={athlete}
                             drafts={drafts}
                             upcomingDrafts={upcomingDrafts}
-                            showButtons
+                            showButtons={showButtons}
                             stats={true}
                         />
                     ))}

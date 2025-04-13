@@ -18,9 +18,7 @@ const TeamAvatar = (props) => {
     team = getThisTeam(teams, character);
   }
 
-  if (team?._id === undefined) team = teams.find(el => el._id === team) 
-
-
+  if (teams && team?._id === undefined) team = teams.find(el => el._id === team)
   if (team)
 	return (
     <Tooltip openDelay={200} hasArrow placement='top' label={<div>
@@ -32,7 +30,6 @@ const TeamAvatar = (props) => {
     </Tooltip>
 	);
   else {
-    console.log(props.team)
     return (<b>oops team avatar broke</b>)
   }
 };

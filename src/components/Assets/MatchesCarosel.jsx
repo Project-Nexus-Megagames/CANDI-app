@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { getTeamAccount } from '../../redux/entities/accounts';
 import { Box, Center, Grid, GridItem, IconButton, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import MatchCard from '../Assets/MatchCard';
+import MatchCard from './MatchCard';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
-const MatchesCarosel = ({matches}) => {
+const MatchesCarosel = ({matches, rounds}) => {
     const navigate = useNavigate();
     const blueprints = useSelector(s => s.blueprints.list);
     const { login, team, character} = useSelector(s => s.auth);

@@ -14,11 +14,11 @@ import StatIcon from './StatIcon';
 import CountDownTag from '../Common/CountDownTag';
 import FacilityCard from '../Team/FacilityCard';
 
-const MatchCard = ({ match, handleSelect }) => {
+const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, showStandard=true }) => {
     const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
-    const { login, team, character } = useSelector(s => s.auth);
+    const { login, team, control } = useSelector(s => s.auth);
     const [loading, setLoading] = useState(false);
-    const [mode, setMode] = useState(false);
+    const [mode, setMode] = useState(defaultMode);
     const athletes = useSelector(getTeamAthletes);
     const disabled = match?.status === 'finished' || match?.status === 'ongoing';
     const border = disabled ? 'dotted' : 'solid';
@@ -28,7 +28,7 @@ const MatchCard = ({ match, handleSelect }) => {
     const isHome = match.homeTeam?._id === team._id;
     const isVisitor = match.awayTeam?._id === team._id;
 
-    const array = new Array(5).fill(null);
+    const array = new Array(4).fill(null);
     const backgroundColor =
         match?.status === 'scheduled' ? getFadedColor() :
             homeWon ? match.homeTeam.color : match.awayTeam.color
@@ -41,21 +41,26 @@ const MatchCard = ({ match, handleSelect }) => {
         })
     }
 
-    console.log(match)
+    const runMatch = () => {
+        setLoading(true)
+        socket.emit('request', { route: 'event', action: 'runMatch', data: { matchId: match._id } }, (response) => {
+            console.log(response);
+            setLoading(false)
+        })
+    }
 
     return (
         <div key={match._id}
             style={{
                 textAlign: 'center',
-                width: "40vw",
+                width: "100%",
                 border: `3px ${border} ${backgroundColor}`,
                 backgroundColor: '#1a1d24',
                 opacity: '',
                 margin: '3px',
                 padding: '3px',
-                minWidth: '40vw',
-            }}
-            onClick={() => (handleSelect && !disabled) ? handleSelect(match) : console.log((handleSelect && !disabled))}
+                height: '100%'
+            }}            
         >
             <Text noOfLines={2} fontSize='lg'>{match.name}</Text>
 
@@ -63,11 +68,12 @@ const MatchCard = ({ match, handleSelect }) => {
                 <NexusTag value={match.status} />
                 <CountDownTag timeout={match.scheduledTick} width={'50px'} />
             </Center>
+            
             <Flex alignItems='center'>
                 <Spacer />
 
                 <Stack backgroundColor={homeWon ? backgroundColor : 'inherit'}  >
-                    <TeamAvatar size={"xl"} team={match.homeTeam?._id} />
+                    <TeamAvatar size={"xl"} team={match.homeTeam} />
                     {homeWon && <Text>Winner</Text>}
                     {awayWon && <Text>Loser</Text>}
                 </Stack>
@@ -78,14 +84,9 @@ const MatchCard = ({ match, handleSelect }) => {
                     <Text marginBottom={'-2'} noOfLines={1} fontSize='4xl'>{match.homeScore} - {match.awayScore}</Text>
 
                     <Stack gap={1} align={'center'} >
-                        {match.facility && <FacilityCard width={'60%'} compact facility={match.facility} />}
-                        {/* {match.facility?.specialRounds.map((round, index) => (<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
-                            <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
-                            <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
-                            {round.name}
-                        </Tag>))} */}
+                        {showFacility && match.facility && <FacilityCard width={'60%'} compact facility={match.facility} />}
 
-                        {matchRounds.filter(el => el.public).map((round, index) => (
+                        {showStandard && matchRounds && matchRounds.filter(el => el.public).map((round, index) => (
                             <Tag
                                 border={`2px solid ${getFadedColor(round.primaryStat)}`}
                                 backgroundColor={getFadedColor(round.primaryStat, 0.5)}
@@ -94,7 +95,7 @@ const MatchCard = ({ match, handleSelect }) => {
                                 variant={'solid'}
                                 width={'60%'}
                             >
-                                <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
+                                <StatIcon stat={{code: round.primaryStat}} compact />
                                 <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                                 {round.name}
                             </Tag>))}
@@ -105,7 +106,7 @@ const MatchCard = ({ match, handleSelect }) => {
                 <Spacer />
 
                 <Stack backgroundColor={awayWon ? backgroundColor : 'inherit'} >
-                    <TeamAvatar size={"xl"} team={match.awayTeam?._id} />
+                    <TeamAvatar size={"xl"} team={match.awayTeam} />
                     {awayWon && <Text>Winner</Text>}
                     {homeWon && <Text>Loser</Text>}
                 </Stack>
@@ -114,9 +115,11 @@ const MatchCard = ({ match, handleSelect }) => {
 
             <ButtonGroup isAttached>
                 {mode && <Button onClick={() => setMode("roster")} variant={mode === 'roster' ? 'solid' : 'outline'} colorScheme='blue' size={'xs'} >Roster</Button>}
-                {!mode && <IconButton size={'xs'} onClick={() => setMode("roster")} rounded="full" icon={<StatDownArrow />} />}
-                {mode && <IconButton size={'xs'} variant={'solid'} colorScheme='red' onClick={() => setMode(false)} icon={<StatUpArrow />} />}
+                {!mode && !handleSelect && <IconButton size={'xs'} onClick={() => setMode("roster")} rounded="full" icon={<StatDownArrow />} />}
+                {!mode && handleSelect && <Button onClick={() => handleSelect(match)} variant={'solid'} colorScheme='blue' size={'xs'} >View </Button>}
+                {mode && !defaultMode && <IconButton size={'xs'} variant={'solid'} colorScheme='red' onClick={() => setMode(false)} icon={<StatUpArrow />} />}
                 {mode && <Button onClick={() => setMode("logs")} variant={mode === 'logs' ? 'solid' : 'outline'} colorScheme='orange' size={'xs'} >Logs</Button>}
+                {mode && control && <Button onClick={runMatch} variant={'solid'} colorScheme='blue' size={'xs'} >Run</Button>}
 
             </ButtonGroup>
 
@@ -124,7 +127,6 @@ const MatchCard = ({ match, handleSelect }) => {
                 <Flex
                     style={{
                         backgroundColor: '#13151a',
-                        maxHeight: '40vh',
                         overflow: 'auto'
                     }}
                 >
@@ -132,7 +134,7 @@ const MatchCard = ({ match, handleSelect }) => {
                     <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.homeRoster[index] && <AthleteCard asset={match.homeRoster[index]} compact stats={false} />}
+                                {match.homeRoster[index] && <AthleteCard compact asset={match.homeRoster[index]}  stats={true} />}
                                 {!match.homeRoster[index] &&
                                     <Center
                                         style={{
@@ -156,7 +158,7 @@ const MatchCard = ({ match, handleSelect }) => {
                     <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.awayRoster[index] && <AthleteCard asset={match.awayRoster[index]} stats={false} compact height={"90px"} />}
+                                {match.awayRoster[index] && <AthleteCard compact asset={match.awayRoster[index]} stats={true} />}
                                 {!match.awayRoster[index] &&
                                     <Center
                                         style={{
@@ -181,7 +183,6 @@ const MatchCard = ({ match, handleSelect }) => {
                 <Stack
                     style={{
                         backgroundColor: '#13151a',
-                        maxHeight: '40vh',
                         overflow: 'auto'
                     }}>
                     <LogRecords reports={match.logs} />

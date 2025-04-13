@@ -1,39 +1,74 @@
-import React, { useState } from 'react';
-import { Box, Grid, GridItem, Wrap, useBreakpoint } from '@chakra-ui/react';
-import NavBar from './NavBar';
+import React, { useEffect, useState } from 'react';
+import { Box, CircularProgress, Grid, GridItem, Wrap, useBreakpoint } from '@chakra-ui/react';
+import { useSelector, useDispatch } from 'react-redux';
+import NavBar from './PublicNavBar';
 import ImageTextPair from './ImageTextPair';
 import backgroundImg from '../../Images/Old Images/agenda.jpg';
 import WordDivider from '../../WordDivider';
 import ImgPanel from '../ImgPanel';
 import { openLink } from '../../../scripts/frontend';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { gameServer } from '../../../config';
+import MatchesByRound from '../../Assets/MatchesByRound';
+import Standing from '../../Team/Standing';
+import Athletes from '../../Assets/Athletes';
+import { loadTeams } from '../../../redux/entities/teams';
+import { loadAssets } from '../../../redux/entities/assets';
+import { loadClock } from '../../../redux/entities/clock';
+import { loadGamestate } from '../../../redux/entities/gamestate';
+import { loadEvents, eventsReceived } from '../../../redux/entities/events';
+import { loadGameConfig } from '../../../redux/entities/gameConfig';
 
-const LandingPage = (props) => {
-  const [show, setShow] = useState('home');
+
+
+const LandingPage = (props) => {  
+  const { login, team, myCharacter, control, tab } = useSelector(s => s.auth)
+  const matches = useSelector(s => s.events.list)
+  const assets = useSelector(s => s.assets.list)
+  const gamestateLoaded = useSelector(s => s.gamestate.loaded)
+  const gameConfigLoaded = useSelector(s => s.gamestate.loaded)
+  const teams = useSelector(s => s.teams.list)
+  
+  const [rounds, setRounds] = useState([]);
   const [subTab, setSubTab] = useState(0);
   const navigate = useNavigate();
+  const url = `${gameServer}api/events/matches`;
+	const reduxAction = useDispatch();
 
-  const games = [
-    {
-      name: 'Afterlife',
-    },
-    {
-      name: 'Tempest',
-    },
-    {
-      name: "Gods' Wars",
-    }
-  ]
+	useEffect(() => {
+		try{
+
+			const fetchData = async () => {        
+				const {data} = await axios.get(url);
+        reduxAction(eventsReceived(data.matches));
+        setRounds(data.rounds);
+        reduxAction(loadEvents())
+			}
+      if (teams.length == 0) reduxAction(loadTeams())
+      if (assets.length == 0) reduxAction(loadAssets())
+      if (teams.length == 0) reduxAction(loadClock())
+      if (!gamestateLoaded) reduxAction(loadGamestate())
+      if (!gameConfigLoaded) reduxAction(loadGameConfig())
+
+			if (matches.length === 0) fetchData().catch(console.error);
+		}
+		catch (err) {
+			console.log(err)
+			// Alert.error(`Error: ${err.response.data ? err.response.data : err.response}`, 5000);
+		}	
+	}, []);
+
 
   return (
     <Box >
 
-      {show === 'home' && <div>
-        <h2>Welcome to CANDI!</h2>
+      {tab === 'landing' && <div>
+        <h2>Welcome to Goblin League!</h2>
         <ImageTextPair
           bg='#fefefc'
-          title={'What is CANDI?'}
-          description={'CANDI is a software platform to help run and facilitate online roleplaying games. Started as a way to run Play by Email Games, CANDI has evolved over it\'s existence to become a Megagame and roleplaying game engine'}
+          title={'What is Goblin League?'}
+          description={'Goblin League is a sports drafting game created by throwing several other megagames into a blender. "Heavily inspired" by Draft Night, OWL League, and Blaseball this game simulates a season of the made up game Goblin Ball. Teams draft new athletes, create new rules, and create a game plan to become the Champion of the season (or the most popular team!)'}
           imgUrl={backgroundImg}
           reversed
         />
@@ -44,15 +79,23 @@ const LandingPage = (props) => {
             imgUrl={backgroundImg}
           /> */}
 
-        <WordDivider background size="xl" color="black" word={"Past Games"} />
 
-        <Wrap  gap={1}>
-          {games.map(el => (
-            <Box key={el.name} w='33%' height={'200px'} onClick={() => openLink("https://kepler.moonpath.de/")}>
-              <ImgPanel to="#" img={`/landing/${el.name}.png`} title={el.name} body={el.name} />
-            </Box>
-          ))}
-        </Wrap>
+      </div>}
+
+      {tab === 'matches' && <div>
+        {matches && <MatchesByRound matches={matches} rounds={rounds} />}
+
+      </div>}
+
+      {tab === 'teams' && <div>
+        {teams.length == 0 && <CircularProgress isIndeterminate color='green.300' />}
+        {teams && <Standing />}
+
+      </div>}
+
+      {tab === 'athletes' && <div>
+        {assets.length == 0 && <CircularProgress isIndeterminate color='green.300' />}
+        {assets && <Athletes />}
 
       </div>}
 

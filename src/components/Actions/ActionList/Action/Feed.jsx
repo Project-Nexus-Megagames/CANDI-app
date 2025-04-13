@@ -11,7 +11,6 @@ import { PlusSquareIcon } from "@chakra-ui/icons";
 import { CandiModal } from "../../../Common/CandiModal";
 import NewContractForm from "../../../Common/NewContractForm";
 import socket from "../../../../socket";
-import Server from "../../../Team/Server";
 import ActionForm from "../../Forms/ActionForm";
 
 function Feed({ action }) {
@@ -242,9 +241,9 @@ function Feed({ action }) {
         <NewContractForm statusDefault={["action"]} onClose={() => closeIt()} handleCreate={handleCreate} />
       </CandiModal>
 
-      <CandiModal open={mode === 'getIce'} onClose={() => closeIt()}  >
+      {/* <CandiModal open={mode === 'getIce'} onClose={() => closeIt()}  >
         {action.submission.facility && <Server server={facilities.find(el => el._id === action.submission.facility)} />}
-      </CandiModal>
+      </CandiModal> */}
 
       {action && action.creator &&
         <NewEffects

@@ -8,13 +8,13 @@ import LogRecords from '../Logs/LogRecords';
 import { getMyTeamLogs } from '../../redux/entities/actionLogs';
 import AthleteCard from '../Assets/AthleteCard';
 import DraftCard from '../Assets/DraftCard';
-import MatchesCarosel from './MatchesCarosel';
 import { getTeamMatches } from '../../redux/entities/events';
 import { EditAccount } from '../Common/EditAccount';
 import ResourceNugget from '../Common/ResourceNugget';
 import { getTeamAccount } from '../../redux/entities/accounts';
 import { getTeamFacilities } from '../../redux/entities/facilities';
 import FacilityCard from './FacilityCard';
+import MatchesCarosel from '../Assets/MatchesCarosel';
 
 
 const TeamDashboard = () => {

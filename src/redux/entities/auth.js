@@ -15,7 +15,7 @@ const slice = createSlice({
     lastFetch: false,
     users: [],
     error: null,
-
+    tab: 'landing',
     loadingStart: false,
     loadComplete: false,
     lastLogin: null,
@@ -32,19 +32,19 @@ const slice = createSlice({
     },
     loadingState: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
-      auth.loadingStart = true;      
+      auth.loadingStart = true;
     },
     authReceived: (auth, action) => {
       console.log(`${action.type} Dispatched...`);
 
       let jwt = action.payload.token;
-      
+
       console.log("jwt:")
       console.log(jwt)
 
       localStorage.setItem('draft-token', jwt);
       const user = jwtDecode(jwt);
-    
+
       // if (user?.roles.some(el => el === "Control")) auth.control = true;
 
       auth.error = null;
@@ -70,7 +70,7 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       auth.team = action.payload;
       // initConnection(auth.user, auth.team, auth.version);
-      
+
       if (action.payload?.name === 'Control Team') auth.control = true;
     },
     checkTeam: (auth, action) => {
@@ -118,11 +118,29 @@ const slice = createSlice({
       console.log(`${action.type} Dispatched`);
       auth.user = action.payload.user;
     },
+    setTab: (auth, action) => {
+      console.log(`${action.type} Dispatched`);
+      auth.tab = action.payload;
+    },
   },
 });
 
 // Action Export
-export const { authReceived, loginRequested, authRequestFailed, loginSocket, clearAuthError, signOut, updateUser, usersRecieved, finishLoading, setCharacter, setControl, setTeam, loadingState, checkTeam } = slice.actions;
+export const { authReceived,
+  loginRequested,
+  authRequestFailed,
+  loginSocket,
+  clearAuthError,
+  signOut,
+  updateUser,
+  usersRecieved,
+  finishLoading,
+  setCharacter,
+  setControl,
+  setTeam,
+  loadingState,
+  setTab,
+  checkTeam } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 
@@ -130,7 +148,8 @@ export default slice.reducer; // Reducer Export
 const url = 'https://nexus-server.onrender.com/auth';
 
 // aircraft Loader into state
-export const loginUser = (payload) => (dispatch, getState) => {
+export const loginUser = (payload) => (dispatch,
+  getState) => {
   return dispatch(
     apiCallBegan({
       url,

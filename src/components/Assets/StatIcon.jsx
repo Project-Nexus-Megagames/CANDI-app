@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, SimpleGrid, Spacer, Stack, Tag, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
 import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
-const StatIcon = ({preferredCurrency, stat, size='xs'}) => {
+const StatIcon = ({preferredCurrency, stat={code: "???"}, size='xs'}) => {
   let src;
   let additionalText = '';
   
