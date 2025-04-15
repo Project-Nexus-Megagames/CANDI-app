@@ -38,10 +38,6 @@ const Matches = (props) => {
         }
     }
 
-    const handleSelect = (data) => {
-        console.log(data)
-    }
-
     return (
         <Grid
             templateAreas={`"nav"`}

@@ -49,6 +49,7 @@ import TeamDashboard from "./components/Team/TeamDashboard";
 import Matches from "./components/Assets/Matches";
 import Standing from "./components/Team/Standing";
 import Auctions from "./components/Market/Auctions";
+import MatchesByRound from "./components/Assets/MatchesByRound";
 
 // React App Component
 initUpdates();
@@ -246,7 +247,7 @@ const App = (props) => {
 
               <Route exact path='/home/athletes' element={<Athletes {...props} showButtons />} />
               <Route exact path='/home/draft' element={<Draft {...props} />} />
-              <Route exact path='/home/matches' element={<Matches {...props} />} />
+              <Route exact path='/home/matches' element={<MatchesByRound {...props} rounds={Array.from(new Set(props.matches.map(match => match.round)))} />} />
               <Route exact path='/home/standing' element={<Standing {...props} />} />
               <Route exact path='/home/team' element={<TeamDashboard {...props} />} />
               <Route exact path='/home/market' element={<Auctions {...props} />} />
@@ -268,6 +269,7 @@ const mapStateToProps = (state) => ({
   gameConfig: state.gameConfig,
   version: state.gamestate.version,
   characters: state.characters.list,
+  matches: state.events.list,
   myCharacter: state.auth.myCharacter,
   duck: state.gamestate.duck,
 });

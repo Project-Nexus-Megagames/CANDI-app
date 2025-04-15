@@ -15,6 +15,19 @@ const MatchesByRound = ({ matches, rounds }) => {
     const [selected, setSelected] = useState(null);
     const [index, setIndex] = useState(rounds.findIndex(el => el == round));
 
+    useEffect(() => {
+        if (selected) {
+            const match = matches.find(el => el._id === selected._id)
+            setSelected(match)
+        }
+    }, [matches]);
+
+    useEffect(() => {
+        if (matches.length == 0) {
+            navigate("/");
+        }
+    }, []);
+
     if (index < 0) setIndex(0)
 
     if (rounds.length == 0 && matches) {
@@ -23,7 +36,7 @@ const MatchesByRound = ({ matches, rounds }) => {
 
     return (
         <Stack height={'100%'} >
-            <Text fontSize='24'>
+            {!selected && <Text fontSize='24'>
                 <IconButton
                     colorScheme='blue'
                     variant={'solid'}
@@ -42,7 +55,7 @@ const MatchesByRound = ({ matches, rounds }) => {
                     margin={1}
                     onClick={() => setIndex(index + 1)}
                 />
-            </Text>
+            </Text>}
 
             {matches && matches.filter(el => el.round === rounds[index]).length == 0 &&
                 <Center>
@@ -54,7 +67,13 @@ const MatchesByRound = ({ matches, rounds }) => {
                 <Center alignContent={'center'} >
                     <SimpleGrid columns={2} spacing='20px' width={'99%'} >
                         {matches && matches.filter(el => el.round === rounds[index]).map(match => (
-                            <MatchCard handleSelect={setSelected} key={match._id} match={match} showFacility={true} showStandard={false} />
+                            <MatchCard
+                                handleSelect={setSelected}
+                                key={match._id}
+                                match={match}
+                                showFacility={true}
+                                showStandard={login}
+                            />
                         ))}
                     </SimpleGrid>
                 </Center>}

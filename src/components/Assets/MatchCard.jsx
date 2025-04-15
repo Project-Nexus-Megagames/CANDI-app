@@ -14,14 +14,14 @@ import StatIcon from './StatIcon';
 import CountDownTag from '../Common/CountDownTag';
 import FacilityCard from '../Team/FacilityCard';
 
-const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, showStandard=true }) => {
+const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = true, showStandard = true }) => {
     const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
     const { login, team, control } = useSelector(s => s.auth);
     const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState(defaultMode);
     const athletes = useSelector(getTeamAthletes);
-    const disabled = match?.status === 'finished' || match?.status === 'ongoing';
-    const border = disabled ? 'dotted' : 'solid';
+    const disabled = match?.status === 'completed' || match?.status === 'ongoing';
+    const border = disabled ? 'solid' : 'dotted';
     const homeWon = match.homeScore > match.awayScore;
     const awayWon = match.homeScore < match.awayScore;
 
@@ -36,6 +36,14 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
     const addRoster = (athlete) => {
         setLoading(true)
         socket.emit('request', { route: 'event', action: 'addRoster', data: { id: athlete._id, isHome, isVisitor, matchId: match._id } }, (response) => {
+            console.log(response);
+            setLoading(false)
+        })
+    }
+
+    const removeRoster = (athlete) => {
+        setLoading(true)
+        socket.emit('request', { route: 'event', action: 'removeRoster', data: { id: athlete._id, isHome, isVisitor, matchId: match._id } }, (response) => {
             console.log(response);
             setLoading(false)
         })
@@ -60,7 +68,7 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
                 margin: '3px',
                 padding: '3px',
                 height: '100%'
-            }}            
+            }}
         >
             <Text noOfLines={2} fontSize='lg'>{match.name}</Text>
 
@@ -68,7 +76,7 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
                 <NexusTag value={match.status} />
                 <CountDownTag timeout={match.scheduledTick} width={'50px'} />
             </Center>
-            
+
             <Flex alignItems='center'>
                 <Spacer />
 
@@ -95,7 +103,7 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
                                 variant={'solid'}
                                 width={'60%'}
                             >
-                                <StatIcon stat={{code: round.primaryStat}} compact />
+                                <StatIcon stat={{ code: round.primaryStat }} compact />
                                 <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                                 {round.name}
                             </Tag>))}
@@ -134,7 +142,14 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
                     <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.homeRoster[index] && <AthleteCard compact asset={match.homeRoster[index]}  stats={true} />}
+                                {match.homeRoster[index] &&
+                                    <AthleteCard
+                                        compact
+                                        asset={match.homeRoster[index]}
+                                        stats={true}
+                                        showRemove={isHome && !disabled}
+                                        removeAsset={() => removeRoster(match.homeRoster[index])}
+                                    />}
                                 {!match.homeRoster[index] &&
                                     <Center
                                         style={{
@@ -144,7 +159,7 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
                                         }}
                                     >
                                         <b>Slot {index + 1}</b>
-                                        {isHome && <AddAsset
+                                        {isHome && !disabled && <AddAsset
                                             assets={athletes.filter(el => !match.homeRoster.some(ass => ass?._id === el._id || ass === el._id))}
                                             handleSelect={addRoster}
                                         />}
@@ -158,7 +173,15 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
                     <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.awayRoster[index] && <AthleteCard compact asset={match.awayRoster[index]} stats={true} />}
+                                {match.awayRoster[index] &&
+                                    <AthleteCard
+                                        compact
+                                        asset={match.awayRoster[index]}
+                                        stats={true}
+                                        showRemove={isVisitor && !disabled}
+                                        removeAsset={() => removeRoster(match.awayRoster[index])}
+
+                                    />}
                                 {!match.awayRoster[index] &&
                                     <Center
                                         style={{
@@ -168,7 +191,7 @@ const MatchCard = ({ match, handleSelect, defaultMode=false, showFacility=true, 
                                         }}
                                     >
                                         <b>Slot {index + 1}</b>
-                                        {isVisitor && <AddAsset
+                                        {isVisitor && !disabled && <AddAsset
                                             assets={athletes.filter(el => !match.awayRoster.some(ass => ass?._id === el._id || ass === el._id))}
                                             handleSelect={addRoster}
                                         />}

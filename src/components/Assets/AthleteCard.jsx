@@ -190,7 +190,14 @@ const AthleteCard = (props) => {
                 </Center>
               </div>
 
-              {removeAsset && showRemove && <IconButton variant={'outline'} onClick={removeAsset} colorScheme="red" size={'sm'} icon={<Close />} />}
+              {removeAsset && showRemove &&
+                <IconButton
+                  variant={'outline'}
+                  onClick={removeAsset}
+                  colorScheme="red"
+                  size={'sm'}
+                  icon={<Close />}
+                />}
 
               <Spacer />
             </Flex>

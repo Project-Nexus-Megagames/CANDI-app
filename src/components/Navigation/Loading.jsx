@@ -16,6 +16,7 @@ const Loading = ({controlMode}) => {
 	const { loadingStart, user, myCharacter, team } = useSelector((s) => s.auth);
 	const characters = useSelector((s) => s.characters.list);
 	const teams = useSelector((s) => s.teams.list);
+	const matches = useSelector((s) => s.events.list);
 	const entities = useSelector((s) => s)
   
 	const gameConfig = useSelector((s) => s.gameConfig)
@@ -63,7 +64,7 @@ const Loading = ({controlMode}) => {
 
 	useEffect(() => {
 		console.log('Trigger B');
-		if (teams.length > 0 && !team && myCharacter) {
+		if (matches.length > 0 && teams.length > 0 && !team && myCharacter) {
 			console.log('Finished Loading!!!!');
 			const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
 
