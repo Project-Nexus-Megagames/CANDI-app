@@ -228,7 +228,17 @@ const EventLog = props => {
         />
       </StepIndicator>
 
-      <Box backgroundColor={getFadedColor('blue', (0.2 * Math.floor(report.round)))} flexShrink='0' style={{ margin: "2px", padding: "5px", border: `2px solid ${getFadedColor(report.transaction)}`, width: '95%', maxWidth: '88%' }}  >
+      <Box
+        // backgroundColor={getFadedColor('blue', (0.2 * Math.floor(report.round)))}
+        backgroundColor={report.color}
+        flexShrink='0'
+        style={{
+          margin: "2px",
+          padding: "5px",
+          border: `2px solid ${getFadedColor(report.transaction)}`,
+          width: '95%',
+        }}
+      >
         <StepTitle>Round {report.round}) {report.text}</StepTitle>
         <StepDescription color={'whiteAlpha.800'} >{<b>({getTime(report.createdAt)})</b>}</StepDescription>
         {report.athlete && <Flex>
