@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Redux store provider
-import { VStack, Flex, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button, Spacer, Switch, Grid, InputGroup, IconButton, CloseButton } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import { VStack, Flex, FormControl, Box, FormLabel, Input, Text, ButtonGroup, Button, Spacer, Switch, Grid, InputGroup, IconButton, CloseButton, SimpleGrid, HStack } from '@chakra-ui/react';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { RepeatClockIcon } from '@chakra-ui/icons';
 import SelectPicker from './SelectPicker';
@@ -26,7 +26,11 @@ const AssetForm = (props) => {
   const [status, setStatus] = useState(asset && asset?.status ? asset?.status : []);
   const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
   const [resources, setResources] = React.useState((asset && asset.resource) ? [...asset.resources] : []);
-  const [team, setTeam] = React.useState(props.team || facility?.ownerTeam || false);
+  const [stats, setStats] = React.useState(
+    (asset && asset.stats) ? asset.stats.map(s => ({ ...s })) : []
+  );
+
+  const [team, setTeam] = React.useState(props.team || facility?.teamOwner || false);
 
 
   const { register, control, handleSubmit, reset, formState, watch } = useForm(
@@ -50,7 +54,6 @@ const AssetForm = (props) => {
 
   useEffect(() => {
     if (blueprint) {
-      console.log(blueprint)
       let found = blueprints.find(el => el._id === blueprint)
       reset(found);
       let temp = []
@@ -137,10 +140,10 @@ const AssetForm = (props) => {
 
   function onSubmit(data, e) {
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, dice, resources, type: type, status: status, teamOwner: team });
+      props.handleSubmit({ ...data, dice, stats, resources, type: type, status: status, teamOwner: team });
     } else {
       e.preventDefault();
-      const asset = { ...data, dice, resources, type: type, status: status, teamOwner: team };
+      const asset = { ...data, dice, stats, resources, type: type, status: status, teamOwner: team };
       socket.emit('request', {
         route: 'asset',
         action: mode,
@@ -174,10 +177,24 @@ const AssetForm = (props) => {
         temp[index] = thing;
         setResources(temp);
         break;
+      case 'stat':
+        temp = [...stats];
+        temp[index].statAmount = parseInt(incoming);
+        setStats(temp);
+        break;
       default:
         console.log('UwU Scott made an oopsie doodle!')
     }
   }
+
+    const {
+      fields: tagFields,
+      append: appendTag,
+      remove: removeTag
+    } = useFieldArray({
+      name: 'tags',
+      control
+    });
 
   return (
     <form onSubmit={handleSubmit(onSubmit, handleError)} style={{ width: '90%' }} >
@@ -234,6 +251,39 @@ const AssetForm = (props) => {
               {errors.description && errors.description.message}
             </Text>
           </FormControl>
+
+          <HStack w="100%">
+            <FormLabel>Tags</FormLabel>
+            {tagFields.map((item, i) => (
+              <div key={i}>
+                <HStack>
+                  <FormControl>
+                    <Input size="md" {...register(`tags.${i}`)}></Input>
+                    <Button colorScheme='red' variant={'solid'} onClick={() => removeTag(i)}>-</Button>
+                  </FormControl>{' '}
+                </HStack>
+              </div>
+            ))}
+            <Button colorScheme='green' variant={'solid'} onClick={() => appendTag('')}>+</Button>
+          </HStack>
+
+          <SimpleGrid columns={3} >
+            {stats.map((stat, index) => (
+              <FormControl>
+                <FormLabel>{stat.name} </FormLabel>
+                <InputNumber
+                  prefix='value'
+                  style={{ width: 200 }}
+                  defaultValue={stat.statAmount.toString()}
+                  value={stat.statAmount}
+                  min={-15}
+                  onChange={(event) => editState(parseInt(event), index, 'stat')}>
+
+                </InputNumber>
+              </FormControl>
+            ))}
+          </SimpleGrid>
+
 
           <FormControl>
             <FormLabel>Dice! </FormLabel>

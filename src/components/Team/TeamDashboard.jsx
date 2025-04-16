@@ -19,7 +19,7 @@ import MatchesCarosel from '../Assets/MatchesCarosel';
 
 const TeamDashboard = () => {
   const navigate = useNavigate();
-  const { login, team, isControl } = useSelector(s => s.auth);
+  const { login, team, control } = useSelector(s => s.auth);
   const { round } = useSelector(s => s.gamestate);
   const drafts = useSelector(getTeamDraft);
   const athletes = useSelector(getTeamAthletes);
@@ -58,7 +58,7 @@ const TeamDashboard = () => {
           {account && account.resources.map((item) =>
             <ResourceNugget key={item.type} type={item.type} value={item.balance} width={'80px'} height={'30'} />
           )}
-          {isControl && account && <EditAccount account={account} />}
+          {control && account && <EditAccount account={account} />}
         </Center>
         <LogRecords reports={myLogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))} />
       </GridItem>
