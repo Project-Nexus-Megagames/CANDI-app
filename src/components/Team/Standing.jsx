@@ -87,7 +87,7 @@ const Standing = (props) => {
                                             <Td>{team.popularity}</Td>
                                             {props.login && <Td>
                                                 <SimpleGrid columns={3} >
-                                                    {account && account.resources?.map((item) =>
+                                                    {account && account.resources?.filter(r => r.balance > 0).map((item) =>
                                                         <ResourceNugget key={item._id} type={item.type} value={item.balance} width={'50px'} height={'30'} />
                                                     )}
                                                 </SimpleGrid>
