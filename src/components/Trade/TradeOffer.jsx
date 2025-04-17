@@ -158,7 +158,7 @@ const TradeOffer = (props) => { //trade object
 				{!disabled &&
 					<AddAsset
 						assets={teamAssets.filter(el => 
-							el.tags.some(s => s === 'tradable') && 
+							el.status.some(s => s === 'tradable') && 
 							!el.status.some(s => s === 'used') &&
 							!assets.some(ass => ass?._id === el._id || ass === el._id)
 						)}
