@@ -79,7 +79,18 @@ const MatchesByRound = (props) => {
             {!selected && rounds[index] &&
                 <Center alignContent={'center'} >
                     <SimpleGrid columns={2} spacing='20px' width={'99%'} >
-                        {matches && matches.filter(el => el.round == rounds[index]).map(match => (
+                        {matches && matches
+                        .filter(el => el.round == rounds[index])
+                        .sort((a, b) => {
+                            if (a?.scheduledTick < b?.scheduledTick) {
+                              return -1;
+                            }
+                            if (a?.scheduledTick > b?.scheduledTick) {
+                              return 1;
+                            }
+                            return 0;
+                          })
+                        .map(match => (
                             <MatchCard
                                 handleSelect={setSelected}
                                 key={match._id}
