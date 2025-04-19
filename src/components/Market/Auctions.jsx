@@ -16,6 +16,7 @@ const Auctions = (props) => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const { login, team, } = useSelector(s => s.auth);
 	const myCharacter = useSelector(s => s.auth.character);
+	const resourceTypes = useSelector(s => s.gameConfig.resourceTypes);
 	const assets = useSelector(s => s.assets.list);
 	const teams = useSelector(s => s.teams.list);
 	const account = useSelector(getTeamAccount);
@@ -33,6 +34,7 @@ const Auctions = (props) => {
 	const [tags, setTags] = React.useState([]);
 	const [checkerData, setCheckerData] = React.useState([]);
 	const [description, setDescription] = React.useState('');
+	const [acceptedResources, setResources] = React.useState(resourceTypes.map(el => el.type));
 
 	if (!props.login) {
 		navigate("/");
@@ -88,6 +90,7 @@ const Auctions = (props) => {
 			account: account._id,
 			stuff: formattedAssets,
 			hours,
+			acceptedResources,
 			highestBid: starting,
 			autobuy
 		};
@@ -115,7 +118,7 @@ const Auctions = (props) => {
 					</Tooltip>
 				</ButtonGroup>
 			</div>
-			{auctions.length}
+
 			<Box style={{ height: '80vh', overflow: 'auto', justifyContent: 'center' }}>
 				<Grid templateColumns='repeat(2, 1fr)' gap={4}>
 					{auctions
@@ -153,6 +156,15 @@ const Auctions = (props) => {
 								onChange={(event) => setAsset(event)}
 								data={[...assets]}
 								value={asset}
+							/>
+
+							<CheckerPick
+								label='type'
+								valueKey="type"
+								placeholder={`${resourceTypes.length} Eligible Resorces`}
+								onChange={(event) => setResources(event)}
+								data={resourceTypes}
+								value={acceptedResources}
 							/>
 						</div>
 

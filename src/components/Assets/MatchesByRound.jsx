@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTeamAccount } from '../../redux/entities/accounts';
 import { Box, Button, Center, CircularProgress, Grid, GridItem, IconButton, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import MatchCard from './MatchCard';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { gameServer } from '../../config';
+import { eventMassAdd, eventsRequested } from '../../redux/entities/events';
+import axios from 'axios';
 
-const MatchesByRound = ({ matches, rounds }) => {
+const MatchesByRound = (props) => {
     const navigate = useNavigate();
+    const reduxAction = useDispatch();
     const blueprints = useSelector(s => s.blueprints.list);
     const { login, team, character } = useSelector(s => s.auth);
     const round = useSelector(s => s.gamestate.round);
+    const { rounds, loading, list } = useSelector(s => s.events);
+    let matches = list;
     const account = useSelector(getTeamAccount);
     const [selected, setSelected] = useState(null);
     const [index, setIndex] = useState(rounds.findIndex(el => el == round));
@@ -23,17 +29,24 @@ const MatchesByRound = ({ matches, rounds }) => {
     }, [matches]);
 
     useEffect(() => {
+        if (index && !loading && matches.filter(el => el.round === rounds[index]).length == 0) {
+            const fetchData = async () => {
+                reduxAction(eventsRequested());
+                const { data } = await axios.get(`${gameServer}api/events/matches/${rounds[index]}`);
+                reduxAction(eventMassAdd(data));
+            }
+            fetchData()
+        }
+    }, [index]);
+
+
+    useEffect(() => {
         if (matches.length == 0) {
             navigate("/");
         }
     }, []);
 
     if (index < 0) setIndex(0)
-
-    if (rounds.length == 0 && matches) {
-        rounds = Array.from(new Set(matches.map(match => match.round)));
-    }
-
     return (
         <Stack height={'100%'} >
             {!selected && <Text fontSize='24'>
@@ -66,7 +79,7 @@ const MatchesByRound = ({ matches, rounds }) => {
             {!selected && rounds[index] &&
                 <Center alignContent={'center'} >
                     <SimpleGrid columns={2} spacing='20px' width={'99%'} >
-                        {matches && matches.filter(el => el.round === rounds[index]).map(match => (
+                        {matches && matches.filter(el => el.round == rounds[index]).map(match => (
                             <MatchCard
                                 handleSelect={setSelected}
                                 key={match._id}

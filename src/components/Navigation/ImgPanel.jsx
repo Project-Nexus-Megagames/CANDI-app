@@ -5,7 +5,15 @@ import { Link } from 'react-router-dom';
 const ImgPanel = (props) => {
 	return (
 		<Link to={props.disabled ? '#' : props.to}>
-			{props.new && <Tag size='lg' color='red' style={{ position: 'absolute', zIndex: 999, top: '20px', right: '30px' }}>New</Tag>}
+			{props.new &&
+				<Tag
+					variant={'solid'}
+					size='lg'
+					color='red'
+					style={{ position: 'absolute', zIndex: 999, top: '20px', right: '30px' }}
+					>
+					New
+				</Tag>}
 			<div
 				style={{
 					border: '5px solid #FA9C37',

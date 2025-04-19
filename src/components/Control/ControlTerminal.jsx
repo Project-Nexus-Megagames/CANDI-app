@@ -11,7 +11,7 @@ import ResourceNugget from '../Common/ResourceNugget';
 import { PauseOutline, PlayOutline } from '@rsuite/icons';
 import ArrowRightLineIcon from '@rsuite/icons/ArrowRightLine';
 import ArrowLeftLineIcon from '@rsuite/icons/ArrowLeftLine';
-import { Box, Button, ButtonGroup, HStack, Divider, Grid, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, InputGroup, InputLeftAddon, Tag, TagCloseButton } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, HStack, Divider, Grid, IconButton, Input, Tab, TabList, TabPanel, TabPanels, Tabs, InputGroup, InputLeftAddon, Tag, TagCloseButton, Checkbox } from '@chakra-ui/react';
 import SelectPicker from '../Common/SelectPicker';
 import WordDivider from '../Common/WordDivider';
 import AssetCard from '../Common/AssetCard';
@@ -171,15 +171,29 @@ const ControlDashboard = (props) => {
 								{<TagCloseButton onClick={() => setSpecialRound(round)} />}
 							</Tag>))}
 
+						<br />
+						Other Rounds
+						<br />
+						{matchRounds.filter(el => !el.public).map((round) => (
+							<Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
+								<StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
+								<StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
+								{round.name}
+								{<TagCloseButton onClick={() => setSpecialRound(round)} />}
+							</Tag>))}
+
 						{specialRound && <CandiModal
 							onClose={() => { setSpecialRound(false); }}
 							open={specialRound}
 							title={`Edit ${specialRound.name}`}
 						>
+							<Checkbox
+								isChecked={specialRound.public}
+								onChange={(e) => setSpecialRound({ ...specialRound, public: !specialRound.public })}
+							>Public</Checkbox>
 							<Input
 								onChange={(e) => setSpecialRound({ ...specialRound, name: e.target.value })}
-								value={props.filter}
-								placeholder={specialRound.name}
+								value={specialRound.name}
 								color='white'
 							/>
 							<SelectPicker
@@ -197,6 +211,13 @@ const ControlDashboard = (props) => {
 								onChange={(change) => setSpecialRound({ ...specialRound, secondaryStat: change })}
 								placeholder={specialRound.secondaryStat}
 								value={specialRound.secondaryStat}
+							/>
+
+							injuryRate
+							<Input
+								onChange={(e) => setSpecialRound({ ...specialRound, injuryRate: parseInt(e.target.value) })}
+								value={specialRound.injuryRate}
+								color='white'
 							/>
 
 							<Button onClick={editRound} > Submit</Button>

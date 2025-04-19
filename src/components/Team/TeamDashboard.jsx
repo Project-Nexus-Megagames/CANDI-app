@@ -70,7 +70,7 @@ const TeamDashboard = () => {
       <GridItem area={'drafts'} bg='#0f131a' overflow={'auto'}>
         <VStack>
           {facilities.map(facility => (
-            <FacilityCard key={facility._id} facility={facility._id} isOwned={round < 8} /> 
+            <FacilityCard key={facility._id} facility={facility._id} isOwned={control} /> 
           ))}
           {drafts.map(asset => (
             <DraftCard draft={asset} key={asset._id} showRemove={true}/>

@@ -1,7 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getTextColor, getThisTeam } from '../../scripts/frontend';
-import { Box, Button, ButtonGroup, Grid, GridItem, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Tag, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Center, Divider, Grid, GridItem, HStack, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, StackDivider, Tag, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
+    PopoverFooter,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverAnchor,
+} from '@chakra-ui/react'
 import AthleteCard from '../Assets/AthleteCard';
 import socket from '../../socket';
 import { getTeamAccount } from '../../redux/entities/accounts';
@@ -10,17 +21,35 @@ import CharacterNugget from '../Common/CharacterNugget';
 import CountDownTag from '../Common/CountDownTag';
 import TeamAvatar from '../Common/TeamAvatar';
 import { CandiWarning } from '../Common/CandiWarning';
+import ResourceNugget from '../Common/ResourceNugget';
+import { ArrowDownIcon } from '@chakra-ui/icons';
+import { BsArrowDown } from 'react-icons/bs';
+import { IoCaretDownOutline } from 'react-icons/io5';
 
 const Auction = (props) => {
     const { market, loading, size, altIconPath } = props;
     const assets = useSelector(s => s.assets.list);
     const myCharacter = useSelector(s => s.auth.character);
     const teams = useSelector(s => s.teams.list);
+    const { resourceTypes } = useSelector(s => s.gameConfig);
     const account = useSelector(getTeamAccount);
     const [mode, setMode] = React.useState(false);
+    const [selectedResource, setSelectedResource] = React.useState(market.currentResource);
 
-    const rawr = account !== undefined ? account.resources.find((el) => el.type === market.currency) : undefined;
-	const credits = rawr ? rawr.balance : 0;
+    const rawr = account?.resources.find((el) => el.type === selectedResource);
+    const credits = rawr ? rawr.balance : -999;
+
+    const resourceMap = account.resources.reduce((acc, item) => {
+        acc[item.type] = item.balance;
+        return acc;
+    }, {});
+
+    const salaryTypes = [
+        { name: "Shiny Rock", code: "shiny_rock", color: "#9b549f" },
+        { name: "Excellent Moss", code: "excellent_moss", color: "#55f348" },
+        { name: "Mushroom", code: "mushroom", color: "#f79b48" },
+        { name: "Gold", code: "gold", color: "#dddd12", textColor: "black" }
+    ]
 
     const getMarketObject = (thingy) => {
         switch (thingy.type) {
@@ -35,7 +64,7 @@ const Auction = (props) => {
                 else
                     return (
                         // <AssetCard height="150px" key={thingy._id} asset={asset} />
-                        <AthleteCard key={thingy._id} asset={asset} />
+                        <AthleteCard compact key={thingy._id} asset={asset} />
                     );
             case 'contract':
                 const asset0 = assets.find((el) => el._id === thingy._id);
@@ -53,6 +82,7 @@ const Auction = (props) => {
         const data = {
             auction,
             highestBidder: myCharacter._id,
+            currentResource: selectedResource,
             bidAccount: account._id
         };
         socket.emit('request', { route: 'market', action: 'bid', data });
@@ -73,39 +103,53 @@ const Auction = (props) => {
                 border: `3px solid ${getFadedColor(getThisTeam(teams, market.creator._id))}`,
                 borderRadius: '10px',
             }}>
-            <Grid
-                h='260px'
-                templateRows='repeat(2, 1fr)'
-                templateColumns='repeat(5, 1fr)'
-                gap={2}
-            >
-                <GridItem colSpan={5} bg={getFadedColor(getThisTeam(teams, market.creator._id))} color={getTextColor(getThisTeam(teams, market.creator._id))} className='styleSpaceAround' >
-                    <div >
-                        <Text noOfLines={1} as='u' style={{ color: 'black' }} fontSize='4xl' ><CharacterNugget character={market.creator} />Auction "{market.name}" ({market.stuff.length} Items)</Text >
-                    </div>
-                    <div>
-                        <CountDownTag timeout={market.timeout} />
-                    </div>
 
+
+            <Grid
+                templateAreas={`
+                    "header header"
+                    "left main"`}
+                gridTemplateRows={'0.3fr 1fr'}
+                gridTemplateColumns={'0.4fr 1fr'}
+            // templateRows='repeat(2, 1fr)'
+            // templateColumns='repeat(5, 1fr)'
+            >
+                <GridItem
+                    area={'header'}
+                    bg={getFadedColor(getThisTeam(teams, market.creator._id))}
+                    color={getTextColor(getThisTeam(teams, market.creator._id))}
+                    className='styleCenter'
+                >
+                    <Text noOfLines={1} as='u' style={{ color: 'black', }} fontSize='4xl' >
+                        {market.name} ({market.stuff.length} Items)
+                    </Text >
                 </GridItem>
 
-                <GridItem style={{ height: '150px' }} colSpan={1} className='styleDeadCenter' >
-                    <div>
-                        <Text fontSize='xs' >Highest Bidder</Text >
+                <GridItem
+                    area={'left'}
+                    as={Stack}
+                    align='stretch'
+                >
+                    <Box
+                        bg={"rgb(42, 53, 71)"}
+                        // bg={getFadedColor(getThisTeam(teams, market.highestBidder._id))}
+                        padding={'2px'}  >
+                        <Text fontSize='xs' >Highest Bidder </Text >
 
-                        {/* <CharacterNugget size='lg' character={market.highestBidder} /> */}
-                        <TeamAvatar character={market.highestBidder?._id} />
+                        <Center >
+                            <TeamAvatar
+                                character={market.highestBidder?._id}
+                                margin={"15px"}
+                                specialBadge={<CountDownTag timeout={market.timeout} />}
+                            />
+                            <ResourceNugget value={market.highestBid} type={market.currentResource} width={'70px'} />
+                        </Center>
+                    </Box>
+
+                    {!(market.creator._id === myCharacter._id || market.highestBidder._id === myCharacter._id) && <Text fontSize='xs' >Your Bid</Text >}
+                    {(market.creator._id === myCharacter._id || market.highestBidder._id === myCharacter._id) && <Text fontSize='lg' >You're the Highest Bidder!</Text >}
+                    <Center >
                         <ButtonGroup isAttached>
-                            <Tooltip openDelay={200} hasArrow placement='top' label={"Current Bid"}>
-                                <Button
-                                    leftIcon={<img src={`/images/${market.currency}.png`} width={'30px'} alt={`${market.currency}!`} />}
-                                    size={'md'}
-                                    variant='outline'
-                                    colorScheme="green"
-                                >
-                                    <b>{market.highestBid}</b>
-                                </Button>
-                            </Tooltip>
 
                             {!(market.creator._id === myCharacter._id || market.highestBidder._id === myCharacter._id) && <Tooltip openDelay={200} hasArrow placement='top' label={
                                 market.highestBidder._id === myCharacter._id ? (
@@ -113,42 +157,97 @@ const Auction = (props) => {
                                 ) : !credits ? (
                                     <b>Account is undefined</b>
                                 ) : credits <= market.highestBid ? (
-                                    <b>You do not have enough credits! ({credits})</b>
+                                    <b>You do not have enough resources! ({credits})</b>
                                 ) : market.creator._id === myCharacter._id ? (
                                     <b>Can't bid on your own Auction, silly </b>
                                 ) : (
                                     <b>Click to place bid</b>
                                 )}>
+
+                                <Popover>
+                                    {({ isOpen, onClose }) => (
+                                        <>
+                                            <PopoverTrigger>
+                                                <Button
+                                                    borderRadius={'5px 0 0 5px'}
+                                                    variant={'outline'}
+                                                    colorScheme={selectedResource ? getFadedColor(selectedResource) : 'red'}
+                                                    leftIcon={<img src={`/images/${selectedResource}.png`} width={'30px'}
+                                                        alt={`${market.currency}!`} />}
+                                                    rightIcon={market.acceptedResources.length > 1 ? <IoCaretDownOutline /> : ""}
+                                                >{selectedResource}</Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent backgroundColor={'black'}>
+                                                <PopoverArrow />
+                                                <PopoverCloseButton />
+                                                <PopoverHeader>Accepted Resources ({market.acceptedResources.length}) </PopoverHeader>
+                                                <PopoverBody  >
+                                                    <Stack isAttached>
+                                                        {salaryTypes
+                                                            .filter(resource => market.acceptedResources.some(ar => ar == resource.code))
+                                                            .map(resource => (
+                                                                <Button
+                                                                    size={'xs'}
+                                                                    isDisabled={!resourceMap[resource.code] || resourceMap[resource.code] <= 0}
+                                                                    onClick={() => { onClose(); setSelectedResource(resource.code) }}
+                                                                    variant={selectedResource === resource.code ? 'solid' : 'outline'}
+                                                                    leftIcon={<img src={`/images/${resource.code}.png`} width={'25px'} alt={`${resource.code}!`} />}
+                                                                >{resource.name} {resourceMap[resource.code]}
+                                                                </Button>
+                                                            ))}
+                                                    </Stack>
+                                                </PopoverBody>
+                                            </PopoverContent>
+                                        </>
+                                    )}
+
+                                </Popover>
+
                                 <Button
+                                    borderRadius={'0 5px 5px 0'}
                                     size={'md'}
                                     colorScheme={market.highestBidder._id === myCharacter._id ? 'blue' : 'green'}
                                     variant={market.highestBidder._id === myCharacter._id ? 'outline' : 'solid'}
-                                    disabled={
+                                    isDisabled={
                                         market.creator._id === myCharacter._id ||
                                         market.highestBidder._id === myCharacter._id ||
                                         !credits ||
-                                        credits <= market.highestBid
+                                        credits <= market.highestBid ||
+                                        !selectedResource
                                     }
-                                    onClick={() => handleBid(market._id)}
+                                    onClick={() => setMode("bid")}
                                 >
-                                    +5
+                                    +1
                                 </Button>
                             </Tooltip>}
 
                         </ButtonGroup>
-                        {/* {market.autobuy && market.autobuy > 0 && <Button onClick={() => setMode('autobuy')} >Auto Buy</Button>} */}
-                        <CandiWarning open={mode === 'autobuy'} title={`Auto Buy "${market.name}"?`} onClose={() => setMode(false)} handleAccept={() => handleAutobuy(market._id)}>
-                            Are you sure you wish to purchase this Auction Lot? It will cost {market.autobuy} credits
-                        </CandiWarning>
-                    </div>
+                    </Center>
+
+                    <CandiWarning
+                        open={mode === 'bid'}
+                        title={`Bid on "${market.name}"?`}
+                        onClose={() => setMode(false)}
+                        handleAccept={() => handleBid(market._id)}
+                    >
+                        This will cost {market.highestBid + 1} {selectedResource}
+                        <ResourceNugget value={market.highestBid + 1} type={selectedResource} />
+                    </CandiWarning>
+
+                    {/* {market.autobuy && market.autobuy > 0 && <Button onClick={() => setMode('autobuy')} >Auto Buy</Button>} */}
+                    <CandiWarning open={mode === 'autobuy'} title={`Auto Buy "${market.name}"?`} onClose={() => setMode(false)} handleAccept={() => handleAutobuy(market._id)}>
+                        Are you sure you wish to purchase this Auction Lot? It will cost {market.autobuy} credits
+                    </CandiWarning>
+
 
                 </GridItem>
 
-                <GridItem style={{ height: '95%' }} colSpan={4} bg='#343a40' className='styleCenter'>
+                <GridItem area={'main'} bg='#00a0bd' >
                     <Grid
-                        templateColumns='repeat(1, 1fr)'
-                        gap={2}
-                        style={{ overflow: 'scroll', maxHeight: '20vh', width: '100%', scrollbarWidth: 'thin' }}
+                        templateColumns={market.stuff.length === 1 ? "" : `repeat(2, 1fr)`}
+                        overflow={'clip'}
+                        height={'20vh'}
+                        style={{ overflow: 'scroll', scrollbarWidth: 'thin' }}
                     >
                         {market.stuff.map((thingy) => getMarketObject(thingy))}
                     </Grid>

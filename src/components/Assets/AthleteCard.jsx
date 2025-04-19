@@ -78,20 +78,21 @@ const AthleteCard = (props) => {
 
   if (asset)
     return (
-      <div style={{ textAlign: 'center', width: "100%" }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
+      <div style={{ width: "100%", height: '100%' }} onClick={() => (handleSelect && !disabled) ? handleSelect(asset) : console.log((handleSelect && !disabled))} >
         <Card
           key={asset._id}
-          style={{
-            border: `3px ${border} ${getFadedColor(asset.type)}`,
-            height: height ? height : '100%'
-          }}
+          borderWidth="3px"
+          borderStyle={border}
+          borderColor={getFadedColor(asset.type)}
+          width="100%"
         >
+
           <CardHeader>
             <Flex align={'center'} overflow='hidden' width='100%'>
               <Spacer />
 
               <Stack>
-                <Avatar size={height ? height : 'xl'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
+                <Avatar size={'lg'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
                   {asset.teamOwner && <AvatarBadge boxSize='1.25em' bg={true ? 'green.500' : '#d4af37'}>
                     <TeamAvatar size={compact ? 'md' : 'md'} team={asset.teamOwner?._id} />
                   </AvatarBadge>}
@@ -160,11 +161,11 @@ const AthleteCard = (props) => {
 
                       <Text as='kbd' fontSize={'md'} casing={'capitalize'}>{asset.species}</Text>
 
-                      {!compact && asset.tags.map((el, index) => (
+                      {/* {!compact && asset.tags.map((el, index) => (
                         <Tag key={index} variant={'solid'} colorScheme={el.color}>
                           {el}
                         </Tag>
-                      ))}
+                      ))} */}
                     </HStack>
 
 

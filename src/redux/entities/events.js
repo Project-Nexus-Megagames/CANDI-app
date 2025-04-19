@@ -7,10 +7,11 @@ import socket from '../../socket'
 // Create entity slice of the store
 const slice = createSlice({
   name: "events",
-	initialState: {
+  initialState: {
     list: [],
     loading: false,
     loaded: false,
+    rounds: [8],
     lastFetch: null,
   },
   // Reducers - Events
@@ -21,7 +22,15 @@ const slice = createSlice({
     },
     eventsReceived: (events, action) => {
       console.log(`${action.type} Dispatched...!!`);
-      events.list = action.payload;
+
+      if (action.payload.matches) {
+        events.list = action.payload.matches;
+        events.rounds = action.payload.rounds
+      }
+      else {
+        events.list = action.payload;
+      }
+
       events.loading = false;
       events.lastFetch = Date.now();
       events.loaded = true;
@@ -33,6 +42,15 @@ const slice = createSlice({
     eventAdded: (events, action) => {
       console.log(`${action.type} Dispatched`)
       events.list.push(action.payload);
+    },
+    eventMassAdd: (events, action) => {
+      console.log(`${action.type} Dispatched`)
+      events.list = [...events.list, ...action.payload].filter(
+        (event, index, self) =>
+          index === self.findIndex(e => e._id === event._id)
+      );
+
+      events.loading = false;
     },
     eventUpdated: (events, action) => {
       console.log(`${action.type} Dispatched`)
@@ -48,7 +66,8 @@ export const {
   eventsReceived,
   eventsRequested,
   eventsRequestFailed,
-  eventUpdated
+  eventUpdated,
+  eventMassAdd
 } = slice.actions;
 
 export default slice.reducer; // Reducer Export
@@ -69,12 +88,12 @@ export const getTeamMatches = createSelector(
 export const loadEvents = payload => (dispatch, getState) => {
   return dispatch(
     apiCallBegan({
-      url,
+      url: `${url}/matches`,
       method: 'get',
       data: payload,
-      onStart:eventsRequested.type,
+      onStart: eventsRequested.type,
       onSuccess: eventsReceived.type,
-      onError:eventsRequestFailed.type
+      onError: eventsRequestFailed.type
     })
   );
 };
