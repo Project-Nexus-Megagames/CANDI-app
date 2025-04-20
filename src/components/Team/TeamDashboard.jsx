@@ -20,7 +20,7 @@ import MatchesCarosel from '../Assets/MatchesCarosel';
 const TeamDashboard = () => {
   const navigate = useNavigate();
   const { login, team, control } = useSelector(s => s.auth);
-  const { round } = useSelector(s => s.gamestate);
+  const { rounds } = useSelector(s => s.gamestate);
   const drafts = useSelector(getTeamDraft);
   const athletes = useSelector(getTeamAthletes);
   const facilities = useSelector(getTeamFacilities);

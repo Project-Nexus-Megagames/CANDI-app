@@ -3,7 +3,7 @@ import { getTeamAccount } from '../../redux/entities/accounts';
 import { getMyAssets, getTeamAssets } from '../../redux/entities/assets';
 import socket from '../../socket';
 import AssetInfo from '../Common/AssetInfo';
-import { getWorkingAuctions } from '../../redux/entities/markets';
+import { getWorkingAuctions, getAuctions } from '../../redux/entities/markets';
 import { useSelector } from 'react-redux';
 import { Funnel, Plus } from '@rsuite/icons';
 import { Box, Button, ButtonGroup, Grid, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Tooltip, useDisclosure } from '@chakra-ui/react';
@@ -14,7 +14,7 @@ import Auction from './Auction';
 const Auctions = (props) => {
 	const navigate = useNavigate();
 	const { isOpen, onOpen, onClose } = useDisclosure()
-	const { login, team, } = useSelector(s => s.auth);
+	const { login, team, control } = useSelector(s => s.auth);
 	const myCharacter = useSelector(s => s.auth.character);
 	const resourceTypes = useSelector(s => s.gameConfig.resourceTypes);
 	const assets = useSelector(s => s.assets.list);
@@ -22,7 +22,9 @@ const Auctions = (props) => {
 	const account = useSelector(getTeamAccount);
 	const myAssets = useSelector(getMyAssets);
 	const teamAssets = useSelector(getTeamAssets);
-	const markets = useSelector(getWorkingAuctions);
+	const ongoingMarkets = useSelector(getWorkingAuctions);
+	const auctions = useSelector(getAuctions);
+	
 
 	const [showInfo, setShowInfo] = React.useState(false);
 	const [mode, setMode] = React.useState(false);
@@ -30,9 +32,7 @@ const Auctions = (props) => {
 	const [starting, setStarting] = React.useState(0);
 	const [autobuy, setAutobuy] = React.useState(0);
 	const [asset, setAsset] = React.useState([]);
-	const [auctions, setAuctions] = React.useState([]);
-	const [tags, setTags] = React.useState([]);
-	const [checkerData, setCheckerData] = React.useState([]);
+	const [tags, setTags] = React.useState(['ongoing']);
 	const [description, setDescription] = React.useState('');
 	const [acceptedResources, setResources] = React.useState(resourceTypes.map(el => el.type));
 
@@ -40,37 +40,6 @@ const Auctions = (props) => {
 		navigate("/");
 		return <div />;
 	}
-
-	useEffect(() => {
-		// display.some(el => el !== site.subType)
-		if (markets && tags && tags.length > 0) {
-			let auctions = [...markets];
-			let test = [];
-			for (const tag of tags) {
-				test = [...auctions.filter((el) => el.tags.some((t) => t === tag))];
-			}
-
-			// console.log(test);
-			setAuctions(test);
-		} else if (tags && tags.length === 0) {
-			setAuctions(markets);
-		}
-	}, [markets, tags]);
-
-	// dynamically creat tags based on the aseets that exis
-	useEffect(() => {
-		if (markets) {
-			let uniqueChars = [];
-			let formatted = [];
-			for (const asset of markets) {
-				uniqueChars = [...new Set(asset.tags)];
-			}
-			for (const tag of uniqueChars) {
-				formatted.push({ value: tag, label: tag });
-			}
-			setCheckerData(formatted);
-		}
-	}, [markets]);
 
 	const handleCreate = () => {
 		const formattedAssets = [];
@@ -109,12 +78,17 @@ const Auctions = (props) => {
 			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 				<h3>Auctions{'- '}</h3>
 				<ButtonGroup isAttached>
-					<Tooltip openDelay={200} hasArrow label='New Auction' placement='top'>
-						<IconButton onClick={() => setMode('new')} colorScheme='green' icon={<Plus />}></IconButton>
-					</Tooltip>
+					{control && <Tooltip openDelay={200} hasArrow label='New Auction' placement='top'>
+						<IconButton variant={'solid'} onClick={() => setMode('new')} colorScheme='green' icon={<Plus />}></IconButton>
+					</Tooltip>}
 
 					<Tooltip openDelay={200} hasArrow label='Filter' placement='top'>
-						<IconButton colorScheme='purple' onClick={() => setMode(mode === 'filter' ? false : 'filter')} icon={<Funnel />}>{mode}</IconButton>
+						<CheckerPick
+							button={<IconButton variant={'solid'} colorScheme='purple' onClick={() => setMode(mode === 'filter' ? false : 'filter')} icon={<Funnel />} />}
+							data={[{ _id: 'ongoing', }, { _id: 'finished' }]}
+							value={tags}
+							onChange={setTags}
+						/>
 					</Tooltip>
 				</ButtonGroup>
 			</div>
@@ -122,6 +96,7 @@ const Auctions = (props) => {
 			<Box style={{ height: '80vh', overflow: 'auto', justifyContent: 'center' }}>
 				<Grid templateColumns='repeat(2, 1fr)' gap={4}>
 					{auctions
+						.filter(el => tags.some(t => el.status.some(s => s === t) ))
 						.sort((a, b) => {
 							// sort the catagories alphabetically
 							if (a.timeout > b.timeout) {
