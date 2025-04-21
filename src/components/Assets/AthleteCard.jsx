@@ -304,7 +304,7 @@ const AthleteCard = (props) => {
                 onClick={() => levelUp(stat.code)}
                 key={stat._id}
                 isLoading={loading}
-                isDisabled={getXPForStat(stat.statAmount) > asset.xp}
+                isDisabled={getXPForStat(stat.statAmount) > asset.xp || stat.statAmount >= 25}
                 variant={'outline'}
                 size={compact ? "sm" : "md"}
                 style={{
