@@ -1,5 +1,16 @@
 import React, { useEffect } from 'react';
 import { Avatar, AvatarBadge, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, Icon, IconButton, SimpleGrid, Spacer, Stack, Tag, TagLeftIcon, Text, Tooltip, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from '@chakra-ui/react'
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from '../Common/CandiWarning';
@@ -49,7 +60,7 @@ const AthleteCard = (props) => {
     { min: 9, max: 16, xp: 3 },
     { min: 17, max: 25, xp: 4 }
   ];
-  
+
   function getXPForStat(statValue) {
     const entry = levelUpTable.find(range => statValue >= range.min && statValue <= range.max);
     return entry ? entry.xp : 0; // Default to 0 XP if statValue is outside defined ranges
@@ -165,10 +176,29 @@ const AthleteCard = (props) => {
                 {stats && <HStack marginBottom={'3px'} overflow={'hidden'} >
 
                   {asset.injuries && asset.injuries.length > 0 &&
-                    <Tag variant={'solid'} colorScheme='red'>
-                      <Avatar size={'xs'} src={'/images/injury.png'} />
-                      {asset.injuries.length}x Injury
-                    </Tag>}
+                    <Popover placement='top' trigger="hover">
+                      <PopoverTrigger>
+                        <Tag cursor={'pointer'} variant={'solid'} colorScheme='red'>
+                          <Avatar size={'xs'} src={'/images/injury.png'} />
+                          {asset.injuries.length}x Injury
+                        </Tag>
+                      </PopoverTrigger>
+                      <PopoverContent bgColor={'black'}>
+                        <PopoverHeader fontWeight='semibold'>Injuries</PopoverHeader>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverBody >
+                          {asset.injuries.map(inj => (
+                            <Tag key={inj._id} variant={'solid'} colorScheme='red'>
+                              <Avatar size={'xs'} src={'/images/injury.png'} />
+                              {inj.name}
+                              <CountDownTag timeout={inj.duration} width={'20px'} />
+                            </Tag>
+                          ))}
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+                  }
                 </HStack>}
               </Stack>
 
@@ -270,7 +300,7 @@ const AthleteCard = (props) => {
 
           {<SimpleGrid columns={3}>
             {asset.stats && asset.stats.map((stat, index) => (
-              <Button 
+              <Button
                 onClick={() => levelUp(stat.code)}
                 key={stat._id}
                 isLoading={loading}
