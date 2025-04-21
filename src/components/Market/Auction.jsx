@@ -23,14 +23,17 @@ import TeamAvatar from '../Common/TeamAvatar';
 import { CandiWarning } from '../Common/CandiWarning';
 import ResourceNugget from '../Common/ResourceNugget';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-import { BsArrowDown } from 'react-icons/bs';
+import { BsArrowDown, BsPencil } from 'react-icons/bs';
 import { IoCaretDownOutline } from 'react-icons/io5';
 import NexusTag from '../Common/NexusTag';
+import { CandiModal } from '../Common/CandiModal';
+import AuctionForm from './AuctionForm';
 
 const Auction = (props) => {
     const { market, loading, size, altIconPath } = props;
     const assets = useSelector(s => s.assets.list);
     const myCharacter = useSelector(s => s.auth.character);
+    const { control } = useSelector(s => s.auth);
     const teams = useSelector(s => s.teams.list);
     const { resourceTypes } = useSelector(s => s.gameConfig);
     const account = useSelector(getTeamAccount);
@@ -98,6 +101,24 @@ const Auction = (props) => {
         socket.emit('request', { route: 'market', action: 'autobuy', data });
     };
 
+    const handleEdit = ({asset, description, hours, acceptedResources, starting, autobuy}) => {
+		const formattedAssets = [];
+
+		const data = {
+            ...market,
+            id: market._id,
+			name: description,
+			stuff: asset,
+			timeout: hours,
+			acceptedResources,
+			highestBid: starting,
+			autobuy
+		};
+		socket.emit('request', { route: 'market', action: 'edit', data });
+		// console.log('WHAT', data);
+	};
+
+
     return (
         <Box key={market._id} index={market._id}
             style={{
@@ -123,6 +144,7 @@ const Auction = (props) => {
                 >
                     <Text noOfLines={1} as='u' style={{ color: 'black', }} fontSize='4xl' >
                         {market.name} ({market.stuff.length} Items)
+                        {control && <IconButton icon={<BsPencil/>} onClick={() => setMode('edit')}  />}
                     </Text >
 
                 </GridItem>
@@ -249,6 +271,9 @@ const Auction = (props) => {
                         Are you sure you wish to purchase this Auction Lot? It will cost {market.autobuy} credits
                     </CandiWarning>
 
+                    {market && <CandiModal open={mode === 'edit'} onClose={() => setMode(false)}>
+                        <AuctionForm auction={market} handleSubmit={(data) => handleEdit(data)} />
+                    </CandiModal>}
 
                 </GridItem>
 

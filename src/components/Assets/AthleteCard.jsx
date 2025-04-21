@@ -7,7 +7,7 @@ import NexusTag from '../Common/NexusTag';
 import { useSelector } from 'react-redux';
 import { CandiModal } from '../Common/CandiModal';
 import { BsBookmarkHeartFill, BsBookmark, BsPencil } from 'react-icons/bs';
-import { Calendar, Close, Trash } from '@rsuite/icons';
+import { ArrowUp, Calendar, Close, Trash } from '@rsuite/icons';
 import CountDownTag from '../Common/CountDownTag';
 import { getFadedColor, getTextColor, getThisTeam, populateThisAccount } from '../../scripts/frontend';
 import CharacterNugget from '../Common/CharacterNugget';
@@ -43,6 +43,18 @@ const AthleteCard = (props) => {
   const assets = useSelector(state => state.assets.list);
   const accounts = useSelector(state => state.accounts.list);
 
+  const levelUpTable = [
+    { min: -8, max: 0, xp: 1 },
+    { min: 1, max: 8, xp: 2 },
+    { min: 9, max: 16, xp: 3 },
+    { min: 17, max: 25, xp: 4 }
+  ];
+  
+  function getXPForStat(statValue) {
+    const entry = levelUpTable.find(range => statValue >= range.min && statValue <= range.max);
+    return entry ? entry.xp : 0; // Default to 0 XP if statValue is outside defined ranges
+  }
+
 
   useEffect(() => {
     if (myTeam) {
@@ -56,6 +68,17 @@ const AthleteCard = (props) => {
       route: 'asset',
       action: 'delete',
       data: { id: asset._id }
+    });
+  };
+
+  const levelUp = async (stat) => {
+    setLoading(true)
+    socket.emit('request', {
+      route: 'asset',
+      action: 'levelUp',
+      data: { id: asset._id, stat }
+    }, (response) => {
+      setLoading(false)
     });
   };
 
@@ -75,6 +98,7 @@ const AthleteCard = (props) => {
   const disabled = asset?.status?.some(el => el.toLowerCase() === ('working' || 'used'));
   const isHidden = asset?.status?.some(el => el.toLowerCase() === ('hidden'));
   const border = isHidden ? 'dotted' : 'solid'
+  const isMine = asset.teamOwner?._id === myTeam._id || false
 
   if (asset)
     return (
@@ -157,6 +181,18 @@ const AthleteCard = (props) => {
 
                     <HStack marginBottom={'3px'} >
                       {isBookmarked && <BsBookmarkHeartFill size={'18px'} color='yellow' fill='yellow' />}
+                      {isMine && asset.xp > 0 &&
+                        <Tooltip hasArrow placement='top' label={`Level up Athlete ${asset.xp}`}>
+                          <Button
+                            size={'xs'}
+                            leftIcon={<ArrowUp />}
+                            variant={'solid'}
+                            colorScheme='yellow'
+                            onClick={() => setMode("level")} >
+                            {"XP: "}{asset.xp}
+                          </Button>
+                        </Tooltip>
+                      }
                       <Text as='u' fontSize={'lg'} casing={'capitalize'} >{asset.name}</Text>
 
                       <Text as='kbd' fontSize={'md'} casing={'capitalize'}>{asset.species}</Text>
@@ -227,6 +263,31 @@ const AthleteCard = (props) => {
                 }
               })} >Draft!</Button>
           </Box>}
+        </CandiModal>
+
+        <CandiModal onClose={() => { setMode(false); }} open={mode === "level"} title={`Level up "${asset.name}"`}>
+          You have: {asset.xp} XP
+
+          {<SimpleGrid columns={3}>
+            {asset.stats && asset.stats.map((stat, index) => (
+              <Button 
+                onClick={() => levelUp(stat.code)}
+                key={stat._id}
+                isLoading={loading}
+                isDisabled={getXPForStat(stat.statAmount) > asset.xp}
+                variant={'outline'}
+                size={compact ? "sm" : "md"}
+                style={{
+                  backgroundColor: getFadedColor(stat.code, stat.statAmount / 8 + 0.4),
+                  color: getTextColor(stat.name),
+                  border: `1px solid white`,
+                  borderRadius: '0'
+                }}>
+                <StatIcon stat={stat} compact={compact} preferredCurrency={asset.preferredCurrency} />
+                {!compact && stat.code} {stat.statAmount} ({getXPForStat(stat.statAmount)})
+              </Button>
+            ))}
+          </SimpleGrid>}
         </CandiModal>
 
         <CandiModal onClose={() => { setMode(false); }} open={mode === "sechedule"} title={`Sechedule Draft of "${asset.name}"`}>
