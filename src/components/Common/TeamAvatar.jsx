@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { getFadedColor, getThisTeam } from '../../scripts/frontend';
 
 const TeamAvatar = (props) => {
-  const { account, online, badge, size, character, specialBadge } = props;
+  const { account, online, badge, size, character, specialBadge, opacity = 1 } = props;
   const teams = useSelector(s => s.teams.list);
   const accounts = useSelector(s => s.accounts.list);
 
@@ -24,7 +24,7 @@ const TeamAvatar = (props) => {
       <Tooltip openDelay={200} hasArrow placement='top' label={<div>
         <p color='black' >{team.name}</p>
       </div>}>
-        <Avatar margin={'2px'} size={size ? size : 'md'} bg={getFadedColor(team.code)} name={team.name} src={`/images/team/${team.code}.png`}>
+        <Avatar opacity={opacity} margin={'2px'} size={size ? size : 'md'} bg={getFadedColor(team.code)} name={team.name} src={`/images/team/${team.code}.png`}>
           {badge && <AvatarBadge boxSize='1.25em' bg={online ? 'green.500' : '#d4af37'} />}
           {specialBadge &&
             <AvatarBadge

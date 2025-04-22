@@ -11,7 +11,7 @@ import {
   StepStatus,
   StepTitle,
 } from '@chakra-ui/react'
-import { getFadedColor } from "../../scripts/frontend";
+import { getFadedColor, getFadedHexColor } from "../../scripts/frontend";
 import ResourceNugget from "../Common/ResourceNugget";
 import { StarIcon } from "@chakra-ui/icons";
 import AthleteCard from "../Assets/AthleteCard";
@@ -230,20 +230,22 @@ const EventLog = props => {
 
       <Box
         // backgroundColor={getFadedColor('blue', (0.2 * Math.floor(report.round)))}
-        backgroundColor={report.color}
+        backgroundColor={getFadedHexColor(report.color, 0.3)}
         flexShrink='0'
         style={{
           margin: "2px",
           padding: "5px",
-          border: `2px solid ${getFadedColor(report.transaction)}`,
+          border: `2px solid ${report.color}`,
           width: '95%',
         }}
       >
         <StepTitle>Round {report.round}) {report.text}</StepTitle>
         <StepDescription color={'whiteAlpha.800'} >{<b>({getTime(report.createdAt)})</b>}</StepDescription>
-        {report.athlete && <Flex>
+        {report.athlete && <Flex alignItems={'center'}  >
           {report.injurer && <AthleteCard asset={report.injurer} compact stats={false} />}
-          {report.injurer && <img src={`/images/injury.png`} width={'30%'} alt={`ouch!`} />}
+          {report.injurer && <img src={`/images/${report.type}.png`} width={'30%'} alt={report.type} />}
+          {report.type === "lucky" && <img src={`/images/stats/LUK.png`} width={'10%'} alt={report.type} />}
+ 
           <AthleteCard asset={report.athlete} compact stats={false} />
 
         </Flex>

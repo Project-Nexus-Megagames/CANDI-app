@@ -153,6 +153,22 @@ function getTextColor(color, fade = 1) {
   }
 }
 
+function getFadedHexColor(hex, alpha) {
+  // Remove hash if present
+  hex = hex.replace(/^#/, '');
+
+  // Convert 3-digit hex to 6-digit
+  if (hex.length === 3) {
+    hex = hex.split('').map(c => c + c).join('');
+  }
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 function getCountdownHours(start, end) {
   let countDownDate = new Date(end).getTime();
   const now = new Date(start).getTime();
@@ -312,6 +328,7 @@ export {
   getThisTeamFromAccount,
   getCountdownHours,
   getFadedColor,
+  getFadedHexColor,
   getThisEffort,
   getTextColor,
   getTime,

@@ -28,6 +28,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
     const isHome = match.homeTeam?._id === team._id;
     const isVisitor = match.awayTeam?._id === team._id;
 
+    const wasTied = match.logs.find(el => el.type === 'tie')
     const array = new Array(4).fill(null);
     const backgroundColor =
         match?.status === 'scheduled' ? getFadedColor() :
@@ -81,9 +82,9 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                 <Spacer />
 
                 <Stack backgroundColor={homeWon ? backgroundColor : 'inherit'}  >
-                    <TeamAvatar size={"xl"} team={match.homeTeam} />
-                    {homeWon && <Text>Winner</Text>}
-                    {awayWon && <Text>Loser</Text>}
+                    <TeamAvatar opacity={awayWon && 0.5} size={"xl"} team={match.homeTeam} />
+                    {homeWon && <Text>Won</Text>}
+                    {awayWon && <Text>Lost</Text>}
                 </Stack>
 
                 <Spacer />
@@ -92,21 +93,55 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                     <Text marginBottom={'-2'} noOfLines={1} fontSize='4xl'>{match.homeScore} - {match.awayScore}</Text>
 
                     <Stack gap={1} align={'center'} >
-                        {showFacility && match.facility && <FacilityCard width={'60%'} compact facility={match.facility} />}
+                        {showFacility && match.facility &&
+                            <FacilityCard
+                                showStandard={showStandard}
+                                width={'60%'}
+                                compact
+                                facility={match.facility}
+                            />}
 
-                        {showStandard && matchRounds && matchRounds.filter(el => el.public).map((round, index) => (
+                        {showStandard && matchRounds &&
+                            [...match.facility.specialRounds, ...matchRounds.filter(el => el.public)]
+                                .map((round, index) => {
+                                    const log = match.logs.find(el => el.type === 'end-round' && el.round == (index + 2 - 0.01))
+                                    const homeWonRound = log?.homeRoundScore > log?.awayRoundScore
+                                    const awayWonRound = log?.homeRoundScore < log?.awayRoundScore
+                                    const color = homeWonRound ? match.homeTeam.color :
+                                    awayWonRound ? match.awayTeam.color :
+                                            getFadedColor(round.color);
+                                    return (
+                                        <Tag
+                                            border={`3px solid ${color}`}
+                                            backgroundColor={getFadedColor(round.primaryStat, 0.5)}
+                                            key={round._id}
+                                            colorScheme='green'
+                                            variant={'solid'}
+                                            width={'60%'}
+                                        >
+                                            {log && <Center marginRight={'10px'}>
+                                                <TeamAvatar opacity={awayWonRound && 0.5} size={"xs"} team={match.homeTeam} />
+                                                <Text minW={'15px'} as={log?.homeRoundScore > log?.awayRoundScore && "u"} noOfLines={1} >{log?.homeRoundScore}</Text>
+                                                <TeamAvatar opacity={homeWonRound && 0.5} size={"xs"} team={match.awayTeam} />
+                                                <Text minW={'15px'} as={log?.homeRoundScore < log?.awayRoundScore && "u"} noOfLines={1} >{log?.awayRoundScore}</Text>
+                                            </Center>}
+                                            <StatIcon stat={{ code: round.primaryStat }} compact />
+                                            <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
+                                            <Text noOfLines={1} >{round.name}</Text>
+                                        </Tag>)
+                                })}
+                        {wasTied &&
                             <Tag
-                                border={`2px solid ${getFadedColor(round.primaryStat)}`}
-                                backgroundColor={getFadedColor(round.primaryStat, 0.5)}
-                                key={round._id}
+                                border={`3px solid ${backgroundColor}`}
+                                backgroundColor={getFadedColor(wasTied.color, 0.5)}
                                 colorScheme='green'
+                                alignContent={'center'}
                                 variant={'solid'}
                                 width={'60%'}
                             >
-                                <StatIcon stat={{ code: round.primaryStat }} compact />
-                                <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
-                                {round.name}
-                            </Tag>))}
+                                <TeamAvatar size={"xs"} team={homeWon ? match.homeTeam : match.awayTeam} />
+                                <Text noOfLines={2} >{wasTied.text}</Text>
+                            </Tag>}
                     </Stack>
 
                 </Stack>
@@ -114,9 +149,9 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                 <Spacer />
 
                 <Stack backgroundColor={awayWon ? backgroundColor : 'inherit'} >
-                    <TeamAvatar size={"xl"} team={match.awayTeam} />
-                    {awayWon && <Text>Winner</Text>}
-                    {homeWon && <Text>Loser</Text>}
+                    <TeamAvatar opacity={homeWon && 0.5} size={"xl"} team={match.awayTeam} />
+                    {awayWon && <Text>Won</Text>}
+                    {homeWon && <Text>Lost</Text>}
                 </Stack>
                 <Spacer />
             </Flex>

@@ -127,9 +127,14 @@ const AthleteCard = (props) => {
               <Spacer />
 
               <Stack>
-                <Avatar size={'lg'} bg={getFadedColor(asset.species)} name={asset.species} src={`/images/species/${asset.species}.png`}>
+                <Avatar
+                  size={'lg'}
+                  bg={getFadedColor(asset.species)}
+                  name={asset.species}
+                  src={`/images/species/${asset.species}.png`}
+                >
                   {asset.teamOwner && <AvatarBadge boxSize='1.25em' bg={true ? 'green.500' : '#d4af37'}>
-                    <TeamAvatar size={compact ? 'md' : 'md'} team={asset.teamOwner?._id} />
+                    <TeamAvatar size={compact ? 'sm' : 'md'} team={asset.teamOwner?._id} />
                   </AvatarBadge>}
                 </Avatar>
 

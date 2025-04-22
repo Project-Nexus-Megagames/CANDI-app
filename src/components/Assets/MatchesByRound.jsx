@@ -96,7 +96,7 @@ const MatchesByRound = (props) => {
                                 key={match._id}
                                 match={match}
                                 showFacility={true}
-                                showStandard={login}
+                                showStandard={login && match.status === "scheduled"}
                             />
                         ))}
                     </SimpleGrid>
