@@ -29,10 +29,10 @@ const MatchesByRound = (props) => {
     }, [matches]);
 
     useEffect(() => {
-        if (index && !loading && matches.filter(el => el.round === rounds[index]).length == 0) {
+        if (index >=0 && !loading && matches.filter(el => el.round === rounds[index]).length == 0) {
             const fetchData = async () => {
-                reduxAction(eventsRequested());
-                const { data } = await axios.get(`${gameServer}api/events/matches/${rounds[index]}`);
+                const existingMatches = matches.map(m => m._id);
+                const { data } = await axios.post(`${gameServer}api/events/matches/${rounds[index]}`, existingMatches);
                 reduxAction(eventMassAdd(data));
             }
             fetchData()

@@ -44,13 +44,13 @@ const slice = createSlice({
       events.list.push(action.payload);
     },
     eventMassAdd: (events, action) => {
-      console.log(`${action.type} Dispatched`)
+      console.log(`${action.type} Dispatched`);
+      events.loading = false;
       events.list = [...events.list, ...action.payload].filter(
         (event, index, self) =>
           index === self.findIndex(e => e._id === event._id)
       );
 
-      events.loading = false;
     },
     eventUpdated: (events, action) => {
       console.log(`${action.type} Dispatched`)

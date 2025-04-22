@@ -14,6 +14,7 @@ import TeamCard from '../Common/TeamCard';
 import { CandiModal } from '../Common/CandiModal';
 import { getCharacterById, getMyCharacter } from '../../redux/entities/characters';
 import UserList from './UserList';
+import { GrRefresh } from "react-icons/gr";
 
 // const mapStateToProps = state => ({
 // 	login: state.auth.login,
@@ -31,7 +32,7 @@ const NavBar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, team, myCharacter, control } = useSelector(s => s.auth)
-  const loading = useSelector(s => s.gamestate.loading)
+  const gsLoading = useSelector(s => s.gamestate.loading)
   const allCharacters = useSelector(state => state.characters.list);
   const teams = useSelector(state => state.teams.list);
   const clock = useSelector(s => s.clock)
@@ -46,6 +47,7 @@ const NavBar = (props) => {
   const [seconds, setSeconds] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [hours, setHours] = React.useState(0);
+  const [navLoading, setNavLoading] = React.useState(0);
   const [filter, setFilter] = React.useState('');
   const [mode, setMode] = React.useState('');
 
@@ -100,6 +102,8 @@ const NavBar = (props) => {
     } else setSelectedChar(myChar._id);
   };
 
+  const loading = (navLoading || gsLoading);
+
   return (
     <div style={{
       display: 'flex', justifyContent: 'left', alignItems: 'center', color: 'white', fontSize: '0.966em', maxHeight: "70px", backgroundColor: '#746d75', borderBottom: '3px solid', borderRadius: 0, borderColor: '#d4af37',
@@ -149,18 +153,28 @@ const NavBar = (props) => {
 
       <div style={{ width: '40%', margin: '8px', }}>
 
-
-
         {login && <div className='styleCenterLeft'>
           {hours}:{minutes <= 9 && <>0</>}{minutes}:{seconds <= 9 && <>0</>}{seconds} ~
           Round {gamestate.round} Pick: {clock.tickNum}
-          <BsFillGearFill spin={clock.loading.toString()} onClick={() => { reduxAction(clockRequested()); socket.emit('request', { route: 'clock', action: 'getState' }); }} style={{ cursor: 'pointer', marginLeft: "5px" }} />
+          <IconButton
+            size={'sm'}
+            icon={<GrRefresh />}
+            color={'white'}
+            _hover={{
+              color: 'gold',
+            }}
+            isLoading={loading}
+            variant={"ghost"}
+            onClick={() => { setNavLoading(true); socket.emit('request', { route: 'clock', action: 'getState' }, (res) => (setNavLoading(false))); }}
+          />
+
         </div>}
         {<Progress
           isIndeterminate={loading}
           value={loading ? 100 : fraction * 100}
           colorScheme={clock.paused ? 'whiteAlpha' : loading ? 'gray' : (fraction * 100) >= 66 ? "cyan" : (fraction * 100) >= 33 ? "yellow" : "red"}
-          style={{ width: '30%', }} />}
+          style={{ width: '12.5rem', }} />
+          }
 
       </div>
 
@@ -190,7 +204,7 @@ const NavBar = (props) => {
           marginTop: '15px',
           marginBottom: '10px',
         }} >
-          {control && <UserList />}
+        {control && <UserList />}
         {team && <TeamCard team={team} handleSelect={(() => { if (control) setMode('change') })} />}
         {myChar && myCharacter && myChar !== myCharacter && <Button size={'xs'} onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
         {!team && <Link style={{ color: 'white' }} to="/login">Sign In</Link>}
