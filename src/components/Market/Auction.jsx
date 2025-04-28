@@ -29,6 +29,7 @@ import NexusTag from '../Common/NexusTag';
 import { CandiModal } from '../Common/CandiModal';
 import AuctionForm from './AuctionForm';
 import DraftCard from '../Assets/DraftCard';
+import AssetCard from '../Common/AssetCard';
 
 const Auction = (props) => {
     const { market, loading, size, altIconPath } = props;
@@ -75,7 +76,10 @@ const Auction = (props) => {
                     </Box>
                 );
             default:
-                return <b key={thingy._id}>Unable to render {thingy.type}</b>;
+                return (
+                    <AssetCard key={thingy._id} asset={asset} /> 
+                );
+                // return <b key={thingy._id}>Unable to render {thingy.type}</b>;
         }
     };
 
