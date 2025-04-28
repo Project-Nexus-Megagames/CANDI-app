@@ -29,7 +29,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
     const isVisitor = match.awayTeam?._id === team._id;
 
     const wasTied = match.logs.find(el => el.type === 'tie')
-    const array = new Array(4).fill(null);
+    const array = new Array(Math.max(4, match.homeRoster.length, match.awayRoster.length)).fill(null);
     const backgroundColor =
         match?.status === 'scheduled' ? getFadedColor() :
             homeWon ? match.homeTeam.color : match.awayTeam.color

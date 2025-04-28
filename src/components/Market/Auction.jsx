@@ -28,6 +28,7 @@ import { IoCaretDownOutline } from 'react-icons/io5';
 import NexusTag from '../Common/NexusTag';
 import { CandiModal } from '../Common/CandiModal';
 import AuctionForm from './AuctionForm';
+import DraftCard from '../Assets/DraftCard';
 
 const Auction = (props) => {
     const { market, loading, size, altIconPath } = props;
@@ -56,21 +57,17 @@ const Auction = (props) => {
     ]
 
     const getMarketObject = (thingy) => {
-        switch (thingy.type) {
-            case 'Asset':
-                const asset = assets.find((el) => el._id === thingy._id);
-                if (asset.tags.some((el) => el === 'contract'))
-                    return (
-                        <Box key={thingy._id} style={{ border: '2px solid #d4af37', margin: '5px' }}>
-                            <Contract contract={asset} />
-                        </Box>
-                    );
-                else
-                    return (
-                        // <AssetCard height="150px" key={thingy._id} asset={asset} />
-                        <AthleteCard compact key={thingy._id} asset={asset} />
-                    );
-            case 'contract':
+        const asset = assets.find((el) => el._id === thingy._id);
+        switch (asset.__t) {
+            case 'Athlete':
+                return (
+                    <AthleteCard compact key={thingy._id} asset={asset} />
+                );
+            case 'Draft':
+                return (
+                    <DraftCard key={thingy._id} draft={asset} />
+                );
+            case 'Contract':
                 const asset0 = assets.find((el) => el._id === thingy._id);
                 return (
                     <Box key={thingy._id} style={{ border: '2px solid #d4af37', margin: '5px' }}>
@@ -101,22 +98,22 @@ const Auction = (props) => {
         socket.emit('request', { route: 'market', action: 'autobuy', data });
     };
 
-    const handleEdit = ({asset, description, hours, acceptedResources, starting, autobuy}) => {
-		const formattedAssets = [];
+    const handleEdit = ({ asset, description, hours, acceptedResources, starting, autobuy }) => {
+        const formattedAssets = [];
 
-		const data = {
+        const data = {
             ...market,
             id: market._id,
-			name: description,
-			stuff: asset,
-			timeout: hours,
-			acceptedResources,
-			highestBid: starting,
-			autobuy
-		};
-		socket.emit('request', { route: 'market', action: 'edit', data });
-		// console.log('WHAT', data);
-	};
+            name: description,
+            stuff: asset,
+            timeout: hours,
+            acceptedResources,
+            highestBid: starting,
+            autobuy
+        };
+        socket.emit('request', { route: 'market', action: 'edit', data });
+        // console.log('WHAT', data);
+    };
 
 
     return (
@@ -144,7 +141,7 @@ const Auction = (props) => {
                 >
                     <Text noOfLines={1} as='u' style={{ color: 'black', }} fontSize='4xl' >
                         {market.name} ({market.stuff.length} Items)
-                        {control && <IconButton icon={<BsPencil/>} onClick={() => setMode('edit')}  />}
+                        {control && <IconButton icon={<BsPencil />} onClick={() => setMode('edit')} />}
                     </Text >
 
                 </GridItem>

@@ -59,7 +59,7 @@ const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, sched
         <div key={draft._id}
             style={{
                 textAlign: 'center',
-                width: "20vw",
+                width: "100%",
                 border: `3px ${border} ${getFadedColor('draft')}`,
                 backgroundColor: '#1a1d24',
                 minWidth: '350px'

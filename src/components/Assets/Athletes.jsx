@@ -27,6 +27,7 @@ import { AddTag } from '../Common/AddTag';
 import InputNumber from '../Common/InputNumber';
 import socket from '../../socket';
 import StatIcon from './StatIcon';
+import AssetForm from '../Common/AssetForm';
 
 const Athletes = ({showButtons}) => {
     const { isControl } = usePermissions();
@@ -243,8 +244,9 @@ const Athletes = ({showButtons}) => {
             </GridItem>
 
             <GridItem pl='2' area={'main'} overflow={'auto'}>
+                {mode === "new" && <AssetForm />}
                 <SimpleGrid columns={columns} columnGap="2" rowGap="4">
-                    {athletes.filter(filterFn).sort(compareFn).map(athlete => (
+                    {mode !== "new" && athletes.filter(filterFn).sort(compareFn).map(athlete => (
                         <AthleteCard
                             key={athlete._id}
                             asset={athlete}

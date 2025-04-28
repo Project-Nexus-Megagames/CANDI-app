@@ -232,13 +232,13 @@ const AthleteCard = (props) => {
 
                       <Text as='kbd' fontSize={'md'} casing={'capitalize'}>{asset.species}</Text>
 
-                      {/* {!compact && asset.tags.map((el, index) => (
-                        <Tag key={index} variant={'solid'} colorScheme={el.color}>
-                          {el}
-                        </Tag>
-                      ))} */}
                     </HStack>
 
+                    <HStack>
+                      {!compact && asset.tags.map((el, index) => (
+                        <NexusTag key={index} value={el} />
+                      ))}
+                    </HStack>
 
 
                     {stats && <SimpleGrid columns={3}>

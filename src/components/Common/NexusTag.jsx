@@ -70,7 +70,7 @@ const NexusTag = (props) => {
                 <h5>This Asset can be traded</h5>
               </div>)}>
             <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
-              <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />
+              <img style={{ margin: '4px', }} src={`/images/panels/auctions.png`} width={'20px'} alt={`${icon}???`} />
             </div>
           </Tooltip>
         )
@@ -83,25 +83,25 @@ const NexusTag = (props) => {
                 <h5>This match has been completed</h5>
               </div>)}>
             <Tag textTransform={'capitalize'} colorScheme={'green'} size='md' variant='solid' marginLeft={1} marginRight={1} >
-            <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`completed`} />
+              <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`completed`} />
               {(icon)}
             </Tag>
           </Tooltip>
         )
-        case 'scheduled':
-          return (
-            <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
-              label={(
-                <div>
-                  <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
-                  <h5>This match will happen soon(ish)</h5>
-                </div>)}>
-              <Tag textTransform={'capitalize'} colorScheme={'blue'} size='md' variant='solid' marginLeft={1} marginRight={1} >
+      case 'scheduled':
+        return (
+          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+            label={(
+              <div>
+                <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+                <h5>This match will happen soon(ish)</h5>
+              </div>)}>
+            <Tag textTransform={'capitalize'} colorScheme={'blue'} size='md' variant='solid' marginLeft={1} marginRight={1} >
               <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`completed`} />
-                {(icon)}
-              </Tag>
-            </Tooltip>
-          )
+              {(icon)}
+            </Tag>
+          </Tooltip>
+        )
       case 'multi-use':
         return (
           <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
@@ -115,6 +115,45 @@ const NexusTag = (props) => {
             </div>
           </Tooltip>
         )
+      case 'necromancer':
+        return (
+          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+            label={(
+              <div>
+                <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+                <h5>This Athlete can summon an undead teammate from your bench!</h5>
+              </div>)}>
+            <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
+              <img style={{ margin: '4px', }} src={`/images/${icon}.png`} width={'20px'} alt={`${icon}???`} />
+            </div>
+          </Tooltip>
+        )
+      case 'defender':
+        return (
+          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+            label={(
+              <div>
+                <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+                <h5>This Athlete automatically prevents 1 injury to your team</h5>
+              </div>)}>
+            <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
+              <img style={{ margin: '4px', }} src={`/images/near-injury.png`} width={'20px'} alt={`${icon}???`} />
+            </div>
+          </Tooltip>
+        )
+        case 'chaos':
+          return (
+            <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+              label={(
+                <div>
+                  <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+                  <h5>This Athlete has increased</h5>
+                </div>)}>
+              <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
+                <img style={{ margin: '4px', }} src={`/images/near-injury.png`} width={'20px'} alt={`${icon}???`} />
+              </div>
+            </Tooltip>
+          )
       default:
         return (
           <Tag textTransform={'capitalize'} colorScheme={'green'} size='md' variant='solid' marginLeft={1} marginRight={1} >

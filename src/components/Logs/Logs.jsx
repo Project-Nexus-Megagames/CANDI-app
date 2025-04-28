@@ -248,8 +248,8 @@ const EventLog = props => {
  
           <AthleteCard asset={report.athlete} compact stats={false} />
 
-        </Flex>
-        }
+        </Flex>}
+        {report.note}
       </Box>
 
       <StepSeparator />

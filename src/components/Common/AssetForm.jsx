@@ -12,7 +12,7 @@ import TeamAvatar from './TeamAvatar';
 import { AddTeam } from './AddTeam';
 
 const AssetForm = (props) => {
-  const { asset, mode, facility } = props;
+  const { asset, mode = "new", facility } = props;
   const loggedInUser = useSelector((state) => state.auth.user);
   const teams = useSelector((state) => state.teams.list);
   const blueprints = useSelector((state) => state.blueprints.list);
@@ -22,12 +22,14 @@ const AssetForm = (props) => {
 
   const [imageURL, setImageURL] = useState('');
   const [blueprint, setBlueprint] = useState(false);
-  const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of resourceType
+  const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of assetType
+  const [species, setSpecies] = useState(asset ? asset.species : 'goblin'); // TODO change to first element of resourceType
   const [status, setStatus] = useState(asset && asset?.status ? asset?.status : []);
   const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
   const [resources, setResources] = React.useState((asset && asset.resource) ? [...asset.resources] : []);
   const [stats, setStats] = React.useState(
-    (asset && asset.stats) ? asset.stats.map(s => ({ ...s })) : []
+    (asset && asset.stats) ? asset.stats.map(s => ({ ...s })) : gameConfig.athleteStats.map(({ _id, ...rest }) => ({ ...rest }))
+
   );
 
   const [team, setTeam] = React.useState(props.team || facility?.teamOwner || false);
@@ -140,10 +142,10 @@ const AssetForm = (props) => {
 
   function onSubmit(data, e) {
     if (props.handleSubmit) {
-      props.handleSubmit({ ...data, dice, stats, resources, type: type, status: status, teamOwner: team });
+      props.handleSubmit({ ...data, dice, stats, resources, type: type, status: status, teamOwner: team, species });
     } else {
       e.preventDefault();
-      const asset = { ...data, dice, stats, resources, type: type, status: status, teamOwner: team };
+      const asset = { ...data, dice, stats, resources, type: type, status: status, teamOwner: team, species };
       socket.emit('request', {
         route: 'asset',
         action: mode,
@@ -218,7 +220,18 @@ const AssetForm = (props) => {
                 onChange={(ddd) => setType(ddd)}
                 value={type} />
             </FormControl>
+            
             <Spacer />
+
+            <FormControl>
+              <FormLabel>Species </FormLabel>
+              <SelectPicker
+                valueKey={'name'}
+                label={'name'}
+                data={gameConfig.species}
+                onChange={(ddd) => setSpecies(ddd)}
+                value={species} />
+            </FormControl>
           </Flex>
 
           <Box>
@@ -317,6 +330,14 @@ const AssetForm = (props) => {
             <Input type='text' size='md' variant='outline' {...register('uses', validation.uses)}></Input>
             <Text fontSize='sm' color='red.500'>
               {errors.uses && errors.uses.message}
+            </Text>
+          </FormControl>
+
+          <FormControl>
+            <FormLabel>XP</FormLabel>
+            <Input type='text' size='md' variant='outline' {...register('xp', validation.xp)}></Input>
+            <Text fontSize='sm' color='red.500'>
+              {errors.xp && errors.xp.message}
             </Text>
           </FormControl>
 

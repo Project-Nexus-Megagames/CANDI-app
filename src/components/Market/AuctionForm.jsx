@@ -2,12 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Button, ButtonGroup, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from '@chakra-ui/react';
 import CheckerPick from '../Common/CheckerPick';
+import { getTeamAthletes, getTeamAssets } from '../../redux/entities/assets';
 
 const AuctionForm = ({ auction, handleSubmit }) => {
     const blueprints = useSelector(s => s.blueprints.list);
     const { login, team, character } = useSelector(s => s.auth);
     const loading = useSelector(s => s.gamestate.loading);
-    const assets = useSelector(s => s.assets.list);
+    const assets = useSelector(getTeamAssets);
+    const athletes = useSelector(getTeamAthletes);
     const resourceTypes = useSelector(s => s.gameConfig.resourceTypes);
 
     const [hours, setHours] = React.useState(auction?.timeout || 0);
@@ -25,7 +27,7 @@ const AuctionForm = ({ auction, handleSubmit }) => {
                 <Input placeholder='Name' value={description} onChange={(e) => setDescription(e.target.value)}></Input>
                 <CheckerPick
                     label='name'
-                    placeholder={`${[...assets].length} Eligible Assets`}
+                    placeholder={`${[...assets].length} Eligible assets`}
                     onChange={(event) => setAsset(event)}
                     data={[...assets]}
                     value={asset}
