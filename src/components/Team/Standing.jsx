@@ -60,6 +60,7 @@ const Standing = (props) => {
                                 <Th>{d.name}</Th>
                                 <Th>W</Th>
                                 <Th >L</Th>
+                                <Th >T</Th>
                                 <Th >POP</Th>
                                 {props.login && <Th >RES</Th>}
                             </Tr>
@@ -84,6 +85,7 @@ const Standing = (props) => {
                                             <Td width={'400px'} ><Text fontSize='2xl' >{team.name}</Text></Td>
                                             <Td>{team.wins}</Td>
                                             <Td>{team.losses}</Td>
+                                            <Td>{team.ties}</Td>
                                             <Td>{team.popularity}</Td>
                                             {props.login && <Td>
                                                 <SimpleGrid columns={3} >
