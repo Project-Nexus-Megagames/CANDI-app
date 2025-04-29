@@ -30,6 +30,7 @@ import { CandiModal } from '../Common/CandiModal';
 import AuctionForm from './AuctionForm';
 import DraftCard from '../Assets/DraftCard';
 import AssetCard from '../Common/AssetCard';
+import { Minus, Plus } from '@rsuite/icons';
 
 const Auction = (props) => {
     const { market, loading, size, altIconPath } = props;
@@ -41,6 +42,7 @@ const Auction = (props) => {
     const account = useSelector(getTeamAccount);
     const [mode, setMode] = React.useState(false);
     const [selectedResource, setSelectedResource] = React.useState(market.currentResource);
+    const [amount, setAmount] = React.useState(1);
 
     const rawr = account?.resources.find((el) => el.type === selectedResource);
     const credits = rawr ? rawr.balance : -999;
@@ -77,9 +79,9 @@ const Auction = (props) => {
                 );
             default:
                 return (
-                    <AssetCard key={thingy._id} asset={asset} /> 
+                    <AssetCard key={thingy._id} asset={asset} />
                 );
-                // return <b key={thingy._id}>Unable to render {thingy.type}</b>;
+            // return <b key={thingy._id}>Unable to render {thingy.type}</b>;
         }
     };
 
@@ -88,6 +90,7 @@ const Auction = (props) => {
             auction,
             highestBidder: myCharacter._id,
             currentResource: selectedResource,
+            amount: amount,
             bidAccount: account._id
         };
         socket.emit('request', { route: 'market', action: 'bid', data });
@@ -101,6 +104,12 @@ const Auction = (props) => {
         };
         socket.emit('request', { route: 'market', action: 'autobuy', data });
     };
+
+    const handleChangeResource = (code) => {
+        setSelectedResource(code);
+        const max = resourceMap[code];
+        setAmount(max)
+    }
 
     const handleEdit = ({ asset, description, hours, acceptedResources, starting, autobuy }) => {
         const formattedAssets = [];
@@ -180,7 +189,7 @@ const Auction = (props) => {
                         {!(market.creator._id === myCharacter._id || market.highestBidder._id === myCharacter._id) && <Text fontSize='xs' >Your Bid</Text >}
                         {(market.creator._id === myCharacter._id || market.highestBidder._id === myCharacter._id) && <Text fontSize='lg' >You're the Highest Bidder!</Text >}
                         <Center >
-                            <ButtonGroup isAttached>
+                            <ButtonGroup isAttached size={'xs'} >
 
                                 {!(market.creator._id === myCharacter._id || market.highestBidder._id === myCharacter._id) && <Tooltip openDelay={200} hasArrow placement='top' label={
                                     market.highestBidder._id === myCharacter._id ? (
@@ -206,7 +215,7 @@ const Auction = (props) => {
                                                         leftIcon={<img src={`/images/${selectedResource}.png`} width={'30px'}
                                                             alt={`${market.currency}!`} />}
                                                         rightIcon={market.acceptedResources.length > 1 ? <IoCaretDownOutline /> : ""}
-                                                    >{selectedResource}</Button>
+                                                    >{salaryTypes.find(el => el.code === selectedResource).name || selectedResource}</Button>
                                                 </PopoverTrigger>
                                                 <PopoverContent backgroundColor={'black'}>
                                                     <PopoverArrow />
@@ -220,7 +229,7 @@ const Auction = (props) => {
                                                                     <Button
                                                                         size={'xs'}
                                                                         isDisabled={!resourceMap[resource.code] || resourceMap[resource.code] <= 0}
-                                                                        onClick={() => { onClose(); setSelectedResource(resource.code) }}
+                                                                        onClick={() => { onClose(); handleChangeResource(resource.code) }}
                                                                         variant={selectedResource === resource.code ? 'solid' : 'outline'}
                                                                         leftIcon={<img src={`/images/${resource.code}.png`} width={'25px'} alt={`${resource.code}!`} />}
                                                                     >{resource.name} {resourceMap[resource.code]}
@@ -234,10 +243,17 @@ const Auction = (props) => {
 
                                     </Popover>
 
+                                    <IconButton
+                                        variant={'solid'}
+                                        colorScheme='red'
+                                        icon={<Minus />}
+                                        borderRadius={'0 0 0 0'}
+                                        isDisabled={amount <= 0 || amount <= market.highestBid}            
+                                        onClick={() => setAmount(amount-1)}
+                                    />
                                     <Button
-                                        borderRadius={'0 5px 5px 0'}
-                                        size={'md'}
-                                        colorScheme={market.highestBidder._id === myCharacter._id ? 'blue' : 'green'}
+                                        borderRadius={'0'}
+                                        colorScheme={market.highestBidder._id === myCharacter._id ? 'blue' : 'purple'}
                                         variant={market.highestBidder._id === myCharacter._id ? 'outline' : 'solid'}
                                         isDisabled={
                                             market.creator._id === myCharacter._id ||
@@ -248,9 +264,17 @@ const Auction = (props) => {
                                         }
                                         onClick={() => setMode("bid")}
                                     >
-                                        +1
+                                        +{amount}
                                     </Button>
                                 </Tooltip>}
+                                <IconButton 
+                                borderRadius={'0 5px 5px 0'} 
+                                icon={<Plus />} 
+                                variant={'solid'} 
+                                colorScheme='green'        
+                                isDisabled={amount >= resourceMap[selectedResource]}                         
+                                onClick={() => setAmount(amount+1)}
+                                />
 
                             </ButtonGroup>
                         </Center>
@@ -263,8 +287,8 @@ const Auction = (props) => {
                         onClose={() => setMode(false)}
                         handleAccept={() => handleBid(market._id)}
                     >
-                        This will cost {market.highestBid + 1} {selectedResource} (if you win)
-                        <ResourceNugget value={market.highestBid + 1} type={selectedResource} />
+                        This will cost {amount} {selectedResource} (if you win)
+                        <ResourceNugget value={amount} type={selectedResource} />
                     </CandiWarning>
 
                     {/* {market.autobuy && market.autobuy > 0 && <Button onClick={() => setMode('autobuy')} >Auto Buy</Button>} */}

@@ -20,19 +20,22 @@ const Auctions = (props) => {
 	const assets = useSelector(s => s.assets.list);
 	const account = useSelector(getTeamAccount);
 	const auctions = useSelector(getAuctions);
-	
+
 
 	const [showInfo, setShowInfo] = React.useState(false);
 	const [mode, setMode] = React.useState(false);
-	
+
 	const [tags, setTags] = React.useState(['ongoing']);
 
-	if (!props.login) {
-		navigate("/");
-		return <div />;
-	}
+	useEffect(() => {
+		if (!props.myCharacter) {
+			navigate("/login");
+		}
+	}, []);
 
-	const handleCreate = ({asset, description, hours, acceptedResources, starting, autobuy}) => {
+
+
+	const handleCreate = ({ asset, description, hours, acceptedResources, starting, autobuy }) => {
 		const formattedAssets = [];
 		for (const ass of asset) {
 			const formatted = assets.find((el) => el._id === ass);
@@ -82,7 +85,7 @@ const Auctions = (props) => {
 			<Box style={{ height: '80vh', overflow: 'auto', justifyContent: 'center' }}>
 				<Grid templateColumns='repeat(2, 1fr)' gap={4}>
 					{auctions
-						.filter(el => tags.some(t => el.status.some(s => s === t) ))
+						.filter(el => tags.some(t => el.status.some(s => s === t)))
 						.sort((a, b) => {
 							// sort the catagories alphabetically
 							if (a.timeout > b.timeout) {
