@@ -26,6 +26,7 @@ import DraftCard from './DraftCard';
 import TeamAvatar from '../Common/TeamAvatar';
 import AssetForm from '../Common/AssetForm';
 import StatIcon from './StatIcon';
+import { RiBarChartFill } from "react-icons/ri";
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
 
@@ -216,6 +217,13 @@ const AthleteCard = (props) => {
 
                     <HStack marginBottom={'3px'} >
                       {isBookmarked && <BsBookmarkHeartFill size={'18px'} color='yellow' fill='yellow' />}
+                      {!isMine && asset.xp > 0 &&
+                        <Tag variant={'solid'} colorScheme={'yellow'} >
+                          <RiBarChartFill size={'18px'} color='yellow' fill='black'></RiBarChartFill>
+                          
+                          <Text marginLeft={'5px'} fontSize={'sm'} color={'black'} >{"XP: "}{asset.xp}</Text>
+                        </Tag>
+                      }
                       {isMine && asset.xp > 0 &&
                         <Tooltip hasArrow placement='top' label={`Level up Athlete ${asset.xp}`}>
                           <Button
