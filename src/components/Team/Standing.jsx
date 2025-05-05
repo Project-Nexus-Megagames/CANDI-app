@@ -69,10 +69,10 @@ const Standing = (props) => {
                             {teams && [...teams]
                                 .sort((a, b) => {
                                     // sort alphabetically
-                                    if (a?.wins < b?.wins) {
+                                    if ((a?.wins + (a?.ties *0.5)) < (b?.wins + (b?.ties *0.5))) {
                                         return 1;
                                     }
-                                    if (a?.wins > b?.wins) {
+                                    if ((a?.wins + (a?.ties *0.5)) > (b?.wins + (b?.ties *0.5))) {
                                         return -1;
                                     }
                                     return 0;
