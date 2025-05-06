@@ -41,38 +41,20 @@ const Loading = ({controlMode}) => {
     
 	}, []);
 
-  // useEffect(() => {
-  //   console.log("gameConfig", gameConfig)
-	// 	if (gameConfig && gameConfig.loadingTips) {
-  //     console.log("loadingTips", gameConfig.loadingTips)
-	// 		setLoadingTips(gameConfig.loadingTips)
-  //     setMessage(Math.floor(Math.random() * gameConfig.loadingTips.length))
-	// 	}
-
-	// }, [gameConfig]);
-
-	useEffect(() => {
-		// console.log('Trigger A');
-		if (entities.characters.list.length > 0 && user && user !== undefined) {
-			console.log('Finished Loading????');
-
-      const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
-      reduxAction(setCharacter(character0));
-		}
-	}, [characters, message]);
-
-
 	useEffect(() => {
 		console.log('Trigger B');
-		if (matches.length > 0 && teams.length > 0 && !team && myCharacter) {
+		if (matches.length > 0 && teams.length > 0 && !team && entities.characters.list.length > 0 && user && user !== undefined) {
 			console.log('Finished Loading!!!!');
-			const myTeam = myCharacter ? entities.teams.list.find((el) => el.characters.some((user) => user._id == myCharacter._id)) : false;
+      const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
+      reduxAction(setCharacter(character0));
+      
+      const myTeam = character0 ? entities.teams.list.find((el) => el.characters.some((user) => user._id == character0._id)) : false;
 
-      console.log(myCharacter, myTeam);
+      console.log(character0, myTeam);
 			reduxAction(setTeam(myTeam));
 			reduxAction(finishLoading());
 		}
-	}, [myCharacter, message]);
+	}, [message]);
 
   const handleLogOut = async () => {
 		reduxAction(signOut())
