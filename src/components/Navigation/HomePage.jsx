@@ -76,8 +76,8 @@ const HomePage = (props) => {
         <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
       </GridItem>   */}
 
-      <GridItem  colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={actionImg} to="actions" title="~ Actions ~" body="Private Actions" />
+      <GridItem  colSpan={columns == 1 ? 2 : 2}>
+        <ImgPanel img={actionImg} to="actions" title="~ Actions ~" body="Freeform Actions" />
       </GridItem>   
 
       {/* <GridItem colSpan={columns == 1 ? 2 : 1}>
@@ -96,21 +96,21 @@ const HomePage = (props) => {
         <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
       </GridItem>    
 
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://drive.google.com/file/d/1uuMXpxaqXojf88YKPaIaPO6tgpca2cl9/view")} >
+      <GridItem colSpan={columns == 1 ? 2 : 2} onClick={() => openLink("https://docs.google.com/document/d/11WOSH0l7mXb_3_b1ZMWbGJAG9lMaKPHof-LWiHJQ9gA/edit?tab=t.0#heading=h.6j03b7nmjkyk")} >
         <ImgPanel img={rules} to="" title="~ Rules ~" body="Learn how to play the game"/>
       </GridItem>
 
-      <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1mK73XowcXWt28nTSHDwmaDRsBL1R8JiQHYOo0i8oq5A/edit")} >
+      {/* <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1mK73XowcXWt28nTSHDwmaDRsBL1R8JiQHYOo0i8oq5A/edit")} >
         <ImgPanel img={lore} to="" title="~ Lore ~" body="Learn more aobut the world"/>
-      </GridItem>
+      </GridItem> */}
 
       {/* <GridItem colSpan={columns == 1 ? 2 : columns == 2 ? 2 : 1}>
         <ImgPanel img={leaderboard} to="leaderboard" title="~ Character Leaderboard ~" body="Who's big in town?" />
       </GridItem>                         */}
 
-<GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/forms/d/e/1FAIpQLSeo0RErM5tnKoD9exGiYk3JRw-0Z0bU9PzuUa4XDy7DorKe3w/viewform")} >
+      {/* <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/forms/d/e/1FAIpQLSeo0RErM5tnKoD9exGiYk3JRw-0Z0bU9PzuUa4XDy7DorKe3w/viewform")} >
         <ImgPanel img={gcBanner} to="" title="~ Goblin City playtest ~" body="Sign up to play in the Goblin City playtest!"/>
-      </GridItem>
+      </GridItem> */}
 
       {isControl && <GridItem colSpan={columns} >
           <ImgPanel img={control} to="control" title={'~ Control Terminal ~'} body='"Now he gets it!"' />

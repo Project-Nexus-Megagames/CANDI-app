@@ -51,6 +51,7 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
         description: data0.description,
         intent: data0.intent,
         facility: data0.facility,
+        resources: data0.resources
         //location: data0.destination ? data0.destination : undefined,
       },
       ...data0
@@ -120,9 +121,12 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
                 closeAction={closeAction}
                 edit={mode === 'edit'}
                 name={name}
-              />}</Center>
+              />}
+              
+              </Center>
             {mode !== 'edit' && <Box>
 
+              <ActionEffort effort={action.submission.resources} />
               <ActionMarkdown
                 header='Description'
                 tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
@@ -148,12 +152,14 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
                 markdown={action.location.name}
                 edit={false}
               />}
+              
 
               {actionType.type !== 'Agenda' && actionType.maxAssets > 0 && <ActionResources
                 actionType={actionType}
                 assets={action.submission.assets}
                 toggleAssetInfo={toggleAssetInfo}
               />}
+
 
               {control && actionType.type === 'Agenda' && action.options.length == 0 &&
                 <Box>

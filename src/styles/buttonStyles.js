@@ -1,6 +1,5 @@
 const buttonStyles = {
 	baseStyle: {
-		mx: '0.25rem',
 		my: '0.5rem'
 	},
 	variants: {

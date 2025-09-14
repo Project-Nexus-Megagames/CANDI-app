@@ -30,20 +30,23 @@ export const AlertList = () => {
 	let total = alerts.length;
 
 	return (
-		<div>
       <Popover 
-      closeOnBlur={false}
+      
+        closeOnBlur={false}
         onClose={onClose}>
+
           <IconButton
             size="xs"
             variant={'outline'}
             onClick={() => { store.dispatch(alertsReceived([])); onClose();  } }
             icon={<CloseIcon/>}
-            aria-label={'Remove Asset'}
-            
+            color={'red'}
+            height={'fit-to-content'}
+            isDisabled={total == 0}
+            style={{ backgroundColor: '#5a4b5c' }}
         />
         <PopoverTrigger>
-          <Button variant={'outline'} colorScheme={total > 0 ? "yellow" : "gray"} leftIcon={<ChatIcon color={total > 0 ? 'yellow' : 'gray'} />} circle size="md"><Badge>{alerts.length}</Badge></Button>
+          <Button style={{ backgroundColor: '#5a4b5c' }} variant={'outline'} colorScheme={total > 0 ? "yellow" : "gray"} leftIcon={<ChatIcon color={total > 0 ? 'yellow' : 'gray'} />} circle size="md"><Badge>{alerts.length}</Badge></Button>
         </PopoverTrigger>
         <PopoverContent style={{ backgroundColor: '#5a4b5c' }}>
           <PopoverArrow />
@@ -62,6 +65,5 @@ export const AlertList = () => {
           </PopoverBody>
         </PopoverContent>
       </Popover>
-		</div>
 	);
 };
