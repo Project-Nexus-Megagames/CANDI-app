@@ -46,15 +46,16 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
 
   const handleSubmit = (data0) => {
     const data = {
-			submission: {
-				assets: data0.assets,
-				description: data0.description,
-				intent: intent,
+      submission: {
+        assets: data0.assets,
+        description: data0.description,
+        intent: data0.intent,
         facility: data0.facility,
+        resources: data0.resources
         //location: data0.destination ? data0.destination : undefined,
-			},
+      },
       ...data0
-		};
+    };
     //console.log(data0)
     socket.emit('request', { route: 'action', action: 'update', data });
     setMode(false);
@@ -120,14 +121,26 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
                 closeAction={closeAction}
                 edit={mode === 'edit'}
                 name={name}
-              />}</Center>
+              />}
+              
+              </Center>
             {mode !== 'edit' && <Box>
 
+              <ActionEffort effort={action.submission.resources} />
               <ActionMarkdown
                 header='Description'
                 tooltip='A description of what your character is doing in this action and how you will use your assigned Assets to accomplish this.'
                 markdown={action.submission.description}
                 data={description}
+                handleEdit={handleEdit}
+                edit={false}
+              />
+
+              <ActionMarkdown
+                header='Intent'
+                tooltip='What you hope your action will accomplish, including desired mechanical benefits and/or narrative goals.'
+                markdown={action.submission.intent}
+                data={intent}
                 handleEdit={handleEdit}
                 edit={false}
               />
@@ -139,12 +152,14 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
                 markdown={action.location.name}
                 edit={false}
               />}
+              
 
               {actionType.type !== 'Agenda' && actionType.maxAssets > 0 && <ActionResources
                 actionType={actionType}
                 assets={action.submission.assets}
                 toggleAssetInfo={toggleAssetInfo}
               />}
+
 
               {control && actionType.type === 'Agenda' && action.options.length == 0 &&
                 <Box>
@@ -163,13 +178,14 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
               />} */}
             </Box>}
 
-            {mode === 'edit' && <Box> 
-              <ActionForm 
-              defaultValue={{ ...action.submission, name: action.name, location: action.location?._id }} 
-              handleSubmit={(action) =>handleSubmit(action)} 
-              actionType={action.type}
-              actionID={action._id} 
-              closeNew={() => setMode(false)} />
+            {mode === 'edit' && <Box>
+              <ActionForm
+                tags={action.tags}
+                defaultValue={{ ...action.submission, name: action.name, location: action.location?._id }}
+                handleSubmit={(action) => handleSubmit(action)}
+                actionType={action.type}
+                actionID={action._id}
+                closeNew={() => setMode(false)} />
             </Box>}
 
 

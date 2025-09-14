@@ -3,7 +3,7 @@ import React from "react";
 import { InfoTip } from "./Common/InfoTip";
 import { getFadedColor } from "../scripts/frontend";
 
-function WordDivider({ word, tooltip, size = 'md', background }) {
+function WordDivider({ word, tooltip, size = 'md', background, children }) {
 
   function getHeading() {
     const minWidth = size === 'xl' && '13rem';
@@ -44,6 +44,7 @@ function WordDivider({ word, tooltip, size = 'md', background }) {
     <Flex align="center" >
       <Divider />
       {getHeading()}
+      {children}
       <Divider />
     </Flex>
   );

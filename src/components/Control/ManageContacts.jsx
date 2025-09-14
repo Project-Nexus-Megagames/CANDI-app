@@ -4,13 +4,14 @@ import socket from '../../socket';
 import { getCharacterById, getPlayerCharacters } from '../../redux/entities/characters';
 import _ from 'lodash';
 import SelectPicker from '../Common/SelectPicker';
-import { Stack } from '@chakra-ui/react';
+import { Input, Stack, Tag } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/layout';
 import { Checkbox, CheckboxGroup } from '@chakra-ui/checkbox';
 import { Modal, ModalBody } from '@chakra-ui/modal';
 import { Button, ButtonGroup } from '@chakra-ui/button';
 import { CandiModal } from '../Common/CandiModal';
 import CharacterTag from '../Common/CharacterTag';
+import { getFadedColor, getTextColor } from '../../scripts/frontend';
 
 const ManageContacts = (props) => {
 	const characters = useSelector((state) => state.characters.list);
@@ -19,6 +20,7 @@ const ManageContacts = (props) => {
 	const [selectedChar, setSelectedChar] = useState(props.defaultCharacter || '');
 	const char = useSelector(getCharacterById(selectedChar));
 	const [contacts, setContacts] = useState([]);
+	const [filter, setFilter] = useState('');
 
 	useEffect(() => {
 		if (char) {
@@ -54,6 +56,12 @@ const ManageContacts = (props) => {
 
 	const renderContacts = (char) => {
 		let contactsToManage = characters.filter((el) => el._id !== char._id);
+    contactsToManage = contactsToManage.filter(
+      (char) =>
+        char.characterName.toLowerCase().includes(filter.toLowerCase()) ||
+        char.characterTitle.toLowerCase().includes(filter.toLowerCase()) ||
+        char.tags.some((el) => el.toLowerCase().includes(filter.toLowerCase()))
+    )
 		contactsToManage = _.sortBy(contactsToManage, 'characterName');
 		return (
 			<CheckboxGroup value={contacts} onChange={(value) => handleContactChange(value)}>
@@ -61,6 +69,9 @@ const ManageContacts = (props) => {
           {contactsToManage.map((item) => (
             <Checkbox value={item._id} key={item._id}>
               <CharacterTag character={item} handleSelect={() => handleContactChange(item)} />
+              {item.tags && item.tags.map((item) =>
+                <Tag key={item} variant={'solid'} style={{ backgroundColor: getFadedColor(item), color: getTextColor(item), textTransform: 'capitalize', margin: '4px' }} >{item}</Tag>
+              )}
             </Checkbox>
           ))}          
         </Stack>
@@ -91,6 +102,9 @@ const ManageContacts = (props) => {
           valueKey="_id" 
           label="characterName" />
         </Box>
+
+        <Input onChange={(e) =>setFilter(e.target.value)} />
+        {filter}
         <Box>{renderCharacter()}</Box>
         <ButtonGroup>
             <Button onClick={() => handleSubmit()} color="red">

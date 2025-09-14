@@ -4,7 +4,7 @@ import { getFadedColor, getTextColor, } from '../../../scripts/frontend';
 import { getMyAssets, getTeamAssets } from '../../../redux/entities/assets';
 import { getMyCharacter, getPlayerCharacters, getPublicPlayerCharacters } from '../../../redux/entities/characters';
 import socket from '../../../socket';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack, HStack } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Tag, Spinner, Box, Flex, Button, ButtonGroup, Tooltip, Divider, Spacer, Grid, Center, TagLabel, TagCloseButton, Text, VStack, HStack, Checkbox } from '@chakra-ui/react';
 import CheckerPick from '../../Common/CheckerPick';
 import { AddAsset } from '../../Common/AddAsset';
 import { CheckIcon, CloseIcon, PlusSquareIcon, ViewIcon } from '@chakra-ui/icons';
@@ -18,6 +18,8 @@ import { DiceList } from '../../Common/DiceList';
 import { AddCharacter } from '../../Common/AddCharacter';
 import axios from 'axios';
 import { gameServer } from '../../../config';
+import MDEditor from '@uiw/react-md-editor';
+import NexusSlider from '../../Common/NexusSlider';
 
 /**
  * Form for a new ACTION
@@ -26,12 +28,13 @@ import { gameServer } from '../../../config';
  */
 const NewAction = (props) => {
   const { actionType } = props;
-  const gameConfig = useSelector((state) => state.gameConfig);
+  const gamestate = useSelector((state) => state.gamestate);
   const locations = useSelector((state) => state.locations.list)
   const facilities = useSelector((state) => state.facilities.list)
   const playerCharacters = useSelector(getPublicPlayerCharacters);
+  const [effort, setEffort] = React.useState(actionType.resourceTypes);
 
-
+actionType.resourceTypes
   const { character, user } = useSelector((s) => s.auth);
   // const character = useSelector(getMyCharacter);
   const myAssets = useSelector(getMyAssets);
@@ -49,6 +52,8 @@ const NewAction = (props) => {
   const [collaborators, setCollaborators] = React.useState([]);
 
 
+  const [exertion, setExertion] = React.useState(false);
+
   useEffect(() => {
     if (actionType) newMap(actionType.maxAssets);
   }, [actionType]);
@@ -56,9 +61,10 @@ const NewAction = (props) => {
 
   const editState = (incoming, type, index) => {
     let thing;
+    let temp;
     switch (type) {
       case 'Asset':
-        let temp = [...assets];
+        temp = [...assets];
         temp[index] = incoming;
         setAssets(temp);
         break;
@@ -68,6 +74,20 @@ const NewAction = (props) => {
       case 'addCollab':
         setCollaborators([...collaborators, incoming]);
         break;
+      case 'effort':
+        thing = { ...effort[index] };
+				temp = [...effort];
+
+				if (typeof(incoming) === 'number') { 
+					thing.effortAmount = parseInt(incoming) 
+				}
+				else {
+					thing.type = (incoming);
+					thing.effortAmount = 0;
+				} 
+				temp[index] = thing;
+				setEffort(temp);
+				break;
       default:
         console.log('UwU Scott made an oopsie doodle!');
     }
@@ -82,6 +102,8 @@ const NewAction = (props) => {
           description: description,
           intent: intent,
           facility: facility,
+          resources: effort.map(el => ({ amount: el.effortAmount, type: el.type }))
+
         },
         name: name,
         type: actionType?.type,
@@ -89,6 +111,8 @@ const NewAction = (props) => {
         collaborators,
         account: myAccout._id,
         location: destination,
+        tags: exertion ? ['arcane'] : [],
+        effort,
         user: user.username
       };
 
@@ -120,12 +144,13 @@ const NewAction = (props) => {
       boolean = myAccout.resources.some(e => e.type === resource.type) &&
         myAccout.resources.find(e => e.type === resource.type)?.balance >= resource.min
     }
-    
+
     return !boolean;
   };
 
 
-  const maxLength = 4000;
+  const maxLength = 3000;
+  const maxLengthIntent = 1000;
   const disabledConditions = [
     {
       text: "Description is too short",
@@ -133,7 +158,15 @@ const NewAction = (props) => {
     },
     {
       text: "Description is too long!",
-      disabled: description.length >= maxLength
+      disabled: description.length > maxLength
+    },
+    {
+      text: "Intent is too short",
+      disabled: intent.length < 10
+    },
+    {
+      text: "Intent is too long!",
+      disabled: intent.length > maxLengthIntent
     },
     {
       text: "Name is too short",
@@ -147,6 +180,10 @@ const NewAction = (props) => {
       text: "Not Enough Resources for this action",
       disabled: isResourceDisabled()
     },
+    {
+      text: 'Round is not active',
+      disabled: gamestate.status.toLowerCase() !== 'active'
+    }
   ];
   const isDisabled = disabledConditions.some(el => el.disabled);
 
@@ -190,6 +227,11 @@ const NewAction = (props) => {
                 <CheckIcon />
               </Tag>
             )}
+
+            <Box>
+              <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Arcane</Checkbox>
+            </Box>
+
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>
 
@@ -214,32 +256,36 @@ const NewAction = (props) => {
           </Box>}
 
           <Box>
-        Needed Resources:
-        <Center>
-          {actionType.resourceTypes.map(el => (
-            <Box key={el._id}>
-              
-              {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
-                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                  Lacking Resources
-                </Tag>
-              )}
-              {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
-                <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
-                  <CheckIcon />
-                </Tag>
-              )}
-              <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
-            </Box>
-          ))}
-        </Center>
-      </Box>
+            Needed Effort:
+            <Center>
+              {actionType.resourceTypes.map((el, index) => (
+                <Box key={el._id}>
+
+                  {/* {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
+                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+                      Lacking Resources
+                    </Tag>
+                  )}
+                  {myAccout.resources.find(e => e.type === el.type) == undefined || myAccout.resources.find(e => e.type === el.type)?.balance >= el.min && (
+                    <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                      <CheckIcon />
+                    </Tag>
+                  )} */}
+                  <ResourceNugget type={el.type} value={effort[index].effortAmount} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
+                  <NexusSlider min={1} max={3} onChange={(value) => editState(value, 'effort', index)} />
+                </Box>
+              ))}
+            </Center>
+
+
+          </Box>
 
         </HStack>
         <br />
         <Divider />
+
         <Flex width={"100%"} >
-          <Spacer />
+
           <Box width={"99%"} >
             Description:
             {10 - description.length > 0 && (
@@ -247,10 +293,10 @@ const NewAction = (props) => {
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {description.length >= maxLength && (
+            {description.length > maxLength && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                 too long: ({description.length} / {maxLength})   
-                <CloseIcon />             
+                too long: ({description.length} / {maxLength})
+                <CloseIcon />
               </Tag>
             )}
 
@@ -260,13 +306,56 @@ const NewAction = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
+            {description.length == maxLength && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                PERFECTION ({description.length} / {maxLength})
+              </Tag>
+            )}
+            <div data-color-mode="dark">
+              <MDEditor
+                style={{ backgroundColor: '#1a1d24', color: 'white' }}
+                value={description}
+                preview="edit"
+                onChange={setDescription} />
+            </div>
+
           </Box>
-          <Spacer />
 
         </Flex>
         <br />
+        <Box width={"99%"} >
+          Intent:
+          {10 - intent.length > 0 && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              {10 - intent.length} more characters...
+            </Tag>
+          )}
+          {intent.length > maxLengthIntent && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              too long: ({intent.length} / {maxLengthIntent})
+            </Tag>
+          )}
+          {intent.length == maxLengthIntent && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+              PERFECTION ({intent.length} / {maxLengthIntent})
+            </Tag>
+          )}
 
+          {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
+            <Tag variant='solid' colorScheme={'green'}>
+              {intent.length} / {maxLengthIntent}
+              <CheckIcon />
+            </Tag>
+          )}
+          <div data-color-mode="dark">
+            <MDEditor
+              style={{ backgroundColor: '#1a1d24', color: 'white' }}
+              value={intent}
+              preview="edit"
+              onChange={setIntent} />
+          </div>
+
+        </Box>
 
         <br />
 

@@ -17,6 +17,7 @@ import ActionForm from "../../Forms/ActionForm";
 import usePermissions from "../../../../hooks/usePermissions";
 import AssetCard from "../../../Common/AssetCard";
 import NewComment from "../../Modals/NewComment";
+import MDEditor from "@uiw/react-md-editor";
 
 
 const ActionSubObject = (props) => {
@@ -73,12 +74,13 @@ const ActionSubObject = (props) => {
   };
 
   const handleSubmit = async (incoming) => {
-    const { effort, assets, description, intent, name, actionType, myCharacter } = incoming;
+    const { resources, assets, description, intent, name, actionType, myCharacter } = incoming;
     try {
       const data = {
         submission: {
           assets: assets.filter(el => el),
           description: description,
+          resources,
           intent: intent,
           id: subObject._id,
         },
@@ -109,7 +111,8 @@ const ActionSubObject = (props) => {
     <Center>
       <div key={subObject._id}
         style={{
-          border: (subObject.model == "Comment" && team) ? `3px solid ${team?.color}` : `3px solid ${getFadedColor(subObject.model)}`,
+          // border: (subObject.model == "Comment" && team) ? `3px solid ${team?.color}` : `3px solid ${getFadedColor(subObject.model)}`,
+          border: `3px solid ${getFadedColor(subObject.model)}`,
           borderRadius: '5px',
           padding: '5px',
           width: '85%'
@@ -163,10 +166,12 @@ const ActionSubObject = (props) => {
 
         </Flex>
 
-        {mode !== 'editSubmission' && <Box>
-          {subObject.__t !== "Contract" && <ActionMarkdown
-            markdown={subObject.description ? subObject.description : subObject.body}
+        {(mode !== 'editSubmission' && mode !== 'editComment'&& mode !== 'editEffect' && mode !== 'editResult') && <Box>
+          {subObject.__t !== "Contract" && <MDEditor.Markdown
+            style={{ textAlign: 'left', padding: '0.4rem', backgroundColor: '#283242' }}
+            source={subObject.description ? subObject.description : subObject.body}
           />}
+
           {subObject.__t === "Contract" &&
             <Contract show contract={subObject} />
           }
@@ -226,34 +231,40 @@ const ActionSubObject = (props) => {
           {subObject.asset && <AssetCard asset={subObject.asset} />}
         </Box>}
 
-        {mode === 'editSubmission' && action.type &&
+        {(mode === 'editSubmission') && action.type &&
           <ActionForm
             collabMode
             defaultValue={subObject}
+            tags={action.tags}
             actionType={action.type}
             handleSubmit={(data) => handleSubmit(data)}
             closeNew={() => setMode(false)}
             actionID={subObject._id}
           />}
-      </div>
-      {/* <Divider orientation='vertical' />    */}
 
-
-      <NewResult
+        {mode === 'editComment' && <NewComment
+          show={mode === 'editComment'}
+          mode={"updateSubObject"}
+          comment={subObject}
+          closeNew={() => setMode(false)}
+          selected={action}
+        />}
+        {mode === 'editEffect' && <NewComment
+          show={mode === 'editEffect'}
+          mode={"updateSubObject"}
+          comment={subObject}
+          closeNew={() => setMode(false)}
+          selected={action}
+        />}
+              {mode === 'editResult' && <NewResult
         show={mode === 'editResult'}
         mode={"updateSubObject"}
         result={subObject}
         closeNew={() => setMode(false)}
         selected={action}
-      />
-
-      <NewComment
-        show={mode === 'editComment'}
-        mode={"updateSubObject"}
-        comment={subObject}
-        closeNew={() => setMode(false)}
-        selected={action}
-      />
+      />}
+      </div>
+      
     </Center>
 
   );

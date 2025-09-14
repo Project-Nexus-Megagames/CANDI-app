@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Flex, HStack, IconButton, Spacer, Tag, TagCloseButton, TagLabel, Wrap } from '@chakra-ui/react';
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardHeader, Center, Collapse, Flex, HStack, IconButton, Spacer, Tag, TagCloseButton, TagLabel, Wrap } from '@chakra-ui/react';
 import { useState } from 'react';
 import socket from '../../socket';
 import { CandiWarning } from './CandiWarning';
@@ -18,10 +18,15 @@ import CharacterNugget from './CharacterNugget';
 import { FaHandshake } from 'react-icons/fa';
 import { AddCharacter } from './AddCharacter';
 import { CloseIcon } from '@chakra-ui/icons';
+import MDEditor from '@uiw/react-md-editor';
 
 const AssetCard = (props) => {
   const { showButtons, handleSelect, compact, removeAsset, showRemove } = props;
   const [mode, setMode] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const [overflow, setOverflow] = useState(false);
+
   const control = useSelector(state => state.auth.control);
   const teams = useSelector(state => state.teams.list);
   const assets = useSelector(state => state.assets.list);
@@ -56,7 +61,7 @@ const AssetCard = (props) => {
               <Spacer />
               <Box>
 
-                <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(asset.type)}`, padding: '5px'  }} display="flex"  >
+                <div style={{ borderRadius: '10px', border: `2px solid ${getFadedColor(asset.type)}`, padding: '5px' }} display="flex"  >
                   <Center >
                     {character && <CharacterNugget size='lg' character={character} />}
 
@@ -173,9 +178,16 @@ const AssetCard = (props) => {
 
           </CardHeader>
           <CardBody style={{ paddingTop: '0px' }} >
-            {!compact && <div style={{ maxHeight: '10vh', overflow: 'auto', textOverflow: 'ellipsis', }} >
-              {asset.description}
-            </div>}
+
+            <Collapse ref={v => v && setOverflow(v.children[0]?.scrollHeight > v.scrollHeight)} startingHeight={150} in={show}>
+              {!compact && <div data-color-mode="dark" style={{ maxHeight: '100%', overflow: 'clip', textOverflow: 'ellipsis', }} >
+                <MDEditor.Markdown source={asset.description} style={{ backgroundColor: '#1a1d24', color: 'white', padding: '5px 10px 10px 5px' }} />
+              </div>}
+            </Collapse>
+            {overflow && <Button  variant={'solid'} size='sm' onClick={() => setShow(!show)} mt='1rem'>
+              Show {show ? 'Less' : 'More'}
+            </Button>}
+
           </CardBody>
 
         </Card>

@@ -6,6 +6,8 @@ import loadState from '../../scripts/initState';
 import { finishLoading, setControl, setTeam, signOut, setCharacter, loadingState } from '../../redux/entities/auth';
 import { ArrowLeft, ArrowRight, Check } from '@rsuite/icons';
 import { Box, Button, Center, Flex, IconButton, Progress, Spinner, Text } from '@chakra-ui/react';
+import { quack } from '../../scripts/frontend';
+import { CandiWarning } from '../Common/CandiWarning';
 
 const Loading = ({controlMode}) => {
 	const reduxAction = useDispatch();
@@ -20,6 +22,7 @@ const Loading = ({controlMode}) => {
 
 	const [message, setMessage] = React.useState( Math.floor(Math.random() * loadingTips.length));
 	const [sections, setSections] = React.useState(Object.keys(entities).sort());
+	const [mode, setMode] = React.useState(false);
 
 	let done = Object.keys(entities)
 		.sort()
@@ -34,17 +37,9 @@ const Loading = ({controlMode}) => {
       setMessage(Math.floor(Math.random() * loadingTips.length))
     }, 4500);
     return () => clearInterval(interval);
+    
 	}, []);
 
-  // useEffect(() => {
-  //   console.log("gameConfig", gameConfig)
-	// 	if (gameConfig && gameConfig.loadingTips) {
-  //     console.log("loadingTips", gameConfig.loadingTips)
-	// 		setLoadingTips(gameConfig.loadingTips)
-  //     setMessage(Math.floor(Math.random() * gameConfig.loadingTips.length))
-	// 	}
-
-	// }, [gameConfig]);
 
 	useEffect(() => {
 		// console.log('Trigger A');
@@ -53,10 +48,23 @@ const Loading = ({controlMode}) => {
 
 			const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      
 
-      if (character0) {
-        reduxAction(setCharacter(character0));
-        reduxAction(finishLoading());
+      let length = 100
+      if (user.username.toLowerCase() == 'ljtrigirl' ) {
+        length = 10000 * parseInt(entities.gamestate.round)
+        setMode(true)
       }
+
+      const interval = setTimeout(() => {  
+        console.log("interval`````````````````````````````````````")
+        // quack() 
+
+        if (character0) {
+          reduxAction(setCharacter(character0));
+          reduxAction(finishLoading());
+        }
+
+      }, length);
+
 		}
 	}, [characters, message]);
 
@@ -86,13 +94,26 @@ const Loading = ({controlMode}) => {
 
 	return (
 		<div>
+      <CandiWarning 
+      siz
+      open={mode} 
+      title={"You asked for this :D"} 
+      onClose={() => setMode(false)} 
+      handleAccept={() => setMode(false)}
+      confirmText={'This is exactly what I asked for!'}
+      rejectText={'Damn you Scott! I shall have my revenge!'}
+      >
+        Hello LJ. As you requested I have made the login longer, but only for you. In fact I have made the length longer the more rounds in the game there are. Current wait time:
+        {10 * entities.gamestate.round} seconds
+      </CandiWarning>
+
       <Center>
         <Text fontSize={"x-large"} >{loadingTips[message]?.title}</Text> 
       </Center>
 
       <Center>
         <IconButton icon={<ArrowLeft/>} isDisabled={message <= 0} onClick={() => {setMessage(message-1); }} />
-        <img width={"350px"} src={`${loadingTips[message]?.gifLink}`} alt='Loading...' onClick={() => boredClick()} />
+        <img height={'33vh'} width={"350px"} src={`${loadingTips[message]?.gifLink}`} alt='Loading...' onClick={() => boredClick()} />
         <IconButton icon={<ArrowRight/>} isDisabled={message >= loadingTips.length-1} onClick={() => {setMessage(message+1); }} />
       </Center>
 
@@ -132,10 +153,100 @@ const Loading = ({controlMode}) => {
 
 const loadingTips = [
   {
-    title: "Subway fact #1",
-    description: "All subways are free if you disregard laws",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3ViNmt4M3praTRrajc5anJwdnI3Yjk0NXowemUyaXRncmlpMG1qdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1AjD7N6KS8KUq7ynjW/giphy.gif'
+    title: "CANDI Fact #1",
+    description: "CANDI's birthday is December 30th!",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
   },
+  {
+    title: "CANDI Fact #2",
+    description: "CANDI stands for 'Controlling Actions N Distributing Inputs'. Look, I wanted to give it a dumb name so here we are.",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #3",
+    description: "About 63% of actions are submitted within 24 hours before the action deadline.",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #8",
+    description: "pɐol oʇ pǝʍollɐ ʇou ǝɹɐ noʎ 'sᴉɥʇ pɐǝɹ uɐɔ noʎ ɟI",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #29",
+    description: "Help I'm a man stuck inside a loading screen let me out!",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "01001101 01100001 01100100 01100101 00100000 01111001 01101111 01110101 00100000 01101100 01101111 01101111 01101011",
+    description: " 01001101 01100001 01100100 01100101 00100000 01111001 01101111 01110101 00100000 01101100 01101111 01101111 01101011 00100000 01100001 01100111 01100001 01101001 01101110 00100000 01101100 01101111 01101100 00100000 01100111 01101111 01110100 01100101 01101101",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #257",
+    description: "Hi! We've been trying to reach you about your extended warrenty expiring!",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #27",
+    description: 'If you forget your password you will be asked to answer a security question. It is: "What is a megagame?"',
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #soon",
+    description: "Fun fact: He is getting closer...",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #7",
+    description: "Fun Fact: CANDI is actually pronounced: 'C̷̩͔̈̓ţ̷͍̞̯̝̘͕̼͂̓̀̀̊̓̇̏̈́̒͆̿̐̕͝ȟ̶͓̲̱̥̙̒̄͛́̽̓̇̈́̄̇̔̋ͅo̷̧̧͕͇̘̝̲͇̐͌̀̂̃͜͝n̸̡͙̘̮͕̼̈́̀͂͐́̉i̸̖̓̈́͂̄͊a̷̧͉͗́̍̓̆̀͘͠͝n̵̢̢̝͓̦̈́̈́'",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  {
+    title: "CANDI Fact #0",
+    description: "Long loading screen? Try clicking the loading gif to speed up the wait time!",
+    gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
+  },
+  // {
+  //   title: "Space Fact #1",
+  //   description: "Space is actually pretty big.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #108",
+  //   description: "The Sun is large enough to contain 12 basketballs inside of it!",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #79",
+  //   description: "The Universe is at least 29 years old.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #5",
+  //   description: "There is no sound in space, because sound cannot afford a rocket to exit the atmosphere.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #221",
+  //   description: "Aliens exist! They just don't want to talk to us boring humans. Jerks.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #101",
+  //   description: "The rest of the galaxy already has McDonalds, we were the last planet to get it.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #123",
+  //   description: "Spacecraft have visited all the known planets in our solar system. Including that one that no one is supposed to know about. Wait, forget you read that.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #34",
+  //   description: "In 1 trillion years, you will be dead. Sorry.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
 ];
 
 
@@ -201,12 +312,15 @@ const loadingTips = [
     'https://www.youtube.com/watch?v=R4GlR6X4ljU&t=3s&ab_channel=PopCultureFish', // Oblivion npc conversation
     'https://www.youtube.com/watch?v=gBCKZtpMSNE&ab_channel=JCFosterTakesItToTheMoon', // Maslow Pyramid Any% Speedrun | 8.1 Seconds
     'https://www.youtube.com/watch?v=D4D5fZb-sEM&ab_channel=ProZD', // A Sexy RP with Walter White and Joseph Stalin
-    'https://www.youtube.com/watch?v=D6aVzIWT7oM&t=14s&ab_channel=AllyourbasicGerrard', // Global Club Soccer Rankings
     'https://www.youtube.com/watch?v=x0WQOGVLLGw&ab_channel=weyrdmusicman', // Xenophobia
     'https://www.youtube.com/watch?v=9klzZsVw-cQ&ab_channel=KotteAnimation',
     'https://www.youtube.com/watch?v=jFHH3cFzKbo&ab_channel=Evan%27sKazooCovers', // Interstellar Docking Scene but the Orchestra was Fired and Replaced by Kazoos
-    'https://www.youtube.com/watch?v=CwaD9tb1P50&t=13s&ab_channel=Tr0ubleshooter', // release the kitties
-    'https://www.youtube.com/watch?v=MGJZfmYMltM&ab_channel=MarcRebillet-Topic' // Girl's Club
+    'https://www.youtube.com/watch?v=CwaD9tb1P50&ab_channel=Tr0ubleshooter', // release the kitties
+    'https://www.youtube.com/watch?v=MGJZfmYMltM&ab_channel=MarcRebillet-Topic', // Girl's Club
+    'https://www.youtube.com/watch?v=aRsOBFhNjVM&ab_channel=NPCarlsson', // Steamed Hams Inc. ♪
+    'https://www.youtube.com/watch?v=t6BQo_eMgj8&ab_channel=JoeJohnson',
+    "https://www.youtube.com/watch?v=JQVKkjA0law&t=1s&ab_channel=%E3%83%90%E3%83%BC%E3%83%90%E3%83%91%E3%83%91",
+    
   ]; // https://youtu.be/_17xBPv6-c0?t=4 shut the heeeelll up
   
 export default Loading;

@@ -67,7 +67,6 @@ const Actions = (props) => {
   }, [selected])
 
   const createListCategories = (actions) => {
-    console.log('hi boss')
     const listRounds = [];
     for (const action of actions) {
       if (!listRounds.some((item) => item === action.round)) {
@@ -79,8 +78,6 @@ const Actions = (props) => {
     setRenderRounds([gamestate.round]);
     // if (renderRounds.length === 0) setRenderRounds(listRounds.slice(0, 1))
     // if (selected) setSelected(actions.find(el => el._id === selected._id))
-    
-    console.log(listRounds)
   };
 
   const handleRoundToggle = (round) => {
@@ -116,6 +113,7 @@ const Actions = (props) => {
       templateAreas={`"nav main"`}
       gridTemplateColumns={window.innerWidth < 1000 ? '0% 100%' : '25% 75%'}
       gap='1'
+      bg='#d4af37'
       fontWeight='bold'>
       <GridItem pl='2' bg='#1b2330' area={'nav'} style={{ height: 'calc(100vh - 78px)', overflow: 'auto',scrollbarWidth: 'none' }} >
 

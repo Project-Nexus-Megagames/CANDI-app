@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Box, Flex, Heading, Icon, IconButton, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
+import { Avatar, Box, Center, Flex, Heading, Icon, IconButton, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
 import { getFadedColor, getThisTeam } from "../../../../../scripts/frontend";
 import ActionButtons from "./ActionButtons";
 import { AddCharacter } from "../../../../Common/AddCharacter";
@@ -89,12 +89,13 @@ function ActionHeader({ action, time, edit, creator, actionType, hidebuttons }) 
             }}
           />}
         </Box>
-        <Box
+        <Center
           fontSize={'.9rem'}
           fontWeight={'normal'}
         >
+          {action.tags.map(tag => <Tag margin={'3px'} variant={'solid'} colorScheme='red' textTransform={'capitalize'} key={tag} >{tag}</Tag>)}
           {time}
-        </Box>
+        </Center>
       </Box>
     </Flex>
   );

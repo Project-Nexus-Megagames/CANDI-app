@@ -8,7 +8,7 @@ const ImgPanel = (props) => {
 			{props.new && <Tag size='lg' color='red' style={{ position: 'absolute', zIndex: 999, top: '20px', right: '30px' }}>New</Tag>}
 			<div
 				style={{
-					border: '5px solid #FA9C37',
+					border: '5px solid #f859be',
 					borderRadius: '10px',
 					position: 'relative',
 					margin: '10px',

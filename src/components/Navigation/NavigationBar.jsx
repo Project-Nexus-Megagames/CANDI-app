@@ -19,6 +19,7 @@ import { getFadedColor } from '../../scripts/frontend';
 import { AlertList } from './AlertList';
 import CharacterNugget from '../Common/CharacterNugget';
 import CharacterListItem from '../OtherCharacters/CharacterListItem';
+import { AudioPlayer } from './AudioPlayer';
 
 const Navigation = (props) => {
   const navigate = useNavigate();
@@ -178,6 +179,7 @@ const Navigation = (props) => {
                 <MenuItem onClick={() => reduxAction(toggleDuck())}>Spook</MenuItem>
               </MenuList>
             </Menu>}
+            {/* <AudioPlayer /> */}
         </Box>
 
         <Box
@@ -248,50 +250,50 @@ const Navigation = (props) => {
             marginLeft='auto'
             justifyContent='right'
           >
+            <ButtonGroup isAttached variant={'outline'} >
+              <AlertList />
+              {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
+              {isControl && (
+                <Popover>
+                  <PopoverTrigger
+                    style={{ backgroundColor: '#5a4b5c' }}
+                    // _hover={{ bg: 'gray.400' }}
+                  >
+                    <Button backgroundColor={'#5a4b5c'} variant={'outline'} color='white'>View As</Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    backgroundColor={'#5a4b5c'}
+                    overflow="hidden"
+                    maxHeight={'50vh'}
+                  >
+                    <PopoverHeader >
+                      <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
+                    </PopoverHeader >
+                    <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }}  >
+                      <VStack divider={<Divider />} overflow={"auto"} backgroundColor={'#5a4b5c'}>
+                        {allCharacters
+                        .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
+                        .map(character => (
+                            <CharacterListItem
+                              character={character}
+                              key={character._id}
+                              isAccessible
+                              size='md'
+                              handleSelect={() => {
+                                handleCharChange(character._id);
+                              }} />
+                        ))}
+                      </VStack>
 
-            <AlertList />
-            {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
-            {isControl && (
-              <Popover>
-                <PopoverTrigger
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                  colorScheme={'#0f131a'}
-                  _hover={{ bg: 'gray.400' }}
-                >
-                  <Button variant={'ghost'} >View As</Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  backgroundColor={'#0f131a'}
-                  overflow="hidden"
-                  maxHeight={'50vh'}
-                >
-                  <PopoverHeader >
-                    <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
-                  </PopoverHeader >
-                  <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
-                    <VStack divider={<Divider />} overflow={"auto"} >
-                      {allCharacters
-                      .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
-                      .map(character => (
-                          <CharacterListItem
-                            character={character}
-                            key={character._id}
-                            isAccessible
-                            size='md'
-                            handleSelect={() => {
-                              handleCharChange(character._id);
-                            }} />
-                      ))}
-                    </VStack>
+                    </PopoverBody>
 
-                  </PopoverBody>
+                  </PopoverContent >
+                </Popover>
+              )}
 
-                </PopoverContent >
-              </Popover>
-            )}
+              {isControl && <UserList />}              
+            </ButtonGroup>
 
-            {isControl && <UserList />}
           </Box>          
         </Hide>
 

@@ -12,6 +12,7 @@ import { Plus } from '@rsuite/icons';
 import { getCharAccount } from '../../redux/entities/accounts';
 import CharacterTag from './CharacterTag';
 import { AddCharacter } from './AddCharacter';
+import MDEditor from '@uiw/react-md-editor';
 
 const AssetForm = (props) => {
 	const { asset, character, mode } = props;
@@ -24,9 +25,8 @@ const AssetForm = (props) => {
 	const [status, setStatus] = useState(asset && asset.status ? asset.status : ['hidden']);
 	const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
 	const [account, setAccount] = React.useState(asset ? (asset.account) : 
-  character ? character.account : false);
-  
-  
+  character ? character.account : false); 
+	const [description, setDescription] = useState(asset?.description || '');
 
 	const { register, control, handleSubmit, reset, formState, watch } = useForm(
 		{
@@ -55,12 +55,12 @@ const AssetForm = (props) => {
 				message: "That's way too long, try again"
 			}
 		},
-		description: {
-			maxLength: {
-				value: 3000,
-				message: "That's way too long, try again"
-			}
-		},
+		// description: {
+		// 	maxLength: {
+		// 		value: 3000,
+		// 		message: "That's way too long, try again"
+		// 	}
+		// },
 		uses: {
 			required: 'Use Amount is required',
 			min: { value: 0, message: 'Must be larger than 0' }
@@ -113,10 +113,10 @@ const AssetForm = (props) => {
 
 	function onSubmit(data, e) {
 		if (props.handleSubmit) {
-			props.handleSubmit({ ...data, dice, type: type, status: status, account: account });
+			props.handleSubmit({ ...data, dice, type: type, status: status, account: account, description});
 		} else {
 			e.preventDefault();
-			const asset = { ...data, dice, type: type, status: status, account: account };
+			const asset = { ...data, dice, type: type, status: status, account: account, description};
 			socket.emit('request', {
 				route: 'asset',
 				action: mode,
@@ -194,7 +194,14 @@ const AssetForm = (props) => {
 
 					<FormControl>
 						<FormLabel>Description </FormLabel>
-						<Input type='text' size='md' variant='outline' {...register('description', validation.description)}></Input>
+            <div data-color-mode="dark">
+              <MDEditor
+                style={{ backgroundColor: '#1a1d24', color: 'white' }}
+                value={description}
+                preview="edit"
+                onChange={setDescription} />
+            </div>
+
 						<Text fontSize='sm' color='red.500'>
 							{errors.description && errors.description.message}
 						</Text>

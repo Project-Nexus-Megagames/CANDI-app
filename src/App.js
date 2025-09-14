@@ -46,6 +46,8 @@ import store from "./redux/store";
 import { CandiAlert } from "./components/Common/CandiAlert";
 import LandingPage from "./components/Navigation/Landing/LandingPage";
 import NavBar from "./components/Navigation/Landing/NavBar";
+import { MemorialScroll } from "./components/Navigation/MemorialScroll";
+import { quack } from "./scripts/frontend";
 
 // React App Component
 initUpdates();
@@ -166,14 +168,6 @@ const App = (props) => {
 
   }, [loadChar, loadAssets, loadGamestate, loadLocations, loadGameConfig]);
 
-  const quack = () => {
-    const audio = new Audio("/alert.mp3");
-    audio.loop = false;
-    audio.volume = 0.40;
-    audio.playbackRate = (0.8); 
-    audio.play();
-  };
-
   const error = () => {
     const audio = new Audio("/error.mp3");
     audio.loop = false;
@@ -245,6 +239,7 @@ const App = (props) => {
               <Route exact path='/home/trading' element={<Trade {...props} />} />
 
 
+              <Route exact path='/memorium' element={<MemorialScroll {...props} />} />
               <Route exact path='/log' element={<Log {...props} />} />
               <Route exact path='/404' element={<NotFound {...props} />} />
               <Route exact path='/no-character' element={<NoCharacter {...props} />} />
