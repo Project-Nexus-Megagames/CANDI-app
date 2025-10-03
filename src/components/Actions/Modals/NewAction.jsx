@@ -176,10 +176,10 @@ actionType.resourceTypes
       text: "Name is too long!",
       disabled: name.length >= 1000
     },
-    {
-      text: "Not Enough Resources for this action",
-      disabled: isResourceDisabled()
-    },
+    // {
+    //   text: "Not Enough Resources for this action",
+    //   disabled: isResourceDisabled()
+    // },
     {
       text: 'Round is not active',
       disabled: gamestate.status.toLowerCase() !== 'active'
@@ -387,7 +387,7 @@ actionType.resourceTypes
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el =>
-                      (actionType.assetTypes.some(a => a === el.type || a === el.model)) &&
+                      (actionType.assetTypes.some(a => a.toLowerCase() === el.type.toLowerCase() || a.toLowerCase() === el.model.toLowerCase())) &&
                       (!el.status.some(a => a === 'used' || a === 'working') || el.status.some(a => a === 'multi-use')) &&
                       el.uses > 0 &&
                       !assets.some(ass => ass?._id === el._id)
