@@ -6,17 +6,11 @@ import { getFadedColor, getTextColor } from "../../scripts/frontend";
 import { useSelector } from "react-redux";
 import { getPrivateCharacters } from "../../redux/entities/characters";
 
-function CharacterList({ filteredCharacters, value, onChange, onClick, handleSelect, isOpen, onClose }) {
+function CharacterList({ filteredCharacters, value, onChange, onClick, handleSelect, filter, onClose }) {
   const drawerSize = useBreakpointValue({ base: 'full', sm: 'sm' });
-  const [renderTags] = React.useState([
-    'PC',
-    'NPC',
-    'Control'
-  ]); // TODO: update with Faction tags
+  const gameConfig = useSelector(state => state.gameConfig)
 
-  const myCharacter = useSelector((state) => state.auth.myCharacter);
   const control = useSelector((state) => state.auth.control);
-  const characters = useSelector((state) => state.characters.list);
 
   return (
     <div>
@@ -53,20 +47,19 @@ function CharacterList({ filteredCharacters, value, onChange, onClick, handleSel
         </Flex>
       </Box>
       <Box  >
-        {renderTags.map((tag, index) => (
+        {gameConfig.characterTags.map((tag, index) => (
           <Box key={index}>
-            <Box
-              marginTop='2rem'
-            />
-            <h5 style={{ backgroundColor: getFadedColor(tag), color: getTextColor(`${tag}-text`), textAlign: 'center', }} >{tag}</h5>
-            <Box
-              marginBottom='1rem'
-            />
+
+            {(filter.length === 0 || filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.name.toLowerCase())).length > 0) && 
+                <Tooltip label={tag.description} placement='top'>
+                <h5 style={{ backgroundColor: tag.color, color: tag.textColor, textAlign: 'center', marginTop: '5px', marginBottom: '5px' }} >{tag.name}</h5>
+              </Tooltip>
+            }
+
             <VStack divider={<Divider />} >
-              {filteredCharacters
-                .filter((el) => el.tags.some((el) => el.toLowerCase() === tag.toLowerCase()))
+              {filteredCharacters.filter((el) => el.tags.some((el) => el.toLowerCase() === tag.name.toLowerCase()))
                 .map((character =>
-                  <CharacterListItem tag={tag} showButton={true} key={character._id} character={character} handleSelect={(character) => handleSelect(character)} />
+                  <CharacterListItem tag={tag.name} showButton={true} key={character._id} character={character} handleSelect={(character) => handleSelect(character)} />
                 ))}
             </VStack>
 

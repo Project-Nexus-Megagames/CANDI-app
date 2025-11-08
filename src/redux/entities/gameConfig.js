@@ -14,6 +14,7 @@ const slice = createSlice({
 		assetTypes: [],
 		resourceTypes: [],
 		characterStats: [],
+		characterTags: [],
 		globalStats: [],
 		loadingTips: [],
 		layout: []
@@ -33,6 +34,7 @@ const slice = createSlice({
 			gameConfig.characterStats = action.payload.characterStats;
 			gameConfig.globalStats = action.payload.globalStats;
 			gameConfig.loadingTips = action.payload.loadingTips;
+			gameConfig.characterTags = action.payload.characterTags;
 			gameConfig.loading = false;
 			gameConfig.lastFetch = Date.now();
 			gameConfig.loaded = true;
@@ -65,12 +67,27 @@ const slice = createSlice({
 		characterStatsAdded: (state, action) => {
 			console.log(`${action.type} Dispatched`);
 			state.characterStats = action.payload.characterStats;
+		},
+		characterTagsAdded: (state, action) => {
+			console.log(`${action.type} Dispatched`);
+			state.characterTags = action.payload.characterTags;
 		}
 	}
 });
 
 // Action Export
-export const { actionTypesAdded, layoutAdded, assetTypesAdded, resourceTypesAdded, gameConfigReceived, gameConfigRequested, gameConfigRequestFailed, globalStatsAdded, characterStatsAdded } = slice.actions;
+export const { 
+  actionTypesAdded, 
+  layoutAdded, 
+  assetTypesAdded, 
+  resourceTypesAdded, 
+  gameConfigReceived, 
+  gameConfigRequested, 
+  gameConfigRequestFailed, 
+  globalStatsAdded, 
+  characterStatsAdded, 
+  characterTagsAdded 
+} = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

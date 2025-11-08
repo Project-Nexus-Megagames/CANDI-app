@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getFadedColor, getTextColor } from '../../../scripts/frontend';
 import { getMyAssets } from '../../../redux/entities/assets';
-import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text } from '@chakra-ui/react';
+import { Tag, Box, Flex, Button, Divider, Spacer, Center, useBreakpointValue, Icon, VStack, Text, Checkbox } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import AssetCard from '../../Common/AssetCard';
 import { AddAsset } from '../../Common/AddAsset';
@@ -10,6 +10,7 @@ import SelectPicker from '../../Common/SelectPicker';
 import { getCharAccount } from '../../../redux/entities/accounts';
 import ResourceNugget from '../../Common/ResourceNugget';
 import { HiSave } from 'react-icons/hi';
+import MDEditor from '@uiw/react-md-editor';
 
 /**
  * Form for a new ACTION
@@ -17,7 +18,7 @@ import { HiSave } from 'react-icons/hi';
  * @returns Component
  */
 const ActionForm = (props) => {
-  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header, loading } = props;
+  const { collabMode, handleSubmit, defaultValue, actionID, closeNew, header, loading, tags } = props;
 
   const { gameConfig } = useSelector((state) => state);
   const { myCharacter } = useSelector((s) => s.auth);
@@ -42,6 +43,7 @@ const ActionForm = (props) => {
   const [destination, setDestination] = React.useState(defaultValue?.location ? defaultValue.location : false);
   const [facility, setFacility] = React.useState(undefined);
 
+  const [exertion, setExertion] = React.useState(tags?.some(el => el === 'exertion'));
 
   useEffect(() => {
     if (actionType && actionType.type && !defaultValue) {
@@ -82,6 +84,7 @@ const ActionForm = (props) => {
       location: destination,
       myCharacter: myCharacter._id,
       creator: myCharacter._id,
+      tags: exertion ? ['exertion'] : [],
       id: actionID
     };
     closeNew();
@@ -105,7 +108,8 @@ const ActionForm = (props) => {
     setAssets(arr);
   }
 
-  const maxLength = 4000;
+  const maxLength = 3000;
+  const maxLengthIntent = 1000;
   const disabledConditions = [
     {
       text: "Description is too short",
@@ -113,7 +117,15 @@ const ActionForm = (props) => {
     },
     {
       text: "Description is too long!",
-      disabled: description.length >= maxLength
+      disabled: description.length > maxLength
+    },
+    {
+      text: "intent is too short",
+      disabled: intent.length < 10
+    },
+    {
+      text: "Intent is too long!",
+      disabled: intent.length > maxLengthIntent
     },
     {
       text: "Name is too short",
@@ -121,7 +133,7 @@ const ActionForm = (props) => {
     },
     {
       text: "Name is too long!",
-      disabled: name.length >= 1000 && !collabMode
+      disabled: name.length > 1000 && !collabMode
     },
     {
       text: "Location required",
@@ -138,7 +150,7 @@ const ActionForm = (props) => {
   return (
     <div>
       {header && <h4>{header}</h4>}
-      {!header && <h4>Edit {actionType.type} Action</h4>}
+      {!header && <h4>Edit {actionType.type}</h4>}
       <br />
       <form>
 
@@ -159,6 +171,11 @@ const ActionForm = (props) => {
                 <CheckIcon />
               </Tag>
             )}
+
+            <Box>
+              <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Exertion</Checkbox>
+            </Box>
+
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>}
 
@@ -191,12 +208,12 @@ const ActionForm = (props) => {
             </Flex>
 
           </Box>}
-          
+
         </Flex>
         <br />
         <Divider />
         <Flex width={"100%"} >
-          <Spacer />
+
           <Box width={"99%"} >
             Description:
             {10 - description.length > 0 && (
@@ -204,10 +221,9 @@ const ActionForm = (props) => {
                 {10 - description.length} more characters...
               </Tag>
             )}
-            {description.length >= maxLength && (
+            {description.length > maxLength && (
               <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
-                 too long: ({description.length} / {maxLength})
-                
+                too long: ({description.length} / {maxLength})
               </Tag>
             )}
 
@@ -217,12 +233,61 @@ const ActionForm = (props) => {
                 <CheckIcon />
               </Tag>
             )}
-            <textarea rows='6' value={description} className='textStyle' onChange={(event) => setDescription(event.target.value)} />
+            {description.length == maxLength && (
+              <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+                PERFECTION ({description.length} / {maxLength})
+              </Tag>
+            )}
+            <div data-color-mode="dark">
+              <MDEditor
+                style={{ backgroundColor: '#1a1d24', color: 'white' }}
+                value={description}
+                preview="edit"
+                onChange={setDescription} />
+            </div>
+
           </Box>
-          <Spacer />
+
+
 
         </Flex>
         <br />
+        <br />
+        <Box width={"99%"} >
+          Intent:
+          {10 - intent.length > 0 && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              {10 - intent.length} more characters...
+            </Tag>
+          )}
+          {intent.length > maxLengthIntent && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
+              too long: ({intent.length} / {maxLengthIntent})
+
+            </Tag>
+          )}
+          {10 - intent.length <= 0 && intent.length < maxLengthIntent && (
+            <Tag variant='solid' colorScheme={'green'}>
+              {intent.length} / {maxLengthIntent}
+              <CheckIcon />
+            </Tag>
+          )}
+          {intent.length == maxLengthIntent && (
+            <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
+              PERFECTION ({intent.length} / {maxLengthIntent})
+            </Tag>
+          )}
+
+          <div data-color-mode="dark">
+            <MDEditor
+              style={{ backgroundColor: '#1a1d24', color: 'white' }}
+              value={intent}
+              preview="edit"
+              onChange={setIntent} />
+          </div>
+
+        </Box>
+
         {/* Needed Resources:
         <Center>
           {actionType.resourceTypes.map(el => {
@@ -272,12 +337,12 @@ const ActionForm = (props) => {
                   <AddAsset
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
-                    assets={myAssets.filter(el => 
-                      actionType.assetTypes.some(a => a === el.type || a === el.model) && 
+                    assets={myAssets.filter(el =>
+                      actionType.assetTypes.some(a => a === el.type || a === el.model) &&
                       (!el.status.some(a => a === 'used' || a === 'working') || el.status.some(a => a === 'multi-use')) &&
                       el.uses > 0 &&
-                      !assets.some(ass => ass?._id === el._id || ass === el._id))} 
-                    />}
+                      !assets.some(ass => ass?._id === el._id || ass === el._id))}
+                  />}
                 {ass &&
                   <AssetCard
                     showRemove

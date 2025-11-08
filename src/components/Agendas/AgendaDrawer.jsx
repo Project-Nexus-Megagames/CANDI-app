@@ -6,11 +6,6 @@ import { getMyCharacter } from "../../redux/entities/characters";
 import Action from "../Actions/ActionList/Action/Action";
 
 const AgendaDrawer = (props) => {
-  const [newComment, setNewComment] = useState("");
-  const [commentId, setCommentId] = useState("");
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
   const myChar = useSelector(getMyCharacter);
   const actionTypes = useSelector((state) => state.gameConfig.actionTypes);
   const duck = useSelector((state) => state.gamestate.duck);

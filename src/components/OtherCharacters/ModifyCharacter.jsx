@@ -241,22 +241,6 @@ const ModifyCharacter = (props) => {
                     </Text>
                   </FormControl>
                   
-                  {/* <HStack w="100%">
-                    {effortFields.map((item, i) => (
-                      <div key={i}>
-                        <FormControl>
-                          <FormLabel>Effort {effortTypes?.[i]?.type}</FormLabel>
-                          <Input key={item.id} type="number" size="md" variant="outline" defaultValue={effortTypes?.[i]?.effortAmount} {...register(`effort.${i}.amount`, validation.amount)}></Input>
-                          <Text fontSize="sm" color="red.500">
-                            {errors.effort?.[i]?.amount && errors.effort[i].amount.message}
-                          </Text>
-                          <Button colorScheme='red' variant={'solid'} onClick={() => removeEffort(i)}>-</Button>
-                        </FormControl>
-                      </div>
-                    ))}
-                    <Button isDisabled={effortFields.length == effortTypes.length} colorScheme='green' variant={'solid'} onClick={() => appendEffort({ type: effortTypes[effortFields.length + 1]?.type, amount: effortTypes[effortFields.length + 1]?.effortAmount })}>+</Button>
-                  </HStack> */}
-
                   <HStack w="100%">
                     {characterStats.map((item, i) => (
                       <div key={i}>

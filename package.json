@@ -8,6 +8,7 @@
     "@hookform/devtools": "^4.3.0",
     "@reduxjs/toolkit": "^1.9.1",
     "@rsuite/icons": "^1.0.2",
+    "@uiw/react-md-editor": "^4.0.4",
     "axios": "^1.2.2",
     "framer-motion": "^8.4.2",
     "jwt-decode": "^3.1.2",
