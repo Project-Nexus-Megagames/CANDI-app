@@ -41,7 +41,8 @@ const Actions = (props) => {
     return <div />;
   }
 
-  let actionList = isControl ? fActions : myActions;
+  let endOfGame = true;
+  let actionList = (isControl  || endOfGame) ? fActions : myActions;
 
   useEffect(() => {
     try {
