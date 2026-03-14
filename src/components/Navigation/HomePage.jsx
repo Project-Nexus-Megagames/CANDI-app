@@ -87,11 +87,11 @@ const HomePage = (props) => {
             <ImgPanel backgroundColor="#a452ba" img={"/images/panels/standing.png"} to="standing" title={'~ Standing ~'} body="Check teams win loss records and popularity" />
           </GridItem>
 
-          <GridItem colSpan={columns == 1 ? 2 : 1}>
+          <GridItem colSpan={columns == 1 ? 2 : 2}>
             <ImgPanel backgroundColor="#8C271E" img={"/images/panels/card-pick.png"} to="draft" title={'~ Draft ~'} body="Draft order" />
           </GridItem>
 
-          <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/1XMHhRa4F77vL6f8xppPhA_YHuWMvKxJPlwzHjX6LzyE/edit?usp=sharing")} >
+          <GridItem colSpan={columns == 1 ? 2 : 1} onClick={() => openLink("https://docs.google.com/document/d/118-eb7cyIVB1ej08p6dHag1fo41dpqPE-zTbUoOJ7dA/edit?usp=sharing")} >
             <ImgPanel backgroundColor="#499797" img={"/images/panels/medallist.png"} to="" title="~ Rules ~" body="Learn how to play the game" />
           </GridItem>
 
