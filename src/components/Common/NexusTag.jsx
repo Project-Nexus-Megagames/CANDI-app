@@ -134,26 +134,53 @@ const NexusTag = (props) => {
             label={(
               <div>
                 <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
-                <h5>This Athlete automatically prevents 1 injury to your team</h5>
+                <h5>Automatically negates 1 injury that would be done to your team (per round). Contributes double stats if at home stadium</h5>
               </div>)}>
             <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
               <img style={{ margin: '4px', }} src={`/images/near-injury.png`} width={'20px'} alt={`${icon}???`} />
             </div>
           </Tooltip>
         )
-        case 'chaos':
-          return (
-            <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
-              label={(
-                <div>
-                  <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
-                  <h5>This Athlete has increased</h5>
-                </div>)}>
-              <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
-                <img style={{ margin: '4px', }} src={`/images/near-injury.png`} width={'20px'} alt={`${icon}???`} />
-              </div>
-            </Tooltip>
-          )
+      case 'chaos':
+        return (
+          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+            label={(
+              <div>
+                <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+                <h5>More likely to be lucky and cause injuries. Suffers from performance debuff. Triggers a CHAOS Round to any Round they are assigned to, meaning all rolls are extra chaotic!
+                </h5>
+              </div>)}>
+            <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
+              <img style={{ margin: '4px', }} src={`/images/chaos.png`} width={'20px'} alt={`${icon}???`} />
+            </div>
+          </Tooltip>
+        )
+      case 'time':
+        return (
+          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+            label={(
+              <div>
+                <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+                <h5>If this Athlete loses a round, they are automatically added to the next round roster of the Match.                 </h5>
+              </div>)}>
+            <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
+              <img style={{ margin: '4px', }} src={`/images/time.png`} width={'20px'} alt={`${icon}???`} />
+            </div>
+          </Tooltip>
+        )
+      case 'potential':
+        return (
+          <Tooltip bg={'#343a40'} hasArrow delay={100} placement='top' trigger='hover'
+            label={(
+              <div>
+                <h4 style={{ textTransform: 'capitalize', color: 'white' }}>{icon}</h4>
+                <h5>This Athlete gains double XP. Starts with 20 XP.</h5>
+              </div>)}>
+            <div style={{ display: 'flex', backgroundColor: variant === "ghost" ? `${getFadedColor("background")}` : `${getFadedColor(value)}`, borderRadius: '8px', padding: '1px', margin: '3px', width: 'fit-content' }}>
+              <img style={{ margin: '4px', }} src={`/images/progression.png`} width={'20px'} alt={`${icon}???`} />
+            </div>
+          </Tooltip>
+        )
       default:
         return (
           <Tag textTransform={'capitalize'} colorScheme={'green'} size='md' variant='solid' marginLeft={1} marginRight={1} >

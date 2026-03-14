@@ -55,10 +55,10 @@ const Draft = (props) => {
                         <Box >
                             <h5 className={"toggle-tag"} onClick={() => toggleRound(r)} style={{ backgroundColor: getFadedColor('round', 0.2 * r) }} >Round: {r}</h5>
 
-                            <Wrap spacing='10px' justify='space-around'>
+                            <Wrap spacing='10px' justify='space-around' colspan={2}>
                                 {extended.some(el => el === r) && draft.filter(dra => dra.round === r).map(dra => {
                                     return (
-                                        <DraftCard draft={dra} handleSelect={handleSelect} showRemove={team._id === dra.teamOwner._id} />
+                                        <DraftCard width={"50vw"} draft={dra} handleSelect={handleSelect} showRemove={team._id === dra.teamOwner._id} />
                                     )
                                 })}
                             </Wrap>

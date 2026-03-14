@@ -43,6 +43,7 @@ const Loading = ({controlMode}) => {
 
 	useEffect(() => {
 		console.log('Trigger B');
+    console.log(matches.length);
 		if (matches.length > 0 && teams.length > 0 && !team && entities.characters.list.length > 0 && user && user !== undefined) {
 			console.log('Finished Loading!!!!');
       const character0 = entities.characters.list.find((el) => el.username.toLowerCase() === user.username.toLowerCase());      

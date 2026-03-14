@@ -12,7 +12,7 @@ import CountDownTag from '../Common/CountDownTag';
 import { Close } from '@rsuite/icons';
 import { BsPlus } from 'react-icons/bs';
 
-const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, scheduleAthlete = false, handleClose = false }) => {
+const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, scheduleAthlete = false, handleClose = false, width }) => {
     const blueprints = useSelector(s => s.blueprints.list);
     const { login, team, control } = useSelector(s => s.auth);
     const athletes = useSelector(getDraftableAthletes);
@@ -59,7 +59,7 @@ const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, sched
         <div key={draft._id}
             style={{
                 textAlign: 'center',
-                width: "100%",
+                width: width ? width : "100%",
                 border: `3px ${border} ${getFadedColor('draft')}`,
                 backgroundColor: '#1a1d24',
                 minWidth: '350px'
@@ -68,9 +68,9 @@ const DraftCard = ({ draft, handleSelect, removeAsset, showRemove = false, sched
         >
             <Flex alignItems='center'>
                 <Spacer />
-                <TeamAvatar team={draft.teamOwner?._id} />
-                <Spacer />
-                <Stack textAlign={'left'} width={'60%'} >
+                <TeamAvatar team={draft.teamOwner?._id}  />
+                {/* <Spacer /> */}
+                <Stack marginLeft={'10px'} textAlign={'left'} >
                     <Text noOfLines={1} marginBottom={'-15px'} fontSize='lg'>{draft.name}</Text>
                     <Text noOfLines={1} marginBottom={'-10px'} fontSize='md' >{draft.teamOwner?.name}</Text>
                     <HStack>
