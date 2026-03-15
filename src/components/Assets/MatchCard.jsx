@@ -202,8 +202,8 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                                     isLoading={loading}
                                                     colorScheme="green"
                                                     icon={<PlusRound />}
-                                                    disabled={match.homeRoster[index].roundNum >= 3}
-                                                    onClick={() => editRosterRound(match.homeRoster[index]?._id, match.homeRoster[index].roundNum + 1)}
+                                                    disabled={match.homeRoster[index]?.roundNum >= 3}
+                                                    onClick={() => editRosterRound(match.homeRoster[index]?._id, match.homeRoster[index]?.roundNum + 1)}
                                                 />
                                                 <NumberInput
                                                     height={'100%'}
@@ -213,7 +213,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                                     min={1}
                                                     max={3}
                                                     onChange={(valueString) => editRosterRound(match.homeRoster[index]?._id, parse(valueString))}
-                                                    value={match.homeRoster[index].roundNum}
+                                                    value={match.homeRoster[index]?.roundNum}
                                                 >
                                                     <NumberInputField width={'60px'} />
                                                 </NumberInput>
@@ -222,7 +222,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                                     isLoading={loading}
                                                     colorScheme="red"
                                                     icon={<PlusRound />}
-                                                    disabled={match.homeRoster[index].roundNum <= 1}
+                                                    disabled={match.homeRoster[index]?.roundNum <= 1}
                                                     onClick={() => editRosterRound(match.homeRoster[index]?._id, match.homeRoster[index].roundNum - 1)}
                                                 />
                                             </Stack>}
@@ -232,7 +232,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                             asset={match.homeRoster[index]?.athlete}
                                             stats={true}
                                             showRemove={isHome && !disabled}
-                                            roundNum={match.homeRoster[index].roundNum}
+                                            roundNum={match.homeRoster[index]?.roundNum}
                                             removeAsset={() => removeRoster(match.homeRoster[index]?._id)}
                                         />
                                     </HStack>}
@@ -268,8 +268,8 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                                     isLoading={loading}
                                                     colorScheme="green"
                                                     icon={<PlusRound />}
-                                                    disabled={match.awayRoster[index].roundNum >= 3}
-                                                    onClick={() => editRosterRound(match.awayRoster[index]?._id, match.awayRoster[index].roundNum + 1)}
+                                                    disabled={match.awayRoster[index]?.roundNum >= 3}
+                                                    onClick={() => editRosterRound(match.awayRoster[index]?._id, match.awayRoster[index]?.roundNum + 1)}
                                                 />
                                                 <NumberInput
                                                     height={'100%'}
@@ -279,7 +279,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                                     min={1}
                                                     max={3}
                                                     onChange={(valueString) => editRosterRound(match.awayRoster[index]?._id, parse(valueString))}
-                                                    value={match.awayRoster[index].roundNum}
+                                                    value={match.awayRoster[index]?.roundNum}
                                                 >
                                                     <NumberInputField width={'60px'} />
                                                 </NumberInput>
@@ -288,8 +288,8 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                                     isLoading={loading}
                                                     colorScheme="red"
                                                     icon={<PlusRound />}
-                                                    disabled={match.awayRoster[index].roundNum <= 1}
-                                                    onClick={() => editRosterRound(match.awayRoster[index]?._id, match.awayRoster[index].roundNum - 1)}
+                                                    disabled={match.awayRoster[index]?.roundNum <= 1}
+                                                    onClick={() => editRosterRound(match.awayRoster[index]?._id, match.awayRoster[index]?.roundNum - 1)}
                                                 />
                                             </Stack>}
                                         <AthleteCard
@@ -297,7 +297,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                             asset={match.awayRoster[index]?.athlete}
                                             stats={true}
                                             showRemove={isVisitor && !disabled}
-                                            roundNum={match.homeRoster[index].roundNum}
+                                            roundNum={match.homeRoster[index]?.roundNum}
                                             removeAsset={() => removeRoster(match.awayRoster[index]?._id)}
 
                                         />
