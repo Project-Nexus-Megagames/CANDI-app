@@ -73,6 +73,14 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
         })
     }
 
+    const resetMatch = () => {
+        setLoading(true)
+        socket.emit('request', { route: 'event', action: 'resetMatch', data: { matchId: match._id } }, (response) => {
+            // console.log(response);
+            setLoading(false)
+        })
+    }
+
     return (
         <div key={match._id}
             style={{
@@ -118,7 +126,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
 
                         {(showStandard || match.status == 'completed') && matchRounds &&
                             [...match.facility.specialRounds, ...matchRounds.filter(el => el.public)]
-                            // [...matchRounds.filter(el => el.public)]
+                                // [...matchRounds.filter(el => el.public)]
                                 .map((round, index) => {
                                     const log = match.logs.find(el => el.type === 'end-round' && el.round == (index + 2 - 0.01))
                                     const homeWonRound = log?.homeRoundScore > log?.awayRoundScore
@@ -179,7 +187,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                 {mode && !defaultMode && <IconButton size={'xs'} variant={'solid'} colorScheme='red' onClick={() => setMode(false)} icon={<StatUpArrow />} />}
                 {mode && <Button onClick={() => setMode("logs")} variant={mode === 'logs' ? 'solid' : 'outline'} colorScheme='orange' size={'xs'} >Logs</Button>}
                 {mode && control && <Button onClick={runMatch} variant={'solid'} colorScheme='blue' size={'xs'} >Run</Button>}
-
+                {mode && control && <Button onClick={resetMatch} variant={'solid'} colorScheme='blue' size={'xs'} >Reset</Button>}
             </ButtonGroup>
 
             {mode === 'roster' &&
@@ -190,10 +198,10 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                     }}
                 >
 
-                    <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
+                    {(isHome || match.status === "completed" || control) &&<Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.homeRoster[index]?.athlete &&
+                                {match.homeRoster[index]?.athlete && 
                                     <HStack>
                                         {isHome && !disabled &&
                                             <Stack>
@@ -252,14 +260,14 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                     </Center>}
                             </div>
                         ))}
-                    </Stack>
+                    </Stack>}
 
                     <Spacer />
 
-                    <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
+                    {(isVisitor || match.status === "completed" || control) && <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.awayRoster[index]?.athlete &&
+                                {match.awayRoster[index]?.athlete && 
                                     <HStack>
                                         {isVisitor && !disabled &&
                                             <Stack>
@@ -319,7 +327,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                     </Center>}
                             </div>
                         ))}
-                    </Stack>
+                    </Stack>}
 
                 </Flex>}
 
