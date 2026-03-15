@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import usePermissions from '../../hooks/usePermissions';
-import { Grid, GridItem, Box, Stack, Wrap, WrapItem, SimpleGrid, Text, Center, Spacer, Flex, Avatar } from '@chakra-ui/react';
+import { Grid, GridItem, Box, Stack, Wrap, WrapItem, SimpleGrid, Text, Center, Spacer, Flex, Avatar, IconButton, Button } from '@chakra-ui/react';
 import {
     Table,
     Thead,
@@ -22,15 +22,34 @@ import ResourceNugget from '../Common/ResourceNugget';
 import { getTeamAccounts } from '../../redux/entities/accounts';
 import { CandiModal } from '../Common/CandiModal';
 import AthleteCard from '../Assets/AthleteCard';
+import { BsPencil } from 'react-icons/bs';
+import InputNumber from '../Common/InputNumber';
+import socket from '../../socket';
 
 const Standing = (props) => {
     const { isControl, myCharacter, login } = usePermissions();
     const gamestate = useSelector(state => state.gamestate);
     const [filter, setFilter] = useState('');
     const [selected, setSelected] = useState(null);
+    const [editing, setEditing] = useState(null);
+
+
+    const [wins, setWins] = useState(0);
+    const [losses, setLosses] = useState(0);
+    const [ties, setTies] = useState(0);
+    const [popularity, setPopularity] = useState(0);
+
     const accounts = useSelector(getTeamAccounts)
     const teams = useSelector(state => state.teams.list)
     const assets = useSelector(state => state.assets.list)
+
+    const submitEdit = async () => {
+        socket.emit('request', {
+            route: 'team',
+            action: 'editStandings',
+            data: { wins, losses, ties, popularity, teamID: editing._id }
+        });
+    }
 
     const divisions = [
         { name: "Toad Division", description: "Warts warts warts", code: 'toad' },
@@ -69,10 +88,10 @@ const Standing = (props) => {
                             {teams && [...teams]
                                 .sort((a, b) => {
                                     // sort alphabetically
-                                    if ((a?.wins + (a?.ties *0.5)) < (b?.wins + (b?.ties *0.5))) {
+                                    if ((a?.wins + (a?.ties * 0.5)) < (b?.wins + (b?.ties * 0.5))) {
                                         return 1;
                                     }
-                                    if ((a?.wins + (a?.ties *0.5)) > (b?.wins + (b?.ties *0.5))) {
+                                    if ((a?.wins + (a?.ties * 0.5)) > (b?.wins + (b?.ties * 0.5))) {
                                         return -1;
                                     }
                                     return 0;
@@ -81,7 +100,9 @@ const Standing = (props) => {
                                     const account = accounts.find(el => el.team._id === team._id)
                                     return (
                                         <Tr backgroundColor={team.color} cursor={'pointer'} onClick={() => setSelected(team)} >
-                                            <Td width={'50px'} ><TeamAvatar team={team} /></Td>
+                                            <Td width={'50px'} >
+                                                <TeamAvatar team={team} />
+                                            </Td>
                                             <Td width={'400px'} ><Text fontSize='2xl' >{team.name}</Text></Td>
                                             <Td>{team.wins}</Td>
                                             <Td>{team.losses}</Td>
@@ -105,7 +126,8 @@ const Standing = (props) => {
             ))}
 
             {selected && <CandiModal size="4xl" onClose={() => { setSelected(false); }} open={selected} title={`${selected?.name}`} border={`3px solid ${selected.secondaryColor}`} >
-                <Flex align={'center'} backgroundColor={selected.color} cursor={'pointer'} onClick={() => setSelected(selected)} >
+                <Flex align={'center'} backgroundColor={selected.color}   >
+                    {isControl && <IconButton variant={'ghost'} onClick={() => { setEditing(selected); }} colorScheme="orange" size={'xs'} icon={<BsPencil />} />}
                     <TeamAvatar team={selected} />
                     <Text fontSize='2xl' >{selected.name}</Text>
                     <Spacer />
@@ -124,6 +146,56 @@ const Standing = (props) => {
                         </WrapItem>
                     ))}
                 </Wrap>
+            </CandiModal>}
+
+            {editing && <CandiModal size="4xl" onOpen={() => { setSelected(false); }} onClose={() => { setEditing(false); }} open={editing} title={`${editing?.name}`} border={`3px solid ${editing.secondaryColor}`} >
+                <Flex align={'center'} backgroundColor={editing.color} cursor={'pointer'} onClick={() => setEditing(editing)} >
+                    <TeamAvatar team={editing} />
+                    <Text fontSize='2xl' >{editing.name}</Text>
+                </Flex>
+
+                <Stack >
+                    <InputNumber
+                        prefix='Wins'
+                        style={{ width: 20 }}
+                        defaultValue={editing.wins.toString()}
+                        value={wins}
+                        min={0}
+                        onChange={(event) => setWins(parseInt(event))}>
+                    </InputNumber>
+
+                    <InputNumber
+                        prefix='Losses'
+                        style={{ width: 20 }}
+                        defaultValue={editing.losses.toString()}
+                        value={losses}
+                        min={0}
+                        onChange={(event) => setLosses(parseInt(event))}>
+                    </InputNumber>
+
+                    <InputNumber
+                        prefix='Ties'
+                        style={{ width: 20 }}
+                        defaultValue={editing.ties.toString()}
+                        value={ties}
+                        min={0}
+                        onChange={(event) => setTies(parseInt(event))}>
+                    </InputNumber>
+
+                    <InputNumber
+                        prefix='Popularity'
+                        style={{ width: 20 }}
+                        defaultValue={editing.popularity.toString()}
+                        value={popularity}
+                        min={0}
+                        onChange={(event) => setPopularity(parseInt(event))}>
+                    </InputNumber>
+                </Stack>
+
+                <Button variant={'solid'} onClick={submitEdit} colorScheme='teal' className='btn btn-primary mr-1'>
+                    Submit
+                </Button>
+
             </CandiModal>}
         </SimpleGrid>
     );
