@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Grid, GridItem, Input, IconButton, StackDivider, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, Button, StatDownArrow, StatUpArrow, ButtonGroup, Tag } from '@chakra-ui/react';
+import { Grid, GridItem, Input, IconButton, StackDivider, Box, SimpleGrid, Stack, Text, HStack, Center, Wrap, Card, Flex, Spacer, Button, StatDownArrow, StatUpArrow, ButtonGroup, Tag, NumberInput, NumberInputField, NumberIncrementStepper, NumberInputStepper, NumberDecrementStepper } from '@chakra-ui/react';
 import { getFadedColor } from '../../scripts/frontend';
 import TeamAvatar from '../Common/TeamAvatar';
 import NexusTag from '../Common/NexusTag';
@@ -13,8 +13,11 @@ import LogRecords from '../Logs/LogRecords';
 import StatIcon from './StatIcon';
 import CountDownTag from '../Common/CountDownTag';
 import FacilityCard from '../Team/FacilityCard';
+import InputNumber from '../Common/InputNumber';
+import { PlusRound } from '@rsuite/icons';
 
 const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = true, showStandard = true }) => {
+    const parse = (val) => val.replace(/^\$/, '')
     const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
     const { login, team, control } = useSelector(s => s.auth);
     const [loading, setLoading] = useState(false);
@@ -28,8 +31,10 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
     const isHome = match.homeTeam?._id === team._id;
     const isVisitor = match.awayTeam?._id === team._id;
 
+    // console.log(match.awayTeam, team._id)
+
     const wasTied = match.logs.find(el => el.type === 'tie')
-    const array = new Array(Math.max(4, match.homeRoster.length, match.awayRoster.length)).fill(null);
+    const array = new Array(Math.max(5, match.homeRoster.length, match.awayRoster.length)).fill(null);
     const backgroundColor =
         match?.status === 'scheduled' ? getFadedColor() :
             homeWon ? match.homeTeam.color : match.awayTeam.color
@@ -37,15 +42,25 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
     const addRoster = (athlete) => {
         setLoading(true)
         socket.emit('request', { route: 'event', action: 'addRoster', data: { id: athlete._id, isHome, isVisitor, matchId: match._id } }, (response) => {
-            console.log(response);
+            // console.log(response);
             setLoading(false)
         })
     }
 
-    const removeRoster = (athlete) => {
+    const removeRoster = (rosterID) => {
         setLoading(true)
-        socket.emit('request', { route: 'event', action: 'removeRoster', data: { id: athlete._id, isHome, isVisitor, matchId: match._id } }, (response) => {
-            console.log(response);
+        socket.emit('request', { route: 'event', action: 'removeRoster', data: { id: rosterID, isHome, isVisitor, matchId: match._id } }, (response) => {
+            // console.log(response);
+            setLoading(false)
+        })
+    }
+
+    const editRosterRound = (roundId, roundNum) => {
+        console.log(roundId)
+        if (!roundNum)
+            setLoading(true)
+        socket.emit('request', { route: 'event', action: 'editRosterRound', data: { id: roundId, isHome, isVisitor, matchId: match._id, roundNum } }, (response) => {
+            // console.log(response);
             setLoading(false)
         })
     }
@@ -53,7 +68,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
     const runMatch = () => {
         setLoading(true)
         socket.emit('request', { route: 'event', action: 'runMatch', data: { matchId: match._id } }, (response) => {
-            console.log(response);
+            // console.log(response);
             setLoading(false)
         })
     }
@@ -95,20 +110,21 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                     <Stack gap={1} align={'center'} >
                         {showFacility && match.facility &&
                             <FacilityCard
-                                showStandard={showStandard}
+                                showStandard={true}
                                 width={'60%'}
                                 compact
                                 facility={match.facility}
                             />}
 
                         {showStandard && matchRounds &&
-                            [...match.facility.specialRounds, ...matchRounds.filter(el => el.public)]
+                            // [...match.facility.specialRounds, ...matchRounds.filter(el => el.public)]
+                            [...matchRounds.filter(el => el.public)]
                                 .map((round, index) => {
                                     const log = match.logs.find(el => el.type === 'end-round' && el.round == (index + 2 - 0.01))
                                     const homeWonRound = log?.homeRoundScore > log?.awayRoundScore
                                     const awayWonRound = log?.homeRoundScore < log?.awayRoundScore
                                     const color = homeWonRound ? match.homeTeam.color :
-                                    awayWonRound ? match.awayTeam.color :
+                                        awayWonRound ? match.awayTeam.color :
                                             getFadedColor(round.color);
                                     return (
                                         <Tag
@@ -177,15 +193,49 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                     <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.homeRoster[index] &&
-                                    <AthleteCard
-                                        compact
-                                        asset={match.homeRoster[index]}
-                                        stats={true}
-                                        showRemove={isHome && !disabled}
-                                        removeAsset={() => removeRoster(match.homeRoster[index])}
-                                    />}
-                                {!match.homeRoster[index] &&
+                                {match.homeRoster[index]?.athlete &&
+                                    <HStack>
+                                        {isHome && !disabled &&
+                                            <Stack>
+                                                <IconButton
+                                                    variant={'solid'}
+                                                    isLoading={loading}
+                                                    colorScheme="green"
+                                                    icon={<PlusRound />}
+                                                    disabled={match.homeRoster[index].roundNum >= 3}
+                                                    onClick={() => editRosterRound(match.homeRoster[index]?._id, match.homeRoster[index].roundNum + 1)}
+                                                />
+                                                <NumberInput
+                                                    height={'100%'}
+                                                    width={'60px'}
+                                                    allowMouseWheel
+                                                    size={'lg'}
+                                                    min={1}
+                                                    max={3}
+                                                    onChange={(valueString) => editRosterRound(match.homeRoster[index]?._id, parse(valueString))}
+                                                    value={match.homeRoster[index].roundNum}
+                                                >
+                                                    <NumberInputField width={'60px'} />
+                                                </NumberInput>
+                                                <IconButton
+                                                    variant={'solid'}
+                                                    isLoading={loading}
+                                                    colorScheme="red"
+                                                    icon={<PlusRound />}
+                                                    disabled={match.homeRoster[index].roundNum <= 1}
+                                                    onClick={() => editRosterRound(match.homeRoster[index]?._id, match.homeRoster[index].roundNum - 1)}
+                                                />
+                                            </Stack>}
+
+                                        <AthleteCard
+                                            compact
+                                            asset={match.homeRoster[index]?.athlete}
+                                            stats={true}
+                                            showRemove={isHome && !disabled}
+                                            removeAsset={() => removeRoster(match.homeRoster[index]?._id)}
+                                        />
+                                    </HStack>}
+                                {!match.homeRoster[index]?.athlete &&
                                     <Center
                                         style={{
                                             border: `3px dotted ${getFadedColor('')}`,
@@ -195,7 +245,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                     >
                                         <b>Slot {index + 1}</b>
                                         {isHome && !disabled && <AddAsset
-                                            assets={athletes.filter(el => !match.homeRoster.some(ass => ass?._id === el._id || ass === el._id))}
+                                            assets={athletes.filter(el => !match.homeRoster.some(ass => ass?.athlete?._id === el._id || ass?.athlete === el._id))}
                                             handleSelect={addRoster}
                                         />}
                                     </Center>}
@@ -208,16 +258,50 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                     <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
-                                {match.awayRoster[index] &&
-                                    <AthleteCard
-                                        compact
-                                        asset={match.awayRoster[index]}
-                                        stats={true}
-                                        showRemove={isVisitor && !disabled}
-                                        removeAsset={() => removeRoster(match.awayRoster[index])}
+                                {match.awayRoster[index]?.athlete &&
+                                    <HStack>
+                                        {isVisitor && !disabled &&
+                                            <Stack>
+                                                <IconButton
+                                                    variant={'solid'}
+                                                    isLoading={loading}
+                                                    colorScheme="green"
+                                                    icon={<PlusRound />}
+                                                    disabled={match.awayRoster[index].roundNum >= 3}
+                                                    onClick={() => editRosterRound(match.awayRoster[index]?._id, match.awayRoster[index].roundNum + 1)}
+                                                />
+                                                <NumberInput
+                                                    height={'100%'}
+                                                    width={'60px'}
+                                                    allowMouseWheel
+                                                    size={'lg'}
+                                                    min={1}
+                                                    max={3}
+                                                    onChange={(valueString) => editRosterRound(match.awayRoster[index]?._id, parse(valueString))}
+                                                    value={match.awayRoster[index].roundNum}
+                                                >
+                                                    <NumberInputField width={'60px'} />
+                                                </NumberInput>
+                                                <IconButton
+                                                    variant={'solid'}
+                                                    isLoading={loading}
+                                                    colorScheme="red"
+                                                    icon={<PlusRound />}
+                                                    disabled={match.awayRoster[index].roundNum <= 1}
+                                                    onClick={() => editRosterRound(match.awayRoster[index]?._id, match.awayRoster[index].roundNum - 1)}
+                                                />
+                                            </Stack>}
+                                        <AthleteCard
+                                            compact
+                                            asset={match.awayRoster[index]?.athlete}
+                                            stats={true}
+                                            showRemove={isVisitor && !disabled}
+                                            removeAsset={() => removeRoster(match.awayRoster[index]?._id)}
 
-                                    />}
-                                {!match.awayRoster[index] &&
+                                        />
+                                    </HStack>
+                                }
+                                {!match.awayRoster[index]?.athlete &&
                                     <Center
                                         style={{
                                             border: `3px dotted ${getFadedColor('')}`,
@@ -227,7 +311,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                     >
                                         <b>Slot {index + 1}</b>
                                         {isVisitor && !disabled && <AddAsset
-                                            assets={athletes.filter(el => !match.awayRoster.some(ass => ass?._id === el._id || ass === el._id))}
+                                            assets={athletes.filter(el => !match.awayRoster.some(ass => ass?.athlete?._id === el._id || ass?.athlete === el._id))}
                                             handleSelect={addRoster}
                                         />}
                                     </Center>}
