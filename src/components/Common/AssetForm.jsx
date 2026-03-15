@@ -22,7 +22,7 @@ const AssetForm = (props) => {
 
   const [imageURL, setImageURL] = useState('');
   const [blueprint, setBlueprint] = useState(false);
-  const [type, setType] = useState(asset ? asset.type : 'Asset'); // TODO change to first element of assetType
+  const [type, setType] = useState(asset ? (asset.type || asset.__t) : 'asset'); // TODO change to first element of assetType
   const [species, setSpecies] = useState(asset ? asset.species : 'goblin'); // TODO change to first element of resourceType
   const [status, setStatus] = useState(asset && asset?.status ? asset?.status : []);
   const [dice, setDice] = React.useState(asset ? [...asset.dice] : []);
@@ -99,10 +99,10 @@ const AssetForm = (props) => {
       text: "Provide a type",
       disabled: !type
     },
-    {
-      text: "Asset needs a Team",
-      disabled: !team
-    },
+    // {
+    //   text: "Asset needs a Team",
+    //   disabled: !team
+    // },
   ];
   const isDisabled = disabledConditions.some(el => el.disabled);
   const { errors } = formState;

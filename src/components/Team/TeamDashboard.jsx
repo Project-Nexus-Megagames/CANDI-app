@@ -83,7 +83,7 @@ const TeamDashboard = () => {
         <Wrap spacing='10px' justify='space-around'>
           {athletes.map(asset => (
             <WrapItem key={asset._id}>
-              <AthleteCard asset={asset} />
+              <AthleteCard showButtons={control} asset={asset} />
             </WrapItem>
           ))}
         </Wrap>
