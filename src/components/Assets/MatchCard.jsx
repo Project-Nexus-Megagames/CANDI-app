@@ -16,7 +16,7 @@ import FacilityCard from '../Team/FacilityCard';
 import InputNumber from '../Common/InputNumber';
 import { PlusRound } from '@rsuite/icons';
 
-const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = true, showStandard = true }) => {
+const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = true, showStandard = true, showSpecial }) => {
     const parse = (val) => val.replace(/^\$/, '')
     const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
     const { login, team, control } = useSelector(s => s.auth);
@@ -110,15 +110,15 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                     <Stack gap={1} align={'center'} >
                         {showFacility && match.facility &&
                             <FacilityCard
-                                showStandard={true}
+                                showSpecial={showSpecial}
                                 width={'60%'}
                                 compact
                                 facility={match.facility}
                             />}
 
-                        {showStandard && matchRounds &&
-                            // [...match.facility.specialRounds, ...matchRounds.filter(el => el.public)]
-                            [...matchRounds.filter(el => el.public)]
+                        {(showStandard || match.status == 'completed') && matchRounds &&
+                            [...match.facility.specialRounds, ...matchRounds.filter(el => el.public)]
+                            // [...matchRounds.filter(el => el.public)]
                                 .map((round, index) => {
                                     const log = match.logs.find(el => el.type === 'end-round' && el.round == (index + 2 - 0.01))
                                     const homeWonRound = log?.homeRoundScore > log?.awayRoundScore
@@ -141,7 +141,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                                 <TeamAvatar opacity={homeWonRound && 0.5} size={"xs"} team={match.awayTeam} />
                                                 <Text minW={'15px'} as={log?.homeRoundScore < log?.awayRoundScore && "u"} noOfLines={1} >{log?.awayRoundScore}</Text>
                                             </Center>}
-                                            <StatIcon stat={{ code: round.primaryStat }} compact />
+                                            <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
                                             <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                                             <Text noOfLines={1} >{round.name}</Text>
                                         </Tag>)
@@ -232,6 +232,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                             asset={match.homeRoster[index]?.athlete}
                                             stats={true}
                                             showRemove={isHome && !disabled}
+                                            roundNum={match.homeRoster[index].roundNum}
                                             removeAsset={() => removeRoster(match.homeRoster[index]?._id)}
                                         />
                                     </HStack>}
@@ -296,6 +297,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                             asset={match.awayRoster[index]?.athlete}
                                             stats={true}
                                             showRemove={isVisitor && !disabled}
+                                            roundNum={match.homeRoster[index].roundNum}
                                             removeAsset={() => removeRoster(match.awayRoster[index]?._id)}
 
                                         />

@@ -41,6 +41,7 @@ const AthleteCard = (props) => {
     stats = true,
     height,
     compact,
+    roundNum,
     filterTags = []
   } = props;
   const [mode, setMode] = useState(false);
@@ -138,6 +139,7 @@ const AthleteCard = (props) => {
                     <TeamAvatar size={compact ? 'sm' : 'md'} team={asset.teamOwner?._id} />
                   </AvatarBadge>}
                 </Avatar>
+                {roundNum && <h4>Round {roundNum}</h4>}
 
                 {showButtons && <ButtonGroup isAttached>
                   {control &&

@@ -19,7 +19,7 @@ const FacilityCard = (props) => {
         width = '100%',
         compact,
         isOwned=false,
-        showStandard = true
+        showSpecial = true
     } = props;
     const [mode, setMode] = useState(false);
     const [specialRound, setSpecialRound] = useState(false);
@@ -90,10 +90,10 @@ const FacilityCard = (props) => {
 
                         </Flex>
 
-                    {athleteStats && showStandard && facility?.specialRounds.map((round) => (
+                    {athleteStats && showSpecial && facility?.specialRounds.map((round) => (
                         <Tag border={`2px solid ${getFadedColor(round.primaryStat)}`} backgroundColor={getFadedColor(round.primaryStat, 0.5)} key={round._id} colorScheme='green' variant={'solid'} >
-                            <StatIcon stat={{code: round.primaryStat}} compact />
-                            <StatIcon stat={{code: round.secondaryStat}} compact />
+                            <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
+                            <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                             <Text noOfLines={1} >{round.name}</Text>
                             {isOwned && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setSpecialRound(round)} />}
                         </Tag>))}

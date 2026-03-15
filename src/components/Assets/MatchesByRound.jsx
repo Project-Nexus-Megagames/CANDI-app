@@ -104,7 +104,7 @@ const MatchesByRound = (props) => {
 
             {selected && <Stack align={'center'} >
                 <Button variant='outline' colorScheme='white' onClick={() => setSelected(false)} >Back</Button>
-                <MatchCard match={selected} defaultMode="roster" />
+                <MatchCard showStandard={true} showSpecial={false} match={selected} defaultMode="roster" />
             </Stack>}
 
         </Stack>
