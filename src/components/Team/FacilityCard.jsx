@@ -95,7 +95,7 @@ const FacilityCard = (props) => {
                             <StatIcon stat={athleteStats.find(el => el.code === round.primaryStat)} compact />
                             <StatIcon stat={athleteStats.find(el => el.code === round.secondaryStat)} compact />
                             <Text noOfLines={1} >{round.name}</Text>
-                            {isOwned && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setSpecialRound(round)} />}
+                            {control && <IconButton size={'xs'} variant={'outline'} icon={<Edit />} onClick={() => setSpecialRound(round)} />}
                         </Tag>))}
 
                 </Card>
