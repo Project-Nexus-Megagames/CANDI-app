@@ -20,6 +20,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
     const parse = (val) => val.replace(/^\$/, '')
     const { matchRounds, athleteStats } = useSelector(s => s.gameConfig);
     const { login, team, control } = useSelector(s => s.auth);
+    const localControl = team.name == "Control Team" // this way I can "see" what players are seeing
     const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState(defaultMode);
     const athletes = useSelector(getTeamAthletes);
@@ -198,7 +199,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                     }}
                 >
 
-                    {(isHome || match.status === "completed" || control) &&<Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
+                    {(isHome || match.status === "completed" || localControl) &&<Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
                                 {match.homeRoster[index]?.athlete && 
@@ -264,7 +265,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
 
                     <Spacer />
 
-                    {(isVisitor || match.status === "completed" || control) && <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
+                    {(isVisitor || match.status === "completed" || localControl) && <Stack width={'48%'} divider={<StackDivider borderColor='gray.200' />}>
                         {array.map((slot, index) => (
                             <div key={index} >
                                 {match.awayRoster[index]?.athlete && 
@@ -305,7 +306,7 @@ const MatchCard = ({ match, handleSelect, defaultMode = false, showFacility = tr
                                             asset={match.awayRoster[index]?.athlete}
                                             stats={true}
                                             showRemove={isVisitor && !disabled}
-                                            roundNum={match.homeRoster[index]?.roundNum}
+                                            roundNum={match.awayRoster[index]?.roundNum}
                                             removeAsset={() => removeRoster(match.awayRoster[index]?._id)}
 
                                         />
