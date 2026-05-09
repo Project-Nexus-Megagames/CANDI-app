@@ -187,9 +187,9 @@ const ActionForm = (props) => {
               </Tag>
             )}
 
-            <Box>
+            {/* <Box>
               <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Arcane</Checkbox>
-            </Box>
+            </Box> */}
 
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
 
@@ -211,7 +211,7 @@ const ActionForm = (props) => {
                   </Tag>
                 )} */}
                     <ResourceNugget type={el.type} value={el.amount} label={`You have ${myResources?.balance} ${el.type} resource${myResources?.balance > 0 && 's'}`} />
-                    <NexusSlider min={1} max={3} onChange={(value) => editState(value, 'effort', index)} />
+                    <NexusSlider min={1} max={1} onChange={(value) => editState(value, 'effort', index)} />
                   </Box>)
               }
 

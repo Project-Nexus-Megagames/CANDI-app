@@ -32,9 +32,8 @@ const NewAction = (props) => {
   const locations = useSelector((state) => state.locations.list)
   const facilities = useSelector((state) => state.facilities.list)
   const playerCharacters = useSelector(getPublicPlayerCharacters);
-  const [effort, setEffort] = React.useState(actionType.resourceTypes);
+  const [effort, setEffort] = React.useState(actionType?.resourceTypes);
 
-actionType.resourceTypes
   const { character, user } = useSelector((s) => s.auth);
   // const character = useSelector(getMyCharacter);
   const myAssets = useSelector(getMyAssets);
@@ -228,9 +227,9 @@ actionType.resourceTypes
               </Tag>
             )}
 
-            <Box>
+            {/* <Box>
               <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Arcane</Checkbox>
-            </Box>
+            </Box> */}
 
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>
@@ -258,7 +257,7 @@ actionType.resourceTypes
           <Box>
             Needed Effort:
             <Center>
-              {actionType.resourceTypes.map((el, index) => (
+              {actionType?.resourceTypes.map((el, index) => (
                 <Box key={el._id}>
 
                   {/* {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
@@ -272,7 +271,7 @@ actionType.resourceTypes
                     </Tag>
                   )} */}
                   <ResourceNugget type={el.type} value={effort[index].effortAmount} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
-                  <NexusSlider min={1} max={3} onChange={(value) => editState(value, 'effort', index)} />
+                  <NexusSlider min={1} max={1} onChange={(value) => editState(value, 'effort', index)} />
                 </Box>
               ))}
             </Center>

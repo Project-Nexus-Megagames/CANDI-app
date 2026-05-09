@@ -76,13 +76,13 @@ const HomePage = (props) => {
         <ImgPanel img={trade} to="trading" body={'Exchange resources and Assets with other players'} title="~ Trading ~" />
       </GridItem>   */}
 
-      <GridItem  colSpan={columns == 1 ? 2 : 2}>
+      <GridItem  colSpan={columns == 1 ? 2 : 1}>
         <ImgPanel img={actionImg} to="actions" title="~ Actions ~" body="Freeform Actions" />
       </GridItem>   
 
-      {/* <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={agendas} to="agendas" title="~ Forum ~" body="Surf the Web!" />
-      </GridItem>    */}
+      <GridItem colSpan={columns == 1 ? 2 : 1}>
+        <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Work with the town" />
+      </GridItem>   
 
       {/* <GridItem colSpan={columns == 1 ? 2 : 1} >
         <ImgPanel  new={newArticles.length > 0} img={news} to="news" title="~ News ~" body="What is happening in the world?" />

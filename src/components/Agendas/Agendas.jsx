@@ -155,12 +155,12 @@ const Agendas = (props) => {
               ))}
           </Wrap>}
 
-          {mode === 'new' && <NewAction closeNew={() => setMode(false)} actionType={gameConfig.actionTypes.find(el => el.type === 'Forum')} />}
+          {mode === 'new' && <NewAction closeNew={() => setMode(false)} actionType={gameConfig.actionTypes.find(el => el.type === 'Agenda')} />}
 
           {selected &&
             <Center>
               <Action
-                actionType={gameConfig.actionTypes[1]}
+                actionType={gameConfig.actionTypes.find(el => el.type === 'Agenda')}
                 action={selected}
                 closeAction={() => setSelected(false)}
               />
