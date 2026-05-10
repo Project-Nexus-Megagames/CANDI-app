@@ -96,7 +96,7 @@ const HomePage = (props) => {
         <ImgPanel img={other} to="others" title={'~ Other Characters ~'} body="Character Details" />
       </GridItem>    
 
-      <GridItem colSpan={columns == 1 ? 2 : 2} onClick={() => openLink("https://docs.google.com/document/d/11WOSH0l7mXb_3_b1ZMWbGJAG9lMaKPHof-LWiHJQ9gA/edit?tab=t.0#heading=h.6j03b7nmjkyk")} >
+      <GridItem colSpan={columns == 1 ? 2 : 2} onClick={() => openLink("https://docs.google.com/document/d/1W-LLogyzZ2Jwlk01U5GpAWH1_LEzU7W1q9o9oOl40jA/edit?usp=sharing")} >
         <ImgPanel img={rules} to="" title="~ Rules ~" body="Learn how to play the game"/>
       </GridItem>
 
