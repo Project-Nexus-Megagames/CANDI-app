@@ -51,6 +51,9 @@ const SelectedCharacter = (props) => {
         // Alert.error(`${controller} could not be added to clipboard`, 6000);
       }
 
+      const gameControl = characters.find((el) => el.tags.some(t => t.toLowerCase() === 'game control'));
+      if (gameControl) board = board.concat(`; ${gameControl.email}`);
+
       navigator.clipboard.writeText(board);
       // Alert.success('Email Copied!', 6000);
     }
