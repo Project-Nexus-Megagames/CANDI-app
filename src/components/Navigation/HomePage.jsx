@@ -26,6 +26,7 @@ import { openLink } from '../../scripts/frontend';
 import NoCharacter from './NoCharacter';
 import CharacterCreation from '../MyCharacters/CharacterCreation';
 import { toggleAuido } from '../../redux/entities/gamestate';
+import { getAgendaActions, getPublishedAgendas } from '../../redux/entities/playerActions';
 
 const HomePage = (props) => {
 	const navigate = useNavigate();
@@ -36,6 +37,9 @@ const HomePage = (props) => {
   const actions = useSelector(state => state.actions.list)
   const gamestate = useSelector(state => state.gamestate)
 	const newArticles = useSelector((state) => state.articles.new);
+    const agendaActions = useSelector(getPublishedAgendas);
+      const round = useSelector((state) => state.gamestate.round);
+
 
 	const [loaded, setLoaded] = React.useState(false);
 	const [selectedChar, setSelectedChar] = React.useState('');
@@ -81,7 +85,7 @@ const HomePage = (props) => {
       </GridItem>   
 
       <GridItem colSpan={columns == 1 ? 2 : 1}>
-        <ImgPanel img={agendas} to="agendas" title="~ Agendas ~" body="Work with the town" />
+        <ImgPanel number={agendaActions.filter((el) => el.round === round).length} img={agendas} to="agendas" title="~ Agendas ~" body="Work with the town" />
       </GridItem>   
 
       {/* <GridItem colSpan={columns == 1 ? 2 : 1} >

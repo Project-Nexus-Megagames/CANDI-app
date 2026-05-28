@@ -161,7 +161,7 @@ const Action = ({ action, toggleAssetInfo, closeAction, actionType, hidebuttons 
               />}
 
 
-              {control && actionType.type === 'Agenda' && action.options.length == 0 &&
+              {control && actionType.type === 'agenda' && action.options.length == 0 &&
                 <Box>
                   Choice Type: {choiceType} (Control Only)<br />
                   <ButtonGroup>

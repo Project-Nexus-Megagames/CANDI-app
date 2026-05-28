@@ -117,7 +117,7 @@ export const getMyCovertActions = createSelector(
 
 export const getAgendaActions = createSelector(
   state => state.actions.list,
-	(actions) => actions.filter(el => el.type === 'Agenda'),
+	(actions) => actions.filter(el => el.type.toLowerCase() === 'agenda'),
   //(actions) => actions.filter(el => el.type === 'Agenda' && el.tags.some(tag => tag.toLowerCase() === 'published'))
 );
 
@@ -128,7 +128,7 @@ export const getPublishedAgendas = createSelector(
 
 export const getPublicActions = createSelector(
   state => state.actions.list,
-	(actions) => actions.filter(el => el.tags.some(tag => tag.toLowerCase() === 'public') )
+	(actions) => actions.filter(el => el.tags.some(tag => tag.toLowerCase() === 'public') || el.submission.status.toLowerCase() == 'public' )
 );
 
 export const getPublicPublishedActions = createSelector(

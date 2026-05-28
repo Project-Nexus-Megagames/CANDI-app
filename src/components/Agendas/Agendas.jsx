@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'; // React import
 import NewsFeed from '../Common/NewsFeed';
 import NavigationBar from '../Navigation/NavigationBar';
 import { useSelector } from 'react-redux';
-import { Avatar, Box, Button, Center, CloseButton, Flex, Grid, GridItem, Heading, IconButton, Input, Progress, Spinner, Wrap } from '@chakra-ui/react';
-import { getPublicActions, getPublicPublishedActions } from '../../redux/entities/playerActions';
+import { Avatar, Box, Button, Center, CloseButton, Flex, Grid, GridItem, Heading, IconButton, Input, Progress, Spinner, Tag, TagLabel, TagLeftIcon, Wrap } from '@chakra-ui/react';
+import { getAgendaActions, getPublicActions, getPublicPublishedActions } from '../../redux/entities/playerActions';
 import { Stack } from '@chakra-ui/react';
 import { getMyCharacter } from '../../redux/entities/characters';
-import { calculateProgress, getFadedColor, getTime } from '../../scripts/frontend';
+import { calculateAgProgress, calculateForProgress, calculateProgress, getFadedColor, getTime } from '../../scripts/frontend';
 import socket from '../../socket';
 import AgendaDrawer from './AgendaDrawer';
 import { useNavigate } from 'react-router';
@@ -20,7 +20,7 @@ const Agendas = (props) => {
   const gamestate = useSelector((state) => state.gamestate);
   const gameConfig = useSelector(s => s.gameConfig);
 
-  const agendas = useSelector(getPublicActions).sort((a, b) => {
+  const agendas = useSelector(getAgendaActions).sort((a, b) => {
     let da = new Date(a.createdAt),
       db = new Date(b.createdAt);
     return da - db;
@@ -56,7 +56,7 @@ const Agendas = (props) => {
     if (filter) {
       let filtered = [];
       let agendasToFilter = [];
-      myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter =  [...new Set([...publishedAgendas, ...myDrafts])]);
+      myCharacter.tags.some((el) => el.toLowerCase() === 'control') ? (agendasToFilter = agendas) : (agendasToFilter = [...new Set([...publishedAgendas, ...myDrafts])]);
 
       filtered = agendasToFilter.filter(
         (agenda) =>
@@ -125,7 +125,7 @@ const Agendas = (props) => {
                     minWidth: '500px'
                   }}
                 >
-                  <Flex align="middle"  justify="space-between" >
+                  <Flex align="middle" justify="space-between" >
                     <Box style={{ margin: '5px' }} width={'25%'}>
                       <Avatar circle size="lg" src={agenda.creator.profilePicture} alt="?" style={{ maxHeight: '50vh' }} />
                     </Box>
@@ -134,12 +134,24 @@ const Agendas = (props) => {
                       <h5 >{agenda.name}</h5>
                       {agenda.creator.playerName} - {agenda.creator.characterName}
                       <p className="slim-text">{getTime(agenda.submission.updatedAt)}</p>
+
+
+
+                      <Tag variant='outline' colorScheme='green' size={'lg'} >
+                        <img src={`/images/thumb-up.png`} width={'40px'} alt={`For!`} />
+                        <TagLabel>{calculateForProgress(agenda.options)}</TagLabel>
+                      </Tag>
+                                            <Tag variant='outline' colorScheme='red' size={'lg'} >
+                        <img src={`/images/thumb-down.png`} width={'40px'} alt={`For!`} />
+                        <TagLabel>{calculateAgProgress(agenda.options)}</TagLabel>
+                      </Tag>
+
                     </Box>
 
                     <Center width={'25%'} >
-                      {/* <Center>{calculateProgress(agenda.options)}</Center> */}
-                      {/* 
-                      <Progress
+                      
+
+                      {/* <Progress
                         borderRadius={'20px'}
                         colorScheme={calculateProgress(agenda.options) > 0 ? 'green' : 'red'}
                         size='lg'
@@ -148,6 +160,8 @@ const Agendas = (props) => {
                         marginRight={'5px'}
                         marginTop={'5px'}
                         value={Math.abs(calculateProgress(agenda.options))} /> */}
+
+
                       <b>Comments {agenda.comments.length}</b>
                     </Center>
                   </Flex>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const ImgPanel = (props) => {
 	return (
 		<Link to={props.disabled ? '#' : props.to}>
-			{props.new && <Tag size='lg' color='red' style={{ position: 'absolute', zIndex: 999, top: '20px', right: '30px' }}>New</Tag>}
+			{props.new && <Tag size='lg' color='red' style={{ position: 'absolute', zIndex: 999, top: '20px', right: '10%' }}>New</Tag>}
 			<div
 				style={{
 					border: '5px solid #f859be',
@@ -32,7 +32,8 @@ const ImgPanel = (props) => {
 						color: 'white',
 						background: '#00A36C'
 					}}
-				>{`${props.disabled ? '[DISABLED] ' : ''}${props.title}`}</h6>
+				>{`${props.disabled ? '[DISABLED] ' : ''}${props.title}`} {props.number && `(${props.number})`} </h6>
+				
 				<p
 					style={{
 						position: 'absolute',
@@ -45,6 +46,7 @@ const ImgPanel = (props) => {
 				>
 					{props.body}
 				</p>
+				
 			</div>
 		</Link>
 	);
