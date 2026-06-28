@@ -6,7 +6,7 @@ import { apiCallBegan } from '../api'; // Import Redux API call
 const slice = createSlice({
 	name: 'gamestate',
 	initialState: {
-		version: '5.9.4',
+		version: '5.9.5',
 		loading: false,
 		loaded: false,
 		lastFetch: null,
@@ -17,7 +17,7 @@ const slice = createSlice({
 		discovered: false,
 		play: false,
 		duck: false,
-
+		endOfGame: false
 	},
 	// Reducers - Events
 	reducers: {
@@ -49,6 +49,10 @@ const slice = createSlice({
 			console.log(`${action.type} Dispatched`);
 			gamestate.duck = !gamestate.duck;
 		},
+		toggleEOG: (gamestate, action) => {
+			console.log(`${action.type} Dispatched`);
+			gamestate.endOfGame = !gamestate.endOfGame;
+		},
     toggleAuido: (gamestate, action) => {
 			console.log(`${action.type} Dispatched`);
 			gamestate.play = !gamestate.play;
@@ -57,7 +61,7 @@ const slice = createSlice({
 });
 
 // Action Export
-export const { gamestateAdded, gamestateReceived, gamestateRequested, gamestateRequestFailed, toggleDuck, toggleAuido } = slice.actions;
+export const { gamestateAdded, gamestateReceived, gamestateRequested, gamestateRequestFailed, toggleDuck, toggleAuido, toggleEOG } = slice.actions;
 
 export default slice.reducer; // Reducer Export
 

@@ -38,6 +38,7 @@ const Navigation = (props) => {
   const gamestate = useSelector(state => state.gamestate)
   const clock = useSelector(s => s.clock)
   const myAccout = useSelector(getCharAccount);
+  const { endOfGame } = useSelector(s => s.gamestate);
 
 
   const [seconds, setSeconds] = React.useState(0);
@@ -234,8 +235,9 @@ const Navigation = (props) => {
             width={'100%'}
           >
             <p>Round: {props.gamestate.round} </p>
-            {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
-            {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
+            {!endOfGame && getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
+            {!endOfGame &&getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}            
+            {endOfGame && <Box>Game is over! Thanks for Playing!</Box>}
             {false &&
               <div className='styleCenter'>
                 {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"} />))}

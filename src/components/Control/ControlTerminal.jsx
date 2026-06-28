@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import socket from '../../socket';
 import Registration from './Registration';
@@ -12,11 +12,14 @@ import { CandiWarning } from '../Common/CandiWarning';
 import EditGamestate from './EditGamestate';
 import TeamTab from './TeamTab';
 import Loading from '../Navigation/Loading';
+import { toggleEOG } from '../../redux/entities/gamestate';
 
 
 const ControlTerminal = (props) => {
   const { login, team, character, user } = useSelector(s => s.auth);
+  const { endOfGame } = useSelector(s => s.gamestate);
   const assets = useSelector(s => s.assets.list);
+    const reduxAction = useDispatch();
 
   let [account, setAccount] = React.useState();
   const [mode, setMode] = React.useState(false);
@@ -80,6 +83,8 @@ const ControlTerminal = (props) => {
     socket.emit('request', { route: 'asset', action: 'unhide', data });
   }
 
+  const isScott = user?.username.toLowerCase() === 'bobtheninjaman';
+
   return (
     <Tabs isLazy variant='enclosed' index={tab} onChange={setTab}>
       <TabList>
@@ -89,7 +94,7 @@ const ControlTerminal = (props) => {
         <Tab>Register</Tab>
         {<Tab>Characters</Tab>}
         {<Tab>Assets</Tab>}
-        {user?.username.toLowerCase() === 'bobtheninjaman' && <Tab> * Teams</Tab>}
+        {isScott && <Tab> * Teams</Tab>}
       </TabList>
 
       <TabPanels>
@@ -102,7 +107,7 @@ const ControlTerminal = (props) => {
             <Button variant={'solid'} colorScheme='teal' onClick={() => setMode("next")}>Next Round</Button>
           </div>
 
-          {(user?.username.toLowerCase() === 'bobtheninjaman' || user?.username.toLowerCase() === 'franzi') && <div>
+          {(isScott || user?.username.toLowerCase() === 'franzi') && <div>
             <Box>
               Used Assets: {assets.filter(el => el.status.some(s => s === 'used')).length}
               Working Assets: {assets.filter(el => el.status.some(s => s === 'working')).length}
@@ -120,6 +125,8 @@ const ControlTerminal = (props) => {
           </CandiWarning>
 
           <EditGamestate show={mode === 'edit'} onClose={() => setMode(false)} />
+
+            {isScott && <Button onClick={() => reduxAction(toggleEOG())}>Game is : {endOfGame ? "Over!" : 'Ongoing'}</Button>}
 
           {/* Loading screen tips
           <Center>
