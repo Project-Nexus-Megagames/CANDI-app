@@ -36,6 +36,7 @@ const slice = createSlice({
 			gamestate.loading = false;
 			gamestate.lastFetch = Date.now();
 			gamestate.loaded = true;
+			gamestate.endOfGame = action.payload.endOfGame
 		},
 		gamestateRequestFailed: (gamestate, action) => {
 			console.log(`${action.type} Dispatched`);

@@ -73,6 +73,11 @@ const ControlTerminal = (props) => {
     socket.emit('request', { route: 'gamestate', action: 'closeRound', data });
   }
 
+  const endGame = () => {
+    const data = user.username;
+    socket.emit('request', { route: 'gamestate', action: 'endOfGame', data });
+  }
+
   const handleEffect = () => {
     const data = user.username;
     socket.emit('request', { route: 'gamestate', action: 'unhideEffects', data });
@@ -126,7 +131,7 @@ const ControlTerminal = (props) => {
 
           <EditGamestate show={mode === 'edit'} onClose={() => setMode(false)} />
 
-            {isScott && <Button onClick={() => reduxAction(toggleEOG())}>Game is : {endOfGame ? "Over!" : 'Ongoing'}</Button>}
+            {isScott && <Button onClick={() => endGame()}>Game is : {endOfGame ? "Over!" : 'Ongoing'}</Button>}
 
           {/* Loading screen tips
           <Center>
