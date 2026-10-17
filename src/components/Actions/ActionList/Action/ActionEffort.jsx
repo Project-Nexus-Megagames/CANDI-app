@@ -1,31 +1,23 @@
-import { Box, Progress, Text } from "@chakra-ui/react";
+import { Box, Center, Progress, Text } from "@chakra-ui/react";
 import React from "react";
 import WordDivider from "../../../Common/WordDivider";
+import ResourceNugget from "../../../Common/ResourceNugget";
 
-function ActionEffort({submission}) {
+function ActionEffort({effort}) {
     return (
-        <Box>
-            {submission.effort.effortType !== 'Agenda' && (
+        <Center>
+            {effort.map(eff => (
                 <Box
                     marginBottom='1rem'
                 >
                     <WordDivider word='Effort'/>
-                    <Text
-                        textAlign='center'
-                        fontWeight='bolder'
-                        fontSize='20'
-                    >
-                        {submission.effort.amount}
-                    </Text>
-                    <Progress
-                        value={submission.effort.amount * 50}
-                        borderRadius='8'
-                        border='1px solid black'
-                        marginTop='0.5rem'
+                    <ResourceNugget 
+                        type={eff.type} 
+                        value={eff.amount} 
                     />
-                </Box>
-            )}
-        </Box>
+                </Box>                
+            ))}
+        </Center>
     )
 }
 

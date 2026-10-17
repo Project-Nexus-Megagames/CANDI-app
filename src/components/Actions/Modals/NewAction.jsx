@@ -19,6 +19,7 @@ import { AddCharacter } from '../../Common/AddCharacter';
 import axios from 'axios';
 import { gameServer } from '../../../config';
 import MDEditor from '@uiw/react-md-editor';
+import NexusSlider from '../../Common/NexusSlider';
 
 /**
  * Form for a new ACTION
@@ -31,7 +32,7 @@ const NewAction = (props) => {
   const locations = useSelector((state) => state.locations.list)
   const facilities = useSelector((state) => state.facilities.list)
   const playerCharacters = useSelector(getPublicPlayerCharacters);
-
+  const [effort, setEffort] = React.useState(actionType?.resourceTypes);
 
   const { character, user } = useSelector((s) => s.auth);
   // const character = useSelector(getMyCharacter);
@@ -59,9 +60,10 @@ const NewAction = (props) => {
 
   const editState = (incoming, type, index) => {
     let thing;
+    let temp;
     switch (type) {
       case 'Asset':
-        let temp = [...assets];
+        temp = [...assets];
         temp[index] = incoming;
         setAssets(temp);
         break;
@@ -71,6 +73,20 @@ const NewAction = (props) => {
       case 'addCollab':
         setCollaborators([...collaborators, incoming]);
         break;
+      case 'effort':
+        thing = { ...effort[index] };
+				temp = [...effort];
+
+				if (typeof(incoming) === 'number') { 
+					thing.effortAmount = parseInt(incoming) 
+				}
+				else {
+					thing.type = (incoming);
+					thing.effortAmount = 0;
+				} 
+				temp[index] = thing;
+				setEffort(temp);
+				break;
       default:
         console.log('UwU Scott made an oopsie doodle!');
     }
@@ -85,6 +101,8 @@ const NewAction = (props) => {
           description: description,
           intent: intent,
           facility: facility,
+          resources: effort.map(el => ({ amount: el.effortAmount, type: el.type }))
+
         },
         name: name,
         type: actionType?.type,
@@ -92,7 +110,8 @@ const NewAction = (props) => {
         collaborators,
         account: myAccout._id,
         location: destination,
-        tags: exertion ? ['exertion'] : [],
+        tags: exertion ? ['arcane'] : [],
+        effort,
         user: user.username
       };
 
@@ -156,10 +175,10 @@ const NewAction = (props) => {
       text: "Name is too long!",
       disabled: name.length >= 1000
     },
-    {
-      text: "Not Enough Resources for this action",
-      disabled: isResourceDisabled()
-    },
+    // {
+    //   text: "Not Enough Resources for this action",
+    //   disabled: isResourceDisabled()
+    // },
     {
       text: 'Round is not active',
       disabled: gamestate.status.toLowerCase() !== 'active'
@@ -208,9 +227,9 @@ const NewAction = (props) => {
               </Tag>
             )}
 
-            <Box>
-              <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Exertion</Checkbox>
-            </Box>
+            {/* <Box>
+              <Checkbox onChange={() => setExertion(!exertion)} isChecked={exertion}>Arcane</Checkbox>
+            </Box> */}
 
             <textarea rows='1' value={name} className='textStyle' onChange={(event) => setName(event.target.value)}></textarea>
           </Box>
@@ -236,12 +255,12 @@ const NewAction = (props) => {
           </Box>}
 
           <Box>
-            Needed Resources:
+            Needed Effort:
             <Center>
-              {actionType.resourceTypes.map(el => (
+              {actionType?.resourceTypes.map((el, index) => (
                 <Box key={el._id}>
 
-                  {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
+                  {/* {myAccout.resources.find(e => e.type === el.type)?.balance < el.min && (
                     <Tag variant='solid' style={{ color: 'black' }} colorScheme={'orange'}>
                       Lacking Resources
                     </Tag>
@@ -250,11 +269,14 @@ const NewAction = (props) => {
                     <Tag variant='solid' style={{ color: 'black' }} colorScheme={'green'}>
                       <CheckIcon />
                     </Tag>
-                  )}
-                  <ResourceNugget type={el.type} value={el.min} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
+                  )} */}
+                  <ResourceNugget type={el.type} value={effort[index].effortAmount} label={`You have ${myAccout.resources.find(e => e.type === el.type)?.balance} ${el.type}`} />
+                  <NexusSlider min={1} max={1} onChange={(value) => editState(value, 'effort', index)} />
                 </Box>
               ))}
             </Center>
+
+
           </Box>
 
         </HStack>
@@ -364,7 +386,7 @@ const NewAction = (props) => {
                     key={index}
                     handleSelect={(ass) => editState(ass, ass.model, index)}
                     assets={myAssets.filter(el =>
-                      (actionType.assetTypes.some(a => a === el.type || a === el.model)) &&
+                      (actionType.assetTypes.some(a => a.toLowerCase() === el.type.toLowerCase() || a.toLowerCase() === el.model.toLowerCase())) &&
                       (!el.status.some(a => a === 'used' || a === 'working') || el.status.some(a => a === 'multi-use')) &&
                       el.uses > 0 &&
                       !assets.some(ass => ass?._id === el._id)

@@ -24,7 +24,7 @@ function ActionOptions({ options, actionType, action }) {
   const [mode, setMode] = React.useState(false);
   const [slots, setSlots] = React.useState([]);
 
-  const roundActive = game.status === 'Active';
+  const roundActive = game.status == 'Active';
   const charAccount = useSelector(getCharAccount);
 
   const myTeam = useSelector(s => s.auth.team);
@@ -177,8 +177,8 @@ function ActionOptions({ options, actionType, action }) {
                             textAlign:'center'
                           }} >
                           <h5>
-                            <TeamAvatar account={resource.contributor} />
-                            {getThisTeamFromAccount(accounts, teams, resource.contributor).name}
+                            {/* <TeamAvatar account={resource.contributor} /> */}
+                            {/* {getThisTeamFromAccount(accounts, teams, resource.contributor).name} */}
                           </h5>
                           {resource.character && isControl && <CharacterTag character={resource.character} />}
                         </div>}
@@ -189,11 +189,11 @@ function ActionOptions({ options, actionType, action }) {
                       type={resource.type} />
 
                       {isControl && <ButtonGroup>
-                      <Tooltip
+                      {/* <Tooltip
                         label='Return Resource to contributor'
                         aria-label='a tooltip'>
-                        <IconButton isDisabled icon={<Icon as={FaRecycle} />} colorScheme="blue" onClick={removeResource} variant='solid' />
-                      </Tooltip>
+                        <IconButton icon={<Icon as={FaRecycle} />} colorScheme="blue" onClick={()=> removeResource(resource, index)} variant='solid' />
+                      </Tooltip> */}
 
                         <Tooltip
                           label='Remove Resource'

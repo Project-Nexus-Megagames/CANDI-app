@@ -292,6 +292,36 @@ const calculateProgress = (options) => {
   return forProg - agProg;
 }
 
+const calculateForProgress = (options) => {
+  let forProg = 0;
+  for (let resource of options[0].resources) {
+    forProg += agendaValue(resource.type, resource.amount)
+  }
+  
+  for (let asset of options[0].assets) {
+    for (const die of asset.dice) {          
+      forProg += die.amount;
+    }
+  } 
+
+  return forProg;
+}
+
+const calculateAgProgress = (options) => {  
+  let agProg = 0;
+  for (let resource of options[1].resources) {
+    agProg += agendaValue(resource.type, resource.amount)
+  }
+
+  for (let asset of options[1].assets) {
+    for (const die of asset.dice) {
+      agProg += die.amount;
+    }
+  }
+
+  return agProg;
+}
+
 
 const agendaValue = (resource, value) => {
   switch(resource) {
@@ -323,5 +353,7 @@ export {
   openLink, 
   getIcon, 
   populateThisAccount,
+  calculateForProgress,
+  calculateAgProgress,
   quack 
 };

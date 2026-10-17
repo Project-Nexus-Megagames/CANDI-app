@@ -13,6 +13,7 @@ import ActionDrawer from './ActionList/ActionDrawer';
 
 const Actions = (props) => {
   const compactActions = useSelector(s => s.actions.compactList);
+  const endOfGame = useSelector(s => s.gamestate.endOfGame);
   const myActions = useSelector(getMyActions);
   const fActions = useSelector(filteredActions);
   const [filter, setFilter] = useState('');
@@ -41,7 +42,7 @@ const Actions = (props) => {
     return <div />;
   }
 
-  let actionList = true ? fActions : myActions;
+  let actionList = (isControl  || endOfGame) ? fActions : myActions;
 
   useEffect(() => {
     try {

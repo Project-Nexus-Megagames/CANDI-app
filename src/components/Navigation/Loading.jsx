@@ -40,15 +40,6 @@ const Loading = ({controlMode}) => {
     
 	}, []);
 
-  // useEffect(() => {
-  //   console.log("gameConfig", gameConfig)
-	// 	if (gameConfig && gameConfig.loadingTips) {
-  //     console.log("loadingTips", gameConfig.loadingTips)
-	// 		setLoadingTips(gameConfig.loadingTips)
-  //     setMessage(Math.floor(Math.random() * gameConfig.loadingTips.length))
-	// 	}
-
-	// }, [gameConfig]);
 
 	useEffect(() => {
 		// console.log('Trigger A');
@@ -216,46 +207,46 @@ const loadingTips = [
     description: "Long loading screen? Try clicking the loading gif to speed up the wait time!",
     gifLink: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/38a50e00-83f8-4310-b83e-ffd1e2be065e/ddxipaf-17527ab5-59c5-4f7d-b6d4-4af1aa4db41f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM4YTUwZTAwLTgzZjgtNDMxMC1iODNlLWZmZDFlMmJlMDY1ZVwvZGR4aXBhZi0xNzUyN2FiNS01OWM1LTRmN2QtYjZkNC00YWYxYWE0ZGI0MWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jcQRVSIzYA0mgRcFBegcUEeMnQyKq4haj0cLb6pYlus'
   },
-  {
-    title: "Space Fact #1",
-    description: "Space is actually pretty big.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    title: "Space Fact #108",
-    description: "The Sun is large enough to contain 12 basketballs inside of it!",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    title: "Space Fact #79",
-    description: "The Universe is at least 29 years old.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    title: "Space Fact #5",
-    description: "There is no sound in space, because sound cannot afford a rocket to exit the atmosphere.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    title: "Space Fact #221",
-    description: "Aliens exist! They just don't want to talk to us boring humans. Jerks.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    title: "Space Fact #101",
-    description: "The rest of the galaxy already has McDonalds, we were the last planet to get it.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    title: "Space Fact #123",
-    description: "Spacecraft have visited all the known planets in our solar system. Including that one that no one is supposed to know about. Wait, forget you read that.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
-  {
-    title: "Space Fact #34",
-    description: "In 1 trillion years, you will be dead. Sorry.",
-    gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
-  },
+  // {
+  //   title: "Space Fact #1",
+  //   description: "Space is actually pretty big.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #108",
+  //   description: "The Sun is large enough to contain 12 basketballs inside of it!",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #79",
+  //   description: "The Universe is at least 29 years old.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #5",
+  //   description: "There is no sound in space, because sound cannot afford a rocket to exit the atmosphere.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #221",
+  //   description: "Aliens exist! They just don't want to talk to us boring humans. Jerks.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #101",
+  //   description: "The rest of the galaxy already has McDonalds, we were the last planet to get it.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #123",
+  //   description: "Spacecraft have visited all the known planets in our solar system. Including that one that no one is supposed to know about. Wait, forget you read that.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
+  // {
+  //   title: "Space Fact #34",
+  //   description: "In 1 trillion years, you will be dead. Sorry.",
+  //   gifLink: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmg2b3A4MHo1eW1kcXl6YnZkbTFwbmo1Mmp6aTFpcm13Nmh0cWh0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2WH6sqGKm027uq1Q9G/giphy.gif'
+  // },
 ];
 
 

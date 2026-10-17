@@ -38,6 +38,7 @@ const Navigation = (props) => {
   const gamestate = useSelector(state => state.gamestate)
   const clock = useSelector(s => s.clock)
   const myAccout = useSelector(getCharAccount);
+  const { endOfGame } = useSelector(s => s.gamestate);
 
 
   const [seconds, setSeconds] = React.useState(0);
@@ -177,10 +178,9 @@ const Navigation = (props) => {
                 <MenuItem onClick={() => window.open('https://github.com/Project-Nexus-Megagames/CANDI-issues/issues')}>Report Issues</MenuItem>
                 <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
                 <MenuItem onClick={() => reduxAction(toggleDuck())}>Spook</MenuItem>
-                <MenuItem onClick={() => navigate("/memorium")}>To the Sad Parade</MenuItem>
               </MenuList>
             </Menu>}
-            <AudioPlayer />
+            {/* <AudioPlayer /> */}
         </Box>
 
         <Box
@@ -235,8 +235,9 @@ const Navigation = (props) => {
             width={'100%'}
           >
             <p>Round: {props.gamestate.round} </p>
-            {getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
-            {getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}
+            {!endOfGame && getTimeToEndOfRound() > 0 && <Box>Time Left: {time}</Box>}
+            {!endOfGame &&getTimeToEndOfRound() <= 0 && <Box>Game Status: {props.gamestate.status}</Box>}            
+            {endOfGame && <Box>Game is over! Thanks for Playing!</Box>}
             {false &&
               <div className='styleCenter'>
                 {myAccout.resources.filter(el => el.balance > 0).map(resource => (<ResourceNugget fontSize={'1.5em'} key={resource._id} type={resource.code ? resource.code : resource.type} value={resource.balance} width={"70px"} />))}
@@ -251,50 +252,50 @@ const Navigation = (props) => {
             marginLeft='auto'
             justifyContent='right'
           >
+            <ButtonGroup isAttached variant={'outline'} >
+              <AlertList />
+              {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
+              {isControl && (
+                <Popover>
+                  <PopoverTrigger
+                    style={{ backgroundColor: '#5a4b5c' }}
+                    // _hover={{ bg: 'gray.400' }}
+                  >
+                    <Button backgroundColor={'#5a4b5c'} variant={'outline'} color='white'>View As</Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    backgroundColor={'#5a4b5c'}
+                    overflow="hidden"
+                    maxHeight={'50vh'}
+                  >
+                    <PopoverHeader >
+                      <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
+                    </PopoverHeader >
+                    <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }}  >
+                      <VStack divider={<Divider />} overflow={"auto"} backgroundColor={'#5a4b5c'}>
+                        {allCharacters
+                        .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
+                        .map(character => (
+                            <CharacterListItem
+                              character={character}
+                              key={character._id}
+                              isAccessible
+                              size='md'
+                              handleSelect={() => {
+                                handleCharChange(character._id);
+                              }} />
+                        ))}
+                      </VStack>
 
-            <AlertList />
-            {myChar && myCharacter && myChar !== myCharacter && <Button onClick={() => handleCharChange(myChar._id)}>{myCharacter.characterName} (Reset)</Button>}
-            {isControl && (
-              <Popover>
-                <PopoverTrigger
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                  colorScheme={'#0f131a'}
-                  _hover={{ bg: 'gray.400' }}
-                >
-                  <Button variant={'ghost'} >View As</Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  backgroundColor={'#0f131a'}
-                  overflow="hidden"
-                  maxHeight={'50vh'}
-                >
-                  <PopoverHeader >
-                    <Input onChange={(event) => setFilter(event.target.value.toLowerCase())} />
-                  </PopoverHeader >
-                  <PopoverBody overflow={'scroll'} style={{ scrollbarWidth: "thin" }} >
-                    <VStack divider={<Divider />} overflow={"auto"} >
-                      {allCharacters
-                      .filter(el => el.characterName.toLowerCase().includes(filter) || el.playerName.toLowerCase().includes(filter))
-                      .map(character => (
-                          <CharacterListItem
-                            character={character}
-                            key={character._id}
-                            isAccessible
-                            size='md'
-                            handleSelect={() => {
-                              handleCharChange(character._id);
-                            }} />
-                      ))}
-                    </VStack>
+                    </PopoverBody>
 
-                  </PopoverBody>
+                  </PopoverContent >
+                </Popover>
+              )}
 
-                </PopoverContent >
-              </Popover>
-            )}
+              {isControl && <UserList />}              
+            </ButtonGroup>
 
-            {isControl && <UserList />}
           </Box>          
         </Hide>
 

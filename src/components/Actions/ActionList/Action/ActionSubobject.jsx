@@ -74,12 +74,13 @@ const ActionSubObject = (props) => {
   };
 
   const handleSubmit = async (incoming) => {
-    const { effort, assets, description, intent, name, actionType, myCharacter } = incoming;
+    const { resources, assets, description, intent, name, actionType, myCharacter } = incoming;
     try {
       const data = {
         submission: {
           assets: assets.filter(el => el),
           description: description,
+          resources,
           intent: intent,
           id: subObject._id,
         },

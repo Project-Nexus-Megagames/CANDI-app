@@ -15,6 +15,7 @@ import {
   Badge,
   Button,
 } from '@chakra-ui/react'
+import { BsEye } from 'react-icons/bs';
 
 
 const UserList = () => {
@@ -31,12 +32,11 @@ const UserList = () => {
 	}
 
 	return (
-		<div>
       <Popover >
         <PopoverTrigger>
-          <Button variant={'outline'}  leftIcon={<StarIcon />} circle size="md"><Badge>{userList.length}</Badge></Button>
+          <Button style={{ backgroundColor: '#5a4b5c' }} color={'white'} leftIcon={<BsEye />} circle size="md"><Badge>{userList.length}</Badge></Button>
         </PopoverTrigger>
-        <PopoverContent style={{ backgroundColor: '#0f131a' }}>
+        <PopoverContent style={{ backgroundColor: '#5a4b5c' }}>
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverHeader>Online Users: {online}</PopoverHeader>
@@ -58,7 +58,6 @@ const UserList = () => {
           </PopoverBody>
         </PopoverContent>
       </Popover>
-		</div>
 	);
 };
 
